@@ -1,4 +1,4 @@
-# Copyright (c) 2020-2021 Andy Maleh
+# Copyright (c) 2021 Andy Maleh
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -19,48 +19,21 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+require 'glimmer/dsl/expression'
 require 'glimmer/libui/control_proxy'
 
 module Glimmer
-  module LibUI
-    # Proxy for LibUI Window objects
-    #
-    # Follows the Proxy Design Pattern
-    class WindowProxy < ControlProxy
-      def show
-        send_to_libui('show')
-        unless @shown_at_least_once
-          @shown_at_least_once = true
-          ::LibUI.main
+  module DSL
+    module Libui
+      class ListenerExpression < Expression
+        def can_interpret?(parent, keyword, *args, &block)
+          parent.is_a?(Glimmer::LibUI::ControlProxy) and
+            block_given? and
+            parent.can_handle_listener?(keyword)
         end
-      end
-      
-      def handle_listener(listener_name, &listener)
-        if listener_name == 'on_closing'
-          default_behavior_listener = Proc.new do
-            return_value = listener.call
-            if return_value.is_a?(Numeric)
-              return_value
-            else
-              destroy
-              ::LibUI.quit
-              0
-            end
-          end
-        end
-        super(listener_name, &default_behavior_listener)
-      end
-    
-      private
-      
-      def build_control
-        ::LibUI.init
-        super.tap do
-          handle_listener('on_closing') do
-            destroy
-            ::LibUI.quit
-            0
-          end
+  
+        def interpret(parent, keyword, *args, &block)
+          parent.handle_listener(keyword, &block)
         end
       end
     end

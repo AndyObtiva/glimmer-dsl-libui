@@ -58,6 +58,10 @@ module Glimmer
         # No Op by default
       end
       
+      def can_handle_listener?(listener_name)
+        ::LibUI.respond_to?("control_#{listener_name}") || ::LibUI.respond_to?("#{@keyword}_#{listener_name}")
+      end
+      
       def handle_listener(listener_name, &listener)
         if ::LibUI.respond_to?("control_#{listener_name}")
           ::LibUI.send("control_#{listener_name}", @libui, &listener)

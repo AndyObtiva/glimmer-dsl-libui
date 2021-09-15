@@ -40,6 +40,7 @@ module Glimmer
 #           block_attribute
 #           attribute
         %w[
+          listener
           control
         ]
       )
