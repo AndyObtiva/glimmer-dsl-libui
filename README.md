@@ -1,7 +1,6 @@
 # [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.0.1
 ## Dependency-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
-[![Coverage Status](https://coveralls.io/repos/github/AndyObtiva/glimmer-dsl-libui/badge.svg?branch=master)](https://coveralls.io/github/AndyObtiva/glimmer-dsl-libui?branch=master)
 [![Maintainability](https://api.codeclimate.com/v1/badges/ce2853efdbecf6ebdc73/maintainability)](https://codeclimate.com/github/AndyObtiva/glimmer-dsl-libui/maintainability)
 [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
@@ -15,6 +14,135 @@
 - Custom Widget support
 - Scaffolding for new custom widgets, apps, and gems
 - Native-Executable packaging on Mac, Windows, and Linux
+
+## Glimmer GUI DSL Concepts
+
+The Glimmer GUI DSL provides a declarative syntax for [LibUI](https://github.com/kojix2/LibUI) that:
+- Supports smart defaults (e.g. grid layout on most widgets)
+- Automates wiring of widgets (e.g. nesting a label under a toplevel root or adding a frame to a notebook)
+- Hides lower-level details (e.g. main loop is started automatically when opening a window)
+- Nests widgets according to their visual hierarchy
+- Requires the minimum amount of syntax needed to describe an app's GUI
+
+The Glimmer GUI DSL follows these simple concepts in mapping from [LibUI](https://github.com/kojix2/LibUI) syntax:
+- **Control**: [LibUI](https://github.com/kojix2/LibUI) controls may be declared by lower-case underscored name (aka keyword) (e.g. `window` or `button`). Behind the scenes, they are represented by keyword methods that map to corresponding `LibUI.new_keyword` methods receiving args (e.g. `window('hello world', 300, 200, 1)`).
+- **Content/Properties/Listeners Block**: Any keyword may be optionally followed by a Ruby curly-brace multi-line-block containing nested controls (content) and/or properties (attributes) (e.g. `window('hello world', 300, 200, 1) {button('greet')}`). It optionally recives one arg representing the control (e.g. `button('greet') {|b| on_clicked { puts b.text}}`)
+- **Property**: Control properties may be declared inside keyword blocks with lower-case underscored name followed by property value args (e.g. `title "hello world"` inside `group`). Behind the scenes, they properties correspond to `control_set_property` methods.
+- **Listener**: Control listeners may be declared inside keyword blocks with listener lower-case underscored name beginning with `on_` and receiving required block handler (e.g. `on_clicked {puts 'clicked'}` inside `button`). Behind the scenes, they listeners correspond to `control_on_event` methods.
+
+Example of an app written in [LibUI](https://github.com/kojix2/LibUI)'s procedural imperative syntax:
+
+```ruby
+require 'libui'
+
+UI = LibUI
+
+UI.init
+
+main_window = UI.new_window('hello world', 300, 200, 1)
+
+UI.control_show(main_window)
+
+UI.window_on_closing(main_window) do
+  puts 'Bye Bye'
+  UI.control_destroy(main_window)
+  UI.quit
+  0
+end
+
+UI.main
+UI.quit
+```
+
+Example of the same app written in [Glimmer](https://github.com/AndyObtiva/glimmer) object-oriented declarative hierarchical syntax:
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+window('hello world', 300, 200, 1) {
+  on_closing do
+    puts 'Bye Bye'
+  end
+}.show
+```
+
+## Usage
+
+Add `require 'glimmer-dsl-libui'` at the top, and then `include Glimmer` into the top-level main object for testing or into an actual class for serious usage.
+
+Example:
+
+```ruby
+require 'glimmer-dsl-libui'
+
+class Application
+  include Glimmer
+  
+  def launch
+    window('hello world', 300, 200, 1) {
+      button('Button') {
+        on_clicked do
+          puts 'Button Clicked'
+        end
+      }
+      
+      on_closing do
+        puts 'Bye Bye'
+      end
+    }.show
+  end
+end
+
+Application.new.launch
+```
+
+## Girb (Glimmer IRB)
+
+You can run the `girb` command (`bin/girb` if you cloned the project locally):
+
+```
+girb
+```
+
+This gives you `irb` with the `glimmer-dsl-libui` gem loaded and the `Glimmer` module mixed into the main object for easy experimentation with GUI.
+
+## Examples
+
+### Basic Window
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+window('hello world', 300, 200, 1) {
+  on_closing do
+    puts 'Bye Bye'
+  end
+}.show
+```
+
+### Basic Button
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+window('hello world', 300, 200, 1) {
+  button('Button') {
+    on_clicked do
+      msg_box('Information', 'You clicked the button')
+    end
+  }
+  
+  on_closing do
+    puts 'Bye Bye'
+  end
+}.show
+```
 
 ## Contributing to glimmer-dsl-libui
 

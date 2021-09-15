@@ -17,10 +17,8 @@ gem 'libui', '~> 0.0.9'
 # Add dependencies to develop your gem here.
 # Include everything needed to run rake, tests, features, etc.
 group :development do
-  gem 'rspec', '~> 3.5.0'
-  gem 'rdoc', '~> 3.12'
-  gem 'bundler', '>= 1.0'
-  gem 'jeweler', '>= 2.3.9', '< 3.0.0'
+  gem 'juwelier', '>= 2.4.9', '< 3.0.0'
+  gem 'rspec', '~> 3.0'
   gem 'rake-tui', '>= 0.2.1'
   gem 'puts_debuggerer', '~> 0.13.1', require: false
   gem 'coveralls', '= 0.8.23', require: false

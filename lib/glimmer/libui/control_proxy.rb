@@ -1,4 +1,4 @@
-# Copyright (c) 2020-2021 Andy Maleh
+# Copyright (c) 2021 Andy Maleh
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -27,7 +27,7 @@ module Glimmer
     class ControlProxy
       class << self
         def control_exists?(keyword)
-          ::LibUI.respond_to?("new_#{keyword}")
+          ::LibUI.respond_to?("new_#{keyword}") || ::LibUI.respond_to?(keyword)
         end
         
         def create(keyword, parent, args)
@@ -52,6 +52,9 @@ module Glimmer
         @parent_proxy = parent
         @args = args
         build_control
+        if @parent_proxy.is_a?(WindowProxy)
+          ::LibUI.window_set_child(@parent_proxy.libui, @libui)
+        end
       end
       
       def post_add_content
@@ -106,7 +109,12 @@ module Glimmer
       private
       
       def build_control
-        @libui ||= ::LibUI.send("new_#{@keyword}", *@args)
+        @libui ||= if ::LibUI.respond_to?("new_#{keyword}")
+          ::LibUI.send("new_#{@keyword}", *@args)
+        elsif ::LibUI.respond_to?(keyword)
+          @args[0] = @args.first.libui if @args.first.is_a?(ControlProxy)
+          ::LibUI.send(@keyword, *@args)
+        end
       end
     end
   end
