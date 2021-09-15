@@ -77,7 +77,8 @@ module Glimmer
       def respond_to_libui?(method_name, *args, &block)
         ::LibUI.respond_to?("control_#{method_name}") ||
           ::LibUI.respond_to?("#{@keyword}_#{method_name}") ||
-          ::LibUI.respond_to?("#{@keyword}_set_#{method_name}")
+          ::LibUI.respond_to?("#{@keyword}_set_#{method_name}") ||
+          ::LibUI.respond_to?("#{@keyword}_set_#{method_name.to_s.sub(/=$/, '')}")
       end
       
       def method_missing(method_name, *args, &block)
@@ -95,6 +96,10 @@ module Glimmer
           ::LibUI.send("#{@keyword}_#{method_name}", @libui, *args)
         elsif ::LibUI.respond_to?("#{@keyword}_set_#{method_name}") && !args.empty?
           ::LibUI.send("#{@keyword}_set_#{method_name}", @libui, *args)
+        elsif ::LibUI.respond_to?("#{@keyword}_set_#{method_name.to_s.sub(/=$/, '')}") && !args.empty?
+          ::LibUI.send("#{@keyword}_set_#{method_name.to_s.sub(/=$/, '')}", @libui, *args)
+        elsif ::LibUI.respond_to?("#{@keyword}_#{method_name}") && method_name.start_with?('set_') && !args.empty?
+          ::LibUI.send("#{@keyword}_#{method_name}", @libui, *args)
         end
       end
       

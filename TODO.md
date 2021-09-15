@@ -6,12 +6,12 @@
 
 ## Soon
 
-- girb (Glimmer IRB)
+- Support examples/basic_button.rb
 
 ## Future
 
+- girb (Glimmer IRB)
 - Support examples/basic_area.rb
-- Support examples/basic_button.rb
 - Support examples/basic_draw_text.rb
 - Support examples/basic_entry.rb
 - Support examples/basic_table.rb
