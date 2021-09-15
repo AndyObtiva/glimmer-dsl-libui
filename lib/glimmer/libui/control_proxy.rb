@@ -91,9 +91,9 @@ module Glimmer
       def send_to_libui(method_name, *args, &block)
         if ::LibUI.respond_to?("control_#{method_name}")
           ::LibUI.send("control_#{method_name}", @libui, *args)
-        elsif ::LibUI.respond_to?("#{@keyword}_#{method_name}")
+        elsif ::LibUI.respond_to?("#{@keyword}_#{method_name}") && args.empty?
           ::LibUI.send("#{@keyword}_#{method_name}", @libui, *args)
-        elsif ::LibUI.respond_to?("#{@keyword}_set_#{method_name}")
+        elsif ::LibUI.respond_to?("#{@keyword}_set_#{method_name}") && !args.empty?
           ::LibUI.send("#{@keyword}_set_#{method_name}", @libui, *args)
         end
       end
