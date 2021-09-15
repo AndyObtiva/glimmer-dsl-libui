@@ -20,6 +20,7 @@ Juwelier::Tasks.new do |gem|
   gem.description = %Q{Dependency-Free Ruby Desktop Development GUI Library (no need to pre-install any pre-requisites. Just install the gem and have platform-independent GUI that just works)}
   gem.email = "andy.am@gmail.com"
   gem.authors = ["Andy Maleh"]
+#   gem.executables = ['girb']
   gem.files = ['README.md', 'CHANGELOG.md', 'VERSION', 'LICENSE.txt', 'glimmer-dsl-libui.gemspec', 'bin/**/*', 'lib/**/*', 'icons/**/*', 'examples/**/*']
   gem.require_paths = ['lib', '.']
 

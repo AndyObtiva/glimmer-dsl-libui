@@ -1,4 +1,4 @@
-# Copyright (c) 2021 Andy Maleh
+# Copyright (c) 2020-2021 Andy Maleh
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -19,30 +19,34 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'glimmer/dsl/engine'
-Dir[File.expand_path('../*_expression.rb', __FILE__)].each {|f| require f}
-
-# Glimmer DSL expression configuration module
-#
-# When DSL engine interprets an expression, it attempts to handle
-# with expressions listed here in the order specified.
-
-# Every expression has a corresponding Expression subclass
-# in glimmer/dsl
+require 'glimmer/libui/control_proxy'
 
 module Glimmer
-  module DSL
-    module Libui
-      Engine.add_dynamic_expressions(
-        Libui,
-#           list_selection_data_binding
-#           data_binding
-#           block_attribute
-#           attribute
-        %w[
-          control
-        ]
-      )
+  module LibUI
+    # Proxy for LibUI Window objects
+    #
+    # Follows the Proxy Design Pattern
+    class WindowProxy < ControlProxy
+      def show
+        send_to_libui('show')
+        unless @shown_at_least_once
+          @shown_at_least_once = true
+          ::LibUI.main
+        end
+      end
+    
+      private
+      
+      def build_control
+        ::LibUI.init
+        super.tap do
+          handle_listener('on_closing') do
+            destroy
+            ::LibUI.quit
+            0
+          end
+        end
+      end
     end
   end
 end
