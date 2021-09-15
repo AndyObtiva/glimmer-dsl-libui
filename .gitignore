@@ -51,3 +51,5 @@ pkg
 tmp
 
 .gladiator
+
+.DS_Store

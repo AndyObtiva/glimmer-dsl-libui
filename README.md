@@ -18,9 +18,9 @@
 ## Glimmer GUI DSL Concepts
 
 The Glimmer GUI DSL provides a declarative syntax for [LibUI](https://github.com/kojix2/LibUI) that:
-- Supports smart defaults (e.g. grid layout on most widgets)
-- Automates wiring of widgets (e.g. nesting a label under a toplevel root or adding a frame to a notebook)
-- Hides lower-level details (e.g. main loop is started automatically when opening a window)
+- Supports smart defaults (e.g. automatic `on_closing` listener that quits `window`)
+- Automates wiring of widgets (e.g. `button` is automatically set as child of `window`)
+- Hides lower-level details (e.g. `LibUI.main` loop is started automatically when triggering `show` on `window`)
 - Nests widgets according to their visual hierarchy
 - Requires the minimum amount of syntax needed to describe an app's GUI
 
@@ -72,7 +72,7 @@ window('hello world', 300, 200, 1) {
 
 Add `require 'glimmer-dsl-libui'` at the top, and then `include Glimmer` into the top-level main object for testing or into an actual class for serious usage.
 
-Example:
+Example (you may copy/paste in [`girb`](#girb-glimmer-irb)):
 
 ```ruby
 require 'glimmer-dsl-libui'
@@ -98,6 +98,21 @@ end
 Application.new.launch
 ```
 
+## API
+
+Any control returned by a Glimmer GUI DSL keyword declaration can be introspected for its properties and updated via object-oriented attributes (standard Ruby `attr`/`attr=` or `set_attr`).
+
+Example (you may copy/paste in [`girb`](#girb-glimmer-irb)):
+
+```ruby
+w = window('hello world', 300, 200, 1)
+puts w.title # => hello world
+w.title = 'howdy'
+puts w.title # => howdy
+w.set_title 'aloha'
+puts w.title # => aloha
+```
+
 ## Girb (Glimmer IRB)
 
 You can run the `girb` command (`bin/girb` if you cloned the project locally):
@@ -108,9 +123,49 @@ girb
 
 This gives you `irb` with the `glimmer-dsl-libui` gem loaded and the `Glimmer` module mixed into the main object for easy experimentation with GUI.
 
+Gotcha: On the Mac, when you close a window opened in `girb`, it remains open until you enter `exit` or open another GUI window.
+
 ## Examples
 
+These examples reimplement the ones in the [LibUI](https://github.com/kojix2/LibUI) project utilizing the shorter Glimmer GUI DSL syntax.
+
 ### Basic Window
+
+[examples/basic_window.rb](examples/basic_window.rb)
+
+Mac
+
+![glimmer-dsl-libui-basic-window-mac.png](images/glimmer-dsl-libui-basic-window-mac.png)
+
+Linux
+
+![glimmer-dsl-libui-basic-window-linux.png](images/glimmer-dsl-libui-basic-window-linux.png)
+
+[LibUI](https://github.com/kojix2/LibUI) Original Version:
+
+```ruby
+require 'libui'
+
+UI = LibUI
+
+UI.init
+
+main_window = UI.new_window('hello world', 300, 200, 1)
+
+UI.control_show(main_window)
+
+UI.window_on_closing(main_window) do
+  puts 'Bye Bye'
+  UI.control_destroy(main_window)
+  UI.quit
+  0
+end
+
+UI.main
+UI.quit
+```
+
+[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
 
 ```ruby
 require 'glimmer-dsl-libui'
@@ -126,15 +181,60 @@ window('hello world', 300, 200, 1) {
 
 ### Basic Button
 
+[examples/basic_button.rb](examples/basic_button.rb)
+
+Mac
+
+![glimmer-dsl-libui-basic-button-mac.png](images/glimmer-dsl-libui-basic-button-mac.png)
+![glimmer-dsl-libui-basic-button-msg-box-mac.png](images/glimmer-dsl-libui-basic-button-msg-box-mac.png)
+
+Linux
+
+![glimmer-dsl-libui-basic-button-linux.png](images/glimmer-dsl-libui-basic-button-linux.png)
+![glimmer-dsl-libui-basic-button-msg-box-linux.png](images/glimmer-dsl-libui-basic-button-msg-box-linux.png)
+
+[LibUI](https://github.com/kojix2/LibUI) Original Version:
+
+```ruby
+require 'libui'
+
+UI = LibUI
+
+UI.init
+
+main_window = UI.new_window('hello world', 300, 200, 1)
+
+button = UI.new_button('Button')
+
+UI.button_on_clicked(button) do
+  UI.msg_box(main_window, 'Information', 'You clicked the button')
+end
+
+UI.window_on_closing(main_window) do
+  puts 'Bye Bye'
+  UI.control_destroy(main_window)
+  UI.quit
+  0
+end
+
+UI.window_set_child(main_window, button)
+UI.control_show(main_window)
+
+UI.main
+UI.quit
+```
+
+[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
 ```ruby
 require 'glimmer-dsl-libui'
 
 include Glimmer
 
-window('hello world', 300, 200, 1) {
+window('hello world', 300, 200, 1) { |w|
   button('Button') {
     on_clicked do
-      msg_box('Information', 'You clicked the button')
+      msg_box(w, 'Information', 'You clicked the button')
     end
   }
   
