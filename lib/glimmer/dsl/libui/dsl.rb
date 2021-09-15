@@ -19,22 +19,30 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-$LOAD_PATH.unshift(File.expand_path('..', __FILE__))
+require 'glimmer/dsl/engine'
+Dir[File.expand_path('../*_expression.rb', __FILE__)].each {|f| require f}
 
-# External requires
-require 'glimmer'
-# require 'logging'
-# require 'puts_debuggerer' if ENV['pd'].to_s.downcase == 'true'
-# require 'super_module'
-require 'libui'
+# Glimmer DSL expression configuration module
+#
+# When DSL engine interprets an expression, it attempts to handle
+# with expressions listed here in the order specified.
 
-# Internal requires
-# require 'ext/glimmer/config'
-# require 'ext/glimmer'
-require 'glimmer/dsl/libui/dsl'
-Glimmer::Config.loop_max_count = -1
-Glimmer::Config.excluded_keyword_checkers << lambda do |method_symbol, *args|
-  method = method_symbol.to_s
-  result = false
-  result ||= method == 'load_iseq'
+# Every expression has a corresponding Expression subclass
+# in glimmer/dsl
+
+module Glimmer
+  module DSL
+    module Libui
+      Engine.add_dynamic_expressions(
+        Libui,
+        [
+#           list_selection_data_binding
+#           data_binding
+#           block_attribute
+#           attribute
+#           widget
+        ]
+      )
+    end
+  end
 end
