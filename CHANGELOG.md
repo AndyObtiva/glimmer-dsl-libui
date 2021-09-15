@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.0.2
+
+- Support `vertical_box` and `horizontal_box`
+- Support examples/basic_entry.rb
+
 ## 0.0.1
 
 - LibUI general control and window support

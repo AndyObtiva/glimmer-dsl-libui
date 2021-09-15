@@ -19,53 +19,14 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'glimmer/libui/control_proxy'
-
 module Glimmer
   module LibUI
-    # Proxy for LibUI Window objects
-    #
-    # Follows the Proxy Design Pattern
-    class WindowProxy < ControlProxy
+    module Box
+      APPEND_PROPERTIES = %w[stretchy]
+      
       def post_initialize_child(child)
-        ::LibUI.window_set_child(@libui, child.libui)
-      end
-    
-      def show
-        send_to_libui('show')
-        unless @shown_at_least_once
-          @shown_at_least_once = true
-          ::LibUI.main
-        end
-      end
-      
-      def handle_listener(listener_name, &listener)
-        if listener_name == 'on_closing'
-          default_behavior_listener = Proc.new do
-            return_value = listener.call
-            if return_value.is_a?(Numeric)
-              return_value
-            else
-              destroy
-              ::LibUI.quit
-              0
-            end
-          end
-        end
-        super(listener_name, &default_behavior_listener)
-      end
-    
-      private
-      
-      def build_control
-        ::LibUI.init
-        super.tap do
-          handle_listener('on_closing') do
-            destroy
-            ::LibUI.quit
-            0
-          end
-        end
+        child.stretchy = 1 if child.stretchy.nil?
+        ::LibUI.box_append(@libui, child.libui, child.stretchy)
       end
     end
   end

@@ -46,5 +46,8 @@ module Glimmer
   end
 end
 
+# TODO Consider moving all controls underneath Control namespace
 require 'glimmer/libui/control_proxy'
 require 'glimmer/libui/window_proxy'
+require 'glimmer/libui/horizontal_box_proxy'
+require 'glimmer/libui/vertical_box_proxy'

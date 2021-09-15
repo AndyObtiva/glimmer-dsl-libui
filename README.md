@@ -6,6 +6,8 @@
 
 [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) is a dependency-free Ruby desktop development GUI library. No need to pre-install any pre-requisites. Just install the gem and have platform-independent GUI that just works!
 
+The main trade-off against [Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt) and [Glimmer DSL for Tk](https://github.com/AndyObtiva/glimmer-dsl-tk) is the fact that [SWT](https://www.eclipse.org/swt/) and [Tk](https://www.tcl.tk/) are more mature than [LibUI](https://github.com/kojix2/LibUI) as GUI toolkits. Still, if there is only a need to build a small simple application, [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) could be a pretty good choice due to having zero external dependencies beyond what is included in the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui).
+
 [Glimmer DSL for LibUI](https://github.com/AndyObtiva/glimmer-dsl-libui) aims to provide a DSL similar to the [Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt) to enable more productive desktop development in Ruby with:
 - Declarative DSL syntax that visually maps to the GUI widget hierarchy
 - Convention over configuration via smart defaults and automation of low-level details
@@ -14,6 +16,28 @@
 - Custom Widget support
 - Scaffolding for new custom widgets, apps, and gems
 - Native-Executable packaging on Mac, Windows, and Linux
+
+Example:
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+window('hello world', 300, 200, 1).show
+```
+
+![glimmer-dsl-libui-basic-window-mac.png](images/glimmer-dsl-libui-basic-window-mac.png)
+![glimmer-dsl-libui-basic-window-linux.png](images/glimmer-dsl-libui-basic-window-linux.png)
+
+NOTE: [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) is in early alpha mode. Please help make better by contributing, adopting for small or low risk projects, and providing feedback. It is still an early alpha, so the more feedback and issues you report the better.
+
+Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interested in:
+- [glimmer-dsl-swt](https://github.com/AndyObtiva/glimmer-dsl-swt): Glimmer DSL for SWT (JRuby Desktop Development GUI Framework)
+- [glimmer-dsl-opal](https://github.com/AndyObtiva/glimmer-dsl-opal): Glimmer DSL for Opal (Pure Ruby Web GUI and Auto-Webifier of Desktop Apps)
+- [glimmer-dsl-xml](https://github.com/AndyObtiva/glimmer-dsl-xml): Glimmer DSL for XML (& HTML)
+- [glimmer-dsl-css](https://github.com/AndyObtiva/glimmer-dsl-css): Glimmer DSL for CSS
+- [glimmer-dsl-tk](https://github.com/AndyObtiva/glimmer-dsl-tk): Glimmer DSL for Tk (MRI Ruby Desktop Development GUI Library)
 
 ## Glimmer GUI DSL Concepts
 
@@ -87,10 +111,6 @@ class Application
           puts 'Button Clicked'
         end
       }
-      
-      on_closing do
-        puts 'Bye Bye'
-      end
     }.show
   end
 end

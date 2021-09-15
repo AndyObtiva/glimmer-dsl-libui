@@ -30,8 +30,8 @@ module Glimmer
           ::LibUI.respond_to?("new_#{keyword}") || ::LibUI.respond_to?(keyword)
         end
         
-        def create(keyword, parent, args)
-          widget_proxy_class(keyword).new(keyword, parent, args)
+        def create(keyword, parent, args, &block)
+          widget_proxy_class(keyword).new(keyword, parent, args, &block)
         end
         
         def widget_proxy_class(keyword)
@@ -51,16 +51,24 @@ module Glimmer
         @keyword = keyword
         @parent_proxy = parent
         @args = args
+        @block = block
         build_control
-        if @parent_proxy.is_a?(WindowProxy)
-          ::LibUI.window_set_child(@parent_proxy.libui, @libui)
+        if @parent_proxy.class.constants.include?(:APPEND_PROPERTIES)
+          @parent_proxy.class::APPEND_PROPERTIES
         end
+        post_add_content if @block.nil?
       end
       
+      # Subclasses may override to perform post add_content work (normally must call super)
       def post_add_content
+        @parent_proxy&.post_initialize_child(self)
+      end
+      
+      # Subclasses may override to perform post initialization work on an added child
+      def post_initialize_child(child)
         # No Op by default
       end
-      
+
       def can_handle_listener?(listener_name)
         ::LibUI.respond_to?("control_#{listener_name}") || ::LibUI.respond_to?("#{@keyword}_#{listener_name}")
       end
@@ -74,7 +82,9 @@ module Glimmer
       end
       
       def respond_to?(method_name, *args, &block)
-        respond_to_libui?(method_name, *args, &block) || super
+        respond_to_libui?(method_name, *args, &block) ||
+          (append_properties.include?(method_name.to_s) || append_properties.include?(method_name.to_s.sub(/=$/, ''))) ||
+          super
       end
       
       def respond_to_libui?(method_name, *args, &block)
@@ -87,6 +97,8 @@ module Glimmer
       def method_missing(method_name, *args, &block)
         if respond_to_libui?(method_name, *args, &block)
           send_to_libui(method_name, *args, &block)
+        elsif (append_properties.include?(method_name.to_s) || append_properties.include?(method_name.to_s.sub(/=$/, '')))
+          append_property(method_name, *args)
         else
           super
         end
@@ -103,6 +115,20 @@ module Glimmer
           ::LibUI.send("#{@keyword}_set_#{method_name.to_s.sub(/=$/, '')}", @libui, *args)
         elsif ::LibUI.respond_to?("#{@keyword}_#{method_name}") && method_name.start_with?('set_') && !args.empty?
           ::LibUI.send("#{@keyword}_#{method_name}", @libui, *args)
+        end
+      end
+      
+      def append_properties
+        @parent_proxy&.class&.constants&.include?(:APPEND_PROPERTIES) ? @parent_proxy.class::APPEND_PROPERTIES : []
+      end
+      
+      def append_property(property, value = nil)
+        property = property.to_s.sub(/=$/, '')
+        @append_property_hash ||= {}
+        if value.nil?
+          @append_property_hash[property]
+        else
+          @append_property_hash[property] = value
         end
       end
       
