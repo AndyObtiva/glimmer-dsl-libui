@@ -4,7 +4,7 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/ce2853efdbecf6ebdc73/maintainability)](https://codeclimate.com/github/AndyObtiva/glimmer-dsl-libui/maintainability)
 [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-[Glimmer](https://github.com/AndyObtiva/glimmer) DSL for [LibUI](https://github.com/kojix2/LibUI) is a dependency-free Ruby desktop development GUI library. No need to pre-install any pre-requisites. Just install the gem and have platform-independent GUI that just works!
+[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) is a dependency-free Ruby desktop development GUI library. No need to pre-install any pre-requisites. Just install the gem and have platform-independent GUI that just works!
 
 The main trade-off against [Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt) and [Glimmer DSL for Tk](https://github.com/AndyObtiva/glimmer-dsl-tk) is the fact that [SWT](https://www.eclipse.org/swt/) and [Tk](https://www.tcl.tk/) are more mature than [LibUI](https://github.com/kojix2/LibUI) as GUI toolkits. Still, if there is only a need to build a small simple application, [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) could be a pretty good choice due to having zero external dependencies beyond what is included in the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui).
 
@@ -156,15 +156,6 @@ w.title = 'howdy'
 puts w.title # => howdy
 w.set_title 'aloha'
 puts w.title # => aloha
-```
-
-Controls are wrapped as Ruby proxy objects, having a `#libui` method to obtain the wrapped Fiddle pointer object. Ruby proxy objects shield consumers from having to deal with lower-level details unless absolutely needed.
-
-Example (you may copy/paste in [`girb`](#girb-glimmer-irb)):
-
-```
-w = window('hello world', 300, 200, 1) # => #<Glimmer::LibUI::WindowProxy:0x00007fde4ea39fb0
-w.libui # => #<Fiddle::Pointer:0x00007fde53997980 ptr=0x00007fde51352a60 size=0 free=0x0000000000000000> 
 ```
 
 ## Girb (Glimmer IRB)
@@ -399,7 +390,7 @@ include Glimmer
 window('Basic Entry', 300, 50, 1) { |w|
   horizontal_box {
     e = entry {
-      stretchy 1
+      # stretchy 1 # Smart default option for appending to horizontal_box
     
       on_changed do
         puts e.text
@@ -456,7 +447,7 @@ UI = LibUI
 
 UI.init
 
-main_window = UI.new_window('Basic Entry', 300, 50, 1)
+main_window = UI.new_window('Notepad', 500, 300, 1)
 UI.window_on_closing(main_window) do
   puts 'Bye Bye'
   UI.control_destroy(main_window)
@@ -464,24 +455,11 @@ UI.window_on_closing(main_window) do
   0
 end
 
-hbox = UI.new_horizontal_box
-UI.window_set_child(main_window, hbox)
+vbox = UI.new_vertical_box
+UI.window_set_child(main_window, vbox)
 
-entry = UI.new_entry
-UI.entry_on_changed(entry) do
-  puts UI.entry_text(entry).to_s
-  $stdout.flush # For Windows
-end
-UI.box_append(hbox, entry, 1)
-
-button = UI.new_button('Button')
-UI.button_on_clicked(button) do
-  text = UI.entry_text(entry).to_s
-  UI.msg_box(main_window, 'You entered', text)
-  0
-end
-
-UI.box_append(hbox, button, 0)
+entry = UI.new_non_wrapping_multiline_entry
+UI.box_append(vbox, entry, 1)
 
 UI.control_show(main_window)
 UI.main
@@ -495,30 +473,14 @@ require 'glimmer-dsl-libui'
 
 include Glimmer
 
-window('Basic Entry', 300, 50, 1) { |w|
-  horizontal_box {
-    e = entry {
-      stretchy 1
-    
-      on_changed do
-        puts e.text
-        $stdout.flush # For Windows
-      end
-    }
-    
-    button('Button') {
-      stretchy 0
-      
-      on_clicked do
-        text = e.text
-        msg_box(w, 'You entered', text)
-      end
-    }
-  }
-  
+window('Notepad', 500, 300, 1) {
   on_closing do
     puts 'Bye Bye'
   end
+  
+  vertical_box {
+    non_wrapping_multiline_entry
+  }
 }.show
 ```
 

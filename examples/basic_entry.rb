@@ -7,7 +7,7 @@ include Glimmer
 window('Basic Entry', 300, 50, 1) { |w|
   horizontal_box {
     e = entry {
-      # stretchy 1 # Smart default for box append
+      # stretchy 1 # Smart default option for appending to horizontal_box
     
       on_changed do
         puts e.text
