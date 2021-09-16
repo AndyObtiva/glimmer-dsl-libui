@@ -4,7 +4,8 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/ce2853efdbecf6ebdc73/maintainability)](https://codeclimate.com/github/AndyObtiva/glimmer-dsl-libui/maintainability)
 [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) is a dependency-free Ruby desktop development GUI library. No need to pre-install any pre-requisites. Just install the gem and have platform-independent GUI that just works!
+[Glimmer](https://github.com/AndyObtiva/glimmer) DSL for [LibUI](https://github.com/kojix2/LibUI) is a dependency-free Ruby desktop development GUI library. No need to pre-insta
+ll any pre-requisites. Just install the gem and have platform-independent GUI that just works!
 
 The main trade-off against [Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt) and [Glimmer DSL for Tk](https://github.com/AndyObtiva/glimmer-dsl-tk) is the fact that [SWT](https://www.eclipse.org/swt/) and [Tk](https://www.tcl.tk/) are more mature than [LibUI](https://github.com/kojix2/LibUI) as GUI toolkits. Still, if there is only a need to build a small simple application, [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) could be a pretty good choice due to having zero external dependencies beyond what is included in the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui).
 
@@ -156,6 +157,15 @@ w.title = 'howdy'
 puts w.title # => howdy
 w.set_title 'aloha'
 puts w.title # => aloha
+```
+
+Controls are wrapped as Ruby proxy objects, having a `#libui` method to obtain the wrapped Fiddle pointer object. Ruby proxy objects rely on composition (via [Proxy Design Pattern](https://en.wikipedia.org/wiki/Proxy_pattern)) instead of inheritance to shield consumers from having to deal with lower-level details unless absolutely needed.
+
+Example (you may copy/paste in [`girb`](#girb-glimmer-irb)):
+
+```ruby
+w = window('hello world', 300, 200, 1) # => #<Glimmer::LibUI::WindowProxy:0x00007fde4ea39fb0
+w.libui # => #<Fiddle::Pointer:0x00007fde53997980 ptr=0x00007fde51352a60 size=0 free=0x0000000000000000>
 ```
 
 ## Girb (Glimmer IRB)
