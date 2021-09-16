@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.0.1
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.0.2
 ## Dependency-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Maintainability](https://api.codeclimate.com/v1/badges/ce2853efdbecf6ebdc73/maintainability)](https://codeclimate.com/github/AndyObtiva/glimmer-dsl-libui/maintainability)
@@ -94,6 +94,18 @@ window('hello world', 300, 200, 1) {
 
 ## Usage
 
+Install [glimmer-dsl-libui](https://rubygems.org/gems/glimmer-dsl-libui) gem directly:
+
+```
+gem install glimmer-dsl-libui
+```
+ 
+Or install via Bundler `Gemfile`:
+
+```ruby
+gem 'glimmer-dsl-libui', '~> 0.0.2'
+```
+
 Add `require 'glimmer-dsl-libui'` at the top, and then `include Glimmer` into the top-level main object for testing or into an actual class for serious usage.
 
 Example (you may copy/paste in [`girb`](#girb-glimmer-irb)):
@@ -147,11 +159,23 @@ Gotcha: On the Mac, when you close a window opened in `girb`, it remains open un
 
 ## Examples
 
-These examples reimplement the ones in the [LibUI](https://github.com/kojix2/LibUI) project utilizing the shorter Glimmer GUI DSL syntax.
+These examples reimplement the ones in the [LibUI](https://github.com/kojix2/LibUI) project utilizing the Glimmer GUI DSL.
 
 ### Basic Window
 
 [examples/basic_window.rb](examples/basic_window.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/basic_window.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/basic_window'"
+```
 
 Mac
 
@@ -202,6 +226,18 @@ window('hello world', 300, 200, 1) {
 ### Basic Button
 
 [examples/basic_button.rb](examples/basic_button.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/basic_button.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/basic_button'"
+```
 
 Mac
 
@@ -256,6 +292,107 @@ window('hello world', 300, 200, 1) { |w|
     on_clicked do
       msg_box(w, 'Information', 'You clicked the button')
     end
+  }
+  
+  on_closing do
+    puts 'Bye Bye'
+  end
+}.show
+```
+
+### Basic Entry
+
+[examples/basic_entry.rb](examples/basic_entry.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/basic_entry.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/basic_entry'"
+```
+
+Mac
+
+![glimmer-dsl-libui-basic-entry-mac.png](images/glimmer-dsl-libui-basic-entry-mac.png)
+![glimmer-dsl-libui-basic-entry-msg-box-mac.png](images/glimmer-dsl-libui-basic-entry-msg-box-mac.png)
+
+Linux
+
+![glimmer-dsl-libui-basic-entry-linux.png](images/glimmer-dsl-libui-basic-entry-linux.png)
+![glimmer-dsl-libui-basic-entry-msg-box-linux.png](images/glimmer-dsl-libui-basic-entry-msg-box-linux.png)
+
+[LibUI](https://github.com/kojix2/LibUI) Original Version:
+
+```ruby
+require 'libui'
+
+UI = LibUI
+
+UI.init
+
+main_window = UI.new_window('Basic Entry', 300, 50, 1)
+UI.window_on_closing(main_window) do
+  puts 'Bye Bye'
+  UI.control_destroy(main_window)
+  UI.quit
+  0
+end
+
+hbox = UI.new_horizontal_box
+UI.window_set_child(main_window, hbox)
+
+entry = UI.new_entry
+UI.entry_on_changed(entry) do
+  puts UI.entry_text(entry).to_s
+  $stdout.flush # For Windows
+end
+UI.box_append(hbox, entry, 1)
+
+button = UI.new_button('Button')
+UI.button_on_clicked(button) do
+  text = UI.entry_text(entry).to_s
+  UI.msg_box(main_window, 'You entered', text)
+  0
+end
+
+UI.box_append(hbox, button, 0)
+
+UI.control_show(main_window)
+UI.main
+UI.quit
+```
+
+[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+window('Basic Entry', 300, 50, 1) { |w|
+  horizontal_box {
+    e = entry {
+      stretchy 1
+    
+      on_changed do
+        puts e.text
+        $stdout.flush # For Windows
+      end
+    }
+    
+    button('Button') {
+      stretchy 0
+      
+      on_clicked do
+        text = e.text
+        msg_box(w, 'You entered', text)
+      end
+    }
   }
   
   on_closing do
