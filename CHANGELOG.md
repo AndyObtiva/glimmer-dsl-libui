@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.3
+
+- Support examples/simple_notepad.rb
+
 ## 0.0.2
 
 - Support `vertical_box` and `horizontal_box`

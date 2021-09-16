@@ -1,10 +1,10 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.0.2
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.0.3
 ## Dependency-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Maintainability](https://api.codeclimate.com/v1/badges/ce2853efdbecf6ebdc73/maintainability)](https://codeclimate.com/github/AndyObtiva/glimmer-dsl-libui/maintainability)
 [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) is a dependency-free Ruby desktop development GUI library. No need to pre-install any pre-requisites. Just install the gem and have platform-independent GUI that just works!
+[Glimmer](https://github.com/AndyObtiva/glimmer) DSL for [LibUI](https://github.com/kojix2/LibUI) is a dependency-free Ruby desktop development GUI library. No need to pre-install any pre-requisites. Just install the gem and have platform-independent GUI that just works!
 
 The main trade-off against [Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt) and [Glimmer DSL for Tk](https://github.com/AndyObtiva/glimmer-dsl-tk) is the fact that [SWT](https://www.eclipse.org/swt/) and [Tk](https://www.tcl.tk/) are more mature than [LibUI](https://github.com/kojix2/LibUI) as GUI toolkits. Still, if there is only a need to build a small simple application, [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) could be a pretty good choice due to having zero external dependencies beyond what is included in the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui).
 
@@ -51,8 +51,8 @@ The Glimmer GUI DSL provides a declarative syntax for [LibUI](https://github.com
 The Glimmer GUI DSL follows these simple concepts in mapping from [LibUI](https://github.com/kojix2/LibUI) syntax:
 - **Control**: [LibUI](https://github.com/kojix2/LibUI) controls may be declared by lower-case underscored name (aka keyword) (e.g. `window` or `button`). Behind the scenes, they are represented by keyword methods that map to corresponding `LibUI.new_keyword` methods receiving args (e.g. `window('hello world', 300, 200, 1)`).
 - **Content/Properties/Listeners Block**: Any keyword may be optionally followed by a Ruby curly-brace multi-line-block containing nested controls (content) and/or properties (attributes) (e.g. `window('hello world', 300, 200, 1) {button('greet')}`). It optionally recives one arg representing the control (e.g. `button('greet') {|b| on_clicked { puts b.text}}`)
-- **Property**: Control properties may be declared inside keyword blocks with lower-case underscored name followed by property value args (e.g. `title "hello world"` inside `group`). Behind the scenes, they properties correspond to `control_set_property` methods.
-- **Listener**: Control listeners may be declared inside keyword blocks with listener lower-case underscored name beginning with `on_` and receiving required block handler (e.g. `on_clicked {puts 'clicked'}` inside `button`). Behind the scenes, they listeners correspond to `control_on_event` methods.
+- **Property**: Control properties may be declared inside keyword blocks with lower-case underscored name followed by property value args (e.g. `title "hello world"` inside `group`). Behind the scenes, properties correspond to `control_set_property` methods.
+- **Listener**: Control listeners may be declared inside keyword blocks with listener lower-case underscored name beginning with `on_` and receiving required block handler (e.g. `on_clicked {puts 'clicked'}` inside `button`). Behind the scenes, listeners correspond to `control_on_event` methods.
 
 Example of an app written in [LibUI](https://github.com/kojix2/LibUI)'s procedural imperative syntax:
 
@@ -65,7 +65,11 @@ UI.init
 
 main_window = UI.new_window('hello world', 300, 200, 1)
 
-UI.control_show(main_window)
+button = UI.new_button('Button')
+
+UI.button_on_clicked(button) do
+  UI.msg_box(main_window, 'Information', 'You clicked the button')
+end
 
 UI.window_on_closing(main_window) do
   puts 'Bye Bye'
@@ -73,6 +77,9 @@ UI.window_on_closing(main_window) do
   UI.quit
   0
 end
+
+UI.window_set_child(main_window, button)
+UI.control_show(main_window)
 
 UI.main
 UI.quit
@@ -85,7 +92,13 @@ require 'glimmer-dsl-libui'
 
 include Glimmer
 
-window('hello world', 300, 200, 1) {
+window('hello world', 300, 200, 1) { |w|
+  button('Button') {
+    on_clicked do
+      msg_box(w, 'Information', 'You clicked the button')
+    end
+  }
+  
   on_closing do
     puts 'Bye Bye'
   end
@@ -103,7 +116,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.0.2'
+gem 'glimmer-dsl-libui', '~> 0.0.3'
 ```
 
 Add `require 'glimmer-dsl-libui'` at the top, and then `include Glimmer` into the top-level main object for testing or into an actual class for serious usage.
@@ -143,6 +156,15 @@ w.title = 'howdy'
 puts w.title # => howdy
 w.set_title 'aloha'
 puts w.title # => aloha
+```
+
+Controls are wrapped as Ruby proxy objects, having a `#libui` method to obtain the wrapped Fiddle pointer object. Ruby proxy objects shield consumers from having to deal with lower-level details unless absolutely needed.
+
+Example (you may copy/paste in [`girb`](#girb-glimmer-irb)):
+
+```
+w = window('hello world', 300, 200, 1) # => #<Glimmer::LibUI::WindowProxy:0x00007fde4ea39fb0
+w.libui # => #<Fiddle::Pointer:0x00007fde53997980 ptr=0x00007fde51352a60 size=0 free=0x0000000000000000> 
 ```
 
 ## Girb (Glimmer IRB)
@@ -325,6 +347,105 @@ Linux
 
 ![glimmer-dsl-libui-basic-entry-linux.png](images/glimmer-dsl-libui-basic-entry-linux.png)
 ![glimmer-dsl-libui-basic-entry-msg-box-linux.png](images/glimmer-dsl-libui-basic-entry-msg-box-linux.png)
+
+[LibUI](https://github.com/kojix2/LibUI) Original Version:
+
+```ruby
+require 'libui'
+
+UI = LibUI
+
+UI.init
+
+main_window = UI.new_window('Basic Entry', 300, 50, 1)
+UI.window_on_closing(main_window) do
+  puts 'Bye Bye'
+  UI.control_destroy(main_window)
+  UI.quit
+  0
+end
+
+hbox = UI.new_horizontal_box
+UI.window_set_child(main_window, hbox)
+
+entry = UI.new_entry
+UI.entry_on_changed(entry) do
+  puts UI.entry_text(entry).to_s
+  $stdout.flush # For Windows
+end
+UI.box_append(hbox, entry, 1)
+
+button = UI.new_button('Button')
+UI.button_on_clicked(button) do
+  text = UI.entry_text(entry).to_s
+  UI.msg_box(main_window, 'You entered', text)
+  0
+end
+
+UI.box_append(hbox, button, 0)
+
+UI.control_show(main_window)
+UI.main
+UI.quit
+```
+
+[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+window('Basic Entry', 300, 50, 1) { |w|
+  horizontal_box {
+    e = entry {
+      stretchy 1
+    
+      on_changed do
+        puts e.text
+        $stdout.flush # For Windows
+      end
+    }
+    
+    button('Button') {
+      stretchy 0
+      
+      on_clicked do
+        text = e.text
+        msg_box(w, 'You entered', text)
+      end
+    }
+  }
+  
+  on_closing do
+    puts 'Bye Bye'
+  end
+}.show
+```
+
+### Simple Notepad
+
+[examples/simple_notepad.rb](examples/simple_notepad.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/simple_notepad.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/simple_notepad'"
+```
+
+Mac
+
+![glimmer-dsl-libui-simple-notepad-mac.png](images/glimmer-dsl-libui-simple-notepad-mac.png)
+
+Linux
+
+![glimmer-dsl-libui-simple-notepad-linux.png](images/glimmer-dsl-libui-simple-notepad-linux.png)
 
 [LibUI](https://github.com/kojix2/LibUI) Original Version:
 

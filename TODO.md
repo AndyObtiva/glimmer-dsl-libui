@@ -2,12 +2,11 @@
 
 ## Next
 
-- Support examples/simple_notepad.rb
+- Support examples/midi_player.rb
 
 ## Soon
 
 - Support examples/control_gallery.rb
-- Support examples/midi_player.rb
 
 ## Future
 
