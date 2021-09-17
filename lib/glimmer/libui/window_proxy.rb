@@ -59,7 +59,6 @@ module Glimmer
       private
       
       def build_control
-        self.class.init
         super.tap do
           handle_listener('on_closing') do
             destroy

@@ -44,13 +44,6 @@ module Glimmer
             Glimmer::LibUI::ControlProxy
           end
         end
-        
-        def init
-          unless defined?(@@initialized) && @@initialized
-            ::LibUI.init
-            @@initialized = true
-          end
-        end
       end
       
       # libui returns the contained LibUI object

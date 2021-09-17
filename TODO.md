@@ -2,10 +2,10 @@
 
 ## Next
 
+- Support examples/control_gallery.rb
 
 ## Soon
 
-- Support examples/control_gallery.rb
 
 ## Future
 

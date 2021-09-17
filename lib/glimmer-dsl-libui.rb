@@ -38,3 +38,5 @@ Glimmer::Config.excluded_keyword_checkers << lambda do |method_symbol, *args|
   result = false
   result ||= method == 'load_iseq'
 end
+
+::LibUI.init
