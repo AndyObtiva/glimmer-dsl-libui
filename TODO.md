@@ -3,9 +3,25 @@
 ## Next
 
 - Support examples/control_gallery.rb
+- Support `open_file` and `save_file`
+- Add `quit_menu_item` automatically as a smart default
+- Support optional `preferences_menu_item` and `about_menu_item`
+- Support `check_menu_item`
+- Support `separator_menu_item`
+- Support `enabled=` & `set_enabled` on all controls (making `enabled` property read/write by relying on `enable`/`disable` operations)
+- Support `visible=` & `set_visible` on all controls (making `visible` property read/write by relying on `show`/`hide` operations)
+- Support `horizontal_box` and `vertical_box` propeties (`padded`) & operations (`append`, `delete`) via `LibUI.box_*` methods (enhancing them to accept Ruby objects in addition to pointers)
+- Support `tab` and `tab_item`
 
 ## Soon
 
+- Make listener block provide Ruby proxy object as optional argument (not Fiddle pointer)
+- Support splatting items array for radiobuttons, editable_checkbox and checkbox items
+- Support passing boolean values to C bool args/properties that take 1 or 0
+- Support `non_wrapping_multiline_entry` propeties/operations via `LibUI.multiline_entry_*` methods (enhancing them to accept Ruby objects in addition to pointers)
+- Document control-specific operations
+- Consider making `padded 1` the default in `horizontal_box` and `vertical_box` to achieve nicer looking GUI by default
+- Consider making `margined 1` the default in `window`, `tab`, and `group` to achieve nicer looking GUI by default
 
 ## Future
 
@@ -16,5 +32,5 @@
 - Support examples/date_time_picker.rb
 - Support examples/font_button.rb
 - Support examples/histogram.rb
-- Support passing boolean values to C bool args/properties that take 1 or 0
 - Support ability to set properties on a control after instantiating without args (e.g. `window { title 'Title'; width 300; height 400; has_menubar true }`)
+- Support data-binding

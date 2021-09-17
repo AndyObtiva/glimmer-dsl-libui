@@ -1,15 +1,16 @@
 # [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.0.4
-## Dependency-Free Ruby Desktop Development GUI Library
+## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Maintainability](https://api.codeclimate.com/v1/badges/ce2853efdbecf6ebdc73/maintainability)](https://codeclimate.com/github/AndyObtiva/glimmer-dsl-libui/maintainability)
 [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-[Glimmer](https://github.com/AndyObtiva/glimmer) DSL for [LibUI](https://github.com/kojix2/LibUI) is a dependency-free Ruby desktop development GUI library. No need to pre-insta
-ll any pre-requisites. Just install the gem and have platform-independent GUI that just works!
+[Glimmer](https://github.com/AndyObtiva/glimmer) DSL for [LibUI](https://github.com/kojix2/LibUI) is a prerequisite-free Ruby desktop development GUI library. No need to pre-install any prerequisites. Just install the gem and have platform-independent GUI that just works!
 
-The main trade-off against [Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt) and [Glimmer DSL for Tk](https://github.com/AndyObtiva/glimmer-dsl-tk) (all of which have native-looking widgets) is the fact that [SWT](https://www.eclipse.org/swt/) and [Tk](https://www.tcl.tk/) are more mature than [LibUI](https://github.com/kojix2/LibUI) as GUI toolkits. Still, if there is only a need to build a small simple application, [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) could be a good choice due to having zero external dependencies beyond what is included in the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui). Also, just like [Glimmer DSL for Tk](https://github.com/AndyObtiva/glimmer-dsl-tk) (and unlike [Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt)), its apps start instantly and have a small memory footprint. [LibUI](https://github.com/kojix2/LibUI) is a promising new GUI toolkit that might prove itself quite worthy in the future.
+[LibUI](https://github.com/kojix2/LibUI) is a thin [Ruby](https://www.ruby-lang.org/en/) wrapper around [libui](https://github.com/andlabs/libui), a relatively new C GUI library that renders native widgets on every platform (similar to [SWT](https://www.eclipse.org/swt/), but without the heavy weight of the [Java Virtual Machine](https://www.java.com/en/)).
 
-[Glimmer DSL for LibUI](https://github.com/AndyObtiva/glimmer-dsl-libui) aims to provide a DSL similar to the [Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt) to enable more productive desktop development in Ruby with:
+The main trade-off in using [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) as opposed to [Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt) or [Glimmer DSL for Tk](https://github.com/AndyObtiva/glimmer-dsl-tk) is the fact that [SWT](https://www.eclipse.org/swt/) and [Tk](https://www.tcl.tk/) are more mature than mid-alpha [libui](https://github.com/andlabs/libui) as GUI toolkits. Still, if there is only a need to build a small simple application, [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) could be a good convenient choice due to having zero prerequisites beyond the dependencies included in the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui). Also, just like [Glimmer DSL for Tk](https://github.com/AndyObtiva/glimmer-dsl-tk), its apps start instantly and have a small memory footprint. [LibUI](https://github.com/kojix2/LibUI) is a promising new GUI toolkit that might prove quite worthy in the future.
+
+[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) aims to provide a DSL similar to the [Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt) to enable more productive desktop development in Ruby with:
 - Declarative DSL syntax that visually maps to the GUI widget hierarchy
 - Convention over configuration via smart defaults and automation of low-level details
 - Requiring the least amount of syntax possible to build GUI
@@ -42,7 +43,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
 
 ## Glimmer GUI DSL Concepts
 
-The Glimmer GUI DSL provides a declarative syntax for [LibUI](https://github.com/kojix2/LibUI) that:
+The Glimmer GUI DSL provides object-oriented declarative hierarchical syntax for [LibUI](https://github.com/kojix2/LibUI) that:
 - Supports smart defaults (e.g. automatic `on_closing` listener that quits `window`)
 - Automates wiring of widgets (e.g. `button` is automatically set as child of `window`)
 - Hides lower-level details (e.g. `LibUI.main` loop is started automatically when triggering `show` on `window`)
@@ -146,7 +147,7 @@ Application.new.launch
 
 ## API
 
-Any control returned by a Glimmer GUI DSL keyword declaration can be introspected for its properties and updated via object-oriented attributes (standard Ruby `attr`/`attr=` or `set_attr`).
+Any control returned by a [Glimmer GUI DSL](#glimmer-gui-dsl-concepts) keyword declaration can be introspected for its properties and updated via object-oriented attributes (standard Ruby `attr`/`attr=` or `set_attr`).
 
 Example (you may copy/paste in [`girb`](#girb-glimmer-irb)):
 
@@ -170,18 +171,24 @@ w.libui # => #<Fiddle::Pointer:0x00007fde53997980 ptr=0x00007fde51352a60 size=0 
 
 Supported Controls and their Properties / Listeners:
 - `button`: `text` (`String`) / `on_clicked`
+- `combobox`: `items` (`Array` of `String`), `selected` (`1` or `0`) / `on_selected`
 - `entry`: `read_only` (`1` or `0`), `text` (`String`) / `on_changed`
+- `horizontal_box`: None / None
 - `menu`: None / None
 - `menu_item`: `checked` (`1` or `0`) / `on_clicked`
 - `msg_box`: None / None
 - `non_wrapping_multiline_entry`: None / None
+- `vertical_box`: None / None
 - `window`: `borderless` (`1` or `0`), `content_size` (width `Numeric`, height `Numeric`), `fullscreen` (`1` or `0`), `margined` (`1` or `0`), `title` (`String`) / `on_closing`, `on_content_size_changed`
 
 Common Control Properties:
-- `enabled`
-- `parent`
-- `toplevel`
-- `visible`
+- `enabled` [read-only] (`1` or `0`)
+- `libui` (`Fiddle::Pointer`): returns wrapped [LibUI](https://github.com/kojix2/LibUI) object
+- `parent_proxy` (`Glimmer::LibUI::ControlProxy` or subclass)
+- `parent` (`Fiddle::Pointer`)
+- `toplevel` [read-only] (`1` or `0`)
+- `visible` [read-only] (`1` or `0`)
+- `stretchy` [dsl-only] (`1` or `0`): available in [Glimmer GUI DSL](#glimmer-gui-dsl-concepts) when nested under `horizontal_box` or `vertical_box`
 
 Common Control Operations:
 - `destroy`
@@ -189,6 +196,8 @@ Common Control Operations:
 - `enable`
 - `hide`
 - `show`
+
+To learn more about the [LibUI](https://github.com/kojix2/LibUI) API exposed through [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui), check out the [libui C headers](https://github.com/andlabs/libui/blob/master/ui.h)
 
 ## Girb (Glimmer IRB)
 
@@ -204,7 +213,7 @@ Gotcha: On the Mac, when you close a window opened in `girb`, it remains open un
 
 ## Examples
 
-These examples reimplement the ones in the [LibUI](https://github.com/kojix2/LibUI) project utilizing the Glimmer GUI DSL.
+These examples reimplement the ones in the [LibUI](https://github.com/kojix2/LibUI) project utilizing the [Glimmer GUI DSL](#glimmer-gui-dsl-concepts).
 
 ### Basic Window
 
@@ -518,7 +527,7 @@ window('Notepad', 500, 300, 1) {
 
 ### Midi Player
 
-This example has pre-requisites:
+This example has prerequisites:
 - Install [TiMidity](http://timidity.sourceforge.net) and ensure `timidity` command is in `PATH` (can be installed via [Homebrew](https://brew.sh) on Mac or [apt-get](https://help.ubuntu.com/community/AptGet/Howto) on Linux).
 - Add `*.mid` files to `~/Music` directory (you may copy the ones included in [sounds](sounds) directory)
 

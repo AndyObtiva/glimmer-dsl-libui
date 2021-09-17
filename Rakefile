@@ -17,7 +17,7 @@ Juwelier::Tasks.new do |gem|
   gem.homepage = "http://github.com/AndyObtiva/glimmer-dsl-libui"
   gem.license = "MIT"
   gem.summary = %Q{Glimmer DSL for LibUI}
-  gem.description = %Q{Dependency-Free Ruby Desktop Development GUI Library (no need to pre-install any pre-requisites. Just install the gem and have platform-independent GUI that just works)}
+  gem.description = %Q{Prerequisite-Free Ruby Desktop Development GUI Library (no need to pre-install any prerequisites. Just install the gem and have platform-independent GUI that just works!)}
   gem.email = "andy.am@gmail.com"
   gem.authors = ["Andy Maleh"]
   gem.executables = ['girb']
