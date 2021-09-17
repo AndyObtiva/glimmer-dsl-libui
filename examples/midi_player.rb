@@ -49,14 +49,14 @@ class TinyMidiPlayer
   end
 
   def create_gui
-    help_menu = menu('Help') {
+#     help_menu = menu('Help') {
 #       version_item = menu_item('Version') {
 #         on_clicked do
-#           show_version(@w)
+#           show_version(@main_window)
 #         end
 #       }
-    }
-    @w = window('Tiny Midi Player', 200, 50, 1) {
+#     }
+    @main_window = window('Tiny Midi Player', 200, 50, 1) {
       horizontal_box {
         vertical_box {
           stretchy 0
@@ -74,10 +74,7 @@ class TinyMidiPlayer
         }
 
         combobox { |c|
-          @midi_files.each do |path|
-            name = File.basename(path)
-            c.append name
-          end
+          items @midi_files.map { |path| File.basename(path) }
           
           on_selected do
             @selected_file = @midi_files[c.selected]
@@ -86,7 +83,7 @@ class TinyMidiPlayer
         }
       }
     }
-    @w.show
+    @main_window.show
   end
 end
 

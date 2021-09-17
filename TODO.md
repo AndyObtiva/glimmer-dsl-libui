@@ -2,7 +2,6 @@
 
 ## Next
 
-- Support examples/midi_player.rb
 
 ## Soon
 

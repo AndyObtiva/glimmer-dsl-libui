@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.0.4
+
+- Support examples/midi_player.rb
+- Support `combobox` `items` attribute to append text value array declaratively
+
 ## 0.0.3
 
 - Support examples/simple_notepad.rb

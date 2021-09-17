@@ -19,33 +19,24 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'glimmer/dsl/expression'
-require 'glimmer/dsl/parent_expression'
+require 'glimmer/libui/control_proxy'
 
 module Glimmer
-  module DSL
-    module Libui
-      class ControlExpression < Expression
-        include ParentExpression
-  
-        def can_interpret?(parent, keyword, *args, &block)
-          Glimmer::LibUI::ControlProxy.control_exists?(keyword)
+  module LibUI
+    # Proxy for LibUI Window objects
+    #
+    # Follows the Proxy Design Pattern
+    class ComboboxProxy < ControlProxy
+      def items(values = nil)
+        if values.nil?
+          @values
+        else
+          @values = values
+          @values.each { |value| append value }
         end
-  
-        def interpret(parent, keyword, *args, &block)
-          Glimmer::LibUI::ControlProxy.create(keyword, parent, args, &block)
-        end
-        
-        def add_content(parent, keyword, *args, &block)
-          super
-          parent.post_add_content
-        end
-        
       end
+      alias set_items items
+      alias items= items
     end
   end
 end
-
-# TODO Consider moving all controls underneath Control namespace
-require 'glimmer/libui/control_proxy'
-Dir[File.expand_path('../../libui/*.rb', __dir__)].each {|f| require f}

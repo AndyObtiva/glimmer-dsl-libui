@@ -36,6 +36,7 @@ module Glimmer
         unless @shown_at_least_once
           @shown_at_least_once = true
           ::LibUI.main
+          ::LibUI.quit
         end
       end
       
