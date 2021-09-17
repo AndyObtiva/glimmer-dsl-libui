@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.0.3
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.0.4
 ## Dependency-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Maintainability](https://api.codeclimate.com/v1/badges/ce2853efdbecf6ebdc73/maintainability)](https://codeclimate.com/github/AndyObtiva/glimmer-dsl-libui/maintainability)
@@ -28,8 +28,8 @@ include Glimmer
 window('hello world', 300, 200, 1).show
 ```
 
-![glimmer-dsl-libui-basic-window-mac.png](images/glimmer-dsl-libui-basic-window-mac.png)
-![glimmer-dsl-libui-basic-window-linux.png](images/glimmer-dsl-libui-basic-window-linux.png)
+![glimmer-dsl-libui-mac-basic-window.png](images/glimmer-dsl-libui-mac-basic-window.png)
+![glimmer-dsl-libui-linux-basic-window.png](images/glimmer-dsl-libui-linux-basic-window.png)
 
 NOTE: [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) is in early alpha mode (only supports included examples). Please help make better by contributing, adopting for small or low risk projects, and providing feedback. It is still an early alpha, so the more feedback and issues you report the better.
 
@@ -117,7 +117,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.0.3'
+gem 'glimmer-dsl-libui', '~> 0.0.4'
 ```
 
 Add `require 'glimmer-dsl-libui'` at the top, and then `include Glimmer` into the top-level main object for testing or into an actual class for serious usage.
@@ -168,6 +168,28 @@ w = window('hello world', 300, 200, 1) # => #<Glimmer::LibUI::WindowProxy:0x0000
 w.libui # => #<Fiddle::Pointer:0x00007fde53997980 ptr=0x00007fde51352a60 size=0 free=0x0000000000000000>
 ```
 
+Supported Controls and their Properties / Listeners:
+- `button`: `text` (`String`) / `on_clicked`
+- `entry`: `read_only` (`1` or `0`), `text` (`String`) / `on_changed`
+- `menu`: None / None
+- `menu_item`: `checked` (`1` or `0`) / `on_clicked`
+- `msg_box`: None / None
+- `non_wrapping_multiline_entry`: None / None
+- `window`: `borderless` (`1` or `0`), `content_size` (width `Numeric`, height `Numeric`), `fullscreen` (`1` or `0`), `margined` (`1` or `0`), `title` (`String`) / `on_closing`, `on_content_size_changed`
+
+Common Control Properties:
+- `enabled`
+- `parent`
+- `toplevel`
+- `visible`
+
+Common Control Operations:
+- `destroy`
+- `disable`
+- `enable`
+- `hide`
+- `show`
+
 ## Girb (Glimmer IRB)
 
 You can run the `girb` command (`bin/girb` if you cloned the project locally):
@@ -202,11 +224,11 @@ ruby -r glimmer-dsl-libui -e "require 'examples/basic_window'"
 
 Mac
 
-![glimmer-dsl-libui-basic-window-mac.png](images/glimmer-dsl-libui-basic-window-mac.png)
+![glimmer-dsl-libui-mac-basic-window.png](images/glimmer-dsl-libui-mac-basic-window.png)
 
 Linux
 
-![glimmer-dsl-libui-basic-window-linux.png](images/glimmer-dsl-libui-basic-window-linux.png)
+![glimmer-dsl-libui-linux-basic-window.png](images/glimmer-dsl-libui-linux-basic-window.png)
 
 [LibUI](https://github.com/kojix2/LibUI) Original Version:
 
@@ -264,13 +286,13 @@ ruby -r glimmer-dsl-libui -e "require 'examples/basic_button'"
 
 Mac
 
-![glimmer-dsl-libui-basic-button-mac.png](images/glimmer-dsl-libui-basic-button-mac.png)
-![glimmer-dsl-libui-basic-button-msg-box-mac.png](images/glimmer-dsl-libui-basic-button-msg-box-mac.png)
+![glimmer-dsl-libui-mac-basic-button.png](images/glimmer-dsl-libui-mac-basic-button.png)
+![glimmer-dsl-libui-mac-basic-button-msg-box.png](images/glimmer-dsl-libui-basic-button-msg-box.png)
 
 Linux
 
-![glimmer-dsl-libui-basic-button-linux.png](images/glimmer-dsl-libui-basic-button-linux.png)
-![glimmer-dsl-libui-basic-button-msg-box-linux.png](images/glimmer-dsl-libui-basic-button-msg-box-linux.png)
+![glimmer-dsl-libui-linux-basic-button.png](images/glimmer-dsl-libui-linux-basic-button.png)
+![glimmer-dsl-libui-linux-basic-button-msg-box.png](images/glimmer-dsl-libui-linux-basic-button-msg-box.png)
 
 [LibUI](https://github.com/kojix2/LibUI) Original Version:
 
@@ -341,13 +363,13 @@ ruby -r glimmer-dsl-libui -e "require 'examples/basic_entry'"
 
 Mac
 
-![glimmer-dsl-libui-basic-entry-mac.png](images/glimmer-dsl-libui-basic-entry-mac.png)
-![glimmer-dsl-libui-basic-entry-msg-box-mac.png](images/glimmer-dsl-libui-basic-entry-msg-box-mac.png)
+![glimmer-dsl-libui-mac-basic-entry.png](images/glimmer-dsl-libui-mac-basic-entry.png)
+![glimmer-dsl-libui-mac-basic-entry-msg-box.png](images/glimmer-dsl-libui-mac-basic-entry-msg-box.png)
 
 Linux
 
-![glimmer-dsl-libui-basic-entry-linux.png](images/glimmer-dsl-libui-basic-entry-linux.png)
-![glimmer-dsl-libui-basic-entry-msg-box-linux.png](images/glimmer-dsl-libui-basic-entry-msg-box-linux.png)
+![glimmer-dsl-libui-linux-basic-entry.png](images/glimmer-dsl-libui-linux-basic-entry.png)
+![glimmer-dsl-libui-linux-basic-entry-msg-box.png](images/glimmer-dsl-libui-linux-basic-entry-msg-box.png)
 
 [LibUI](https://github.com/kojix2/LibUI) Original Version:
 
@@ -442,11 +464,11 @@ ruby -r glimmer-dsl-libui -e "require 'examples/simple_notepad'"
 
 Mac
 
-![glimmer-dsl-libui-simple-notepad-mac.png](images/glimmer-dsl-libui-simple-notepad-mac.png)
+![glimmer-dsl-libui-mac-simple-notepad.png](images/glimmer-dsl-libui-mac-simple-notepad.png)
 
 Linux
 
-![glimmer-dsl-libui-simple-notepad-linux.png](images/glimmer-dsl-libui-simple-notepad-linux.png)
+![glimmer-dsl-libui-linux-simple-notepad.png](images/glimmer-dsl-libui-linux-simple-notepad.png)
 
 [LibUI](https://github.com/kojix2/LibUI) Original Version:
 
@@ -492,6 +514,230 @@ window('Notepad', 500, 300, 1) {
     non_wrapping_multiline_entry
   }
 }.show
+```
+
+### Midi Player
+
+This example has pre-requisites:
+- Install [TiMidity](http://timidity.sourceforge.net) and ensure `timidity` command is in `PATH` (can be installed via [Homebrew](https://brew.sh) on Mac or [apt-get](https://help.ubuntu.com/community/AptGet/Howto) on Linux).
+- Add `*.mid` files to `~/Music` directory
+
+[examples/midi_player.rb](examples/midi_player.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/midi_player.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/midi_player'"
+```
+
+Mac
+
+![glimmer-dsl-libui-mac-midi-player.png](images/glimmer-dsl-libui-mac-midi-player.png)
+![glimmer-dsl-libui-mac-midi-player-version-msg-box.png](images/glimmer-dsl-libui-mac-midi-player-version-msg-box.png)
+
+Linux
+
+![glimmer-dsl-libui-linux-midi-player.png](images/glimmer-dsl-libui-linux-midi-player.png)
+![glimmer-dsl-libui-linux-midi-player-version-msg-box.png](images/glimmer-dsl-libui-linux-midi-player-version-msg-box.png)
+
+[LibUI](https://github.com/kojix2/LibUI) Original Version:
+
+```ruby
+require 'libui'
+UI = LibUI
+
+class TinyMidiPlayer
+  VERSION = '0.0.1'
+
+  def initialize
+    UI.init
+    @pid = nil
+    @music_directory = File.expand_path(ARGV[0] || '~/Music/')
+    @midi_files      = Dir.glob(File.join(@music_directory, '**/*.mid'))
+                          .sort_by { |path| File.basename(path) }
+    at_exit { stop_midi }
+    create_gui
+  end
+
+  def stop_midi
+    if @pid
+      if @th.alive?
+        Process.kill(:SIGKILL, @pid)
+        @pid = nil
+      else
+        @pid = nil
+      end
+    end
+  end
+
+  def play_midi
+    stop_midi
+    if @pid.nil? && @selected_file
+      begin
+        @pid = spawn "timidity #{@selected_file}"
+        @th = Process.detach @pid
+      rescue Errno::ENOENT
+        warn 'Timidty++ not found. Please install Timidity++.'
+        warn 'https://sourceforge.net/projects/timidity/'
+      end
+    end
+  end
+
+  def show_version(main_window)
+    UI.msg_box(main_window,
+               'Tiny Midi Player',
+               "Written in Ruby\n" \
+               "https://github.com/kojix2/libui\n" \
+               "Version #{VERSION}")
+  end
+
+  def create_gui
+    help_menu = UI.new_menu('Help')
+    version_item = UI.menu_append_item(help_menu, 'Version')
+
+    UI.new_window('Tiny Midi Player', 200, 50, 1).tap do |main_window|
+      UI.menu_item_on_clicked(version_item) { show_version(main_window) }
+
+      UI.window_on_closing(main_window) do
+        UI.control_destroy(main_window)
+        UI.quit
+        0
+      end
+
+      UI.new_horizontal_box.tap do |hbox|
+        UI.new_vertical_box.tap do |vbox|
+          UI.new_button('▶').tap do |button1|
+            UI.button_on_clicked(button1) { play_midi }
+            UI.box_append(vbox, button1, 1)
+          end
+          UI.new_button('■').tap do |button2|
+            UI.button_on_clicked(button2) { stop_midi }
+            UI.box_append(vbox, button2, 1)
+          end
+          UI.box_append(hbox, vbox, 0)
+        end
+        UI.window_set_child(main_window, hbox)
+
+        UI.new_combobox.tap do |cbox|
+          @midi_files.each do |path|
+            name = File.basename(path)
+            UI.combobox_append(cbox, name)
+          end
+          UI.combobox_on_selected(cbox) do |ptr|
+            @selected_file = @midi_files[UI.combobox_selected(ptr)]
+            play_midi if @th&.alive?
+            0
+          end
+          UI.box_append(hbox, cbox, 1)
+        end
+      end
+      UI.control_show(main_window)
+    end
+    UI.main
+    UI.quit
+  end
+end
+
+TinyMidiPlayer.new
+```
+
+[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+require 'glimmer-dsl-libui'
+
+class TinyMidiPlayer
+  include Glimmer
+  
+  VERSION = '0.0.1'
+
+  def initialize
+    @pid = nil
+    @music_directory = File.expand_path(ARGV[0] || '~/Music/')
+    @midi_files      = Dir.glob(File.join(@music_directory, '**/*.mid'))
+                          .sort_by { |path| File.basename(path) }
+    at_exit { stop_midi }
+    create_gui
+  end
+
+  def stop_midi
+    if @pid
+      if @th.alive?
+        Process.kill(:SIGKILL, @pid)
+        @pid = nil
+      else
+        @pid = nil
+      end
+    end
+  end
+
+  def play_midi
+    stop_midi
+    if @pid.nil? && @selected_file
+      begin
+        @pid = spawn "timidity #{@selected_file}"
+        @th = Process.detach @pid
+      rescue Errno::ENOENT
+        warn 'Timidty++ not found. Please install Timidity++.'
+        warn 'https://sourceforge.net/projects/timidity/'
+      end
+    end
+  end
+
+  def show_version(main_window)
+    msg_box(main_window,
+               'Tiny Midi Player',
+               "Written in Ruby\n" \
+               "https://github.com/kojix2/libui\n" \
+               "Version #{VERSION}")
+  end
+
+  def create_gui
+    menu('Help') { |m|
+      menu_item('Version') {
+        on_clicked do
+          show_version(@main_window)
+        end
+      }
+    }
+    @main_window = window('Tiny Midi Player', 200, 50, 1) {
+      horizontal_box {
+        vertical_box {
+          stretchy 0
+          
+          button('▶') {
+            on_clicked do
+              play_midi
+            end
+          }
+          button('■') {
+            on_clicked do
+              stop_midi
+            end
+          }
+        }
+        
+        combobox { |c|
+          items @midi_files.map { |path| File.basename(path) }
+          
+          on_selected do
+            @selected_file = @midi_files[c.selected]
+            play_midi if @th&.alive?
+          end
+        }
+      }
+    }
+    @main_window.show
+  end
+end
+
+TinyMidiPlayer.new
 ```
 
 ## Contributing to glimmer-dsl-libui
