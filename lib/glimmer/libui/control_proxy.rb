@@ -21,13 +21,15 @@
 
 module Glimmer
   module LibUI
-    # Proxy for LibUI Control objects
+    # Proxy for LibUI control objects
     #
     # Follows the Proxy Design Pattern
     class ControlProxy
       class << self
         def control_exists?(keyword)
-          ::LibUI.respond_to?("new_#{keyword}") || ::LibUI.respond_to?(keyword)
+          ::LibUI.respond_to?("new_#{keyword}") ||
+            ::LibUI.respond_to?(keyword) ||
+            Glimmer::LibUI.constants.include?("#{keyword.camelcase(:upper)}Proxy".to_sym)
         end
         
         def create(keyword, parent, args, &block)
@@ -40,6 +42,13 @@ module Glimmer
             Glimmer::LibUI.const_get(class_name)
           rescue
             Glimmer::LibUI::ControlProxy
+          end
+        end
+        
+        def init
+          unless defined?(@@initialized) && @@initialized
+            ::LibUI.init
+            @@initialized = true
           end
         end
       end

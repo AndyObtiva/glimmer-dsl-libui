@@ -24,7 +24,7 @@ require 'glimmer/libui/box'
 
 module Glimmer
   module LibUI
-    # Proxy for LibUI Window objects
+    # Proxy for LibUI vertical box objects
     #
     # Follows the Proxy Design Pattern
     class VerticalBoxProxy < ControlProxy

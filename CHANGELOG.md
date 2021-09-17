@@ -4,6 +4,7 @@
 
 - Support examples/midi_player.rb
 - Support `combobox` `items` attribute to append text value array declaratively
+- Support `menu` and `menu_item` controls
 
 ## 0.0.3
 

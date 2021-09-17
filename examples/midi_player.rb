@@ -49,13 +49,13 @@ class TinyMidiPlayer
   end
 
   def create_gui
-#     help_menu = menu('Help') {
-#       version_item = menu_item('Version') {
-#         on_clicked do
-#           show_version(@main_window)
-#         end
-#       }
-#     }
+    help_menu = menu('Help') { |m|
+      version_item = menu_item('Version') {
+        on_clicked do
+          show_version(@main_window)
+        end
+      }
+    }
     @main_window = window('Tiny Midi Player', 200, 50, 1) {
       horizontal_box {
         vertical_box {

@@ -20,15 +20,19 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 require 'glimmer/libui/control_proxy'
-require 'glimmer/libui/box'
 
 module Glimmer
   module LibUI
-    # Proxy for LibUI horizontal box objects
+    # Proxy for LibUI menu item objects
     #
     # Follows the Proxy Design Pattern
-    class HorizontalBoxProxy < ControlProxy
-      include Box
+    class MenuItemProxy < ControlProxy
+    
+      private
+      
+      def build_control
+        @libui ||= @parent_proxy.append_item('Version')
+      end
     end
   end
 end

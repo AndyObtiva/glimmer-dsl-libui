@@ -23,7 +23,7 @@ require 'glimmer/libui/control_proxy'
 
 module Glimmer
   module LibUI
-    # Proxy for LibUI Window objects
+    # Proxy for LibUI window objects
     #
     # Follows the Proxy Design Pattern
     class ComboboxProxy < ControlProxy
