@@ -115,6 +115,8 @@ module Glimmer
           ::LibUI.send("#{@keyword}_set_#{method_name.to_s.sub(/=$/, '')}", @libui, *args)
         elsif ::LibUI.respond_to?("#{@keyword}_#{method_name}") && method_name.start_with?('set_') && !args.empty?
           ::LibUI.send("#{@keyword}_#{method_name}", @libui, *args)
+        elsif ::LibUI.respond_to?("#{@keyword}_#{method_name}") && !args.empty?
+          ::LibUI.send("#{@keyword}_#{method_name}", @libui, *args)
         end
       end
       
