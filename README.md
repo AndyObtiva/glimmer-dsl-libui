@@ -520,7 +520,7 @@ window('Notepad', 500, 300, 1) {
 
 This example has pre-requisites:
 - Install [TiMidity](http://timidity.sourceforge.net) and ensure `timidity` command is in `PATH` (can be installed via [Homebrew](https://brew.sh) on Mac or [apt-get](https://help.ubuntu.com/community/AptGet/Howto) on Linux).
-- Add `*.mid` files to `~/Music` directory
+- Add `*.mid` files to `~/Music` directory (you may copy the ones included in [sounds](sounds) directory)
 
 [examples/midi_player.rb](examples/midi_player.rb)
 
