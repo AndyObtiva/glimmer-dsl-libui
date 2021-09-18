@@ -2,11 +2,10 @@
 
 ## Next
 
-- Document newly supported controls in v0.0.5
+- Fix issue with `menu_item` `on_clicked` listeners crashing
 
 ## Soon
 
-- Make listener block provide Ruby proxy object as optional argument (not Fiddle pointer)
 - Support splatting items array for radiobuttons, editable_checkbox and checkbox items
 - Support passing boolean values to C bool args/properties that take 1 or 0
 - Support `non_wrapping_multiline_entry` propeties/operations via `LibUI.multiline_entry_*` methods (enhancing them to accept Ruby objects in addition to pointers)

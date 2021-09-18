@@ -73,14 +73,16 @@ module Glimmer
       end
 
       def can_handle_listener?(listener_name)
-        ::LibUI.respond_to?("control_#{listener_name}") || ::LibUI.respond_to?("#{libui_api_keyword}_#{listener_name}")
+        ::LibUI.respond_to?("#{libui_api_keyword}_#{listener_name}") ||
+          ::LibUI.respond_to?("control_#{listener_name}")
       end
       
       def handle_listener(listener_name, &listener)
-        if ::LibUI.respond_to?("control_#{listener_name}")
-          ::LibUI.send("control_#{listener_name}", @libui, &listener)
-        elsif ::LibUI.respond_to?("#{libui_api_keyword}_#{listener_name}")
-          ::LibUI.send("#{libui_api_keyword}_#{listener_name}", @libui, &listener)
+        safe_listener = Proc.new { listener.call(self) }
+        if ::LibUI.respond_to?("#{libui_api_keyword}_#{listener_name}")
+          ::LibUI.send("#{libui_api_keyword}_#{listener_name}", @libui, &safe_listener)
+        elsif ::LibUI.respond_to?("control_#{listener_name}")
+          ::LibUI.send("control_#{listener_name}", @libui, &safe_listener)
         end
       end
       

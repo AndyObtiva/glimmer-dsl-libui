@@ -1058,7 +1058,7 @@ menu('File') {
 menu('Edit') {
   check_menu_item('Checkable Item_')
   separator_menu_item
-  menu_item('Disabled Item_') { |mi|
+  menu_item('Disabled Item_') {
     enabled 0
   }
 }
@@ -1096,10 +1096,10 @@ MAIN_WINDOW = window('Control Gallery', 600, 500, 1) {
             end
           }
 
-          checkbox('Checkbox') { |c|
+          checkbox('Checkbox') {
             stretchy 0
 
-            on_toggled do
+            on_toggled do |c|
               checked = c.checked == 1
               MAIN_WINDOW.title = "Checkbox is #{checked}"
               c.text = "I am the checkbox (#{checked})"
@@ -1132,19 +1132,19 @@ MAIN_WINDOW = window('Control Gallery', 600, 500, 1) {
           vertical_box {
             padded 1
 
-            spinbox(0, 100) { |s|
+            spinbox(0, 100) {
               stretchy 0
               value 42
 
-              on_changed do
+              on_changed do |s|
                 puts "New Spinbox value: #{s.value}"
               end
             }
 
-            slider(0, 100) { |s|
+            slider(0, 100) {
               stretchy 0
 
-              on_changed do
+              on_changed do |s|
                 v = s.value
                 puts "New Slider value: #{v}"
                 @progress_bar.value = v
@@ -1162,11 +1162,11 @@ MAIN_WINDOW = window('Control Gallery', 600, 500, 1) {
           vertical_box {
             padded 1
 
-            combobox { |c|
+            combobox {
               stretchy 0
               items ['combobox Item 1', 'combobox Item 2', 'combobox Item 3']
 
-              on_selected do
+              on_selected do |c|
                 puts "New combobox selection: #{c.selected}"
               end
             }
@@ -1185,10 +1185,10 @@ MAIN_WINDOW = window('Control Gallery', 600, 500, 1) {
         tab {
           tab_item('Page 1') {
             horizontal_box {
-              entry { |e|
+              entry {
                 text 'Please enter your feelings'
 
-                on_changed do
+                on_changed do |e|
                   puts "Current textbox data: '#{e.text}'"
                 end
               }

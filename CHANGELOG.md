@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.6
+
+- Make listener block provide Ruby proxy object as optional argument (not Fiddle pointer)
+
 ## 0.0.5
 
 - Support examples/control_gallery.rb
