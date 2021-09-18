@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.0.4
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.0.5
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Maintainability](https://api.codeclimate.com/v1/badges/ce2853efdbecf6ebdc73/maintainability)](https://codeclimate.com/github/AndyObtiva/glimmer-dsl-libui/maintainability)
@@ -118,7 +118,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.0.4'
+gem 'glimmer-dsl-libui', '~> 0.0.5'
 ```
 
 Add `require 'glimmer-dsl-libui'` at the top, and then `include Glimmer` into the top-level main object for testing or into an actual class for serious usage.
@@ -172,22 +172,38 @@ w.libui # => #<Fiddle::Pointer:0x00007fde53997980 ptr=0x00007fde51352a60 size=0 
 Supported Controls and their Properties / Listeners:
 - `button`: `text` (`String`) / `on_clicked`
 - `combobox`: `items` (`Array` of `String`), `selected` (`1` or `0`) / `on_selected`
+- `color_button`: `color` (r `Numeric`, g `Numeric`, b `Numeric`, a `Numeric`), `selected` (`1` or `0`) / `on_selected`
+- `date_picker`: None / None
+- `date_time_picker`: `time` (`UI::FFI::TM`) / `on_changed`
+- `editable_combobox`: `items` (`Array` of `String`), `text` (`String`) / `on_changed`
 - `entry`: `read_only` (`1` or `0`), `text` (`String`) / `on_changed`
-- `horizontal_box`: None / None
+- `font_button`: `font` (`UI::FFI::FontDescriptor`) / `on_changed`
+- `group`: `margined` (`1` or `0`), `title` (`String`) / None
+- `horizontal_box`: `padded` (`1` or `0`) / None
+- `horizontal_separator`: None / None
+- `label`: `text` (`String`) / None
 - `menu`: None / None
 - `menu_item`: `checked` (`1` or `0`) / `on_clicked`
+- `multiline_entry`: `read_only` (`1` or `0`), `text` (`String`) / None
 - `msg_box`: None / None
 - `non_wrapping_multiline_entry`: None / None
-- `vertical_box`: None / None
+- `progress_bar`: `value` (`Numeric`) / None
+- `radio_buttons`: `selected` (`1` or `0`) / `on_selected`
+- `slider`: `value` (`Numeric`) / `on_changed`
+- `spinbox`: `value` (`Numeric`) / `on_changed`
+- `tab`: `margined` (`1` or `0`), `num_pages` (`Integer`) / None
+- `tab_item`: `index` [read-only] (`Integer`), `margined` (`1` or `0`), `name` [read-only] (`String`) / None
+- `time_picker`: None / None
+- `vertical_box`: `padded` (`1` or `0`) / None
 - `window`: `borderless` (`1` or `0`), `content_size` (width `Numeric`, height `Numeric`), `fullscreen` (`1` or `0`), `margined` (`1` or `0`), `title` (`String`) / `on_closing`, `on_content_size_changed`
 
 Common Control Properties:
-- `enabled` [read-only] (`1` or `0`)
+- `enabled` (`1` or `0`)
 - `libui` (`Fiddle::Pointer`): returns wrapped [LibUI](https://github.com/kojix2/LibUI) object
 - `parent_proxy` (`Glimmer::LibUI::ControlProxy` or subclass)
 - `parent` (`Fiddle::Pointer`)
 - `toplevel` [read-only] (`1` or `0`)
-- `visible` [read-only] (`1` or `0`)
+- `visible` (`1` or `0`)
 - `stretchy` [dsl-only] (`1` or `0`): available in [Glimmer GUI DSL](#glimmer-gui-dsl-concepts) when nested under `horizontal_box` or `vertical_box`
 
 Common Control Operations:
@@ -747,6 +763,412 @@ class TinyMidiPlayer
 end
 
 TinyMidiPlayer.new
+```
+
+### Control Gallery
+
+[examples/control_gallery.rb](examples/control_gallery.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/control_gallery.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/control_gallery'"
+```
+
+Mac
+
+![glimmer-dsl-libui-mac-control-gallery.png](images/glimmer-dsl-libui-mac-control-gallery.png)
+
+Linux
+
+![glimmer-dsl-libui-linux-control-gallery.png](images/glimmer-dsl-libui-linux-control-gallery.png)
+
+[LibUI](https://github.com/kojix2/LibUI) Original Version:
+
+```ruby
+require 'libui'
+UI = LibUI
+
+UI.init
+
+should_quit = proc do
+  puts 'Bye Bye'
+  UI.control_destroy(MAIN_WINDOW)
+  UI.quit
+  0
+end
+
+# File menu
+menu = UI.new_menu('File')
+open_menu_item = UI.menu_append_item(menu, 'Open')
+UI.menu_item_on_clicked(open_menu_item) do
+  pt = UI.open_file(MAIN_WINDOW)
+  puts pt unless pt.null?
+end
+save_menu_item = UI.menu_append_item(menu, 'Save')
+UI.menu_item_on_clicked(save_menu_item) do
+  pt = UI.save_file(MAIN_WINDOW)
+  puts pt unless pt.null?
+end
+
+UI.menu_append_quit_item(menu)
+UI.on_should_quit(should_quit)
+
+# Edit menu
+edit_menu = UI.new_menu('Edit')
+UI.menu_append_check_item(edit_menu, 'Checkable Item_')
+UI.menu_append_separator(edit_menu)
+disabled_item = UI.menu_append_item(edit_menu, 'Disabled Item_')
+UI.menu_item_disable(disabled_item)
+
+preferences = UI.menu_append_preferences_item(menu)
+
+# Help menu
+help_menu = UI.new_menu('Help')
+UI.menu_append_item(help_menu, 'Help')
+UI.menu_append_about_item(help_menu)
+
+# Main Window
+MAIN_WINDOW = UI.new_window('Control Gallery', 600, 500, 1)
+UI.window_set_margined(MAIN_WINDOW, 1)
+UI.window_on_closing(MAIN_WINDOW, should_quit)
+
+vbox = UI.new_vertical_box
+UI.window_set_child(MAIN_WINDOW, vbox)
+hbox = UI.new_horizontal_box
+UI.box_set_padded(vbox, 1)
+UI.box_set_padded(hbox, 1)
+
+UI.box_append(vbox, hbox, 1)
+
+# Group - Basic Controls
+group = UI.new_group('Basic Controls')
+UI.group_set_margined(group, 1)
+UI.box_append(hbox, group, 1) # OSX bug?
+
+inner = UI.new_vertical_box
+UI.box_set_padded(inner, 1)
+UI.group_set_child(group, inner)
+
+# Button
+button = UI.new_button('Button')
+UI.button_on_clicked(button) do
+  UI.msg_box(MAIN_WINDOW, 'Information', 'You clicked the button')
+end
+UI.box_append(inner, button, 0)
+
+# Checkbox
+checkbox = UI.new_checkbox('Checkbox')
+UI.checkbox_on_toggled(checkbox) do |ptr|
+  checked = UI.checkbox_checked(ptr) == 1
+  UI.window_set_title(MAIN_WINDOW, "Checkbox is #{checked}")
+  UI.checkbox_set_text(ptr, "I am the checkbox (#{checked})")
+end
+UI.box_append(inner, checkbox, 0)
+
+# Label
+UI.box_append(inner, UI.new_label('Label'), 0)
+
+# Separator
+UI.box_append(inner, UI.new_horizontal_separator, 0)
+
+# Date Picker
+UI.box_append(inner, UI.new_date_picker, 0)
+
+# Time Picker
+UI.box_append(inner, UI.new_time_picker, 0)
+
+# Date Time Picker
+UI.box_append(inner, UI.new_date_time_picker, 0)
+
+# Font Button
+UI.box_append(inner, UI.new_font_button, 0)
+
+# Color Button
+UI.box_append(inner, UI.new_color_button, 0)
+
+inner2 = UI.new_vertical_box
+UI.box_set_padded(inner2, 1)
+UI.box_append(hbox, inner2, 1)
+
+# Group - Numbers
+group = UI.new_group('Numbers')
+UI.group_set_margined(group, 1)
+UI.box_append(inner2, group, 0)
+
+inner = UI.new_vertical_box
+UI.box_set_padded(inner, 1)
+UI.group_set_child(group, inner)
+
+# Spinbox
+spinbox = UI.new_spinbox(0, 100)
+UI.spinbox_set_value(spinbox, 42)
+UI.spinbox_on_changed(spinbox) do |ptr|
+  puts "New Spinbox value: #{UI.spinbox_value(ptr)}"
+end
+UI.box_append(inner, spinbox, 0)
+
+# Slider
+slider = UI.new_slider(0, 100)
+UI.box_append(inner, slider, 0)
+
+# Progressbar
+progressbar = UI.new_progress_bar
+UI.box_append(inner, progressbar, 0)
+
+UI.slider_on_changed(slider) do |ptr|
+  v = UI.slider_value(ptr)
+  puts "New Slider value: #{v}"
+  UI.progress_bar_set_value(progressbar, v)
+end
+
+# Group - Lists
+group = UI.new_group('Lists')
+UI.group_set_margined(group, 1)
+UI.box_append(inner2, group, 0)
+
+inner = UI.new_vertical_box
+UI.box_set_padded(inner, 1)
+UI.group_set_child(group, inner)
+
+# Combobox
+cbox = UI.new_combobox
+UI.combobox_append(cbox, 'combobox Item 1')
+UI.combobox_append(cbox, 'combobox Item 2')
+UI.combobox_append(cbox, 'combobox Item 3')
+UI.box_append(inner, cbox, 0)
+UI.combobox_on_selected(cbox) do |ptr|
+  puts "New combobox selection: #{UI.combobox_selected(ptr)}"
+end
+
+# Editable Combobox
+ebox = UI.new_editable_combobox
+UI.editable_combobox_append(ebox, 'Editable Item 1')
+UI.editable_combobox_append(ebox, 'Editable Item 2')
+UI.editable_combobox_append(ebox, 'Editable Item 3')
+UI.box_append(inner, ebox, 0)
+
+# Radio Buttons
+rb = UI.new_radio_buttons
+UI.radio_buttons_append(rb, 'Radio Button 1')
+UI.radio_buttons_append(rb, 'Radio Button 2')
+UI.radio_buttons_append(rb, 'Radio Button 3')
+UI.box_append(inner, rb, 1)
+
+# Tab
+tab = UI.new_tab
+hbox1 = UI.new_horizontal_box
+hbox2 = UI.new_horizontal_box
+UI.tab_append(tab, 'Page 1', hbox1)
+UI.tab_append(tab, 'Page 2', hbox2)
+UI.tab_append(tab, 'Page 3', UI.new_horizontal_box)
+UI.box_append(inner2, tab, 1)
+
+# Text Entry
+text_entry = UI.new_entry
+UI.entry_set_text text_entry, 'Please enter your feelings'
+UI.entry_on_changed(text_entry) do |ptr|
+  puts "Current textbox data: '#{UI.entry_text(ptr)}'"
+end
+UI.box_append(hbox1, text_entry, 1)
+
+UI.control_show(MAIN_WINDOW)
+
+UI.main
+UI.quit
+```
+
+[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+menu('File') {
+  menu_item('Open') {
+    on_clicked do
+      file = open_file(MAIN_WINDOW)
+      puts file unless file.nil?
+    end
+  }
+
+  menu_item('Save') {
+    on_clicked do
+      file = save_file(MAIN_WINDOW)
+      puts file unless file.nil?
+    end
+  }
+  
+  quit_menu_item {
+    on_clicked do
+      puts 'Bye Bye'
+    end
+  }
+  
+  preferences_menu_item # Can optionally contain an on_clicked listener
+}
+
+menu('Edit') {
+  check_menu_item('Checkable Item_')
+  separator_menu_item
+  menu_item('Disabled Item_') { |mi|
+    enabled 0
+  }
+}
+
+menu('Help') {
+  menu_item('Help')
+  
+  about_menu_item # Can optionally contain an on_clicked listener
+}
+
+MAIN_WINDOW = window('Control Gallery', 600, 500, 1) {
+  margined 1
+  
+  on_closing do
+    puts 'Bye Bye'
+  end
+  
+  vertical_box { |vb|
+    padded 1
+
+    horizontal_box {
+      padded 1
+
+      group('Basic Controls') {
+        margined 1
+
+        vertical_box {
+          padded 1
+
+          button('Button') {
+            stretchy 0
+
+            on_clicked do
+              msg_box(MAIN_WINDOW, 'Information', 'You clicked the button')
+            end
+          }
+
+          checkbox('Checkbox') { |c|
+            stretchy 0
+
+            on_toggled do
+              checked = c.checked == 1
+              MAIN_WINDOW.title = "Checkbox is #{checked}"
+              c.text = "I am the checkbox (#{checked})"
+            end
+          }
+
+          label('Label') { stretchy 0 }
+
+          horizontal_separator { stretchy 0 }
+
+          date_picker { stretchy 0 }
+
+          time_picker { stretchy 0 }
+
+          date_time_picker { stretchy 0 }
+
+          font_button { stretchy 0 }
+
+          color_button { stretchy 0 }
+        }
+      }
+
+      vertical_box {
+        padded 1
+
+        group('Numbers') {
+          stretchy 0
+          margined 1
+
+          vertical_box {
+            padded 1
+
+            spinbox(0, 100) { |s|
+              stretchy 0
+              value 42
+
+              on_changed do
+                puts "New Spinbox value: #{s.value}"
+              end
+            }
+
+            slider(0, 100) { |s|
+              stretchy 0
+
+              on_changed do
+                v = s.value
+                puts "New Slider value: #{v}"
+                @progress_bar.value = v
+              end
+            }
+
+            @progress_bar = progress_bar { stretchy 0 }
+          }
+        }
+
+        group('Lists') {
+          stretchy 0
+          margined 1
+
+          vertical_box {
+            padded 1
+
+            combobox { |c|
+              stretchy 0
+              items ['combobox Item 1', 'combobox Item 2', 'combobox Item 3']
+
+              on_selected do
+                puts "New combobox selection: #{c.selected}"
+              end
+            }
+
+            editable_combobox {
+              stretchy 0
+              items ['Editable Item 1', 'Editable Item 2', 'Editable Item 3']
+            }
+
+            radio_buttons {
+              items ['Radio Button 1', 'Radio Button 2', 'Radio Button 3']
+            }
+          }
+        }
+
+        tab {
+          tab_item('Page 1') {
+            horizontal_box {
+              entry { |e|
+                text 'Please enter your feelings'
+
+                on_changed do
+                  puts "Current textbox data: '#{e.text}'"
+                end
+              }
+            }
+          }
+
+          tab_item('Page 2') {
+            horizontal_box
+          }
+
+          tab_item('Page 3') {
+            horizontal_box
+          }
+        }
+      }
+    }
+  }
+}
+
+MAIN_WINDOW.show
 ```
 
 ## Contributing to glimmer-dsl-libui
