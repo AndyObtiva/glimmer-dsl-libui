@@ -27,8 +27,9 @@ module Glimmer
     #
     # Follows the Proxy Design Pattern
     class ComboboxProxy < ControlProxy
-      def items(values = nil)
-        if values.nil?
+      def items(*values)
+        values = values.first if values.first.is_a?(Array)
+        if values.empty?
           @values
         else
           @values = values

@@ -5,6 +5,7 @@
 - Make listener block provide Ruby proxy object as optional argument (not Fiddle pointer)
 - Handle `tab_item` scenario where it has an empty block or no block (auto-generate empty `horizontal_box` content as a smart default to avoid crashing)
 - Support `non_wrapping_multiline_entry` propeties/operations via `LibUI.multiline_entry_*` methods (enhancing them to accept Ruby objects in addition to pointers)
+- Support splatting `items` array for `radio_buttons`, `editable_combobox`, and `combobox` items
 - Fix issue with `menu_item` `on_clicked` listeners crashing in examples/control_gallery.rb due to garbage collection
 
 ## 0.0.5

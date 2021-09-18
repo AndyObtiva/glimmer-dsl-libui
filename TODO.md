@@ -2,15 +2,14 @@
 
 ## Next
 
-- Support splatting `items` array for `radio_buttons`, `editable_checkbox` and `checkbox` items
-- Support passing boolean values to C bool args/properties that take 1 or 0
+- Make `padded 1` the default in `horizontal_box` and `vertical_box` to achieve nicer looking GUI by default
+- Make `margined 1` the default in `window`, `tab`, and `group` to achieve nicer looking GUI by default
 
 ## Soon
 
-- Consider making `padded 1` the default in `horizontal_box` and `vertical_box` to achieve nicer looking GUI by default
-- Consider making `margined 1` the default in `window`, `tab`, and `group` to achieve nicer looking GUI by default
-- Document control-specific operations
+- Support passing boolean values to C bool args/properties that take 1 or 0
 - Enhance `box_append` and `{control}_set_child` methods to accept Ruby objects in addition to pointers
+- Document control-specific operations
 - Support examples/font_button.rb
 
 ## Future

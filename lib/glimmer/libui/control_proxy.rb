@@ -95,7 +95,7 @@ module Glimmer
       def respond_to?(method_name, *args, &block)
         respond_to_libui?(method_name, *args, &block) ||
           (append_properties.include?(method_name.to_s) || append_properties.include?(method_name.to_s.sub(/=$/, ''))) ||
-          super
+          super(method_name, true)
       end
       
       def respond_to_libui?(method_name, *args, &block)

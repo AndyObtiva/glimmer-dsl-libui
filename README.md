@@ -1164,7 +1164,7 @@ MAIN_WINDOW = window('Control Gallery', 600, 500, 1) {
 
             combobox {
               stretchy 0
-              items ['combobox Item 1', 'combobox Item 2', 'combobox Item 3']
+              items 'combobox Item 1', 'combobox Item 2', 'combobox Item 3' # also accepts a single array argument
 
               on_selected do |c|
                 puts "New combobox selection: #{c.selected}"
@@ -1173,11 +1173,11 @@ MAIN_WINDOW = window('Control Gallery', 600, 500, 1) {
 
             editable_combobox {
               stretchy 0
-              items ['Editable Item 1', 'Editable Item 2', 'Editable Item 3']
+              items 'Editable Item 1', 'Editable Item 2', 'Editable Item 3' # also accepts a single array argument
             }
 
             radio_buttons {
-              items ['Radio Button 1', 'Radio Button 2', 'Radio Button 3']
+              items 'Radio Button 1', 'Radio Button 2', 'Radio Button 3' # also accepts a single array argument
             }
           }
         }
