@@ -81,6 +81,14 @@ module Glimmer
       def post_initialize_child(child)
         # No Op by default
       end
+      
+      def window_proxy
+        found_proxy = self
+        until found_proxy.nil? || found_proxy.is_a?(WindowProxy)
+          found_proxy = found_proxy.parent_proxy
+        end
+        found_proxy
+      end
 
       def can_handle_listener?(listener_name)
         ::LibUI.respond_to?("#{libui_api_keyword}_#{listener_name}") ||

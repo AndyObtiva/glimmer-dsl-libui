@@ -7,6 +7,7 @@
 - Destroy main window upon hitting quit on quit menu item
 - Rename `ControlProxy::all_controls` to `ControlProxy::all_control_proxies` to more accurately describe its contents
 - Add `ControlProxy::main_window_proxy` method to retrieve main window proxy
+- Define a `#window_proxy` method on `ControlProxy` to retrieve `window` control proxy for any control
 
 ## 0.0.6
 

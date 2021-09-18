@@ -52,6 +52,8 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
     - [Common Control Operations](#common-control-operations)
     - [Extra Dialogs](#extra-dialogs)
     - [Extra Operations](#extra-operations)
+    - [Smart Defaults and Conventions](#smart-defaults-and-conventions)
+    - [Original API](#original-api)
   - [Girb (Glimmer IRB)](#girb-glimmer-irb)
   - [Examples](#examples)
     - [Basic Window](#basic-window)
@@ -259,12 +261,13 @@ Control(Args) | Properties | Listeners
 
 - `ControlProxy::all_control_proxies`: returns all instantiated control proxies in the application
 - `ControlProxy::main_window_proxy`: returns the first window proxy instantiated in the application
+- `ControlProxy#window_proxy`: returns the window proxy parent for a control
 
 ### Smart Defaults and Conventions
 
 - `horizontal_box` and `vertical_box` controls have `padded` as `1` upon instantiation to ensure more user-friendly GUI by default
 - `group` controls have `margined` as `1` upon instantiation to ensure more user-friendly GUI by default
-- All controls nested under a `horizontal_box` or `vertical_box` have `stretchy` property as `1` by default (filling maximum space)
+- All controls nested under a `horizontal_box` or `vertical_box` have `stretchy` property (passed to `box_append` method) as `1` by default (filling maximum space)
 - `window` has an `on_closing` listener by default that quits application upon hitting the close button (can be overridden with a manual `on_closing` implementation that returns integer `0` for success)
 - `quit_menu_item` has an `on_clicked` listener by default that quits application upon selecting the quit menu item (can be overridden with a manual `on_clicked` implementation that returns integer `0` for success)
 - If an `on_closing` listener was defined on `window` and it does not return an integer, default exit behavior is assumed (`window.destroy` is called followed by `LibUI.quit`, returning `0`).

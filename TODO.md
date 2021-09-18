@@ -6,8 +6,6 @@
 
 ## Soon
 
-- Enhance `box_append` and `{control}_set_child` methods to accept Ruby objects in addition to pointers
-- Define a `#window_proxy` method on `ControlProxy` to enable any control to retrieve its `window` control proxy
 - Document control-specific operations
 - Document Smart Defaults and Conventions
 - Document Style Guide
