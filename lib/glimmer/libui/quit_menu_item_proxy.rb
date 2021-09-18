@@ -23,14 +23,39 @@ require 'glimmer/libui/control_proxy'
 
 module Glimmer
   module LibUI
-    # Proxy for LibUI menu item objects
+    # Proxy for LibUI quit menu item object
     #
     # Follows the Proxy Design Pattern
-    class MenuItemProxy < ControlProxy
+    class QuitMenuItemProxy < ControlProxy
+      def can_handle_listener?(listener_name)
+        listener_name == 'on_clicked' || super
+      end
+    
+      def handle_listener(listener_name, &listener)
+        if listener_name == 'on_clicked'
+          default_behavior_listener = Proc.new do
+            return_value = listener.call
+            if return_value.is_a?(Numeric)
+              return_value
+            else
+              destroy
+              ::LibUI.quit
+              0
+            end
+          end
+        end
+        ::LibUI.on_should_quit(&default_behavior_listener)
+      end
+    
       private
       
       def build_control
-        @libui = @parent_proxy.append_item(*@args)
+        @libui = @parent_proxy.append_quit_item(*@args)
+        handle_listener('on_clicked') do
+          destroy
+          ::LibUI.quit
+          0
+        end
       end
     end
   end

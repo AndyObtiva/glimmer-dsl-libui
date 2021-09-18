@@ -139,7 +139,7 @@ module Glimmer
       private
       
       def build_control
-        @libui ||= if ::LibUI.respond_to?("new_#{keyword}")
+        @libui = if ::LibUI.respond_to?("new_#{keyword}")
           ::LibUI.send("new_#{@keyword}", *@args)
         elsif ::LibUI.respond_to?(keyword)
           @args[0] = @args.first.libui if @args.first.is_a?(ControlProxy)

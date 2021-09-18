@@ -19,11 +19,11 @@ menu('File') {
     end
   }
   
-#   quit_menu_item {
-#     on_clicked do
-#       puts 'Bye Bye'
-#     end
-#   }
+  quit_menu_item {
+    on_clicked do
+      puts 'Bye Bye'
+    end
+  }
   
 #   preferences_menu_item # Can optionally contain an on_clicked listener
 }
