@@ -3,6 +3,7 @@
 ## 0.0.7
 
 - Make `padded 1` the default in `horizontal_box` and `vertical_box` to achieve nicer looking GUI by default
+- Make `margined 1` the default in `group` to achieve nicer looking GUI by default
 
 ## 0.0.6
 

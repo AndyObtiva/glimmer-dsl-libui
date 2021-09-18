@@ -36,8 +36,9 @@ module Glimmer
       private
       
       def build_control
-        super
-        self.padded = 1
+        super.tap do
+          self.padded = 1
+        end
       end
     end
   end

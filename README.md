@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.0.6
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.0.7
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Maintainability](https://api.codeclimate.com/v1/badges/ce2853efdbecf6ebdc73/maintainability)](https://codeclimate.com/github/AndyObtiva/glimmer-dsl-libui/maintainability)
@@ -43,7 +43,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
 
 ## Table of Contents
 
-- [Glimmer DSL for LibUI 0.0.6](#-glimmer-dsl-for-libui-006)
+- [Glimmer DSL for LibUI 0.0.7](#-glimmer-dsl-for-libui-007)
   - [Glimmer GUI DSL Concepts](#glimmer-gui-dsl-concepts)
   - [Usage](#usage)
   - [API](#api)
@@ -146,7 +146,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.0.6'
+gem 'glimmer-dsl-libui', '~> 0.0.7'
 ```
 
 Add `require 'glimmer-dsl-libui'` at the top, and then `include Glimmer` into the top-level main object for testing or into an actual class for serious usage.
@@ -255,9 +255,12 @@ Control(Args) | Properties | Listeners
 
 ### Smart Defaults and Conventions
 
-- `horizontal_box` and `vertical_box` have `padded` as `1` on creation to ensure producing nicer GUI by default
+- `horizontal_box` and `vertical_box` controls have `padded` as `1` upon instantiation to ensure more user-friendly GUI by default
+- `group` controls have `margined` as `1` upon instantiation to ensure more user-friendly GUI by default
 - All controls nested under a `horizontal_box` or `vertical_box` have `stretchy` property as `1` by default (filling maximum space)
 - `window` has an `on_closing` listener by default that quits application upon hitting the close button
+- If an `on_closing` listener was defined on `window` and it does not return an integer, default exit behavior is assumed (`window.destroy` is called followed by `LibUI.quit`, returning `0`).
+- If an `on_clicked` listener was defined on `quit_menu_item` and it does not return an integer, default exit behavior is assumed (`quit_menu_item.destroy` is called followed by `LibUI.quit`, returning `0`).
 
 ### Original API
 
@@ -1088,8 +1091,6 @@ MAIN_WINDOW = window('Control Gallery', 600, 500, 1) {
   vertical_box {
     horizontal_box {
       group('Basic Controls') {
-        margined 1
-
         vertical_box {
           button('Button') {
             stretchy 0
@@ -1128,7 +1129,6 @@ MAIN_WINDOW = window('Control Gallery', 600, 500, 1) {
       vertical_box {
         group('Numbers') {
           stretchy 0
-          margined 1
 
           vertical_box {
             spinbox(0, 100) {
@@ -1156,7 +1156,6 @@ MAIN_WINDOW = window('Control Gallery', 600, 500, 1) {
 
         group('Lists') {
           stretchy 0
-          margined 1
 
           vertical_box {
             combobox {

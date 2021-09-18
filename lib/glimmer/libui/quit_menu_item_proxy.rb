@@ -52,7 +52,7 @@ module Glimmer
       def build_control
         @libui = @parent_proxy.append_quit_item(*@args)
         handle_listener('on_clicked') do
-          destroy
+          destroy # TODO look into finding a way to destroy main window
           ::LibUI.quit
           0
         end

@@ -2,12 +2,13 @@
 
 ## Next
 
-- Make `margined 1` the default in `window`, `tab`, and `group` to achieve nicer looking GUI by default
+- Support passing boolean values to C bool args/properties that take 1 or 0
 
 ## Soon
 
-- Support passing boolean values to C bool args/properties that take 1 or 0
 - Enhance `box_append` and `{control}_set_child` methods to accept Ruby objects in addition to pointers
+- Destroy main window upon hitting quit on quit menu item (look for it in `ControlProxy::all_controls`)
+- Auto-define `menu('File')` and `quit_menu_item` if no `menu`/`menu_item` instances were generated.
 - Document control-specific operations
 - Document Smart Defaults and Conventions
 - Document Style Guide

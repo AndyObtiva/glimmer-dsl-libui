@@ -30,6 +30,14 @@ module Glimmer
       def post_initialize_child(child)
         ::LibUI.group_set_child(@libui, child.libui)
       end
+      
+      private
+      
+      def build_control
+        super.tap do
+          self.margined = 1
+        end
+      end
     end
   end
 end

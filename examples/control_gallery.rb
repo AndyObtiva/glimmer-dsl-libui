@@ -52,8 +52,6 @@ MAIN_WINDOW = window('Control Gallery', 600, 500, 1) {
   vertical_box {
     horizontal_box {
       group('Basic Controls') {
-        margined 1
-
         vertical_box {
           button('Button') {
             stretchy 0
@@ -92,7 +90,6 @@ MAIN_WINDOW = window('Control Gallery', 600, 500, 1) {
       vertical_box {
         group('Numbers') {
           stretchy 0
-          margined 1
 
           vertical_box {
             spinbox(0, 100) {
@@ -120,7 +117,6 @@ MAIN_WINDOW = window('Control Gallery', 600, 500, 1) {
 
         group('Lists') {
           stretchy 0
-          margined 1
 
           vertical_box {
             combobox {
