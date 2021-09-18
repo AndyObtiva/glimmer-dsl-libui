@@ -217,10 +217,10 @@ Control(Args) | Properties | Listeners
 `label(text as String)` | `text` (`String`) | None
 `menu(text as String)` | None | None
 `menu_item(text as String)` | `checked` (`1` or `0`) | `on_clicked`
-`multiline_entry` | `read_only` (`1` or `0`), `text` (`String`) | None
+`multiline_entry` | `read_only` (`1` or `0`), `text` (`String`) | `on_changed`
 `msg_box(window as Glimmer::LibUI::WindowProxy, title as String, description as String)` | None | None
 `msg_box_error(window as Glimmer::LibUI::WindowProxy, title as String, description as String)` | None | None
-`non_wrapping_multiline_entry` | None | None
+`non_wrapping_multiline_entry` | `read_only` (`1` or `0`), `text` (`String`) | `on_changed`
 `preferences_menu_item` | None | `on_clicked`
 `progress_bar` | `value` (`Numeric`) | None
 `quit_menu_item` | None | `on_clicked`

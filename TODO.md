@@ -7,7 +7,6 @@
 
 ## Soon
 
-- Support `non_wrapping_multiline_entry` propeties/operations via `LibUI.multiline_entry_*` methods (enhancing them to accept Ruby objects in addition to pointers)
 - Consider making `padded 1` the default in `horizontal_box` and `vertical_box` to achieve nicer looking GUI by default
 - Consider making `margined 1` the default in `window`, `tab`, and `group` to achieve nicer looking GUI by default
 - Document control-specific operations
@@ -16,6 +15,7 @@
 
 ## Future
 
+- Create new examples not found in LibUI
 - Support examples/basic_area.rb
 - Support examples/basic_draw_text.rb
 - Support examples/basic_table.rb
