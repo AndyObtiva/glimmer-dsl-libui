@@ -49,112 +49,112 @@ MAIN_WINDOW = window('Control Gallery', 600, 500, 1) {
     puts 'Bye Bye'
   end
   
-#   vertical_box { |vb|
-#     padded 1
-#
-#     horizontal_box {
-#       padded 1
-#
-#       group('Basic Controls') {
-#         margined 1
-#
-#         vertical_box {
-#           padded 1
-#
-#           button('Button') {
-#             stretchy 0
-#
-#             on_clicked do
-#               msg_box(MAIN_WINDOW, 'Information', 'You clicked the button')
-#             end
-#           }
-#
-#           checkbox('Checkbox') { |c|
-#             stretchy 0
-#
-#             on_toggled do
-#               checked = c.checked == 1
-#               MAIN_WINDOW.title = "Checkbox is #{checked}"
-#               c.text = "I am the checkbox (#{checked})"
-#             end
-#           }
-#
-#           label('Label') { stretchy 0 }
-#
-#           horizontal_separator { stretchy 0 }
-#
-#           date_picker { stretchy 0 }
-#
-#           time_picker { stretchy 0 }
-#
-#           date_time_picker { stretchy 0 }
-#
-#           font_button { stretchy 0 }
-#
-#           color_button { stretchy 0 }
-#         }
-#       }
-#
-#       vertical_box {
-#         padded 1
-#
-#         group('Numbers') {
-#           stretchy 0
-#           margined 1
-#
-#           vertical_box {
-#             padded 1
-#
-#             spinbox(0, 100) { |s|
-#               stretchy 0
-#               value 42
-#
-#               on_changed do
-#                 puts "New Spinbox value: #{s.value}"
-#               end
-#             }
-#
-#             slider(0, 100) { |s|
-#               stretchy 0
-#
-#               on_changed do
-#                 v = s.value
-#                 puts "New Slider value: #{v}"
-#                 @progress_bar.value = v
-#               end
-#             }
-#
-#             @progress_bar = progress_bar { stretchy 0 }
-#           }
-#         }
-#
-#         group('Lists') {
-#           stretchy 0
-#           margined 1
-#
-#           vertical_box {
-#             padded 1
-#
-#             combobox { |c|
-#               stretchy 0
-#               items ['combobox Item 1', 'combobox Item 2', 'combobox Item 3']
-#
-#               on_selected do
-#                 puts "New combobox selection: #{c.selected}"
-#               end
-#             }
-#
-#             editable_combobox {
-#               stretchy 0
-#               items ['Editable Item 1', 'Editable Item 2', 'Editable Item 3']
-#             }
-#
-#             radio_buttons {
-#               items ['Radio Button 1', 'Radio Button 2', 'Radio Button 3']
-#             }
-#           }
-#         }
-#
+  vertical_box { |vb|
+    padded 1
+
+    horizontal_box {
+      padded 1
+
+      group('Basic Controls') {
+        margined 1
+
+        vertical_box {
+          padded 1
+
+          button('Button') {
+            stretchy 0
+
+            on_clicked do
+              msg_box(MAIN_WINDOW, 'Information', 'You clicked the button')
+            end
+          }
+
+          checkbox('Checkbox') { |c|
+            stretchy 0
+
+            on_toggled do
+              checked = c.checked == 1
+              MAIN_WINDOW.title = "Checkbox is #{checked}"
+              c.text = "I am the checkbox (#{checked})"
+            end
+          }
+
+          label('Label') { stretchy 0 }
+
+          horizontal_separator { stretchy 0 }
+
+          date_picker { stretchy 0 }
+
+          time_picker { stretchy 0 }
+
+          date_time_picker { stretchy 0 }
+
+          font_button { stretchy 0 }
+
+          color_button { stretchy 0 }
+        }
+      }
+
+      vertical_box {
+        padded 1
+
+        group('Numbers') {
+          stretchy 0
+          margined 1
+
+          vertical_box {
+            padded 1
+
+            spinbox(0, 100) { |s|
+              stretchy 0
+              value 42
+
+              on_changed do
+                puts "New Spinbox value: #{s.value}"
+              end
+            }
+
+            slider(0, 100) { |s|
+              stretchy 0
+
+              on_changed do
+                v = s.value
+                puts "New Slider value: #{v}"
+                @progress_bar.value = v
+              end
+            }
+
+            @progress_bar = progress_bar { stretchy 0 }
+          }
+        }
+
+        group('Lists') {
+          stretchy 0
+          margined 1
+
+          vertical_box {
+            padded 1
+
+            combobox { |c|
+              stretchy 0
+              items ['combobox Item 1', 'combobox Item 2', 'combobox Item 3']
+
+              on_selected do
+                puts "New combobox selection: #{c.selected}"
+              end
+            }
+
+            editable_combobox {
+              stretchy 0
+              items ['Editable Item 1', 'Editable Item 2', 'Editable Item 3']
+            }
+
+            radio_buttons {
+              items ['Radio Button 1', 'Radio Button 2', 'Radio Button 3']
+            }
+          }
+        }
+
 #         tab {
 #           tab_item {
 #             name 'Page 1'
@@ -182,9 +182,9 @@ MAIN_WINDOW = window('Control Gallery', 600, 500, 1) {
 #             horizontal_box
 #           }
 #         }
-#       }
-#     }
-#   }
+      }
+    }
+  }
 }
 
 MAIN_WINDOW.show
