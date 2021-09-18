@@ -25,7 +25,7 @@ menu('File') {
     end
   }
   
-#   preferences_menu_item # Can optionally contain an on_clicked listener
+  preferences_menu_item # Can optionally contain an on_clicked listener
 }
 
 menu('Edit') {
@@ -39,7 +39,7 @@ menu('Edit') {
 menu('Help') {
   menu_item('Help')
   
-#   about_menu_item # Can optionally contain an on_clicked listener
+  about_menu_item # Can optionally contain an on_clicked listener
 }
 
 MAIN_WINDOW = window('Control Gallery', 600, 500, 1) {

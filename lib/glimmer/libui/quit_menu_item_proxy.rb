@@ -19,14 +19,14 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'glimmer/libui/control_proxy'
+require 'glimmer/libui/menu_item_proxy'
 
 module Glimmer
   module LibUI
     # Proxy for LibUI quit menu item object
     #
     # Follows the Proxy Design Pattern
-    class QuitMenuItemProxy < ControlProxy
+    class QuitMenuItemProxy < MenuItemProxy
       def can_handle_listener?(listener_name)
         listener_name == 'on_clicked' || super
       end

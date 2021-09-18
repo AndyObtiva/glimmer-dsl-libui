@@ -72,14 +72,14 @@ module Glimmer
       end
 
       def can_handle_listener?(listener_name)
-        ::LibUI.respond_to?("control_#{listener_name}") || ::LibUI.respond_to?("#{@keyword}_#{listener_name}")
+        ::LibUI.respond_to?("control_#{listener_name}") || ::LibUI.respond_to?("#{libui_api_keyword}_#{listener_name}")
       end
       
       def handle_listener(listener_name, &listener)
         if ::LibUI.respond_to?("control_#{listener_name}")
           ::LibUI.send("control_#{listener_name}", @libui, &listener)
-        elsif ::LibUI.respond_to?("#{@keyword}_#{listener_name}")
-          ::LibUI.send("#{@keyword}_#{listener_name}", @libui, &listener)
+        elsif ::LibUI.respond_to?("#{libui_api_keyword}_#{listener_name}")
+          ::LibUI.send("#{libui_api_keyword}_#{listener_name}", @libui, &listener)
         end
       end
       
@@ -91,9 +91,9 @@ module Glimmer
       
       def respond_to_libui?(method_name, *args, &block)
         ::LibUI.respond_to?("control_#{method_name}") ||
-          ::LibUI.respond_to?("#{@keyword}_#{method_name}") ||
-          ::LibUI.respond_to?("#{@keyword}_set_#{method_name}") ||
-          ::LibUI.respond_to?("#{@keyword}_set_#{method_name.to_s.sub(/=$/, '')}")
+          ::LibUI.respond_to?("#{libui_api_keyword}_#{method_name}") ||
+          ::LibUI.respond_to?("#{libui_api_keyword}_set_#{method_name}") ||
+          ::LibUI.respond_to?("#{libui_api_keyword}_set_#{method_name.to_s.sub(/=$/, '')}")
       end
       
       def method_missing(method_name, *args, &block)
@@ -109,16 +109,16 @@ module Glimmer
       def send_to_libui(method_name, *args, &block)
         if ::LibUI.respond_to?("control_#{method_name}")
           ::LibUI.send("control_#{method_name}", @libui, *args)
-        elsif ::LibUI.respond_to?("#{@keyword}_#{method_name}") && args.empty?
-          ::LibUI.send("#{@keyword}_#{method_name}", @libui, *args)
-        elsif ::LibUI.respond_to?("#{@keyword}_set_#{method_name}") && !args.empty?
-          ::LibUI.send("#{@keyword}_set_#{method_name}", @libui, *args)
-        elsif ::LibUI.respond_to?("#{@keyword}_set_#{method_name.to_s.sub(/=$/, '')}") && !args.empty?
-          ::LibUI.send("#{@keyword}_set_#{method_name.to_s.sub(/=$/, '')}", @libui, *args)
-        elsif ::LibUI.respond_to?("#{@keyword}_#{method_name}") && method_name.start_with?('set_') && !args.empty?
-          ::LibUI.send("#{@keyword}_#{method_name}", @libui, *args)
-        elsif ::LibUI.respond_to?("#{@keyword}_#{method_name}") && !args.empty?
-          ::LibUI.send("#{@keyword}_#{method_name}", @libui, *args)
+        elsif ::LibUI.respond_to?("#{libui_api_keyword}_#{method_name}") && args.empty?
+          ::LibUI.send("#{libui_api_keyword}_#{method_name}", @libui, *args)
+        elsif ::LibUI.respond_to?("#{libui_api_keyword}_set_#{method_name}") && !args.empty?
+          ::LibUI.send("#{libui_api_keyword}_set_#{method_name}", @libui, *args)
+        elsif ::LibUI.respond_to?("#{libui_api_keyword}_set_#{method_name.to_s.sub(/=$/, '')}") && !args.empty?
+          ::LibUI.send("#{libui_api_keyword}_set_#{method_name.to_s.sub(/=$/, '')}", @libui, *args)
+        elsif ::LibUI.respond_to?("#{libui_api_keyword}_#{method_name}") && method_name.start_with?('set_') && !args.empty?
+          ::LibUI.send("#{libui_api_keyword}_#{method_name}", @libui, *args)
+        elsif ::LibUI.respond_to?("#{libui_api_keyword}_#{method_name}") && !args.empty?
+          ::LibUI.send("#{libui_api_keyword}_#{method_name}", @libui, *args)
         end
       end
       
@@ -134,6 +134,10 @@ module Glimmer
         else
           @append_property_hash[property] = value
         end
+      end
+      
+      def libui_api_keyword
+        @keyword
       end
       
       private

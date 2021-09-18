@@ -19,22 +19,18 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'glimmer/libui/control_proxy'
+require 'glimmer/libui/menu_item_proxy'
 
 module Glimmer
   module LibUI
-    # Proxy for LibUI menu item objects
+    # Proxy for LibUI quit menu item object
     #
     # Follows the Proxy Design Pattern
-    class MenuItemProxy < ControlProxy
-      def libui_api_keyword
-        'menu_item'
-      end
-    
+    class PreferencesMenuItemProxy < MenuItemProxy
       private
       
       def build_control
-        @libui = @parent_proxy.append_item(*@args)
+        @libui = @parent_proxy.append_preferences_item(*@args)
       end
     end
   end

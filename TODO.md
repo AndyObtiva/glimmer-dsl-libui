@@ -2,7 +2,6 @@
 
 ## Next
 
-- Support optional `preferences_menu_item` and `about_menu_item`
 - Support `check_menu_item`
 - Support `separator_menu_item`
 - Support `enabled=` & `set_enabled` on all controls (making `enabled` property read/write by relying on `enable`/`disable` operations)
