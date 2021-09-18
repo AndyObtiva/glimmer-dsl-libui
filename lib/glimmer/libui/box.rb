@@ -32,6 +32,13 @@ module Glimmer
       def libui_api_keyword
         'box'
       end
+      
+      private
+      
+      def build_control
+        super
+        self.padded = 1
+      end
     end
   end
 end

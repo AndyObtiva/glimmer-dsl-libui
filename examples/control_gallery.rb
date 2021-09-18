@@ -50,17 +50,11 @@ MAIN_WINDOW = window('Control Gallery', 600, 500, 1) {
   end
   
   vertical_box {
-    padded 1
-
     horizontal_box {
-      padded 1
-
       group('Basic Controls') {
         margined 1
 
         vertical_box {
-          padded 1
-
           button('Button') {
             stretchy 0
 
@@ -96,15 +90,11 @@ MAIN_WINDOW = window('Control Gallery', 600, 500, 1) {
       }
 
       vertical_box {
-        padded 1
-
         group('Numbers') {
           stretchy 0
           margined 1
 
           vertical_box {
-            padded 1
-
             spinbox(0, 100) {
               stretchy 0
               value 42
@@ -133,8 +123,6 @@ MAIN_WINDOW = window('Control Gallery', 600, 500, 1) {
           margined 1
 
           vertical_box {
-            padded 1
-
             combobox {
               stretchy 0
               items 'combobox Item 1', 'combobox Item 2', 'combobox Item 3' # also accepts a single array argument

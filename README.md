@@ -253,7 +253,16 @@ Control(Args) | Properties | Listeners
 - `open_file(window as Glimmer::LibUI::WindowProxy)`: returns selected file (`String`) or `nil` if cancelled
 - `save_file(window as Glimmer::LibUI::WindowProxy)`: returns selected file (`String`) or `nil` if cancelled
 
-To learn more about the [LibUI](https://github.com/kojix2/LibUI) API exposed through [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui), check out the [libui C headers](https://github.com/andlabs/libui/blob/master/ui.h)
+### Smart Defaults and Conventions
+
+- `horizontal_box` and `vertical_box` have `padded` as `1` on creation to ensure producing nicer GUI by default
+- All controls nested under a `horizontal_box` or `vertical_box` have `stretchy` property as `1` by default (filling maximum space)
+- `window` has an `on_closing` listener by default that quits application upon hitting the close button
+
+### Original API
+
+To learn more about the [LibUI](https://github.com/kojix2/LibUI) API exposed through [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui),
+check out the [libui C headers](https://github.com/andlabs/libui/blob/master/ui.h)
 
 ## Girb (Glimmer IRB)
 
@@ -1077,17 +1086,11 @@ MAIN_WINDOW = window('Control Gallery', 600, 500, 1) {
   end
   
   vertical_box {
-    padded 1
-
     horizontal_box {
-      padded 1
-
       group('Basic Controls') {
         margined 1
 
         vertical_box {
-          padded 1
-
           button('Button') {
             stretchy 0
 
@@ -1123,15 +1126,11 @@ MAIN_WINDOW = window('Control Gallery', 600, 500, 1) {
       }
 
       vertical_box {
-        padded 1
-
         group('Numbers') {
           stretchy 0
           margined 1
 
           vertical_box {
-            padded 1
-
             spinbox(0, 100) {
               stretchy 0
               value 42
@@ -1160,8 +1159,6 @@ MAIN_WINDOW = window('Control Gallery', 600, 500, 1) {
           margined 1
 
           vertical_box {
-            padded 1
-
             combobox {
               stretchy 0
               items 'combobox Item 1', 'combobox Item 2', 'combobox Item 3' # also accepts a single array argument
