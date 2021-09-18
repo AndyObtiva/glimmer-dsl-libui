@@ -7,6 +7,8 @@
 - Support `quit_menu_item` with `on_clicked` listener
 - Support `preferences_menu_item` and `about_menu_item`
 - Support `check_menu_item` and `separator_menu_item`
+- Support `enabled=` & `set_enabled` on all controls (making `enabled` property read/write by relying on `enable`/`disable` operations)
+- Support `visible=` & `set_visible` on all controls (making `visible` property read/write by relying on `show`/`hide` operations)
 - Fix issue with always setting menu item text to 'Version' (correctly set to passed argument instead)
 
 ## 0.0.4

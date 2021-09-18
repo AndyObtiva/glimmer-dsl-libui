@@ -31,8 +31,8 @@ menu('File') {
 menu('Edit') {
   check_menu_item('Checkable Item_')
   separator_menu_item
-  menu_item('Disabled Item_') {
-#     enabled false
+  menu_item('Disabled Item_') { |mi|
+    enabled 0
   }
 }
 

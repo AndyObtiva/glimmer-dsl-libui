@@ -54,6 +54,7 @@ module Glimmer
         @parent_proxy = parent
         @args = args
         @block = block
+        @enabled = 1
         build_control
         if @parent_proxy.class.constants.include?(:APPEND_PROPERTIES)
           @parent_proxy.class::APPEND_PROPERTIES
@@ -107,9 +108,7 @@ module Glimmer
       end
       
       def send_to_libui(method_name, *args, &block)
-        if ::LibUI.respond_to?("control_#{method_name}")
-          ::LibUI.send("control_#{method_name}", @libui, *args)
-        elsif ::LibUI.respond_to?("#{libui_api_keyword}_#{method_name}") && args.empty?
+        if ::LibUI.respond_to?("#{libui_api_keyword}_#{method_name}") && args.empty?
           ::LibUI.send("#{libui_api_keyword}_#{method_name}", @libui, *args)
         elsif ::LibUI.respond_to?("#{libui_api_keyword}_set_#{method_name}") && !args.empty?
           ::LibUI.send("#{libui_api_keyword}_set_#{method_name}", @libui, *args)
@@ -119,6 +118,8 @@ module Glimmer
           ::LibUI.send("#{libui_api_keyword}_#{method_name}", @libui, *args)
         elsif ::LibUI.respond_to?("#{libui_api_keyword}_#{method_name}") && !args.empty?
           ::LibUI.send("#{libui_api_keyword}_#{method_name}", @libui, *args)
+        elsif ::LibUI.respond_to?("control_#{method_name}")
+          ::LibUI.send("control_#{method_name}", @libui, *args)
         end
       end
       
@@ -139,6 +140,37 @@ module Glimmer
       def libui_api_keyword
         @keyword
       end
+      
+      def enabled(value = nil)
+        if value.nil?
+          @enabled
+        elsif value != @enabled
+          if value == 1
+            send_to_libui('enable')
+          else
+            send_to_libui('disable')
+          end
+        end
+      end
+      alias enabled? enabled
+      alias set_enabled enabled
+      alias enabled= enabled
+      
+      def visible(value = nil)
+        current_value = send_to_libui('visible')
+        if value.nil?
+          current_value
+        elsif value != current_value
+          if value == 1
+            send_to_libui('show')
+          else
+            send_to_libui('hide')
+          end
+        end
+      end
+      alias visible? visible
+      alias set_visible visible
+      alias visible= visible
       
       private
       
