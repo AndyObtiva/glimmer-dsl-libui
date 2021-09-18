@@ -2,7 +2,6 @@
 
 ## Next
 
-- Support `horizontal_box` and `vertical_box` propeties (`padded`) & operations (`append`, `delete`) via `LibUI.box_*` methods (enhancing them to accept Ruby objects in addition to pointers)
 - Support `tab` and `tab_item`
 
 ## Soon
@@ -14,6 +13,7 @@
 - Document control-specific operations
 - Consider making `padded 1` the default in `horizontal_box` and `vertical_box` to achieve nicer looking GUI by default
 - Consider making `margined 1` the default in `window`, `tab`, and `group` to achieve nicer looking GUI by default
+- Enhance `box_append` methods to accept Ruby objects in addition to pointers
 
 ## Future
 

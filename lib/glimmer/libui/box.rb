@@ -28,6 +28,10 @@ module Glimmer
         child.stretchy = 1 if child.stretchy.nil?
         ::LibUI.box_append(@libui, child.libui, child.stretchy)
       end
+      
+      def libui_api_keyword
+        'box'
+      end
     end
   end
 end
