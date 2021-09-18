@@ -32,7 +32,7 @@ window('hello world', 300, 200, 1).show
 ![glimmer-dsl-libui-mac-basic-window.png](images/glimmer-dsl-libui-mac-basic-window.png)
 ![glimmer-dsl-libui-linux-basic-window.png](images/glimmer-dsl-libui-linux-basic-window.png)
 
-NOTE: [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) is in early alpha mode (only supports included examples). Please help make better by contributing, adopting for small or low risk projects, and providing feedback. It is still an early alpha, so the more feedback and issues you report the better.
+NOTE: [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) is in early alpha mode (only supports included [examples](#examples)). Please help make better by contributing, adopting for small or low risk projects, and providing feedback. It is still an early alpha, so the more feedback and issues you report the better.
 
 Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interested in:
 - [glimmer-dsl-swt](https://github.com/AndyObtiva/glimmer-dsl-swt): Glimmer DSL for SWT (JRuby Desktop Development GUI Framework)
@@ -207,10 +207,10 @@ Control(Args) | Properties | Listeners
 `combobox` | `items` (`Array` of `String`), `selected` (`1` or `0`) | `on_selected`
 `color_button` | `color` (r `Numeric`, g `Numeric`, b `Numeric`, a `Numeric`), `selected` (`1` or `0`) | `on_selected`
 `date_picker` | None | None
-`date_time_picker` | `time` (`UI::FFI::TM`) | `on_changed`
+`date_time_picker` | `time` (`LibUI::FFI::TM`) | `on_changed`
 `editable_combobox` | `items` (`Array` of `String`), `text` (`String`) | `on_changed`
 `entry` | `read_only` (`1` or `0`), `text` (`String`) | `on_changed`
-`font_button` | `font` (`UI::FFI::FontDescriptor`) | `on_changed`
+`font_button` | `font` (`LibUI::FFI::FontDescriptor`) | `on_changed`
 `group(text as String)` | `margined` (`1` or `0`), `title` (`String`) | None
 `horizontal_box` | `padded` (`1` or `0`) | None
 `horizontal_separator` | None | None
