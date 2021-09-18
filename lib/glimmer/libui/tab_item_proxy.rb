@@ -20,6 +20,7 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 require 'glimmer/libui/control_proxy'
+require 'glimmer/libui/horizontal_box_proxy'
 
 module Glimmer
   module LibUI
@@ -36,7 +37,7 @@ module Glimmer
         @block = block
         @enabled = 1
         @index = @parent_proxy.num_pages
-        @content = @block.call
+        @content = @block&.call
         build_control
       end
       
@@ -57,6 +58,7 @@ module Glimmer
       private
       
       def build_control
+        @content = HorizontalBoxProxy.new('horizontal_box', @libui, []) if @content.nil?
         @libui = @parent_proxy.append(name, @content.libui)
       end
     end

@@ -3,6 +3,7 @@
 ## 0.0.6
 
 - Make listener block provide Ruby proxy object as optional argument (not Fiddle pointer)
+- Handle `tab_item` scenario where it has an empty block or no block (auto-generate empty `horizontal_box` content as a smart default to avoid crashing)
 
 ## 0.0.5
 

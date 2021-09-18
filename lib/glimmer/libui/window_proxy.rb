@@ -43,7 +43,7 @@ module Glimmer
       def handle_listener(listener_name, &listener)
         if listener_name == 'on_closing'
           default_behavior_listener = Proc.new do
-            return_value = listener.call
+            return_value = listener.call(self)
             if return_value.is_a?(Numeric)
               return_value
             else

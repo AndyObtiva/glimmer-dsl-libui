@@ -167,11 +167,11 @@ MAIN_WINDOW = window('Control Gallery', 600, 500, 1) {
               }
             }
           }
-
+          
           tab_item('Page 2') {
             horizontal_box
           }
-
+          
           tab_item('Page 3') {
             horizontal_box
           }
