@@ -14,6 +14,7 @@
 - Consider making `padded 1` the default in `horizontal_box` and `vertical_box` to achieve nicer looking GUI by default
 - Consider making `margined 1` the default in `window`, `tab`, and `group` to achieve nicer looking GUI by default
 - Enhance `box_append` methods to accept Ruby objects in addition to pointers
+- Support examples/font_button.rb
 
 ## Future
 
@@ -22,7 +23,6 @@
 - Support examples/basic_table.rb
 - Support examples/basic_table_image.rb
 - Support examples/date_time_picker.rb
-- Support examples/font_button.rb
 - Support examples/histogram.rb
 - Support ability to set properties on a control after instantiating without args (e.g. `window { title 'Title'; width 300; height 400; has_menubar true }`)
 - Support data-binding

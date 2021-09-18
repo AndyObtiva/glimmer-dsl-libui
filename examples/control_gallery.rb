@@ -49,7 +49,7 @@ MAIN_WINDOW = window('Control Gallery', 600, 500, 1) {
     puts 'Bye Bye'
   end
   
-  vertical_box { |vb|
+  vertical_box {
     padded 1
 
     horizontal_box {

@@ -4,7 +4,7 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/ce2853efdbecf6ebdc73/maintainability)](https://codeclimate.com/github/AndyObtiva/glimmer-dsl-libui/maintainability)
 [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-[Glimmer](https://github.com/AndyObtiva/glimmer) DSL for [LibUI](https://github.com/kojix2/LibUI) is a prerequisite-free Ruby desktop development GUI library. No need to pre-install any prerequisites. Just install the gem and have platform-independent GUI that just works!
+[Glimmer](https://github.com/AndyObtiva/glimmer) DSL for [LibUI](https://github.com/kojix2/LibUI) is a prerequisite-free Ruby desktop development GUI library. No need to pre-install any prerequisites. Just install the gem and have platform-independent native GUI that just works!
 
 [LibUI](https://github.com/kojix2/LibUI) is a thin [Ruby](https://www.ruby-lang.org/en/) wrapper around [libui](https://github.com/andlabs/libui), a relatively new C GUI library that renders native widgets on every platform (similar to [SWT](https://www.eclipse.org/swt/), but without the heavy weight of the [Java Virtual Machine](https://www.java.com/en/)).
 
@@ -40,6 +40,30 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
 - [glimmer-dsl-xml](https://github.com/AndyObtiva/glimmer-dsl-xml): Glimmer DSL for XML (& HTML)
 - [glimmer-dsl-css](https://github.com/AndyObtiva/glimmer-dsl-css): Glimmer DSL for CSS
 - [glimmer-dsl-tk](https://github.com/AndyObtiva/glimmer-dsl-tk): Glimmer DSL for Tk (MRI Ruby Desktop Development GUI Library)
+
+## Table of Contents
+
+- [Glimmer DSL for LibUI 0.0.5](#-glimmer-dsl-for-libui-005)
+  - [Glimmer GUI DSL Concepts](#glimmer-gui-dsl-concepts)
+  - [Usage](#usage)
+  - [API](#api)
+  - [Girb (Glimmer IRB)](#girb-glimmer-irb)
+  - [Examples](#examples)
+    - [Basic Window](#basic-window)
+    - [Basic Button](#basic-button)
+    - [Basic Entry](#basic-entry)
+    - [Simple Notepad](#simple-notepad)
+    - [Midi Player](#midi-player)
+    - [Control Gallery](#control-gallery)
+  - [Contributing to glimmer-dsl-libui](#contributing-to-glimmer-dsl-libui)
+  - [Help](#help)
+    - [Issues](#issues)
+    - [Chat](#chat)
+  - [Process](#process)
+  - [Planned Features and Feature Suggestions](#planned-features-and-feature-suggestions)
+  - [Change Log](#change-log)
+  - [Contributors](#contributors)
+  - [License](#license)
 
 ## Glimmer GUI DSL Concepts
 
@@ -1036,7 +1060,7 @@ MAIN_WINDOW = window('Control Gallery', 600, 500, 1) {
     puts 'Bye Bye'
   end
   
-  vertical_box { |vb|
+  vertical_box {
     padded 1
 
     horizontal_box {
