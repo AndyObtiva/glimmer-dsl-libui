@@ -50,6 +50,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
     - [Supported Controls](#supported-controls)
     - [Common Control Properties](#common-control-properties)
     - [Common Control Operations](#common-control-operations)
+    - [Extra Dialogs](#extra-dialogs)
     - [Extra Operations](#extra-operations)
   - [Girb (Glimmer IRB)](#girb-glimmer-irb)
   - [Examples](#examples)
@@ -249,18 +250,25 @@ Control(Args) | Properties | Listeners
 - `hide`
 - `show`
 
-### Extra Operations
+### Extra Dialogs
+
 - `open_file(window as Glimmer::LibUI::WindowProxy)`: returns selected file (`String`) or `nil` if cancelled
 - `save_file(window as Glimmer::LibUI::WindowProxy)`: returns selected file (`String`) or `nil` if cancelled
+
+### Extra Operations
+
+- `ControlProxy::all_control_proxies`: returns all instantiated control proxies in the application
+- `ControlProxy::main_window_proxy`: returns the first window proxy instantiated in the application
 
 ### Smart Defaults and Conventions
 
 - `horizontal_box` and `vertical_box` controls have `padded` as `1` upon instantiation to ensure more user-friendly GUI by default
 - `group` controls have `margined` as `1` upon instantiation to ensure more user-friendly GUI by default
 - All controls nested under a `horizontal_box` or `vertical_box` have `stretchy` property as `1` by default (filling maximum space)
-- `window` has an `on_closing` listener by default that quits application upon hitting the close button
+- `window` has an `on_closing` listener by default that quits application upon hitting the close button (can be overridden with a manual `on_closing` implementation that returns integer `0` for success)
+- `quit_menu_item` has an `on_clicked` listener by default that quits application upon selecting the quit menu item (can be overridden with a manual `on_clicked` implementation that returns integer `0` for success)
 - If an `on_closing` listener was defined on `window` and it does not return an integer, default exit behavior is assumed (`window.destroy` is called followed by `LibUI.quit`, returning `0`).
-- If an `on_clicked` listener was defined on `quit_menu_item` and it does not return an integer, default exit behavior is assumed (`quit_menu_item.destroy` is called followed by `LibUI.quit`, returning `0`).
+- If an `on_clicked` listener was defined on `quit_menu_item` and it does not return an integer, default exit behavior is assumed (`main_window.destroy` is called followed by `LibUI.quit`, returning `0`).
 
 ### Original API
 

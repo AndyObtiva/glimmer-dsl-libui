@@ -33,7 +33,7 @@ module Glimmer
         end
         
         def create(keyword, parent, args, &block)
-          widget_proxy_class(keyword).new(keyword, parent, args, &block).tap {|c| all_controls << c}
+          widget_proxy_class(keyword).new(keyword, parent, args, &block).tap {|c| all_control_proxies << c}
         end
         
         def widget_proxy_class(keyword)
@@ -46,9 +46,13 @@ module Glimmer
         end
         
         # autosave all controls in this array to avoid garbage collection
-        def all_controls
-          @@all_controls = [] unless defined?(@@all_controls)
-          @@all_controls
+        def all_control_proxies
+          @@all_control_proxies = [] unless defined?(@@all_control_proxies)
+          @@all_control_proxies
+        end
+        
+        def main_window_proxy
+          all_control_proxies.find {|c| c.is_a?(WindowProxy)}
         end
       end
       
@@ -182,7 +186,7 @@ module Glimmer
       
       def destroy
         send_to_libui('destroy')
-        self.class.all_controls.delete(self)
+        self.class.all_control_proxies.delete(self)
       end
       
       private
