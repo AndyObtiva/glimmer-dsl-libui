@@ -2,7 +2,7 @@
 
 ## Next
 
-- Support `tab` and `tab_item`
+- Document newly supported controls in v0.0.5
 
 ## Soon
 
@@ -14,7 +14,6 @@
 - Consider making `padded 1` the default in `horizontal_box` and `vertical_box` to achieve nicer looking GUI by default
 - Consider making `margined 1` the default in `window`, `tab`, and `group` to achieve nicer looking GUI by default
 - Enhance `box_append` methods to accept Ruby objects in addition to pointers
-- Support `non_wrapping_multiline_entry` properties/operations via `multiline_entry` libui_api_keyword
 
 ## Future
 

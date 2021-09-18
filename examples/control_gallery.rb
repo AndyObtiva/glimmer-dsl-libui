@@ -155,33 +155,27 @@ MAIN_WINDOW = window('Control Gallery', 600, 500, 1) {
           }
         }
 
-#         tab {
-#           tab_item {
-#             name 'Page 1'
-#
-#             horizontal_box {
-#               entry { |e|
-#                 text 'Please enter your feelings'
-#
-#                 on_changed do
-#                   puts "Current textbox data: '#{e.text}'"
-#                 end
-#               }
-#             }
-#           }
-#
-#           tab_item {
-#             name 'Page 2'
-#
-#             horizontal_box
-#           }
-#
-#           tab_item {
-#             name 'Page 3'
-#
-#             horizontal_box
-#           }
-#         }
+        tab {
+          tab_item('Page 1') {
+            horizontal_box {
+              entry { |e|
+                text 'Please enter your feelings'
+
+                on_changed do
+                  puts "Current textbox data: '#{e.text}'"
+                end
+              }
+            }
+          }
+
+          tab_item('Page 2') {
+            horizontal_box
+          }
+
+          tab_item('Page 3') {
+            horizontal_box
+          }
+        }
       }
     }
   }

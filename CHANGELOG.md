@@ -11,6 +11,7 @@
 - Support `visible=` & `set_visible` on all controls (making `visible` property read/write by relying on `show`/`hide` operations)
 - Support `horizontal_box` and `vertical_box` propeties (`padded`) & operations (`append`, `delete`) via `LibUI.box_*` methods
 - Support `editable_combobox`, `radio_buttons`, and `group`
+- Support `tab` and `tab_item`
 - Fix issue with always setting menu item text to 'Version' (correctly set to passed argument instead)
 
 ## 0.0.4
