@@ -23,7 +23,7 @@ require 'glimmer/libui/menu_item_proxy'
 
 module Glimmer
   module LibUI
-    # Proxy for LibUI quit menu item object
+    # Proxy for LibUI about menu item object
     #
     # Follows the Proxy Design Pattern
     class AboutMenuItemProxy < MenuItemProxy

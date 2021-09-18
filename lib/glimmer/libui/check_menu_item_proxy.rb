@@ -23,14 +23,14 @@ require 'glimmer/libui/menu_item_proxy'
 
 module Glimmer
   module LibUI
-    # Proxy for LibUI preferences menu item object
+    # Proxy for LibUI check menu item object
     #
     # Follows the Proxy Design Pattern
-    class PreferencesMenuItemProxy < MenuItemProxy
+    class CheckMenuItemProxy < MenuItemProxy
       private
       
       def build_control
-        @libui = @parent_proxy.append_preferences_item(*@args)
+        @libui = @parent_proxy.append_check_item(*@args)
       end
     end
   end
