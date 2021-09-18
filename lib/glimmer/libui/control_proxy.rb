@@ -33,7 +33,7 @@ module Glimmer
         end
         
         def create(keyword, parent, args, &block)
-          widget_proxy_class(keyword).new(keyword, parent, args, &block)
+          widget_proxy_class(keyword).new(keyword, parent, args, &block).tap {|c| all_controls << c}
         end
         
         def widget_proxy_class(keyword)
@@ -43,6 +43,12 @@ module Glimmer
           rescue
             Glimmer::LibUI::ControlProxy
           end
+        end
+        
+        # autosave all controls in this array to avoid garbage collection
+        def all_controls
+          @@all_controls = [] unless defined?(@@all_controls)
+          @@all_controls
         end
       end
       
@@ -173,6 +179,11 @@ module Glimmer
       alias visible? visible
       alias set_visible visible
       alias visible= visible
+      
+      def destroy
+        send_to_libui('destroy')
+        self.class.all_controls.delete(self)
+      end
       
       private
       

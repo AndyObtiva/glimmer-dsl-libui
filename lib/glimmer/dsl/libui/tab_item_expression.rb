@@ -27,7 +27,7 @@ module Glimmer
     module Libui
       class TabItemExpression < StaticExpression
         def interpret(parent, keyword, *args, &block)
-          Glimmer::LibUI::TabItemProxy.new(keyword, parent, args, &block)
+          Glimmer::LibUI::TabItemProxy.create(keyword, parent, args, &block)
         end
       end
     end

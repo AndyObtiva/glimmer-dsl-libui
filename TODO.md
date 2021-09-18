@@ -2,17 +2,16 @@
 
 ## Next
 
-- Fix issue with `menu_item` `on_clicked` listeners crashing
+- Support splatting `items` array for `radio_buttons`, `editable_checkbox` and `checkbox` items
+- Support passing boolean values to C bool args/properties that take 1 or 0
 
 ## Soon
 
-- Support splatting items array for radiobuttons, editable_checkbox and checkbox items
-- Support passing boolean values to C bool args/properties that take 1 or 0
 - Support `non_wrapping_multiline_entry` propeties/operations via `LibUI.multiline_entry_*` methods (enhancing them to accept Ruby objects in addition to pointers)
-- Document control-specific operations
 - Consider making `padded 1` the default in `horizontal_box` and `vertical_box` to achieve nicer looking GUI by default
 - Consider making `margined 1` the default in `window`, `tab`, and `group` to achieve nicer looking GUI by default
-- Enhance `box_append` methods to accept Ruby objects in addition to pointers
+- Document control-specific operations
+- Enhance `box_append` and `{control}_set_child` methods to accept Ruby objects in addition to pointers
 - Support examples/font_button.rb
 
 ## Future
