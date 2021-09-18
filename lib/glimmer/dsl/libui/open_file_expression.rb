@@ -19,32 +19,15 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'glimmer/dsl/engine'
-Dir[File.expand_path('*_expression.rb', __dir__)].each {|f| require f}
-
-# Glimmer DSL expression configuration module
-#
-# When DSL engine interprets an expression, it attempts to handle
-# with expressions listed here in the order specified.
-
-# Every expression has a corresponding Expression subclass
-# in glimmer/dsl
+require 'glimmer/dsl/static_expression'
+require 'glimmer/dsl/libui/file_expression'
 
 module Glimmer
   module DSL
     module Libui
-      Engine.add_dynamic_expressions(
-        Libui,
-#           list_selection_data_binding
-#           data_binding
-#           block_attribute
-#           attribute
-        %w[
-          listener
-          property
-          control
-        ]
-      )
+      class OpenFileExpression < StaticExpression
+        include FileExpression
+      end
     end
   end
 end

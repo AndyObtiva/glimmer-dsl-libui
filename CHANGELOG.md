@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.0.5
+
+- Support examples/control_gallery.rb
+- Support `open_file` and `save_file`
+- Fix issue with always setting menu item text to 'Version' (correctly set to passed argument instead)
+
 ## 0.0.4
 
 - Support examples/midi_player.rb

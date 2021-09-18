@@ -2,8 +2,6 @@
 
 ## Next
 
-- Support examples/control_gallery.rb
-- Support `open_file` and `save_file`
 - Add `quit_menu_item` automatically as a smart default
 - Support optional `preferences_menu_item` and `about_menu_item`
 - Support `check_menu_item`

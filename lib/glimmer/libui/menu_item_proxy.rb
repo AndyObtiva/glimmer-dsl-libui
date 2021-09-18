@@ -27,11 +27,10 @@ module Glimmer
     #
     # Follows the Proxy Design Pattern
     class MenuItemProxy < ControlProxy
-    
       private
       
       def build_control
-        @libui ||= @parent_proxy.append_item('Version')
+        @libui ||= @parent_proxy.append_item(*@args)
       end
     end
   end
