@@ -47,6 +47,10 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
   - [Glimmer GUI DSL Concepts](#glimmer-gui-dsl-concepts)
   - [Usage](#usage)
   - [API](#api)
+    - [Supported Controls](#supported-controls)
+    - [Common Control Properties](#common-control-properties)
+    - [Common Control Operations](#common-control-operations)
+    - [Extra Operations](#extra-operations)
   - [Girb (Glimmer IRB)](#girb-glimmer-irb)
   - [Examples](#examples)
     - [Basic Window](#basic-window)
@@ -193,35 +197,43 @@ w = window('hello world', 300, 200, 1) # => #<Glimmer::LibUI::WindowProxy:0x0000
 w.libui # => #<Fiddle::Pointer:0x00007fde53997980 ptr=0x00007fde51352a60 size=0 free=0x0000000000000000>
 ```
 
-Supported Controls and their Properties / Listeners:
-- `button`: `text` (`String`) / `on_clicked`
-- `combobox`: `items` (`Array` of `String`), `selected` (`1` or `0`) / `on_selected`
-- `color_button`: `color` (r `Numeric`, g `Numeric`, b `Numeric`, a `Numeric`), `selected` (`1` or `0`) / `on_selected`
-- `date_picker`: None / None
-- `date_time_picker`: `time` (`UI::FFI::TM`) / `on_changed`
-- `editable_combobox`: `items` (`Array` of `String`), `text` (`String`) / `on_changed`
-- `entry`: `read_only` (`1` or `0`), `text` (`String`) / `on_changed`
-- `font_button`: `font` (`UI::FFI::FontDescriptor`) / `on_changed`
-- `group`: `margined` (`1` or `0`), `title` (`String`) / None
-- `horizontal_box`: `padded` (`1` or `0`) / None
-- `horizontal_separator`: None / None
-- `label`: `text` (`String`) / None
-- `menu`: None / None
-- `menu_item`: `checked` (`1` or `0`) / `on_clicked`
-- `multiline_entry`: `read_only` (`1` or `0`), `text` (`String`) / None
-- `msg_box`: None / None
-- `non_wrapping_multiline_entry`: None / None
-- `progress_bar`: `value` (`Numeric`) / None
-- `radio_buttons`: `selected` (`1` or `0`) / `on_selected`
-- `slider`: `value` (`Numeric`) / `on_changed`
-- `spinbox`: `value` (`Numeric`) / `on_changed`
-- `tab`: `margined` (`1` or `0`), `num_pages` (`Integer`) / None
-- `tab_item`: `index` [read-only] (`Integer`), `margined` (`1` or `0`), `name` [read-only] (`String`) / None
-- `time_picker`: None / None
-- `vertical_box`: `padded` (`1` or `0`) / None
-- `window`: `borderless` (`1` or `0`), `content_size` (width `Numeric`, height `Numeric`), `fullscreen` (`1` or `0`), `margined` (`1` or `0`), `title` (`String`) / `on_closing`, `on_content_size_changed`
+### Supported Controls
 
-Common Control Properties:
+Control(Args) | Properties | Listeners
+------------- | ---------- | ---------
+`about_menu_item` | None | `on_clicked`
+`button(text as String)` | `text` (`String`) | `on_clicked`
+`checkbox(text as String)` | `checked` (`1` or `0`), `text` (`String`) | `on_toggled`
+`combobox` | `items` (`Array` of `String`), `selected` (`1` or `0`) | `on_selected`
+`color_button` | `color` (r `Numeric`, g `Numeric`, b `Numeric`, a `Numeric`), `selected` (`1` or `0`) | `on_selected`
+`date_picker` | None | None
+`date_time_picker` | `time` (`UI::FFI::TM`) | `on_changed`
+`editable_combobox` | `items` (`Array` of `String`), `text` (`String`) | `on_changed`
+`entry` | `read_only` (`1` or `0`), `text` (`String`) | `on_changed`
+`font_button` | `font` (`UI::FFI::FontDescriptor`) | `on_changed`
+`group(text as String)` | `margined` (`1` or `0`), `title` (`String`) | None
+`horizontal_box` | `padded` (`1` or `0`) | None
+`horizontal_separator` | None | None
+`label(text as String)` | `text` (`String`) | None
+`menu(text as String)` | None | None
+`menu_item(text as String)` | `checked` (`1` or `0`) | `on_clicked`
+`multiline_entry` | `read_only` (`1` or `0`), `text` (`String`) | None
+`msg_box(window as Glimmer::LibUI::WindowProxy, title as String, description as String)` | None | None
+`msg_box_error(window as Glimmer::LibUI::WindowProxy, title as String, description as String)` | None | None
+`non_wrapping_multiline_entry` | None | None
+`preferences_menu_item` | None | `on_clicked`
+`progress_bar` | `value` (`Numeric`) | None
+`quit_menu_item` | None | `on_clicked`
+`radio_buttons` | `selected` (`1` or `0`) | `on_selected`
+`slider(min as Numeric, max as Numeric)` | `value` (`Numeric`) | `on_changed`
+`spinbox(min as Numeric, max as Numeric)` | `value` (`Numeric`) | `on_changed`
+`tab` | `margined` (`1` or `0`), `num_pages` (`Integer`) | None
+`tab_item(name as String)` | `index` [read-only] (`Integer`), `margined` (`1` or `0`), `name` [read-only] (`String`) | None
+`time_picker` | None | None
+`vertical_box` | `padded` (`1` or `0`) | None
+`window(title as String, width as Integer, height as Integer, has_menubar as 1 or 0)` | `borderless` (`1` or `0`), `content_size` (width `Numeric`, height `Numeric`), `fullscreen` (`1` or `0`), `margined` (`1` or `0`), `title` (`String`) | `on_closing`, `on_content_size_changed`
+
+### Common Control Properties
 - `enabled` (`1` or `0`)
 - `libui` (`Fiddle::Pointer`): returns wrapped [LibUI](https://github.com/kojix2/LibUI) object
 - `parent_proxy` (`Glimmer::LibUI::ControlProxy` or subclass)
@@ -230,12 +242,16 @@ Common Control Properties:
 - `visible` (`1` or `0`)
 - `stretchy` [dsl-only] (`1` or `0`): available in [Glimmer GUI DSL](#glimmer-gui-dsl-concepts) when nested under `horizontal_box` or `vertical_box`
 
-Common Control Operations:
+### Common Control Operations
 - `destroy`
 - `disable`
 - `enable`
 - `hide`
 - `show`
+
+### Extra Operations
+- `open_file(window as Glimmer::LibUI::WindowProxy)`: returns selected file (`String`) or `nil` if cancelled
+- `save_file(window as Glimmer::LibUI::WindowProxy)`: returns selected file (`String`) or `nil` if cancelled
 
 To learn more about the [LibUI](https://github.com/kojix2/LibUI) API exposed through [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui), check out the [libui C headers](https://github.com/andlabs/libui/blob/master/ui.h)
 
