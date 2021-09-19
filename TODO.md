@@ -2,8 +2,6 @@
 
 ## Next
 
-- Support `text` property as a String not fiddle pointer
-
 ## Soon
 
 - Support `color_button` `color` property

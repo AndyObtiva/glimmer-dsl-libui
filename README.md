@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.0.7
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.0.8
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Maintainability](https://api.codeclimate.com/v1/badges/ce2853efdbecf6ebdc73/maintainability)](https://codeclimate.com/github/AndyObtiva/glimmer-dsl-libui/maintainability)
@@ -43,7 +43,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
 
 ## Table of Contents
 
-- [Glimmer DSL for LibUI 0.0.7](#-glimmer-dsl-for-libui-007)
+- [Glimmer DSL for LibUI 0.0.8](#-glimmer-dsl-for-libui-008)
   - [Glimmer GUI DSL Concepts](#glimmer-gui-dsl-concepts)
   - [Usage](#usage)
   - [API](#api)
@@ -149,7 +149,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.0.7'
+gem 'glimmer-dsl-libui', '~> 0.0.8'
 ```
 
 Add `require 'glimmer-dsl-libui'` at the top, and then `include Glimmer` into the top-level main object for testing or into an actual class for serious usage.
@@ -275,6 +275,7 @@ Control(Args) | Properties | Listeners
 - If an `on_clicked` listener was defined on `quit_menu_item` and it does not return an integer, default exit behavior is assumed (`main_window.destroy` is called followed by `LibUI.quit`, returning `0`).
 - All boolean property readers return `true` or `false` in Ruby instead of the [libui](https://github.com/andlabs/libui) original `0` or `1` in C.
 - All boolean property writers accept `true`/`false` in addition to `1`/`0` in Ruby
+- All string property readers return a `String` object in Ruby instead of the [libui](https://github.com/andlabs/libui) Fiddle pointer object.
 
 ### Original API
 

@@ -8,6 +8,7 @@
 - Support passing boolean values to C bool constructor args in addition to `1` or `0`
 - Update all examples to utilize booleans
 - Make `window` properties `title`=`'Glimmer'`, `content_size`=`150`,`150` & `has_menubar`=`1` if not specified as args in constructor
+- Have string properties (e.g. `text` and `title`) return `String` not fiddle pointer
 
 ## 0.0.7
 

@@ -74,6 +74,11 @@ module Glimmer
         stretchy
       ]
       
+      STRING_PROPERTIES = %w[
+        text
+        title
+      ]
+      
       # libui returns the contained LibUI object
       attr_reader :parent_proxy, :libui, :args, :keyword
       
@@ -153,7 +158,7 @@ module Glimmer
         if ::LibUI.respond_to?("#{libui_api_keyword}_#{method_name.to_s.sub(/\?$/, '')}") && args.empty?
           property = method_name.to_s.sub(/\?$/, '')
           value = ::LibUI.send("#{libui_api_keyword}_#{property}", @libui, *args)
-          handle_boolean_property(property, value)
+          handle_string_property(property, handle_boolean_property(property, value))
         elsif ::LibUI.respond_to?("#{libui_api_keyword}_set_#{method_name.to_s.sub(/=$/, '')}") && !args.empty?
           property = method_name.to_s.sub(/=$/, '')
           args[0] = ControlProxy.boolean_to_integer(args.first) if BOOLEAN_PROPERTIES.include?(property) && (args.first.is_a?(TrueClass) || args.first.is_a?(FalseClass))
@@ -163,7 +168,7 @@ module Glimmer
         elsif ::LibUI.respond_to?("control_#{method_name.to_s.sub(/\?$/, '')}") && args.empty?
           property = method_name.to_s.sub(/\?$/, '')
           value = ::LibUI.send("control_#{method_name.to_s.sub(/\?$/, '')}", @libui, *args)
-          handle_boolean_property(property, value)
+          handle_string_property(property, handle_boolean_property(property, value))
         elsif ::LibUI.respond_to?("control_set_#{method_name.to_s.sub(/=$/, '')}")
           property = method_name.to_s.sub(/=$/, '')
           args[0] = ControlProxy.boolean_to_integer(args.first) if BOOLEAN_PROPERTIES.include?(property) && (args.first.is_a?(TrueClass) || args.first.is_a?(FalseClass))
@@ -182,7 +187,7 @@ module Glimmer
         @append_property_hash ||= {}
         if value.nil?
           value = @append_property_hash[property]
-          handle_boolean_property(property, value)
+          handle_string_property(property, handle_boolean_property(property, value))
         else
           value = ControlProxy.boolean_to_integer(value) if BOOLEAN_PROPERTIES.include?(property) && (value.is_a?(TrueClass) || value.is_a?(FalseClass))
           @append_property_hash[property] = value
@@ -242,6 +247,10 @@ module Glimmer
       
       def handle_boolean_property(property, value)
         BOOLEAN_PROPERTIES.include?(property) ? ControlProxy.integer_to_boolean(value) : value
+      end
+      
+      def handle_string_property(property, value)
+        STRING_PROPERTIES.include?(property) ? value.to_s : value
       end
     end
   end
