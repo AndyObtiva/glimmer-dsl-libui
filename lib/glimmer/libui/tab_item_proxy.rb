@@ -54,6 +54,7 @@ module Glimmer
       end
       alias set_margined margined
       alias margined= margined
+      alias margined? margined
           
       private
       

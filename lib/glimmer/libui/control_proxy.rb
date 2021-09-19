@@ -56,6 +56,16 @@ module Glimmer
         end
       end
       
+      BOOLEAN_PROPERTIES = %w[
+        padded
+        checked
+        selected
+        enabled toplevel visible
+        read_only
+        margined
+        borderless fullscreen
+      ]
+      
       # libui returns the contained LibUI object
       attr_reader :parent_proxy, :libui, :args, :keyword
       
@@ -66,9 +76,6 @@ module Glimmer
         @block = block
         @enabled = 1
         build_control
-        if @parent_proxy.class.constants.include?(:APPEND_PROPERTIES)
-          @parent_proxy.class::APPEND_PROPERTIES
-        end
         post_add_content if @block.nil?
       end
       
@@ -112,15 +119,15 @@ module Glimmer
       
       def respond_to_libui?(method_name, *args, &block)
         ::LibUI.respond_to?("control_#{method_name}") ||
-          ::LibUI.respond_to?("#{libui_api_keyword}_#{method_name}") ||
-          ::LibUI.respond_to?("#{libui_api_keyword}_set_#{method_name}") ||
+          ::LibUI.respond_to?("#{libui_api_keyword}_#{method_name.to_s.sub(/\?$/, '')}") ||
           ::LibUI.respond_to?("#{libui_api_keyword}_set_#{method_name.to_s.sub(/=$/, '')}")
       end
       
       def method_missing(method_name, *args, &block)
         if respond_to_libui?(method_name, *args, &block)
           send_to_libui(method_name, *args, &block)
-        elsif (append_properties.include?(method_name.to_s) || append_properties.include?(method_name.to_s.sub(/=$/, '')))
+        elsif append_properties.include?(method_name.to_s) ||
+            append_properties.include?(method_name.to_s.sub(/(=|\?)$/, ''))
           append_property(method_name, *args)
         else
           super
@@ -128,8 +135,8 @@ module Glimmer
       end
       
       def send_to_libui(method_name, *args, &block)
-        if ::LibUI.respond_to?("#{libui_api_keyword}_#{method_name}") && args.empty?
-          ::LibUI.send("#{libui_api_keyword}_#{method_name}", @libui, *args)
+        if ::LibUI.respond_to?("#{libui_api_keyword}_#{method_name.to_s.sub(/\?$/, '')}") && args.empty?
+          ::LibUI.send("#{libui_api_keyword}_#{method_name.to_s.sub(/\?$/, '')}", @libui, *args)
         elsif ::LibUI.respond_to?("#{libui_api_keyword}_set_#{method_name}") && !args.empty?
           ::LibUI.send("#{libui_api_keyword}_set_#{method_name}", @libui, *args)
         elsif ::LibUI.respond_to?("#{libui_api_keyword}_set_#{method_name.to_s.sub(/=$/, '')}") && !args.empty?
@@ -138,8 +145,8 @@ module Glimmer
           ::LibUI.send("#{libui_api_keyword}_#{method_name}", @libui, *args)
         elsif ::LibUI.respond_to?("#{libui_api_keyword}_#{method_name}") && !args.empty?
           ::LibUI.send("#{libui_api_keyword}_#{method_name}", @libui, *args)
-        elsif ::LibUI.respond_to?("control_#{method_name}")
-          ::LibUI.send("control_#{method_name}", @libui, *args)
+        elsif ::LibUI.respond_to?("control_#{method_name.to_s.sub(/\?$/, '')}")
+          ::LibUI.send("control_#{method_name.to_s.sub(/\?$/, '')}", @libui, *args)
         end
       end
       
@@ -148,7 +155,7 @@ module Glimmer
       end
       
       def append_property(property, value = nil)
-        property = property.to_s.sub(/=$/, '')
+        property = property.to_s.sub(/(=|\?)$/, '')
         @append_property_hash ||= {}
         if value.nil?
           @append_property_hash[property]

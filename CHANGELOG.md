@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.8
+
+- Support `?` suffixed boolean methods (e.g. `padded?` or `margined?`)
+
 ## 0.0.7
 
 - Make `padded 1` the default in `horizontal_box` and `vertical_box` to achieve nicer looking GUI by default

@@ -3,13 +3,18 @@
 ## Next
 
 - Support passing boolean values to C bool args/properties that take 1 or 0
+  - Constructors (accept both 0/1 and boolean)
+  - Property Readers (return only boolean)
+  - Property Writers (accept both 0/1 and boolean)
+  - Update all examples to utilize booleans
+- Make `window` `has_menubar` instantiation property have the default value of `1` if not specified
 
 ## Soon
 
 - Document control-specific operations
-- Document Smart Defaults and Conventions
 - Document Style Guide
 - Support examples/font_button.rb
+- Support `control_set_parent` libui property setter via `parent=` or `set_parent`
 - Build a meta-example (example of examples)
 
 ## Future
