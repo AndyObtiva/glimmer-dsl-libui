@@ -119,6 +119,7 @@ module Glimmer
       
       def respond_to_libui?(method_name, *args, &block)
         ::LibUI.respond_to?("control_#{method_name}") ||
+          ::LibUI.respond_to?("control_set_#{method_name.to_s.sub(/=$/, '')}") ||
           ::LibUI.respond_to?("#{libui_api_keyword}_#{method_name.to_s.sub(/\?$/, '')}") ||
           ::LibUI.respond_to?("#{libui_api_keyword}_set_#{method_name.to_s.sub(/=$/, '')}")
       end
@@ -137,16 +138,16 @@ module Glimmer
       def send_to_libui(method_name, *args, &block)
         if ::LibUI.respond_to?("#{libui_api_keyword}_#{method_name.to_s.sub(/\?$/, '')}") && args.empty?
           ::LibUI.send("#{libui_api_keyword}_#{method_name.to_s.sub(/\?$/, '')}", @libui, *args)
-        elsif ::LibUI.respond_to?("#{libui_api_keyword}_set_#{method_name}") && !args.empty?
-          ::LibUI.send("#{libui_api_keyword}_set_#{method_name}", @libui, *args)
         elsif ::LibUI.respond_to?("#{libui_api_keyword}_set_#{method_name.to_s.sub(/=$/, '')}") && !args.empty?
           ::LibUI.send("#{libui_api_keyword}_set_#{method_name.to_s.sub(/=$/, '')}", @libui, *args)
-        elsif ::LibUI.respond_to?("#{libui_api_keyword}_#{method_name}") && method_name.start_with?('set_') && !args.empty?
-          ::LibUI.send("#{libui_api_keyword}_#{method_name}", @libui, *args)
         elsif ::LibUI.respond_to?("#{libui_api_keyword}_#{method_name}") && !args.empty?
           ::LibUI.send("#{libui_api_keyword}_#{method_name}", @libui, *args)
-        elsif ::LibUI.respond_to?("control_#{method_name.to_s.sub(/\?$/, '')}")
+        elsif ::LibUI.respond_to?("control_#{method_name.to_s.sub(/\?$/, '')}") && args.empty?
           ::LibUI.send("control_#{method_name.to_s.sub(/\?$/, '')}", @libui, *args)
+        elsif ::LibUI.respond_to?("control_set_#{method_name.to_s.sub(/=$/, '')}")
+          ::LibUI.send("control_set_#{method_name.to_s.sub(/=$/, '')}", @libui, *args)
+        elsif ::LibUI.respond_to?("control_#{method_name}") && !args.empty?
+          ::LibUI.send("control_#{method_name}", @libui, *args)
         end
       end
       

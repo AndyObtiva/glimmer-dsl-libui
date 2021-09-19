@@ -2,7 +2,8 @@
 
 ## 0.0.8
 
-- Support `?` suffixed boolean methods (e.g. `padded?` or `margined?`)
+- Add `?` suffixed aliases to all boolean property methods
+- Support `control_set_parent` libui property setter via `parent=` or `set_parent`
 
 ## 0.0.7
 

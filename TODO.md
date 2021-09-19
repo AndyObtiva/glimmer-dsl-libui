@@ -14,7 +14,6 @@
 - Document control-specific operations
 - Document Style Guide
 - Support examples/font_button.rb
-- Support `control_set_parent` libui property setter via `parent=` or `set_parent`
 - Build a meta-example (example of examples)
 
 ## Future
