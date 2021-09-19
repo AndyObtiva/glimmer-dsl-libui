@@ -3,8 +3,11 @@
 ## 0.0.8
 
 - Add `?` suffixed aliases to all boolean property methods
-- Make C bool properties return boolean in Ruby (not 1 or 0)
-- Support passing boolean values to C bool properties in addition to 1 or 0
+- Make C bool properties return boolean in Ruby (not `1` or `0`)
+- Support passing boolean values to C bool properties in addition to `1` or `0`
+- Support passing boolean values to C bool constructor args in addition to `1` or `0`
+- Update all examples to utilize booleans
+- Make `window` properties `title`=`'Glimmer'`, `content_size`=`150`,`150` & `has_menubar`=`1` if not specified as args in constructor
 
 ## 0.0.7
 

@@ -26,7 +26,7 @@ require 'glimmer-dsl-libui'
 
 include Glimmer
 
-window('hello world', 300, 200, 1).show
+window('hello world').show
 ```
 
 ![glimmer-dsl-libui-mac-basic-window.png](images/glimmer-dsl-libui-mac-basic-window.png)
@@ -82,8 +82,8 @@ The Glimmer GUI DSL provides object-oriented declarative hierarchical syntax for
 - Requires the minimum amount of syntax needed to describe an app's GUI
 
 The Glimmer GUI DSL follows these simple concepts in mapping from [LibUI](https://github.com/kojix2/LibUI) syntax:
-- **Control**: [LibUI](https://github.com/kojix2/LibUI) controls may be declared by lower-case underscored name (aka keyword) (e.g. `window` or `button`). Behind the scenes, they are represented by keyword methods that map to corresponding `LibUI.new_keyword` methods receiving args (e.g. `window('hello world', 300, 200, 1)`).
-- **Content/Properties/Listeners Block**: Any keyword may be optionally followed by a Ruby curly-brace multi-line-block containing nested controls (content) and/or properties (attributes) (e.g. `window('hello world', 300, 200, 1) {button('greet')}`). It optionally recives one arg representing the control (e.g. `button('greet') {|b| on_clicked { puts b.text}}`)
+- **Control**: [LibUI](https://github.com/kojix2/LibUI) controls may be declared by lower-case underscored name (aka keyword) (e.g. `window` or `button`). Behind the scenes, they are represented by keyword methods that map to corresponding `LibUI.new_keyword` methods receiving args (e.g. `window('hello world', 300, 200, true)`).
+- **Content/Properties/Listeners Block**: Any keyword may be optionally followed by a Ruby curly-brace multi-line-block containing nested controls (content) and/or properties (attributes) (e.g. `window('hello world', 300, 200, true) {button('greet')}`). It optionally receives one arg representing the control (e.g. `button('greet') {|b| on_clicked { puts b.text}}`)
 - **Property**: Control properties may be declared inside keyword blocks with lower-case underscored name followed by property value args (e.g. `title "hello world"` inside `group`). Behind the scenes, properties correspond to `control_set_property` methods.
 - **Listener**: Control listeners may be declared inside keyword blocks with listener lower-case underscored name beginning with `on_` and receiving required block handler (e.g. `on_clicked {puts 'clicked'}` inside `button`). Behind the scenes, listeners correspond to `control_on_event` methods.
 
@@ -125,7 +125,7 @@ require 'glimmer-dsl-libui'
 
 include Glimmer
 
-window('hello world', 300, 200, 1) { |w|
+window('hello world', 300, 200) { |w|
   button('Button') {
     on_clicked do
       msg_box(w, 'Information', 'You clicked the button')
@@ -163,7 +163,7 @@ class Application
   include Glimmer
   
   def launch
-    window('hello world', 300, 200, 1) {
+    window('hello world', 300, 200) {
       button('Button') {
         on_clicked do
           puts 'Button Clicked'
@@ -234,7 +234,7 @@ Control(Args) | Properties | Listeners
 `tab_item(name as String)` | `index` [read-only] (`Integer`), `margined` (Boolean), `name` [read-only] (`String`) | None
 `time_picker` | `time` (`LibUI::FFI::TM`) | `on_changed`
 `vertical_box` | `padded` (Boolean) | None
-`window(title as String, width as Integer, height as Integer, has_menubar as 1 or 0)` | `borderless` (Boolean), `content_size` (width `Numeric`, height `Numeric`), `fullscreen` (Boolean), `margined` (Boolean), `title` (`String`) | `on_closing`, `on_content_size_changed`
+`window(title as String, width as Integer, height as Integer, has_menubar as Boolean)` | `borderless` (Boolean), `content_size` (width `Numeric`, height `Numeric`), `fullscreen` (Boolean), `margined` (Boolean), `title` (`String`) | `on_closing`, `on_content_size_changed`
 
 ### Common Control Properties
 - `enabled` (Boolean)
@@ -268,6 +268,7 @@ Control(Args) | Properties | Listeners
 - `horizontal_box` and `vertical_box` controls have `padded` as `1` upon instantiation to ensure more user-friendly GUI by default
 - `group` controls have `margined` as `1` upon instantiation to ensure more user-friendly GUI by default
 - All controls nested under a `horizontal_box` or `vertical_box` have `stretchy` property (passed to `box_append` method) as `1` by default (filling maximum space)
+- `window` constructor args can be left off and have the following defaults when unspecified: `title` as `'Glimmer'`, `width` as `150`, `height` as `150`, and `has_menubar` as `true`)
 - `window` has an `on_closing` listener by default that quits application upon hitting the close button (can be overridden with a manual `on_closing` implementation that returns integer `0` for success)
 - `quit_menu_item` has an `on_clicked` listener by default that quits application upon selecting the quit menu item (can be overridden with a manual `on_clicked` implementation that returns integer `0` for success)
 - If an `on_closing` listener was defined on `window` and it does not return an integer, default exit behavior is assumed (`window.destroy` is called followed by `LibUI.quit`, returning `0`).
@@ -351,7 +352,7 @@ require 'glimmer-dsl-libui'
 
 include Glimmer
 
-window('hello world', 300, 200, 1) {
+window('hello world', 300, 200, true) {
   on_closing do
     puts 'Bye Bye'
   end
@@ -422,12 +423,29 @@ require 'glimmer-dsl-libui'
 
 include Glimmer
 
-window('hello world', 300, 200, 1) { |w|
+window('hello world', 300, 200) { |w|
   button('Button') {
     on_clicked do
       msg_box(w, 'Information', 'You clicked the button')
     end
   }
+  
+  on_closing do
+    puts 'Bye Bye'
+  end
+}.show
+```
+
+[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 2:
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+window { # args can alternatively be set via properties with 4th arg has_menubar=true by default
+  title 'hello world'
+  content_size 300, 200
   
   on_closing do
     puts 'Bye Bye'
@@ -509,7 +527,7 @@ require 'glimmer-dsl-libui'
 
 include Glimmer
 
-window('Basic Entry', 300, 50, 1) { |w|
+window('Basic Entry', 300, 50) { |w|
   horizontal_box {
     e = entry {
       # stretchy true # Smart default option for appending to horizontal_box
@@ -595,7 +613,7 @@ require 'glimmer-dsl-libui'
 
 include Glimmer
 
-window('Notepad', 500, 300, 1) {
+window('Notepad', 500, 300) {
   on_closing do
     puts 'Bye Bye'
   end
@@ -796,7 +814,7 @@ class TinyMidiPlayer
         end
       }
     }
-    @main_window = window('Tiny Midi Player', 200, 50, 1) {
+    @main_window = window('Tiny Midi Player', 200, 50) {
       horizontal_box {
         vertical_box {
           stretchy false
@@ -1094,7 +1112,7 @@ menu('Help') {
   about_menu_item # Can optionally contain an on_clicked listener
 }
 
-MAIN_WINDOW = window('Control Gallery', 600, 500, 1) {
+MAIN_WINDOW = window('Control Gallery', 600, 500) {
   margined true
   
   on_closing do

@@ -4,7 +4,7 @@ require 'glimmer-dsl-libui'
 
 include Glimmer
 
-window('Notepad', 500, 300, 1) {
+window('Notepad', 500, 300) {
   on_closing do
     puts 'Bye Bye'
   end

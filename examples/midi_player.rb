@@ -56,7 +56,7 @@ class TinyMidiPlayer
         end
       }
     }
-    @main_window = window('Tiny Midi Player', 200, 50, 1) {
+    @main_window = window('Tiny Midi Player', 200, 50) {
       horizontal_box {
         vertical_box {
           stretchy false

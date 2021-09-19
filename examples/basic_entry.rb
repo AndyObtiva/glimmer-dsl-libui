@@ -4,7 +4,7 @@ require 'glimmer-dsl-libui'
 
 include Glimmer
 
-window('Basic Entry', 300, 50, 1) { |w|
+window('Basic Entry', 300, 50) { |w|
   horizontal_box {
     e = entry {
       # stretchy true # Smart default option for appending to horizontal_box

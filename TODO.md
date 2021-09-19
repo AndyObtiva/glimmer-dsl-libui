@@ -2,9 +2,6 @@
 
 ## Next
 
-- Support passing boolean values to C bool constructor args in addition to 1 or 0
-- Update all examples to utilize booleans
-- Make `window` `has_menubar` instantiation property have the default value of `1` if not specified
 - Support `text` property as a String not fiddle pointer
 
 ## Soon

@@ -42,7 +42,7 @@ menu('Help') {
   about_menu_item # Can optionally contain an on_clicked listener
 }
 
-MAIN_WINDOW = window('Control Gallery', 600, 500, 1) {
+MAIN_WINDOW = window('Control Gallery', 600, 500) {
   margined true
   
   on_closing do

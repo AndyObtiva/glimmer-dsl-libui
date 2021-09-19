@@ -27,6 +27,11 @@ module Glimmer
     #
     # Follows the Proxy Design Pattern
     class WindowProxy < ControlProxy
+      DEFAULT_TITLE = 'Glimmer'
+      DEFAULT_WIDTH = 150
+      DEFAULT_HEIGHT = 150
+      DEFAULT_HAS_MENUBAR = 1
+      
       def post_initialize_child(child)
         ::LibUI.window_set_child(@libui, child.libui)
       end
@@ -59,7 +64,14 @@ module Glimmer
       private
       
       def build_control
-        super.tap do
+        construction_args = @args.dup
+        construction_args[0] = DEFAULT_TITLE if construction_args.size == 0
+        construction_args[1] = DEFAULT_WIDTH if construction_args.size == 1
+        construction_args[2] = DEFAULT_HEIGHT if construction_args.size == 2
+        construction_args[3] = DEFAULT_HAS_MENUBAR if construction_args.size == 3
+        construction_args[3] = ControlProxy.boolean_to_integer(construction_args[3]) if construction_args.size == 4 && (construction_args[3].is_a?(TrueClass) || construction_args[3].is_a?(FalseClass))
+        @libui = ::LibUI.send("new_window", *construction_args)
+        @libui.tap do
           handle_listener('on_closing') do
             destroy
             ::LibUI.quit
