@@ -19,25 +19,14 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'glimmer/libui/control_proxy'
+require 'glimmer/libui/date_time_picker_proxy'
 
 module Glimmer
   module LibUI
-    # Proxy for LibUI group objects
+    # Proxy for LibUI time picker objects
     #
     # Follows the Proxy Design Pattern
-    class GroupProxy < ControlProxy
-      def post_initialize_child(child)
-        ::LibUI.group_set_child(@libui, child.libui)
-      end
-      
-      private
-      
-      def build_control
-        super.tap do
-          self.margined = true
-        end
-      end
+    class TimePickerProxy < DateTimePickerProxy
     end
   end
 end

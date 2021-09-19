@@ -3,7 +3,8 @@
 ## 0.0.8
 
 - Add `?` suffixed aliases to all boolean property methods
-- Support boolean property readers (return only boolean not 1 or 0)
+- Make C bool properties return boolean in Ruby (not 1 or 0)
+- Support passing boolean values to C bool properties in addition to 1 or 0
 
 ## 0.0.7
 

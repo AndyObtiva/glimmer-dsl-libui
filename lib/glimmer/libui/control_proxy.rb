@@ -82,7 +82,7 @@ module Glimmer
         @parent_proxy = parent
         @args = args
         @block = block
-        @enabled = 1
+        @enabled = true
         build_control
         post_add_content if @block.nil?
       end
@@ -155,7 +155,9 @@ module Glimmer
           value = ::LibUI.send("#{libui_api_keyword}_#{property}", @libui, *args)
           handle_boolean_property(property, value)
         elsif ::LibUI.respond_to?("#{libui_api_keyword}_set_#{method_name.to_s.sub(/=$/, '')}") && !args.empty?
-          ::LibUI.send("#{libui_api_keyword}_set_#{method_name.to_s.sub(/=$/, '')}", @libui, *args)
+          property = method_name.to_s.sub(/=$/, '')
+          args[0] = ControlProxy.boolean_to_integer(args.first) if BOOLEAN_PROPERTIES.include?(property) && (args.first.is_a?(TrueClass) || args.first.is_a?(FalseClass))
+          ::LibUI.send("#{libui_api_keyword}_set_#{property}", @libui, *args)
         elsif ::LibUI.respond_to?("#{libui_api_keyword}_#{method_name}") && !args.empty?
           ::LibUI.send("#{libui_api_keyword}_#{method_name}", @libui, *args)
         elsif ::LibUI.respond_to?("control_#{method_name.to_s.sub(/\?$/, '')}") && args.empty?
@@ -163,6 +165,8 @@ module Glimmer
           value = ::LibUI.send("control_#{method_name.to_s.sub(/\?$/, '')}", @libui, *args)
           handle_boolean_property(property, value)
         elsif ::LibUI.respond_to?("control_set_#{method_name.to_s.sub(/=$/, '')}")
+          property = method_name.to_s.sub(/=$/, '')
+          args[0] = ControlProxy.boolean_to_integer(args.first) if BOOLEAN_PROPERTIES.include?(property) && (args.first.is_a?(TrueClass) || args.first.is_a?(FalseClass))
           ::LibUI.send("control_set_#{method_name.to_s.sub(/=$/, '')}", @libui, *args)
         elsif ::LibUI.respond_to?("control_#{method_name}") && !args.empty?
           ::LibUI.send("control_#{method_name}", @libui, *args)
@@ -180,6 +184,7 @@ module Glimmer
           value = @append_property_hash[property]
           handle_boolean_property(property, value)
         else
+          value = ControlProxy.boolean_to_integer(value) if BOOLEAN_PROPERTIES.include?(property) && (value.is_a?(TrueClass) || value.is_a?(FalseClass))
           @append_property_hash[property] = value
         end
       end
@@ -192,7 +197,7 @@ module Glimmer
         if value.nil?
           @enabled
         elsif value != @enabled
-          if value == 1
+          if value == 1 || value
             send_to_libui('enable')
           else
             send_to_libui('disable')
@@ -208,7 +213,7 @@ module Glimmer
         if value.nil?
           current_value
         elsif value != current_value
-          if value == 1
+          if value == 1 || value
             send_to_libui('show')
           else
             send_to_libui('hide')

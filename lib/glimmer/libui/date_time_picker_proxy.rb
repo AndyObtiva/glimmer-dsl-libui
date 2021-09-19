@@ -23,20 +23,12 @@ require 'glimmer/libui/control_proxy'
 
 module Glimmer
   module LibUI
-    # Proxy for LibUI group objects
+    # Proxy for LibUI date time picker objects
     #
     # Follows the Proxy Design Pattern
-    class GroupProxy < ControlProxy
-      def post_initialize_child(child)
-        ::LibUI.group_set_child(@libui, child.libui)
-      end
-      
-      private
-      
-      def build_control
-        super.tap do
-          self.margined = true
-        end
+    class DateTimePickerProxy < ControlProxy
+      def libui_api_keyword
+        'date_time_picker'
       end
     end
   end

@@ -32,7 +32,7 @@ menu('Edit') {
   check_menu_item('Checkable Item_')
   separator_menu_item
   menu_item('Disabled Item_') {
-    enabled 0
+    enabled false
   }
 }
 
@@ -43,7 +43,7 @@ menu('Help') {
 }
 
 MAIN_WINDOW = window('Control Gallery', 600, 500, 1) {
-  margined 1
+  margined true
   
   on_closing do
     puts 'Bye Bye'
@@ -54,7 +54,7 @@ MAIN_WINDOW = window('Control Gallery', 600, 500, 1) {
       group('Basic Controls') {
         vertical_box {
           button('Button') {
-            stretchy 0
+            stretchy false
 
             on_clicked do
               msg_box(MAIN_WINDOW, 'Information', 'You clicked the button')
@@ -62,38 +62,38 @@ MAIN_WINDOW = window('Control Gallery', 600, 500, 1) {
           }
 
           checkbox('Checkbox') {
-            stretchy 0
+            stretchy false
 
             on_toggled do |c|
-              checked = c.checked == 1
+              checked = c.checked?
               MAIN_WINDOW.title = "Checkbox is #{checked}"
               c.text = "I am the checkbox (#{checked})"
             end
           }
 
-          label('Label') { stretchy 0 }
+          label('Label') { stretchy false }
 
-          horizontal_separator { stretchy 0 }
+          horizontal_separator { stretchy false }
 
-          date_picker { stretchy 0 }
+          date_picker { stretchy false }
 
-          time_picker { stretchy 0 }
+          time_picker { stretchy false }
 
-          date_time_picker { stretchy 0 }
+          date_time_picker { stretchy false }
 
-          font_button { stretchy 0 }
+          font_button { stretchy false }
 
-          color_button { stretchy 0 }
+          color_button { stretchy false }
         }
       }
 
       vertical_box {
         group('Numbers') {
-          stretchy 0
+          stretchy false
 
           vertical_box {
             spinbox(0, 100) {
-              stretchy 0
+              stretchy false
               value 42
 
               on_changed do |s|
@@ -102,7 +102,7 @@ MAIN_WINDOW = window('Control Gallery', 600, 500, 1) {
             }
 
             slider(0, 100) {
-              stretchy 0
+              stretchy false
 
               on_changed do |s|
                 v = s.value
@@ -111,16 +111,16 @@ MAIN_WINDOW = window('Control Gallery', 600, 500, 1) {
               end
             }
 
-            @progress_bar = progress_bar { stretchy 0 }
+            @progress_bar = progress_bar { stretchy false }
           }
         }
 
         group('Lists') {
-          stretchy 0
+          stretchy false
 
           vertical_box {
             combobox {
-              stretchy 0
+              stretchy false
               items 'combobox Item 1', 'combobox Item 2', 'combobox Item 3' # also accepts a single array argument
 
               on_selected do |c|
@@ -129,7 +129,7 @@ MAIN_WINDOW = window('Control Gallery', 600, 500, 1) {
             }
 
             editable_combobox {
-              stretchy 0
+              stretchy false
               items 'Editable Item 1', 'Editable Item 2', 'Editable Item 3' # also accepts a single array argument
             }
 

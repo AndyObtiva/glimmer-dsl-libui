@@ -27,7 +27,7 @@ module Glimmer
       APPEND_PROPERTIES = %w[stretchy]
       
       def post_initialize_child(child)
-        child.stretchy = 1 if child.stretchy.nil?
+        child.stretchy = true if child.stretchy.nil?
         ::LibUI.box_append(@libui, child.libui, ControlProxy.boolean_to_integer(child.stretchy))
       end
       
@@ -39,7 +39,7 @@ module Glimmer
       
       def build_control
         super.tap do
-          self.padded = 1
+          self.padded = true
         end
       end
     end

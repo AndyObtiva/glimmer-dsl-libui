@@ -206,44 +206,44 @@ Control(Args) | Properties | Listeners
 ------------- | ---------- | ---------
 `about_menu_item` | None | `on_clicked`
 `button(text as String)` | `text` (`String`) | `on_clicked`
-`checkbox(text as String)` | `checked` (`1` or `0`), `text` (`String`) | `on_toggled`
-`combobox` | `items` (`Array` of `String`), `selected` (`1` or `0`) | `on_selected`
-`color_button` | `color` (r `Numeric`, g `Numeric`, b `Numeric`, a `Numeric`), `selected` (`1` or `0`) | `on_selected`
-`date_picker` | None | None
+`checkbox(text as String)` | `checked` (Boolean), `text` (`String`) | `on_toggled`
+`combobox` | `items` (`Array` of `String`), `selected` (`Integer`) | `on_selected`
+`color_button` | `color` (r `Numeric`, g `Numeric`, b `Numeric`, a `Numeric`) | `on_changed`
+`date_picker` | `time` (`LibUI::FFI::TM`) | `on_changed`
 `date_time_picker` | `time` (`LibUI::FFI::TM`) | `on_changed`
 `editable_combobox` | `items` (`Array` of `String`), `text` (`String`) | `on_changed`
-`entry` | `read_only` (`1` or `0`), `text` (`String`) | `on_changed`
+`entry` | `read_only` (Boolean), `text` (`String`) | `on_changed`
 `font_button` | `font` (`LibUI::FFI::FontDescriptor`) | `on_changed`
-`group(text as String)` | `margined` (`1` or `0`), `title` (`String`) | None
-`horizontal_box` | `padded` (`1` or `0`) | None
+`group(text as String)` | `margined` (Boolean), `title` (`String`) | None
+`horizontal_box` | `padded` (Boolean) | None
 `horizontal_separator` | None | None
 `label(text as String)` | `text` (`String`) | None
 `menu(text as String)` | None | None
-`menu_item(text as String)` | `checked` (`1` or `0`) | `on_clicked`
-`multiline_entry` | `read_only` (`1` or `0`), `text` (`String`) | `on_changed`
+`menu_item(text as String)` | `checked` (Boolean) | `on_clicked`
+`multiline_entry` | `read_only` (Boolean), `text` (`String`) | `on_changed`
 `msg_box(window as Glimmer::LibUI::WindowProxy, title as String, description as String)` | None | None
 `msg_box_error(window as Glimmer::LibUI::WindowProxy, title as String, description as String)` | None | None
-`non_wrapping_multiline_entry` | `read_only` (`1` or `0`), `text` (`String`) | `on_changed`
+`non_wrapping_multiline_entry` | `read_only` (Boolean), `text` (`String`) | `on_changed`
 `preferences_menu_item` | None | `on_clicked`
 `progress_bar` | `value` (`Numeric`) | None
 `quit_menu_item` | None | `on_clicked`
-`radio_buttons` | `selected` (`1` or `0`) | `on_selected`
+`radio_buttons` | `selected` (`Integer`) | `on_selected`
 `slider(min as Numeric, max as Numeric)` | `value` (`Numeric`) | `on_changed`
 `spinbox(min as Numeric, max as Numeric)` | `value` (`Numeric`) | `on_changed`
-`tab` | `margined` (`1` or `0`), `num_pages` (`Integer`) | None
-`tab_item(name as String)` | `index` [read-only] (`Integer`), `margined` (`1` or `0`), `name` [read-only] (`String`) | None
-`time_picker` | None | None
-`vertical_box` | `padded` (`1` or `0`) | None
-`window(title as String, width as Integer, height as Integer, has_menubar as 1 or 0)` | `borderless` (`1` or `0`), `content_size` (width `Numeric`, height `Numeric`), `fullscreen` (`1` or `0`), `margined` (`1` or `0`), `title` (`String`) | `on_closing`, `on_content_size_changed`
+`tab` | `margined` (Boolean), `num_pages` (`Integer`) | None
+`tab_item(name as String)` | `index` [read-only] (`Integer`), `margined` (Boolean), `name` [read-only] (`String`) | None
+`time_picker` | `time` (`LibUI::FFI::TM`) | `on_changed`
+`vertical_box` | `padded` (Boolean) | None
+`window(title as String, width as Integer, height as Integer, has_menubar as 1 or 0)` | `borderless` (Boolean), `content_size` (width `Numeric`, height `Numeric`), `fullscreen` (Boolean), `margined` (Boolean), `title` (`String`) | `on_closing`, `on_content_size_changed`
 
 ### Common Control Properties
-- `enabled` (`1` or `0`)
+- `enabled` (Boolean)
 - `libui` (`Fiddle::Pointer`): returns wrapped [LibUI](https://github.com/kojix2/LibUI) object
 - `parent_proxy` (`Glimmer::LibUI::ControlProxy` or subclass)
 - `parent` (`Fiddle::Pointer`)
-- `toplevel` [read-only] (`1` or `0`)
-- `visible` (`1` or `0`)
-- `stretchy` [dsl-only] (`1` or `0`): available in [Glimmer GUI DSL](#glimmer-gui-dsl-concepts) when nested under `horizontal_box` or `vertical_box`
+- `toplevel` [read-only] (Boolean)
+- `visible` (Boolean)
+- `stretchy` [dsl-only] (Boolean): available in [Glimmer GUI DSL](#glimmer-gui-dsl-concepts) when nested under `horizontal_box` or `vertical_box`
 
 ### Common Control Operations
 - `destroy`
@@ -272,6 +272,8 @@ Control(Args) | Properties | Listeners
 - `quit_menu_item` has an `on_clicked` listener by default that quits application upon selecting the quit menu item (can be overridden with a manual `on_clicked` implementation that returns integer `0` for success)
 - If an `on_closing` listener was defined on `window` and it does not return an integer, default exit behavior is assumed (`window.destroy` is called followed by `LibUI.quit`, returning `0`).
 - If an `on_clicked` listener was defined on `quit_menu_item` and it does not return an integer, default exit behavior is assumed (`main_window.destroy` is called followed by `LibUI.quit`, returning `0`).
+- All boolean property readers return `true` or `false` in Ruby instead of the [libui](https://github.com/andlabs/libui) original `0` or `1` in C.
+- All boolean property writers accept `true`/`false` in addition to `1`/`0` in Ruby
 
 ### Original API
 
@@ -510,7 +512,7 @@ include Glimmer
 window('Basic Entry', 300, 50, 1) { |w|
   horizontal_box {
     e = entry {
-      # stretchy 1 # Smart default option for appending to horizontal_box
+      # stretchy true # Smart default option for appending to horizontal_box
     
       on_changed do
         puts e.text
@@ -519,7 +521,7 @@ window('Basic Entry', 300, 50, 1) { |w|
     }
     
     button('Button') {
-      stretchy 0
+      stretchy false
       
       on_clicked do
         text = e.text
@@ -797,7 +799,7 @@ class TinyMidiPlayer
     @main_window = window('Tiny Midi Player', 200, 50, 1) {
       horizontal_box {
         vertical_box {
-          stretchy 0
+          stretchy false
           
           button('▶') {
             on_clicked do
@@ -1082,7 +1084,7 @@ menu('Edit') {
   check_menu_item('Checkable Item_')
   separator_menu_item
   menu_item('Disabled Item_') {
-    enabled 0
+    enabled false
   }
 }
 
@@ -1093,7 +1095,7 @@ menu('Help') {
 }
 
 MAIN_WINDOW = window('Control Gallery', 600, 500, 1) {
-  margined 1
+  margined true
   
   on_closing do
     puts 'Bye Bye'
@@ -1104,7 +1106,7 @@ MAIN_WINDOW = window('Control Gallery', 600, 500, 1) {
       group('Basic Controls') {
         vertical_box {
           button('Button') {
-            stretchy 0
+            stretchy false
 
             on_clicked do
               msg_box(MAIN_WINDOW, 'Information', 'You clicked the button')
@@ -1112,7 +1114,7 @@ MAIN_WINDOW = window('Control Gallery', 600, 500, 1) {
           }
 
           checkbox('Checkbox') {
-            stretchy 0
+            stretchy false
 
             on_toggled do |c|
               checked = c.checked == 1
@@ -1121,29 +1123,29 @@ MAIN_WINDOW = window('Control Gallery', 600, 500, 1) {
             end
           }
 
-          label('Label') { stretchy 0 }
+          label('Label') { stretchy false }
 
-          horizontal_separator { stretchy 0 }
+          horizontal_separator { stretchy false }
 
-          date_picker { stretchy 0 }
+          date_picker { stretchy false }
 
-          time_picker { stretchy 0 }
+          time_picker { stretchy false }
 
-          date_time_picker { stretchy 0 }
+          date_time_picker { stretchy false }
 
-          font_button { stretchy 0 }
+          font_button { stretchy false }
 
-          color_button { stretchy 0 }
+          color_button { stretchy false }
         }
       }
 
       vertical_box {
         group('Numbers') {
-          stretchy 0
+          stretchy false
 
           vertical_box {
             spinbox(0, 100) {
-              stretchy 0
+              stretchy false
               value 42
 
               on_changed do |s|
@@ -1152,7 +1154,7 @@ MAIN_WINDOW = window('Control Gallery', 600, 500, 1) {
             }
 
             slider(0, 100) {
-              stretchy 0
+              stretchy false
 
               on_changed do |s|
                 v = s.value
@@ -1161,16 +1163,16 @@ MAIN_WINDOW = window('Control Gallery', 600, 500, 1) {
               end
             }
 
-            @progress_bar = progress_bar { stretchy 0 }
+            @progress_bar = progress_bar { stretchy false }
           }
         }
 
         group('Lists') {
-          stretchy 0
+          stretchy false
 
           vertical_box {
             combobox {
-              stretchy 0
+              stretchy false
               items 'combobox Item 1', 'combobox Item 2', 'combobox Item 3' # also accepts a single array argument
 
               on_selected do |c|
@@ -1179,7 +1181,7 @@ MAIN_WINDOW = window('Control Gallery', 600, 500, 1) {
             }
 
             editable_combobox {
-              stretchy 0
+              stretchy false
               items 'Editable Item 1', 'Editable Item 2', 'Editable Item 3' # also accepts a single array argument
             }
 
