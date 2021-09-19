@@ -8,6 +8,7 @@
   - Property Writers (accept both 0/1 and boolean)
   - Update all examples to utilize booleans
 - Make `window` `has_menubar` instantiation property have the default value of `1` if not specified
+- Support `text` property as a String not fiddle pointer
 
 ## Soon
 

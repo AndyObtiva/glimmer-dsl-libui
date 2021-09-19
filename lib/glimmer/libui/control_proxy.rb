@@ -113,14 +113,19 @@ module Glimmer
       
       def respond_to?(method_name, *args, &block)
         respond_to_libui?(method_name, *args, &block) ||
-          (append_properties.include?(method_name.to_s) || append_properties.include?(method_name.to_s.sub(/=$/, ''))) ||
+          (
+            append_properties.include?(method_name.to_s) ||
+            (append_properties.include?(method_name.to_s.sub(/\?$/, '')) && BOOLEAN_PROPERTIES.include?(method_name.to_s.sub(/\?$/, ''))) ||
+            append_properties.include?(method_name.to_s.sub(/=$/, ''))
+          ) ||
           super(method_name, true)
       end
       
       def respond_to_libui?(method_name, *args, &block)
         ::LibUI.respond_to?("control_#{method_name}") ||
           ::LibUI.respond_to?("control_set_#{method_name.to_s.sub(/=$/, '')}") ||
-          ::LibUI.respond_to?("#{libui_api_keyword}_#{method_name.to_s.sub(/\?$/, '')}") ||
+          ::LibUI.respond_to?("#{libui_api_keyword}_#{method_name}") ||
+          (::LibUI.respond_to?("#{libui_api_keyword}_#{method_name.to_s.sub(/\?$/, '')}") && BOOLEAN_PROPERTIES.include?(method_name.to_s.sub(/\?$/, '')) ) ||
           ::LibUI.respond_to?("#{libui_api_keyword}_set_#{method_name.to_s.sub(/=$/, '')}")
       end
       
