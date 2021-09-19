@@ -4,7 +4,7 @@ require 'glimmer-dsl-libui'
 
 include Glimmer
 
-window { # args can alternatively be set via properties with 4th arg has_menubar=true by default
+window { # first 3 args can be set via properties with 4th arg has_menubar=true by default
   title 'hello world'
   content_size 300, 200
   

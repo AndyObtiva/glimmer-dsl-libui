@@ -265,9 +265,9 @@ Control(Args) | Properties | Listeners
 
 ### Smart Defaults and Conventions
 
-- `horizontal_box` and `vertical_box` controls have `padded` as `1` upon instantiation to ensure more user-friendly GUI by default
-- `group` controls have `margined` as `1` upon instantiation to ensure more user-friendly GUI by default
-- All controls nested under a `horizontal_box` or `vertical_box` have `stretchy` property (passed to `box_append` method) as `1` by default (filling maximum space)
+- `horizontal_box` and `vertical_box` controls have `padded` as `true` upon instantiation to ensure more user-friendly GUI by default
+- `group` controls have `margined` as `true` upon instantiation to ensure more user-friendly GUI by default
+- All controls nested under a `horizontal_box` or `vertical_box` have `stretchy` property (passed to `box_append` method) as `true` by default (filling maximum space)
 - `window` constructor args can be left off and have the following defaults when unspecified: `title` as `'Glimmer'`, `width` as `150`, `height` as `150`, and `has_menubar` as `true`)
 - `window` has an `on_closing` listener by default that quits application upon hitting the close button (can be overridden with a manual `on_closing` implementation that returns integer `0` for success)
 - `quit_menu_item` has an `on_clicked` listener by default that quits application upon selecting the quit menu item (can be overridden with a manual `on_clicked` implementation that returns integer `0` for success)
@@ -424,7 +424,7 @@ require 'glimmer-dsl-libui'
 
 include Glimmer
 
-window('hello world', 300, 200) { |w|
+window('hello world', 300, 200, true) { |w|
   button('Button') {
     on_clicked do
       msg_box(w, 'Information', 'You clicked the button')
@@ -444,7 +444,7 @@ require 'glimmer-dsl-libui'
 
 include Glimmer
 
-window { # args can alternatively be set via properties with 4th arg has_menubar=true by default
+window { # first 3 args can be set via properties with 4th arg has_menubar=true by default
   title 'hello world'
   content_size 300, 200
   
