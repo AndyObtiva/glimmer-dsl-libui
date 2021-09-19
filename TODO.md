@@ -2,11 +2,9 @@
 
 ## Next
 
-- Support passing boolean values to C bool args/properties that take 1 or 0
-  - Constructors (accept both 0/1 and boolean)
-  - Property Readers (return only boolean)
-  - Property Writers (accept both 0/1 and boolean)
-  - Update all examples to utilize booleans
+- Support passing boolean values to C bool constructor args in addition to 1 or 0
+- Support passing boolean values to C bool properties in addition to 1 or 0
+- Update all examples to utilize booleans
 - Make `window` `has_menubar` instantiation property have the default value of `1` if not specified
 - Support `text` property as a String not fiddle pointer
 

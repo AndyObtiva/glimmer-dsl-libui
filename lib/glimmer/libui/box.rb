@@ -19,6 +19,8 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+require 'glimmer/libui/control_proxy'
+
 module Glimmer
   module LibUI
     module Box
@@ -26,7 +28,7 @@ module Glimmer
       
       def post_initialize_child(child)
         child.stretchy = 1 if child.stretchy.nil?
-        ::LibUI.box_append(@libui, child.libui, child.stretchy)
+        ::LibUI.box_append(@libui, child.libui, ControlProxy.boolean_to_integer(child.stretchy))
       end
       
       def libui_api_keyword

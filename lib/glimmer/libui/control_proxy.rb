@@ -54,16 +54,24 @@ module Glimmer
         def main_window_proxy
           all_control_proxies.find {|c| c.is_a?(WindowProxy)}
         end
+        
+        def integer_to_boolean(int)
+          int.nil? ? nil : int == 1
+        end
+        
+        def boolean_to_integer(bool)
+          bool.nil? ? nil : (bool ? 1 : 0)
+        end
       end
       
       BOOLEAN_PROPERTIES = %w[
         padded
         checked
-        selected
         enabled toplevel visible
         read_only
         margined
         borderless fullscreen
+        stretchy
       ]
       
       # libui returns the contained LibUI object
@@ -123,6 +131,7 @@ module Glimmer
       
       def respond_to_libui?(method_name, *args, &block)
         ::LibUI.respond_to?("control_#{method_name}") ||
+          (::LibUI.respond_to?("control_#{method_name.to_s.sub(/\?$/, '')}") && BOOLEAN_PROPERTIES.include?(method_name.to_s.sub(/\?$/, '')) ) ||
           ::LibUI.respond_to?("control_set_#{method_name.to_s.sub(/=$/, '')}") ||
           ::LibUI.respond_to?("#{libui_api_keyword}_#{method_name}") ||
           (::LibUI.respond_to?("#{libui_api_keyword}_#{method_name.to_s.sub(/\?$/, '')}") && BOOLEAN_PROPERTIES.include?(method_name.to_s.sub(/\?$/, '')) ) ||
@@ -142,13 +151,17 @@ module Glimmer
       
       def send_to_libui(method_name, *args, &block)
         if ::LibUI.respond_to?("#{libui_api_keyword}_#{method_name.to_s.sub(/\?$/, '')}") && args.empty?
-          ::LibUI.send("#{libui_api_keyword}_#{method_name.to_s.sub(/\?$/, '')}", @libui, *args)
+          property = method_name.to_s.sub(/\?$/, '')
+          value = ::LibUI.send("#{libui_api_keyword}_#{property}", @libui, *args)
+          handle_boolean_property(property, value)
         elsif ::LibUI.respond_to?("#{libui_api_keyword}_set_#{method_name.to_s.sub(/=$/, '')}") && !args.empty?
           ::LibUI.send("#{libui_api_keyword}_set_#{method_name.to_s.sub(/=$/, '')}", @libui, *args)
         elsif ::LibUI.respond_to?("#{libui_api_keyword}_#{method_name}") && !args.empty?
           ::LibUI.send("#{libui_api_keyword}_#{method_name}", @libui, *args)
         elsif ::LibUI.respond_to?("control_#{method_name.to_s.sub(/\?$/, '')}") && args.empty?
-          ::LibUI.send("control_#{method_name.to_s.sub(/\?$/, '')}", @libui, *args)
+          property = method_name.to_s.sub(/\?$/, '')
+          value = ::LibUI.send("control_#{method_name.to_s.sub(/\?$/, '')}", @libui, *args)
+          handle_boolean_property(property, value)
         elsif ::LibUI.respond_to?("control_set_#{method_name.to_s.sub(/=$/, '')}")
           ::LibUI.send("control_set_#{method_name.to_s.sub(/=$/, '')}", @libui, *args)
         elsif ::LibUI.respond_to?("control_#{method_name}") && !args.empty?
@@ -164,7 +177,8 @@ module Glimmer
         property = property.to_s.sub(/(=|\?)$/, '')
         @append_property_hash ||= {}
         if value.nil?
-          @append_property_hash[property]
+          value = @append_property_hash[property]
+          handle_boolean_property(property, value)
         else
           @append_property_hash[property] = value
         end
@@ -209,7 +223,7 @@ module Glimmer
         send_to_libui('destroy')
         self.class.all_control_proxies.delete(self)
       end
-      
+            
       private
       
       def build_control
@@ -219,6 +233,10 @@ module Glimmer
           @args[0] = @args.first.libui if @args.first.is_a?(ControlProxy)
           ::LibUI.send(@keyword, *@args)
         end
+      end
+      
+      def handle_boolean_property(property, value)
+        BOOLEAN_PROPERTIES.include?(property) ? ControlProxy.integer_to_boolean(value) : value
       end
     end
   end

@@ -3,6 +3,7 @@
 ## 0.0.8
 
 - Add `?` suffixed aliases to all boolean property methods
+- Support boolean property readers (return only boolean not 1 or 0)
 
 ## 0.0.7
 
