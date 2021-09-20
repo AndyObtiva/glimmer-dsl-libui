@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.9
+
+- Build a meta-example (example of examples)
+
 ## 0.0.8
 
 - Add `?` suffixed aliases to all boolean property methods

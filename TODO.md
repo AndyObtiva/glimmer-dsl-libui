@@ -2,8 +2,6 @@
 
 ## Next
 
-- Build a meta-example (example of examples)
-
 ## Soon
 
 - Document control-specific operations

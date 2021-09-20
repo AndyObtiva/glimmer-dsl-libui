@@ -16,20 +16,38 @@ class MetaExample
     @examples
   end
   
+  def file_path_for(example)
+    File.join(File.expand_path('.', __dir__), "#{example.underscore}.rb")
+  end
+  
   def launch
-    window('Meta-Example', 300) { |w|
+    window('Meta-Example', 700, 500) { |w|
       margined true
       
-      vertical_box {
-        rbs = radio_buttons {
-          items examples
+      horizontal_box {
+        vertical_box {
+          @rbs = radio_buttons {
+            stretchy false
+            items examples
+            selected 0
+            
+            on_selected do
+              @nwme.text = File.read(file_path_for(@examples[@rbs.selected]))
+            end
+          }
+          button('Launch') {
+            stretchy false
+            
+            on_clicked do
+              system "ruby -r puts_debuggerer -r #{File.expand_path('../lib/glimmer-dsl-libui', __dir__)} #{file_path_for(@examples[@rbs.selected])}"
+            end
+          }
         }
-        button('Launch') {
-          stretchy false
-          
-          on_clicked do
-            system "ruby -r puts_debuggerer -r #{File.expand_path('../lib/glimmer-dsl-libui', __dir__)} #{File.join(File.expand_path('.', __dir__), "#{@examples[rbs.selected].underscore}.rb")}"
-          end
+        vertical_box {
+          @nwme = non_wrapping_multiline_entry {
+            read_only true
+            text File.read(file_path_for(@examples[@rbs.selected]))
+          }
         }
       }
     }.show

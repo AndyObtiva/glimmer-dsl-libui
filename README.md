@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.0.8
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.0.9
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Maintainability](https://api.codeclimate.com/v1/badges/ce2853efdbecf6ebdc73/maintainability)](https://codeclimate.com/github/AndyObtiva/glimmer-dsl-libui/maintainability)
@@ -17,7 +17,7 @@ The main trade-off in using [Glimmer DSL for LibUI](https://rubygems.org/gems/gl
 - Bidirectional Data-Binding to declaratively wire and automatically synchronize GUI with Business Models
 - Custom Widget support
 - Scaffolding for new custom widgets, apps, and gems
-- Native-Executable packaging on Mac, Windows, and Linux
+- Native-Executable packaging on Mac, Windows, and Linux.
 
 Example:
 
@@ -43,7 +43,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
 
 ## Table of Contents
 
-- [Glimmer DSL for LibUI 0.0.8](#-glimmer-dsl-for-libui-008)
+- [Glimmer DSL for LibUI 0.0.9](#-glimmer-dsl-for-libui-009)
   - [Glimmer GUI DSL Concepts](#glimmer-gui-dsl-concepts)
   - [Usage](#usage)
   - [API](#api)
@@ -149,7 +149,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.0.8'
+gem 'glimmer-dsl-libui', '~> 0.0.9'
 ```
 
 Add `require 'glimmer-dsl-libui'` at the top, and then `include Glimmer` into the top-level main object for testing or into an actual class for serious usage.
@@ -296,7 +296,92 @@ Gotcha: On the Mac, when you close a window opened in `girb`, it remains open un
 
 ## Examples
 
-These examples reimplement the ones in the [LibUI](https://github.com/kojix2/LibUI) project utilizing the [Glimmer GUI DSL](#glimmer-gui-dsl-concepts).
+These examples include reimplementions of the examples in the [LibUI](https://github.com/kojix2/LibUI) project utilizing the [Glimmer GUI DSL](#glimmer-gui-dsl-concepts).
+
+To browse all examples, simply launch the [Meta-Example](examples/meta_example.rb), which lists all examples and displays each example's code when selected.
+
+[examples/meta_example.rb](examples/meta_example.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/meta_example.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/meta_example'"
+```
+
+Mac
+
+![glimmer-dsl-libui-mac-meta-example.png](images/glimmer-dsl-libui-mac-meta-example.png)
+
+Linux
+
+![glimmer-dsl-libui-linux-meta-example.png](images/glimmer-dsl-libui-linux-meta-example.png)
+
+[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+require 'glimmer-dsl-libui'
+require 'facets'
+
+class MetaExample
+  include Glimmer
+  
+  def examples
+    if @examples.nil?
+      example_files = Dir.glob(File.join(File.expand_path('.', __dir__), '**', '*.rb'))
+      example_file_names = example_files.map { |f| File.basename(f, '.rb') }
+      example_file_names = example_file_names.reject { |f| f == 'meta_example' }
+      @examples = example_file_names.map { |f| f.underscore.titlecase }
+    end
+    @examples
+  end
+  
+  def file_path_for(example)
+    File.join(File.expand_path('.', __dir__), "#{example.underscore}.rb")
+  end
+  
+  def launch
+    window('Meta-Example', 700, 500) { |w|
+      margined true
+      
+      horizontal_box {
+        vertical_box {
+          @rbs = radio_buttons {
+            stretchy false
+            items examples
+            selected 0
+            
+            on_selected do
+              @nwme.text = File.read(file_path_for(@examples[@rbs.selected]))
+            end
+          }
+          button('Launch') {
+            stretchy false
+            
+            on_clicked do
+              system "ruby -r puts_debuggerer -r #{File.expand_path('../lib/glimmer-dsl-libui', __dir__)} #{file_path_for(@examples[@rbs.selected])}"
+            end
+          }
+        }
+        vertical_box {
+          @nwme = non_wrapping_multiline_entry {
+            read_only true
+            text File.read(file_path_for(@examples[@rbs.selected]))
+          }
+        }
+      }
+    }.show
+  end
+end
+
+MetaExample.new.launch
+```
+
 
 ### Basic Window
 
