@@ -6,17 +6,17 @@
 
 [Glimmer](https://github.com/AndyObtiva/glimmer) DSL for [LibUI](https://github.com/kojix2/LibUI) is a prerequisite-free Ruby desktop development GUI library. No need to pre-install any prerequisites. Just install the gem and have platform-independent native GUI that just works!
 
-[LibUI](https://github.com/kojix2/LibUI) is a thin [Ruby](https://www.ruby-lang.org/en/) wrapper around [libui](https://github.com/andlabs/libui), a relatively new C GUI library that renders native widgets on every platform (similar to [SWT](https://www.eclipse.org/swt/), but without the heavy weight of the [Java Virtual Machine](https://www.java.com/en/)).
+[LibUI](https://github.com/kojix2/LibUI) is a thin [Ruby](https://www.ruby-lang.org/en/) wrapper around [libui](https://github.com/andlabs/libui), a relatively new C GUI library that renders native controls on every platform (similar to [SWT](https://www.eclipse.org/swt/), but without the heavy weight of the [Java Virtual Machine](https://www.java.com/en/)).
 
 The main trade-off in using [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) as opposed to [Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt) or [Glimmer DSL for Tk](https://github.com/AndyObtiva/glimmer-dsl-tk) is the fact that [SWT](https://www.eclipse.org/swt/) and [Tk](https://www.tcl.tk/) are more mature than mid-alpha [libui](https://github.com/andlabs/libui) as GUI toolkits. Still, if there is only a need to build a small simple application, [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) could be a good convenient choice due to having zero prerequisites beyond the dependencies included in the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui). Also, just like [Glimmer DSL for Tk](https://github.com/AndyObtiva/glimmer-dsl-tk), its apps start instantly and have a small memory footprint. [LibUI](https://github.com/kojix2/LibUI) is a promising new GUI toolkit that might prove quite worthy in the future.
 
 [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) aims to provide a DSL similar to the [Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt) to enable more productive desktop development in Ruby with:
-- Declarative DSL syntax that visually maps to the GUI widget hierarchy
+- Declarative DSL syntax that visually maps to the GUI control hierarchy
 - Convention over configuration via smart defaults and automation of low-level details
 - Requiring the least amount of syntax possible to build GUI
 - Bidirectional Data-Binding to declaratively wire and automatically synchronize GUI with Business Models
-- Custom Widget support
-- Scaffolding for new custom widgets, apps, and gems
+- Custom Control support
+- Scaffolding for new custom controls, apps, and gems
 - Native-Executable packaging on Mac, Windows, and Linux.
 
 Example:
@@ -54,6 +54,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
     - [Extra Operations](#extra-operations)
     - [Smart Defaults and Conventions](#smart-defaults-and-conventions)
     - [Original API](#original-api)
+  - [Glimmer Style Guide](#glimmer-style-guide)
   - [Girb (Glimmer IRB)](#girb-glimmer-irb)
   - [Examples](#examples)
     - [Basic Window](#basic-window)
@@ -76,9 +77,9 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
 
 The Glimmer GUI DSL provides object-oriented declarative hierarchical syntax for [LibUI](https://github.com/kojix2/LibUI) that:
 - Supports smart defaults (e.g. automatic `on_closing` listener that quits `window`)
-- Automates wiring of widgets (e.g. `button` is automatically set as child of `window`)
+- Automates wiring of controls (e.g. `button` is automatically set as child of `window`)
 - Hides lower-level details (e.g. `LibUI.main` loop is started automatically when triggering `show` on `window`)
-- Nests widgets according to their visual hierarchy
+- Nests controls according to their visual hierarchy
 - Requires the minimum amount of syntax needed to describe an app's GUI
 
 The Glimmer GUI DSL follows these simple concepts in mapping from [LibUI](https://github.com/kojix2/LibUI) syntax:
@@ -281,6 +282,15 @@ Control(Args) | Properties | Listeners
 
 To learn more about the [LibUI](https://github.com/kojix2/LibUI) API exposed through [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui),
 check out the [libui C headers](https://github.com/andlabs/libui/blob/master/ui.h)
+
+## Glimmer Style Guide
+
+- Control arguments are always wrapped inside parentheses
+- Control blocks are always declared with curly braces to clearly visualize hierarchical view code and separate from logic code
+- Control property declarations always have arguments and never take a block
+- Control property arguments are never wrapped inside parentheses
+- Control listeners are always declared starting with on_ prefix and affixing listener event method name afterwards in underscored lowercase form. Their multi-line blocks have a `do; end` style.
+- Pure logic multi-line blocks that do not constitute GUI DSL view elements have `do; end` style to clearly separate logic code from view code.
 
 ## Girb (Glimmer IRB)
 

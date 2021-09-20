@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.10
+
+- Glimmer Style Guide added to README.md
+
 ## 0.0.9
 
 - Build a meta-example (example of examples)
