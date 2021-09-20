@@ -2,6 +2,9 @@
 
 ## 0.0.10
 
+- Support examples/font_button.rb
+- Support `font_button` control
+- Add File -> Quit menu item to examples/meta_example.rb
 - Glimmer Style Guide added to README.md
 
 ## 0.0.9

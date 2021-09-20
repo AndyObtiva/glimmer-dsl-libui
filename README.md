@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.0.9
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.0.10
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Maintainability](https://api.codeclimate.com/v1/badges/ce2853efdbecf6ebdc73/maintainability)](https://codeclimate.com/github/AndyObtiva/glimmer-dsl-libui/maintainability)
@@ -43,7 +43,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
 
 ## Table of Contents
 
-- [Glimmer DSL for LibUI 0.0.9](#-glimmer-dsl-for-libui-009)
+- [Glimmer DSL for LibUI 0.0.10](#-glimmer-dsl-for-libui-0010)
   - [Glimmer GUI DSL Concepts](#glimmer-gui-dsl-concepts)
   - [Usage](#usage)
   - [API](#api)
@@ -63,6 +63,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
     - [Simple Notepad](#simple-notepad)
     - [Midi Player](#midi-player)
     - [Control Gallery](#control-gallery)
+    - [Font Button](#font-button)
   - [Contributing to glimmer-dsl-libui](#contributing-to-glimmer-dsl-libui)
   - [Help](#help)
     - [Issues](#issues)
@@ -150,7 +151,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.0.9'
+gem 'glimmer-dsl-libui', '~> 0.0.10'
 ```
 
 Add `require 'glimmer-dsl-libui'` at the top, and then `include Glimmer` into the top-level main object for testing or into an actual class for serious usage.
@@ -214,7 +215,7 @@ Control(Args) | Properties | Listeners
 `date_time_picker` | `time` (`LibUI::FFI::TM`) | `on_changed`
 `editable_combobox` | `items` (`Array` of `String`), `text` (`String`) | `on_changed`
 `entry` | `read_only` (Boolean), `text` (`String`) | `on_changed`
-`font_button` | `font` (`LibUI::FFI::FontDescriptor`) | `on_changed`
+`font_button` | `font` [read-only] (`Hash` of keys: `:family`, `:size`, `:weight`, `:italic`, `:stretch`) | `on_changed`
 `group(text as String)` | `margined` (Boolean), `title` (`String`) | None
 `horizontal_box` | `padded` (Boolean) | None
 `horizontal_separator` | None | None
@@ -277,6 +278,7 @@ Control(Args) | Properties | Listeners
 - All boolean property readers return `true` or `false` in Ruby instead of the [libui](https://github.com/andlabs/libui) original `0` or `1` in C.
 - All boolean property writers accept `true`/`false` in addition to `1`/`0` in Ruby
 - All string property readers return a `String` object in Ruby instead of the [libui](https://github.com/andlabs/libui) Fiddle pointer object.
+- Automatically allocate font descriptors upon instantiating `font_button` controls and free font descriptors when destorying `font_button` controls
 
 ### Original API
 
@@ -356,6 +358,10 @@ class MetaExample
   end
   
   def launch
+    menu('File') {
+      quit_menu_item
+    }
+    
     window('Meta-Example', 700, 500) { |w|
       margined true
       
@@ -1332,6 +1338,91 @@ MAIN_WINDOW = window('Control Gallery', 600, 500) {
 }
 
 MAIN_WINDOW.show
+```
+
+### Font Button
+
+[examples/font_button.rb](examples/font_button.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/font_button.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/font_button'"
+```
+
+Mac
+
+![glimmer-dsl-libui-mac-font-button.png](images/glimmer-dsl-libui-mac-font-button.png)
+![glimmer-dsl-libui-mac-font-button-selection.png](images/glimmer-dsl-libui-mac-font-button-selection.png)
+
+Linux
+
+![glimmer-dsl-libui-linux-font-button.png](images/glimmer-dsl-libui-linux-font-button.png)
+![glimmer-dsl-libui-linux-font-button-selection.png](images/glimmer-dsl-libui-linux-font-button-selection.png)
+
+[LibUI](https://github.com/kojix2/LibUI) Original Version:
+
+```ruby
+require 'libui'
+
+UI = LibUI
+
+UI.init
+
+main_window = UI.new_window('hello world', 300, 200, 1)
+
+font_button = UI.new_font_button
+font_descriptor = UI::FFI::FontDescriptor.malloc
+UI.font_button_on_changed(font_button) do
+  UI.font_button_font(font_button, font_descriptor)
+  p family: font_descriptor.Family.to_s,
+    size: font_descriptor.Size,
+    weight: font_descriptor.Weight,
+    italic: font_descriptor.Italic,
+    stretch: font_descriptor.Stretch
+end
+
+UI.window_on_closing(main_window) do
+  puts 'Bye Bye'
+  UI.control_destroy(main_window)
+  UI.quit
+  0
+end
+
+UI.window_set_child(main_window, font_button)
+UI.control_show(main_window)
+
+UI.main
+UI.quit
+
+```
+
+[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+window('hello world', 300, 200) {
+  font_button { |fb|
+    on_changed do
+      font_descriptor = fb.font
+      p font_descriptor
+    end
+  }
+  
+  on_closing do
+    puts 'Bye Bye'
+  end
+}.show
+
 ```
 
 ## Contributing to glimmer-dsl-libui
