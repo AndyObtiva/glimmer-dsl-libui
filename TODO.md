@@ -2,19 +2,20 @@
 
 ## Next
 
+- Build a meta-example (example of examples)
+
 ## Soon
 
 - Document control-specific operations
 - Document Style Guide
 - Support examples/font_button.rb
-- Build a meta-example (example of examples)
 
 ## Future
 
-- Support `date_picker` and `time_picker` `time` property
-- Support examples/date_time_picker.rb
 - Support `color_button` `color` property
 - New examples/basic_color.rb
+- Support `date_picker` and `time_picker` `time` property
+- Support examples/date_time_picker.rb
 - Support examples/basic_area.rb
 - Support examples/basic_draw_text.rb
 - Support examples/basic_table.rb
