@@ -480,7 +480,7 @@ ruby -r glimmer-dsl-libui -e "require 'examples/basic_button'"
 Mac
 
 ![glimmer-dsl-libui-mac-basic-button.png](images/glimmer-dsl-libui-mac-basic-button.png)
-![glimmer-dsl-libui-mac-basic-button-msg-box.png](images/glimmer-dsl-libui-basic-button-msg-box.png)
+![glimmer-dsl-libui-mac-basic-button-msg-box.png](images/glimmer-dsl-libui-mac-basic-button-msg-box.png)
 
 Linux
 
