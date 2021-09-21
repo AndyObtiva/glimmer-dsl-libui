@@ -36,6 +36,22 @@ module Glimmer
         [@red[0, 8].unpack1('d') * 255.0, @green[0, 8].unpack1('d') * 255.0, @blue[0, 8].unpack1('d') * 255.0, @alpha[0, 8].unpack1('d')]
       end
       
+      def red
+        color[0]
+      end
+      
+      def green
+        color[1]
+      end
+      
+      def blue
+        color[2]
+      end
+      
+      def alpha
+        color[3]
+      end
+      
       def destroy
         Fiddle.free @red unless @red.nil?
         Fiddle.free @green unless @green.nil?

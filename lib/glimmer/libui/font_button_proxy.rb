@@ -39,6 +39,26 @@ module Glimmer
         }
       end
       
+      def family
+        font[:family]
+      end
+      
+      def size
+        font[:size]
+      end
+      
+      def weight
+        font[:weight]
+      end
+      
+      def italic
+        font[:italic]
+      end
+      
+      def stretch
+        font[:stretch]
+      end
+      
       def destroy
         ::LibUI.free_font_button_font(@font_descriptor) unless @font_descriptor.nil?
         super

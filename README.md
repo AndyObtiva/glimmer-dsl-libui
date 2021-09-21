@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.0.10
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.0.11
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Maintainability](https://api.codeclimate.com/v1/badges/ce2853efdbecf6ebdc73/maintainability)](https://codeclimate.com/github/AndyObtiva/glimmer-dsl-libui/maintainability)
@@ -43,7 +43,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
 
 ## Table of Contents
 
-- [Glimmer DSL for LibUI 0.0.10](#-glimmer-dsl-for-libui-0010)
+- [Glimmer DSL for LibUI 0.0.11](#-glimmer-dsl-for-libui-0011)
   - [Glimmer GUI DSL Concepts](#glimmer-gui-dsl-concepts)
   - [Usage](#usage)
   - [API](#api)
@@ -151,7 +151,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.0.10'
+gem 'glimmer-dsl-libui', '~> 0.0.11'
 ```
 
 Add `require 'glimmer-dsl-libui'` at the top, and then `include Glimmer` into the top-level main object for testing or into an actual class for serious usage.
@@ -210,12 +210,12 @@ Control(Args) | Properties | Listeners
 `button(text as String)` | `text` (`String`) | `on_clicked`
 `checkbox(text as String)` | `checked` (Boolean), `text` (`String`) | `on_toggled`
 `combobox` | `items` (`Array` of `String`), `selected` (`Integer`) | `on_selected`
-`color_button` | `color` (r `Numeric`, g `Numeric`, b `Numeric`, a `Numeric`) | `on_changed`
+`color_button` | `color` (Array of `red` as `Float`, `green` as `Float`, `blue` as `Float`, `alpha` as `Float`), `red` as `Float`, `green` as `Float`, `blue` as `Float`, `alpha` as `Float` | `on_changed`
 `date_picker` | `time` (`LibUI::FFI::TM`) | `on_changed`
 `date_time_picker` | `time` (`LibUI::FFI::TM`) | `on_changed`
 `editable_combobox` | `items` (`Array` of `String`), `text` (`String`) | `on_changed`
 `entry` | `read_only` (Boolean), `text` (`String`) | `on_changed`
-`font_button` | `font` [read-only] (`Hash` of keys: `:family`, `:size`, `:weight`, `:italic`, `:stretch`) | `on_changed`
+`font_button` | `font` [read-only] (`Hash` of keys: `:family`, `:size`, `:weight`, `:italic`, `:stretch`), `family` as `String`, `size` as `Float`, `weight` as `Integer`, `italic` as `Integer`, `stretch` as `Integer` | `on_changed`
 `group(text as String)` | `margined` (Boolean), `title` (`String`) | None
 `horizontal_box` | `padded` (Boolean) | None
 `horizontal_separator` | None | None

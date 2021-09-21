@@ -69,6 +69,10 @@ module Glimmer
       private
       
       def build_control
+        if OS.mac? && ControlProxy.menu_proxies.empty?
+          menu_proxy = ControlProxy.create('menu', nil, [''])
+          quit_menu_item_proxy = ControlProxy.create('quit_menu_item', menu_proxy, [])
+        end
         construction_args = @args.dup
         construction_args[0] = DEFAULT_TITLE if construction_args.size == 0
         construction_args[1] = DEFAULT_WIDTH if construction_args.size == 1

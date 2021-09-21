@@ -2,9 +2,6 @@
 
 ## Next
 
-- Support `color_button` `color` property
-- New examples/basic_color.rb
-
 ## Soon
 
 - Make code text in meta_example.rb editable with launch button taking changes into account to enable experimentation
@@ -27,5 +24,5 @@
 - Support control-specific operations that accept Ruby proxy objects instead of Fiddle pointer objects
 - Better management of `LibUI.init` and `LibUI.quit` to enable closing an app and opening a new one (perhaps manage their state globally around calls to `menu` and `window` for triggering init if not triggered already)
 - Consider supporting italic values as boolean (`true` for `2` and `false` for `0`)
-- On the Mac only, if no menu is specified, add a File -> Quit menu item automatically (and remove File -> Quit from Meta-Sample)
 - Consider fine-grained attribute reader methods for `font_button` (e.g. `family`) and `color_button` (e.g. `green`)
+- Trap exit signal (CTRL+C) and close application gracefully

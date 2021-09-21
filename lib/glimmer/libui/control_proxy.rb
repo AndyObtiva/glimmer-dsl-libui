@@ -52,7 +52,7 @@ module Glimmer
         end
         
         def main_window_proxy
-          all_control_proxies.find {|c| c.is_a?(WindowProxy)}
+          all_control_proxies.find {|c| c.is_a?(Glimmer::LibUI::WindowProxy)}
         end
         
         def integer_to_boolean(int)
@@ -61,6 +61,10 @@ module Glimmer
         
         def boolean_to_integer(bool)
           bool.nil? ? nil : (bool ? 1 : 0)
+        end
+        
+        def menu_proxies
+          all_control_proxies.select {|c| c.keyword == 'menu' }
         end
       end
       

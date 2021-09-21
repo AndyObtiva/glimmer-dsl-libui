@@ -21,10 +21,6 @@ class MetaExample
   end
   
   def launch
-    menu('File') {
-      quit_menu_item
-    }
-    
     window('Meta-Example', 700, 500) { |w|
       margined true
       

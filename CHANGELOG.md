@@ -2,7 +2,10 @@
 
 ## 0.0.11
 
+- New examples/basic_color.rb
+- Support `color_button` `color` property
 - Proper destroy of controls (deleting from parent `box`, `window`, or `group` first)
+- On the Mac only, if no menu is specified, add a Quit menu item automatically to allow quitting with CMD+Q
 
 ## 0.0.10
 
