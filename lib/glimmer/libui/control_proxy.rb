@@ -167,8 +167,13 @@ module Glimmer
           ::LibUI.send("#{libui_api_keyword}_#{method_name}", @libui, *args)
         elsif ::LibUI.respond_to?("control_#{method_name.to_s.sub(/\?$/, '')}") && args.empty?
           property = method_name.to_s.sub(/\?$/, '')
-          value = ::LibUI.send("control_#{method_name.to_s.sub(/\?$/, '')}", @libui, *args)
-          handle_string_property(property, handle_boolean_property(property, value))
+          if property == 'destroy' && parent_proxy.is_a?(Glimmer::LibUI::Box)
+            ::LibUI.send("box_delete", parent_proxy.libui, parent_proxy.children.index(self))
+#             ::LibUI.send("control_set_parent", @libui, nil) if property == 'destroy'
+          else
+            value = ::LibUI.send("control_#{property}", @libui, *args)
+            handle_string_property(property, handle_boolean_property(property, value))
+          end
         elsif ::LibUI.respond_to?("control_set_#{method_name.to_s.sub(/=$/, '')}")
           property = method_name.to_s.sub(/=$/, '')
           args[0] = ControlProxy.boolean_to_integer(args.first) if BOOLEAN_PROPERTIES.include?(property) && (args.first.is_a?(TrueClass) || args.first.is_a?(FalseClass))

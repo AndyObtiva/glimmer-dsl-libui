@@ -23,29 +23,25 @@ require 'glimmer/libui/control_proxy'
 
 module Glimmer
   module LibUI
-    module Box
-      APPEND_PROPERTIES = %w[stretchy]
-      
-      def post_initialize_child(child)
-        child.stretchy = true if child.stretchy.nil?
-        ::LibUI.box_append(@libui, child.libui, ControlProxy.boolean_to_integer(child.stretchy))
-        children << child
+    # Proxy for LibUI color button objects
+    #
+    # Follows the Proxy Design Pattern
+    class ColorButtonProxy < ControlProxy
+      def color
+        @red ||= Fiddle::Pointer.malloc(8) # double
+        @green ||= Fiddle::Pointer.malloc(8) # double
+        @blue ||= Fiddle::Pointer.malloc(8) # double
+        @alpha ||= Fiddle::Pointer.malloc(8) # double
+        ::LibUI.color_button_color(@libui, @red, @green, @blue, @alpha)
+        [@red.to_s, @green.to_s, @blue.to_s, @alpha.to_s]
       end
       
-      def libui_api_keyword
-        'box'
-      end
-      
-      def children
-        @children ||= []
-      end
-      
-      private
-      
-      def build_control
-        super.tap do
-          self.padded = true
-        end
+      def destroy
+        Fiddle.free @red unless @red.nil?
+        Fiddle.free @green unless @green.nil?
+        Fiddle.free @blue unless @blue.nil?
+        Fiddle.free @alpha unless @alpha.nil?
+        super
       end
     end
   end

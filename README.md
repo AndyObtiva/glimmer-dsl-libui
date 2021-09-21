@@ -287,7 +287,7 @@ check out the [libui C headers](https://github.com/andlabs/libui/blob/master/ui.
 
 ## Glimmer Style Guide
 
-- Control arguments are always wrapped inside parentheses
+- Control arguments are always wrapped by parentheses
 - Control blocks are always declared with curly braces to clearly visualize hierarchical view code and separate from logic code
 - Control property declarations always have arguments and never take a block
 - Control property arguments are never wrapped inside parentheses

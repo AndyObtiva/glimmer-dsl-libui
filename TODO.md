@@ -2,12 +2,13 @@
 
 ## Next
 
-- Make code text in meta_example.rb editable with launch button taking changes into account to enable experimentation
+- Support `color_button` `color` property
+- New examples/basic_color.rb
+- Proper destroy of controls (deleting from containing box and unsetting from parent first)
 
 ## Soon
 
-- Support `color_button` `color` property
-- New examples/basic_color.rb
+- Make code text in meta_example.rb editable with launch button taking changes into account to enable experimentation
 
 ## Future
 
@@ -26,3 +27,4 @@
 - Better management of `LibUI.init` and `LibUI.quit` to enable closing an app and opening a new one (perhaps manage their state globally around calls to `menu` and `window` for triggering init if not triggered already)
 - Consider supporting italic values as boolean (`true` for `2` and `false` for `0`)
 - On the Mac only, if no menu is specified, add a File -> Quit menu item automatically (and remove File -> Quit from Meta-Sample)
+- Consider fine-grained attribute reader methods for `font_button` (e.g. `family`) and `color_button` (e.g. `green`)

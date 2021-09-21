@@ -37,7 +37,7 @@ module Glimmer
       end
     
       def show
-        send_to_libui('show')
+        super
         unless @shown_at_least_once
           @shown_at_least_once = true
           ::LibUI.main
