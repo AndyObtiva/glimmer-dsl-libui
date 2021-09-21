@@ -33,7 +33,7 @@ module Glimmer
         @blue ||= Fiddle::Pointer.malloc(8) # double
         @alpha ||= Fiddle::Pointer.malloc(8) # double
         ::LibUI.color_button_color(@libui, @red, @green, @blue, @alpha)
-        [@red.to_s, @green.to_s, @blue.to_s, @alpha.to_s]
+        [@red[0, 8].unpack1('d') * 255.0, @green[0, 8].unpack1('d') * 255.0, @blue[0, 8].unpack1('d') * 255.0, @alpha[0, 8].unpack1('d')]
       end
       
       def destroy
