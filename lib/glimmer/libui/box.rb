@@ -40,6 +40,11 @@ module Glimmer
         @children ||= []
       end
       
+      def destroy_child(child)
+        ::LibUI.send("box_delete", @libui, children.index(child))
+        ControlProxy.all_control_proxies.delete(child)
+      end
+      
       private
       
       def build_control

@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.11
+
+- Proper destroy of controls (deleting from parent `box`, `window`, or `group` first)
+
 ## 0.0.10
 
 - Support examples/font_button.rb

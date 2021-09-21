@@ -31,6 +31,11 @@ module Glimmer
         ::LibUI.group_set_child(@libui, child.libui)
       end
       
+      def destroy_child(child)
+        ::LibUI.send("group_set_child", @libui, nil)
+        super
+      end
+    
       private
       
       def build_control

@@ -167,13 +167,8 @@ module Glimmer
           ::LibUI.send("#{libui_api_keyword}_#{method_name}", @libui, *args)
         elsif ::LibUI.respond_to?("control_#{method_name.to_s.sub(/\?$/, '')}") && args.empty?
           property = method_name.to_s.sub(/\?$/, '')
-          if property == 'destroy' && parent_proxy.is_a?(Glimmer::LibUI::Box)
-            ::LibUI.send("box_delete", parent_proxy.libui, parent_proxy.children.index(self))
-#             ::LibUI.send("control_set_parent", @libui, nil) if property == 'destroy'
-          else
-            value = ::LibUI.send("control_#{property}", @libui, *args)
-            handle_string_property(property, handle_boolean_property(property, value))
-          end
+          value = ::LibUI.send("control_#{property}", @libui, *args)
+          handle_string_property(property, handle_boolean_property(property, value))
         elsif ::LibUI.respond_to?("control_set_#{method_name.to_s.sub(/=$/, '')}")
           property = method_name.to_s.sub(/=$/, '')
           args[0] = ControlProxy.boolean_to_integer(args.first) if BOOLEAN_PROPERTIES.include?(property) && (args.first.is_a?(TrueClass) || args.first.is_a?(FalseClass))
@@ -203,6 +198,23 @@ module Glimmer
         @keyword
       end
       
+      def destroy
+        if parent_proxy.nil?
+          default_destroy
+        else
+          parent_proxy.destroy_child(self)
+        end
+      end
+      
+      def destroy_child(child)
+        child.default_destroy
+      end
+      
+      def default_destroy
+        send_to_libui('destroy')
+        ControlProxy.all_control_proxies.delete(self)
+      end
+            
       def enabled(value = nil)
         if value.nil?
           @enabled
@@ -234,11 +246,6 @@ module Glimmer
       alias set_visible visible
       alias visible= visible
       
-      def destroy
-        send_to_libui('destroy')
-        self.class.all_control_proxies.delete(self)
-      end
-            
       private
       
       def build_control

@@ -35,6 +35,11 @@ module Glimmer
       def post_initialize_child(child)
         ::LibUI.window_set_child(@libui, child.libui)
       end
+      
+      def destroy_child(child)
+        ::LibUI.send("window_set_child", @libui, nil)
+        super
+      end
     
       def show
         super
