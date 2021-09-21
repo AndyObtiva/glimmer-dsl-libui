@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.0.11
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.0.12
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Maintainability](https://api.codeclimate.com/v1/badges/ce2853efdbecf6ebdc73/maintainability)](https://codeclimate.com/github/AndyObtiva/glimmer-dsl-libui/maintainability)
@@ -43,7 +43,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
 
 ## Table of Contents
 
-- [Glimmer DSL for LibUI 0.0.11](#-glimmer-dsl-for-libui-0011)
+- [Glimmer DSL for LibUI 0.0.12](#-glimmer-dsl-for-libui-0012)
   - [Glimmer GUI DSL Concepts](#glimmer-gui-dsl-concepts)
   - [Usage](#usage)
   - [API](#api)
@@ -152,7 +152,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.0.11'
+gem 'glimmer-dsl-libui', '~> 0.0.12'
 ```
 
 Add `require 'glimmer-dsl-libui'` at the top, and then `include Glimmer` into the top-level main object for testing or into an actual class for serious usage.
@@ -315,7 +315,7 @@ Gotcha: On the Mac, when you close a window opened in `girb`, it remains open un
 
 These examples include reimplementions of the examples in the [LibUI](https://github.com/kojix2/LibUI) project utilizing the [Glimmer GUI DSL](#glimmer-gui-dsl-concepts) as well as brand new examples.
 
-To browse all examples, simply launch the [Meta-Example](examples/meta_example.rb), which lists all examples and displays each example's code when selected.
+To browse all examples, simply launch the [Meta-Example](examples/meta_example.rb), which lists all examples and displays each example's code when selected. It also enables code editing to facilitate experimentation and learning.
 
 [examples/meta_example.rb](examples/meta_example.rb)
 
@@ -362,11 +362,11 @@ class MetaExample
     File.join(File.expand_path('.', __dir__), "#{example.underscore}.rb")
   end
   
+  def glimmer_dsl_libui_file
+    File.expand_path('../lib/glimmer-dsl-libui', __dir__)
+  end
+  
   def launch
-    menu('File') {
-      quit_menu_item
-    }
-    
     window('Meta-Example', 700, 500) { |w|
       margined true
       
@@ -385,13 +385,20 @@ class MetaExample
             stretchy false
             
             on_clicked do
-              system "ruby -r puts_debuggerer -r #{File.expand_path('../lib/glimmer-dsl-libui', __dir__)} #{file_path_for(@examples[@rbs.selected])}"
+              begin
+                meta_example_file = File.join(Dir.home, '.meta_example.rb')
+                File.write(meta_example_file, @nwme.text)
+                result = `ruby -r #{glimmer_dsl_libui_file} #{meta_example_file} 2>&1`
+                msg_box(w, 'Error Running Example', result) if result.include?('error')
+              rescue => e
+                puts 'Unable to write code changes! Running original example...'
+                system "ruby -r #{glimmer_dsl_libui_file} #{file_path_for(@examples[@rbs.selected])}"
+              end
             end
           }
         }
         vertical_box {
           @nwme = non_wrapping_multiline_entry {
-            read_only true
             text File.read(file_path_for(@examples[@rbs.selected]))
           }
         }

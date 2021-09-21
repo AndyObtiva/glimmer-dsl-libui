@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.0.12
+
+- Have examples/meta_example.rb allow code editing to enable experimentation and learning
+- Fix issue with examples/meta_example using puts_debuggerer (a development gem)
+
 ## 0.0.11
 
 - New examples/basic_color.rb

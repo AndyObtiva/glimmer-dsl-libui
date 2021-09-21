@@ -20,6 +20,10 @@ class MetaExample
     File.join(File.expand_path('.', __dir__), "#{example.underscore}.rb")
   end
   
+  def glimmer_dsl_libui_file
+    File.expand_path('../lib/glimmer-dsl-libui', __dir__)
+  end
+  
   def launch
     window('Meta-Example', 700, 500) { |w|
       margined true
@@ -39,13 +43,20 @@ class MetaExample
             stretchy false
             
             on_clicked do
-              system "ruby -r puts_debuggerer -r #{File.expand_path('../lib/glimmer-dsl-libui', __dir__)} #{file_path_for(@examples[@rbs.selected])}"
+              begin
+                meta_example_file = File.join(Dir.home, '.meta_example.rb')
+                File.write(meta_example_file, @nwme.text)
+                result = `ruby -r #{glimmer_dsl_libui_file} #{meta_example_file} 2>&1`
+                msg_box(w, 'Error Running Example', result) if result.include?('error')
+              rescue => e
+                puts 'Unable to write code changes! Running original example...'
+                system "ruby -r #{glimmer_dsl_libui_file} #{file_path_for(@examples[@rbs.selected])}"
+              end
             end
           }
         }
         vertical_box {
           @nwme = non_wrapping_multiline_entry {
-            read_only true
             text File.read(file_path_for(@examples[@rbs.selected]))
           }
         }
