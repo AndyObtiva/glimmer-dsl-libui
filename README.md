@@ -186,7 +186,7 @@ Any control returned by a [Glimmer GUI DSL](#glimmer-gui-dsl-concepts) keyword d
 Example (you may copy/paste in [`girb`](#girb-glimmer-irb)):
 
 ```ruby
-w = window('hello world', 300, 200, 1)
+w = window('hello world')
 puts w.title # => hello world
 w.title = 'howdy'
 puts w.title # => howdy
@@ -199,7 +199,7 @@ Controls are wrapped as Ruby proxy objects, having a `#libui` method to obtain t
 Example (you may copy/paste in [`girb`](#girb-glimmer-irb)):
 
 ```ruby
-w = window('hello world', 300, 200, 1) # => #<Glimmer::LibUI::WindowProxy:0x00007fde4ea39fb0
+w = window('hello world') # => #<Glimmer::LibUI::WindowProxy:0x00007fde4ea39fb0
 w.libui # => #<Fiddle::Pointer:0x00007fde53997980 ptr=0x00007fde51352a60 size=0 free=0x0000000000000000>
 ```
 
