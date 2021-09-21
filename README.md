@@ -64,6 +64,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
     - [Midi Player](#midi-player)
     - [Control Gallery](#control-gallery)
     - [Font Button](#font-button)
+    - [Color Button](#color-button)
   - [Contributing to glimmer-dsl-libui](#contributing-to-glimmer-dsl-libui)
   - [Help](#help)
     - [Issues](#issues)
@@ -278,7 +279,11 @@ Control(Args) | Properties | Listeners
 - All boolean property readers return `true` or `false` in Ruby instead of the [libui](https://github.com/andlabs/libui) original `0` or `1` in C.
 - All boolean property writers accept `true`/`false` in addition to `1`/`0` in Ruby
 - All string property readers return a `String` object in Ruby instead of the [libui](https://github.com/andlabs/libui) Fiddle pointer object.
-- Automatically allocate font descriptors upon instantiating `font_button` controls and free font descriptors when destorying `font_button` controls
+- Automatically allocate font descriptors upon instantiating `font_button` controls and free them when destorying `font_button` controls
+- Automatically allocate color value pointers upon instantiating `color_button` controls and free them when destorying `color_button` controls
+- On the Mac, if no `menu` items were added, an automatic `quit_menu_item` is added to enable quitting with CTRL+Q
+- When destroying a control nested under a `horizontal_box` or `vertical_box`, it is automatically deleted from the box's children
+- When destroying a control nested under a `window` or `group`, it is automatically unset as their child to allow successful destruction
 
 ### Original API
 
@@ -308,7 +313,7 @@ Gotcha: On the Mac, when you close a window opened in `girb`, it remains open un
 
 ## Examples
 
-These examples include reimplementions of the examples in the [LibUI](https://github.com/kojix2/LibUI) project utilizing the [Glimmer GUI DSL](#glimmer-gui-dsl-concepts).
+These examples include reimplementions of the examples in the [LibUI](https://github.com/kojix2/LibUI) project utilizing the [Glimmer GUI DSL](#glimmer-gui-dsl-concepts) as well as brand new examples.
 
 To browse all examples, simply launch the [Meta-Example](examples/meta_example.rb), which lists all examples and displays each example's code when selected.
 
@@ -334,7 +339,7 @@ Linux
 
 ![glimmer-dsl-libui-linux-meta-example.png](images/glimmer-dsl-libui-linux-meta-example.png)
 
-[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
 
 ```ruby
 require 'glimmer-dsl-libui'
@@ -1422,7 +1427,51 @@ window('hello world', 300, 200) {
     puts 'Bye Bye'
   end
 }.show
+```
 
+### Color Button
+
+[examples/color_button.rb](examples/color_button.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/color_button.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/color_button'"
+```
+
+Mac
+
+![glimmer-dsl-libui-mac-color-button.png](images/glimmer-dsl-libui-mac-color-button.png)
+![glimmer-dsl-libui-mac-color-button-selection.png](images/glimmer-dsl-libui-mac-color-button-selection.png)
+
+Linux
+
+![glimmer-dsl-libui-linux-color-button.png](images/glimmer-dsl-libui-linux-color-button.png)
+![glimmer-dsl-libui-linux-color-button-selection.png](images/glimmer-dsl-libui-linux-color-button-selection.png)
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+# frozen_string_literal: true
+
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+window('color button', 230) {
+  color_button { |cb|
+    on_changed do
+      rgba = cb.color
+      p rgba
+    end
+  }
+}.show
 ```
 
 ## Contributing to glimmer-dsl-libui
