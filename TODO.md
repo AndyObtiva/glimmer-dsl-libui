@@ -3,6 +3,8 @@
 ## Next
 
 - New examples/grid.rb
+- Support `grid` control and child attributes of `left`, `top`, `xspan`, `yspan`, `hexpand`, `halign`, `vexpand`, and `valign`
+- Smart defaults for `grid` child attributes `left`, `top`, `xspan` (`1`), `yspan` (`1`), `hexpand` (`false`), `halign` (`0`), `vexpand` (`false`), and `valign` (`0`)
 
 ## Soon
 
