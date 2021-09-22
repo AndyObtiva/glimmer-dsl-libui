@@ -2,12 +2,10 @@
 
 ## Next
 
-- Support `date_picker`, `time_picker`, and `time` property
-- Support examples/date_time_picker.rb
+- New examples/grid.rb
 
 ## Soon
 
-- New examples/grid.rb
 - New examples/form.rb
 
 ## Future

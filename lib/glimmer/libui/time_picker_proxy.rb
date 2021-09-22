@@ -27,6 +27,13 @@ module Glimmer
     #
     # Follows the Proxy Design Pattern
     class TimePickerProxy < DateTimePickerProxy
+      def time(value = nil)
+        if value.nil?
+          super.slice(:sec, :min, :hour)
+        else
+          super
+        end
+      end
     end
   end
 end

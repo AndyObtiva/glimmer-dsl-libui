@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.0.13
+
+- Support examples/date_time_picker.rb
+- Support `date_time_picker`, `date_picker`, and `time_picker` controls having `time`/`time=`/`set_time` property
+
 ## 0.0.12
 
 - Have examples/meta_example.rb allow code editing to enable experimentation and learning

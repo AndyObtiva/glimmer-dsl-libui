@@ -27,6 +27,13 @@ module Glimmer
     #
     # Follows the Proxy Design Pattern
     class DatePickerProxy < DateTimePickerProxy
+      def time(value = nil)
+        if value.nil?
+          super.slice(:mday, :mon, :year, :wday, :yday)
+        else
+          super
+        end
+      end
     end
   end
 end

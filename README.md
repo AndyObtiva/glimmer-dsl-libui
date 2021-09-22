@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.0.12
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.0.13
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Maintainability](https://api.codeclimate.com/v1/badges/ce2853efdbecf6ebdc73/maintainability)](https://codeclimate.com/github/AndyObtiva/glimmer-dsl-libui/maintainability)
@@ -43,7 +43,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
 
 ## Table of Contents
 
-- [Glimmer DSL for LibUI 0.0.12](#-glimmer-dsl-for-libui-0012)
+- [Glimmer DSL for LibUI 0.0.13](#-glimmer-dsl-for-libui-0013)
   - [Glimmer GUI DSL Concepts](#glimmer-gui-dsl-concepts)
   - [Usage](#usage)
   - [API](#api)
@@ -65,6 +65,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
     - [Control Gallery](#control-gallery)
     - [Font Button](#font-button)
     - [Color Button](#color-button)
+    - [Date Time Picker](#date-time-picker)
   - [Contributing to glimmer-dsl-libui](#contributing-to-glimmer-dsl-libui)
   - [Help](#help)
     - [Issues](#issues)
@@ -152,7 +153,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.0.12'
+gem 'glimmer-dsl-libui', '~> 0.0.13'
 ```
 
 Add `require 'glimmer-dsl-libui'` at the top, and then `include Glimmer` into the top-level main object for testing or into an actual class for serious usage.
@@ -212,8 +213,8 @@ Control(Args) | Properties | Listeners
 `checkbox(text as String)` | `checked` (Boolean), `text` (`String`) | `on_toggled`
 `combobox` | `items` (`Array` of `String`), `selected` (`Integer`) | `on_selected`
 `color_button` | `color` (Array of `red` as `Float`, `green` as `Float`, `blue` as `Float`, `alpha` as `Float`), `red` as `Float`, `green` as `Float`, `blue` as `Float`, `alpha` as `Float` | `on_changed`
-`date_picker` | `time` (`LibUI::FFI::TM`) | `on_changed`
-`date_time_picker` | `time` (`LibUI::FFI::TM`) | `on_changed`
+`date_picker` | `time` (`Hash` of keys: `sec` as `Integer`, `min` as `Integer`, `hour` as `Integer`, `mday` as `Integer`, `mon` as `Integer`, `year` as `Integer`, `wday` as `Integer`, `yday` as `Integer`, `dst` as Boolean) | `on_changed`
+`date_time_picker` | `time` (`Hash` of keys: `sec` as `Integer`, `min` as `Integer`, `hour` as `Integer`, `mday` as `Integer`, `mon` as `Integer`, `year` as `Integer`, `wday` as `Integer`, `yday` as `Integer`, `dst` as Boolean) | `on_changed`
 `editable_combobox` | `items` (`Array` of `String`), `text` (`String`) | `on_changed`
 `entry` | `read_only` (Boolean), `text` (`String`) | `on_changed`
 `font_button` | `font` [read-only] (`Hash` of keys: `:family`, `:size`, `:weight`, `:italic`, `:stretch`), `family` as `String`, `size` as `Float`, `weight` as `Integer`, `italic` as `Integer`, `stretch` as `Integer` | `on_changed`
@@ -235,7 +236,7 @@ Control(Args) | Properties | Listeners
 `spinbox(min as Numeric, max as Numeric)` | `value` (`Numeric`) | `on_changed`
 `tab` | `margined` (Boolean), `num_pages` (`Integer`) | None
 `tab_item(name as String)` | `index` [read-only] (`Integer`), `margined` (Boolean), `name` [read-only] (`String`) | None
-`time_picker` | `time` (`LibUI::FFI::TM`) | `on_changed`
+`time_picker` | `time` (`Hash` of keys: `sec` as `Integer`, `min` as `Integer`, `hour` as `Integer`, `mday` as `Integer`, `mon` as `Integer`, `year` as `Integer`, `wday` as `Integer`, `yday` as `Integer`, `dst` as Boolean) | `on_changed`
 `vertical_box` | `padded` (Boolean) | None
 `window(title as String, width as Integer, height as Integer, has_menubar as Boolean)` | `borderless` (Boolean), `content_size` (width `Numeric`, height `Numeric`), `fullscreen` (Boolean), `margined` (Boolean), `title` (`String`) | `on_closing`, `on_content_size_changed`
 
@@ -284,6 +285,7 @@ Control(Args) | Properties | Listeners
 - On the Mac, if no `menu` items were added, an automatic `quit_menu_item` is added to enable quitting with CTRL+Q
 - When destroying a control nested under a `horizontal_box` or `vertical_box`, it is automatically deleted from the box's children
 - When destroying a control nested under a `window` or `group`, it is automatically unset as their child to allow successful destruction
+- For `date_time_picker`, `date_picker`, and `time_picker`, make sure `time` hash values for `mon`, `wday`, and `yday` are 1-based instead of [libui](https://github.com/andlabs/libui) original 0-based values, and return `dst` as Boolean instead of `isdst` as `1`/`0`
 
 ### Original API
 
@@ -1465,8 +1467,6 @@ Linux
 New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
 
 ```ruby
-# frozen_string_literal: true
-
 require 'glimmer-dsl-libui'
 
 include Glimmer
@@ -1478,6 +1478,96 @@ window('color button', 230) {
       p rgba
     end
   }
+}.show
+```
+
+### Date Time Picker
+
+[examples/date_time_picker.rb](examples/date_time_picker.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/date_time_picker.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/date_time_picker'"
+```
+
+Mac
+
+![glimmer-dsl-libui-mac-date-time-picker.png](images/glimmer-dsl-libui-mac-date-time-picker.png)
+
+Linux
+
+![glimmer-dsl-libui-linux-date-time-picker.png](images/glimmer-dsl-libui-linux-date-time-picker.png)
+
+[LibUI](https://github.com/kojix2/LibUI) Original Version:
+
+```ruby
+require 'libui'
+
+UI = LibUI
+
+UI.init
+
+vbox = UI.new_vertical_box
+
+date_time_picker = UI.new_date_time_picker
+
+time = UI::FFI::TM.malloc
+
+UI.date_time_picker_on_changed(date_time_picker) do
+  UI.date_time_picker_time(date_time_picker, time)
+  p sec: time.tm_sec,
+    min: time.tm_min,
+    hour: time.tm_hour,
+    mday: time.tm_mday,
+    mon: time.tm_mon,
+    year: time.tm_year,
+    wday: time.tm_wday,
+    yday: time.tm_yday,
+    isdst: time.tm_isdst
+end
+UI.box_append(vbox, date_time_picker, 1)
+
+main_window = UI.new_window('Date Time Pickers', 300, 200, 1)
+UI.window_on_closing(main_window) do
+  puts 'Bye Bye'
+  UI.control_destroy(main_window)
+  UI.quit
+  0
+end
+UI.window_set_child(main_window, vbox)
+UI.control_show(main_window)
+
+UI.main
+UI.quit
+```
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+window('Date Time Pickers', 300, 200) {
+  vertical_box {
+    date_time_picker { |dtp|
+      on_changed do
+        time = dtp.time
+        p time
+      end
+    }
+  }
+  
+  on_closing do
+    puts 'Bye Bye'
+  end
 }.show
 ```
 
