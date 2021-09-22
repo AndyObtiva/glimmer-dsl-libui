@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.0.13
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.0.14
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Maintainability](https://api.codeclimate.com/v1/badges/ce2853efdbecf6ebdc73/maintainability)](https://codeclimate.com/github/AndyObtiva/glimmer-dsl-libui/maintainability)
@@ -43,7 +43,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
 
 ## Table of Contents
 
-- [Glimmer DSL for LibUI 0.0.13](#-glimmer-dsl-for-libui-0013)
+- [Glimmer DSL for LibUI 0.0.14](#-glimmer-dsl-for-libui-0014)
   - [Glimmer GUI DSL Concepts](#glimmer-gui-dsl-concepts)
   - [Usage](#usage)
   - [API](#api)
@@ -53,6 +53,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
     - [Extra Dialogs](#extra-dialogs)
     - [Extra Operations](#extra-operations)
     - [Smart Defaults and Conventions](#smart-defaults-and-conventions)
+    - [API Gotchas](#api-gotchas)
     - [Original API](#original-api)
   - [Glimmer Style Guide](#glimmer-style-guide)
   - [Girb (Glimmer IRB)](#girb-glimmer-irb)
@@ -66,6 +67,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
     - [Font Button](#font-button)
     - [Color Button](#color-button)
     - [Date Time Picker](#date-time-picker)
+    - [Grid](#grid)
   - [Contributing to glimmer-dsl-libui](#contributing-to-glimmer-dsl-libui)
   - [Help](#help)
     - [Issues](#issues)
@@ -153,7 +155,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.0.13'
+gem 'glimmer-dsl-libui', '~> 0.0.14'
 ```
 
 Add `require 'glimmer-dsl-libui'` at the top, and then `include Glimmer` into the top-level main object for testing or into an actual class for serious usage.
@@ -218,6 +220,7 @@ Control(Args) | Properties | Listeners
 `editable_combobox` | `items` (`Array` of `String`), `text` (`String`) | `on_changed`
 `entry` | `read_only` (Boolean), `text` (`String`) | `on_changed`
 `font_button` | `font` [read-only] (`Hash` of keys: `:family`, `:size`, `:weight`, `:italic`, `:stretch`), `family` as `String`, `size` as `Float`, `weight` as `Integer`, `italic` as `Integer`, `stretch` as `Integer` | `on_changed`
+`grid` | `padded` (Boolean) | None
 `group(text as String)` | `margined` (Boolean), `title` (`String`) | None
 `horizontal_box` | `padded` (Boolean) | None
 `horizontal_separator` | None | None
@@ -247,7 +250,15 @@ Control(Args) | Properties | Listeners
 - `parent` (`Fiddle::Pointer`)
 - `toplevel` [read-only] (Boolean)
 - `visible` (Boolean)
-- `stretchy` [dsl-only] (Boolean): available in [Glimmer GUI DSL](#glimmer-gui-dsl-concepts) when nested under `horizontal_box` or `vertical_box`
+- `stretchy` [dsl-only] (Boolean) [default=`true`]: available in [Glimmer GUI DSL](#glimmer-gui-dsl-concepts) when nested under `horizontal_box` or `vertical_box`
+- `left` [dsl-only] (`Integer`) [default=`0`]: available in [Glimmer GUI DSL](#glimmer-gui-dsl-concepts) when nested under `grid`
+- `top` [dsl-only] (`Integer`) [default=`0`]: available in [Glimmer GUI DSL](#glimmer-gui-dsl-concepts) when nested under `grid`
+- `xspan` [dsl-only] (`Integer`) [default=`1`]: available in [Glimmer GUI DSL](#glimmer-gui-dsl-concepts) when nested under `grid`
+- `yspan` [dsl-only] (`Integer`) [default=`1`]: available in [Glimmer GUI DSL](#glimmer-gui-dsl-concepts) when nested under `grid`
+- `hexpand` [dsl-only] (Boolean) [default=`false`]: available in [Glimmer GUI DSL](#glimmer-gui-dsl-concepts) when nested under `grid`
+- `halign` [dsl-only] (`Integer`) [default=`0`]: available in [Glimmer GUI DSL](#glimmer-gui-dsl-concepts) when nested under `grid`
+- `vexpand` [dsl-only] (Boolean) [default=`false`]: available in [Glimmer GUI DSL](#glimmer-gui-dsl-concepts) when nested under `grid`
+- `valign` [dsl-only] (`Integer`) [default=`0`]: available in [Glimmer GUI DSL](#glimmer-gui-dsl-concepts) when nested under `grid`
 
 ### Common Control Operations
 - `destroy`
@@ -269,7 +280,7 @@ Control(Args) | Properties | Listeners
 
 ### Smart Defaults and Conventions
 
-- `horizontal_box` and `vertical_box` controls have `padded` as `true` upon instantiation to ensure more user-friendly GUI by default
+- `horizontal_box`, `vertical_box`, and `grid` controls have `padded` as `true` upon instantiation to ensure more user-friendly GUI by default
 - `group` controls have `margined` as `true` upon instantiation to ensure more user-friendly GUI by default
 - All controls nested under a `horizontal_box` or `vertical_box` have `stretchy` property (passed to `box_append` method) as `true` by default (filling maximum space)
 - `window` constructor args can be left off and have the following defaults when unspecified: `title` as `'Glimmer'`, `width` as `150`, `height` as `150`, and `has_menubar` as `true`)
@@ -286,6 +297,11 @@ Control(Args) | Properties | Listeners
 - When destroying a control nested under a `horizontal_box` or `vertical_box`, it is automatically deleted from the box's children
 - When destroying a control nested under a `window` or `group`, it is automatically unset as their child to allow successful destruction
 - For `date_time_picker`, `date_picker`, and `time_picker`, make sure `time` hash values for `mon`, `wday`, and `yday` are 1-based instead of [libui](https://github.com/andlabs/libui) original 0-based values, and return `dst` as Boolean instead of `isdst` as `1`/`0`
+- Smart defaults for `grid` child attributes are `left` (`0`), `top` (`0`), `xspan` (`1`), `yspan` (`1`), `hexpand` (`false`), `halign` (`0`), `vexpand` (`false`), and `valign` (`0`)
+
+### API Gotchas
+
+There is no proper was to destroy `grid` children due to [libui](https://github.com/andlabs/libui) not offering any API for deleting them from `grid` (no `grid_delete` similar to `box_delete` for `horizontal_box` and `vertical_box`)
 
 ### Original API
 
@@ -1548,7 +1564,7 @@ UI.main
 UI.quit
 ```
 
-New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
 
 ```ruby
 require 'glimmer-dsl-libui'
@@ -1568,6 +1584,107 @@ window('Date Time Pickers', 300, 200) {
   on_closing do
     puts 'Bye Bye'
   end
+}.show
+```
+
+### Grid
+
+[examples/grid.rb](examples/grid.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/grid.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/grid'"
+```
+
+Mac
+
+![glimmer-dsl-libui-mac-grid-spanning.png](images/glimmer-dsl-libui-mac-grid-spanning.png)
+![glimmer-dsl-libui-mac-grid-expanding.png](images/glimmer-dsl-libui-mac-grid-expanding.png)
+
+Linux
+
+![glimmer-dsl-libui-linux-grid-spanning.png](images/glimmer-dsl-libui-linux-grid-spanning.png)
+![glimmer-dsl-libui-linux-grid-expanding.png](images/glimmer-dsl-libui-linux-grid-expanding.png)
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+window('Grid') {
+  tab {
+    tab_item('Spanning') {
+      grid {
+        4.times { |left_value|
+          4.times { |top_value|
+            label("(#{left_value}, #{top_value}) xspan1\nyspan1") {
+              left left_value
+              top top_value
+              hexpand true
+              vexpand true
+            }
+          }
+        }
+        label("(0, 4) xspan2\nyspan1 more text fits horizontally") {
+          left 0
+          top 4
+          xspan 2
+        }
+        label("(2, 4) xspan2\nyspan1 more text fits horizontally") {
+          left 2
+          top 4
+          xspan 2
+        }
+        label("(0, 5) xspan1\nyspan2\nmore text\nfits vertically") {
+          left 0
+          top 5
+          yspan 2
+        }
+        label("(0, 7) xspan1\nyspan2\nmore text\nfits vertically") {
+          left 0
+          top 7
+          yspan 2
+        }
+        label("(1, 5) xspan3\nyspan4 a lot more text fits horizontally than before\nand\neven\na lot\nmore text\nfits vertically\nthan\nbefore") {
+          left 1
+          top 5
+          xspan 3
+          yspan 4
+        }
+      }
+    }
+    tab_item('Expanding') {
+      grid {
+        label("(0, 0) hexpand/vexpand\nall available horizontal space is taken\nand\nall\navailable\nvertical\nspace\nis\ntaken") {
+          left 0
+          top 0
+          hexpand true
+          vexpand true
+        }
+        label("(1, 0)") {
+          left 1
+          top 0
+        }
+        label("(0, 1)") {
+          left 0
+          top 1
+        }
+        label("(1, 1)") {
+          left 1
+          top 1
+        }
+      }
+    }
+  }
 }.show
 ```
 

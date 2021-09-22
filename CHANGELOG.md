@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.0.14
+
+- New examples/grid.rb
+- Support `grid` control and child attributes of `left`, `top`, `xspan`, `yspan`, `hexpand`, `halign`, `vexpand`, and `valign`
+- Smart defaults for `grid` child attributes `left` (`0`), `top` (`0`), `xspan` (`1`), `yspan` (`1`), `hexpand` (`false`), `halign` (`0`), `vexpand` (`false`), and `valign` (`0`)
+
 ## 0.0.13
 
 - Support examples/date_time_picker.rb

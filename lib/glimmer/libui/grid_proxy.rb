@@ -38,6 +38,8 @@ module Glimmer
         ::LibUI.grid_append(@libui, child.libui, child.left, child.top, child.xspan, child.yspan, ControlProxy.boolean_to_integer(child.hexpand), child.halign, ControlProxy.boolean_to_integer(child.vexpand), child.valign)
       end
       
+      # Note that there is no proper destroy_child(child) method for GridProxy due to libui not offering any API for it (no grid_delete)
+      
       private
       
       def build_control

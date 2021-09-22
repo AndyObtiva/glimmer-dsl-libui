@@ -2,18 +2,15 @@
 
 ## Next
 
-- New examples/grid.rb
-- Support `grid` control and child attributes of `left`, `top`, `xspan`, `yspan`, `hexpand`, `halign`, `vexpand`, and `valign`
-- Smart defaults for `grid` child attributes `left`, `top`, `xspan` (`1`), `yspan` (`1`), `hexpand` (`false`), `halign` (`0`), `vexpand` (`false`), and `valign` (`0`)
+- New examples/form.rb
 
 ## Soon
 
-- New examples/form.rb
+- Support examples/basic_table.rb
+- Support examples/basic_table_image.rb
 
 ## Future
 
-- Support examples/basic_table.rb
-- Support examples/basic_table_image.rb
 - Support examples/basic_area.rb
 - Support examples/basic_draw_text.rb
 - Support examples/histogram.rb
