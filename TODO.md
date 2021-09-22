@@ -29,3 +29,4 @@
 - Consider supporting italic values as boolean (`true` for `2` and `false` for `0`)
 - Consider fine-grained attribute reader methods for `font_button` (e.g. `family`) and `color_button` (e.g. `green`)
 - Trap exit signal (CTRL+C) and close application gracefully
+- Support automatic `grid` horizontal or vertical layout by specifying `column_count` or `row_count`
