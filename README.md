@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.0.14
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.0.15
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Maintainability](https://api.codeclimate.com/v1/badges/ce2853efdbecf6ebdc73/maintainability)](https://codeclimate.com/github/AndyObtiva/glimmer-dsl-libui/maintainability)
@@ -43,7 +43,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
 
 ## Table of Contents
 
-- [Glimmer DSL for LibUI 0.0.14](#-glimmer-dsl-for-libui-0014)
+- [Glimmer DSL for LibUI 0.0.15](#-glimmer-dsl-for-libui-0015)
   - [Glimmer GUI DSL Concepts](#glimmer-gui-dsl-concepts)
   - [Usage](#usage)
   - [API](#api)
@@ -68,6 +68,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
     - [Color Button](#color-button)
     - [Date Time Picker](#date-time-picker)
     - [Grid](#grid)
+    - [Form](#form)
   - [Contributing to glimmer-dsl-libui](#contributing-to-glimmer-dsl-libui)
   - [Help](#help)
     - [Issues](#issues)
@@ -155,7 +156,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.0.14'
+gem 'glimmer-dsl-libui', '~> 0.0.15'
 ```
 
 Add `require 'glimmer-dsl-libui'` at the top, and then `include Glimmer` into the top-level main object for testing or into an actual class for serious usage.
@@ -220,6 +221,7 @@ Control(Args) | Properties | Listeners
 `editable_combobox` | `items` (`Array` of `String`), `text` (`String`) | `on_changed`
 `entry` | `read_only` (Boolean), `text` (`String`) | `on_changed`
 `font_button` | `font` [read-only] (`Hash` of keys: `:family`, `:size`, `:weight`, `:italic`, `:stretch`), `family` as `String`, `size` as `Float`, `weight` as `Integer`, `italic` as `Integer`, `stretch` as `Integer` | `on_changed`
+`form` | `padded` (Boolean) | None
 `grid` | `padded` (Boolean) | None
 `group(text as String)` | `margined` (Boolean), `title` (`String`) | None
 `horizontal_box` | `padded` (Boolean) | None
@@ -250,7 +252,7 @@ Control(Args) | Properties | Listeners
 - `parent` (`Fiddle::Pointer`)
 - `toplevel` [read-only] (Boolean)
 - `visible` (Boolean)
-- `stretchy` [dsl-only] (Boolean) [default=`true`]: available in [Glimmer GUI DSL](#glimmer-gui-dsl-concepts) when nested under `horizontal_box` or `vertical_box`
+- `stretchy` [dsl-only] (Boolean) [default=`true`]: available in [Glimmer GUI DSL](#glimmer-gui-dsl-concepts) when nested under `horizontal_box`, `vertical_box`, or `form`
 - `left` [dsl-only] (`Integer`) [default=`0`]: available in [Glimmer GUI DSL](#glimmer-gui-dsl-concepts) when nested under `grid`
 - `top` [dsl-only] (`Integer`) [default=`0`]: available in [Glimmer GUI DSL](#glimmer-gui-dsl-concepts) when nested under `grid`
 - `xspan` [dsl-only] (`Integer`) [default=`1`]: available in [Glimmer GUI DSL](#glimmer-gui-dsl-concepts) when nested under `grid`
@@ -280,7 +282,7 @@ Control(Args) | Properties | Listeners
 
 ### Smart Defaults and Conventions
 
-- `horizontal_box`, `vertical_box`, and `grid` controls have `padded` as `true` upon instantiation to ensure more user-friendly GUI by default
+- `horizontal_box`, `vertical_box`, `grid`, and `form` controls have `padded` as `true` upon instantiation to ensure more user-friendly GUI by default
 - `group` controls have `margined` as `true` upon instantiation to ensure more user-friendly GUI by default
 - All controls nested under a `horizontal_box` or `vertical_box` have `stretchy` property (passed to `box_append` method) as `true` by default (filling maximum space)
 - `window` constructor args can be left off and have the following defaults when unspecified: `title` as `'Glimmer'`, `width` as `150`, `height` as `150`, and `has_menubar` as `true`)
@@ -295,13 +297,14 @@ Control(Args) | Properties | Listeners
 - Automatically allocate color value pointers upon instantiating `color_button` controls and free them when destorying `color_button` controls
 - On the Mac, if no `menu` items were added, an automatic `quit_menu_item` is added to enable quitting with CTRL+Q
 - When destroying a control nested under a `horizontal_box` or `vertical_box`, it is automatically deleted from the box's children
+- When destroying a control nested under a `form`, it is automatically deleted from the form's children
 - When destroying a control nested under a `window` or `group`, it is automatically unset as their child to allow successful destruction
 - For `date_time_picker`, `date_picker`, and `time_picker`, make sure `time` hash values for `mon`, `wday`, and `yday` are 1-based instead of [libui](https://github.com/andlabs/libui) original 0-based values, and return `dst` as Boolean instead of `isdst` as `1`/`0`
 - Smart defaults for `grid` child attributes are `left` (`0`), `top` (`0`), `xspan` (`1`), `yspan` (`1`), `hexpand` (`false`), `halign` (`0`), `vexpand` (`false`), and `valign` (`0`)
 
 ### API Gotchas
 
-There is no proper was to destroy `grid` children due to [libui](https://github.com/andlabs/libui) not offering any API for deleting them from `grid` (no `grid_delete` similar to `box_delete` for `horizontal_box` and `vertical_box`)
+There is no proper way to destroy `grid` children due to [libui](https://github.com/andlabs/libui) not offering any API for deleting them from `grid` (no `grid_delete` similar to `box_delete` for `horizontal_box` and `vertical_box`)
 
 ### Original API
 
@@ -1683,6 +1686,64 @@ window('Grid') {
           top 1
         }
       }
+    }
+  }
+}.show
+```
+
+### Form
+
+[examples/form.rb](examples/form.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/form.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/form'"
+```
+
+Mac
+
+![glimmer-dsl-libui-mac-form.png](images/glimmer-dsl-libui-mac-form.png)
+![glimmer-dsl-libui-mac-form-msg-box.png](images/glimmer-dsl-libui-mac-form-msg-box.png)
+
+Linux
+
+![glimmer-dsl-libui-linux-form.png](images/glimmer-dsl-libui-linux-form.png)
+![glimmer-dsl-libui-linux-form-msg-box.png](images/glimmer-dsl-libui-linux-form-msg-box.png)
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+window('Form') { |w|
+  margined true
+  
+  vertical_box {
+    form {
+      @first_name_entry = entry {
+        # stretchy true # Smart default option for appending to form
+        label 'First Name'
+      }
+      
+      @last_name_entry = entry {
+        # stretchy true # Smart default option for appending to form
+        label 'Last Name'
+      }
+    }
+    
+    button('Display Name') {
+      on_clicked do
+        msg_box(w, 'Name', "#{@first_name_entry.text} #{@last_name_entry.text}")
+      end
     }
   }
 }.show

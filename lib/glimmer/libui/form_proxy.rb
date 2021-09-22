@@ -23,19 +23,13 @@ require 'glimmer/libui/control_proxy'
 
 module Glimmer
   module LibUI
-    class GridProxy < ControlProxy
-      APPEND_PROPERTIES = %w[left top xspan yspan hexpand halign vexpand valign]
+    class FormProxy < ControlProxy
+      APPEND_PROPERTIES = %w[label stretchy]
       
       def post_initialize_child(child)
-        child.left = 0 if child.left.nil?
-        child.top = 0 if child.top.nil?
-        child.xspan = 1 if child.xspan.nil?
-        child.yspan = 1 if child.yspan.nil?
-        child.hexpand = false if child.hexpand.nil?
-        child.halign = 0 if child.halign.nil?
-        child.vexpand = false if child.vexpand.nil?
-        child.valign = 0 if child.valign.nil?
-        ::LibUI.grid_append(@libui, child.libui, child.left, child.top, child.xspan, child.yspan, ControlProxy.boolean_to_integer(child.hexpand), child.halign, ControlProxy.boolean_to_integer(child.vexpand), child.valign)
+        child.label = '' if child.label.nil?
+        child.stretchy = true if child.stretchy.nil?
+        ::LibUI.form_append(@libui, child.label, child.libui, ControlProxy.boolean_to_integer(child.stretchy))
         children << child
       end
       
@@ -43,7 +37,10 @@ module Glimmer
         @children ||= []
       end
       
-      # Note that there is no proper destroy_child(child) method for GridProxy due to libui not offering any API for it (no grid_delete)
+      def destroy_child(child)
+        ::LibUI.send("form_delete", @libui, children.index(child))
+        ControlProxy.all_control_proxies.delete(child)
+      end
       
       private
       

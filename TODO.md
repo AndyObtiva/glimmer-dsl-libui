@@ -2,11 +2,10 @@
 
 ## Next
 
-- New examples/form.rb
+- Support examples/basic_table.rb
 
 ## Soon
 
-- Support examples/basic_table.rb
 - Support examples/basic_table_image.rb
 
 ## Future

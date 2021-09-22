@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.0.15
+
+- New examples/form.rb
+- Support `form` control and child attributes of `stretchy` and `label`
+- Smart defaults for `form` child attributes `stretchy` (`true`) and `label` (`''`)
+
 ## 0.0.14
 
 - New examples/grid.rb
