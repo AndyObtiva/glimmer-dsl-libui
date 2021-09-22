@@ -10,13 +10,11 @@ window('Form') { |w|
   vertical_box {
     form {
       @first_name_entry = entry {
-        # stretchy true # Smart default option for appending to form
-        label 'First Name'
+        label 'First Name' # label property is available when control is nested under form
       }
       
       @last_name_entry = entry {
-        # stretchy true # Smart default option for appending to form
-        label 'Last Name'
+        label 'Last Name' # label property is available when control is nested under form
       }
     }
     

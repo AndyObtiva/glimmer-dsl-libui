@@ -284,7 +284,7 @@ Control(Args) | Properties | Listeners
 
 - `horizontal_box`, `vertical_box`, `grid`, and `form` controls have `padded` as `true` upon instantiation to ensure more user-friendly GUI by default
 - `group` controls have `margined` as `true` upon instantiation to ensure more user-friendly GUI by default
-- All controls nested under a `horizontal_box` or `vertical_box` have `stretchy` property (passed to `box_append` method) as `true` by default (filling maximum space)
+- All controls nested under a `horizontal_box`, `vertical_box`, and `form` have `stretchy` property (fill maximum space) as `true` by default (passed to `box_append`/`form_append` method)
 - `window` constructor args can be left off and have the following defaults when unspecified: `title` as `'Glimmer'`, `width` as `150`, `height` as `150`, and `has_menubar` as `true`)
 - `window` has an `on_closing` listener by default that quits application upon hitting the close button (can be overridden with a manual `on_closing` implementation that returns integer `0` for success)
 - `quit_menu_item` has an `on_clicked` listener by default that quits application upon selecting the quit menu item (can be overridden with a manual `on_clicked` implementation that returns integer `0` for success)
@@ -674,7 +674,7 @@ window('Basic Entry', 300, 50) { |w|
     }
     
     button('Button') {
-      stretchy false
+      stretchy false # stretchy property is available when control is nested under horizontal_box
       
       on_clicked do
         text = e.text
@@ -1730,13 +1730,11 @@ window('Form') { |w|
   vertical_box {
     form {
       @first_name_entry = entry {
-        # stretchy true # Smart default option for appending to form
-        label 'First Name'
+        label 'First Name' # label property is available when control is nested under form
       }
       
       @last_name_entry = entry {
-        # stretchy true # Smart default option for appending to form
-        label 'Last Name'
+        label 'Last Name' # label property is available when control is nested under form
       }
     }
     
