@@ -2,7 +2,7 @@
 
 ## Next
 
-- Support `date_picker` and `time_picker` `time` property
+- Support `date_picker`, `time_picker`, and `time` property
 - Support examples/date_time_picker.rb
 
 ## Soon
