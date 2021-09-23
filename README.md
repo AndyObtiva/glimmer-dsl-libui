@@ -500,6 +500,23 @@ window('hello world', 300, 200, true) {
 }.show
 ```
 
+[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 2:
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+window { # first 3 args can be set via properties with 4th arg has_menubar=true by default
+  title 'hello world'
+  content_size 300, 200
+  
+  on_closing do
+    puts 'Bye Bye'
+  end
+}.show
+```
+
 ### Basic Button
 
 [examples/basic_button.rb](examples/basic_button.rb)
@@ -564,29 +581,12 @@ require 'glimmer-dsl-libui'
 
 include Glimmer
 
-window('hello world', 300, 200, true) { |w|
+window('hello world', 300, 200) { |w|
   button('Button') {
     on_clicked do
       msg_box(w, 'Information', 'You clicked the button')
     end
   }
-  
-  on_closing do
-    puts 'Bye Bye'
-  end
-}.show
-```
-
-[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 2:
-
-```ruby
-require 'glimmer-dsl-libui'
-
-include Glimmer
-
-window { # first 3 args can be set via properties with 4th arg has_menubar=true by default
-  title 'hello world'
-  content_size 300, 200
   
   on_closing do
     puts 'Bye Bye'
