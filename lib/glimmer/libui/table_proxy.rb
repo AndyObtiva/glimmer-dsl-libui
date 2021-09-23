@@ -72,6 +72,7 @@ module Glimmer
       def build_control
         @model_handler = ::LibUI::FFI::TableModelHandler.malloc
         @model_handler.NumColumns   = rbcallback(4) { @columns.count }
+        @model_handler.ColumnType   = rbcallback(4) { 0 } # TODO derive from @columns when supporting multiple column types in the future
         @model_handler.NumRows      = rbcallback(4) { cell_rows.count }
         @model_handler.CellValue    = rbcallback(1, [1, 1, 4, 4]) do |_, _, row, column|
           ::LibUI.new_table_value_string((@cell_rows[row] && @cell_rows[row][column]).to_s)
