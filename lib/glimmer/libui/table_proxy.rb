@@ -27,8 +27,7 @@ module Glimmer
     #
     # Follows the Proxy Design Pattern
     class TableProxy < ControlProxy
-      attr_reader :model_handler, :model, :table_params
-      attr_accessor :cell_values
+      attr_reader :model_handler, :model, :table_params, :columns
     
       def initialize(keyword, parent, args, &block)
         @keyword = keyword
@@ -37,7 +36,7 @@ module Glimmer
         @block = block
         @enabled = true
         @columns = []
-        @cell_values = []
+        @cell_rows = []
         window_proxy.on_destroy do
           # the following unless condition is an exceptional condition stumbled upon that fails freeing the table model
           ::LibUI.free_table_model(@model) unless @destroyed && parent_proxy.is_a?(Glimmer::LibUI::Box)
@@ -58,13 +57,23 @@ module Glimmer
         @destroyed = true
       end
       
+      def cell_rows(rows = nil)
+        if rows.nil?
+          @cell_rows
+        else
+          @cell_rows = rows
+        end
+      end
+      alias cell_rows= cell_rows
+      alias set_cell_rows cell_rows
+      
       private
       
       def build_control
         @model_handler = ::LibUI::FFI::TableModelHandler.malloc
-        @model_handler.NumRows      = rbcallback(4) { cell_values.count }
+        @model_handler.NumRows      = rbcallback(4) { cell_rows.count }
         @model_handler.CellValue    = rbcallback(1, [1, 1, 4, 4]) do |_, _, row, column|
-          ::LibUI.new_table_value_string((@cell_values[row] && @cell_values[row][column]).to_s)
+          ::LibUI.new_table_value_string((@cell_rows[row] && @cell_rows[row][column]).to_s)
         end
         
         @model = ::LibUI.new_table_model(@model_handler)
@@ -74,9 +83,13 @@ module Glimmer
         @table_params.RowBackgroundColorModelColumn = -1
         
         @libui = ControlProxy.new_control(@keyword, [@table_params])
+        @libui.tap do
+          @columns.each {|column| column.send(:build_control) }
+        end
       end
       
       def rbcallback(*args, &block)
+        # TODO consider moving to a more general reusable location in the future (e.g. when used with `AreaProxy`)
         # Protects BlockCaller objects from garbage collection.
         @blockcaller ||= []
         args << [0] if args.size == 1 # Argument types are ommited

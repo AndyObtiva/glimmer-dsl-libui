@@ -1,5 +1,12 @@
 # Change Log
 
+## 0.0.17
+
+- Support examples/basic_table.rb
+- Support non-editable `table` control
+- Support table `text_column`
+- Support table `cell_rows` property as an `Array` (rows) of `Array`s (columns per rows) of cell values
+
 ## 0.0.16
 
 - Support ability to instantiate without args and set args as properties afterwards inside block (e.g. `window { title 'Greeter'; content_size 300, 400; button {text 'Greet'; on_clicked {puts 'Hi'}} }`)

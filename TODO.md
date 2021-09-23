@@ -2,18 +2,24 @@
 
 ## Next
 
-- Support non-editable `table` control with text columns and automatic cell value reading management (on row insertion/change/deletion)
-- Support examples/basic_table.rb
+- Support table `image_column`
+- Support examples/basic_table_image.rb
+- Support `image` and `image_part` for building images from rgba byte arrays
 
 ## Soon
 
-- Support table image columns
-- Support examples/basic_table_image.rb
-- Support table button columns
-- Support table checkbox columns
-- Support table checkbox text columns
-- Support table image text columns
-- Support table progress bar columns
+- Support table `image_text_columns`
+- New examples/basic_table_image_text.rb
+- Support table `button_column`
+- Support automatic table cell value reading management (row deletion in `cell_rows`)
+- New examples/deletable_row_table.rb
+- Support automatic table cell value reading management (row insertion in `cell_rows`)
+- New examples/insertable_row_table.rb
+- Support automatic table cell value reading management (row change in `cell_rows`)
+- New examples/changable_row_table.rb
+- Support table `checkbox_column`
+- Support table `checkbox_text_column`
+- Support table `progress_bar_column`
 - Support editable `table` control
 
 ## Future
@@ -31,3 +37,4 @@
 - Consider fine-grained attribute reader methods for `font_button` (e.g. `family`) and `color_button` (e.g. `green`)
 - Trap exit signal (CTRL+C) and close application gracefully
 - Support automatic `grid` horizontal or vertical layout by specifying `column_count` or `row_count`
+- Support re-opening a control by using `#content`
