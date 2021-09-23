@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.0.16
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.0.17
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Maintainability](https://api.codeclimate.com/v1/badges/ce2853efdbecf6ebdc73/maintainability)](https://codeclimate.com/github/AndyObtiva/glimmer-dsl-libui/maintainability)
@@ -43,7 +43,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
 
 ## Table of Contents
 
-- [Glimmer DSL for LibUI 0.0.16](#-glimmer-dsl-for-libui-0016)
+- [Glimmer DSL for LibUI 0.0.17](#-glimmer-dsl-for-libui-0017)
   - [Glimmer GUI DSL Concepts](#glimmer-gui-dsl-concepts)
   - [Usage](#usage)
   - [API](#api)
@@ -69,6 +69,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
     - [Date Time Picker](#date-time-picker)
     - [Grid](#grid)
     - [Form](#form)
+    - [Basic Table](#basic-table)
   - [Contributing to glimmer-dsl-libui](#contributing-to-glimmer-dsl-libui)
   - [Help](#help)
     - [Issues](#issues)
@@ -156,7 +157,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.0.16'
+gem 'glimmer-dsl-libui', '~> 0.0.17'
 ```
 
 Add `require 'glimmer-dsl-libui'` at the top, and then `include Glimmer` into the top-level main object for testing or into an actual class for serious usage.
@@ -241,6 +242,8 @@ Control(Args) | Properties | Listeners
 `spinbox(min as Numeric, max as Numeric)` | `value` (`Numeric`) | `on_changed`
 `tab` | `margined` (Boolean), `num_pages` (`Integer`) | None
 `tab_item(name as String)` | `index` [read-only] (`Integer`), `margined` (Boolean), `name` [read-only] (`String`) | None
+`table` | `cell_rows` (`Array` (rows) of `Arrays` (row columns) of cell values (e.g. `String` values)) | None
+`text_column(name as String)` | None | None
 `time_picker` | `time` (`Hash` of keys: `sec` as `Integer`, `min` as `Integer`, `hour` as `Integer`, `mday` as `Integer`, `mon` as `Integer`, `year` as `Integer`, `wday` as `Integer`, `yday` as `Integer`, `dst` as Boolean) | `on_changed`
 `vertical_box` | `padded` (Boolean) | None
 `window(title as String, width as Integer, height as Integer, has_menubar as Boolean)` | `borderless` (Boolean), `content_size` (width `Numeric`, height `Numeric`), `fullscreen` (Boolean), `margined` (Boolean), `title` (`String`) | `on_closing`, `on_content_size_changed`, `on_destroy`
@@ -303,6 +306,7 @@ Control(Args) | Properties | Listeners
 - When destroying a control nested under a `window` or `group`, it is automatically unset as their child to allow successful destruction
 - For `date_time_picker`, `date_picker`, and `time_picker`, make sure `time` hash values for `mon`, `wday`, and `yday` are 1-based instead of [libui](https://github.com/andlabs/libui) original 0-based values, and return `dst` as Boolean instead of `isdst` as `1`/`0`
 - Smart defaults for `grid` child attributes are `left` (`0`), `top` (`0`), `xspan` (`1`), `yspan` (`1`), `hexpand` (`false`), `halign` (`0`), `vexpand` (`false`), and `valign` (`0`)
+- The `table` control automatically constructs required `TableModelHandler`, `TableModel`, and `TableParams`, calculating all their arguments from `cell_rows` property (e.g. `NumRows`)
 
 ### API Gotchas
 
@@ -1746,6 +1750,126 @@ window('Form') { |w|
       end
     }
   }
+}.show
+```
+
+### Basic Table
+
+[examples/basic_table.rb](examples/basic_table.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/basic_table.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/basic_table'"
+```
+
+Mac
+
+![glimmer-dsl-libui-mac-basic-table.png](images/glimmer-dsl-libui-mac-basic-table.png)
+
+Linux
+
+![glimmer-dsl-libui-linux-basic-table.png](images/glimmer-dsl-libui-linux-basic-table.png)
+
+[LibUI](https://github.com/kojix2/LibUI) Original Version:
+
+```ruby
+require 'libui'
+
+UI = LibUI
+
+UI.init
+
+main_window = UI.new_window('Animal sounds', 300, 200, 1)
+
+hbox = UI.new_horizontal_box
+UI.window_set_child(main_window, hbox)
+
+data = [
+  %w[cat meow],
+  %w[dog woof],
+  %w[checken cock-a-doodle-doo],
+  %w[hourse neigh],
+  %w[cow moo]
+]
+
+# Protects BlockCaller objects from garbage collection.
+@blockcaller = []
+def rbcallback(*args, &block)
+  args << [0] if args.size == 1 # Argument types are ommited
+  blockcaller = Fiddle::Closure::BlockCaller.new(*args, &block)
+  @blockcaller << blockcaller
+  blockcaller
+end
+
+model_handler = UI::FFI::TableModelHandler.malloc
+model_handler.NumColumns   = rbcallback(4) { 2 }
+model_handler.ColumnType   = rbcallback(4) { 0 }
+model_handler.NumRows      = rbcallback(4) { 5 }
+model_handler.CellValue    = rbcallback(1, [1, 1, 4, 4]) do |_, _, row, column|
+  UI.new_table_value_string(data[row][column])
+end
+model_handler.SetCellValue = rbcallback(0, [0]) {}
+
+model = UI.new_table_model(model_handler)
+
+table_params = UI::FFI::TableParams.malloc
+table_params.Model = model
+table_params.RowBackgroundColorModelColumn = -1
+
+table = UI.new_table(table_params)
+UI.table_append_text_column(table, 'Animal', 0, -1)
+UI.table_append_text_column(table, 'Description', 1, -1)
+
+UI.box_append(hbox, table, 1)
+UI.control_show(main_window)
+
+UI.window_on_closing(main_window) do
+  puts 'Bye Bye'
+  UI.control_destroy(main_window)
+  UI.free_table_model(model)
+  UI.quit
+  0
+end
+
+UI.main
+UI.quit
+```
+
+[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+data = [
+  %w[cat meow],
+  %w[dog woof],
+  %w[chicken cock-a-doodle-doo],
+  %w[hourse neigh],
+  %w[cow moo]
+]
+
+window('Animal sounds', 300, 200) {
+  horizontal_box {
+    table {
+      text_column('Animal')
+      text_column('Description')
+
+      cell_rows data
+    }
+  }
+  
+  on_closing do
+    puts 'Bye Bye'
+  end
 }.show
 ```
 

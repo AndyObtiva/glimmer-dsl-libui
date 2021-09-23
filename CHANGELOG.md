@@ -5,7 +5,7 @@
 - Support examples/basic_table.rb
 - Support non-editable `table` control
 - Support table `text_column`
-- Support table `cell_rows` property as an `Array` (rows) of `Array`s (columns per rows) of cell values
+- Support table `cell_rows` property as an `Array` (rows) of `Array`s (row columns) of cell values
 
 ## 0.0.16
 
