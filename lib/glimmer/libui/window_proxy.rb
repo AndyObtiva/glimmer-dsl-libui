@@ -40,6 +40,16 @@ module Glimmer
         ::LibUI.send("window_set_child", @libui, nil)
         super
       end
+      
+      def destroy
+        super
+        @on_destroy_procs&.each { |on_destroy_proc| on_destroy_proc.call(self)}
+      end
+      
+      def on_destroy(&block)
+        @on_destroy_procs ||= []
+        @on_destroy_procs << block
+      end
     
       def show
         super

@@ -2,10 +2,19 @@
 
 ## Next
 
+- Support non-editable `table` control with text columns and automatic cell value reading management (on row insertion/change/deletion)
+- Support examples/basic_table.rb
+
 ## Soon
 
-- Support examples/basic_table.rb
+- Support table image columns
 - Support examples/basic_table_image.rb
+- Support table button columns
+- Support table checkbox columns
+- Support table checkbox text columns
+- Support table image text columns
+- Support table progress bar columns
+- Support editable `table` control
 
 ## Future
 
@@ -13,7 +22,6 @@
 - Support examples/basic_draw_text.rb
 - Support examples/histogram.rb
 - Create new examples not found in LibUI for everything not covered by the original examples
-- Implement examples in libui_paradise
 - Support general property data-binding
 - Support table property data-binding
 - Support combobox and editable_combobox property data-binding

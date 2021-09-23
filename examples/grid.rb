@@ -8,8 +8,8 @@ window('Grid') {
   tab {
     tab_item('Spanning') {
       grid {
-        4.times { |left_value|
-          4.times { |top_value|
+        4.times { |top_value|
+          4.times { |left_value|
             label("(#{left_value}, #{top_value}) xspan1\nyspan1") {
               left left_value
               top top_value

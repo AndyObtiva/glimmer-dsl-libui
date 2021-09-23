@@ -243,7 +243,7 @@ Control(Args) | Properties | Listeners
 `tab_item(name as String)` | `index` [read-only] (`Integer`), `margined` (Boolean), `name` [read-only] (`String`) | None
 `time_picker` | `time` (`Hash` of keys: `sec` as `Integer`, `min` as `Integer`, `hour` as `Integer`, `mday` as `Integer`, `mon` as `Integer`, `year` as `Integer`, `wday` as `Integer`, `yday` as `Integer`, `dst` as Boolean) | `on_changed`
 `vertical_box` | `padded` (Boolean) | None
-`window(title as String, width as Integer, height as Integer, has_menubar as Boolean)` | `borderless` (Boolean), `content_size` (width `Numeric`, height `Numeric`), `fullscreen` (Boolean), `margined` (Boolean), `title` (`String`) | `on_closing`, `on_content_size_changed`
+`window(title as String, width as Integer, height as Integer, has_menubar as Boolean)` | `borderless` (Boolean), `content_size` (width `Numeric`, height `Numeric`), `fullscreen` (Boolean), `margined` (Boolean), `title` (`String`) | `on_closing`, `on_content_size_changed`, `on_destroy`
 
 ### Common Control Properties
 - `enabled` (Boolean)
@@ -1629,8 +1629,8 @@ window('Grid') {
   tab {
     tab_item('Spanning') {
       grid {
-        4.times { |left_value|
-          4.times { |top_value|
+        4.times { |top_value|
+          4.times { |left_value|
             label("(#{left_value}, #{top_value}) xspan1\nyspan1") {
               left left_value
               top top_value
