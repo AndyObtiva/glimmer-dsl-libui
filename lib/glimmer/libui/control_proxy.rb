@@ -66,6 +66,10 @@ module Glimmer
         def menu_proxies
           all_control_proxies.select {|c| c.keyword == 'menu' }
         end
+        
+        def new_control(keyword, args)
+          ::LibUI.send("new_#{keyword}", *args)
+        end
       end
       
       BOOLEAN_PROPERTIES = %w[
@@ -254,7 +258,7 @@ module Glimmer
       
       def build_control
         @libui = if ::LibUI.respond_to?("new_#{keyword}")
-          ::LibUI.send("new_#{@keyword}", *@args)
+          ControlProxy.new_control(@keyword, @args)
         elsif ::LibUI.respond_to?(keyword)
           @args[0] = @args.first.libui if @args.first.is_a?(ControlProxy)
           ::LibUI.send(@keyword, *@args)

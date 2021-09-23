@@ -23,30 +23,18 @@ require 'glimmer/libui/control_proxy'
 
 module Glimmer
   module LibUI
-    # Proxy for LibUI group objects
+    # Proxy for LibUI menu objects
     #
     # Follows the Proxy Design Pattern
-    class GroupProxy < ControlProxy
-      DEFAULT_TITLE = ''
+    class MenuProxy < ControlProxy
+      DEFAULT_TEXT = ''
       
-      def post_initialize_child(child)
-        ::LibUI.group_set_child(@libui, child.libui)
-      end
-      
-      def destroy_child(child)
-        ::LibUI.send("group_set_child", @libui, nil)
-        super
-      end
-    
       private
       
       def build_control
         construction_args = @args.dup
-        construction_args[0] = DEFAULT_TITLE if construction_args.size == 0
+        construction_args[0] = DEFAULT_TEXT if construction_args.size == 0
         @libui = ControlProxy.new_control(@keyword, construction_args)
-        @libui.tap do
-          self.margined = true
-        end
       end
     end
   end

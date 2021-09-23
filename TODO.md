@@ -2,20 +2,9 @@
 
 ## Next
 
-- Support examples/basic_table.rb
-
 ## Soon
 
-- Support ability to set properties on controls after instantiation without args (e.g. `window { title 'Title'; width 300; height 400; button {text 'Greet'; on_clicked {puts 'Hi'}} }`)
-  - button
-  - checkbox
-  - group
-  - label
-  - menu
-  - menu_item
-  - slider
-  - spinbox
-  - tab_item
+- Support examples/basic_table.rb
 - Support examples/basic_table_image.rb
 
 ## Future

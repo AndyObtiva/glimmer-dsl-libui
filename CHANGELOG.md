@@ -1,5 +1,14 @@
 # Change Log
 
+## 0.0.16
+
+- Support ability to instantiate without args and set args as properties afterwards inside block (e.g. `window { title 'Greeter'; content_size 300, 400; button {text 'Greet'; on_clicked {puts 'Hi'}} }`)
+  - window (was supported before, but changed default title to empty string)
+  - button
+  - checkbox
+  - group
+  - label
+
 ## 0.0.15
 
 - New examples/form.rb
