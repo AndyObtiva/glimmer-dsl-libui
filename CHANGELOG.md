@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.0.20
+
+- New examples/editable_column_table.rb
+- Support `editable` property for `text_column`
+
 ## 0.0.19
 
 - New examples/editable_table.rb

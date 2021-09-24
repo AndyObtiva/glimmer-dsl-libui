@@ -2,8 +2,6 @@
 
 ## Next
 
-- Support editable `text_column`
-- New examples/editable_column_table.rb
 
 ## Soon
 
@@ -31,9 +29,13 @@
 - Support radio_buttons property data-binding
 - Create new examples not found in LibUI for everything not covered by the original examples
 - Support control-specific operations that accept Ruby proxy objects instead of Fiddle pointer objects (mainly `insert_at` operations)
-- Trap exit signal (CTRL+C) and close application gracefully
 - Support automatic `grid` horizontal or vertical layout by specifying `column_count` or `row_count`
 - Support re-opening a control by using `#content`
 - Support custom controls
 - Support custom windows
 - Add a 3rd tab to examples/grid.rb showcasing the halign and valign properties and provide symbol alternatives for their values like `:fill` and `:center`
+
+## Maybe
+
+- Trap exit signal (CTRL+C) and close application gracefully
+- Support optionally passing arguments to columns for LibUI.append_column_xyz methods

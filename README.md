@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.0.19
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.0.20
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Maintainability](https://api.codeclimate.com/v1/badges/ce2853efdbecf6ebdc73/maintainability)](https://codeclimate.com/github/AndyObtiva/glimmer-dsl-libui/maintainability)
@@ -43,7 +43,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
 
 ## Table of Contents
 
-- [Glimmer DSL for LibUI 0.0.19](#-glimmer-dsl-for-libui-0019)
+- [Glimmer DSL for LibUI 0.0.20](#-glimmer-dsl-for-libui-0020)
   - [Glimmer GUI DSL Concepts](#glimmer-gui-dsl-concepts)
   - [Usage](#usage)
   - [API](#api)
@@ -71,6 +71,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
     - [Form](#form)
     - [Basic Table](#basic-table)
     - [Editable Table](#editable-table)
+    - [Editable Column Table](#editable-column-table)
     - [Basic Table Image](#basic-table-image)
   - [Contributing to glimmer-dsl-libui](#contributing-to-glimmer-dsl-libui)
   - [Help](#help)
@@ -159,7 +160,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.0.19'
+gem 'glimmer-dsl-libui', '~> 0.0.20'
 ```
 
 Add `require 'glimmer-dsl-libui'` at the top, and then `include Glimmer` into the top-level main object for testing or into an actual class for serious usage.
@@ -248,7 +249,7 @@ Control(Args) | Properties | Listeners
 `tab` | `margined` (Boolean), `num_pages` (`Integer`) | None
 `tab_item(name as String)` | `index` [read-only] (`Integer`), `margined` (Boolean), `name` [read-only] (`String`) | None
 `table` | `cell_rows` (`Array` (rows) of `Arrays` (row columns) of cell values (e.g. `String` values)), `editable` as Boolean | None
-`text_column(name as String)` | None | None
+`text_column(name as String)` | `editable` as Boolean | None
 `time_picker` | `time` (`Hash` of keys: `sec` as `Integer`, `min` as `Integer`, `hour` as `Integer`, `mday` as `Integer`, `mon` as `Integer`, `year` as `Integer`, `wday` as `Integer`, `yday` as `Integer`, `dst` as Boolean) | `on_changed`
 `vertical_box` | `padded` (Boolean) | None
 `window(title as String, width as Integer, height as Integer, has_menubar as Boolean)` | `borderless` (Boolean), `content_size` (width `Numeric`, height `Numeric`), `fullscreen` (Boolean), `margined` (Boolean), `title` (`String`) | `on_closing`, `on_content_size_changed`, `on_destroy`
@@ -313,7 +314,7 @@ Control(Args) | Properties | Listeners
 - When destroying a control nested under a `window` or `group`, it is automatically unset as their child to allow successful destruction
 - For `date_time_picker`, `date_picker`, and `time_picker`, make sure `time` hash values for `mon`, `wday`, and `yday` are 1-based instead of [libui](https://github.com/andlabs/libui) original 0-based values, and return `dst` as Boolean instead of `isdst` as `1`/`0`
 - Smart defaults for `grid` child attributes are `left` (`0`), `top` (`0`), `xspan` (`1`), `yspan` (`1`), `hexpand` (`false`), `halign` (`0`), `vexpand` (`false`), and `valign` (`0`)
-- The `table` control automatically constructs required `TableModelHandler`, `TableModel`, and `TableParams`, calculating all their arguments from `cell_rows` property (e.g. `NumRows`)
+- The `table` control automatically constructs required `TableModelHandler`, `TableModel`, and `TableParams`, calculating all their arguments from `cell_rows` and `editable` properties (e.g. `NumRows`) as well as nested columns (e.g. `text_column`)
 - Table model instances are automatically freed from memory after `window` is destroyed.
 - `image` instances are automatically freed from memory after `window` is destroyed.
 
@@ -1942,6 +1943,65 @@ window('Editable animal sounds', 300, 200) {
 }.show
 ```
 
+### Editable Column Table
+
+[examples/editable_column_table.rb](examples/editable_column_table.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/editable_column_table.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/editable_column_table'"
+```
+
+Mac
+
+![glimmer-dsl-libui-mac-editable-column-table-editing.png](images/glimmer-dsl-libui-mac-editable-column-table-editing.png)
+![glimmer-dsl-libui-mac-editable-column-table-edited.png](images/glimmer-dsl-libui-mac-editable-column-table-edited.png)
+
+Linux
+
+![glimmer-dsl-libui-linux-editable-column-table-editing.png](images/glimmer-dsl-libui-linux-editable-column-table-editing.png)
+![glimmer-dsl-libui-linux-editable-column-table-edited.png](images/glimmer-dsl-libui-linux-editable-column-table-edited.png)
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+data = [
+  %w[cat calm meow],
+  %w[dog loyal woof],
+  %w[chicken bird cock-a-doodle-doo],
+  %w[hourse fast neigh],
+  %w[cow slow moo]
+]
+
+window('Editable column animal sounds', 400, 200) {
+  horizontal_box {
+    table {
+      text_column('Animal')
+      text_column('Description')
+      text_column('Sound (Editable)') {
+        editable true
+      }
+
+      cell_rows data
+    }
+  }
+  
+  on_closing do
+    puts 'Bye Bye'
+  end
+}.show
+```
 
 ### Basic Table Image
 

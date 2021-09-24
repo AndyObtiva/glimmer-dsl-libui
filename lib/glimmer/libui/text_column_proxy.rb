@@ -30,10 +30,21 @@ module Glimmer
     class TextColumnProxy < ControlProxy
       include Column
           
+      def editable(value = nil)
+        if value.nil?
+          @editable
+        else
+          @editable = !!value
+        end
+      end
+      alias editable= editable
+      alias set_editable editable
+      alias editable? editable
+          
       private
       
       def build_control
-        @parent_proxy.append_text_column(name, next_column_index, @parent_proxy.editable? ? -2 : -1)
+        @parent_proxy.append_text_column(name, next_column_index, @parent_proxy.editable? || editable? ? -2 : -1)
         super
       end
     end
