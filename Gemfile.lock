@@ -50,9 +50,7 @@ GEM
       facets (>= 3.1.0, < 4.0.0)
     hashie (3.6.0)
     highline (2.0.3)
-    jar-dependencies (0.4.1)
     json (2.5.1)
-    json (2.5.1-java)
     juwelier (2.4.9)
       builder
       bundler
@@ -72,8 +70,6 @@ GEM
     multi_json (1.15.0)
     multi_xml (0.6.0)
     multipart-post (2.1.1)
-    nokogiri (1.12.4-java)
-      racc (~> 1.4)
     nokogiri (1.12.4-x86_64-darwin)
       racc (~> 1.4)
     oauth2 (1.4.7)
@@ -86,13 +82,10 @@ GEM
     pastel (0.8.0)
       tty-color (~> 0.5)
     psych (4.0.1)
-    psych (4.0.1-java)
-      jar-dependencies (>= 0.1.7)
     public_suffix (4.0.6)
     puts_debuggerer (0.13.1)
       awesome_print (~> 1.9.2)
     racc (1.5.2)
-    racc (1.5.2-java)
     rack (2.2.3)
     rake (13.0.6)
     rake-tui (0.2.3)
@@ -125,7 +118,6 @@ GEM
       tins (~> 1.0)
     thor (1.1.0)
     thread_safe (0.3.6)
-    thread_safe (0.3.6-java)
     tins (1.29.1)
       sync
     tty-color (0.6.0)
@@ -145,7 +137,7 @@ PLATFORMS
   x86_64-darwin-20
 
 DEPENDENCIES
-  chunky_png (> 0)
+  chunky_png (~> 1.4.0)
   coveralls (= 0.8.23)
   glimmer (~> 2.1.2)
   juwelier (>= 2.4.9, < 3.0.0)

@@ -73,7 +73,15 @@ module Glimmer
       def build_control
         @model_handler = ::LibUI::FFI::TableModelHandler.malloc
         @model_handler.NumColumns   = rbcallback(4) { @columns.count }
-        @model_handler.ColumnType   = rbcallback(4) { 0 } # TODO derive from @columns when supporting multiple column types in the future
+        @model_handler.ColumnType   = rbcallback(4) do
+          # TODO support different values for different columns
+          case @columns.first
+          when TextColumnProxy
+            0
+          when ImageColumnProxy
+            1
+          end
+        end
         @model_handler.NumRows      = rbcallback(4) { cell_rows.count }
         @model_handler.CellValue    = rbcallback(1, [1, 1, 4, 4]) do |_, _, row, column|
           case @columns[column]

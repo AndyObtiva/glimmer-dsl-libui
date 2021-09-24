@@ -31,7 +31,7 @@ end
 window('The Red Turtle', 310, 350, false) {
   horizontal_box {
     table {
-      image_column('www.ghibli.jp/works/red-turtle', 0)
+      image_column('www.ghibli.jp/works/red-turtle')
       
       cell_rows IMAGE_ROWS
     }

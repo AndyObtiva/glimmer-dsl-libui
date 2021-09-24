@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.0.17
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.0.18
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Maintainability](https://api.codeclimate.com/v1/badges/ce2853efdbecf6ebdc73/maintainability)](https://codeclimate.com/github/AndyObtiva/glimmer-dsl-libui/maintainability)
@@ -43,7 +43,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
 
 ## Table of Contents
 
-- [Glimmer DSL for LibUI 0.0.17](#-glimmer-dsl-for-libui-0017)
+- [Glimmer DSL for LibUI 0.0.18](#-glimmer-dsl-for-libui-0018)
   - [Glimmer GUI DSL Concepts](#glimmer-gui-dsl-concepts)
   - [Usage](#usage)
   - [API](#api)
@@ -157,7 +157,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.0.17'
+gem 'glimmer-dsl-libui', '~> 0.0.18'
 ```
 
 Add `require 'glimmer-dsl-libui'` at the top, and then `include Glimmer` into the top-level main object for testing or into an actual class for serious usage.
@@ -227,6 +227,9 @@ Control(Args) | Properties | Listeners
 `group(text as String)` | `margined` (Boolean), `title` (`String`) | None
 `horizontal_box` | `padded` (Boolean) | None
 `horizontal_separator` | None | None
+`image(width as Numeric, height as Numeric)` | None | None
+`image_part(pixels as String [encoded image rgba byte array], width as Numeric, height as Numeric, byte_stride as Numeric [usually width*4])` | None | None
+`image_column(name as String)` | None | None
 `label(text as String)` | `text` (`String`) | None
 `menu(text as String)` | None | None
 `menu_item(text as String)` | `checked` (Boolean) | `on_clicked`
@@ -1871,6 +1874,164 @@ window('Animal sounds', 300, 200) {
     }
   }
   
+  on_closing do
+    puts 'Bye Bye'
+  end
+}.show
+```
+
+### Basic Table Image
+
+This example has a prerequisite of installing `chunky_png` Ruby gem:
+
+```
+gem install chunky_png -v1.4.0
+```
+
+Also, note that behavior varies per platform (i.e. how `table` chooses to size images by default).
+
+[examples/basic_table_image.rb](examples/basic_table_image.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/basic_table_image.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/basic_table_image'"
+```
+
+Mac
+
+![glimmer-dsl-libui-mac-basic-table-image.png](images/glimmer-dsl-libui-mac-basic-table-image.png)
+
+Linux
+
+![glimmer-dsl-libui-linux-basic-table-image.png](images/glimmer-dsl-libui-linux-basic-table-image.png)
+
+[LibUI](https://github.com/kojix2/LibUI) Original Version:
+
+```ruby
+# NOTE:
+# This example displays images that can be freely downloaded from the Studio Ghibli website.
+
+require 'libui'
+require 'chunky_png'
+require 'open-uri'
+
+UI = LibUI
+
+UI.init
+
+main_window = UI.new_window('The Red Turtle', 310, 350, 0)
+
+hbox = UI.new_horizontal_box
+UI.window_set_child(main_window, hbox)
+
+IMAGES = []
+
+50.times do |i|
+  url = format('https://www.ghibli.jp/gallery/thumb-redturtle%03d.png', (i + 1))
+  puts "Processing Image: #{url}"
+  f = URI.open(url)
+  canvas = ChunkyPNG::Canvas.from_io(f)
+  f.close
+  data = canvas.to_rgba_stream
+  width = canvas.width
+  height = canvas.height
+  image = UI.new_image(width, height)
+  UI.image_append(image, data, width, height, width * 4)
+  IMAGES << image
+rescue StandardError => e
+  warn url, e.message
+end
+
+# Protects BlockCaller objects from garbage collection.
+@blockcaller = []
+def rbcallback(*args, &block)
+  args << [0] if args.size == 1 # Argument types are ommited
+  blockcaller = Fiddle::Closure::BlockCaller.new(*args, &block)
+  @blockcaller << blockcaller
+  blockcaller
+end
+
+model_handler = UI::FFI::TableModelHandler.malloc
+model_handler.NumColumns   = rbcallback(4) { 1 }
+model_handler.ColumnType   = rbcallback(4) { 1 } # Image
+model_handler.NumRows      = rbcallback(4) { IMAGES.size }
+model_handler.CellValue    = rbcallback(1, [1, 1, 4, 4]) do |_, _, row, _column|
+  UI.new_table_value_image(IMAGES[row])
+end
+model_handler.SetCellValue = rbcallback(0, [0]) {}
+
+model = UI.new_table_model(model_handler)
+
+table_params = UI::FFI::TableParams.malloc
+table_params.Model = model
+table_params.RowBackgroundColorModelColumn = -1
+
+table = UI.new_table(table_params)
+UI.table_append_image_column(table, 'www.ghibli.jp/works/red-turtle', 0)
+
+UI.box_append(hbox, table, 1)
+UI.control_show(main_window)
+
+UI.window_on_closing(main_window) do
+  puts 'Bye Bye'
+  UI.control_destroy(main_window)
+  UI.free_table_model(model)
+  IMAGES.each { |i| UI.free_image(i) }
+  UI.quit
+  0
+end
+
+UI.main
+UI.quit
+```
+
+[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+# NOTE:
+# This example displays images that can be freely downloaded from the Studio Ghibli website.
+
+require 'glimmer-dsl-libui'
+require 'chunky_png'
+require 'open-uri'
+
+include Glimmer
+
+IMAGE_ROWS = []
+
+50.times do |i|
+  url = format('https://www.ghibli.jp/gallery/thumb-redturtle%03d.png', (i + 1))
+  puts "Processing Image: #{url}"
+  f = URI.open(url)
+  canvas = ChunkyPNG::Canvas.from_io(f)
+  f.close
+  data = canvas.to_rgba_stream
+  width = canvas.width
+  height = canvas.height
+  img = image(width, height) {
+    image_part(data, width, height, width * 4)
+  }
+  IMAGE_ROWS << [img] # array of one column cell
+rescue StandardError => e
+  warn url, e.message
+end
+
+window('The Red Turtle', 310, 350, false) {
+  horizontal_box {
+    table {
+      image_column('www.ghibli.jp/works/red-turtle', 0)
+      
+      cell_rows IMAGE_ROWS
+    }
+    
+  }
   on_closing do
     puts 'Bye Bye'
   end
