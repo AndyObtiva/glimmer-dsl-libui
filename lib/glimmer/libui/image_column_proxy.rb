@@ -33,8 +33,7 @@ module Glimmer
       private
       
       def build_control
-        @parent_proxy.append_image_column(name, next_column_index)
-        super
+        @parent_proxy.append_image_column(name, column_index)
       end
     end
   end

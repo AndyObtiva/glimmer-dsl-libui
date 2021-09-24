@@ -40,3 +40,4 @@
 
 - Trap exit signal (CTRL+C) and close application gracefully
 - Support optionally passing arguments to columns for LibUI.append_column_xyz methods
+- Support `table` `on_changed` listener to intercept change and cancel it if needed

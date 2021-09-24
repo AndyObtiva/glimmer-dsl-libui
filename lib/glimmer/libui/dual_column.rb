@@ -24,7 +24,11 @@ require 'glimmer/libui/control_proxy'
 module Glimmer
   module LibUI
     # A dual column is one that represents two values (e.g. image and text or checkbox and text)
+    # It is meant to be included in a column proxy class that already includes Column
     module DualColumn
+      def second_column_index
+        column_index + 1
+      end
     end
   end
 end

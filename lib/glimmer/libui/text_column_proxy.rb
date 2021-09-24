@@ -34,8 +34,7 @@ module Glimmer
       private
       
       def build_control
-        @parent_proxy.append_text_column(name, next_column_index, editable_value)
-        super
+        @parent_proxy.append_text_column(name, column_index, editable_value)
       end
     end
   end

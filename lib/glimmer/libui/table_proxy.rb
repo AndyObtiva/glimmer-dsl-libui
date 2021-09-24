@@ -81,7 +81,9 @@ module Glimmer
       alias set_cell_rows cell_rows
       
       def expanded_cell_rows
-        @cell_rows.flatten(1)
+        cell_rows.map do |row|
+          row.flatten(1)
+        end
       end
       
       def editable(value = nil)
@@ -125,9 +127,9 @@ module Glimmer
           the_cell_rows = expanded_cell_rows
           case @columns[column]
           when TextColumnProxy, NilClass
-            ::LibUI.new_table_value_string((the_cell_rows[row] && the_cell_rows[row][column]).to_s)
+            ::LibUI.new_table_value_string((expanded_cell_rows[row] && expanded_cell_rows[row][column]).to_s)
           when ImageColumnProxy, ImageTextColumnProxy
-            ::LibUI.new_table_value_image((the_cell_rows[row] && the_cell_rows[row][column]))
+            ::LibUI.new_table_value_image((expanded_cell_rows[row] && expanded_cell_rows[row][column]))
           end
         end
         @model_handler.SetCellValue = rbcallback(0, [1, 1, 4, 4, 1]) do |_, _, row, column, val|
@@ -161,6 +163,11 @@ module Glimmer
         blockcaller = Fiddle::Closure::BlockCaller.new(*args, &block)
         @blockcaller << blockcaller
         blockcaller
+      end
+      
+      def next_column_index
+        @next_column_index ||= -1
+        @next_column_index += 1
       end
       
     end

@@ -35,9 +35,8 @@ module Glimmer
       private
       
       def build_control
-        first_column_index = next_column_index
+        first_column_index = column_index
         @parent_proxy.append_image_text_column(name, first_column_index, first_column_index + 1, editable_value)
-        super
       end
     end
   end
