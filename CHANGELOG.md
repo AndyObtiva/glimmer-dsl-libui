@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.0.19
+
+- New examples/editable_table.rb
+- Support editable `table` control
+- Fix issue with table `text_column` repeating the first column as the second
+
 ## 0.0.18
 
 - Support examples/basic_table_image.rb

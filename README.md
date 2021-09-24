@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.0.18
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.0.19
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Maintainability](https://api.codeclimate.com/v1/badges/ce2853efdbecf6ebdc73/maintainability)](https://codeclimate.com/github/AndyObtiva/glimmer-dsl-libui/maintainability)
@@ -43,7 +43,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
 
 ## Table of Contents
 
-- [Glimmer DSL for LibUI 0.0.18](#-glimmer-dsl-for-libui-0018)
+- [Glimmer DSL for LibUI 0.0.19](#-glimmer-dsl-for-libui-0019)
   - [Glimmer GUI DSL Concepts](#glimmer-gui-dsl-concepts)
   - [Usage](#usage)
   - [API](#api)
@@ -157,7 +157,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.0.18'
+gem 'glimmer-dsl-libui', '~> 0.0.19'
 ```
 
 Add `require 'glimmer-dsl-libui'` at the top, and then `include Glimmer` into the top-level main object for testing or into an actual class for serious usage.
@@ -245,7 +245,7 @@ Control(Args) | Properties | Listeners
 `spinbox(min as Numeric, max as Numeric)` | `value` (`Numeric`) | `on_changed`
 `tab` | `margined` (Boolean), `num_pages` (`Integer`) | None
 `tab_item(name as String)` | `index` [read-only] (`Integer`), `margined` (Boolean), `name` [read-only] (`String`) | None
-`table` | `cell_rows` (`Array` (rows) of `Arrays` (row columns) of cell values (e.g. `String` values)) | None
+`table` | `cell_rows` (`Array` (rows) of `Arrays` (row columns) of cell values (e.g. `String` values)), `editable` as Boolean | None
 `text_column(name as String)` | None | None
 `time_picker` | `time` (`Hash` of keys: `sec` as `Integer`, `min` as `Integer`, `hour` as `Integer`, `mday` as `Integer`, `mon` as `Integer`, `year` as `Integer`, `wday` as `Integer`, `yday` as `Integer`, `dst` as Boolean) | `on_changed`
 `vertical_box` | `padded` (Boolean) | None
@@ -1879,6 +1879,67 @@ window('Animal sounds', 300, 200) {
   end
 }.show
 ```
+
+### Editable Table
+
+[examples/editable_table.rb](examples/editable_table.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/editable_table.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/editable_table'"
+```
+
+Mac
+
+![glimmer-dsl-libui-mac-editable-table.png](images/glimmer-dsl-libui-mac-editable-table.png)
+![glimmer-dsl-libui-mac-editable-table-editing.png](images/glimmer-dsl-libui-mac-editable-table-editing.png)
+![glimmer-dsl-libui-mac-editable-table-edited.png](images/glimmer-dsl-libui-mac-editable-table-edited.png)
+
+Linux
+
+![glimmer-dsl-libui-linux-editable-table.png](images/glimmer-dsl-libui-linux-editable-table.png)
+![glimmer-dsl-libui-linux-editable-table-editing.png](images/glimmer-dsl-libui-linux-editable-table-editing.png)
+![glimmer-dsl-libui-linux-editable-table-edited.png](images/glimmer-dsl-libui-linux-editable-table-edited.png)
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+data = [
+  %w[cat meow],
+  %w[dog woof],
+  %w[chicken cock-a-doodle-doo],
+  %w[hourse neigh],
+  %w[cow moo]
+]
+
+window('Editable animal sounds', 300, 200) {
+  horizontal_box {
+    table {
+      text_column('Animal')
+      text_column('Description')
+
+      cell_rows data
+      editable true
+    }
+  }
+  
+  on_closing do
+    puts 'Bye Bye'
+  end
+}.show
+```
+
 
 ### Basic Table Image
 

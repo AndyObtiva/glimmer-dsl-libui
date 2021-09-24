@@ -33,7 +33,8 @@ module Glimmer
       private
       
       def build_control
-        @libui = @parent_proxy.append_image_column(name, @parent_proxy.columns.map(&:libui).compact.count)
+        @parent_proxy.append_image_column(name, next_column_index)
+        super
       end
     end
   end

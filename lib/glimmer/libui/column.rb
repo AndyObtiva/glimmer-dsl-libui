@@ -25,6 +25,9 @@ module Glimmer
   module LibUI
     # Common logic for all column proxy objects
     module Column
+      attr_reader :appended
+      alias appended? appended
+    
       def initialize(keyword, parent, args, &block)
         @keyword = keyword
         @parent_proxy = parent
@@ -36,6 +39,16 @@ module Glimmer
       
       def name
         @args.first
+      end
+      
+      private
+      
+      def build_control
+        @appended = true
+      end
+      
+      def next_column_index
+        @parent_proxy.columns.map(&:appended?).compact.count
       end
     end
   end

@@ -29,11 +29,12 @@ module Glimmer
     # Follows the Proxy Design Pattern
     class TextColumnProxy < ControlProxy
       include Column
-    
+          
       private
       
       def build_control
-        @libui = @parent_proxy.append_text_column(name, @parent_proxy.columns.map(&:libui).compact.count, -1) # -1 for non-editable for now until editing is supported
+        @parent_proxy.append_text_column(name, next_column_index, @parent_proxy.editable? ? -2 : -1)
+        super
       end
     end
   end

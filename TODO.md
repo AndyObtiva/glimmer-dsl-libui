@@ -2,11 +2,13 @@
 
 ## Next
 
-- Support table `image_text_column`
-- New examples/basic_table_image_text.rb
+- Support editable `text_column`
+- New examples/editable_column_table.rb
 
 ## Soon
 
+- Support table `image_text_column`
+- New examples/basic_table_image_text.rb
 - Support table `button_column`
 - Support automatic table cell value reading management (row deletion in `cell_rows`)
 - New examples/deletable_row_table.rb
@@ -17,7 +19,6 @@
 - Support table `checkbox_column`
 - Support table `checkbox_text_column`
 - Support table `progress_bar_column`
-- Support editable `table` control
 
 ## Future
 
@@ -35,3 +36,4 @@
 - Support re-opening a control by using `#content`
 - Support custom controls
 - Support custom windows
+- Add a 3rd tab to examples/grid.rb showcasing the halign and valign properties and provide symbol alternatives for their values like `:fill` and `:center`

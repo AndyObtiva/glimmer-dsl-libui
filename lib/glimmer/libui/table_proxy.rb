@@ -68,13 +68,25 @@ module Glimmer
       alias cell_rows= cell_rows
       alias set_cell_rows cell_rows
       
+      def editable(value = nil)
+        if value.nil?
+          @editable
+        else
+          @editable = !!value
+        end
+      end
+      alias editable= editable
+      alias set_editable editable
+      alias editable? editable
+      
       private
       
       def build_control
         @model_handler = ::LibUI::FFI::TableModelHandler.malloc
         @model_handler.NumColumns   = rbcallback(4) { @columns.count }
         @model_handler.ColumnType   = rbcallback(4) do
-          # TODO support different values for different columns
+          # Note: this assumes all columns are the same type
+          # TODO support different values per different columns
           case @columns.first
           when TextColumnProxy
             0
@@ -89,6 +101,13 @@ module Glimmer
             ::LibUI.new_table_value_string((@cell_rows[row] && @cell_rows[row][column]).to_s)
           when ImageColumnProxy
             ::LibUI.new_table_value_image((@cell_rows[row] && @cell_rows[row][column]))
+          end
+        end
+        @model_handler.SetCellValue = rbcallback(0, [1, 1, 4, 4, 1]) do |_, _, row, column, val|
+          case @columns[column]
+          when TextColumnProxy
+            @cell_rows[row] ||= []
+            @cell_rows[row][column] = ::LibUI.table_value_string(val).to_s
           end
         end
         
