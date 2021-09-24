@@ -70,6 +70,8 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
     - [Grid](#grid)
     - [Form](#form)
     - [Basic Table](#basic-table)
+    - [Editable Table](#editable-table)
+    - [Basic Table Image](#basic-table-image)
   - [Contributing to glimmer-dsl-libui](#contributing-to-glimmer-dsl-libui)
   - [Help](#help)
     - [Issues](#issues)
