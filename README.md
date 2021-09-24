@@ -279,7 +279,9 @@ Control(Args) | Properties | Listeners
 
 ### Extra Operations
 
-- `ControlProxy::all_control_proxies`: returns all instantiated control proxies in the application
+- `ControlProxy::control_proxies`: returns all instantiated control proxies in the application
+- `ControlProxy::menu_proxies`: returns all instantiated `menu` proxies in the application
+- `ControlProxy::image_proxies`: returns all instantiated `image` proxies in the application
 - `ControlProxy::main_window_proxy`: returns the first window proxy instantiated in the application
 - `ControlProxy#window_proxy`: returns the window proxy parent for a control
 
@@ -307,6 +309,8 @@ Control(Args) | Properties | Listeners
 - For `date_time_picker`, `date_picker`, and `time_picker`, make sure `time` hash values for `mon`, `wday`, and `yday` are 1-based instead of [libui](https://github.com/andlabs/libui) original 0-based values, and return `dst` as Boolean instead of `isdst` as `1`/`0`
 - Smart defaults for `grid` child attributes are `left` (`0`), `top` (`0`), `xspan` (`1`), `yspan` (`1`), `hexpand` (`false`), `halign` (`0`), `vexpand` (`false`), and `valign` (`0`)
 - The `table` control automatically constructs required `TableModelHandler`, `TableModel`, and `TableParams`, calculating all their arguments from `cell_rows` property (e.g. `NumRows`)
+- Table model instances are automatically freed from memory after `window` is destroyed.
+- `image` instances are automatically freed from memory after `window` is destroyed.
 
 ### API Gotchas
 

@@ -39,7 +39,7 @@ module Glimmer
       
       def destroy_child(child)
         ::LibUI.send("form_delete", @libui, children.index(child))
-        ControlProxy.all_control_proxies.delete(child)
+        ControlProxy.control_proxies.delete(child)
       end
       
       private

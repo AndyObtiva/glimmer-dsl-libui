@@ -61,6 +61,7 @@ module Glimmer
         if rows.nil?
           @cell_rows
         else
+          rows = rows.map {|row| row.map {|cell| cell.respond_to?(:libui) ? cell.libui : cell }}
           @cell_rows = rows
         end
       end
@@ -75,7 +76,12 @@ module Glimmer
         @model_handler.ColumnType   = rbcallback(4) { 0 } # TODO derive from @columns when supporting multiple column types in the future
         @model_handler.NumRows      = rbcallback(4) { cell_rows.count }
         @model_handler.CellValue    = rbcallback(1, [1, 1, 4, 4]) do |_, _, row, column|
-          ::LibUI.new_table_value_string((@cell_rows[row] && @cell_rows[row][column]).to_s)
+          case @columns[column]
+          when TextColumnProxy
+            ::LibUI.new_table_value_string((@cell_rows[row] && @cell_rows[row][column]).to_s)
+          when ImageColumnProxy
+            ::LibUI.new_table_value_image((@cell_rows[row] && @cell_rows[row][column]))
+          end
         end
         
         @model = ::LibUI.new_table_model(@model_handler)

@@ -23,34 +23,14 @@ require 'glimmer/libui/control_proxy'
 
 module Glimmer
   module LibUI
-    module Box
-      APPEND_PROPERTIES = %w[stretchy]
-      
-      def post_initialize_child(child)
-        child.stretchy = true if child.stretchy.nil?
-        ::LibUI.box_append(@libui, child.libui, ControlProxy.boolean_to_integer(child.stretchy))
-        children << child
-      end
-      
-      def libui_api_keyword
-        'box'
-      end
-      
-      def children
-        @children ||= []
-      end
-      
-      def destroy_child(child)
-        ::LibUI.send("box_delete", @libui, children.index(child))
-        ControlProxy.control_proxies.delete(child)
-      end
-      
+    # Proxy for LibUI image part objects
+    #
+    # Follows the Proxy Design Pattern
+    class ImagePartProxy < ControlProxy
       private
       
       def build_control
-        super.tap do
-          self.padded = true
-        end
+        @libui = @parent_proxy.append(*@args)
       end
     end
   end

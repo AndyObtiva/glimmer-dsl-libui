@@ -2,14 +2,11 @@
 
 ## Next
 
-- Support table `image_column`
-- Support examples/basic_table_image.rb
-- Support `image` and `image_part` for building images from rgba byte arrays
+- Support table `image_text_column`
+- New examples/basic_table_image_text.rb
 
 ## Soon
 
-- Support table `image_text_columns`
-- New examples/basic_table_image_text.rb
 - Support table `button_column`
 - Support automatic table cell value reading management (row deletion in `cell_rows`)
 - New examples/deletable_row_table.rb

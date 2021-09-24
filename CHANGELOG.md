@@ -1,5 +1,13 @@
 # Change Log
 
+## 0.0.18
+
+- Support examples/basic_table_image.rb
+- Support table `image_column`
+- Support `image` and `image_part` for building images from rgba byte arrays
+- Rename `Glimmer::LibUI::ControlProxy.all_control_proxies` to `Glimmer::LibUI::ControlProxy.control_proxies`
+- Add `Glimmer::LibUI::ControlProxy.image_proxies`
+
 ## 0.0.17
 
 - Support examples/basic_table.rb

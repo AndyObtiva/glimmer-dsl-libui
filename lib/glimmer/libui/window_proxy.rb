@@ -43,6 +43,7 @@ module Glimmer
       
       def destroy
         super
+        ControlProxy.image_proxies.each { |image_proxy| ::LibUI.free_image(image_proxy.libui) }
         @on_destroy_procs&.each { |on_destroy_proc| on_destroy_proc.call(self)}
       end
       
