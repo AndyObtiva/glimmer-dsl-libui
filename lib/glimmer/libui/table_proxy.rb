@@ -50,6 +50,8 @@ module Glimmer
       
       def post_initialize_child(child)
         @columns << child
+        # add an extra complementary nil column if it is a dual column (i.e. ImageTextColumnProxy or CheckboxTextColumnProxy
+        @columns << nil if child.is_a?(DualColumn)
       end
       
       def destroy
@@ -61,12 +63,26 @@ module Glimmer
         if rows.nil?
           @cell_rows
         else
-          rows = rows.map {|row| row.map {|cell| cell.respond_to?(:libui) ? cell.libui : cell }}
+          rows = rows.map do |row|
+            row.map do |cell|
+              if cell.respond_to?(:libui)
+                cell.libui
+              elsif cell.is_a?(Array)
+                cell.map { |inner_cell| inner_cell.respond_to?(:libui) ? inner_cell.libui : inner_cell }
+              else
+                cell
+              end
+            end
+          end
           @cell_rows = rows
         end
       end
       alias cell_rows= cell_rows
       alias set_cell_rows cell_rows
+      
+      def expanded_cell_rows
+        @cell_rows.flatten(1)
+      end
       
       def editable(value = nil)
         if value.nil?
@@ -83,7 +99,7 @@ module Glimmer
       
       def build_control
         @model_handler = ::LibUI::FFI::TableModelHandler.malloc
-        @model_handler.NumColumns   = rbcallback(4) { @columns.count }
+        @model_handler.NumColumns   = rbcallback(4) { @columns.map {|c| c.is_a?(DualColumn) ? 2 : 1}.sum }
         @model_handler.ColumnType   = rbcallback(4) do
           # Note: this assumes all columns are the same type
           # TODO support different values per different columns
@@ -92,15 +108,26 @@ module Glimmer
             0
           when ImageColumnProxy
             1
+          when ImageTextColumnProxy
+            2
+#           when CheckboxColumnProxy
+#             3
+#           when CheckboxTextColumnProxy
+#             4
+#           when ProgressBarColumnProxy
+#             5
+#           when ButtonColumnProxy
+#             6
           end
         end
         @model_handler.NumRows      = rbcallback(4) { cell_rows.count }
         @model_handler.CellValue    = rbcallback(1, [1, 1, 4, 4]) do |_, _, row, column|
+          the_cell_rows = expanded_cell_rows
           case @columns[column]
-          when TextColumnProxy
-            ::LibUI.new_table_value_string((@cell_rows[row] && @cell_rows[row][column]).to_s)
-          when ImageColumnProxy
-            ::LibUI.new_table_value_image((@cell_rows[row] && @cell_rows[row][column]))
+          when TextColumnProxy, NilClass
+            ::LibUI.new_table_value_string((the_cell_rows[row] && the_cell_rows[row][column]).to_s)
+          when ImageColumnProxy, ImageTextColumnProxy
+            ::LibUI.new_table_value_image((the_cell_rows[row] && the_cell_rows[row][column]))
           end
         end
         @model_handler.SetCellValue = rbcallback(0, [1, 1, 4, 4, 1]) do |_, _, row, column, val|
@@ -108,6 +135,9 @@ module Glimmer
           when TextColumnProxy
             @cell_rows[row] ||= []
             @cell_rows[row][column] = ::LibUI.table_value_string(val).to_s
+            # TODO
+#           when NilClass
+#             @cell_rows[row][column] = ::LibUI.table_value_string(val).to_s
           end
         end
         
@@ -119,7 +149,7 @@ module Glimmer
         
         @libui = ControlProxy.new_control(@keyword, [@table_params])
         @libui.tap do
-          @columns.each {|column| column.send(:build_control) }
+          @columns.each {|column| column&.send(:build_control) }
         end
       end
       

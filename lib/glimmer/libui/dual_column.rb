@@ -20,23 +20,11 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 require 'glimmer/libui/control_proxy'
-require 'glimmer/libui/column'
 
 module Glimmer
   module LibUI
-    # Proxy for LibUI text column objects
-    #
-    # Follows the Proxy Design Pattern
-    class TextColumnProxy < ControlProxy
-      include Column
-      include EditableColumn
-          
-      private
-      
-      def build_control
-        @parent_proxy.append_text_column(name, next_column_index, editable_value)
-        super
-      end
+    # A dual column is one that represents two values (e.g. image and text or checkbox and text)
+    module DualColumn
     end
   end
 end

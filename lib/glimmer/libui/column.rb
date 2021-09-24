@@ -40,7 +40,7 @@ module Glimmer
       def name
         @args.first
       end
-      
+            
       private
       
       def build_control
@@ -48,7 +48,17 @@ module Glimmer
       end
       
       def next_column_index
-        @parent_proxy.columns.map(&:appended?).compact.count
+        @parent_proxy.columns.map do |column|
+          count = 0
+          if column&.appended?
+            if column.is_a?(DualColumn)
+              count += 2
+            else
+              count += 1
+            end
+          end
+          count
+        end.sum
       end
     end
   end

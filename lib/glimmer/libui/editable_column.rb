@@ -20,22 +20,25 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 require 'glimmer/libui/control_proxy'
-require 'glimmer/libui/column'
 
 module Glimmer
   module LibUI
-    # Proxy for LibUI text column objects
-    #
-    # Follows the Proxy Design Pattern
-    class TextColumnProxy < ControlProxy
-      include Column
-      include EditableColumn
-          
+    module EditableColumn
+      def editable(value = nil)
+        if value.nil?
+          @editable
+        else
+          @editable = !!value
+        end
+      end
+      alias editable= editable
+      alias set_editable editable
+      alias editable? editable
+
       private
       
-      def build_control
-        @parent_proxy.append_text_column(name, next_column_index, editable_value)
-        super
+      def editable_value
+        (@parent_proxy.editable? || editable?) ? -2 : -1
       end
     end
   end
