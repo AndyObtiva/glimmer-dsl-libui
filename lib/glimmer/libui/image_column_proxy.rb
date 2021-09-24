@@ -24,16 +24,16 @@ require 'glimmer/libui/column'
 
 module Glimmer
   module LibUI
-    # Proxy for LibUI text column objects
+    # Proxy for LibUI image column objects
     #
     # Follows the Proxy Design Pattern
-    class TextColumnProxy < ControlProxy
+    class ImageColumnProxy < ControlProxy
       include Column
     
       private
       
       def build_control
-        @libui = @parent_proxy.append_text_column(name, @parent_proxy.columns.map(&:libui).compact.count, -1) # -1 for non-editable for now until editing is supported
+        @libui = @parent_proxy.append_image_column(name, @parent_proxy.columns.map(&:libui).compact.count)
       end
     end
   end

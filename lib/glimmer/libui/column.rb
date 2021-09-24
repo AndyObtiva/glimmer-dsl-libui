@@ -20,20 +20,22 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 require 'glimmer/libui/control_proxy'
-require 'glimmer/libui/column'
 
 module Glimmer
   module LibUI
-    # Proxy for LibUI text column objects
-    #
-    # Follows the Proxy Design Pattern
-    class TextColumnProxy < ControlProxy
-      include Column
-    
-      private
+    # Common logic for all column proxy objects
+    module Column
+      def initialize(keyword, parent, args, &block)
+        @keyword = keyword
+        @parent_proxy = parent
+        @args = args
+        @block = block
+        @enabled = true
+        post_add_content if @block.nil?
+      end
       
-      def build_control
-        @libui = @parent_proxy.append_text_column(name, @parent_proxy.columns.map(&:libui).compact.count, -1) # -1 for non-editable for now until editing is supported
+      def name
+        @args.first
       end
     end
   end
