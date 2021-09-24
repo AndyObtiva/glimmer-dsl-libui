@@ -2030,8 +2030,8 @@ window('The Red Turtle', 310, 350, false) {
       
       cell_rows IMAGE_ROWS
     }
-    
   }
+    
   on_closing do
     puts 'Bye Bye'
   end
