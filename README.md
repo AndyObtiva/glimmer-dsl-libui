@@ -74,6 +74,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
     - [Editable Column Table](#editable-column-table)
     - [Basic Table Image](#basic-table-image)
     - [Basic Table Image Text](#basic-table-image-text)
+    - [Basic Table Button](#basic-table-button)
   - [Contributing to glimmer-dsl-libui](#contributing-to-glimmer-dsl-libui)
   - [Help](#help)
     - [Issues](#issues)
@@ -2240,6 +2241,64 @@ window('The Red Turtle', 900, 350) {
       }
       
       cell_rows IMAGE_ROWS
+    }
+  }
+}.show
+```
+
+### Basic Table Button
+
+[examples/basic_table_button.rb](examples/basic_table_button.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/basic_table_button.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/basic_table_button'"
+```
+
+Mac
+
+![glimmer-dsl-libui-mac-basic-table-button.png](images/glimmer-dsl-libui-mac-basic-table-button.png)
+![glimmer-dsl-libui-mac-basic-table-button-deleted.png](images/glimmer-dsl-libui-mac-basic-table-button-deleted.png)
+
+Linux
+
+![glimmer-dsl-libui-linux-basic-table-button.png](images/glimmer-dsl-libui-linux-basic-table-button.png)
+![glimmer-dsl-libui-linux-basic-table-button-deleted.png](images/glimmer-dsl-libui-linux-basic-table-button-deleted.png)
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+data = [
+  %w[cat meow delete],
+  %w[dog woof delete],
+  %w[chicken cock-a-doodle-doo delete],
+  %w[hourse neigh delete],
+  %w[cow moo delete]
+]
+
+window('Animal sounds', 300, 200) {
+  horizontal_box {
+    table {
+      text_column('Animal')
+      text_column('Description')
+      button_column('Action') {
+        on_clicked do |row|
+          data.delete_at(row) # automatically deletes actual table row due to implicit data-binding
+        end
+      }
+
+      cell_rows data # implicit data-binding
     }
   }
 }.show
