@@ -73,7 +73,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
     - [Editable Table](#editable-table)
     - [Editable Column Table](#editable-column-table)
     - [Basic Table Image](#basic-table-image)
-    - [Editable Column Table Image Text](#editable-column-table-image-text)
+    - [Basic Table Image Text](#basic-table-image-text)
   - [Contributing to glimmer-dsl-libui](#contributing-to-glimmer-dsl-libui)
   - [Help](#help)
     - [Issues](#issues)
@@ -2163,7 +2163,7 @@ window('The Red Turtle', 310, 350, false) {
 }.show
 ```
 
-### Editable Column Table Image Text
+### Basic Table Image Text
 
 This example has a prerequisite of installing `chunky_png` Ruby gem:
 
@@ -2173,27 +2173,27 @@ gem install chunky_png -v1.4.0
 
 Also, note that behavior varies per platform (i.e. how `table` chooses to size images by default).
 
-[examples/editable_column_table_image_text.rb](examples/editable_column_table_image_text.rb)
+[examples/basic_table_image_text.rb](examples/basic_table_image_text.rb)
 
 Run with this command from the root of the project if you cloned the project:
 
 ```
-ruby -r './lib/glimmer-dsl-libui' examples/editable_column_table_image_text.rb
+ruby -r './lib/glimmer-dsl-libui' examples/basic_table_image_text.rb
 ```
 
 Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
 
 ```
-ruby -r glimmer-dsl-libui -e "require 'examples/editable_column_table_image_text'"
+ruby -r glimmer-dsl-libui -e "require 'examples/basic_table_image_text'"
 ```
 
 Mac
 
-![glimmer-dsl-libui-mac-editable-column-table-image-text.png](images/glimmer-dsl-libui-mac-editable-column-table-image-text.png)
+![glimmer-dsl-libui-mac-basic-table-image-text.png](images/glimmer-dsl-libui-mac-basic-table-image-text.png)
 
 Linux
 
-![glimmer-dsl-libui-linux-editable-column-table-image-text.png](images/glimmer-dsl-libui-linux-editable-column-table-image-text.png)
+![glimmer-dsl-libui-linux-basic-table-image-text.png](images/glimmer-dsl-libui-linux-basic-table-image-text.png)
 
 New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
 
