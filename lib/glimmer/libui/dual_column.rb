@@ -19,8 +19,6 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'glimmer/libui/control_proxy'
-
 module Glimmer
   module LibUI
     # A dual column is one that represents two values (e.g. image and text or checkbox and text)

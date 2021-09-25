@@ -104,7 +104,7 @@ module Glimmer
         @model_handler.NumColumns   = rbcallback(4) { @columns.map {|c| c.is_a?(DualColumn) ? 2 : 1}.sum }
         @model_handler.ColumnType   = rbcallback(4, [1, 1, 4]) do |_, _, column|
           case @columns[column]
-          when TextColumnProxy, NilClass
+          when TextColumnProxy, ButtonColumnProxy, NilClass
             0
           when ImageColumnProxy, ImageTextColumnProxy
             1
@@ -114,15 +114,13 @@ module Glimmer
 #             2
 #           when ProgressBarColumnProxy
 #             2
-#           when ButtonColumnProxy
-#             0
           end
         end
         @model_handler.NumRows      = rbcallback(4) { cell_rows.count }
         @model_handler.CellValue    = rbcallback(1, [1, 1, 4, 4]) do |_, _, row, column|
           the_cell_rows = expanded_cell_rows
           case @columns[column]
-          when TextColumnProxy, NilClass
+          when TextColumnProxy, ButtonColumnProxy, NilClass
             ::LibUI.new_table_value_string((expanded_cell_rows[row] && expanded_cell_rows[row][column]).to_s)
           when ImageColumnProxy, ImageTextColumnProxy
             ::LibUI.new_table_value_image((expanded_cell_rows[row] && expanded_cell_rows[row][column]))
@@ -135,9 +133,11 @@ module Glimmer
             @cell_rows[row] ||= []
             @cell_rows[row][column] = ::LibUI.table_value_string(val).to_s
           when NilClass
-            # TODO ensure this works for editable table
             column = @columns[column - 1].index
             @cell_rows[row][column][1] = ::LibUI.table_value_string(val).to_s
+          when ButtonColumnProxy
+            # TODO
+#             @columns[column].notify_listeners(:clicked, row)
           end
         end
         

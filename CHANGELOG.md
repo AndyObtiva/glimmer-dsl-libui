@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.0.22
+
+- New examples/basic_table_button.rb
+- Support table `button_column`
+- Support table `button_column` `enabled` property
+
 ## 0.0.21
 
 - New examples/editable_column_table_image_text.rb

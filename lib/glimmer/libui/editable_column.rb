@@ -19,13 +19,12 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'glimmer/libui/control_proxy'
-
 module Glimmer
   module LibUI
     module EditableColumn
       def editable(value = nil)
         if value.nil?
+          @editable = false if @editable.nil?
           @editable
         else
           @editable = !!value

@@ -19,25 +19,25 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'glimmer/libui/control_proxy'
-require 'glimmer/libui/column'
-require 'glimmer/libui/dual_column'
-require 'glimmer/libui/editable_column'
-
 module Glimmer
   module LibUI
-    # Proxy for LibUI image text column objects
-    #
-    # Follows the Proxy Design Pattern
-    class ImageTextColumnProxy < ControlProxy
-      include Column
-      include DualColumn
-      include EditableColumn
-    
+    module EnableableColumn
+      def enabled(value = nil)
+        if value.nil?
+          @enabled = true if @enabled.nil?
+          @enabled
+        else
+          @enabled = !!value
+        end
+      end
+      alias enabled= enabled
+      alias set_enabled enabled
+      alias enabled? enabled
+
       private
       
-      def build_control
-        @parent_proxy.append_image_text_column(name, column_index, second_column_index, editable_value)
+      def enabled_value
+        enabled? ? -2 : -1
       end
     end
   end

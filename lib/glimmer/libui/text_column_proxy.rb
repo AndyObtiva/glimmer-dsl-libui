@@ -21,6 +21,7 @@
 
 require 'glimmer/libui/control_proxy'
 require 'glimmer/libui/column'
+require 'glimmer/libui/editable_column'
 
 module Glimmer
   module LibUI

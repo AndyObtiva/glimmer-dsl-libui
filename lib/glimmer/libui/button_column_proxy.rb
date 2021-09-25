@@ -21,23 +21,21 @@
 
 require 'glimmer/libui/control_proxy'
 require 'glimmer/libui/column'
-require 'glimmer/libui/dual_column'
-require 'glimmer/libui/editable_column'
+require 'glimmer/libui/enableable_column'
 
 module Glimmer
   module LibUI
-    # Proxy for LibUI image text column objects
+    # Proxy for LibUI button column objects
     #
     # Follows the Proxy Design Pattern
-    class ImageTextColumnProxy < ControlProxy
+    class ButtonColumnProxy < ControlProxy
       include Column
-      include DualColumn
-      include EditableColumn
-    
+      include EnableableColumn
+          
       private
       
       def build_control
-        @parent_proxy.append_image_text_column(name, column_index, second_column_index, editable_value)
+        @parent_proxy.append_button_column(name, column_index, enabled_value)
       end
     end
   end
