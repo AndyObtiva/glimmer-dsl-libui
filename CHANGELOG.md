@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.0.21
+
+- New examples/editable_column_table_image_text.rb
+- Support table `image_text_column`
+
 ## 0.0.20
 
 - New examples/editable_column_table.rb

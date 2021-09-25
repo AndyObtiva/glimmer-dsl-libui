@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.0.20
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.0.21
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Maintainability](https://api.codeclimate.com/v1/badges/ce2853efdbecf6ebdc73/maintainability)](https://codeclimate.com/github/AndyObtiva/glimmer-dsl-libui/maintainability)
@@ -43,7 +43,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
 
 ## Table of Contents
 
-- [Glimmer DSL for LibUI 0.0.20](#-glimmer-dsl-for-libui-0020)
+- [Glimmer DSL for LibUI 0.0.21](#-glimmer-dsl-for-libui-0021)
   - [Glimmer GUI DSL Concepts](#glimmer-gui-dsl-concepts)
   - [Usage](#usage)
   - [API](#api)
@@ -73,6 +73,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
     - [Editable Table](#editable-table)
     - [Editable Column Table](#editable-column-table)
     - [Basic Table Image](#basic-table-image)
+    - [Editable Column Table Image Text](#editable-column-table-image-text)
   - [Contributing to glimmer-dsl-libui](#contributing-to-glimmer-dsl-libui)
   - [Help](#help)
     - [Issues](#issues)
@@ -160,7 +161,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.0.20'
+gem 'glimmer-dsl-libui', '~> 0.0.21'
 ```
 
 Add `require 'glimmer-dsl-libui'` at the top, and then `include Glimmer` into the top-level main object for testing or into an actual class for serious usage.
@@ -233,6 +234,7 @@ Control(Args) | Properties | Listeners
 `image(width as Numeric, height as Numeric)` | None | None
 `image_part(pixels as String [encoded image rgba byte array], width as Numeric, height as Numeric, byte_stride as Numeric [usually width*4])` | None | None
 `image_column(name as String)` | None | None
+`image_text_column(name as String)` | None | None
 `label(text as String)` | `text` (`String`) | None
 `menu(text as String)` | None | None
 `menu_item(text as String)` | `checked` (Boolean) | `on_clicked`
@@ -248,7 +250,7 @@ Control(Args) | Properties | Listeners
 `spinbox(min as Numeric, max as Numeric)` | `value` (`Numeric`) | `on_changed`
 `tab` | `margined` (Boolean), `num_pages` (`Integer`) | None
 `tab_item(name as String)` | `index` [read-only] (`Integer`), `margined` (Boolean), `name` [read-only] (`String`) | None
-`table` | `cell_rows` (`Array` (rows) of `Arrays` (row columns) of cell values (e.g. `String` values)), `editable` as Boolean | None
+`table` | `cell_rows` (`Array` (rows) of `Arrays` (row columns) of cell values (e.g. `String` values for `text_column` cells or `Array` of `image`/`String` for `image_text_column`)), `editable` as Boolean | None
 `text_column(name as String)` | `editable` as Boolean | None
 `time_picker` | `time` (`Hash` of keys: `sec` as `Integer`, `min` as `Integer`, `hour` as `Integer`, `mday` as `Integer`, `mon` as `Integer`, `year` as `Integer`, `wday` as `Integer`, `yday` as `Integer`, `dst` as Boolean) | `on_changed`
 `vertical_box` | `padded` (Boolean) | None
@@ -2158,6 +2160,88 @@ window('The Red Turtle', 310, 350, false) {
   on_closing do
     puts 'Bye Bye'
   end
+}.show
+```
+
+### Editable Column Table Image Text
+
+This example has a prerequisite of installing `chunky_png` Ruby gem:
+
+```
+gem install chunky_png -v1.4.0
+```
+
+Also, note that behavior varies per platform (i.e. how `table` chooses to size images by default).
+
+[examples/editable_column_table_image_text.rb](examples/editable_column_table_image_text.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/editable_column_table_image_text.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/editable_column_table_image_text'"
+```
+
+Mac
+
+![glimmer-dsl-libui-mac-editable-column-table-image-text.png](images/glimmer-dsl-libui-mac-editable-column-table-image-text.png)
+
+Linux
+
+![glimmer-dsl-libui-linux-editable-column-table-image-text.png](images/glimmer-dsl-libui-linux-editable-column-table-image-text.png)
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+# NOTE:
+# This example displays images that can be freely downloaded from the Studio Ghibli website.
+
+require 'glimmer-dsl-libui'
+require 'chunky_png'
+require 'open-uri'
+
+include Glimmer
+
+IMAGE_ROWS = []
+
+5.times do |i|
+  url = format('https://www.ghibli.jp/gallery/thumb-redturtle%03d.png', (i + 1))
+  puts "Processing Image: #{url}"
+  f = URI.open(url)
+  canvas = ChunkyPNG::Canvas.from_io(f)
+  f.close
+  data = canvas.to_rgba_stream
+  width = canvas.width
+  height = canvas.height
+  img = image(width, height) {
+    image_part(data, width, height, width * 4)
+  }
+  text = url.sub('https://www.ghibli.jp/gallery/thumb-redturtle', '').sub('.png', '')
+  IMAGE_ROWS << [[img, text], text, text, [img, text]]
+rescue StandardError => e
+  warn url, e.message
+end
+
+window('The Red Turtle', 900, 350) {
+  horizontal_box {
+    table {
+      image_text_column('image/number')
+      text_column('number')
+      text_column('number (editable)') {
+        editable true
+      }
+      image_text_column('image/number (editable)') {
+        editable true
+      }
+      
+      cell_rows IMAGE_ROWS
+    }
+  }
 }.show
 ```
 

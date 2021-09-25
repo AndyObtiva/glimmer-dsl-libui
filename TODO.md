@@ -2,14 +2,11 @@
 
 ## Next
 
-- Support table `image_text_column`
-- New examples/basic_table_image_text.rb
-- Store column indices on every column to ease conversion to expanded cell rows
+- Support table `button_column`
+- Support automatic table cell value reading management (row deletion in `cell_rows`)
 
 ## Soon
 
-- Support table `button_column`
-- Support automatic table cell value reading management (row deletion in `cell_rows`)
 - New examples/deletable_row_table.rb
 - Support automatic table cell value reading management (row insertion in `cell_rows`)
 - New examples/insertable_row_table.rb
