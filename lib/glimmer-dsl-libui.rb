@@ -27,6 +27,7 @@ require 'glimmer'
 # require 'puts_debuggerer' if ENV['pd'].to_s.downcase == 'true'
 # require 'super_module'
 require 'os'
+require 'array_include_methods'
 require 'libui'
 
 # Internal requires

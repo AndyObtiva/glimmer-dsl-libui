@@ -2,8 +2,6 @@
 
 ## Next
 
-- Support automatic table cell value reading management (row deletion in `cell_rows`)
-
 ## Soon
 
 - Support table `checkbox_column`

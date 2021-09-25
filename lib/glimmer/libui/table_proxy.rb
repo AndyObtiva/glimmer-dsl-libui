@@ -20,6 +20,9 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 require 'glimmer/libui/control_proxy'
+require 'glimmer/data_binding/observer'
+
+using ArrayIncludeMethods
 
 module Glimmer
   module LibUI
@@ -63,18 +66,19 @@ module Glimmer
         if rows.nil?
           @cell_rows
         else
-          rows = rows.map do |row|
-            row.map do |cell|
-              if cell.respond_to?(:libui)
-                cell.libui
-              elsif cell.is_a?(Array)
-                cell.map { |inner_cell| inner_cell.respond_to?(:libui) ? inner_cell.libui : inner_cell }
-              else
-                cell
-              end
-            end
-          end
           @cell_rows = rows
+          @cell_rows.tap do
+            @last_cell_rows = @cell_rows.clone
+            Glimmer::DataBinding::Observer.proc do
+              if (@cell_rows.size == @last_cell_rows.size - 1) && @last_cell_rows & @cell_rows == @cell_rows
+                _, row = @last_cell_rows.each_with_index.find do |row_data, row|
+                  !@cell_rows.include?(row_data)
+                end
+                ::LibUI.table_model_row_deleted(model, row)
+              end
+              @last_cell_rows = @cell_rows.clone
+            end.observe(self, :cell_rows)
+          end
         end
       end
       alias cell_rows= cell_rows
@@ -123,7 +127,7 @@ module Glimmer
           when TextColumnProxy, ButtonColumnProxy, NilClass
             ::LibUI.new_table_value_string((expanded_cell_rows[row] && expanded_cell_rows[row][column]).to_s)
           when ImageColumnProxy, ImageTextColumnProxy
-            ::LibUI.new_table_value_image((expanded_cell_rows[row] && expanded_cell_rows[row][column]))
+            ::LibUI.new_table_value_image((expanded_cell_rows[row] && (expanded_cell_rows[row][column].respond_to?(:libui) ? expanded_cell_rows[row][column].libui : expanded_cell_rows[row][column])))
           end
         end
         @model_handler.SetCellValue = rbcallback(0, [1, 1, 4, 4, 1]) do |_, _, row, column, val|

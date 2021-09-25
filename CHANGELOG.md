@@ -6,6 +6,7 @@
 - Support table `button_column`
 - Support table `button_column` `enabled` property
 - Support `on_clicked` listener for `button_column`
+- Support automatic table cell value reading management (table row deletion upon actual `cell_rows` deletion due to implicit data-binding)
 
 ## 0.0.21
 

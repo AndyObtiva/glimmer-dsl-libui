@@ -19,12 +19,11 @@ window('Animal sounds', 300, 200) {
       text_column('Description')
       button_column('Action') {
         on_clicked do |row|
-          puts "Clicked for row: #{row}"
-#           data.delete(row) # TODO
+          data.delete_at(row) # automatically deletes actual table row due to implicit data-binding
         end
       }
 
-      cell_rows data
+      cell_rows data # implicit data-binding
     }
   }
   
