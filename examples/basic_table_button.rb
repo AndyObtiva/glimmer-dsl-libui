@@ -18,9 +18,10 @@ window('Animal sounds', 300, 200) {
       text_column('Animal')
       text_column('Description')
       button_column('Action') {
-#         on_clicked do |row|
-#           data.delete(row)
-#         end
+        on_clicked do |row|
+          puts "Clicked for row: #{row}"
+#           data.delete(row) # TODO
+        end
       }
 
       cell_rows data

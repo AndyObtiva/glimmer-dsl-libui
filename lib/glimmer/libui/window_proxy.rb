@@ -61,20 +61,29 @@ module Glimmer
         end
       end
       
+      def can_handle_listener?(listener_name)
+        listener_name == 'on_destroy' || super
+      end
+      
       def handle_listener(listener_name, &listener)
-        if listener_name == 'on_closing'
-          default_behavior_listener = Proc.new do
-            return_value = listener.call(self)
-            if return_value.is_a?(Numeric)
-              return_value
-            else
-              destroy
-              ::LibUI.quit
-              0
+        case listener_name
+        when 'on_destroy'
+          on_destroy(&listener)
+        else
+          if listener_name == 'on_closing'
+            default_behavior_listener = Proc.new do
+              return_value = listener.call(self)
+              if return_value.is_a?(Numeric)
+                return_value
+              else
+                destroy
+                ::LibUI.quit
+                0
+              end
             end
           end
+          super(listener_name, &default_behavior_listener)
         end
-        super(listener_name, &default_behavior_listener)
       end
     
       private

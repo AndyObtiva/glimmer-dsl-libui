@@ -35,10 +35,6 @@ module Glimmer
     module Libui
       Engine.add_dynamic_expressions(
         Libui,
-#           list_selection_data_binding
-#           data_binding
-#           block_attribute
-#           attribute
         %w[
           listener
           property

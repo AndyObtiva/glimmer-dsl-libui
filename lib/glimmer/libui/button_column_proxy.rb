@@ -31,6 +31,31 @@ module Glimmer
     class ButtonColumnProxy < ControlProxy
       include Column
       include EnableableColumn
+      
+      def on_clicked(&block)
+        # TODO consider generalizing into custom listeners and moving to ControlProxy
+        @on_clicked_procs ||= []
+        @on_clicked_procs << block
+      end
+      
+      def can_handle_listener?(listener_name)
+        listener_name == 'on_clicked' || super
+      end
+      
+      def handle_listener(listener_name, &listener)
+        case listener_name
+        when 'on_clicked'
+          on_clicked(&listener)
+        else
+          super
+        end
+      end
+      
+      def notify_listeners(listener_name, *args)
+        @on_clicked_procs&.each do |on_clicked_proc|
+          on_clicked_proc.call(*args)
+        end
+      end
           
       private
       

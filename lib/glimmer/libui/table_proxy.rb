@@ -136,8 +136,7 @@ module Glimmer
             column = @columns[column - 1].index
             @cell_rows[row][column][1] = ::LibUI.table_value_string(val).to_s
           when ButtonColumnProxy
-            # TODO
-#             @columns[column].notify_listeners(:clicked, row)
+            @columns[column].notify_listeners(:on_clicked, row)
           end
         end
         

@@ -2,7 +2,6 @@
 
 ## Next
 
-- Support property_block attributes (e.g. `on_clicked` inside `button_column` to add listener)
 - Support automatic table cell value reading management (row deletion in `cell_rows`)
 
 ## Soon

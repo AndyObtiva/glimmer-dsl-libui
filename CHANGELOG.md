@@ -5,6 +5,7 @@
 - New examples/basic_table_button.rb
 - Support table `button_column`
 - Support table `button_column` `enabled` property
+- Support `on_clicked` listener for `button_column`
 
 ## 0.0.21
 
