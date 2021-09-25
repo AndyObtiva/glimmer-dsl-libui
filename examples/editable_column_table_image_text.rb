@@ -11,7 +11,7 @@ include Glimmer
 
 IMAGE_ROWS = []
 
-50.times do |i|
+5.times do |i|
   url = format('https://www.ghibli.jp/gallery/thumb-redturtle%03d.png', (i + 1))
   puts "Processing Image: #{url}"
   f = URI.open(url)
@@ -24,12 +24,12 @@ IMAGE_ROWS = []
     image_part(data, width, height, width * 4)
   }
   text = url.sub('https://www.ghibli.jp/gallery/thumb-redturtle', '').sub('.png', '')
-  IMAGE_ROWS << [[img, text], text, text, [img, text]] # array of dual-value array column cell
+  IMAGE_ROWS << [[img, text], text, text, [img, text]]
 rescue StandardError => e
   warn url, e.message
 end
 
-window('The Red Turtle', 610, 350) {
+window('The Red Turtle', 900, 350) {
   horizontal_box {
     table {
       image_text_column('image/number')

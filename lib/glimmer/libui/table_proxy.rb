@@ -102,24 +102,20 @@ module Glimmer
       def build_control
         @model_handler = ::LibUI::FFI::TableModelHandler.malloc
         @model_handler.NumColumns   = rbcallback(4) { @columns.map {|c| c.is_a?(DualColumn) ? 2 : 1}.sum }
-        @model_handler.ColumnType   = rbcallback(4) do
-          # Note: this assumes all columns are the same type
-          # TODO support different values per different columns
-          case @columns.first
-          when TextColumnProxy
+        @model_handler.ColumnType   = rbcallback(4, [1, 1, 4]) do |_, _, column|
+          case @columns[column]
+          when TextColumnProxy, NilClass
             0
-          when ImageColumnProxy
+          when ImageColumnProxy, ImageTextColumnProxy
             1
-          when ImageTextColumnProxy
-            2
 #           when CheckboxColumnProxy
-#             3
+#             2
 #           when CheckboxTextColumnProxy
-#             4
+#             2
 #           when ProgressBarColumnProxy
-#             5
+#             2
 #           when ButtonColumnProxy
-#             6
+#             0
           end
         end
         @model_handler.NumRows      = rbcallback(4) { cell_rows.count }
