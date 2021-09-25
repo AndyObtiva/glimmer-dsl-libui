@@ -37,11 +37,16 @@ module Glimmer
       def name
         @args.first
       end
-            
-      private
       
+      # column index used in table append column API call
+      # expanded to ensure DualColumn index accounts for two columns acting as one
       def column_index
         @column_index ||= @parent_proxy.send(:next_column_index)
+      end
+      
+      # actual index within table columns (disregarding nil fillings that account for DualColumn instances)
+      def index
+        @parent_proxy.columns.compact.index(self)
       end
     end
   end

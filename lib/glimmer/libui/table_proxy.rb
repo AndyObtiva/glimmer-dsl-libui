@@ -135,11 +135,13 @@ module Glimmer
         @model_handler.SetCellValue = rbcallback(0, [1, 1, 4, 4, 1]) do |_, _, row, column, val|
           case @columns[column]
           when TextColumnProxy
+            column = @columns[column].index
             @cell_rows[row] ||= []
             @cell_rows[row][column] = ::LibUI.table_value_string(val).to_s
-            # TODO
-#           when NilClass
-#             @cell_rows[row][column] = ::LibUI.table_value_string(val).to_s
+          when NilClass
+            # TODO ensure this works for editable table
+            column = @columns[column - 1].index
+            @cell_rows[row][column][1] = ::LibUI.table_value_string(val).to_s
           end
         end
         

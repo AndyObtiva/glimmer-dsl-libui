@@ -23,22 +23,25 @@ IMAGE_ROWS = []
   img = image(width, height) {
     image_part(data, width, height, width * 4)
   }
-  text = url.sub('https://www.ghibli.jp', '')
-  IMAGE_ROWS << [[img, text]] # array of dual-value array column cell
+  text = url.sub('https://www.ghibli.jp/gallery/thumb-redturtle', '').sub('.png', '')
+  IMAGE_ROWS << [[img, text], text, text, [img, text]] # array of dual-value array column cell
 rescue StandardError => e
   warn url, e.message
 end
 
-window('The Red Turtle', 310, 350, false) {
+window('The Red Turtle', 610, 350) {
   horizontal_box {
     table {
-      image_text_column('www.ghibli.jp/works/red-turtle')
+      image_text_column('image/number')
+      text_column('number')
+      text_column('number (editable)') {
+        editable true
+      }
+      image_text_column('image/number (editable)') {
+        editable true
+      }
       
       cell_rows IMAGE_ROWS
     }
   }
-  
-  on_closing do
-    puts 'Bye Bye'
-  end
 }.show

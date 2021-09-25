@@ -29,6 +29,12 @@ module Glimmer
       def second_column_index
         column_index + 1
       end
+      
+      def column_index
+        @column_index ||= @parent_proxy.send(:next_column_index).tap do
+          @parent_proxy.send(:next_column_index)
+        end
+      end
     end
   end
 end
