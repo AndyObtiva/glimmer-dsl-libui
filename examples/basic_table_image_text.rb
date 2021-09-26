@@ -24,19 +24,15 @@ IMAGE_ROWS = []
     image_part(data, width, height, width * 4)
   }
   text = url.sub('https://www.ghibli.jp/gallery/thumb-redturtle', '').sub('.png', '')
-  IMAGE_ROWS << [[img, text], text, text, [img, text]]
+  IMAGE_ROWS << [[img, text], [img, text]] # cell values are dual-element arrays
 rescue StandardError => e
   warn url, e.message
 end
 
-window('The Red Turtle', 900, 350) {
+window('The Red Turtle', 670, 350) {
   horizontal_box {
     table {
       image_text_column('image/number')
-      text_column('number')
-      text_column('number (editable)') {
-        editable true
-      }
       image_text_column('image/number (editable)') {
         editable true
       }

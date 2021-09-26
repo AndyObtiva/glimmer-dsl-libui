@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.0.22
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.0.23
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Maintainability](https://api.codeclimate.com/v1/badges/ce2853efdbecf6ebdc73/maintainability)](https://codeclimate.com/github/AndyObtiva/glimmer-dsl-libui/maintainability)
@@ -43,7 +43,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
 
 ## Table of Contents
 
-- [Glimmer DSL for LibUI 0.0.22](#-glimmer-dsl-for-libui-0022)
+- [Glimmer DSL for LibUI 0.0.23](#-glimmer-dsl-for-libui-0023)
   - [Glimmer GUI DSL Concepts](#glimmer-gui-dsl-concepts)
   - [Usage](#usage)
   - [API](#api)
@@ -162,7 +162,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.0.22'
+gem 'glimmer-dsl-libui', '~> 0.0.23'
 ```
 
 Add `require 'glimmer-dsl-libui'` at the top, and then `include Glimmer` into the top-level main object for testing or into an actual class for serious usage.
@@ -2225,19 +2225,15 @@ IMAGE_ROWS = []
     image_part(data, width, height, width * 4)
   }
   text = url.sub('https://www.ghibli.jp/gallery/thumb-redturtle', '').sub('.png', '')
-  IMAGE_ROWS << [[img, text], text, text, [img, text]]
+  IMAGE_ROWS << [[img, text], [img, text]] # cell values are dual-element arrays
 rescue StandardError => e
   warn url, e.message
 end
 
-window('The Red Turtle', 900, 350) {
+window('The Red Turtle', 670, 350) {
   horizontal_box {
     table {
       image_text_column('image/number')
-      text_column('number')
-      text_column('number (editable)') {
-        editable true
-      }
       image_text_column('image/number (editable)') {
         editable true
       }
