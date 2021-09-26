@@ -319,7 +319,9 @@ Control(Args) | Properties | Listeners
 - Smart defaults for `grid` child attributes are `left` (`0`), `top` (`0`), `xspan` (`1`), `yspan` (`1`), `hexpand` (`false`), `halign` (`0`), `vexpand` (`false`), and `valign` (`0`)
 - The `table` control automatically constructs required `TableModelHandler`, `TableModel`, and `TableParams`, calculating all their arguments from `cell_rows` and `editable` properties (e.g. `NumRows`) as well as nested columns (e.g. `text_column`)
 - Table model instances are automatically freed from memory after `window` is destroyed.
+- Table `cell_rows` data has implicit data-binding to table cell values. When deleting data from `cell_rows` array, then actual rows from the `table` are automatically deleted.
 - `image` instances are automatically freed from memory after `window` is destroyed.
+- `image` `width` and `height` can be left off if it has one `image_part` only as they default to the same `width` and `height` of the `image_part`
 
 ### API Gotchas
 
@@ -2141,7 +2143,7 @@ IMAGE_ROWS = []
   data = canvas.to_rgba_stream
   width = canvas.width
   height = canvas.height
-  img = image(width, height) {
+  img = image {
     image_part(data, width, height, width * 4)
   }
   IMAGE_ROWS << [img] # array of one column cell
@@ -2219,7 +2221,7 @@ IMAGE_ROWS = []
   data = canvas.to_rgba_stream
   width = canvas.width
   height = canvas.height
-  img = image(width, height) {
+  img = image {
     image_part(data, width, height, width * 4)
   }
   text = url.sub('https://www.ghibli.jp/gallery/thumb-redturtle', '').sub('.png', '')

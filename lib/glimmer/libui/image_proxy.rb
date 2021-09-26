@@ -20,13 +20,16 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 require 'glimmer/libui/control_proxy'
+require 'glimmer/data_binding/observer'
+
+using ArrayIncludeMethods
 
 module Glimmer
   module LibUI
-    # Proxy for LibUI image part objects
+    # Proxy for LibUI image objects
     #
     # Follows the Proxy Design Pattern
-    class ImagePartProxy < ControlProxy
+    class ImageProxy < ControlProxy
       def initialize(keyword, parent, args, &block)
         @keyword = keyword
         @parent_proxy = parent
@@ -37,10 +40,23 @@ module Glimmer
         post_add_content if @block.nil?
       end
       
+      def post_add_content
+        build_control
+        super
+      end
+ 
+      def post_initialize_child(child)
+        @children << child
+      end
+      
       private
       
       def build_control
-        @libui = @parent_proxy.append(*@args)
+        @args = [@children.first.args[1], @children.first.args[2]] if @children.size == 1 && (@args[0].nil? || @args[1].nil?)
+        super
+        @libui.tap do
+          @children.each {|child| child&.send(:build_control) }
+        end
       end
     end
   end

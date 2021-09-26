@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.23
+
+- Have `image` not require `width` and `height` if it only has one `image_part` (defaults to `image_part` `width` and `height`)
+
 ## 0.0.22
 
 - New examples/basic_table_button.rb

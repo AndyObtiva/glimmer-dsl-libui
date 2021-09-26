@@ -20,7 +20,7 @@ IMAGE_ROWS = []
   data = canvas.to_rgba_stream
   width = canvas.width
   height = canvas.height
-  img = image(width, height) {
+  img = image {
     image_part(data, width, height, width * 4)
   }
   text = url.sub('https://www.ghibli.jp/gallery/thumb-redturtle', '').sub('.png', '')

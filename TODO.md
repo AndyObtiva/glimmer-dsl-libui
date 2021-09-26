@@ -2,6 +2,8 @@
 
 ## Next
 
+- Simplify examples/basic_table_image_text.rb
+
 ## Soon
 
 - Support table `checkbox_column`
