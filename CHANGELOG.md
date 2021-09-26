@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.24
+
+- Improve support for table row deletion upon actual `cell_rows` deletion by handling multiple-row deletion not just single-row deletion
+
 ## 0.0.23
 
 - Have `image` not require `width` and `height` if it only has one `image_part` (defaults to `image_part` `width` and `height`)

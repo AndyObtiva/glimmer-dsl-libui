@@ -70,11 +70,10 @@ module Glimmer
           @cell_rows.tap do
             @last_cell_rows = @cell_rows.clone
             Glimmer::DataBinding::Observer.proc do
-              if (@cell_rows.size == @last_cell_rows.size - 1) && @last_cell_rows & @cell_rows == @cell_rows
-                _, row = @last_cell_rows.each_with_index.find do |row_data, row|
-                  !@cell_rows.include?(row_data)
+              if @cell_rows.size < @last_cell_rows.size && @last_cell_rows.include_all?(*@cell_rows)
+                @last_cell_rows.array_diff_indexes(@cell_rows).reverse.each do |index|
+                  ::LibUI.table_model_row_deleted(model, index)
                 end
-                ::LibUI.table_model_row_deleted(model, row)
               end
               @last_cell_rows = @cell_rows.clone
             end.observe(self, :cell_rows)

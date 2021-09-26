@@ -3,7 +3,7 @@ GEM
   specs:
     addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
-    array_include_methods (1.2.0)
+    array_include_methods (1.4.0)
     awesome_print (1.9.2)
     builder (3.2.4)
     chunky_png (1.4.0)
@@ -45,8 +45,8 @@ GEM
       faraday (>= 0.8, < 2)
       hashie (~> 3.5, >= 3.5.2)
       oauth2 (~> 1.0)
-    glimmer (2.1.4)
-      array_include_methods (>= 1.2.0, < 2.0.0)
+    glimmer (2.1.5)
+      array_include_methods (~> 1.4.0)
       facets (>= 3.1.0, < 4.0.0)
     hashie (3.6.0)
     highline (2.0.3)
@@ -147,7 +147,7 @@ PLATFORMS
 DEPENDENCIES
   chunky_png (~> 1.4.0)
   coveralls (= 0.8.23)
-  glimmer (~> 2.1.4)
+  glimmer (~> 2.1.5)
   juwelier (>= 2.4.9, < 3.0.0)
   libui (~> 0.0.10)
   os (>= 1.0.0, < 2.0.0)
