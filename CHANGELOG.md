@@ -3,6 +3,7 @@
 ## 0.0.23
 
 - Have `image` not require `width` and `height` if it only has one `image_part` (defaults to `image_part` `width` and `height`)
+- Upgrade to LibUI version 0.0.10
 
 ## 0.0.22
 

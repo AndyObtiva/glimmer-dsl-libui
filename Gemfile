@@ -12,7 +12,7 @@ gem 'glimmer', '~> 2.1.4' #, path: '../glimmer'
 gem 'os', '>= 1.0.0', '< 2.0.0'
 # gem 'rake', '>= 10.1.0', '< 14.0.0'
 # gem 'text-table', '>= 1.2.4', '< 2.0.0'
-gem 'libui', '~> 0.0.9'
+gem 'libui', '~> 0.0.10'
 
 # Add dependencies to develop your gem here.
 # Include everything needed to run rake, tests, features, etc.
