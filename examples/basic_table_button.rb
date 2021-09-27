@@ -26,8 +26,4 @@ window('Animal sounds', 300, 200) {
       cell_rows data # implicit data-binding
     }
   }
-  
-  on_closing do
-    puts 'Bye Bye'
-  end
 }.show
