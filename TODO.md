@@ -44,3 +44,7 @@
 - Support custom `on_destroy` listener on all widgets, not just `window`
 - Support supplying optional `uiTableTextColumnOptionalParams *textParams` to `text_column`
 - Support configuring `RowBackgroundColorModelColumn` in TableParams
+
+# Refactoring
+
+- Refactor column proxies code to be more dynamic and enable autosupport of new columns in the future
