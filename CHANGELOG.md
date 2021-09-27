@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.0.27
+
+- New examples/form_table.rb
+- Support automatic table row insertion upon inserting data rows into `cell_rows`
+
 ## 0.0.26
 
 - New examples/basic_table_progress_bar.rb

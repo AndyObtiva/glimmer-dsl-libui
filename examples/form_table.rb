@@ -12,7 +12,7 @@ data = [
   ['Melody Hanheimer', 'melody@hanheimer.com', '213-493-8274', 'Los Angeles', 'CA', '90001'],
 ]
 
-window('Contacts', 550, 550) {
+window('Contacts', 600, 600) { |w|
   margined true
   
   vertical_box {
@@ -40,7 +40,17 @@ window('Contacts', 550, 550) {
       stretchy false
       
       on_clicked do
-        data << [@name_entry.text, @email_entry.text, @phone_entry.text, @city_entry.text, @state_entry.text]
+        new_row = [@name_entry.text, @email_entry.text, @phone_entry.text, @city_entry.text, @state_entry.text]
+        if new_row.include?('')
+          msg_box_error(w, 'Validation Error!', 'All fields are required! Please make sure to enter a value for all fields.')
+        else
+          data << new_row # automatically inserts a row into the table due to implicit data-binding
+          @name_entry.text = ''
+          @email_entry.text = ''
+          @phone_entry.text = ''
+          @city_entry.text = ''
+          @state_entry.text = ''
+        end
       end
     }
     
@@ -54,8 +64,4 @@ window('Contacts', 550, 550) {
       cell_rows data # implicit data-binding
     }
   }
-  
-  on_closing do
-    puts 'Bye Bye'
-  end
 }.show

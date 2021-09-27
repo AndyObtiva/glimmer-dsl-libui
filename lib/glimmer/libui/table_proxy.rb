@@ -74,6 +74,10 @@ module Glimmer
                 @last_cell_rows.array_diff_indexes(@cell_rows).reverse.each do |index|
                   ::LibUI.table_model_row_deleted(model, index)
                 end
+              elsif @cell_rows.size > @last_cell_rows.size && @cell_rows.include_all?(*@last_cell_rows)
+                @cell_rows.array_diff_indexes(@last_cell_rows).each do |index|
+                  ::LibUI.table_model_row_inserted(model, index)
+                end
               end
               @last_cell_rows = @cell_rows.clone
             end.observe(self, :cell_rows)

@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.0.26
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.0.27
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Maintainability](https://api.codeclimate.com/v1/badges/ce2853efdbecf6ebdc73/maintainability)](https://codeclimate.com/github/AndyObtiva/glimmer-dsl-libui/maintainability)
@@ -43,7 +43,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
 
 ## Table of Contents
 
-- [Glimmer DSL for LibUI 0.0.26](#-glimmer-dsl-for-libui-0026)
+- [Glimmer DSL for LibUI 0.0.27](#-glimmer-dsl-for-libui-0027)
   - [Glimmer GUI DSL Concepts](#glimmer-gui-dsl-concepts)
   - [Usage](#usage)
   - [API](#api)
@@ -78,6 +78,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
     - [Basic Table Checkbox](#basic-table-checkbox)
     - [Basic Table Checkbox Text](#basic-table-checkbox-text)
     - [Basic Table Progress Bar](#basic-table-progress-bar)
+    - [Form Table](#form-table)
   - [Contributing to glimmer-dsl-libui](#contributing-to-glimmer-dsl-libui)
   - [Help](#help)
     - [Issues](#issues)
@@ -165,7 +166,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.0.26'
+gem 'glimmer-dsl-libui', '~> 0.0.27'
 ```
 
 Add `require 'glimmer-dsl-libui'` at the top, and then `include Glimmer` into the top-level main object for testing or into an actual class for serious usage.
@@ -326,7 +327,7 @@ Control(Args) | Properties | Listeners
 - Smart defaults for `grid` child attributes are `left` (`0`), `top` (`0`), `xspan` (`1`), `yspan` (`1`), `hexpand` (`false`), `halign` (`0`), `vexpand` (`false`), and `valign` (`0`)
 - The `table` control automatically constructs required `TableModelHandler`, `TableModel`, and `TableParams`, calculating all their arguments from `cell_rows` and `editable` properties (e.g. `NumRows`) as well as nested columns (e.g. `text_column`)
 - Table model instances are automatically freed from memory after `window` is destroyed.
-- Table `cell_rows` data has implicit data-binding to table cell values. When deleting data from `cell_rows` array, then actual rows from the `table` are automatically deleted.
+- Table `cell_rows` data has implicit data-binding to table cell values for deletion and insertion (done by diffing `cell_rows` value before and after change and auto-informing `table` of deletions [`::LibUI.table_model_row_deleted`] and insertions [`::LibUI.table_model_row_deleted`]). When deleting data rows from `cell_rows` array, then actual rows from the `table` are automatically deleted. When inserting data rows into `cell_rows` array, then actual `table` rows are automatically inserted.
 - `image` instances are automatically freed from memory after `window` is destroyed.
 - `image` `width` and `height` can be left off if it has one `image_part` only as they default to the same `width` and `height` of the `image_part`
 
@@ -2459,6 +2460,102 @@ window('Task progress', 300, 200) {
       progress_bar_column('Progress')
 
       cell_rows data
+    }
+  }
+}.show
+```
+
+### Form Table
+
+[examples/form_table.rb](examples/form_table.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/form_table.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/form_table'"
+```
+
+Mac
+
+![glimmer-dsl-libui-mac-form-table.png](images/glimmer-dsl-libui-mac-form-table.png)
+![glimmer-dsl-libui-mac-form-table-contact-entered.png](images/glimmer-dsl-libui-mac-form-table-contact-entered.png)
+
+Linux
+
+![glimmer-dsl-libui-linux-form-table.png](images/glimmer-dsl-libui-linux-form-table.png)
+![glimmer-dsl-libui-linux-form-table-contact-entered.png](images/glimmer-dsl-libui-linux-form-table-contact-entered.png)
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+data = [
+  ['Lisa Sky', 'lisa@sky.com', '720-523-4329', 'Denver', 'CO', '80014'],
+  ['Jordan Biggins', 'jordan@biggins.com', '617-528-5399', 'Boston', 'MA', '02101'],
+  ['Mary Glass', 'mary@glass.com', '847-589-8788', 'Elk Grove Village', 'IL', '60007'],
+  ['Darren McGrath', 'darren@mcgrath.com', '206-539-9283', 'Seattle', 'WA', '98101'],
+  ['Melody Hanheimer', 'melody@hanheimer.com', '213-493-8274', 'Los Angeles', 'CA', '90001'],
+]
+
+window('Contacts', 600, 600) { |w|
+  margined true
+  
+  vertical_box {
+    form {
+      stretchy false
+      
+      @name_entry = entry {
+        label 'Name'
+      }
+      @email_entry = entry {
+        label 'Email'
+      }
+      @phone_entry = entry {
+        label 'Phone'
+      }
+      @city_entry = entry {
+        label 'City'
+      }
+      @state_entry = entry {
+        label 'State'
+      }
+    }
+    
+    button('Save Contact') {
+      stretchy false
+      
+      on_clicked do
+        new_row = [@name_entry.text, @email_entry.text, @phone_entry.text, @city_entry.text, @state_entry.text]
+        if new_row.include?('')
+          msg_box_error(w, 'Validation Error!', 'All fields are required! Please make sure to enter a value for all fields.')
+        else
+          data << new_row # automatically inserts a row into the table due to implicit data-binding
+          @name_entry.text = ''
+          @email_entry.text = ''
+          @phone_entry.text = ''
+          @city_entry.text = ''
+          @state_entry.text = ''
+        end
+      end
+    }
+    
+    table {
+      text_column('Name')
+      text_column('Email')
+      text_column('Phone')
+      text_column('City')
+      text_column('State')
+
+      cell_rows data # implicit data-binding
     }
   }
 }.show

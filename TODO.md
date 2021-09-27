@@ -2,16 +2,14 @@
 
 ## Next
 
-- Support automatic table cell value reading management (row insertion in `cell_rows`)
-- New examples/form_table.rb
+- Support automatic table cell value reading management (row change in `cell_rows`)
 
 ## Soon
 
-- Support automatic table cell value reading management (row change in `cell_rows`)
+- Support examples/basic_area.rb
 
 ## Future
 
-- Support examples/basic_area.rb
 - Support examples/basic_draw_text.rb
 - Support examples/histogram.rb
 - Support `search_entry` control
