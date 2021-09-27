@@ -8,7 +8,7 @@ data = [
   %w[cat calm meow],
   %w[dog loyal woof],
   %w[chicken bird cock-a-doodle-doo],
-  %w[hourse fast neigh],
+  %w[horse fast neigh],
   %w[cow slow moo]
 ]
 

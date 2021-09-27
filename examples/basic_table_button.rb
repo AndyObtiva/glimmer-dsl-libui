@@ -8,7 +8,7 @@ data = [
   %w[cat meow delete],
   %w[dog woof delete],
   %w[chicken cock-a-doodle-doo delete],
-  %w[hourse neigh delete],
+  %w[horse neigh delete],
   %w[cow moo delete]
 ]
 

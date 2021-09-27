@@ -5,33 +5,21 @@ require 'glimmer-dsl-libui'
 include Glimmer
 
 data = [
-  ['cat', 'meow', false, false],
-  ['dog', 'woof', false, false],
-  ['chicken', 'cock-a-doodle-doo', true, false],
-  ['hourse', 'neigh', false, false],
-  ['cow', 'moo', false, false]
+  ['cat', 'meow', true],
+  ['dog', 'woof', true],
+  ['chicken', 'cock-a-doodle-doo', false],
+  ['horse', 'neigh', true],
+  ['cow', 'moo', true]
 ]
 
-window('Animal sounds', 500, 200) {
-  vertical_box {
+window('Animal sounds', 300, 200) {
+  horizontal_box {
     table {
       text_column('Animal')
       text_column('Description')
-      checkbox_column('Bird')
-      checkbox_column('Selected (Editable)') {
-        editable true
-      }
+      checkbox_column('Mammal')
 
       cell_rows data # implicit data-binding
-    }
-    button('Delete Selected') {
-      stretchy false
-      
-      on_clicked do
-        data.each_with_index.to_a.reverse do |data_row, row|
-          data.delete_at(row) if data_row[3]
-        end
-      end
     }
   }
 }.show

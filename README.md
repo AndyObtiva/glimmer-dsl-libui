@@ -1810,7 +1810,7 @@ data = [
   %w[cat meow],
   %w[dog woof],
   %w[checken cock-a-doodle-doo],
-  %w[hourse neigh],
+  %w[horse neigh],
   %w[cow moo]
 ]
 
@@ -1868,7 +1868,7 @@ data = [
   %w[cat meow],
   %w[dog woof],
   %w[chicken cock-a-doodle-doo],
-  %w[hourse neigh],
+  %w[horse neigh],
   %w[cow moo]
 ]
 
@@ -1927,7 +1927,7 @@ data = [
   %w[cat meow],
   %w[dog woof],
   %w[chicken cock-a-doodle-doo],
-  %w[hourse neigh],
+  %w[horse neigh],
   %w[cow moo]
 ]
 
@@ -1985,7 +1985,7 @@ data = [
   %w[cat calm meow],
   %w[dog loyal woof],
   %w[chicken bird cock-a-doodle-doo],
-  %w[hourse fast neigh],
+  %w[horse fast neigh],
   %w[cow slow moo]
 ]
 
@@ -2281,7 +2281,7 @@ data = [
   %w[cat meow delete],
   %w[dog woof delete],
   %w[chicken cock-a-doodle-doo delete],
-  %w[hourse neigh delete],
+  %w[horse neigh delete],
   %w[cow moo delete]
 ]
 
