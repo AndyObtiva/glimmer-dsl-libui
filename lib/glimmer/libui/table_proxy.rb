@@ -71,12 +71,16 @@ module Glimmer
             @last_cell_rows = @cell_rows.clone
             Glimmer::DataBinding::Observer.proc do
               if @cell_rows.size < @last_cell_rows.size && @last_cell_rows.include_all?(*@cell_rows)
-                @last_cell_rows.array_diff_indexes(@cell_rows).reverse.each do |index|
-                  ::LibUI.table_model_row_deleted(model, index)
+                @last_cell_rows.array_diff_indexes(@cell_rows).reverse.each do |row|
+                  ::LibUI.table_model_row_deleted(model, row)
                 end
               elsif @cell_rows.size > @last_cell_rows.size && @cell_rows.include_all?(*@last_cell_rows)
-                @cell_rows.array_diff_indexes(@last_cell_rows).each do |index|
-                  ::LibUI.table_model_row_inserted(model, index)
+                @cell_rows.array_diff_indexes(@last_cell_rows).each do |row|
+                  ::LibUI.table_model_row_inserted(model, row)
+                end
+              else
+                @last_cell_rows.each_with_index do |row_data, row|
+                  ::LibUI.table_model_row_changed(model, row) if @cell_rows[row] != row_data
                 end
               end
               @last_cell_rows = @cell_rows.clone

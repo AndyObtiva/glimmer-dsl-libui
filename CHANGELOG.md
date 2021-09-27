@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.28
+
+- Support automatic table row change when updating a row in `cell_rows` (e.g. `data[3] = ['new', 'row', 'cell', 'values']`)
+
 ## 0.0.27
 
 - New examples/form_table.rb

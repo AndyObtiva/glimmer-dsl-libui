@@ -2,7 +2,7 @@
 
 ## Next
 
-- Support automatic table cell value reading management (row change in `cell_rows`)
+- Support automatic table row change when performing a direct row/column update in `cell_rows` (e.g. `data[3][0] = 'new value'`)
 
 ## Soon
 
