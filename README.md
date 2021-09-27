@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.0.27
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.0.28
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Maintainability](https://api.codeclimate.com/v1/badges/ce2853efdbecf6ebdc73/maintainability)](https://codeclimate.com/github/AndyObtiva/glimmer-dsl-libui/maintainability)
@@ -43,7 +43,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
 
 ## Table of Contents
 
-- [Glimmer DSL for LibUI 0.0.27](#-glimmer-dsl-for-libui-0027)
+- [Glimmer DSL for LibUI 0.0.28](#-glimmer-dsl-for-libui-0028)
   - [Glimmer GUI DSL Concepts](#glimmer-gui-dsl-concepts)
   - [Usage](#usage)
   - [API](#api)
@@ -52,6 +52,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
     - [Common Control Operations](#common-control-operations)
     - [Extra Dialogs](#extra-dialogs)
     - [Extra Operations](#extra-operations)
+    - [Table API](#table-api)
     - [Smart Defaults and Conventions](#smart-defaults-and-conventions)
     - [API Gotchas](#api-gotchas)
     - [Original API](#original-api)
@@ -166,7 +167,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.0.27'
+gem 'glimmer-dsl-libui', '~> 0.0.28'
 ```
 
 Add `require 'glimmer-dsl-libui'` at the top, and then `include Glimmer` into the top-level main object for testing or into an actual class for serious usage.
@@ -225,8 +226,8 @@ Control(Args) | Properties | Listeners
 `button(text as String)` | `text` (`String`) | `on_clicked`
 `button_column(name as String)` | `enabled` (Boolean) | None
 `checkbox(text as String)` | `checked` (Boolean), `text` (`String`) | `on_toggled`
-`checkbox_column(name as String)` | None | None
-`checkbox_text_column(name as String)` | `editable` (Boolean) | None
+`checkbox_column(name as String)` | `editable` (Boolean) [Windows-only due to a current libui limitation] | None
+`checkbox_text_column(name as String)` | `editable` (Boolean) [Windows-only due to a current libui limitation], `editable_checkbox` (Boolean) [Windows-only due to a current libui limitation], `editable_text` (Boolean) | None
 `combobox` | `items` (`Array` of `String`), `selected` (`Integer`) | `on_selected`
 `color_button` | `color` (Array of `red` as `Float`, `green` as `Float`, `blue` as `Float`, `alpha` as `Float`), `red` as `Float`, `green` as `Float`, `blue` as `Float`, `alpha` as `Float` | `on_changed`
 `date_picker` | `time` (`Hash` of keys: `sec` as `Integer`, `min` as `Integer`, `hour` as `Integer`, `mday` as `Integer`, `mon` as `Integer`, `year` as `Integer`, `wday` as `Integer`, `yday` as `Integer`, `dst` as Boolean) | `on_changed`
@@ -302,6 +303,24 @@ Control(Args) | Properties | Listeners
 - `ControlProxy::main_window_proxy`: returns the first window proxy instantiated in the application
 - `ControlProxy#window_proxy`: returns the window proxy parent for a control
 
+### Table API
+
+The `table` control must first declare its columns via one of these column keywords (mentioned in [Supported Controls](#supported-controls)):
+  - `button_column`: expects `String` cell values
+  - `checkbox_column`: expects Boolean cell values
+  - `checkbox_text_column`: expects dual-element `Array` of Boolean and `String` cell values
+  - `image_column`: expects `image` cell values (produced by `image` and `image_part` keywords as per [Supported Controls](#supported-controls))
+  - `image_text_column`: expects dual-element `Array` of `image` and `String` cell values
+  - `text_column`: expects `String` cell values
+  - `progress_bar_column`: expects `Integer` cell values
+  
+Afterwards, it must declare its `cell_rows` array (`Array` of `Array`s of column cell values) and whether it is `editable` (Boolean) for all its columns.
+
+Note that the `cell_rows` property declaration results in "implicit data-binding" between the `table` control and `Array` of `Arrays` (a new innovation) to provide convenience automatic support for:
+- Deleting cell rows: Calling `Array#delete`, `Array#delete_at`, `Array#delete_if`, or any filtering/deletion `Array` method automatically deletes rows in actual `table` control
+- Inserting cell rows: Calling `Array#<<`, `Array#push`, `Array#prepend`, or any insertion/addition `Array` method automatically inserts rows in actual `table` control
+- Changing cell rows: Calling `Array#[]=`, `Array#map!`, or any update `Array` method automatically updates rows in actual `table` control
+
 ### Smart Defaults and Conventions
 
 - `horizontal_box`, `vertical_box`, `grid`, and `form` controls have `padded` as `true` upon instantiation to ensure more user-friendly GUI by default
@@ -327,13 +346,14 @@ Control(Args) | Properties | Listeners
 - Smart defaults for `grid` child attributes are `left` (`0`), `top` (`0`), `xspan` (`1`), `yspan` (`1`), `hexpand` (`false`), `halign` (`0`), `vexpand` (`false`), and `valign` (`0`)
 - The `table` control automatically constructs required `TableModelHandler`, `TableModel`, and `TableParams`, calculating all their arguments from `cell_rows` and `editable` properties (e.g. `NumRows`) as well as nested columns (e.g. `text_column`)
 - Table model instances are automatically freed from memory after `window` is destroyed.
-- Table `cell_rows` data has implicit data-binding to table cell values for deletion and insertion (done by diffing `cell_rows` value before and after change and auto-informing `table` of deletions [`::LibUI.table_model_row_deleted`] and insertions [`::LibUI.table_model_row_deleted`]). When deleting data rows from `cell_rows` array, then actual rows from the `table` are automatically deleted. When inserting data rows into `cell_rows` array, then actual `table` rows are automatically inserted.
+- Table `cell_rows` data has implicit data-binding to table cell values for deletion, insertion, and change (done by diffing `cell_rows` value before and after change and auto-informing `table` of deletions [`LibUI.table_model_row_deleted`], insertions [`LibUI.table_model_row_deleted`], and changes [`LibUI.table_model_row_changed`]). When deleting data rows from `cell_rows` array, then actual rows from the `table` are automatically deleted. When inserting data rows into `cell_rows` array, then actual `table` rows are automatically inserted. When updating data rows in `cell_rows` array, then actual `table` rows are automatically updated.
 - `image` instances are automatically freed from memory after `window` is destroyed.
 - `image` `width` and `height` can be left off if it has one `image_part` only as they default to the same `width` and `height` of the `image_part`
 
 ### API Gotchas
 
-There is no proper way to destroy `grid` children due to [libui](https://github.com/andlabs/libui) not offering any API for deleting them from `grid` (no `grid_delete` similar to `box_delete` for `horizontal_box` and `vertical_box`)
+- There is no proper way to destroy `grid` children due to [libui](https://github.com/andlabs/libui) not offering any API for deleting them from `grid` (no `grid_delete` similar to `box_delete` for `horizontal_box` and `vertical_box`).
+- `table` `checkbox_column` and `checkbox_text_column` checkbox editing currently only works in Windows due to a current limitation in [libui](https://github.com/andlabs/libui).
 
 ### Original API
 

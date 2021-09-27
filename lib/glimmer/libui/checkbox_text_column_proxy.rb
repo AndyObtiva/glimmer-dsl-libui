@@ -32,12 +32,44 @@ module Glimmer
     class CheckboxTextColumnProxy < ControlProxy
       include Column
       include DualColumn
-      include EditableColumn # TODO split into editable_checkbox and editable_text properties in the future given that checkbox and text can be edited separately
+      include EditableColumn
       
+      def editable_checkbox(value = nil)
+        if value.nil?
+          @editable_checkbox = false if @editable_checkbox.nil?
+          @editable_checkbox
+        else
+          @editable_checkbox = !!value
+        end
+      end
+      alias editable_checkbox= editable_checkbox
+      alias set_editable_checkbox editable_checkbox
+      alias editable_checkbox? editable_checkbox
+
+      def editable_text(value = nil)
+        if value.nil?
+          @editable_text = false if @editable_text.nil?
+          @editable_text
+        else
+          @editable_text = !!value
+        end
+      end
+      alias editable_text= editable_text
+      alias set_editable_text editable_text
+      alias editable_text? editable_text
+
       private
       
       def build_control
-        @parent_proxy.append_checkbox_text_column(name, column_index, -1, second_column_index, editable_value)
+        @parent_proxy.append_checkbox_text_column(name, column_index, editable_checkbox_value, second_column_index, editable_text_value)
+      end
+      
+      def editable_checkbox_value
+        (@parent_proxy.editable? || editable? || editable_checkbox?) ? -2 : -1
+      end
+      
+      def editable_text_value
+        (@parent_proxy.editable? || editable? || editable_text?) ? -2 : -1
       end
     end
   end

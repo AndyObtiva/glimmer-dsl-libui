@@ -79,8 +79,8 @@ module Glimmer
                   ::LibUI.table_model_row_inserted(model, row)
                 end
               else
-                @last_cell_rows.each_with_index do |row_data, row|
-                  ::LibUI.table_model_row_changed(model, row) if @cell_rows[row] != row_data
+                @cell_rows.each_with_index do |new_row_data, row|
+                  ::LibUI.table_model_row_changed(model, row) if new_row_data != @last_cell_rows[row]
                 end
               end
               @last_cell_rows = @cell_rows.clone

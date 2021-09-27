@@ -3,6 +3,9 @@
 ## 0.0.28
 
 - Support automatic table row change when updating a row in `cell_rows` (e.g. `data[3] = ['new', 'row', 'cell', 'values']`)
+- Support `editable` property for `checkbox_column` (checkbox editing only works in Windows due to a [libui](https://github.com/andlabs/libui) limitation)
+- Support `editable`, `editable_checkbox`, and `editable_text` properties for `checkbox_text_column` (checkbox editing only works in Windows due to a [libui](https://github.com/andlabs/libui) limitation)
+- Fix examples/basic_table_checkbox_text.rb by removing `editable` property
 
 ## 0.0.27
 

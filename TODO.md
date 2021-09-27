@@ -2,19 +2,19 @@
 
 ## Next
 
-- Support automatic table row change when performing a direct row/column update in `cell_rows` (e.g. `data[3][0] = 'new value'`)
+- Support examples/basic_area.rb
+- Support `area` control
 
 ## Soon
 
-- Support examples/basic_area.rb
+- Support examples/basic_draw_text.rb
 
 ## Future
 
-- Support examples/basic_draw_text.rb
 - Support examples/histogram.rb
 - Support `search_entry` control
 - Support `password_entry` control
-- Support `area` control
+- New examples/scrolling_area.rb
 - Support `scrolling_area` control
 - Document `vertical_separator` control
 - Create new examples not found in LibUI for everything not covered by the original examples
@@ -40,6 +40,7 @@
 - Support custom `on_destroy` listener on all widgets, not just `window`
 - Support supplying optional `uiTableTextColumnOptionalParams *textParams` to `text_column`
 - Support configuring `RowBackgroundColorModelColumn` in TableParams
+- Support automatic table row change when performing a direct row/column update in `cell_rows` (e.g. `data[3][0] = 'new value'`) as opposed to a general row update (e.g. `data[3] = ['new value', 'other new value']` <- already supported)
 
 # Refactoring
 

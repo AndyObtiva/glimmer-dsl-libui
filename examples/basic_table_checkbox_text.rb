@@ -17,9 +17,7 @@ window('Animal sounds', 400, 200) {
     table {
       text_column('Animal')
       text_column('Sound')
-      checkbox_text_column('Description') {
-        editable true
-      }
+      checkbox_text_column('Description')
 
       cell_rows data
     }
