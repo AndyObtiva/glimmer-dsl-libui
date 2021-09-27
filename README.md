@@ -226,8 +226,8 @@ Control(Args) | Properties | Listeners
 `button(text as String)` | `text` (`String`) | `on_clicked`
 `button_column(name as String)` | `enabled` (Boolean) | None
 `checkbox(text as String)` | `checked` (Boolean), `text` (`String`) | `on_toggled`
-`checkbox_column(name as String)` | `editable` (Boolean) [Windows-only due to a current libui limitation] | None
-`checkbox_text_column(name as String)` | `editable` (Boolean) [Windows-only due to a current libui limitation], `editable_checkbox` (Boolean) [Windows-only due to a current libui limitation], `editable_text` (Boolean) | None
+`checkbox_column(name as String)` | `editable` (Boolean) | None
+`checkbox_text_column(name as String)` | `editable` (Boolean), `editable_checkbox` (Boolean), `editable_text` (Boolean) | None
 `combobox` | `items` (`Array` of `String`), `selected` (`Integer`) | `on_selected`
 `color_button` | `color` (Array of `red` as `Float`, `green` as `Float`, `blue` as `Float`, `alpha` as `Float`), `red` as `Float`, `green` as `Float`, `blue` as `Float`, `alpha` as `Float` | `on_changed`
 `date_picker` | `time` (`Hash` of keys: `sec` as `Integer`, `min` as `Integer`, `hour` as `Integer`, `mday` as `Integer`, `mon` as `Integer`, `year` as `Integer`, `wday` as `Integer`, `yday` as `Integer`, `dst` as Boolean) | `on_changed`
@@ -353,7 +353,7 @@ Note that the `cell_rows` property declaration results in "implicit data-binding
 ### API Gotchas
 
 - There is no proper way to destroy `grid` children due to [libui](https://github.com/andlabs/libui) not offering any API for deleting them from `grid` (no `grid_delete` similar to `box_delete` for `horizontal_box` and `vertical_box`).
-- `table` `checkbox_column` and `checkbox_text_column` checkbox editing currently only works in Windows due to a current limitation in [libui](https://github.com/andlabs/libui).
+- `table` `checkbox_column` and `checkbox_text_column` checkbox editing only works on Windows and Linux (not Mac) due to a current limitation in [libui](https://github.com/andlabs/ui/issues/357).
 
 ### Original API
 
