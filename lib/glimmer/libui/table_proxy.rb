@@ -111,10 +111,8 @@ module Glimmer
             0
           when ImageColumnProxy, ImageTextColumnProxy
             1
-          when CheckboxColumnProxy
+          when CheckboxColumnProxy, CheckboxTextColumnProxy
             2
-#           when CheckboxTextColumnProxy
-#             2
 #           when ProgressBarColumnProxy
 #             2
           end
@@ -127,7 +125,7 @@ module Glimmer
             ::LibUI.new_table_value_string((expanded_cell_rows[row] && expanded_cell_rows[row][column]).to_s)
           when ImageColumnProxy, ImageTextColumnProxy
             ::LibUI.new_table_value_image((expanded_cell_rows[row] && (expanded_cell_rows[row][column].respond_to?(:libui) ? expanded_cell_rows[row][column].libui : expanded_cell_rows[row][column])))
-          when CheckboxColumnProxy
+          when CheckboxColumnProxy, CheckboxTextColumnProxy
             ::LibUI.new_table_value_int((expanded_cell_rows[row] && (expanded_cell_rows[row][column] == 1 || expanded_cell_rows[row][column].to_s.strip.downcase == 'true' ? 1 : 0)))
           end
         end
@@ -142,7 +140,7 @@ module Glimmer
             @cell_rows[row][column][1] = ::LibUI.table_value_string(val).to_s
           when ButtonColumnProxy
             @columns[column].notify_listeners(:on_clicked, row)
-          when CheckboxColumnProxy
+          when CheckboxColumnProxy, CheckboxTextColumnProxy
             column = @columns[column].index
             @cell_rows[row] ||= []
             @cell_rows[row][column] = ::LibUI.table_value_int(val).to_i == 1

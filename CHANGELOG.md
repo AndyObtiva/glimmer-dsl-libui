@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.0.25
+
+- New examples/basic_table_checkbox_text.rb
+- Support table `checkbox_text_column`
+
 ## 0.0.24
 
 - New examples/basic_table_checkbox.rb

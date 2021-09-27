@@ -2,13 +2,11 @@
 
 ## Next
 
-- Support table `checkbox_text_column`
-- New examples/basic_table_checkbox_text.rb
+- New examples/basic_table_progress_bar.rb
+- Support table `progress_bar_column`
 
 ## Soon
 
-- Support table `progress_bar_column`
-- New examples/basic_table_progress_bar.rb
 - Support automatic table cell value reading management (row insertion in `cell_rows`)
 - New examples/form_table.rb
 - Support automatic table cell value reading management (row change in `cell_rows`)

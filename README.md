@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.0.24
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.0.25
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Maintainability](https://api.codeclimate.com/v1/badges/ce2853efdbecf6ebdc73/maintainability)](https://codeclimate.com/github/AndyObtiva/glimmer-dsl-libui/maintainability)
@@ -43,7 +43,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
 
 ## Table of Contents
 
-- [Glimmer DSL for LibUI 0.0.24](#-glimmer-dsl-for-libui-0024)
+- [Glimmer DSL for LibUI 0.0.25](#-glimmer-dsl-for-libui-0025)
   - [Glimmer GUI DSL Concepts](#glimmer-gui-dsl-concepts)
   - [Usage](#usage)
   - [API](#api)
@@ -76,6 +76,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
     - [Basic Table Image Text](#basic-table-image-text)
     - [Basic Table Button](#basic-table-button)
     - [Basic Table Checkbox](#basic-table-checkbox)
+    - [Basic Table Checkbox Text](#basic-table-checkbox-text)
   - [Contributing to glimmer-dsl-libui](#contributing-to-glimmer-dsl-libui)
   - [Help](#help)
     - [Issues](#issues)
@@ -163,7 +164,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.0.24'
+gem 'glimmer-dsl-libui', '~> 0.0.25'
 ```
 
 Add `require 'glimmer-dsl-libui'` at the top, and then `include Glimmer` into the top-level main object for testing or into an actual class for serious usage.
@@ -223,6 +224,7 @@ Control(Args) | Properties | Listeners
 `button_column(name as String)` | `enabled` (Boolean) | None
 `checkbox(text as String)` | `checked` (Boolean), `text` (`String`) | `on_toggled`
 `checkbox_column(name as String)` | None | None
+`checkbox_text_column(name as String)` | `editable` (Boolean) | None
 `combobox` | `items` (`Array` of `String`), `selected` (`Integer`) | `on_selected`
 `color_button` | `color` (Array of `red` as `Float`, `green` as `Float`, `blue` as `Float`, `alpha` as `Float`), `red` as `Float`, `green` as `Float`, `blue` as `Float`, `alpha` as `Float` | `on_changed`
 `date_picker` | `time` (`Hash` of keys: `sec` as `Integer`, `min` as `Integer`, `hour` as `Integer`, `mday` as `Integer`, `mon` as `Integer`, `year` as `Integer`, `wday` as `Integer`, `yday` as `Integer`, `dst` as Boolean) | `on_changed`
@@ -255,7 +257,7 @@ Control(Args) | Properties | Listeners
 `tab` | `margined` (Boolean), `num_pages` (`Integer`) | None
 `tab_item(name as String)` | `index` [read-only] (`Integer`), `margined` (Boolean), `name` [read-only] (`String`) | None
 `table` | `cell_rows` (`Array` (rows) of `Arrays` (row columns) of cell values (e.g. `String` values for `text_column` cells or `Array` of `image`/`String` for `image_text_column`)), `editable` as Boolean | None
-`text_column(name as String)` | `editable` as Boolean | None
+`text_column(name as String)` | `editable` (Boolean) | None
 `time_picker` | `time` (`Hash` of keys: `sec` as `Integer`, `min` as `Integer`, `hour` as `Integer`, `mday` as `Integer`, `mon` as `Integer`, `year` as `Integer`, `wday` as `Integer`, `yday` as `Integer`, `dst` as Boolean) | `on_changed`
 `vertical_box` | `padded` (Boolean) | None
 `window(title as String, width as Integer, height as Integer, has_menubar as Boolean)` | `borderless` (Boolean), `content_size` (width `Numeric`, height `Numeric`), `fullscreen` (Boolean), `margined` (Boolean), `title` (`String`) | `on_closing`, `on_content_size_changed`, `on_destroy`
@@ -2350,6 +2352,58 @@ window('Animal sounds', 300, 200) {
       text_column('Animal')
       text_column('Description')
       checkbox_column('Mammal')
+
+      cell_rows data
+    }
+  }
+}.show
+```
+
+### Basic Table Checkbox Text
+
+[examples/basic_table_checkbox_text.rb](examples/basic_table_checkbox_text.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/basic_table_checkbox_text.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/basic_table_checkbox_text'"
+```
+
+Mac
+
+![glimmer-dsl-libui-mac-basic-table-checkbox-text.png](images/glimmer-dsl-libui-mac-basic-table-checkbox-text.png)
+
+Linux
+
+![glimmer-dsl-libui-linux-basic-table-checkbox-text.png](images/glimmer-dsl-libui-linux-basic-table-checkbox-text.png)
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+data = [
+  ['cat', 'meow', [true, 'mammal']],
+  ['dog', 'woof', [true, 'mammal']],
+  ['chicken', 'cock-a-doodle-doo', [false, 'mammal']],
+  ['horse', 'neigh', [true, 'mammal']],
+  ['cow', 'moo', [true, 'mammal']]
+]
+
+window('Animal sounds', 400, 200) {
+  horizontal_box {
+    table {
+      text_column('Animal')
+      text_column('Sound')
+      checkbox_text_column('Description')
 
       cell_rows data
     }
