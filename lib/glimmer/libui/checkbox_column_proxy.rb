@@ -30,12 +30,12 @@ module Glimmer
     # Follows the Proxy Design Pattern
     class CheckboxColumnProxy < ControlProxy
       include Column
-      include EditableColumn
+#       include EditableColumn # TODO enable this once checkbox column becomes editable on macosx in C libui (currently has a bug)
       
       private
       
       def build_control
-        @parent_proxy.append_checkbox_column(name, column_index, editable_value)
+        @parent_proxy.append_checkbox_column(name, column_index, -1)
       end
     end
   end

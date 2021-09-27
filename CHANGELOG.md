@@ -2,6 +2,8 @@
 
 ## 0.0.24
 
+- New examples/basic_table_checkbox.rb
+- Support table `checkbox_column`
 - Improve support for table row deletion upon actual `cell_rows` deletion by handling multiple-row deletion not just single-row deletion
 
 ## 0.0.23

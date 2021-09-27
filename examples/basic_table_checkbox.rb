@@ -19,7 +19,7 @@ window('Animal sounds', 300, 200) {
       text_column('Description')
       checkbox_column('Mammal')
 
-      cell_rows data # implicit data-binding
+      cell_rows data
     }
   }
 }.show
