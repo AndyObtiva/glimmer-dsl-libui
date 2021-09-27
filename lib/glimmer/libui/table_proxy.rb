@@ -123,8 +123,10 @@ module Glimmer
             ::LibUI.new_table_value_string((expanded_cell_rows[row] && expanded_cell_rows[row][column]).to_s)
           when ImageColumnProxy, ImageTextColumnProxy
             ::LibUI.new_table_value_image((expanded_cell_rows[row] && (expanded_cell_rows[row][column].respond_to?(:libui) ? expanded_cell_rows[row][column].libui : expanded_cell_rows[row][column])))
-          when CheckboxColumnProxy, CheckboxTextColumnProxy, ProgressBarColumnProxy
+          when CheckboxColumnProxy, CheckboxTextColumnProxy
             ::LibUI.new_table_value_int((expanded_cell_rows[row] && (expanded_cell_rows[row][column] == 1 || expanded_cell_rows[row][column].to_s.strip.downcase == 'true' ? 1 : 0)))
+          when ProgressBarColumnProxy
+            ::LibUI.new_table_value_int((expanded_cell_rows[row] && (expanded_cell_rows[row][column].to_i)))
           end
         end
         @model_handler.SetCellValue = rbcallback(0, [1, 1, 4, 4, 1]) do |_, _, row, column, val|

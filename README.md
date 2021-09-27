@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.0.25
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.0.26
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Maintainability](https://api.codeclimate.com/v1/badges/ce2853efdbecf6ebdc73/maintainability)](https://codeclimate.com/github/AndyObtiva/glimmer-dsl-libui/maintainability)
@@ -43,7 +43,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
 
 ## Table of Contents
 
-- [Glimmer DSL for LibUI 0.0.25](#-glimmer-dsl-for-libui-0025)
+- [Glimmer DSL for LibUI 0.0.26](#-glimmer-dsl-for-libui-0026)
   - [Glimmer GUI DSL Concepts](#glimmer-gui-dsl-concepts)
   - [Usage](#usage)
   - [API](#api)
@@ -77,6 +77,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
     - [Basic Table Button](#basic-table-button)
     - [Basic Table Checkbox](#basic-table-checkbox)
     - [Basic Table Checkbox Text](#basic-table-checkbox-text)
+    - [Basic Table Progress Bar](#basic-table-progress-bar)
   - [Contributing to glimmer-dsl-libui](#contributing-to-glimmer-dsl-libui)
   - [Help](#help)
     - [Issues](#issues)
@@ -164,7 +165,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.0.25'
+gem 'glimmer-dsl-libui', '~> 0.0.26'
 ```
 
 Add `require 'glimmer-dsl-libui'` at the top, and then `include Glimmer` into the top-level main object for testing or into an actual class for serious usage.
@@ -250,6 +251,7 @@ Control(Args) | Properties | Listeners
 `non_wrapping_multiline_entry` | `read_only` (Boolean), `text` (`String`) | `on_changed`
 `preferences_menu_item` | None | `on_clicked`
 `progress_bar` | `value` (`Numeric`) | None
+`progress_bar_column(name as String)` | None | None
 `quit_menu_item` | None | `on_clicked`
 `radio_buttons` | `selected` (`Integer`) | `on_selected`
 `slider(min as Numeric, max as Numeric)` | `value` (`Numeric`) | `on_changed`
@@ -2404,6 +2406,57 @@ window('Animal sounds', 400, 200) {
       text_column('Animal')
       text_column('Sound')
       checkbox_text_column('Description')
+
+      cell_rows data
+    }
+  }
+}.show
+```
+
+### Basic Table Progress Bar
+
+[examples/basic_table_progress_bar.rb](examples/basic_table_progress_bar.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/basic_table_progress_bar.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/basic_table_progress_bar'"
+```
+
+Mac
+
+![glimmer-dsl-libui-mac-basic-table-progress-bar.png](images/glimmer-dsl-libui-mac-basic-table-progress-bar.png)
+
+Linux
+
+![glimmer-dsl-libui-linux-basic-table-progress-bar.png](images/glimmer-dsl-libui-linux-basic-table-progress-bar.png)
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+data = [
+  ['task 1', 0],
+  ['task 2', 15],
+  ['task 3', 100],
+  ['task 4', 75],
+  ['task 5', -1],
+]
+
+window('Task progress', 300, 200) {
+  horizontal_box {
+    table {
+      text_column('Task')
+      progress_bar_column('Progress')
 
       cell_rows data
     }

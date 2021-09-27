@@ -12,7 +12,7 @@ data = [
   ['task 5', -1],
 ]
 
-window('Task Progress', 300, 200) {
+window('Task progress', 300, 200) {
   horizontal_box {
     table {
       text_column('Task')

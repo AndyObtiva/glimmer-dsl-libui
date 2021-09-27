@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.0.26
+
+- New examples/basic_table_progress_bar.rb
+- Support table `progress_bar_column`
+
 ## 0.0.25
 
 - New examples/basic_table_checkbox_text.rb

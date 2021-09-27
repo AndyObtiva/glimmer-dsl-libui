@@ -2,13 +2,11 @@
 
 ## Next
 
-- New examples/basic_table_progress_bar.rb
-- Support table `progress_bar_column`
+- Support automatic table cell value reading management (row insertion in `cell_rows`)
+- New examples/form_table.rb
 
 ## Soon
 
-- Support automatic table cell value reading management (row insertion in `cell_rows`)
-- New examples/form_table.rb
 - Support automatic table cell value reading management (row change in `cell_rows`)
 
 ## Future
