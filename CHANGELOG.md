@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.1.3
+
+- Support `figure(x = nil, y = nil) {}` (`draw_path_new_figure`)
+- Support `closed true` property inside nested figure (`draw_path_close_figure`)
+
 ## 0.1.2
 
 - Support re-opening a control by using `#content {...}`

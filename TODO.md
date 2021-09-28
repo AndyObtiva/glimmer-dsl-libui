@@ -2,20 +2,21 @@
 
 ## Next
 
-- Support `figure(x = nil, y = nil) {}` (`draw_path_new_figure`)
-- Support `arc` (`draw_path_arc_to` if `draw_path_new_figure` was called already or `draw_path_new_figure_with_arc` otherwise)
+- Support `arc` (`draw_path_arc_to` if `draw_path_new_figure` was called already or `draw_path_new_figure_with_arc` if parent is a figure without x,y)
 - Support `bezier`
 - Support `line`
-- Support `closed true` property inside nested figure (`draw_path_close_figure`)
 - Support `area` `transform` property and `matrix` object
 - Support examples/histogram.rb
+- Update meta-example screenshots
 
 ## Soon
 
 - Support `area` listeners: `on_mouse_event`, `on_mouse_crossed`, `on_drag_broken`, `on_key_event`
-- Support `:linear_gradient` `fill`/`stroke` `:type`
-- Support `:radial_gradient` `fill`/`stroke` `:type`
+- Support `path` `fill`/`stroke` `:type` of `:linear_gradient`
+- Support `path` `fill`/`stroke` `:type` of `:radial_gradient`
 - Support `stroke` `:dashes`
+- New examples/scrolling_area.rb
+- Support `scrolling_area` control and `size` property
 
 ## Future
 
@@ -25,21 +26,22 @@
 - Support `search_entry` control
 - New examples/login.rb
 - Support `password_entry` control
-- New examples/scrolling_area.rb
-- Support `scrolling_area` control and `size` property
 - Document `vertical_separator` control
 - Create new examples not found in LibUI for everything not covered by the original examples
-- Add a 3rd tab to examples/grid.rb showcasing the halign and valign properties and provide symbol alternatives for their values like `:fill` and `:center`
-- Default values for msg_box/msg_box_error args if not supplied
+- Add a 3rd tab to examples/grid.rb showcasing the halign and valign properties and provide symbol alternatives for their values like `:fill` (0), `:start` (1), `:center` (2), and `:end` (3)
+- Default values for `msg_box`/`msg_box_error` args if not supplied (assume main window automatically when window is not supplied)
+- Support automatic `grid` horizontal or vertical layout by specifying `column_count` or `row_count`
 
 ## Far Future
 - Support general property data-binding
 - Support table data-binding
 - Support combobox and editable_combobox property data-binding
 - Support radio_buttons property data-binding
-- Support automatic `grid` horizontal or vertical layout by specifying `column_count` or `row_count`
 - Support custom controls
 - Support custom windows
+- Automate OCRA support for Windows Native-Executable Packaging
+- Implement Mac Native-Executable Packaging (perhaps with https://github.com/create-dmg/create-dmg or https://github.com/sveinbjornt/Platypus)
+- Scaffold an application with support for gem and native-executable packaging
 
 ## Maybe
 

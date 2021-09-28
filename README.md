@@ -19,7 +19,7 @@ The main trade-off in using [Glimmer DSL for LibUI](https://rubygems.org/gems/gl
 - Scaffolding for new custom controls, apps, and gems
 - Native-Executable packaging on Mac, Windows, and Linux.
 
-Example:
+Hello, World!
 
 ```ruby
 require 'glimmer-dsl-libui'
@@ -32,6 +32,63 @@ window('hello world').show
 ![glimmer-dsl-libui-mac-basic-window.png](images/glimmer-dsl-libui-mac-basic-window.png)
 ![glimmer-dsl-libui-linux-basic-window.png](images/glimmer-dsl-libui-linux-basic-window.png)
 
+Basic Table Progress Bar
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+data = [
+  ['task 1', 0],
+  ['task 2', 15],
+  ['task 3', 100],
+  ['task 4', 75],
+  ['task 5', -1],
+]
+
+window('Task progress', 300, 200) {
+  horizontal_box {
+    table {
+      text_column('Task')
+      progress_bar_column('Progress')
+
+      cell_rows data
+    }
+  }
+}.show
+```
+
+![glimmer-dsl-libui-mac-basic-table-progress-bar.png](images/glimmer-dsl-libui-mac-basic-table-progress-bar.png)
+![glimmer-dsl-libui-linux-basic-table-progress-bar.png](images/glimmer-dsl-libui-linux-basic-table-progress-bar.png)
+
+Basic Area
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+window('Basic Area', 400, 400) {
+  margined true
+  
+  vertical_box {
+    area {
+      path { # a stable path is added declaratively
+        rectangle(0, 0, 400, 400)
+        
+        fill r: 102, g: 102, b: 204, a: 1.0
+      }
+    }
+  }
+}.show
+```
+
+![glimmer-dsl-libui-mac-basic-area.png](images/glimmer-dsl-libui-mac-basic-area.png)
+![glimmer-dsl-libui-linux-basic-area.png](images/glimmer-dsl-libui-linux-basic-area.png)
+
+[Check Out Many More Examples Over Here!](#examples)
+
 NOTE: [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) is in early alpha mode (only supports included [examples](#examples)). Please help make better by contributing, adopting for small or low risk projects, and providing feedback. It is still an early alpha, so the more feedback and issues you report the better.
 
 Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interested in:
@@ -43,7 +100,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
 
 ## Table of Contents
 
-  - [Glimmer DSL for LibUI 0.1.2](#-glimmer-dsl-for-libui-012)
+- [Glimmer DSL for LibUI 0.1.2](#-glimmer-dsl-for-libui-012)
   - [Glimmer GUI DSL Concepts](#glimmer-gui-dsl-concepts)
   - [Usage](#usage)
   - [Girb (Glimmer IRB)](#girb-glimmer-irb)
@@ -345,6 +402,80 @@ Note that the `cell_rows` property declaration results in "implicit data-binding
 - Deleting cell rows: Calling `Array#delete`, `Array#delete_at`, `Array#delete_if`, or any filtering/deletion `Array` method automatically deletes rows in actual `table` control
 - Inserting cell rows: Calling `Array#<<`, `Array#push`, `Array#prepend`, or any insertion/addition `Array` method automatically inserts rows in actual `table` control
 - Changing cell rows: Calling `Array#[]=`, `Array#map!`, or any update `Array` method automatically updates rows in actual `table` control
+
+Example (you may copy/paste in [`girb`](#girb-glimmer-irb)):
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+data = [
+  ['Lisa Sky', 'lisa@sky.com', '720-523-4329', 'Denver', 'CO', '80014'],
+  ['Jordan Biggins', 'jordan@biggins.com', '617-528-5399', 'Boston', 'MA', '02101'],
+  ['Mary Glass', 'mary@glass.com', '847-589-8788', 'Elk Grove Village', 'IL', '60007'],
+  ['Darren McGrath', 'darren@mcgrath.com', '206-539-9283', 'Seattle', 'WA', '98101'],
+  ['Melody Hanheimer', 'melody@hanheimer.com', '213-493-8274', 'Los Angeles', 'CA', '90001'],
+]
+
+window('Contacts', 600, 600) { |w|
+  margined true
+  
+  vertical_box {
+    form {
+      stretchy false
+      
+      @name_entry = entry {
+        label 'Name'
+      }
+      @email_entry = entry {
+        label 'Email'
+      }
+      @phone_entry = entry {
+        label 'Phone'
+      }
+      @city_entry = entry {
+        label 'City'
+      }
+      @state_entry = entry {
+        label 'State'
+      }
+    }
+    
+    button('Save Contact') {
+      stretchy false
+      
+      on_clicked do
+        new_row = [@name_entry.text, @email_entry.text, @phone_entry.text, @city_entry.text, @state_entry.text]
+        if new_row.include?('')
+          msg_box_error(w, 'Validation Error!', 'All fields are required! Please make sure to enter a value for all fields.')
+        else
+          data << new_row # automatically inserts a row into the table due to implicit data-binding
+          @name_entry.text = ''
+          @email_entry.text = ''
+          @phone_entry.text = ''
+          @city_entry.text = ''
+          @state_entry.text = ''
+        end
+      end
+    }
+    
+    table {
+      text_column('Name')
+      text_column('Email')
+      text_column('Phone')
+      text_column('City')
+      text_column('State')
+
+      cell_rows data # implicit data-binding
+    }
+  }
+}.show
+```
+
+![glimmer-dsl-libui-linux-form-table.png](images/glimmer-dsl-libui-linux-form-table.png)
+
+Learn more by checking out [examples](#examples).
 
 ### Area API
 

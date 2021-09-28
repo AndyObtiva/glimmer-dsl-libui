@@ -23,10 +23,10 @@ require 'glimmer/libui/control_proxy'
 
 module Glimmer
   module LibUI
-    # Proxy for LibUI rectangle objects
+    # Proxy for LibUI figure objects
     #
     # Follows the Proxy Design Pattern
-    class RectangleProxy < ControlProxy
+    class FigureProxy < ControlProxy
       def initialize(keyword, parent, args, &block)
         @keyword = keyword
         @parent_proxy = parent
@@ -37,13 +37,24 @@ module Glimmer
       end
     
       def draw(area_draw_params)
-        ::LibUI.draw_path_add_rectangle(path_proxy.libui, *@args)
+        ::LibUI.draw_path_new_figure(path_proxy.libui, *@args) unless @args.empty? # TODO if args empty then wait till there is an arc child and it starts the figure
+        children.each {|child| child.draw(area_draw_params)}
+        ::LibUI.draw_path_close_figure(path_proxy.libui) if closed?
         destroy if area_proxy.nil?
       end
       
       def destroy
         @parent_proxy.children.delete(self) unless @parent_proxy.nil?
         ControlProxy.control_proxies.delete(self)
+      end
+      
+      def post_initialize_child(child)
+        super
+        children << child
+      end
+      
+      def children
+        @children ||= []
       end
       
       def area_proxy
@@ -84,27 +95,17 @@ module Glimmer
       alias y= y
       alias set_y y
       
-      def width(value = nil)
+      def closed(value = nil)
         if value.nil?
-          @args[2]
+          @closed
         else
-          @args[2] = value
+          @closed = value
           area_proxy&.queue_redraw_all
         end
       end
-      alias width= width
-      alias set_width width
-      
-      def height(value = nil)
-        if value.nil?
-          @args[3]
-        else
-          @args[3] = value
-          area_proxy&.queue_redraw_all
-        end
-      end
-      alias height= height
-      alias set_height height
+      alias closed= closed
+      alias set_closed closed
+      alias closed? closed
       
       private
       
