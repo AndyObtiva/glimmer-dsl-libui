@@ -19,38 +19,15 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'glimmer/libui/control_proxy'
-
 module Glimmer
-  module LibUI
-    # Proxy for LibUI rectangle objects
-    #
-    # Follows the Proxy Design Pattern
-    class RectangleProxy < ControlProxy
-      def initialize(keyword, parent, args, &block)
-        @keyword = keyword
-        @parent_proxy = parent
-        @args = args
-        @block = block
-        @enabled = true
-        post_add_content if @block.nil?
-      end
-    
-      def draw(area_draw_params)
-        ::LibUI.draw_path_add_rectangle(@parent_proxy.libui, *@args)
-      end
-      
-      def destroy
-        if @parent_proxy
-          @parent_proxy.children.delete(self)
-        end
-      end
-      
-      private
-      
-      def build_control
-        # No Op
-      end
+  module FiddleConsumer
+    # Protects Fiddle::Closure::BlockCaller objects from garbage collection.
+    def fiddle_closure_block_caller(*args, &block)
+      @blockcaller ||= []
+      args << [0] if args.size == 1 # Argument types are ommited
+      blockcaller = ::Fiddle::Closure::BlockCaller.new(*args, &block)
+      @blockcaller << blockcaller
+      blockcaller
     end
   end
 end

@@ -21,8 +21,6 @@
 
 require 'glimmer/libui/control_proxy'
 
-using ArrayIncludeMethods
-
 module Glimmer
   module LibUI
     # Proxy for LibUI path objects
@@ -52,7 +50,8 @@ module Glimmer
         build_control
         children.each {|child| child.draw(area_draw_params)}
         ::LibUI.draw_path_end(@libui)
-        ::LibUI.draw_fill(area_draw_params.Context, @libui, fill_brush.to_ptr)
+        ::LibUI.draw_fill(area_draw_params.Context, @libui, fill_draw_brush.to_ptr) unless fill.empty?
+        ::LibUI.draw_stroke(area_draw_params.Context, @libui, stroke_draw_brush, draw_stroke_params) unless stroke.empty?
         ::LibUI.draw_free_path(@libui)
       end
       
@@ -60,45 +59,51 @@ module Glimmer
         @args[0].is_a?(Integer) ? @args[0] : @args[0].to_s == 'alternate' ? 1 : 0
       end
       
-      def fill(args)
+      def fill(args = nil)
         if args.nil?
-          @fill_args
+          @fill ||= {}
         else
-          @fill_args = args
+          @fill = args
         end
       end
+      alias fill= fill
+      alias set_fill fill
       
-      def fill_brush
-        @fill_brush ||= ::LibUI::FFI::DrawBrush.malloc
-        case @fill_args[:type]
-        when Integer
-          @fill_brush.Type = @fill_args[:type]
-        when :solid, 'solid'
-          @fill_brush.Type = 0
-        when :linear_gradient, 'linear_gradient'
-          @fill_brush.Type = 1
-        when :radial_gradient, 'radial_gradient'
-          @fill_brush.Type = 2
-        when :image, 'image'
-          @fill_brush.Type = 3
-        else
-          @fill_brush.Type = 0
-        end
-        @fill_brush.R = (@fill_args[:r] || @fill_args[:red]).to_f / 255.0
-        @fill_brush.G = (@fill_args[:g] || @fill_args[:green]).to_f / 255.0
-        @fill_brush.B = (@fill_args[:b] || @fill_args[:blue]).to_f / 255.0
-        @fill_brush.A = (@fill_args[:a] || @fill_args[:alpha])
-        @fill_brush
+      def fill_draw_brush
+        @fill_draw_brush ||= ::LibUI::FFI::DrawBrush.malloc
+        init_draw_brush(@fill_draw_brush, @fill)
+        @fill_draw_brush
       end
     
-      def stroke(*args)
-        if args.empty?
-          @stroke_args
+      def stroke(args = nil)
+        if args.nil?
+          @stroke ||= {}
         else
-          @stroke_args = args
+          @stroke = args
         end
       end
+      alias stroke= stroke
+      alias set_stroke stroke
       
+      def stroke_draw_brush
+        @stroke_draw_brush ||= ::LibUI::FFI::DrawBrush.malloc
+        init_draw_brush(@stroke_draw_brush, @stroke)
+        @stroke_draw_brush
+      end
+      
+      def draw_stroke_params
+        @draw_stroke_params ||= ::LibUI::FFI::DrawStrokeParams.malloc
+        @draw_stroke_params.Cap = @stroke[:cap] || 0 # flat
+        @draw_stroke_params.Join = @stroke[:join] || 0 # miter
+        @draw_stroke_params.Thickness = @stroke[:thickness] || 1
+        @draw_stroke_params.MiterLimit = @stroke[:miter_limit] || 10 # DEFAULT_MITER_LIMIT
+        @draw_stroke_params_dashes ||= Fiddle::Pointer.malloc(8)
+        @draw_stroke_params.Dashes = @draw_stroke_params_dashes
+        @draw_stroke_params.NumDashes = @stroke[:num_dashes] || 0 # TODO reimplement this line correctly (perhaps no need to pass num dashes, yet dashes themselves and use their count here)
+        @draw_stroke_params.DashPhase = @stroke[:dash_phase] || 0
+        @draw_stroke_params
+      end
+    
       def destroy
         if @parent_proxy
           @parent_proxy.children.delete(self)
@@ -109,6 +114,27 @@ module Glimmer
       
       def build_control
         @libui = ::LibUI.draw_new_path(draw_fill_mode)
+      end
+      
+      def init_draw_brush(draw_brush, draw_brush_args)
+        case draw_brush_args[:type]
+        when Integer
+          draw_brush.Type = draw_brush_args[:type]
+        when :solid, 'solid'
+          draw_brush.Type = 0
+        when :linear_gradient, 'linear_gradient'
+          draw_brush.Type = 1
+        when :radial_gradient, 'radial_gradient'
+          draw_brush.Type = 2
+        when :image, 'image'
+          draw_brush.Type = 3
+        else
+          draw_brush.Type = 0
+        end
+        draw_brush.R = (draw_brush_args[:r] || draw_brush_args[:red]).to_f / 255.0
+        draw_brush.G = (draw_brush_args[:g] || draw_brush_args[:green]).to_f / 255.0
+        draw_brush.B = (draw_brush_args[:b] || draw_brush_args[:blue]).to_f / 255.0
+        draw_brush.A = (draw_brush_args[:a] || draw_brush_args[:alpha])
       end
     end
   end

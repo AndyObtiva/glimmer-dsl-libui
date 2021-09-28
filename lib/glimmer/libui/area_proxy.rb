@@ -20,8 +20,7 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 require 'glimmer/libui/control_proxy'
-
-using ArrayIncludeMethods
+require 'glimmer/fiddle_consumer'
 
 module Glimmer
   module LibUI
@@ -29,6 +28,8 @@ module Glimmer
     #
     # Follows the Proxy Design Pattern
     class AreaProxy < ControlProxy
+      include Glimmer::FiddleConsumer
+      
       attr_reader :area_handler
       
       def post_initialize_child(child)
@@ -53,14 +54,14 @@ module Glimmer
       end
       
       def install_listeners
-        @area_handler.Draw         = Fiddle::Closure::BlockCaller.new(0, [1, 1, 1]) do |_, _, area_draw_params|
+        @area_handler.Draw         = fiddle_closure_block_caller(0, [1, 1, 1]) do |_, _, area_draw_params|
           area_draw_params = ::LibUI::FFI::AreaDrawParams.new(area_draw_params)
           children.each {|child| child.draw(area_draw_params)}
         end
-        @area_handler.MouseEvent   = Fiddle::Closure::BlockCaller.new(0, [0]) {}
-        @area_handler.MouseCrossed = Fiddle::Closure::BlockCaller.new(0, [0]) {}
-        @area_handler.DragBroken   = Fiddle::Closure::BlockCaller.new(0, [0]) {}
-        @area_handler.KeyEvent     = Fiddle::Closure::BlockCaller.new(0, [0]) {}
+        @area_handler.MouseEvent   = fiddle_closure_block_caller(0, [0]) {}
+        @area_handler.MouseCrossed = fiddle_closure_block_caller(0, [0]) {}
+        @area_handler.DragBroken   = fiddle_closure_block_caller(0, [0]) {}
+        @area_handler.KeyEvent     = fiddle_closure_block_caller(0, [0]) {}
       end
     end
   end

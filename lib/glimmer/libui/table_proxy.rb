@@ -21,6 +21,7 @@
 
 require 'glimmer/libui/control_proxy'
 require 'glimmer/data_binding/observer'
+require 'glimmer/fiddle_consumer'
 
 using ArrayIncludeMethods
 
@@ -30,6 +31,8 @@ module Glimmer
     #
     # Follows the Proxy Design Pattern
     class TableProxy < ControlProxy
+      include Glimmer::FiddleConsumer
+      
       attr_reader :model_handler, :model, :table_params, :columns
     
       def initialize(keyword, parent, args, &block)
@@ -112,8 +115,8 @@ module Glimmer
       
       def build_control
         @model_handler = ::LibUI::FFI::TableModelHandler.malloc
-        @model_handler.NumColumns   = rbcallback(4) { @columns.map {|c| c.is_a?(DualColumn) ? 2 : 1}.sum }
-        @model_handler.ColumnType   = rbcallback(4, [1, 1, 4]) do |_, _, column|
+        @model_handler.NumColumns   = fiddle_closure_block_caller(4) { @columns.map {|c| c.is_a?(DualColumn) ? 2 : 1}.sum }
+        @model_handler.ColumnType   = fiddle_closure_block_caller(4, [1, 1, 4]) do |_, _, column|
           case @columns[column]
           when TextColumnProxy, ButtonColumnProxy, NilClass
             0
@@ -123,8 +126,8 @@ module Glimmer
             2
           end
         end
-        @model_handler.NumRows      = rbcallback(4) { cell_rows.count }
-        @model_handler.CellValue    = rbcallback(1, [1, 1, 4, 4]) do |_, _, row, column|
+        @model_handler.NumRows      = fiddle_closure_block_caller(4) { cell_rows.count }
+        @model_handler.CellValue    = fiddle_closure_block_caller(1, [1, 1, 4, 4]) do |_, _, row, column|
           the_cell_rows = expanded_cell_rows
           case @columns[column]
           when TextColumnProxy, ButtonColumnProxy, NilClass
@@ -137,7 +140,7 @@ module Glimmer
             ::LibUI.new_table_value_int((expanded_cell_rows[row] && (expanded_cell_rows[row][column].to_i)))
           end
         end
-        @model_handler.SetCellValue = rbcallback(0, [1, 1, 4, 4, 1]) do |_, _, row, column, val|
+        @model_handler.SetCellValue = fiddle_closure_block_caller(0, [1, 1, 4, 4, 1]) do |_, _, row, column, val|
           case @columns[column]
           when TextColumnProxy
             column = @columns[column].index
@@ -165,15 +168,6 @@ module Glimmer
         @libui.tap do
           @columns.each {|column| column&.send(:build_control) }
         end
-      end
-      
-      def rbcallback(*args, &block)
-        # Protects BlockCaller objects from garbage collection.
-        @blockcaller ||= []
-        args << [0] if args.size == 1 # Argument types are ommited
-        blockcaller = Fiddle::Closure::BlockCaller.new(*args, &block)
-        @blockcaller << blockcaller
-        blockcaller
       end
       
       def next_column_index
