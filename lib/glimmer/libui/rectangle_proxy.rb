@@ -25,42 +25,33 @@ using ArrayIncludeMethods
 
 module Glimmer
   module LibUI
-    # Proxy for LibUI area objects
+    # Proxy for LibUI rectangle objects
     #
     # Follows the Proxy Design Pattern
-    class AreaProxy < ControlProxy
-      attr_reader :area_handler
-      
-      def post_initialize_child(child)
-        super
-        children << child
+    class RectangleProxy < ControlProxy
+      def initialize(keyword, parent, args, &block)
+        @keyword = keyword
+        @parent_proxy = parent
+        @args = args
+        @block = block
+        @enabled = true
+        post_add_content if @block.nil?
+      end
+    
+      def draw(area_draw_params)
+        ::LibUI.draw_path_add_rectangle(@parent_proxy.libui, *@args)
       end
       
-      def post_add_content
-        super
-        install_listeners
-      end
-      
-      def children
-        @children ||= []
+      def destroy
+        if @parent_proxy
+          @parent_proxy.children.delete(self)
+        end
       end
       
       private
       
       def build_control
-        @area_handler = ::LibUI::FFI::AreaHandler.malloc
-        @libui    = ::LibUI.new_area(@area_handler)
-      end
-      
-      def install_listeners
-        @area_handler.Draw         = Fiddle::Closure::BlockCaller.new(0, [1, 1, 1]) do |_, _, area_draw_params|
-          area_draw_params = ::LibUI::FFI::AreaDrawParams.new(area_draw_params)
-          children.each {|child| child.draw(area_draw_params)}
-        end
-        @area_handler.MouseEvent   = Fiddle::Closure::BlockCaller.new(0, [0]) {}
-        @area_handler.MouseCrossed = Fiddle::Closure::BlockCaller.new(0, [0]) {}
-        @area_handler.DragBroken   = Fiddle::Closure::BlockCaller.new(0, [0]) {}
-        @area_handler.KeyEvent     = Fiddle::Closure::BlockCaller.new(0, [0]) {}
+        # No Op
       end
     end
   end
