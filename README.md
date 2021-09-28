@@ -46,6 +46,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
   - [Glimmer DSL for LibUI 0.1.2](#-glimmer-dsl-for-libui-012)
   - [Glimmer GUI DSL Concepts](#glimmer-gui-dsl-concepts)
   - [Usage](#usage)
+  - [Girb (Glimmer IRB)](#girb-glimmer-irb)
   - [API](#api)
     - [Supported Controls](#supported-controls)
     - [Common Control Properties](#common-control-properties)
@@ -58,7 +59,6 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
     - [API Gotchas](#api-gotchas)
     - [Original API](#original-api)
   - [Glimmer Style Guide](#glimmer-style-guide)
-  - [Girb (Glimmer IRB)](#girb-glimmer-irb)
   - [Examples](#examples)
     - [Basic Window](#basic-window)
     - [Basic Button](#basic-button)
@@ -196,6 +196,24 @@ end
 
 Application.new.launch
 ```
+
+If you are new to [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui), check out [Girb](#girb-glimmer-irb) and [Examples](#examples) to quickly learn through copy/paste. You may refer to the [API](#api) later on once you have gotten your feet wet with [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) and need more detailed reference information.
+
+## Girb (Glimmer IRB)
+
+You can run the `girb` command (`bin/girb` if you cloned the project locally) to do some quick and dirty experimentation and learning:
+
+```
+girb
+```
+
+This gives you `irb` with the `glimmer-dsl-libui` gem loaded and the `Glimmer` module mixed into the main object for easy experimentation with GUI.
+
+![glimmer-dsl-libui-girb.png](images/glimmer-dsl-libui-girb.png)
+
+For a more advanced code editing tool, check out the [Meta-Example (The Example of Examples)](#examples).
+
+Gotcha: On the Mac, when you close a window opened in `girb`, it remains open until you enter `exit` or open another GUI window.
 
 ## API
 
@@ -439,21 +457,9 @@ check out the [libui C headers](https://github.com/andlabs/libui/blob/master/ui.
 - Control listeners are always declared starting with on_ prefix and affixing listener event method name afterwards in underscored lowercase form. Their multi-line blocks have a `do; end` style.
 - Pure logic multi-line blocks that do not constitute GUI DSL view elements have `do; end` style to clearly separate logic code from view code.
 
-## Girb (Glimmer IRB)
-
-You can run the `girb` command (`bin/girb` if you cloned the project locally):
-
-```
-girb
-```
-
-This gives you `irb` with the `glimmer-dsl-libui` gem loaded and the `Glimmer` module mixed into the main object for easy experimentation with GUI.
-
-Gotcha: On the Mac, when you close a window opened in `girb`, it remains open until you enter `exit` or open another GUI window.
-
 ## Examples
 
-These examples include reimplementions of the examples in the [LibUI](https://github.com/kojix2/LibUI) project utilizing the [Glimmer GUI DSL](#glimmer-gui-dsl-concepts) as well as brand new examples.
+The following examples include reimplementions of the examples in the [LibUI](https://github.com/kojix2/LibUI) project utilizing the [Glimmer GUI DSL](#glimmer-gui-dsl-concepts) as well as brand new examples.
 
 To browse all examples, simply launch the [Meta-Example](examples/meta_example.rb), which lists all examples and displays each example's code when selected. It also enables code editing to facilitate experimentation and learning.
 

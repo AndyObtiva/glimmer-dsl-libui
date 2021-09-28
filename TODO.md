@@ -7,21 +7,21 @@
 - Support `bezier`
 - Support `line`
 - Support `closed true` property inside nested figure (`draw_path_close_figure`)
+- Support `area` `transform` property and `matrix` object
+- Support examples/histogram.rb
+
+## Soon
+
 - Support `area` listeners: `on_mouse_event`, `on_mouse_crossed`, `on_drag_broken`, `on_key_event`
 - Support `:linear_gradient` `fill`/`stroke` `:type`
 - Support `:radial_gradient` `fill`/`stroke` `:type`
 - Support `stroke` `:dashes`
-- Support `area` `transform` property and `matrix` object
-
-## Soon
-
-- Support examples/histogram.rb
-- New examples/search.rb
 
 ## Future
 
 - Support examples/basic_draw_text.rb
 - Support `text` control
+- New examples/search.rb
 - Support `search_entry` control
 - New examples/login.rb
 - Support `password_entry` control
