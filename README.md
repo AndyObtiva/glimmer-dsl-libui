@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.0.28
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.1.0
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Maintainability](https://api.codeclimate.com/v1/badges/ce2853efdbecf6ebdc73/maintainability)](https://codeclimate.com/github/AndyObtiva/glimmer-dsl-libui/maintainability)
@@ -43,7 +43,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
 
 ## Table of Contents
 
-- [Glimmer DSL for LibUI 0.0.28](#-glimmer-dsl-for-libui-0028)
+  - [Glimmer DSL for LibUI 0.1.0](#-glimmer-dsl-for-libui-010)
   - [Glimmer GUI DSL Concepts](#glimmer-gui-dsl-concepts)
   - [Usage](#usage)
   - [API](#api)
@@ -53,6 +53,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
     - [Extra Dialogs](#extra-dialogs)
     - [Extra Operations](#extra-operations)
     - [Table API](#table-api)
+    - [Area API](#area-api)
     - [Smart Defaults and Conventions](#smart-defaults-and-conventions)
     - [API Gotchas](#api-gotchas)
     - [Original API](#original-api)
@@ -80,6 +81,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
     - [Basic Table Checkbox Text](#basic-table-checkbox-text)
     - [Basic Table Progress Bar](#basic-table-progress-bar)
     - [Form Table](#form-table)
+    - [Basic Area](#basic-area)
   - [Contributing to glimmer-dsl-libui](#contributing-to-glimmer-dsl-libui)
   - [Help](#help)
     - [Issues](#issues)
@@ -167,7 +169,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.0.28'
+gem 'glimmer-dsl-libui', '~> 0.1.0'
 ```
 
 Add `require 'glimmer-dsl-libui'` at the top, and then `include Glimmer` into the top-level main object for testing or into an actual class for serious usage.
@@ -223,6 +225,7 @@ w.libui # => #<Fiddle::Pointer:0x00007fde53997980 ptr=0x00007fde51352a60 size=0 
 Control(Args) | Properties | Listeners
 ------------- | ---------- | ---------
 `about_menu_item` | None | `on_clicked`
+`area` | None | None
 `button(text as String)` | `text` (`String`) | `on_clicked`
 `button_column(name as String)` | `enabled` (Boolean) | None
 `checkbox(text as String)` | `checked` (Boolean), `text` (`String`) | `on_toggled`
@@ -251,11 +254,13 @@ Control(Args) | Properties | Listeners
 `msg_box(window as Glimmer::LibUI::WindowProxy, title as String, description as String)` | None | None
 `msg_box_error(window as Glimmer::LibUI::WindowProxy, title as String, description as String)` | None | None
 `non_wrapping_multiline_entry` | `read_only` (Boolean), `text` (`String`) | `on_changed`
+`path` | `fill` (`Hash` of `:r` as `0`-`255`, `:g` as `0`-`255`, `:b` as `0`-`255`, `:a` as `0.0`-`1.0`), `stroke` (`Hash` of `:r` as `0`-`255`, `:g` as `0`-`255`, `:b` as `0`-`255`, `:a` as `0.0`-`1.0`, `:cap` as `Numeric`, `:join` as `Numeric`, `:thickness` as `Numeric`, `:miter_limit` as `Numeric` ) | None
 `preferences_menu_item` | None | `on_clicked`
 `progress_bar` | `value` (`Numeric`) | None
 `progress_bar_column(name as String)` | None | None
 `quit_menu_item` | None | `on_clicked`
 `radio_buttons` | `selected` (`Integer`) | `on_selected`
+`rectangle(x as Numeric, y as Numeric, width as Numeric, height as Numeric)` | None | None
 `slider(min as Numeric, max as Numeric)` | `value` (`Numeric`) | `on_changed`
 `spinbox(min as Numeric, max as Numeric)` | `value` (`Numeric`) | `on_changed`
 `tab` | `margined` (Boolean), `num_pages` (`Integer`) | None
@@ -321,6 +326,10 @@ Note that the `cell_rows` property declaration results in "implicit data-binding
 - Inserting cell rows: Calling `Array#<<`, `Array#push`, `Array#prepend`, or any insertion/addition `Array` method automatically inserts rows in actual `table` control
 - Changing cell rows: Calling `Array#[]=`, `Array#map!`, or any update `Array` method automatically updates rows in actual `table` control
 
+### Area API
+
+The `area` control can have a `path` nested underneath declaratively, containing figures like `rectangle`, and all the drawing logic is generated automatically from that.
+
 ### Smart Defaults and Conventions
 
 - `horizontal_box`, `vertical_box`, `grid`, and `form` controls have `padded` as `true` upon instantiation to ensure more user-friendly GUI by default
@@ -349,6 +358,7 @@ Note that the `cell_rows` property declaration results in "implicit data-binding
 - Table `cell_rows` data has implicit data-binding to table cell values for deletion, insertion, and change (done by diffing `cell_rows` value before and after change and auto-informing `table` of deletions [`LibUI.table_model_row_deleted`], insertions [`LibUI.table_model_row_deleted`], and changes [`LibUI.table_model_row_changed`]). When deleting data rows from `cell_rows` array, then actual rows from the `table` are automatically deleted. When inserting data rows into `cell_rows` array, then actual `table` rows are automatically inserted. When updating data rows in `cell_rows` array, then actual `table` rows are automatically updated.
 - `image` instances are automatically freed from memory after `window` is destroyed.
 - `image` `width` and `height` can be left off if it has one `image_part` only as they default to the same `width` and `height` of the `image_part`
+- `area` paths are specified declaratively with figures underneath (e.g. `rectangle`) and `area` draw listener is automatically generated
 
 ### API Gotchas
 
@@ -2576,6 +2586,104 @@ window('Contacts', 600, 600) { |w|
       text_column('State')
 
       cell_rows data # implicit data-binding
+    }
+  }
+}.show
+```
+
+### Basic Area
+
+[examples/basic_area.rb](examples/basic_area.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/basic_area.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/basic_area'"
+```
+
+Mac
+
+![glimmer-dsl-libui-mac-basic-area.png](images/glimmer-dsl-libui-mac-basic-area.png)
+
+Linux
+
+![glimmer-dsl-libui-linux-basic-area.png](images/glimmer-dsl-libui-linux-basic-area.png)
+
+[LibUI](https://github.com/kojix2/LibUI) Original Version:
+
+```ruby
+require 'libui'
+
+UI = LibUI
+
+UI.init
+
+handler = UI::FFI::AreaHandler.malloc
+area    = UI.new_area(handler)
+brush   = UI::FFI::DrawBrush.malloc
+
+handler_draw_event = Fiddle::Closure::BlockCaller.new(0, [1, 1, 1]) do |_, _, area_draw_params|
+  path = UI.draw_new_path(0)
+  UI.draw_path_add_rectangle(path, 0, 0, 400, 400)
+  UI.draw_path_end(path)
+  brush.Type = 0
+  brush.R = 0.4
+  brush.G = 0.4
+  brush.B = 0.8
+  brush.A = 1.0
+  area_draw_params = UI::FFI::AreaDrawParams.new(area_draw_params)
+  UI.draw_fill(area_draw_params.Context, path, brush.to_ptr)
+  UI.draw_free_path(path)
+end
+
+handler.Draw         = handler_draw_event
+handler.MouseEvent   = Fiddle::Closure::BlockCaller.new(0, [0]) {}
+handler.MouseCrossed = Fiddle::Closure::BlockCaller.new(0, [0]) {}
+handler.DragBroken   = Fiddle::Closure::BlockCaller.new(0, [0]) {}
+handler.KeyEvent     = Fiddle::Closure::BlockCaller.new(0, [0]) {}
+
+box = UI.new_vertical_box
+UI.box_set_padded(box, 1)
+UI.box_append(box, area, 1)
+
+main_window = UI.new_window('Basic Area', 400, 400, 1)
+UI.window_set_margined(main_window, 1)
+UI.window_set_child(main_window, box)
+
+UI.window_on_closing(main_window) do
+  UI.control_destroy(main_window)
+  UI.quit
+  0
+end
+UI.control_show(main_window)
+
+UI.main
+UI.quit
+```
+
+[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+window('Basic Area', 400, 400) {
+  margined true
+  
+  vertical_box {
+    area {
+      path { # a stable path is added declaratively
+        rectangle(0, 0, 400, 400)
+        
+        fill r: 102, g: 102, b: 204, a: 1.0
+      }
     }
   }
 }.show

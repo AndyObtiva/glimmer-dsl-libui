@@ -1,5 +1,14 @@
 # Change Log
 
+## 0.1.0
+
+- Support examples/basic_area.rb
+- Support `area` control
+- Support `path(fill_mode)` control
+- Support `rectangle(x, y, width, height)` figure
+- Support `path` `fill` property
+- Support `path` `stroke` property
+
 ## 0.0.28
 
 - Support automatic table row change when updating a row in `cell_rows` (e.g. `data[3] = ['new', 'row', 'cell', 'values']`)

@@ -2,36 +2,40 @@
 
 ## Next
 
-- Support examples/basic_area.rb
-- Support `area {}` control and `size` property
-- Support `path(fill_mode) {}` control with `figure(x = nil, y = nil) {}` (`draw_path_new_figure`), `arc` (`draw_path_arc_to` if `draw_path_new_figure` was called already or `draw_path_new_figure_with_arc` otherwise), `bezier`, `line`, `rectangle`, `closed true` property inside nested figure (`draw_path_close_figure`)
-- Support `path` `fill` property
-- Support `path` `stroke` property
+- Support `area` listener: `on_draw`
+- Support re-opening a control by using `#content`
+- Support `figure(x = nil, y = nil) {}` (`draw_path_new_figure`)
+- Support `arc` (`draw_path_arc_to` if `draw_path_new_figure` was called already or `draw_path_new_figure_with_arc` otherwise)
+- Support `bezier`
+- Support `line`
+- Support `closed true` property inside nested figure (`draw_path_close_figure`)
 - Support `path#destroy`
 - Support `figure#destroy`
-- Support re-opening a control by using `#content`
 - Support `path_segment#destroy` (e.g. for `arc`, `bezier`, or `line`)
-- Support `area` events (`MouseEvent`, `MouseCrossed`, `DragBroken`, `KeyEvent`)
+- Support `area` listeners: `on_mouse_event`, `on_mouse_crossed`, `on_drag_broken`, `on_key_event`
+- Support `:linear_gradient` `fill`/`stroke` `:type`
+- Support `:radial_gradient` `fill`/`stroke` `:type`
+- Support `stroke` `:dashes`
+- Support `area` `transform` property and `matrix` object
 
 ## Soon
 
-- Support examples/basic_draw_text.rb
-- Support `text` control
+- Support examples/histogram.rb
+- New examples/search.rb
 
 ## Future
 
-- Support examples/histogram.rb
-- New examples/search.rb
+- Support examples/basic_draw_text.rb
+- Support `text` control
 - Support `search_entry` control
 - New examples/login.rb
 - Support `password_entry` control
 - New examples/scrolling_area.rb
-- Support `scrolling_area` control
+- Support `scrolling_area` control and `size` property
 - Document `vertical_separator` control
 - Create new examples not found in LibUI for everything not covered by the original examples
 - Add a 3rd tab to examples/grid.rb showcasing the halign and valign properties and provide symbol alternatives for their values like `:fill` and `:center`
 - Default values for msg_box/msg_box_error args if not supplied
-- Support Matrix DSL
 
 ## Far Future
 - Support general property data-binding
