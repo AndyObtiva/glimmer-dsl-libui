@@ -3,24 +3,35 @@
 ## Next
 
 - Support examples/basic_area.rb
-- Support `area` control
+- Support `area {}` control and `size` property
+- Support `path(fill_mode) {}` control with `figure(x = nil, y = nil) {}` (`draw_path_new_figure`), `arc` (`draw_path_arc_to` if `draw_path_new_figure` was called already or `draw_path_new_figure_with_arc` otherwise), `bezier`, `line`, `rectangle`, `closed true` property inside nested figure (`draw_path_close_figure`)
+- Support `path` `fill` property
+- Support `path` `stroke` property
+- Support `path#destroy`
+- Support `figure#destroy`
+- Support re-opening a control by using `#content`
+- Support `path_segment#destroy` (e.g. for `arc`, `bezier`, or `line`)
+- Support `area` events (`MouseEvent`, `MouseCrossed`, `DragBroken`, `KeyEvent`)
 
 ## Soon
 
 - Support examples/basic_draw_text.rb
+- Support `text` control
 
 ## Future
 
 - Support examples/histogram.rb
+- New examples/search.rb
 - Support `search_entry` control
+- New examples/login.rb
 - Support `password_entry` control
 - New examples/scrolling_area.rb
 - Support `scrolling_area` control
 - Document `vertical_separator` control
 - Create new examples not found in LibUI for everything not covered by the original examples
-- Support re-opening a control by using `#content`
 - Add a 3rd tab to examples/grid.rb showcasing the halign and valign properties and provide symbol alternatives for their values like `:fill` and `:center`
 - Default values for msg_box/msg_box_error args if not supplied
+- Support Matrix DSL
 
 ## Far Future
 - Support general property data-binding
@@ -33,14 +44,22 @@
 
 ## Maybe
 
+- Support Dynamic `path` (inside `on_draw` listener)
+- Support Dynamic `text` (inside `on_draw` listener)
+- Support Dynamic `matrix` (inside `on_draw` listener)
+- Support Dynamic `path` `save` and `restore`
+- Support nested paths in Path DSL
 - Support control-specific operations that accept Ruby proxy objects instead of Fiddle pointer objects (mainly `insert_at` operations)
 - Trap exit signal (CTRL+C) and close application gracefully
 - Support optionally passing arguments to columns for LibUI.append_column_xyz methods
 - Support `table` `on_changed` listener to intercept change and cancel it if needed
+- Support `table` `cell_value` block property to do custom cell value reading along with `num_rows` property
+- Support `table` `set_cell_value` block property to do custom cell value setting
 - Support custom `on_destroy` listener on all widgets, not just `window`
 - Support supplying optional `uiTableTextColumnOptionalParams *textParams` to `text_column`
 - Support configuring `RowBackgroundColorModelColumn` in TableParams
 - Support automatic table row change when performing a direct row/column update in `cell_rows` (e.g. `data[3][0] = 'new value'`) as opposed to a general row update (e.g. `data[3] = ['new value', 'other new value']` <- already supported)
+- Fold menus inside a `menu_bar` control
 
 # Refactoring
 

@@ -168,7 +168,6 @@ module Glimmer
       end
       
       def rbcallback(*args, &block)
-        # TODO consider moving to a more general reusable location in the future (e.g. when used with `AreaProxy`)
         # Protects BlockCaller objects from garbage collection.
         @blockcaller ||= []
         args << [0] if args.size == 1 # Argument types are ommited
