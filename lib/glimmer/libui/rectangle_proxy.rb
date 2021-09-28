@@ -46,6 +46,50 @@ module Glimmer
         ControlProxy.control_proxies.delete(self)
       end
       
+      def x(value = nil)
+        if value.nil?
+          @args[0]
+        else
+          @args[0] = value
+          @parent_proxy.parent_proxy&.queue_redraw_all
+        end
+      end
+      alias x= x
+      alias set_x x
+      
+      def y(value = nil)
+        if value.nil?
+          @args[1]
+        else
+          @args[1] = value
+          @parent_proxy.parent_proxy&.queue_redraw_all
+        end
+      end
+      alias y= y
+      alias set_y y
+      
+      def width(value = nil)
+        if value.nil?
+          @args[2]
+        else
+          @args[2] = value
+          @parent_proxy.parent_proxy&.queue_redraw_all
+        end
+      end
+      alias width= width
+      alias set_width width
+      
+      def height(value = nil)
+        if value.nil?
+          @args[3]
+        else
+          @args[3] = value
+          @parent_proxy.parent_proxy&.queue_redraw_all
+        end
+      end
+      alias height= height
+      alias set_height height
+      
       private
       
       def build_control

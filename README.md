@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.1.1
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.1.2
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Maintainability](https://api.codeclimate.com/v1/badges/ce2853efdbecf6ebdc73/maintainability)](https://codeclimate.com/github/AndyObtiva/glimmer-dsl-libui/maintainability)
@@ -43,7 +43,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
 
 ## Table of Contents
 
-  - [Glimmer DSL for LibUI 0.1.1](#-glimmer-dsl-for-libui-011)
+  - [Glimmer DSL for LibUI 0.1.2](#-glimmer-dsl-for-libui-012)
   - [Glimmer GUI DSL Concepts](#glimmer-gui-dsl-concepts)
   - [Usage](#usage)
   - [API](#api)
@@ -170,7 +170,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.1.1'
+gem 'glimmer-dsl-libui', '~> 0.1.2'
 ```
 
 Add `require 'glimmer-dsl-libui'` at the top, and then `include Glimmer` into the top-level main object for testing or into an actual class for serious usage.
@@ -417,6 +417,8 @@ To redraw an `area`, you may call `#queue_redraw_all` method.
 - `image` instances are automatically freed from memory after `window` is destroyed.
 - `image` `width` and `height` can be left off if it has one `image_part` only as they default to the same `width` and `height` of the `image_part`
 - `area` paths are specified declaratively with figures underneath (e.g. `rectangle`) and `area` draw listener is automatically generated
+- Observe figure properties (e.g. `rectangle` `width`) for changes and automatically redraw containing area accordingly
+- Observe `path` `fill` and `stroke` hashes for changes and automatically redraw containing area accordingly
 
 ### API Gotchas
 
@@ -2747,6 +2749,30 @@ window('Basic Area', 400, 400) {
 }.show
 ```
 
+[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 2:
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+window('Basic Area', 400, 400) {
+  margined true
+  
+  vertical_box {
+    area {
+      on_draw do |area_draw_params|
+        path(area_draw_params) { # a dynamic path is added semi-declaratively inside on_draw block
+          rectangle(0, 0, 400, 400)
+          
+          fill r: 102, g: 102, b: 204, a: 1.0
+        }
+      end
+    }
+  }
+}.show
+```
+
 ### Dynamic Area
 
 [examples/dynamic_area.rb](examples/dynamic_area.rb)
@@ -2872,6 +2898,108 @@ window('Dynamic Area', 240, 500) {
           fill r: @red_spinbox.value, g: @green_spinbox.value, b: @blue_spinbox.value, a: @alpha_spinbox.value / 100.0
         }
       end
+    }
+  }
+}.show
+```
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 2:
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+window('Dynamic Area', 240, 600) {
+  margined true
+  
+  vertical_box {
+    label('Rectangle Properties') {
+      stretchy false
+    }
+    
+    form {
+      stretchy false
+      
+      @x_spinbox = spinbox(0, 1000) {
+        label 'x'
+        value 25
+        
+        on_changed do
+          @rectangle.x = @x_spinbox.value # updating properties automatically triggers area.queue_redraw_all
+        end
+      }
+      
+      @y_spinbox = spinbox(0, 1000) {
+        label 'y'
+        value 25
+        
+        on_changed do
+          @rectangle.y = @y_spinbox.value # updating properties automatically triggers area.queue_redraw_all
+        end
+      }
+      
+      @width_spinbox = spinbox(0, 1000) {
+        label 'width'
+        value 150
+        
+        on_changed do
+          @rectangle.width = @width_spinbox.value # updating properties automatically triggers area.queue_redraw_all
+        end
+      }
+      
+      @height_spinbox = spinbox(0, 1000) {
+        label 'height'
+        value 150
+        
+        on_changed do
+          @rectangle.height = @height_spinbox.value # updating properties automatically triggers area.queue_redraw_all
+        end
+      }
+      
+      @red_spinbox = spinbox(0, 255) {
+        label 'red'
+        value 102
+        
+        on_changed do
+          @path.fill[:r] = @red_spinbox.value # updating hash properties automatically triggers area.queue_redraw_all
+        end
+      }
+      
+      @green_spinbox = spinbox(0, 255) {
+        label 'green'
+        value 102
+        
+        on_changed do
+          @path.fill[:g] = @green_spinbox.value # updating hash properties automatically triggers area.queue_redraw_all
+        end
+      }
+      
+      @blue_spinbox = spinbox(0, 255) {
+        label 'blue'
+        value 204
+        
+        on_changed do
+          @path.fill[:b] = @blue_spinbox.value # updating hash properties automatically triggers area.queue_redraw_all
+        end
+      }
+      
+      @alpha_spinbox = spinbox(0, 100) {
+        label 'alpha'
+        value 100
+        
+        on_changed do
+          @path.fill[:a] = @alpha_spinbox.value / 100.0 # updating hash properties automatically triggers area.queue_redraw_all
+        end
+      }
+    }
+    
+    area {
+      @path = path { # stable path
+        @rectangle = rectangle(@x_spinbox.value, @y_spinbox.value, @width_spinbox.value, @height_spinbox.value)
+        
+        fill r: @red_spinbox.value, g: @green_spinbox.value, b: @blue_spinbox.value, a: @alpha_spinbox.value / 100.0
+      }
     }
   }
 }.show

@@ -72,6 +72,13 @@ module Glimmer
           @fill ||= {}
         else
           @fill = args
+          @parent_proxy&.queue_redraw_all
+        end
+        @fill.tap do
+          @fill_observer ||= Glimmer::DataBinding::Observer.proc do
+            @parent_proxy&.queue_redraw_all
+          end
+          @fill_observer.observe(@fill)
         end
       end
       alias fill= fill
@@ -88,6 +95,13 @@ module Glimmer
           @stroke ||= {}
         else
           @stroke = args
+          @parent_proxy&.queue_redraw_all
+        end
+        @stroke.tap do
+          @stroke_observer ||= Glimmer::DataBinding::Observer.proc do
+            @parent_proxy&.queue_redraw_all
+          end
+          @stroke_observer.observe(@stroke)
         end
       end
       alias stroke= stroke

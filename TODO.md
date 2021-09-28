@@ -2,15 +2,11 @@
 
 ## Next
 
-- New examples/dynamic_area2.rb (using stable paths)
 - Support `figure(x = nil, y = nil) {}` (`draw_path_new_figure`)
 - Support `arc` (`draw_path_arc_to` if `draw_path_new_figure` was called already or `draw_path_new_figure_with_arc` otherwise)
 - Support `bezier`
 - Support `line`
 - Support `closed true` property inside nested figure (`draw_path_close_figure`)
-- Support `path#destroy`
-- Support `figure#destroy`
-- Support `path_segment#destroy` (e.g. for `arc`, `bezier`, or `line`)
 - Support `area` listeners: `on_mouse_event`, `on_mouse_crossed`, `on_drag_broken`, `on_key_event`
 - Support `:linear_gradient` `fill`/`stroke` `:type`
 - Support `:radial_gradient` `fill`/`stroke` `:type`

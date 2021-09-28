@@ -4,6 +4,8 @@
 
 - Support re-opening a control by using `#content {...}`
 - Ensure destroying `path`/`rectangle` after drawing if it is declared inside `on_draw`
+- Observe `path` `fill` and `stroke` hashes for changes and automatically redraw area accordingly
+- New examples/dynamic_area2.rb (using stable paths)
 
 ## 0.1.1
 
