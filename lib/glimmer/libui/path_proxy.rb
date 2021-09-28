@@ -44,7 +44,10 @@ module Glimmer
       
       def post_add_content
         super
-        draw(area_draw_params) if @parent_proxy.nil?
+        if @parent_proxy.nil? && area_draw_params
+          draw(area_draw_params)
+          destroy
+        end
       end
       
       def children
@@ -116,6 +119,7 @@ module Glimmer
     
       def destroy
         @parent_proxy.children.delete(self) unless @parent_proxy.nil?
+        ControlProxy.control_proxies.delete(self)
       end
       
       private

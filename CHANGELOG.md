@@ -3,6 +3,7 @@
 ## 0.1.2
 
 - Support re-opening a control by using `#content {...}`
+- Ensure destroying `path`/`rectangle` after drawing if it is declared inside `on_draw`
 
 ## 0.1.1
 

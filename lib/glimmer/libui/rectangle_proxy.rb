@@ -38,12 +38,12 @@ module Glimmer
     
       def draw(area_draw_params)
         ::LibUI.draw_path_add_rectangle(@parent_proxy.libui, *@args)
+        destroy if @parent_proxy.parent_proxy.nil?
       end
       
       def destroy
-        if @parent_proxy
-          @parent_proxy.children.delete(self)
-        end
+        @parent_proxy.children.delete(self) unless @parent_proxy.nil?
+        ControlProxy.control_proxies.delete(self)
       end
       
       private
