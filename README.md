@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.1.0
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.1.1
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Maintainability](https://api.codeclimate.com/v1/badges/ce2853efdbecf6ebdc73/maintainability)](https://codeclimate.com/github/AndyObtiva/glimmer-dsl-libui/maintainability)
@@ -43,7 +43,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
 
 ## Table of Contents
 
-  - [Glimmer DSL for LibUI 0.1.0](#-glimmer-dsl-for-libui-010)
+  - [Glimmer DSL for LibUI 0.1.1](#-glimmer-dsl-for-libui-011)
   - [Glimmer GUI DSL Concepts](#glimmer-gui-dsl-concepts)
   - [Usage](#usage)
   - [API](#api)
@@ -82,6 +82,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
     - [Basic Table Progress Bar](#basic-table-progress-bar)
     - [Form Table](#form-table)
     - [Basic Area](#basic-area)
+    - [Dynamic Area](#dynamic-area)
   - [Contributing to glimmer-dsl-libui](#contributing-to-glimmer-dsl-libui)
   - [Help](#help)
     - [Issues](#issues)
@@ -169,7 +170,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.1.0'
+gem 'glimmer-dsl-libui', '~> 0.1.1'
 ```
 
 Add `require 'glimmer-dsl-libui'` at the top, and then `include Glimmer` into the top-level main object for testing or into an actual class for serious usage.
@@ -225,7 +226,7 @@ w.libui # => #<Fiddle::Pointer:0x00007fde53997980 ptr=0x00007fde51352a60 size=0 
 Control(Args) | Properties | Listeners
 ------------- | ---------- | ---------
 `about_menu_item` | None | `on_clicked`
-`area` | None | None
+`area` | None | `on_draw`
 `button(text as String)` | `text` (`String`) | `on_clicked`
 `button_column(name as String)` | `enabled` (Boolean) | None
 `checkbox(text as String)` | `checked` (Boolean), `text` (`String`) | `on_toggled`
@@ -328,7 +329,61 @@ Note that the `cell_rows` property declaration results in "implicit data-binding
 
 ### Area API
 
-The `area` control can have a `path` nested underneath declaratively, containing figures like `rectangle`, and all the drawing logic is generated automatically from that.
+The `area` control can be used in one of two ways:
+- Declaratively via stable paths: useful for stable paths that will not change later on. Simply nest `path` and figures like `rectangle` and all drawing logic is generated automatically.
+- Semi-declaratively via on_draw listener dynamic paths: useful for more dynamic paths that will definitely change. Open an `on_draw` listener block and nest `path(area_draw_params)` and figures like `rectangle` and all drawing logic is generated automatically.
+
+Here is an example of a declarative `area` with a stable path (you may copy/paste in [`girb`](#girb-glimmer-irb)):
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+window('Basic Area', 400, 400) {
+  margined true
+  
+  vertical_box {
+    area {
+      path { # a stable path is added declaratively
+        rectangle(0, 0, 400, 400)
+        
+        fill r: 102, g: 102, b: 204, a: 1.0
+      }
+    }
+  }
+}.show
+```
+
+![glimmer-dsl-libui-mac-basic-area.png](images/glimmer-dsl-libui-mac-basic-area.png)
+
+Here is the same example using a semi-declarative `area` with `on_draw` listener and a dynamic path (you may copy/paste in [`girb`](#girb-glimmer-irb)):
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+window('Basic Area', 400, 400) {
+  margined true
+  
+  vertical_box {
+    area {
+      on_draw do |area_draw_params|
+        path(area_draw_params) { # a dynamic path is added semi-declaratively inside on_draw block
+          rectangle(0, 0, 400, 400)
+          
+          fill r: 102, g: 102, b: 204, a: 1.0
+        }
+      end
+    }
+  }
+}.show
+```
+
+Check [examples/dynamic_area.rb](#dynamic-area) for a more detailed semi-declarative example.
+
+To redraw an `area`, you may call `#queue_redraw_all` method.
 
 ### Smart Defaults and Conventions
 
@@ -2684,6 +2739,136 @@ window('Basic Area', 400, 400) {
         
         fill r: 102, g: 102, b: 204, a: 1.0
       }
+    }
+  }
+}.show
+```
+
+### Dynamic Area
+
+[examples/dynamic_area.rb](examples/dynamic_area.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/dynamic_area.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/dynamic_area'"
+```
+
+Mac
+
+![glimmer-dsl-libui-mac-dynamic-area.png](images/glimmer-dsl-libui-mac-dynamic-area.png)
+![glimmer-dsl-libui-mac-dynamic-area-updated.png](images/glimmer-dsl-libui-mac-dynamic-area-updated.png)
+
+Linux
+
+![glimmer-dsl-libui-linux-dynamic-area.png](images/glimmer-dsl-libui-linux-dynamic-area.png)
+![glimmer-dsl-libui-linux-dynamic-area-updated.png](images/glimmer-dsl-libui-linux-dynamic-area-updated.png)
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+window('Dynamic Area', 240, 500) {
+  margined true
+  
+  vertical_box {
+    label('Rectangle Properties') {
+      stretchy false
+    }
+    
+    form {
+      stretchy false
+      
+      @x_spinbox = spinbox(0, 1000) {
+        label 'x'
+        value 25
+        
+        on_changed do
+          @area.queue_redraw_all
+        end
+      }
+      
+      @y_spinbox = spinbox(0, 1000) {
+        label 'y'
+        value 25
+        
+        on_changed do
+          @area.queue_redraw_all
+        end
+      }
+      
+      @width_spinbox = spinbox(0, 1000) {
+        label 'width'
+        value 150
+        
+        on_changed do
+          @area.queue_redraw_all
+        end
+      }
+      
+      @height_spinbox = spinbox(0, 1000) {
+        label 'height'
+        value 150
+        
+        on_changed do
+          @area.queue_redraw_all
+        end
+      }
+      
+      @red_spinbox = spinbox(0, 255) {
+        label 'red'
+        value 102
+        
+        on_changed do
+          @area.queue_redraw_all
+        end
+      }
+      
+      @green_spinbox = spinbox(0, 255) {
+        label 'green'
+        value 102
+        
+        on_changed do
+          @area.queue_redraw_all
+        end
+      }
+      
+      @blue_spinbox = spinbox(0, 255) {
+        label 'blue'
+        value 204
+        
+        on_changed do
+          @area.queue_redraw_all
+        end
+      }
+      
+      @alpha_spinbox = spinbox(0, 100) {
+        label 'alpha'
+        value 100
+        
+        on_changed do
+          @area.queue_redraw_all
+        end
+      }
+    }
+    
+    @area = area {
+      on_draw do |area_draw_params|
+        path(area_draw_params) { # a dynamic path is added semi-declaratively inside on_draw block
+          rectangle(@x_spinbox.value, @y_spinbox.value, @width_spinbox.value, @height_spinbox.value)
+          
+          fill r: @red_spinbox.value, g: @green_spinbox.value, b: @blue_spinbox.value, a: @alpha_spinbox.value / 100.0
+        }
+      end
     }
   }
 }.show

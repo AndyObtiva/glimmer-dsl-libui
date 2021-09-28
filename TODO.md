@@ -2,8 +2,8 @@
 
 ## Next
 
-- Support `area` listener: `on_draw`
 - Support re-opening a control by using `#content`
+- New examples/dynamic_area2.rb (using stable paths)
 - Support `figure(x = nil, y = nil) {}` (`draw_path_new_figure`)
 - Support `arc` (`draw_path_arc_to` if `draw_path_new_figure` was called already or `draw_path_new_figure_with_arc` otherwise)
 - Support `bezier`

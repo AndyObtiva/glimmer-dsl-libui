@@ -46,6 +46,29 @@ module Glimmer
         @children ||= []
       end
       
+      def on_draw(&block)
+        @on_draw_procs ||= []
+        if block.nil?
+          @on_draw_procs
+        else
+          @on_draw_procs << block
+          block
+        end
+      end
+      
+      def can_handle_listener?(listener_name)
+        listener_name == 'on_draw' || super
+      end
+      
+      def handle_listener(listener_name, &listener)
+        case listener_name
+        when 'on_draw'
+          on_draw(&listener)
+        else
+          super
+        end
+      end
+      
       private
       
       def build_control
@@ -56,12 +79,26 @@ module Glimmer
       def install_listeners
         @area_handler.Draw         = fiddle_closure_block_caller(0, [1, 1, 1]) do |_, _, area_draw_params|
           area_draw_params = ::LibUI::FFI::AreaDrawParams.new(area_draw_params)
+          area_draw_params = area_draw_params_hash(area_draw_params)
           children.each {|child| child.draw(area_draw_params)}
+          on_draw.each {|listener| listener.call(area_draw_params) }
         end
         @area_handler.MouseEvent   = fiddle_closure_block_caller(0, [0]) {}
         @area_handler.MouseCrossed = fiddle_closure_block_caller(0, [0]) {}
         @area_handler.DragBroken   = fiddle_closure_block_caller(0, [0]) {}
         @area_handler.KeyEvent     = fiddle_closure_block_caller(0, [0]) {}
+      end
+      
+      def area_draw_params_hash(area_draw_params)
+        {
+          context: area_draw_params.Context,
+          area_width: area_draw_params.AreaWidth,
+          area_height: area_draw_params.AreaHeight,
+          clip_x: area_draw_params.ClipX,
+          clip_y: area_draw_params.ClipY,
+          clip_width: area_draw_params.ClipWidth,
+          clip_height: area_draw_params.ClipHeight,
+        }
       end
     end
   end

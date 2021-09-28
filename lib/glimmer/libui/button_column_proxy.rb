@@ -35,7 +35,12 @@ module Glimmer
       def on_clicked(&block)
         # TODO consider generalizing into custom listeners and moving to ControlProxy
         @on_clicked_procs ||= []
-        @on_clicked_procs << block
+        if block.nil?
+          @on_clicked_procs
+        else
+          @on_clicked_procs << block
+          block
+        end
       end
       
       def can_handle_listener?(listener_name)

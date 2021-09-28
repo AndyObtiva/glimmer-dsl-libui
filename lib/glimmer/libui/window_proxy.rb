@@ -48,8 +48,14 @@ module Glimmer
       end
       
       def on_destroy(&block)
+        # TODO look into a way to generalize this logic for multiple listeners
         @on_destroy_procs ||= []
-        @on_destroy_procs << block
+        if block.nil?
+          @on_destroy_procs
+        else
+          @on_destroy_procs << block
+          block
+        end
       end
     
       def show

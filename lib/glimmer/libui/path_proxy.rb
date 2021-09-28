@@ -42,6 +42,11 @@ module Glimmer
         children << child
       end
       
+      def post_add_content
+        super
+        draw(area_draw_params) if @parent_proxy.nil?
+      end
+      
       def children
         @children ||= []
       end
@@ -50,8 +55,8 @@ module Glimmer
         build_control
         children.each {|child| child.draw(area_draw_params)}
         ::LibUI.draw_path_end(@libui)
-        ::LibUI.draw_fill(area_draw_params.Context, @libui, fill_draw_brush.to_ptr) unless fill.empty?
-        ::LibUI.draw_stroke(area_draw_params.Context, @libui, stroke_draw_brush, draw_stroke_params) unless stroke.empty?
+        ::LibUI.draw_fill(area_draw_params[:context], @libui, fill_draw_brush.to_ptr) unless fill.empty?
+        ::LibUI.draw_stroke(area_draw_params[:context], @libui, stroke_draw_brush, draw_stroke_params) unless stroke.empty?
         ::LibUI.draw_free_path(@libui)
       end
       
@@ -103,11 +108,14 @@ module Glimmer
         @draw_stroke_params.DashPhase = @stroke[:dash_phase] || 0
         @draw_stroke_params
       end
+      
+      # returns area_draw_params if built inside on_draw listener (not needed if declared outside)
+      def area_draw_params
+        @args[0] if @parent_proxy.nil?
+      end
     
       def destroy
-        if @parent_proxy
-          @parent_proxy.children.delete(self)
-        end
+        @parent_proxy.children.delete(self) unless @parent_proxy.nil?
       end
     
       private

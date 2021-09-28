@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.1.1
+
+- Support `area` listener: `on_draw`
+- New examples/basic_area2.rb
+
 ## 0.1.0
 
 - Support examples/basic_area.rb
