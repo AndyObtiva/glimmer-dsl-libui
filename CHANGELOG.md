@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.1.2
+
+- Support re-opening a control by using `#content {...}`
+
 ## 0.1.1
 
 - Support `area` listener: `on_draw`

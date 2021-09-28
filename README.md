@@ -308,6 +308,7 @@ Control(Args) | Properties | Listeners
 - `ControlProxy::image_proxies`: returns all instantiated `image` proxies in the application
 - `ControlProxy::main_window_proxy`: returns the first window proxy instantiated in the application
 - `ControlProxy#window_proxy`: returns the window proxy parent for a control
+- `ControlProxy#content {...}`: re-opens control's content to add more nested controls or properties
 
 ### Table API
 
@@ -330,8 +331,8 @@ Note that the `cell_rows` property declaration results in "implicit data-binding
 ### Area API
 
 The `area` control can be used in one of two ways:
-- Declaratively via stable paths: useful for stable paths that will not change later on. Simply nest `path` and figures like `rectangle` and all drawing logic is generated automatically.
-- Semi-declaratively via on_draw listener dynamic paths: useful for more dynamic paths that will definitely change. Open an `on_draw` listener block and nest `path(area_draw_params)` and figures like `rectangle` and all drawing logic is generated automatically.
+- Declaratively via stable paths: useful for stable paths that will not change later on. Simply nest `path` and figures like `rectangle` and all drawing logic is generated automatically. Paths proxy objects are preserved across redraws assuming there would be few stable paths (mostly for decorative reasons).
+- Semi-declaratively via on_draw listener dynamic paths: useful for more dynamic paths that will definitely change. Open an `on_draw` listener block and nest `path(area_draw_params)` and figures like `rectangle` and all drawing logic is generated automatically. Path proxy objects are destroyed (thrown-away) at the end of drawing, thus having less memory overhead for drawing thousands of dynamic paths.
 
 Here is an example of a declarative `area` with a stable path (you may copy/paste in [`girb`](#girb-glimmer-irb)):
 
@@ -382,6 +383,8 @@ window('Basic Area', 400, 400) {
 ```
 
 Check [examples/dynamic_area.rb](#dynamic-area) for a more detailed semi-declarative example.
+
+In general, it is recommended to use declarative stable paths whenever feasible since they require less code and simpler maintenance. But, in more advanced cases, semi-declarative dynamic paths could be used instead, especially if there are thousands of paths.
 
 To redraw an `area`, you may call `#queue_redraw_all` method.
 

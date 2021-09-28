@@ -117,7 +117,7 @@ module Glimmer
       def destroy
         @parent_proxy.children.delete(self) unless @parent_proxy.nil?
       end
-    
+      
       private
       
       def build_control

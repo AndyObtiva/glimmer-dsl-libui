@@ -258,6 +258,10 @@ module Glimmer
       alias set_visible visible
       alias visible= visible
       
+      def content(&block)
+        Glimmer::DSL::Engine.add_content(self, Glimmer::DSL::Libui::ControlExpression.new, @keyword, &block)
+      end
+      
       private
       
       def build_control
