@@ -7,6 +7,7 @@
 - Support `closed true` property inside nested figure (`draw_path_close_figure`)
 - Support `line`
 - Support `bezier`
+- Support `arc` (`draw_path_arc_to` if `draw_path_new_figure` was called already or `draw_path_new_figure_with_arc` if parent is a figure without x,y)
 
 ## 0.1.2
 

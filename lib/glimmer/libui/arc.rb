@@ -23,11 +23,16 @@ require 'glimmer/libui/shape'
 
 module Glimmer
   module LibUI
-    class Bezier < Shape
-      parameters :c1_x, :c1_y, :c2_x, :c2_y, :end_x, :end_y
+    class Arc < Shape
+      parameters :x_center, :y_center, :radius, :start_angle, :sweep, :is_negative
               
       def draw(area_draw_params)
-        ::LibUI.draw_path_bezier_to(path_proxy.libui, *@args)
+        @args[5] = ControlProxy.boolean_to_integer(@args[5], allow_nil: false)
+        if parent.is_a?(Figure) && parent.x.nil? && parent.y.nil?
+          ::LibUI.draw_path_new_figure_with_arc(path_proxy.libui, *@args)
+        else
+          ::LibUI.draw_path_arc_to(path_proxy.libui, *@args)
+        end
         super
       end
     end
