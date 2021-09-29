@@ -72,6 +72,7 @@ module Glimmer
           @fill ||= {}
         else
           @fill = args
+          @fill[:a] = 1.0 if @fill[:a].nil?
           @parent_proxy&.queue_redraw_all
         end
         @fill.tap do
@@ -95,6 +96,7 @@ module Glimmer
           @stroke ||= {}
         else
           @stroke = args
+          @stroke[:a] = 1.0 if @stroke[:a].nil?
           @parent_proxy&.queue_redraw_all
         end
         @stroke.tap do

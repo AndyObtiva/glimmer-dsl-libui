@@ -8,10 +8,7 @@ window('Basic Area', 400, 400) {
   vertical_box {
     area {
       path { # a stable path is added declaratively
-        figure(50, 50) {
-          rectangle(0, 0, 400, 400)
-          closed true
-        }
+        rectangle(0, 0, 400, 400)
         
         fill r: 102, g: 102, b: 204, a: 1.0
       }
