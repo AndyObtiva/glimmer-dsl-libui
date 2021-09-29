@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.1.4
+
+- Update examples/basic_table_progress_bar.rb with a listener
+
 ## 0.1.3
 
 - New examples/area_gallery.rb

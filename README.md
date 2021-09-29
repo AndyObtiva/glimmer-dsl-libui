@@ -47,13 +47,23 @@ data = [
   ['task 5', -1],
 ]
 
-window('Task progress', 300, 200) {
-  horizontal_box {
+window('Task Progress', 300, 200) {
+  vertical_box {
     table {
       text_column('Task')
       progress_bar_column('Progress')
 
-      cell_rows data
+      cell_rows data # implicit data-binding
+    }
+    
+    button('Mark All As Done') {
+      stretchy false
+      
+      on_clicked do
+        data.each_with_index do |row_data, row|
+          data[row] = [row_data[0], 100] # automatically updates table due to implicit data-binding
+        end
+      end
     }
   }
 }.show
@@ -94,7 +104,7 @@ window('Area Gallery', 400, 400) {
         }
 
         fill r: 202, g: 102, b: 104, a: 0.5
-        stroke thickness: 1, r: 0, g: 0, b: 0
+        stroke r: 0, g: 0, b: 0
       }
       path { # declarative stable path
         figure(0, 0) {
@@ -622,6 +632,7 @@ To redraw an `area`, you may call `#queue_redraw_all` method.
 
 - There is no proper way to destroy `grid` children due to [libui](https://github.com/andlabs/libui) not offering any API for deleting them from `grid` (no `grid_delete` similar to `box_delete` for `horizontal_box` and `vertical_box`).
 - `table` `checkbox_column` and `checkbox_text_column` checkbox editing only works on Windows and Linux (not Mac) due to a current limitation in [libui](https://github.com/andlabs/ui/issues/357).
+- It seems that `arc` `start_angle` and `sweep` properties are ignored by [libui](https://github.com/andlabs/libui) and always set to `0` and `360` respectively, producing a full circle.
 
 ### Original API
 
@@ -2729,13 +2740,23 @@ data = [
   ['task 5', -1],
 ]
 
-window('Task progress', 300, 200) {
-  horizontal_box {
+window('Task Progress', 300, 200) {
+  vertical_box {
     table {
       text_column('Task')
       progress_bar_column('Progress')
 
-      cell_rows data
+      cell_rows data # implicit data-binding
+    }
+    
+    button('Mark All As Done') {
+      stretchy false
+      
+      on_clicked do
+        data.each_with_index do |row_data, row|
+          data[row] = [row_data[0], 100] # automatically updates table due to implicit data-binding
+        end
+      end
     }
   }
 }.show
@@ -3247,7 +3268,7 @@ window('Area Gallery', 400, 400) {
         }
 
         fill r: 202, g: 102, b: 104, a: 0.5
-        stroke thickness: 1, r: 0, g: 0, b: 0
+        stroke r: 0, g: 0, b: 0
       }
       path { # declarative stable path
         figure(0, 0) {

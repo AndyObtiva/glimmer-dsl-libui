@@ -12,13 +12,23 @@ data = [
   ['task 5', -1],
 ]
 
-window('Task progress', 300, 200) {
-  horizontal_box {
+window('Task Progress', 300, 200) {
+  vertical_box {
     table {
       text_column('Task')
       progress_bar_column('Progress')
 
-      cell_rows data
+      cell_rows data # implicit data-binding
+    }
+    
+    button('Mark All As Done') {
+      stretchy false
+      
+      on_clicked do
+        data.each_with_index do |row_data, row|
+          data[row] = [row_data[0], 100] # automatically updates table due to implicit data-binding
+        end
+      end
     }
   }
 }.show
