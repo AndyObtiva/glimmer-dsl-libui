@@ -4,7 +4,6 @@
 
 - Support `area` `transform` property and `matrix` object
 - Support examples/histogram.rb
-- Update meta-example screenshots
 
 ## Soon
 
