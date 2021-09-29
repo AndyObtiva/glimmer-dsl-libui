@@ -6,6 +6,7 @@
 - Set default values for shape parameters and support passing shape parameters as properties inside their body (e.g. `rectangle {x 2; y 3; width 400; height 800}`)
 - New examples/area_gallery2.rb (utilizing properties instead of args)
 - New examples/area_gallery3.rb (semi-declarative on_draw dynamic paths)
+- New examples/area_gallery4.rb (utilizing properties instead of args with semi-declarative on_draw dynamic paths)
 
 ## 0.1.3
 
