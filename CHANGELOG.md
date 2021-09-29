@@ -8,6 +8,7 @@
 - Support `line`
 - Support `bezier`
 - Support `arc` (`draw_path_arc_to` if `draw_path_new_figure` was called already or `draw_path_new_figure_with_arc` if parent is a figure without x,y)
+- Support `square` with `x`, `y`, and `length` properties
 
 ## 0.1.2
 

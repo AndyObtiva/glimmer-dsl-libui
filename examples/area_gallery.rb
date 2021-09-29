@@ -6,8 +6,8 @@ window('Area Gallery', 400, 400) {
   vertical_box {
     area {
       path { # declarative stable path
-        rectangle(0, 0, 100, 100)
-        rectangle(100, 100, 400, 400)
+        square(0, 0, 100)
+        square(100, 100, 400)
         
         fill r: 102, g: 102, b: 204
       }
@@ -42,7 +42,7 @@ window('Area Gallery', 400, 400) {
         stroke thickness: 2, r: 0, g: 0, b: 0
       }
       path { # declarative stable path
-        arc(200, 200, 90, 90, 90, false)
+        arc(200, 200, 90, 0, 360, false)
 
         fill r: 202, g: 102, b: 204, a: 0.5
         stroke thickness: 2, r: 0, g: 0, b: 0

@@ -104,7 +104,7 @@ module Glimmer
         if self.class.parameters.include?(method_name_parameter)
           method_name = method_name.to_s
           parameter_index = self.class.parameters.index(method_name_parameter)
-          if method_name.start_with?('set_') || method_name.end_with?('=')
+          if method_name.start_with?('set_') || method_name.end_with?('=') || !args.empty?
             @args[parameter_index] = args.first
             area_proxy&.queue_redraw_all
           else

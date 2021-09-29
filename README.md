@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.1.2
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.1.3
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Maintainability](https://api.codeclimate.com/v1/badges/ce2853efdbecf6ebdc73/maintainability)](https://codeclimate.com/github/AndyObtiva/glimmer-dsl-libui/maintainability)
@@ -62,30 +62,65 @@ window('Task progress', 300, 200) {
 ![glimmer-dsl-libui-mac-basic-table-progress-bar.png](images/glimmer-dsl-libui-mac-basic-table-progress-bar.png)
 ![glimmer-dsl-libui-linux-basic-table-progress-bar.png](images/glimmer-dsl-libui-linux-basic-table-progress-bar.png)
 
-Basic Area
+Area Gallery
 
 ```ruby
 require 'glimmer-dsl-libui'
 
 include Glimmer
 
-window('Basic Area', 400, 400) {
-  margined true
-  
+window('Area Gallery', 400, 400) {
   vertical_box {
     area {
-      path { # a stable path is added declaratively
-        rectangle(0, 0, 400, 400)
+      path { # declarative stable path
+        square(0, 0, 100)
+        square(100, 100, 400)
         
-        fill r: 102, g: 102, b: 204, a: 1.0
+        fill r: 102, g: 102, b: 204
+      }
+      path { # declarative stable path
+        rectangle(0, 100, 100, 400)
+        rectangle(100, 0, 400, 100)
+        
+        fill r: 204, g: 102, b: 204
+      }
+      path { # declarative stable path
+        figure(100, 100) {
+          line(100, 400)
+          line(400, 100)
+          line(400, 400)
+
+          closed true
+        }
+
+        fill r: 202, g: 102, b: 104, a: 0.5
+        stroke thickness: 1, r: 0, g: 0, b: 0
+      }
+      path { # declarative stable path
+        figure(0, 0) {
+          bezier(200, 100, 100, 200, 400, 100)
+          bezier(300, 100, 100, 300, 100, 400)
+          bezier(100, 300, 300, 100, 400, 400)
+
+          closed true
+        }
+
+        fill r: 202, g: 102, b: 204, a: 0.5
+        stroke thickness: 2, r: 0, g: 0, b: 0
+      }
+      path { # declarative stable path
+        arc(200, 200, 90, 0, 360, false)
+
+        fill r: 202, g: 102, b: 204, a: 0.5
+        stroke thickness: 2, r: 0, g: 0, b: 0
       }
     }
   }
 }.show
 ```
 
-![glimmer-dsl-libui-mac-basic-area.png](images/glimmer-dsl-libui-mac-basic-area.png)
-![glimmer-dsl-libui-linux-basic-area.png](images/glimmer-dsl-libui-linux-basic-area.png)
+![glimmer-dsl-libui-mac-area-gallery.png](images/glimmer-dsl-libui-mac-area-gallery.png)
+![glimmer-dsl-libui-linux-area-gallery.png](images/glimmer-dsl-libui-linux-area-gallery.png)
 
 [Check Out Many More Examples Over Here!](#examples)
 
@@ -100,7 +135,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
 
 ## Table of Contents
 
-- [Glimmer DSL for LibUI 0.1.2](#-glimmer-dsl-for-libui-012)
+- [Glimmer DSL for LibUI 0.1.3](#-glimmer-dsl-for-libui-013)
   - [Glimmer GUI DSL Concepts](#glimmer-gui-dsl-concepts)
   - [Usage](#usage)
   - [Girb (Glimmer IRB)](#girb-glimmer-irb)
@@ -140,6 +175,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
     - [Form Table](#form-table)
     - [Basic Area](#basic-area)
     - [Dynamic Area](#dynamic-area)
+    - [Area Gallery](#area-gallery)
   - [Contributing to glimmer-dsl-libui](#contributing-to-glimmer-dsl-libui)
   - [Help](#help)
     - [Issues](#issues)
@@ -227,7 +263,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.1.2'
+gem 'glimmer-dsl-libui', '~> 0.1.3'
 ```
 
 Add `require 'glimmer-dsl-libui'` at the top, and then `include Glimmer` into the top-level main object for testing or into an actual class for serious usage.
@@ -302,6 +338,8 @@ Control(Args) | Properties | Listeners
 ------------- | ---------- | ---------
 `about_menu_item` | None | `on_clicked`
 `area` | None | `on_draw`
+`arc(x_center as Numeric, y_center as Numeric, radius as Numeric, start_angle as Numeric, sweep as Numeric, is_negative as Boolean)` | `x_center` (`Numeric`), `y_center` (`Numeric`), `radius` (`Numeric`), `start_angle` (`Numeric`), `sweep` (`Numeric`), `is_negative` (Boolean) | None
+`bezier(c1_x as Numeric, c1_y as Numeric, c2_x as Numeric, c2_y as Numeric, end_x as Numeric, end_y as Numeric)` | `c1_x` (`Numeric`), `c1_y` (`Numeric`), `c2_x` (`Numeric`), `c2_y` (`Numeric`), `end_x` (`Numeric`), `end_y` (`Numeric`) | None
 `button(text as String)` | `text` (`String`) | `on_clicked`
 `button_column(name as String)` | `enabled` (Boolean) | None
 `checkbox(text as String)` | `checked` (Boolean), `text` (`String`) | `on_toggled`
@@ -313,6 +351,7 @@ Control(Args) | Properties | Listeners
 `date_time_picker` | `time` (`Hash` of keys: `sec` as `Integer`, `min` as `Integer`, `hour` as `Integer`, `mday` as `Integer`, `mon` as `Integer`, `year` as `Integer`, `wday` as `Integer`, `yday` as `Integer`, `dst` as Boolean) | `on_changed`
 `editable_combobox` | `items` (`Array` of `String`), `text` (`String`) | `on_changed`
 `entry` | `read_only` (Boolean), `text` (`String`) | `on_changed`
+`figure(x as Numeric, y as Numeric)` | `x` (`Numeric`), `y` (`Numeric`), `closed` (Boolean) | None
 `font_button` | `font` [read-only] (`Hash` of keys: `:family`, `:size`, `:weight`, `:italic`, `:stretch`), `family` as `String`, `size` as `Float`, `weight` as `Integer`, `italic` as `Integer`, `stretch` as `Integer` | `on_changed`
 `form` | `padded` (Boolean) | None
 `grid` | `padded` (Boolean) | None
@@ -324,6 +363,7 @@ Control(Args) | Properties | Listeners
 `image_column(name as String)` | None | None
 `image_text_column(name as String)` | None | None
 `label(text as String)` | `text` (`String`) | None
+`line(x as Numeric, y as Numeric)` | `x` (`Numeric`), `y` (`Numeric`) | None
 `menu(text as String)` | None | None
 `menu_item(text as String)` | `checked` (Boolean) | `on_clicked`
 `multiline_entry` | `read_only` (Boolean), `text` (`String`) | `on_changed`
@@ -336,9 +376,10 @@ Control(Args) | Properties | Listeners
 `progress_bar_column(name as String)` | None | None
 `quit_menu_item` | None | `on_clicked`
 `radio_buttons` | `selected` (`Integer`) | `on_selected`
-`rectangle(x as Numeric, y as Numeric, width as Numeric, height as Numeric)` | None | None
+`rectangle(x as Numeric, y as Numeric, width as Numeric, height as Numeric)` |  `x` (`Numeric`), `y` (`Numeric`), `width` (`Numeric`), `height` (`Numeric`) | None
 `slider(min as Numeric, max as Numeric)` | `value` (`Numeric`) | `on_changed`
 `spinbox(min as Numeric, max as Numeric)` | `value` (`Numeric`) | `on_changed`
+`square(x as Numeric, y as Numeric, length as Numeric)` | `x` (`Numeric`), `y` (`Numeric`), `length` (`Numeric`) | None
 `tab` | `margined` (Boolean), `num_pages` (`Integer`) | None
 `tab_item(name as String)` | `index` [read-only] (`Integer`), `margined` (Boolean), `name` [read-only] (`String`) | None
 `table` | `cell_rows` (`Array` (rows) of `Arrays` (row columns) of cell values (e.g. `String` values for `text_column` cells or `Array` of `image`/`String` for `image_text_column`)), `editable` as Boolean | None
@@ -532,6 +573,14 @@ window('Basic Area', 400, 400) {
 ```
 
 Check [examples/dynamic_area.rb](#dynamic-area) for a more detailed semi-declarative example.
+
+Available nested `path` shapes:
+- `rectangle(x as Numeric, y as Numeric, width as Numeric, height as Numeric)`
+- `square(x as Numeric, y as Numeric, length as Numeric)`
+- `arc(x_center as Numeric, y_center as Numeric, radius as Numeric, start_angle as Numeric, sweep as Numeric, is_negative as Boolean)`
+- `line(x as Numeric, y as Numeric)`
+- `bezier(c1_x as Numeric, c1_y as Numeric, c2_x as Numeric, c2_y as Numeric, end_x as Numeric, end_y as Numeric)`
+- `figure(x as Numeric, y as Numeric)` (composite that can contain other shapes) (can set `closed true` to connect last point to first point automatically)
 
 In general, it is recommended to use declarative stable paths whenever feasible since they require less code and simpler maintenance. But, in more advanced cases, semi-declarative dynamic paths could be used instead, especially if there are thousands of paths.
 
@@ -3136,6 +3185,87 @@ window('Dynamic Area', 240, 600) {
         @rectangle = rectangle(@x_spinbox.value, @y_spinbox.value, @width_spinbox.value, @height_spinbox.value)
         
         fill r: @red_spinbox.value, g: @green_spinbox.value, b: @blue_spinbox.value, a: @alpha_spinbox.value / 100.0
+      }
+    }
+  }
+}.show
+```
+
+### Area Gallery
+
+[examples/area_gallery.rb](examples/area_gallery.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/area_gallery.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/area_gallery'"
+```
+
+Mac
+
+![glimmer-dsl-libui-mac-area-gallery.png](images/glimmer-dsl-libui-mac-area-gallery.png)
+
+Linux
+
+![glimmer-dsl-libui-linux-area-gallery.png](images/glimmer-dsl-libui-linux-area-gallery.png)
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+window('Area Gallery', 400, 400) {
+  vertical_box {
+    area {
+      path { # declarative stable path
+        square(0, 0, 100)
+        square(100, 100, 400)
+        
+        fill r: 102, g: 102, b: 204
+      }
+      path { # declarative stable path
+        rectangle(0, 100, 100, 400)
+        rectangle(100, 0, 400, 100)
+        
+        fill r: 204, g: 102, b: 204
+      }
+      path { # declarative stable path
+        figure(100, 100) {
+          line(100, 400)
+          line(400, 100)
+          line(400, 400)
+
+          closed true
+        }
+
+        fill r: 202, g: 102, b: 104, a: 0.5
+        stroke thickness: 1, r: 0, g: 0, b: 0
+      }
+      path { # declarative stable path
+        figure(0, 0) {
+          bezier(200, 100, 100, 200, 400, 100)
+          bezier(300, 100, 100, 300, 100, 400)
+          bezier(100, 300, 300, 100, 400, 400)
+
+          closed true
+        }
+
+        fill r: 202, g: 102, b: 204, a: 0.5
+        stroke thickness: 2, r: 0, g: 0, b: 0
+      }
+      path { # declarative stable path
+        arc(200, 200, 90, 0, 360, false)
+
+        fill r: 202, g: 102, b: 204, a: 0.5
+        stroke thickness: 2, r: 0, g: 0, b: 0
       }
     }
   }
