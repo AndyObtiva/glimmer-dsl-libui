@@ -3,6 +3,8 @@
 ## 0.1.4
 
 - Update examples/basic_table_progress_bar.rb with a listener
+- Set default values for shape parameters and support passing shape parameters as properties inside their body (e.g. `rectangle {x 2; y 3; width 400; height 800}`)
+- New examples/area_gallery2.rb (utilizing properties instead of args)
 
 ## 0.1.3
 

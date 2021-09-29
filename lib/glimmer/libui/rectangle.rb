@@ -25,6 +25,7 @@ module Glimmer
   module LibUI
     class Rectangle < Shape
       parameters :x, :y, :width, :height
+      parameter_defaults 0, 0, 0, 0
     
       def draw(area_draw_params)
         ::LibUI.draw_path_add_rectangle(path_proxy.libui, *@args)

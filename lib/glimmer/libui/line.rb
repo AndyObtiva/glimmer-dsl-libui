@@ -25,7 +25,8 @@ module Glimmer
   module LibUI
     class Line < Shape
       parameters :x, :y
-              
+      parameter_defaults 0, 0
+
       def draw(area_draw_params)
         ::LibUI.draw_path_line_to(path_proxy.libui, *@args)
         super

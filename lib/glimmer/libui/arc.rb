@@ -25,6 +25,7 @@ module Glimmer
   module LibUI
     class Arc < Shape
       parameters :x_center, :y_center, :radius, :start_angle, :sweep, :is_negative
+      parameter_defaults 0, 0, 0, 0, 360, false
               
       def draw(area_draw_params)
         @args[5] ||= ControlProxy.boolean_to_integer(@args[5], allow_nil: false)

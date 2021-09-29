@@ -25,6 +25,7 @@ module Glimmer
   module LibUI
     class Bezier < Shape
       parameters :c1_x, :c1_y, :c2_x, :c2_y, :end_x, :end_y
+      parameter_defaults 0, 0, 0, 0, 0, 0
               
       def draw(area_draw_params)
         ::LibUI.draw_path_bezier_to(path_proxy.libui, *@args)

@@ -46,6 +46,14 @@ module Glimmer
           end
         end
         
+        def parameter_defaults(*defaults)
+          if defaults.empty?
+            @parameter_defaults
+          else
+            @parameter_defaults = defaults
+          end
+        end
+        
         private
         
         def constant_symbol(keyword)
@@ -60,6 +68,7 @@ module Glimmer
         @parent = parent
         @args = args
         @block = block
+        set_parameter_defaults
         post_add_content if @block.nil?
       end
       
@@ -116,6 +125,12 @@ module Glimmer
       end
       
       private
+      
+      def set_parameter_defaults
+        self.class.parameter_defaults.each_with_index do |default, i|
+          @args[i] ||= default
+        end
+      end
       
       def find_parent_in_ancestors(&condition)
         found = self

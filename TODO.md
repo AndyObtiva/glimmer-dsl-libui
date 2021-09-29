@@ -2,8 +2,6 @@
 
 ## Next
 
-- Support passing shape parameters as properties inside their body (e.g. `rectangle {x 2; y 3; width 400; height 800}`)
-- New examples/area_gallery2.rb (utilizing properties instead of args)
 - Support `area` `transform` property and `matrix` object
 - Support examples/histogram.rb
 - Update meta-example screenshots
