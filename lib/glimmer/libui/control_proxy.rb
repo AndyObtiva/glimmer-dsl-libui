@@ -26,7 +26,7 @@ module Glimmer
     # Follows the Proxy Design Pattern
     class ControlProxy
       class << self
-        def control_exists?(keyword)
+        def exists?(keyword)
           ::LibUI.respond_to?("new_#{keyword}") ||
             ::LibUI.respond_to?(keyword) ||
             Glimmer::LibUI.constants.include?("#{keyword.camelcase(:upper)}Proxy".to_sym)
@@ -92,7 +92,7 @@ module Glimmer
       ]
       
       # libui returns the contained LibUI object
-      attr_reader :parent_proxy, :libui, :args, :keyword
+      attr_reader :parent_proxy, :libui, :args, :keyword, :block
       
       def initialize(keyword, parent, args, &block)
         @keyword = keyword

@@ -21,13 +21,17 @@
 
 require 'glimmer/dsl/expression'
 require 'glimmer/libui/control_proxy'
+require 'glimmer/libui/shape'
 
 module Glimmer
   module DSL
     module Libui
       class PropertyExpression < Expression
         def can_interpret?(parent, keyword, *args, &block)
-          parent.is_a?(Glimmer::LibUI::ControlProxy) and
+          (
+            parent.is_a?(Glimmer::LibUI::ControlProxy) or
+              parent.is_a?(Glimmer::LibUI::Shape)
+          ) and
             block.nil? and
             parent.respond_to?(keyword, *args)
         end

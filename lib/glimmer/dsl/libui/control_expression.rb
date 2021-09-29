@@ -29,7 +29,7 @@ module Glimmer
         include ParentExpression
   
         def can_interpret?(parent, keyword, *args, &block)
-          Glimmer::LibUI::ControlProxy.control_exists?(keyword)
+          Glimmer::LibUI::ControlProxy.exists?(keyword)
         end
   
         def interpret(parent, keyword, *args, &block)

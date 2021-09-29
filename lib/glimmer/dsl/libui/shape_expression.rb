@@ -19,29 +19,38 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'glimmer/dsl/engine'
-Dir[File.expand_path('*_expression.rb', __dir__)].each {|f| require f}
-
-# Glimmer DSL expression configuration module
-#
-# When DSL engine interprets an expression, it attempts to handle
-# with expressions listed here in the order specified.
-
-# Every expression has a corresponding Expression subclass
-# in glimmer/dsl
+require 'glimmer/dsl/expression'
+require 'glimmer/dsl/parent_expression'
 
 module Glimmer
   module DSL
     module Libui
-      Engine.add_dynamic_expressions(
-        Libui,
-        %w[
-          listener
-          property
-          control
-          shape
-        ]
-      )
+      class ShapeExpression < Expression
+        include ParentExpression
+  
+        def can_interpret?(parent, keyword, *args, &block)
+          Glimmer::LibUI::Shape.exists?(keyword) and
+            (
+              parent.is_a?(Glimmer::LibUI::PathProxy) or
+                parent.is_a?(Glimmer::LibUI::Shape)
+            )
+        end
+  
+        def interpret(parent, keyword, *args, &block)
+          Glimmer::LibUI::Shape.create(keyword, parent, args, &block)
+        end
+        
+        def add_content(parent, keyword, *args, &block)
+          super
+          parent.post_add_content
+        end
+        
+      end
     end
   end
 end
+
+# TODO Consider moving all shapes underneath Shape namespace
+require 'glimmer/libui/path_proxy'
+require 'glimmer/libui/shape'
+Dir[File.expand_path('../../libui/*.rb', __dir__)].each {|f| require f}

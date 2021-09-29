@@ -19,81 +19,21 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'glimmer/libui/control_proxy'
+require 'glimmer/libui/shape'
 
 module Glimmer
   module LibUI
-    # Proxy for LibUI figure objects
-    #
-    # Follows the Proxy Design Pattern
-    class FigureProxy < ControlProxy
-      def initialize(keyword, parent, args, &block)
-        @keyword = keyword
-        @parent_proxy = parent
-        @args = args
-        @block = block
-        @enabled = true
-        post_add_content if @block.nil?
-      end
+    # Represents a figure consisting of shapes (nested under path)
+    # Can optionally have `closed true` property (connecting last point to first point automatically)
+    class Figure < Shape
+      parameters :x, :y
     
       def draw(area_draw_params)
         ::LibUI.draw_path_new_figure(path_proxy.libui, *@args) unless @args.empty? # TODO if args empty then wait till there is an arc child and it starts the figure
         children.each {|child| child.draw(area_draw_params)}
         ::LibUI.draw_path_close_figure(path_proxy.libui) if closed?
-        destroy if area_proxy.nil?
-      end
-      
-      def destroy
-        @parent_proxy.children.delete(self) unless @parent_proxy.nil?
-        ControlProxy.control_proxies.delete(self)
-      end
-      
-      def post_initialize_child(child)
         super
-        children << child
       end
-      
-      def children
-        @children ||= []
-      end
-      
-      def area_proxy
-        found_proxy = self
-        until found_proxy.nil? || found_proxy.is_a?(AreaProxy)
-          found_proxy = found_proxy.parent_proxy
-        end
-        found_proxy
-      end
-      
-      def path_proxy
-        found_proxy = self
-        until found_proxy.nil? || found_proxy.is_a?(PathProxy)
-          found_proxy = found_proxy.parent_proxy
-        end
-        found_proxy
-      end
-      
-      def x(value = nil)
-        if value.nil?
-          @args[0]
-        else
-          @args[0] = value
-          area_proxy&.queue_redraw_all
-        end
-      end
-      alias x= x
-      alias set_x x
-      
-      def y(value = nil)
-        if value.nil?
-          @args[1]
-        else
-          @args[1] = value
-          area_proxy&.queue_redraw_all
-        end
-      end
-      alias y= y
-      alias set_y y
       
       def closed(value = nil)
         if value.nil?
@@ -106,12 +46,6 @@ module Glimmer
       alias closed= closed
       alias set_closed closed
       alias closed? closed
-      
-      private
-      
-      def build_control
-        # No Op
-      end
     end
   end
 end

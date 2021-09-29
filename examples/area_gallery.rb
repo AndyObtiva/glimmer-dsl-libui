@@ -16,10 +16,10 @@ window('Area Gallery', 400, 400) {
           line(100, 400)
           line(400, 100)
           line(400, 400)
-          
+
           closed true
         }
-        
+
         fill r: 202, g: 102, b: 104, a: 0.5
         stroke thickness: 1, r: 0, g: 0, b: 0
       }

@@ -19,75 +19,16 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'glimmer/libui/control_proxy'
+require 'glimmer/libui/shape'
 
 module Glimmer
   module LibUI
-    # Proxy for LibUI line objects
-    #
-    # Follows the Proxy Design Pattern
-    class LineProxy < ControlProxy
-      def initialize(keyword, parent, args, &block)
-        @keyword = keyword
-        @parent_proxy = parent
-        @args = args
-        @block = block
-        @enabled = true
-        post_add_content if @block.nil?
-      end
-    
+    class Line < Shape
+      parameters :x, :y
+              
       def draw(area_draw_params)
         ::LibUI.draw_path_line_to(path_proxy.libui, *@args)
-        destroy if area_proxy.nil?
-      end
-      
-      def destroy
-        @parent_proxy.children.delete(self) unless @parent_proxy.nil?
-        ControlProxy.control_proxies.delete(self)
-      end
-      
-      def area_proxy
-        found_proxy = self
-        until found_proxy.nil? || found_proxy.is_a?(AreaProxy)
-          found_proxy = found_proxy.parent_proxy
-        end
-        found_proxy
-      end
-      
-      def path_proxy
-        found_proxy = self
-        until found_proxy.nil? || found_proxy.is_a?(PathProxy)
-          found_proxy = found_proxy.parent_proxy
-        end
-        found_proxy
-      end
-      
-      def x(value = nil)
-        if value.nil?
-          @args[0]
-        else
-          @args[0] = value
-          area_proxy&.queue_redraw_all
-        end
-      end
-      alias x= x
-      alias set_x x
-      
-      def y(value = nil)
-        if value.nil?
-          @args[1]
-        else
-          @args[1] = value
-          area_proxy&.queue_redraw_all
-        end
-      end
-      alias y= y
-      alias set_y y
-      
-      private
-      
-      def build_control
-        # No Op
+        super
       end
     end
   end
