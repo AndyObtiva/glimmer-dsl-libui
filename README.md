@@ -361,7 +361,7 @@ Control(Args) | Properties | Listeners
 `date_time_picker` | `time` (`Hash` of keys: `sec` as `Integer`, `min` as `Integer`, `hour` as `Integer`, `mday` as `Integer`, `mon` as `Integer`, `year` as `Integer`, `wday` as `Integer`, `yday` as `Integer`, `dst` as Boolean) | `on_changed`
 `editable_combobox` | `items` (`Array` of `String`), `text` (`String`) | `on_changed`
 `entry` | `read_only` (Boolean), `text` (`String`) | `on_changed`
-`figure(x as Numeric, y as Numeric)` | `x` (`Numeric`), `y` (`Numeric`), `closed` (Boolean) | None
+`figure(x=nil as Numeric, y=nil as Numeric)` | `x` (`Numeric`), `y` (`Numeric`), `closed` (Boolean) | None
 `font_button` | `font` [read-only] (`Hash` of keys: `:family`, `:size`, `:weight`, `:italic`, `:stretch`), `family` as `String`, `size` as `Float`, `weight` as `Integer`, `italic` as `Integer`, `stretch` as `Integer` | `on_changed`
 `form` | `padded` (Boolean) | None
 `grid` | `padded` (Boolean) | None
@@ -590,7 +590,7 @@ Available nested `path` shapes:
 - `arc(x_center as Numeric, y_center as Numeric, radius as Numeric, start_angle as Numeric, sweep as Numeric, is_negative as Boolean)`
 - `line(x as Numeric, y as Numeric)`
 - `bezier(c1_x as Numeric, c1_y as Numeric, c2_x as Numeric, c2_y as Numeric, end_x as Numeric, end_y as Numeric)`
-- `figure(x as Numeric, y as Numeric)` (composite that can contain other shapes) (can set `closed true` to connect last point to first point automatically)
+- `figure(x=nil as Numeric, y=nil as Numeric)` (composite that can contain other shapes) (can set `closed true` to connect last point to first point automatically)
 
 In general, it is recommended to use declarative stable paths whenever feasible since they require less code and simpler maintenance. But, in more advanced cases, semi-declarative dynamic paths could be used instead, especially if there are thousands of paths.
 
@@ -3406,6 +3406,65 @@ window('Area Gallery', 400, 400) {
         fill r: 202, g: 102, b: 204, a: 0.5
         stroke thickness: 2, r: 0, g: 0, b: 0
       }
+    }
+  }
+}.show
+```
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 3:
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+window('Area Gallery', 400, 400) {
+  vertical_box {
+    area {
+      on_draw do |area_draw_params|
+        path(area_draw_params) { # a dynamic path is added semi-declaratively inside on_draw block
+          square(0, 0, 100)
+          square(100, 100, 400)
+          
+          fill r: 102, g: 102, b: 204
+        }
+        path(area_draw_params) { # a dynamic path is added semi-declaratively inside on_draw block
+          rectangle(0, 100, 100, 400)
+          rectangle(100, 0, 400, 100)
+
+          fill r: 204, g: 102, b: 204
+        }
+        path(area_draw_params) { # a dynamic path is added semi-declaratively inside on_draw block
+          figure(100, 100) {
+            line(100, 400)
+            line(400, 100)
+            line(400, 400)
+
+            closed true
+          }
+
+          fill r: 202, g: 102, b: 104, a: 0.5
+          stroke r: 0, g: 0, b: 0
+        }
+        path(area_draw_params) { # a dynamic path is added semi-declaratively inside on_draw block
+          figure(0, 0) {
+            bezier(200, 100, 100, 200, 400, 100)
+            bezier(300, 100, 100, 300, 100, 400)
+            bezier(100, 300, 300, 100, 400, 400)
+
+            closed true
+          }
+
+          fill r: 202, g: 102, b: 204, a: 0.5
+          stroke thickness: 2, r: 0, g: 0, b: 0
+        }
+        path(area_draw_params) { # a dynamic path is added semi-declaratively inside on_draw block
+          arc(200, 200, 90, 0, 360, false)
+
+          fill r: 202, g: 102, b: 204, a: 0.5
+          stroke thickness: 2, r: 0, g: 0, b: 0
+        }
+      end
     }
   }
 }.show

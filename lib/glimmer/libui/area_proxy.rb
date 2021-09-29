@@ -80,7 +80,7 @@ module Glimmer
         @area_handler.Draw         = fiddle_closure_block_caller(0, [1, 1, 1]) do |_, _, area_draw_params|
           area_draw_params = ::LibUI::FFI::AreaDrawParams.new(area_draw_params)
           area_draw_params = area_draw_params_hash(area_draw_params)
-          children.each {|child| child.draw(area_draw_params)}
+          children.dup.each {|child| child.draw(area_draw_params)}
           on_draw.each {|listener| listener.call(area_draw_params) }
         end
         @area_handler.MouseEvent   = fiddle_closure_block_caller(0, [0]) {}

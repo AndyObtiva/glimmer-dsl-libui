@@ -56,7 +56,7 @@ module Glimmer
       
       def draw(area_draw_params)
         build_control
-        children.each {|child| child.draw(area_draw_params)}
+        children.dup.each {|child| child.draw(area_draw_params)}
         ::LibUI.draw_path_end(@libui)
         ::LibUI.draw_fill(area_draw_params[:context], @libui, fill_draw_brush.to_ptr) unless fill.empty?
         ::LibUI.draw_stroke(area_draw_params[:context], @libui, stroke_draw_brush, draw_stroke_params) unless stroke.empty?

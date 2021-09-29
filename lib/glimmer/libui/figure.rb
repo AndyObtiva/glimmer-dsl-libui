@@ -31,7 +31,7 @@ module Glimmer
     
       def draw(area_draw_params)
         ::LibUI.draw_path_new_figure(path_proxy.libui, *@args) unless @args.compact.empty? # TODO if args empty then wait till there is an arc child and it starts the figure
-        children.each {|child| child.draw(area_draw_params)}
+        children.dup.each {|child| child.draw(area_draw_params)}
         ::LibUI.draw_path_close_figure(path_proxy.libui) if closed?
         super
       end
