@@ -4,6 +4,7 @@
 
 - Support `area` `transform` property and `matrix` object
 - Support examples/histogram.rb
+- Document what `area_draw_params` contains under Area API
 
 ## Soon
 

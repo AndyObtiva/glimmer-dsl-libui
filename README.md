@@ -80,50 +80,48 @@ require 'glimmer-dsl-libui'
 include Glimmer
 
 window('Area Gallery', 400, 400) {
-  vertical_box {
-    area {
-      path { # declarative stable path
-        square(0, 0, 100)
-        square(100, 100, 400)
-        
-        fill r: 102, g: 102, b: 204
-      }
-      path { # declarative stable path
-        rectangle(0, 100, 100, 400)
-        rectangle(100, 0, 400, 100)
-        
-        fill r: 204, g: 102, b: 204
-      }
-      path { # declarative stable path
-        figure(100, 100) {
-          line(100, 400)
-          line(400, 100)
-          line(400, 400)
+  area {
+    path { # declarative stable path
+      square(0, 0, 100)
+      square(100, 100, 400)
+      
+      fill r: 102, g: 102, b: 204
+    }
+    path { # declarative stable path
+      rectangle(0, 100, 100, 400)
+      rectangle(100, 0, 400, 100)
+      
+      fill r: 204, g: 102, b: 204
+    }
+    path { # declarative stable path
+      figure(100, 100) {
+        line(100, 400)
+        line(400, 100)
+        line(400, 400)
 
-          closed true
-        }
-
-        fill r: 202, g: 102, b: 104, a: 0.5
-        stroke r: 0, g: 0, b: 0
+        closed true
       }
-      path { # declarative stable path
-        figure(0, 0) {
-          bezier(200, 100, 100, 200, 400, 100)
-          bezier(300, 100, 100, 300, 100, 400)
-          bezier(100, 300, 300, 100, 400, 400)
 
-          closed true
-        }
+      fill r: 202, g: 102, b: 104, a: 0.5
+      stroke r: 0, g: 0, b: 0
+    }
+    path { # declarative stable path
+      figure(0, 0) {
+        bezier(200, 100, 100, 200, 400, 100)
+        bezier(300, 100, 100, 300, 100, 400)
+        bezier(100, 300, 300, 100, 400, 400)
 
-        fill r: 202, g: 102, b: 204, a: 0.5
-        stroke thickness: 2, r: 0, g: 0, b: 0
+        closed true
       }
-      path { # declarative stable path
-        arc(200, 200, 90, 0, 360, false)
 
-        fill r: 202, g: 102, b: 204, a: 0.5
-        stroke thickness: 2, r: 0, g: 0, b: 0
-      }
+      fill r: 202, g: 102, b: 204, a: 0.5
+      stroke thickness: 2, r: 0, g: 0, b: 0
+    }
+    path { # declarative stable path
+      arc(200, 200, 90, 0, 360, false)
+
+      fill r: 202, g: 102, b: 204, a: 0.5
+      stroke thickness: 2, r: 0, g: 0, b: 0
     }
   }
 }.show
@@ -530,8 +528,8 @@ Learn more by checking out [examples](#examples).
 
 ### Area API
 
-The `area` control can be used in one of two ways:
-- Declaratively via stable paths: useful for stable paths that will not change later on. Simply nest `path` and figures like `rectangle` and all drawing logic is generated automatically. Paths proxy objects are preserved across redraws assuming there would be few stable paths (mostly for decorative reasons).
+The `area` control is a canvas-like control for drawing paths that can be used in one of two ways:
+- Declaratively via stable paths: useful for stable paths that will not change later on. Simply nest `path` and figures like `rectangle` and all drawing logic is generated automatically. Path proxy objects are preserved across redraws assuming there would be few stable paths (mostly for decorative reasons).
 - Semi-declaratively via on_draw listener dynamic paths: useful for more dynamic paths that will definitely change. Open an `on_draw` listener block and nest `path(area_draw_params)` and figures like `rectangle` and all drawing logic is generated automatically. Path proxy objects are destroyed (thrown-away) at the end of drawing, thus having less memory overhead for drawing thousands of dynamic paths.
 
 Here is an example of a declarative `area` with a stable path (you may copy/paste in [`girb`](#girb-glimmer-irb)):
@@ -591,6 +589,8 @@ Available nested `path` shapes:
 - `line(x as Numeric, y as Numeric)`
 - `bezier(c1_x as Numeric, c1_y as Numeric, c2_x as Numeric, c2_y as Numeric, end_x as Numeric, end_y as Numeric)`
 - `figure(x=nil as Numeric, y=nil as Numeric)` (composite that can contain other shapes) (can set `closed true` to connect last point to first point automatically)
+
+Check [examples/area_gallery.rb](#area-gallery) for an overiew of all `path` shapes.
 
 In general, it is recommended to use declarative stable paths whenever feasible since they require less code and simpler maintenance. But, in more advanced cases, semi-declarative dynamic paths could be used instead, especially if there are thousands of paths.
 
@@ -810,7 +810,7 @@ window('hello world', 300, 200, true) {
 }.show
 ```
 
-[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 2:
+[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 2 (setting `window` properties instead of arguments):
 
 ```ruby
 require 'glimmer-dsl-libui'
@@ -2956,7 +2956,7 @@ window('Basic Area', 400, 400) {
 }.show
 ```
 
-[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 2:
+[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 2 (semi-declarative `on_draw` dynamic `path` approach):
 
 ```ruby
 require 'glimmer-dsl-libui'
@@ -3110,7 +3110,7 @@ window('Dynamic Area', 240, 500) {
 }.show
 ```
 
-New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 2:
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 2 (declarative stable `path` approach):
 
 ```ruby
 require 'glimmer-dsl-libui'
@@ -3244,21 +3244,192 @@ require 'glimmer-dsl-libui'
 include Glimmer
 
 window('Area Gallery', 400, 400) {
-  vertical_box {
-    area {
-      path { # declarative stable path
+  area {
+    path { # declarative stable path
+      square(0, 0, 100)
+      square(100, 100, 400)
+      
+      fill r: 102, g: 102, b: 204
+    }
+    path { # declarative stable path
+      rectangle(0, 100, 100, 400)
+      rectangle(100, 0, 400, 100)
+      
+      fill r: 204, g: 102, b: 204
+    }
+    path { # declarative stable path
+      figure(100, 100) {
+        line(100, 400)
+        line(400, 100)
+        line(400, 400)
+
+        closed true
+      }
+
+      fill r: 202, g: 102, b: 104, a: 0.5
+      stroke r: 0, g: 0, b: 0
+    }
+    path { # declarative stable path
+      figure(0, 0) {
+        bezier(200, 100, 100, 200, 400, 100)
+        bezier(300, 100, 100, 300, 100, 400)
+        bezier(100, 300, 300, 100, 400, 400)
+
+        closed true
+      }
+
+      fill r: 202, g: 102, b: 204, a: 0.5
+      stroke thickness: 2, r: 0, g: 0, b: 0
+    }
+    path { # declarative stable path
+      arc(200, 200, 90, 0, 360, false)
+
+      fill r: 202, g: 102, b: 204, a: 0.5
+      stroke thickness: 2, r: 0, g: 0, b: 0
+    }
+  }
+}.show
+```
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 2 (setting shape properties instead of arguments):
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+window('Area Gallery', 400, 400) {
+  area {
+    path { # declarative stable path
+      square {
+        x 0
+        y 0
+        length 100
+      }
+      square {
+        x 100
+        y 100
+        length 400
+      }
+      
+      fill r: 102, g: 102, b: 204
+    }
+    path { # declarative stable path
+      rectangle {
+        x 0
+        y 100
+        width 100
+        height 400
+      }
+      rectangle {
+        x 100
+        y 0
+        width 400
+        height 100
+      }
+      
+      fill r: 204, g: 102, b: 204
+    }
+    path { # declarative stable path
+      figure {
+        x 100
+        y 100
+        
+        line {
+          x 100
+          y 400
+        }
+        line {
+          x 400
+          y 100
+        }
+        line {
+          x 400
+          y 400
+        }
+
+        closed true
+      }
+
+      fill r: 202, g: 102, b: 104, a: 0.5
+      stroke r: 0, g: 0, b: 0
+    }
+    path { # declarative stable path
+      figure {
+        x 0
+        y 0
+        
+        bezier {
+          c1_x 200
+          c1_y 100
+          c2_x 100
+          c2_y 200
+          end_x 400
+          end_y 100
+        }
+        bezier {
+          c1_x 300
+          c1_y 100
+          c2_x 100
+          c2_y 300
+          end_x 100
+          end_y 400
+        }
+        bezier {
+          c1_x 100
+          c1_y 300
+          c2_x 300
+          c2_y 100
+          end_x 400
+          end_y 400
+        }
+
+        closed true
+      }
+
+      fill r: 202, g: 102, b: 204, a: 0.5
+      stroke thickness: 2, r: 0, g: 0, b: 0
+    }
+    path { # declarative stable path
+      arc {
+        x_center 200
+        y_center 200
+        radius 90
+        start_angle 0
+        sweep 360
+        is_negative false
+      }
+
+      fill r: 202, g: 102, b: 204, a: 0.5
+      stroke thickness: 2, r: 0, g: 0, b: 0
+    }
+  }
+}.show
+```
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 3 (semi-declarative `on_draw` dynamic `path` approach):
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+window('Area Gallery', 400, 400) {
+  area {
+    on_draw do |area_draw_params|
+      path(area_draw_params) { # a dynamic path is added semi-declaratively inside on_draw block
         square(0, 0, 100)
         square(100, 100, 400)
         
         fill r: 102, g: 102, b: 204
       }
-      path { # declarative stable path
+      path(area_draw_params) { # a dynamic path is added semi-declaratively inside on_draw block
         rectangle(0, 100, 100, 400)
         rectangle(100, 0, 400, 100)
-        
+
         fill r: 204, g: 102, b: 204
       }
-      path { # declarative stable path
+      path(area_draw_params) { # a dynamic path is added semi-declaratively inside on_draw block
         figure(100, 100) {
           line(100, 400)
           line(400, 100)
@@ -3270,7 +3441,7 @@ window('Area Gallery', 400, 400) {
         fill r: 202, g: 102, b: 104, a: 0.5
         stroke r: 0, g: 0, b: 0
       }
-      path { # declarative stable path
+      path(area_draw_params) { # a dynamic path is added semi-declaratively inside on_draw block
         figure(0, 0) {
           bezier(200, 100, 100, 200, 400, 100)
           bezier(300, 100, 100, 300, 100, 400)
@@ -3282,18 +3453,18 @@ window('Area Gallery', 400, 400) {
         fill r: 202, g: 102, b: 204, a: 0.5
         stroke thickness: 2, r: 0, g: 0, b: 0
       }
-      path { # declarative stable path
+      path(area_draw_params) { # a dynamic path is added semi-declaratively inside on_draw block
         arc(200, 200, 90, 0, 360, false)
 
         fill r: 202, g: 102, b: 204, a: 0.5
         stroke thickness: 2, r: 0, g: 0, b: 0
       }
-    }
+    end
   }
 }.show
 ```
 
-New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 2:
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 4 (setting shape properties instead of arguments with semi-declarative `on_draw` dynamic `path` approach):
 
 ```ruby
 require 'glimmer-dsl-libui'
@@ -3301,9 +3472,9 @@ require 'glimmer-dsl-libui'
 include Glimmer
 
 window('Area Gallery', 400, 400) {
-  vertical_box {
-    area {
-      path { # declarative stable path
+  area {
+    on_draw do |area_draw_params|
+      path(area_draw_params) { # a dynamic path is added semi-declaratively inside on_draw block
         square {
           x 0
           y 0
@@ -3317,7 +3488,7 @@ window('Area Gallery', 400, 400) {
         
         fill r: 102, g: 102, b: 204
       }
-      path { # declarative stable path
+      path(area_draw_params) { # a dynamic path is added semi-declaratively inside on_draw block
         rectangle {
           x 0
           y 100
@@ -3333,7 +3504,7 @@ window('Area Gallery', 400, 400) {
         
         fill r: 204, g: 102, b: 204
       }
-      path { # declarative stable path
+      path(area_draw_params) { # a dynamic path is added semi-declaratively inside on_draw block
         figure {
           x 100
           y 100
@@ -3357,7 +3528,7 @@ window('Area Gallery', 400, 400) {
         fill r: 202, g: 102, b: 104, a: 0.5
         stroke r: 0, g: 0, b: 0
       }
-      path { # declarative stable path
+      path(area_draw_params) { # a dynamic path is added semi-declaratively inside on_draw block
         figure {
           x 0
           y 0
@@ -3393,7 +3564,7 @@ window('Area Gallery', 400, 400) {
         fill r: 202, g: 102, b: 204, a: 0.5
         stroke thickness: 2, r: 0, g: 0, b: 0
       }
-      path { # declarative stable path
+      path(area_draw_params) { # a dynamic path is added semi-declaratively inside on_draw block
         arc {
           x_center 200
           y_center 200
@@ -3406,186 +3577,7 @@ window('Area Gallery', 400, 400) {
         fill r: 202, g: 102, b: 204, a: 0.5
         stroke thickness: 2, r: 0, g: 0, b: 0
       }
-    }
-  }
-}.show
-```
-
-New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 3:
-
-```ruby
-require 'glimmer-dsl-libui'
-
-include Glimmer
-
-window('Area Gallery', 400, 400) {
-  vertical_box {
-    area {
-      on_draw do |area_draw_params|
-        path(area_draw_params) { # a dynamic path is added semi-declaratively inside on_draw block
-          square(0, 0, 100)
-          square(100, 100, 400)
-          
-          fill r: 102, g: 102, b: 204
-        }
-        path(area_draw_params) { # a dynamic path is added semi-declaratively inside on_draw block
-          rectangle(0, 100, 100, 400)
-          rectangle(100, 0, 400, 100)
-
-          fill r: 204, g: 102, b: 204
-        }
-        path(area_draw_params) { # a dynamic path is added semi-declaratively inside on_draw block
-          figure(100, 100) {
-            line(100, 400)
-            line(400, 100)
-            line(400, 400)
-
-            closed true
-          }
-
-          fill r: 202, g: 102, b: 104, a: 0.5
-          stroke r: 0, g: 0, b: 0
-        }
-        path(area_draw_params) { # a dynamic path is added semi-declaratively inside on_draw block
-          figure(0, 0) {
-            bezier(200, 100, 100, 200, 400, 100)
-            bezier(300, 100, 100, 300, 100, 400)
-            bezier(100, 300, 300, 100, 400, 400)
-
-            closed true
-          }
-
-          fill r: 202, g: 102, b: 204, a: 0.5
-          stroke thickness: 2, r: 0, g: 0, b: 0
-        }
-        path(area_draw_params) { # a dynamic path is added semi-declaratively inside on_draw block
-          arc(200, 200, 90, 0, 360, false)
-
-          fill r: 202, g: 102, b: 204, a: 0.5
-          stroke thickness: 2, r: 0, g: 0, b: 0
-        }
-      end
-    }
-  }
-}.show
-```
-
-New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 4:
-
-```ruby
-require 'glimmer-dsl-libui'
-
-include Glimmer
-
-window('Area Gallery', 400, 400) {
-  vertical_box {
-    area {
-      on_draw do |area_draw_params|
-        path(area_draw_params) { # a dynamic path is added semi-declaratively inside on_draw block
-          square {
-            x 0
-            y 0
-            length 100
-          }
-          square {
-            x 100
-            y 100
-            length 400
-          }
-          
-          fill r: 102, g: 102, b: 204
-        }
-        path(area_draw_params) { # a dynamic path is added semi-declaratively inside on_draw block
-          rectangle {
-            x 0
-            y 100
-            width 100
-            height 400
-          }
-          rectangle {
-            x 100
-            y 0
-            width 400
-            height 100
-          }
-          
-          fill r: 204, g: 102, b: 204
-        }
-        path(area_draw_params) { # a dynamic path is added semi-declaratively inside on_draw block
-          figure {
-            x 100
-            y 100
-            
-            line {
-              x 100
-              y 400
-            }
-            line {
-              x 400
-              y 100
-            }
-            line {
-              x 400
-              y 400
-            }
-  
-            closed true
-          }
-  
-          fill r: 202, g: 102, b: 104, a: 0.5
-          stroke r: 0, g: 0, b: 0
-        }
-        path(area_draw_params) { # a dynamic path is added semi-declaratively inside on_draw block
-          figure {
-            x 0
-            y 0
-            
-            bezier {
-              c1_x 200
-              c1_y 100
-              c2_x 100
-              c2_y 200
-              end_x 400
-              end_y 100
-            }
-            bezier {
-              c1_x 300
-              c1_y 100
-              c2_x 100
-              c2_y 300
-              end_x 100
-              end_y 400
-            }
-            bezier {
-              c1_x 100
-              c1_y 300
-              c2_x 300
-              c2_y 100
-              end_x 400
-              end_y 400
-            }
-  
-            closed true
-          }
-  
-          fill r: 202, g: 102, b: 204, a: 0.5
-          stroke thickness: 2, r: 0, g: 0, b: 0
-        }
-        path(area_draw_params) { # a dynamic path is added semi-declaratively inside on_draw block
-          arc {
-            x_center 200
-            y_center 200
-            radius 90
-            start_angle 0
-            sweep 360
-            is_negative false
-          }
-  
-          fill r: 202, g: 102, b: 204, a: 0.5
-          stroke thickness: 2, r: 0, g: 0, b: 0
-        }
-      end
-    }
+    end
   }
 }.show
 ```
