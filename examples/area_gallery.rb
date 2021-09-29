@@ -12,6 +12,12 @@ window('Area Gallery', 400, 400) {
         fill r: 102, g: 102, b: 204
       }
       path { # declarative stable path
+        rectangle(0, 100, 100, 400)
+        rectangle(100, 0, 400, 100)
+        
+        fill r: 204, g: 102, b: 204
+      }
+      path { # declarative stable path
         figure(100, 100) {
           line(100, 400)
           line(400, 100)
