@@ -6,6 +6,7 @@
 - Support `figure(x = nil, y = nil) {}` (`draw_path_new_figure`)
 - Support `closed true` property inside nested figure (`draw_path_close_figure`)
 - Support `line`
+- Support `bezier`
 
 ## 0.1.2
 

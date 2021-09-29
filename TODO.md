@@ -3,7 +3,6 @@
 ## Next
 
 - Support `arc` (`draw_path_arc_to` if `draw_path_new_figure` was called already or `draw_path_new_figure_with_arc` if parent is a figure without x,y)
-- Support `bezier`
 - Support `area` `transform` property and `matrix` object
 - Support examples/histogram.rb
 - Update meta-example screenshots
