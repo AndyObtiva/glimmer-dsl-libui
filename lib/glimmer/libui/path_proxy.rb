@@ -27,6 +27,8 @@ module Glimmer
     #
     # Follows the Proxy Design Pattern
     class PathProxy < ControlProxy
+#       include Transformable
+    
       # TODO support mode without parent proxy
       def initialize(keyword, parent, args, &block)
         @keyword = keyword
@@ -39,6 +41,7 @@ module Glimmer
     
       def post_initialize_child(child)
         super
+        # TODO handle matrix transform child differently (or maybe via Transformable)
         children << child
       end
       
@@ -134,7 +137,7 @@ module Glimmer
       end
     
       def destroy
-        @parent_proxy.children.delete(self) unless @parent_proxy.nil?
+        @parent_proxy&.children&.delete(self)
         ControlProxy.control_proxies.delete(self)
       end
       

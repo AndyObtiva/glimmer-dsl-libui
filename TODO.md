@@ -2,12 +2,16 @@
 
 ## Next
 
-- Support `area` `transform` property and `matrix` object
-- Support examples/histogram.rb
+- Support `path` `transform` property for building `matrix` object (handle with `MatrixProxy` and `TransformProxy` alias)
 - Document what `area_draw_params` contains under Area API
+- Document declarative approach not caring about location of fill/stroke/transform
+
+- Support `area` `transform` property for building `matrix` object
+- Support shape `transform` property for building `matrix` object (e.g. `figure` or `rectangle`)
 
 ## Soon
 
+- Support hex colors
 - Support `area` listeners: `on_mouse_event`, `on_mouse_crossed`, `on_drag_broken`, `on_key_event`
 - Support `path` `fill`/`stroke` `:type` of `:linear_gradient`
 - Support `path` `fill`/`stroke` `:type` of `:radial_gradient`

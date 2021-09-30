@@ -627,6 +627,8 @@ To redraw an `area`, you may call `#queue_redraw_all` method.
 - `area` paths are specified declaratively with figures underneath (e.g. `rectangle`) and `area` draw listener is automatically generated
 - Observe figure properties (e.g. `rectangle` `width`) for changes and automatically redraw containing area accordingly
 - Observe `path` `fill` and `stroke` hashes for changes and automatically redraw containing area accordingly
+- All controls are protected from garbage collection until no longer needed (explicitly destroyed), so there is no need to worry about surprises.
+- All resources are freed automatically once no longer needed or left to garbage collection.
 
 ### API Gotchas
 

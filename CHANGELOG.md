@@ -1,5 +1,12 @@
 # Change Log
 
+## 0.1.5
+
+- Support examples/histogram.rb
+- Support `color_button` `color=`/`set_color` setter
+- Switch `color_button` `color` API to return a hash of `{:r, :g, :b, :a}` instead of an array for consistency with other libui APIs (like fill and stroke brush)
+- Implement `color_button` fine-grained setters (e.g. `cg.red = 144`)
+
 ## 0.1.4
 
 - Update examples/basic_table_progress_bar.rb with a listener

@@ -27,30 +27,81 @@ module Glimmer
     #
     # Follows the Proxy Design Pattern
     class ColorButtonProxy < ControlProxy
-      def color
-        @red ||= Fiddle::Pointer.malloc(8) # double
-        @green ||= Fiddle::Pointer.malloc(8) # double
-        @blue ||= Fiddle::Pointer.malloc(8) # double
-        @alpha ||= Fiddle::Pointer.malloc(8) # double
-        ::LibUI.color_button_color(@libui, @red, @green, @blue, @alpha)
-        [@red[0, 8].unpack1('d') * 255.0, @green[0, 8].unpack1('d') * 255.0, @blue[0, 8].unpack1('d') * 255.0, @alpha[0, 8].unpack1('d')]
+      def color(value = nil)
+        # TODO support hex color value
+        if value.nil?
+          @red ||= Fiddle::Pointer.malloc(8) # double
+          @green ||= Fiddle::Pointer.malloc(8) # double
+          @blue ||= Fiddle::Pointer.malloc(8) # double
+          @alpha ||= Fiddle::Pointer.malloc(8) # double
+          ::LibUI.color_button_color(@libui, @red, @green, @blue, @alpha)
+          {
+            r: @red[0, 8].unpack1('d') * 255.0,
+            g: @green[0, 8].unpack1('d') * 255.0,
+            b: @blue[0, 8].unpack1('d') * 255.0,
+            a: @alpha[0, 8].unpack1('d')
+          }
+        else
+          current_color = color
+          value[:r] ||= current_color[:r]
+          value[:g] ||= current_color[:g]
+          value[:b] ||= current_color[:b]
+          value[:a] ||= current_color[:a]
+          ::LibUI.color_button_set_color(@libui, value[:r].to_f / 255.0, value[:g].to_f / 255.0, value[:b].to_f / 255.0, value[:a].to_f)
+        end
       end
       
-      def red
-        color[0]
+      def red(value = nil)
+        if value.nil?
+          color[:r]
+        else
+          self.color = {r: value}
+        end
       end
+      alias red= red
+      alias set_red red
+      alias r red
+      alias r= red
+      alias set_r red
       
-      def green
-        color[1]
+      def green(value = nil)
+        if value.nil?
+          color[:g]
+        else
+          self.color = {g: value}
+        end
       end
+      alias green= green
+      alias set_green green
+      alias g green
+      alias g= green
+      alias set_g green
       
-      def blue
-        color[2]
+      def blue(value = nil)
+        if value.nil?
+          color[:b]
+        else
+          self.color = {b: value}
+        end
       end
+      alias blue= blue
+      alias set_blue blue
+      alias b blue
+      alias b= blue
+      alias set_b blue
       
-      def alpha
-        color[3]
+      def alpha(value = nil)
+        if value.nil?
+          color[:a]
+        else
+          self.color = {a: value}
+        end
       end
+      alias alpha= alpha
+      alias set_alpha alpha
+      alias a alpha
+      alias a= alpha
+      alias set_a alpha
       
       def destroy
         Fiddle.free @red unless @red.nil?
