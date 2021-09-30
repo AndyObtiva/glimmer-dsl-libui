@@ -31,6 +31,14 @@ module Glimmer
         'draw_matrix'
       end
       
+      def clone
+        MatrixProxy.new('matrix', nil, [@libui.M11, @libui.M12, @libui.M21, @libui.M22, @libui.M31, @libui.M32])
+      end
+      
+      def dup
+        clone
+      end
+      
       private
       
       def build_control
@@ -39,11 +47,11 @@ module Glimmer
           ::LibUI.draw_matrix_set_identity(@libui)
         else
           @libui.M11 = @args[0].to_f
-          @libui.M12 = @args[0].to_f
-          @libui.M21 = @args[0].to_f
-          @libui.M22 = @args[0].to_f
-          @libui.M31 = @args[0].to_f
-          @libui.M32 = @args[0].to_f
+          @libui.M12 = @args[1].to_f
+          @libui.M21 = @args[2].to_f
+          @libui.M22 = @args[3].to_f
+          @libui.M31 = @args[4].to_f
+          @libui.M32 = @args[5].to_f
         end
       end
     end

@@ -42,7 +42,6 @@ module Glimmer
     
       def post_initialize_child(child)
         super
-        # TODO handle matrix transform child differently (or maybe via Transformable)
         children << child
       end
       
@@ -66,7 +65,11 @@ module Glimmer
         ::LibUI.draw_fill(area_draw_params[:context], @libui, fill_draw_brush.to_ptr) unless fill.empty?
         ::LibUI.draw_stroke(area_draw_params[:context], @libui, stroke_draw_brush, draw_stroke_params) unless stroke.empty?
         ::LibUI.draw_free_path(@libui)
-        # TODO invert matrix
+        unless @transform.nil?
+          inverse_transform = @transform.clone
+          inverse_transform.invert
+          ::LibUI.draw_transform(area_draw_params[:context], inverse_transform.libui)
+        end
       end
       
       def draw_fill_mode
