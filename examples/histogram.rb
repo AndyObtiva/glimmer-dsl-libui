@@ -10,7 +10,7 @@ X_OFF_RIGHT  = 20
 Y_OFF_BOTTOM = 20
 POINT_RADIUS = 5
 
-blue         = 0x1E90FF
+COLOR_BLUE   = 0x1E90FF
 
 def graph_size(area_width, area_height)
   graph_width = area_width - X_OFF_LEFT - X_OFF_RIGHT
@@ -32,7 +32,7 @@ def point_locations(datapoints, width, height)
   data
 end
 
-def construct_graph(area_draw_params, datapoints, width, height, should_extend, &block)
+def graph_path(area_draw_params, datapoints, width, height, should_extend, &block)
   locations = point_locations(datapoints, width, height)
   path(area_draw_params) {
     first_location = locations[0] # x and y
@@ -72,7 +72,7 @@ window('histogram example', 640, 480) {
       
       @color_button = color_button {
         stretchy false
-        color blue
+        color COLOR_BLUE
         
         on_changed do
           @area.queue_redraw_all
@@ -105,13 +105,13 @@ window('histogram example', 640, 480) {
 #         }
       
         # now create the fill for the graph below the graph line
-        path = construct_graph(area_draw_params, @datapoints, graph_width, graph_height, true) {
+        graph_path(area_draw_params, @datapoints, graph_width, graph_height, true) {
 #           transform @matrix
           fill @color_button.color.merge(a: 0.5)
         }
         
         # now draw the histogram line
-        path = construct_graph(area_draw_params, @datapoints, graph_width, graph_height, false) {
+        graph_path(area_draw_params, @datapoints, graph_width, graph_height, false) {
 #           transform @matrix
           stroke @color_button.color.merge(thickness: 2, miter_limit: 10)
         }
