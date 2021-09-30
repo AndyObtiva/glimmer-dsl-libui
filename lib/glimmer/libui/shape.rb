@@ -19,6 +19,8 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+require 'glimmer/libui/parent'
+
 module Glimmer
   module LibUI
     # Represents LibUI lightweight shape objects nested under path (e.g. line, rectangle, arc, bezier)
@@ -61,6 +63,8 @@ module Glimmer
         end
       end
       
+      include Parent
+      
       attr_reader :parent, :args, :keyword, :block
       
       def initialize(keyword, parent, args, &block)
@@ -77,18 +81,13 @@ module Glimmer
         @parent&.post_initialize_child(self)
       end
       
-      # Subclasses may override to perform post initialization work on an added child (normally must call super)
-      def post_initialize_child(child)
-        children << child
-      end
-      
-      def children
-        @children ||= []
-      end
-      
       # Subclasses must override to perform draw work and call super afterwards to ensure calling destroy when semi-declarative in an on_draw method
       def draw(area_draw_params)
         destroy if area_proxy.nil?
+      end
+      
+      def redraw
+        area_proxy&.queue_redraw_all
       end
       
       def destroy

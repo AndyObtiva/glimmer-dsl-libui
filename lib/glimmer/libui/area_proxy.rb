@@ -21,6 +21,8 @@
 
 require 'glimmer/libui/control_proxy'
 require 'glimmer/fiddle_consumer'
+require 'glimmer/libui/parent'
+require 'glimmer/libui/transformable'
 
 module Glimmer
   module LibUI
@@ -34,21 +36,14 @@ module Glimmer
       end
       
       include Glimmer::FiddleConsumer
+      include Parent
+      prepend Transformable
       
       attr_reader :area_handler
-      
-      def post_initialize_child(child)
-        super
-        children << child
-      end
       
       def post_add_content
         super
         install_listeners
-      end
-      
-      def children
-        @children ||= []
       end
       
       def on_draw(&block)
@@ -74,6 +69,15 @@ module Glimmer
         end
       end
       
+      def draw(area_draw_params)
+        children.dup.each {|child| child.draw(area_draw_params)}
+        on_draw.each {|listener| listener.call(area_draw_params)}
+      end
+      
+      def redraw
+        queue_redraw_all
+      end
+      
       private
       
       def build_control
@@ -86,8 +90,7 @@ module Glimmer
           area_draw_params = ::LibUI::FFI::AreaDrawParams.new(area_draw_params)
           area_draw_params = area_draw_params_hash(area_draw_params)
           AreaProxy.current_area_draw_params = area_draw_params
-          children.dup.each {|child| child.draw(area_draw_params)}
-          on_draw.each {|listener| listener.call(area_draw_params) }
+          draw(area_draw_params)
           AreaProxy.current_area_draw_params = nil
         end
         @area_handler.MouseEvent   = fiddle_closure_block_caller(0, [0]) {}

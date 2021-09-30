@@ -2,11 +2,12 @@
 
 ## Next
 
-- Document what `area_draw_params` contains under Area API
-- Document declarative approach not caring about location of fill/stroke/transform
-
-- Support `area` `transform` property for building `matrix` objects
-- Support shape `transform` property for building `matrix` objects (e.g. `figure` or `rectangle`)
+- Provide an example for `matrix` use in README
+- Ensure `matrix` `rotate` method accepts degrees (not radians)
+- Support `matrix` `multiply` method
+- Support `matrix` `invertible` property
+- Support `matrix` `transform_point` method
+- Support `matrix` `transform_size` method
 
 ## Soon
 

@@ -21,6 +21,7 @@
 
 require 'glimmer/libui/control_proxy'
 require 'glimmer/libui/area_proxy'
+require 'glimmer/libui/parent'
 require 'glimmer/libui/transformable'
 
 module Glimmer
@@ -29,7 +30,8 @@ module Glimmer
     #
     # Follows the Proxy Design Pattern
     class PathProxy < ControlProxy
-      include Transformable
+      include Parent
+      prepend Transformable
     
       # TODO support mode without parent proxy
       def initialize(keyword, parent, args, &block)
@@ -41,15 +43,6 @@ module Glimmer
         post_add_content if @block.nil?
       end
     
-      def post_initialize_child(child)
-        super
-        if child.is_a?(MatrixProxy)
-          self.transform = child
-        else
-          children << child
-        end
-      end
-      
       def post_add_content
         super
         if @parent_proxy.nil? && AreaProxy.current_area_draw_params
@@ -58,23 +51,13 @@ module Glimmer
         end
       end
       
-      def children
-        @children ||= []
-      end
-      
       def draw(area_draw_params)
         build_control
         children.dup.each {|child| child.draw(area_draw_params)}
         ::LibUI.draw_path_end(@libui)
-        ::LibUI.draw_transform(area_draw_params[:context], @transform.libui) unless @transform.nil?
         ::LibUI.draw_fill(area_draw_params[:context], @libui, fill_draw_brush.to_ptr) unless fill.empty?
         ::LibUI.draw_stroke(area_draw_params[:context], @libui, stroke_draw_brush, draw_stroke_params) unless stroke.empty?
         ::LibUI.draw_free_path(@libui)
-        unless @transform.nil?
-          inverse_transform = @transform.clone
-          inverse_transform.invert
-          ::LibUI.draw_transform(area_draw_params[:context], inverse_transform.libui)
-        end
       end
       
       def draw_fill_mode

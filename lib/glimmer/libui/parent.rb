@@ -19,49 +19,18 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'glimmer/libui/control_proxy'
-
 module Glimmer
   module LibUI
-    # Proxy for LibUI matrix objects
-    #
-    # Follows the Proxy Design Pattern
-    class MatrixProxy < ControlProxy
-      def libui_api_keyword
-        'draw_matrix'
+    # Parent controls and shapes who have children and add child post_initialize_child
+    module Parent
+      # Subclasses can override and must call super (passing add_child: false to cancel adding child to children)
+      def post_initialize_child(child, add_child: true)
+        children << child if add_child
       end
       
-      def clone
-        MatrixProxy.new('matrix', nil, [@libui.M11, @libui.M12, @libui.M21, @libui.M22, @libui.M31, @libui.M32])
-      end
-      
-      def dup
-        clone
-      end
-      
-      def identity
-        set_identity
-      end
-      
-      # TODO provide an identity alias to set_identity
-      # TODO provide attribute accessor methods for m11, m12, etc...
-      
-      private
-      
-      def build_control
-        @libui = ::LibUI::FFI::DrawMatrix.malloc
-        if @args.empty?
-          set_identity
-        else
-          @libui.M11 = @args[0].to_f
-          @libui.M12 = @args[1].to_f
-          @libui.M21 = @args[2].to_f
-          @libui.M22 = @args[3].to_f
-          @libui.M31 = @args[4].to_f
-          @libui.M32 = @args[5].to_f
-        end
+      def children
+        @children ||= []
       end
     end
-    TransformProxy = MatrixProxy # alias
   end
 end

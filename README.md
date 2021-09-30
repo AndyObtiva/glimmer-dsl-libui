@@ -530,7 +530,7 @@ Learn more by checking out [examples](#examples).
 
 The `area` control is a canvas-like control for drawing paths that can be used in one of two ways:
 - Declaratively via stable paths: useful for stable paths that will not change later on. Simply nest `path` and figures like `rectangle` and all drawing logic is generated automatically. Path proxy objects are preserved across redraws assuming there would be few stable paths (mostly for decorative reasons).
-- Semi-declaratively via on_draw listener dynamic paths: useful for more dynamic paths that will definitely change. Open an `on_draw` listener block and nest `path` and figures like `rectangle` and all drawing logic is generated automatically. Path proxy objects are destroyed (thrown-away) at the end of drawing, thus having less memory overhead for drawing thousands of dynamic paths.
+- Semi-declaratively via on_draw listener dynamic paths: useful for more dynamic paths that will definitely change. Open an `on_draw` listener block that receives a `area_draw_params` argument and nest `path` and figures like `rectangle` and all drawing logic is generated automatically. Path proxy objects are destroyed (thrown-away) at the end of drawing, thus having less memory overhead for drawing thousands of dynamic paths.
 
 Here is an example of a declarative `area` with a stable path (you may copy/paste in [`girb`](#girb-glimmer-irb)):
 
@@ -556,7 +556,7 @@ window('Basic Area', 400, 400) {
 
 ![glimmer-dsl-libui-mac-basic-area.png](images/glimmer-dsl-libui-mac-basic-area.png)
 
-Here is the same example using a semi-declarative `area` with `on_draw` listener and a dynamic path (you may copy/paste in [`girb`](#girb-glimmer-irb)):
+Here is the same example using a semi-declarative `area` with `on_draw` listener that receives a `area_draw_params` argument and a dynamic path (you may copy/paste in [`girb`](#girb-glimmer-irb)):
 
 ```ruby
 require 'glimmer-dsl-libui'
@@ -592,9 +592,31 @@ Available nested `path` shapes:
 
 Check [examples/area_gallery.rb](#area-gallery) for an overiew of all `path` shapes.
 
-In general, it is recommended to use declarative stable paths whenever feasible since they require less code and simpler maintenance. But, in more advanced cases, semi-declarative dynamic paths could be used instead, especially if there are thousands of paths.
+The `area_draw_params` argument for `on_draw` block is a hash consisting of the following keys:
+- `:context`: the drawing context object
+- `:area_width`: area width
+- `:area_height`: area height
+- `:clip_x`: clip region top-left x coordinate
+- `:clip_y`: clip region top-left y coordinate
+- `:clip_width`: clip region width
+- `:clip_height`: clip region height
 
-To redraw an `area`, you may call `#queue_redraw_all` method.
+In general, it is recommended to use declarative stable paths whenever feasible since they require less code and simpler maintenance. But, in more advanced cases, semi-declarative dynamic paths could be used instead, especially if there are thousands of dynamic paths that need maximum performance and low memory footprint.
+
+To redraw an `area`, you may call the `#queue_redraw_all` method, or simply `#redraw`.
+
+A transform `matrix` can be set on a path by building a `matrix(m11 = nil, m12 = nil, m21 = nil, m22 = nil, m31 = nil, m32 = nil) {operations}` proxy object and then setting via `transform` property, or alternatively by building and setting the matrix in one call to `transform(m11 = nil, m12 = nil, m21 = nil, m22 = nil, m31 = nil, m32 = nil) {operations}` passing it the matrix arguments and/or content operations.
+
+When instantiating a `matrix` object, it always starts with identity matrix.
+
+Here are the following operations that can be performed in a `matrix` body:
+- `identity` [alias: `set_identity`]: resets matrix to identity matrix
+- `translate(x as Numeric, y as Numeric)`
+- `scale(x_center as Numeric, y_center as Numeric, x as Numeric, y as Numeric)`
+- `skew(x as Numeric, y as Numeric, x_amount as Numeric, y_amount as Numeric)`
+- `rotate(x as Numeric, y as Numeric, degrees as Numeric)`
+
+Note that `area`, `path`, and nested shapes are all truly declarative, meaning they do not care about the ordering of calls to `fill`, `stroke`, and `transform`. Also, any transform that is applied is reversed at the end of the block, so you never have to worry about the ordering of `transform` calls. You simply set a transform anywhere on a `path` and it is guaranteed to be called before all its content is drawn, and then undone afterwards to avoid affecting other paths.
 
 ### Smart Defaults and Conventions
 
