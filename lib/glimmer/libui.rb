@@ -19,27 +19,24 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-$LOAD_PATH.unshift(File.expand_path('..', __FILE__))
-
-# External requires
-require 'glimmer'
-# require 'logging'
-# require 'puts_debuggerer' if ENV['pd'].to_s.downcase == 'true'
-# require 'super_module'
-require 'os'
-require 'array_include_methods'
-require 'libui'
-
-# Internal requires
-# require 'ext/glimmer/config'
-# require 'ext/glimmer'
-require 'glimmer/dsl/libui/dsl'
-require 'glimmer/libui'
-Glimmer::Config.loop_max_count = -1
-Glimmer::Config.excluded_keyword_checkers << lambda do |method_symbol, *args|
-  method = method_symbol.to_s
-  result = false
-  result ||= method == 'load_iseq'
+module Glimmer
+  module LibUI
+    class << self
+      def hex_to_rgb(value)
+        if value.is_a?(String)
+          value = "0x#{value}" if !value.start_with?('0x')
+          value = value.to_i(16)
+        end
+        if value.is_a?(Integer)
+          hex_value = value
+          value = {
+            r: ((hex_value >> 16) & 0xFF),
+            g: ((hex_value >> 8) & 0xFF),
+            b: (hex_value & 0xFF),
+          }
+        end
+        value
+      end
+    end
+  end
 end
-
-::LibUI.init

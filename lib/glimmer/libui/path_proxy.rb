@@ -162,6 +162,7 @@ module Glimmer
         else
           draw_brush.Type = 0
         end
+        draw_brush_args = draw_brush_args.merge(Glimmer::LibUI.hex_to_rgb(draw_brush_args[:color])) if draw_brush_args[:color]
         draw_brush.R = (draw_brush_args[:r] || draw_brush_args[:red]).to_f / 255.0
         draw_brush.G = (draw_brush_args[:g] || draw_brush_args[:green]).to_f / 255.0
         draw_brush.B = (draw_brush_args[:b] || draw_brush_args[:blue]).to_f / 255.0

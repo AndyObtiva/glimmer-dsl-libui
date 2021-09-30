@@ -43,11 +43,12 @@ module Glimmer
           }
         else
           current_color = color
+          value = Glimmer::LibUI.hex_to_rgb(value)
           value[:r] ||= current_color[:r]
           value[:g] ||= current_color[:g]
           value[:b] ||= current_color[:b]
           value[:a] ||= current_color[:a]
-          ::LibUI.color_button_set_color(@libui, value[:r].to_f / 255.0, value[:g].to_f / 255.0, value[:b].to_f / 255.0, value[:a].to_f)
+          ::LibUI.color_button_set_color(@libui, value[:r].to_f / 255.0, value[:g].to_f / 255.0, value[:b].to_f / 255.0, value[:a])
         end
       end
       

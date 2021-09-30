@@ -18,8 +18,6 @@ def graph_size(area_width, area_height)
   [graph_width, graph_height]
 end
 
-# matrix = UI::FFI::DrawMatrix.malloc
-
 def point_locations(datapoints, width, height)
   xincr = width / 9.0 # 10 - 1 to make the last point be at the end
   yincr = height / 100.0
@@ -54,15 +52,6 @@ def construct_graph(area_draw_params, datapoints, width, height, should_extend, 
   }
 end
 
-def hex_to_rgb(color)
-  {
-    r: ((color >> 16) & 0xFF),
-    g: ((color >> 8) & 0xFF),
-    b: (color & 0xFF),
-    a: 1.0
-  }
-end
-
 window('histogram example', 640, 480) {
   margined true
   
@@ -83,7 +72,7 @@ window('histogram example', 640, 480) {
       
       @color_button = color_button {
         stretchy false
-        color hex_to_rgb(blue)
+        color blue
         
         on_changed do
           @area.queue_redraw_all
@@ -96,7 +85,7 @@ window('histogram example', 640, 480) {
         path(area_draw_params) {
           rectangle(0, 0, area_draw_params[:area_width], area_draw_params[:area_height])
           
-          fill hex_to_rgb(0xFFFFFF)
+          fill color: 0xFFFFFF
         }
         
         graph_width, graph_height = *graph_size(area_draw_params[:area_width], area_draw_params[:area_height])
@@ -107,21 +96,23 @@ window('histogram example', 640, 480) {
             line(X_OFF_LEFT + graph_width, Y_OFF_TOP + graph_height)
           }
           
-          stroke hex_to_rgb(0x000000).merge(thickness: 2, miter_limit: 10)
+          stroke color: 0x000000, thickness: 2, miter_limit: 10
         }
       
         # now transform the coordinate space so (0, 0) is the top-left corner of the graph
-#         UI.draw_matrix_set_identity(matrix)
-#         UI.draw_matrix_translate(matrix, X_OFF_LEFT, Y_OFF_TOP)
-#         UI.draw_transform(area_draw_params.Context, matrix)
+#         @matrix = matrix {
+#           translate(X_OFF_LEFT, Y_OFF_TOP)
+#         }
       
         # now create the fill for the graph below the graph line
         path = construct_graph(area_draw_params, @datapoints, graph_width, graph_height, true) {
+#           transform @matrix
           fill @color_button.color.merge(a: 0.5)
         }
         
         # now draw the histogram line
         path = construct_graph(area_draw_params, @datapoints, graph_width, graph_height, false) {
+#           transform @matrix
           stroke @color_button.color.merge(thickness: 2, miter_limit: 10)
         }
       end
