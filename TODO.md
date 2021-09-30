@@ -2,12 +2,11 @@
 
 ## Next
 
-- Provide an example for `matrix` use in README
-- Ensure `matrix` `rotate` method accepts degrees (not radians)
 - Support `matrix` `multiply` method
 - Support `matrix` `invertible` property
 - Support `matrix` `transform_point` method
 - Support `matrix` `transform_size` method
+- Provide an example for `matrix` use in README
 
 ## Soon
 

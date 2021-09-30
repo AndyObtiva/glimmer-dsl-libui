@@ -612,9 +612,9 @@ When instantiating a `matrix` object, it always starts with identity matrix.
 Here are the following operations that can be performed in a `matrix` body:
 - `identity` [alias: `set_identity`]: resets matrix to identity matrix
 - `translate(x as Numeric, y as Numeric)`
-- `scale(x_center as Numeric, y_center as Numeric, x as Numeric, y as Numeric)`
-- `skew(x as Numeric, y as Numeric, x_amount as Numeric, y_amount as Numeric)`
-- `rotate(x as Numeric, y as Numeric, degrees as Numeric)`
+- `scale(x_center = 0 as Numeric, y_center = 0 as Numeric, x as Numeric, y as Numeric)`
+- `skew(x = 0 as Numeric, y = 0 as Numeric, x_amount as Numeric, y_amount as Numeric)`
+- `rotate(x = 0 as Numeric, y = 0 as Numeric, degrees as Numeric)`
 
 Note that `area`, `path`, and nested shapes are all truly declarative, meaning they do not care about the ordering of calls to `fill`, `stroke`, and `transform`. Also, any transform that is applied is reversed at the end of the block, so you never have to worry about the ordering of `transform` calls. You simply set a transform anywhere on a `path` and it is guaranteed to be called before all its content is drawn, and then undone afterwards to avoid affecting other paths.
 

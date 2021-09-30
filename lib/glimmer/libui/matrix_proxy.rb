@@ -43,8 +43,19 @@ module Glimmer
         set_identity
       end
       
-      # TODO provide an identity alias to set_identity
       # TODO provide attribute accessor methods for m11, m12, etc...
+      
+      def rotate(x = 0, y = 0, degrees)
+        super(x, y, (Math::PI*2.0/360.0)*degrees)
+      end
+      
+      def scale(x_center = 0, y_center = 0, x, y)
+        super
+      end
+      
+      def skew(x = 0, y = 0, x_amount, y_amount)
+        super
+      end
       
       private
       
