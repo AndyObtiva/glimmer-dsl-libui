@@ -55,14 +55,6 @@ module Glimmer
           control_proxies.find {|c| c.is_a?(Glimmer::LibUI::WindowProxy)}
         end
         
-        def integer_to_boolean(int, allow_nil: true)
-          int.nil? ? (allow_nil ? nil : false) : int == 1
-        end
-        
-        def boolean_to_integer(bool, allow_nil: true)
-          bool.nil? ? (allow_nil ? nil : 0) : (bool ? 1 : 0)
-        end
-        
         def menu_proxies
           control_proxies.select {|c| c.keyword == 'menu' }
         end
@@ -173,7 +165,7 @@ module Glimmer
           handle_string_property(property, handle_boolean_property(property, value))
         elsif ::LibUI.respond_to?("#{libui_api_keyword}_set_#{method_name.to_s.sub(/=$/, '')}") && !args.empty?
           property = method_name.to_s.sub(/=$/, '')
-          args[0] = ControlProxy.boolean_to_integer(args.first) if BOOLEAN_PROPERTIES.include?(property) && (args.first.is_a?(TrueClass) || args.first.is_a?(FalseClass))
+          args[0] = Glimmer::LibUI.boolean_to_integer(args.first) if BOOLEAN_PROPERTIES.include?(property) && (args.first.is_a?(TrueClass) || args.first.is_a?(FalseClass))
           ::LibUI.send("#{libui_api_keyword}_set_#{property}", @libui, *args)
         elsif ::LibUI.respond_to?("#{libui_api_keyword}_#{method_name}") && !args.empty?
           ::LibUI.send("#{libui_api_keyword}_#{method_name}", @libui, *args)
@@ -183,7 +175,7 @@ module Glimmer
           handle_string_property(property, handle_boolean_property(property, value))
         elsif ::LibUI.respond_to?("control_set_#{method_name.to_s.sub(/=$/, '')}")
           property = method_name.to_s.sub(/=$/, '')
-          args[0] = ControlProxy.boolean_to_integer(args.first) if BOOLEAN_PROPERTIES.include?(property) && (args.first.is_a?(TrueClass) || args.first.is_a?(FalseClass))
+          args[0] = Glimmer::LibUI.boolean_to_integer(args.first) if BOOLEAN_PROPERTIES.include?(property) && (args.first.is_a?(TrueClass) || args.first.is_a?(FalseClass))
           ::LibUI.send("control_set_#{method_name.to_s.sub(/=$/, '')}", @libui, *args)
         elsif ::LibUI.respond_to?("control_#{method_name}") && !args.empty?
           ::LibUI.send("control_#{method_name}", @libui, *args)
@@ -201,7 +193,7 @@ module Glimmer
           value = @append_property_hash[property]
           handle_string_property(property, handle_boolean_property(property, value))
         else
-          value = ControlProxy.boolean_to_integer(value) if BOOLEAN_PROPERTIES.include?(property) && (value.is_a?(TrueClass) || value.is_a?(FalseClass))
+          value = Glimmer::LibUI.boolean_to_integer(value) if BOOLEAN_PROPERTIES.include?(property) && (value.is_a?(TrueClass) || value.is_a?(FalseClass))
           @append_property_hash[property] = value
         end
       end
@@ -274,7 +266,7 @@ module Glimmer
       end
       
       def handle_boolean_property(property, value)
-        BOOLEAN_PROPERTIES.include?(property) ? ControlProxy.integer_to_boolean(value) : value
+        BOOLEAN_PROPERTIES.include?(property) ? Glimmer::LibUI.integer_to_boolean(value) : value
       end
       
       def handle_string_property(property, value)

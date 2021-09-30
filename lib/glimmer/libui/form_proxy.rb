@@ -29,7 +29,7 @@ module Glimmer
       def post_initialize_child(child)
         child.label = '' if child.label.nil?
         child.stretchy = true if child.stretchy.nil?
-        ::LibUI.form_append(@libui, child.label, child.libui, ControlProxy.boolean_to_integer(child.stretchy))
+        ::LibUI.form_append(@libui, child.label, child.libui, Glimmer::LibUI.boolean_to_integer(child.stretchy))
         children << child
       end
       

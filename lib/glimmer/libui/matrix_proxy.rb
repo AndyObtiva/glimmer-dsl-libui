@@ -119,6 +119,11 @@ module Glimmer
         super(matrix.respond_to?(:libui) ? matrix.libui : matrix)
       end
       
+      def invertible
+        Glimmer::LibUI.integer_to_boolean(super, allow_nil: false)
+      end
+      alias invertible? invertible
+      
       private
       
       def build_control

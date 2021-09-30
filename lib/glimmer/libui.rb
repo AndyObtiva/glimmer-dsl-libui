@@ -22,6 +22,14 @@
 module Glimmer
   module LibUI
     class << self
+      def integer_to_boolean(int, allow_nil: true)
+        int.nil? ? (allow_nil ? nil : false) : int == 1
+      end
+      
+      def boolean_to_integer(bool, allow_nil: true)
+        bool.nil? ? (allow_nil ? nil : 0) : (bool ? 1 : 0)
+      end
+    
       def hex_to_rgb(value)
         if value.is_a?(String)
           value = "0x#{value}" if !value.start_with?('0x')

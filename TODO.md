@@ -2,7 +2,6 @@
 
 ## Next
 
-- Support `matrix` `invertible` property
 - Support `matrix` `transform_point` method
 - Support `matrix` `transform_size` method
 - Provide an example for `matrix` use in README

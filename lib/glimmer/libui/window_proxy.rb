@@ -104,7 +104,7 @@ module Glimmer
         construction_args[1] = DEFAULT_WIDTH if construction_args.size == 1
         construction_args[2] = DEFAULT_HEIGHT if construction_args.size == 2
         construction_args[3] = DEFAULT_HAS_MENUBAR if construction_args.size == 3
-        construction_args[3] = ControlProxy.boolean_to_integer(construction_args[3]) if construction_args.size == 4 && (construction_args[3].is_a?(TrueClass) || construction_args[3].is_a?(FalseClass))
+        construction_args[3] = Glimmer::LibUI.boolean_to_integer(construction_args[3]) if construction_args.size == 4 && (construction_args[3].is_a?(TrueClass) || construction_args[3].is_a?(FalseClass))
         @libui = ControlProxy.new_control(@keyword, construction_args)
         @libui.tap do
           handle_listener('on_closing') do

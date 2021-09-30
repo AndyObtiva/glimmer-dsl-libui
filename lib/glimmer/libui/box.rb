@@ -28,7 +28,7 @@ module Glimmer
       
       def post_initialize_child(child)
         child.stretchy = true if child.stretchy.nil?
-        ::LibUI.box_append(@libui, child.libui, ControlProxy.boolean_to_integer(child.stretchy))
+        ::LibUI.box_append(@libui, child.libui, Glimmer::LibUI.boolean_to_integer(child.stretchy))
         children << child
       end
       

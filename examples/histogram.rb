@@ -49,9 +49,11 @@ def graph_path(datapoints, width, height, should_extend, &block)
     }
     
     # now transform the coordinate space so (0, 0) is the top-left corner of the graph
-    transform {
+    t = transform {
       translate X_OFF_LEFT, Y_OFF_TOP
     }
+    pd t.invertible
+    pd t.invertible?
     
     block.call
   }
