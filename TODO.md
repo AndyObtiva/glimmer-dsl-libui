@@ -2,9 +2,9 @@
 
 ## Next
 
-- Support `matrix` `transform_point` method
-- Support `matrix` `transform_size` method
-- Provide an example for `matrix` use in README
+- Nest control proxies under Glimmer::LibUI::ControlProxy namespace
+- Nest shapes under Glimmer::LibUI::Shape namespace
+- Support X11 color names
 
 ## Soon
 
@@ -58,6 +58,8 @@
 - Support configuring `RowBackgroundColorModelColumn` in TableParams
 - Support automatic table row change when performing a direct row/column update in `cell_rows` (e.g. `data[3][0] = 'new value'`) as opposed to a general row update (e.g. `data[3] = ['new value', 'other new value']` <- already supported)
 - Fold menus inside a `menu_bar` control
+- Support `matrix` `transform_point` method
+- Support `matrix` `transform_size` method
 
 # Refactoring
 

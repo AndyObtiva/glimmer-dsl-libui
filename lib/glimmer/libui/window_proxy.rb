@@ -20,6 +20,7 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 require 'glimmer/libui/control_proxy'
+require 'glimmer/libui/area_proxy'
 
 module Glimmer
   module LibUI
@@ -33,6 +34,12 @@ module Glimmer
       DEFAULT_HAS_MENUBAR = 1
       
       def post_initialize_child(child)
+        if child.is_a?(AreaProxy)
+          vertical_box_parent = ControlProxy.create('vertical_box', self, [])
+          child.instance_variable_set(:@parent_proxy, vertical_box_parent)
+          vertical_box_parent.post_initialize_child(child)
+          child = vertical_box_parent
+        end
         ::LibUI.window_set_child(@libui, child.libui)
       end
       

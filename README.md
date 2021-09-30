@@ -184,6 +184,8 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
     - [Basic Area](#basic-area)
     - [Dynamic Area](#dynamic-area)
     - [Area Gallery](#area-gallery)
+    - [Histogram](#histogram)
+    - [Basic Transform](#basic-transform)
   - [Contributing to glimmer-dsl-libui](#contributing-to-glimmer-dsl-libui)
   - [Help](#help)
     - [Issues](#issues)
@@ -372,6 +374,7 @@ Control(Args) | Properties | Listeners
 `image_text_column(name as String)` | None | None
 `label(text as String)` | `text` (`String`) | None
 `line(x as Numeric, y as Numeric)` | `x` (`Numeric`), `y` (`Numeric`) | None
+`matrix(m11 = nil as Numeric, m12 = nil as Numeric, m21 = nil as Numeric, m22 = nil as Numeric, m31 = nil as Numeric, m32 = nil as Numeric)` | `m11` (`Numeric`), `m12` (`Numeric`), `m21` (`Numeric`), `m22` (`Numeric`), `m31` (`Numeric`), `m32` (`Numeric`) | None
 `menu(text as String)` | None | None
 `menu_item(text as String)` | `checked` (Boolean) | `on_clicked`
 `multiline_entry` | `read_only` (Boolean), `text` (`String`) | `on_changed`
@@ -616,7 +619,59 @@ Here are the following operations that can be performed in a `matrix` body:
 - `skew(x = 0 as Numeric, y = 0 as Numeric, x_amount as Numeric, y_amount as Numeric)`
 - `rotate(x = 0 as Numeric, y = 0 as Numeric, degrees as Numeric)`
 
-Note that `area`, `path`, and nested shapes are all truly declarative, meaning they do not care about the ordering of calls to `fill`, `stroke`, and `transform`. Also, any transform that is applied is reversed at the end of the block, so you never have to worry about the ordering of `transform` calls. You simply set a transform anywhere on a `path` and it is guaranteed to be called before all its content is drawn, and then undone afterwards to avoid affecting other paths.
+Example of using transform matrix (you may copy/paste in [`girb`](#girb-glimmer-irb)):
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+window('Basic Transform', 350, 350) {
+  area {
+    path {
+      square(0, 0, 350)
+      
+      fill r: 255, g: 255, b: 0
+    }
+    40.times do |n|
+      path {
+        square(0, 0, 100)
+        
+        fill r: [255 - n*5, 0].max, g: [n*5, 255].min, b: 0, a: 0.5
+        stroke color: 0, thickness: 2
+        transform {
+          skew 0.15, 0.15
+          translate 50, 50
+          rotate 100, 100, -9 * n
+          scale 1.1, 1.1
+        }
+      }
+    end
+  }
+}.show
+```
+
+Keep in mind that this part could be written differently when there is a need to reuse the matrix:
+
+```ruby
+transform {
+  translate 100, 100
+  rotate 100, 100, -9 * n
+}
+```
+
+Alternatively:
+
+```ruby
+m1 = matrix {
+  translate 100, 100
+  rotate 100, 100, -9 * n
+}
+transform m1
+# and then reuse m1 elsewhere too
+```
+
+Note that `area`, `path`, and nested shapes are all truly declarative, meaning they do not care about the ordering of calls to `fill`, `stroke`, and `transform`. Furthermore, any transform that is applied is reversed at the end of the block, so you never have to worry about the ordering of `transform` calls among different paths. You simply set a transform on the `path`s that need it and it is guaranteed to be called before all its content is drawn, and then undone afterwards to avoid affecting later paths. Matrix `transform` can be set on an entire `area` too, applying to all nested `path`s.
 
 ### Smart Defaults and Conventions
 
@@ -3600,6 +3655,404 @@ window('Area Gallery', 400, 400) {
 
         fill r: 202, g: 102, b: 204, a: 0.5
         stroke thickness: 2, r: 0, g: 0, b: 0
+      }
+    end
+  }
+}.show
+```
+
+### Histogram
+
+[examples/histogram.rb](examples/histogram.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/histogram.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/histogram'"
+```
+
+Mac
+
+![glimmer-dsl-libui-mac-histogram.png](images/glimmer-dsl-libui-mac-histogram.png)
+
+Linux
+
+![glimmer-dsl-libui-linux-histogram.png](images/glimmer-dsl-libui-linux-histogram.png)
+
+[LibUI](https://github.com/kojix2/LibUI) Original Version:
+
+```ruby
+# https://github.com/jamescook/libui-ruby/blob/master/example/histogram.rb
+
+require 'libui'
+
+UI = LibUI
+
+X_OFF_LEFT   = 20
+Y_OFF_TOP    = 20
+X_OFF_RIGHT  = 20
+Y_OFF_BOTTOM = 20
+POINT_RADIUS = 5
+
+init         = UI.init
+handler      = UI::FFI::AreaHandler.malloc
+histogram    = UI.new_area(handler)
+brush        = UI::FFI::DrawBrush.malloc
+color_button = UI.new_color_button
+blue         = 0x1E90FF
+datapoints   = []
+
+def graph_size(area_width, area_height)
+  graph_width = area_width - X_OFF_LEFT - X_OFF_RIGHT
+  graph_height = area_height - Y_OFF_TOP - Y_OFF_BOTTOM
+  [graph_width, graph_height]
+end
+
+matrix = UI::FFI::DrawMatrix.malloc
+
+def point_locations(datapoints, width, height)
+  xincr = width / 9.0 # 10 - 1 to make the last point be at the end
+  yincr = height / 100.0
+
+  data = []
+  datapoints.each_with_index do |dp, i|
+    val = 100 - UI.spinbox_value(dp)
+    data << [xincr * i, yincr * val]
+    i += 1
+  end
+
+  data
+end
+
+def construct_graph(datapoints, width, height, should_extend)
+  locations = point_locations(datapoints, width, height)
+  path = UI.draw_new_path(0) # winding
+  first_location = locations[0] # x and y
+  UI.draw_path_new_figure(path, first_location[0], first_location[1])
+  locations.each do |loc|
+    UI.draw_path_line_to(path, loc[0], loc[1])
+  end
+
+  if should_extend
+    UI.draw_path_line_to(path, width, height)
+    UI.draw_path_line_to(path, 0, height)
+    UI.draw_path_close_figure(path)
+  end
+
+  UI.draw_path_end(path)
+
+  path
+end
+
+handler_draw_event = Fiddle::Closure::BlockCaller.new(
+  0, [1, 1, 1]
+) do |_area_handler, _area, area_draw_params|
+  area_draw_params = UI::FFI::AreaDrawParams.new(area_draw_params)
+  path = UI.draw_new_path(0) # winding
+  UI.draw_path_add_rectangle(path, 0, 0, area_draw_params.AreaWidth, area_draw_params.AreaHeight)
+  UI.draw_path_end(path)
+  set_solid_brush(brush, 0xFFFFFF, 1.0) # white
+  UI.draw_fill(area_draw_params.Context, path, brush.to_ptr)
+  UI.draw_free_path(path)
+  dsp = UI::FFI::DrawStrokeParams.malloc
+  dsp.Cap = 0 # flat
+  dsp.Join = 0 # miter
+  dsp.Thickness = 2
+  dsp.MiterLimit = 10 # DEFAULT_MITER_LIMIT
+  dashes = Fiddle::Pointer.malloc(8)
+  dsp.Dashes = dashes
+  dsp.NumDashes = 0
+  dsp.DashPhase = 0
+
+  # draw axes
+  set_solid_brush(brush, 0x000000, 1.0) # black
+  graph_width, graph_height = *graph_size(area_draw_params.AreaWidth, area_draw_params.AreaHeight)
+
+  path = UI.draw_new_path(0) # winding
+  UI.draw_path_new_figure(path, X_OFF_LEFT, Y_OFF_TOP)
+  UI.draw_path_line_to(path, X_OFF_LEFT, Y_OFF_TOP + graph_height)
+  UI.draw_path_line_to(path, X_OFF_LEFT + graph_width, Y_OFF_TOP + graph_height)
+  UI.draw_path_end(path)
+  UI.draw_stroke(area_draw_params.Context, path, brush, dsp)
+  UI.draw_free_path(path)
+
+  # now transform the coordinate space so (0, 0) is the top-left corner of the graph
+  UI.draw_matrix_set_identity(matrix)
+  UI.draw_matrix_translate(matrix, X_OFF_LEFT, Y_OFF_TOP)
+  UI.draw_transform(area_draw_params.Context, matrix)
+
+  # now get the color for the graph itself and set up the brush
+  #  uiColorButtonColor(colorButton, &graphR, &graphG, &graphB, &graphA)
+  graph_r = Fiddle::Pointer.malloc(8) # double
+  graph_g = Fiddle::Pointer.malloc(8) # double
+  graph_b = Fiddle::Pointer.malloc(8) # double
+  graph_a = Fiddle::Pointer.malloc(8) # double
+
+  UI.color_button_color(color_button, graph_r, graph_g, graph_b, graph_a)
+  brush.Type = 0 # solid
+  brush.R = graph_r[0, 8].unpack1('d')
+  brush.G = graph_g[0, 8].unpack1('d')
+  brush.B = graph_b[0, 8].unpack1('d')
+
+  # now create the fill for the graph below the graph line
+  path = construct_graph(datapoints, graph_width, graph_height, true)
+  brush.A = graph_a[0, 8].unpack1('d') / 2.0
+  UI.draw_fill(area_draw_params.Context, path, brush)
+  UI.draw_free_path(path)
+
+  # now draw the histogram line
+  path = construct_graph(datapoints, graph_width, graph_height, false)
+  brush.A = graph_a[0, 8].unpack1('d')
+  UI.draw_stroke(area_draw_params.Context, path, brush, dsp)
+  UI.draw_free_path(path)
+end
+
+handler.Draw         = handler_draw_event
+
+# Assigning to local variables
+# This is intended to protect Fiddle::Closure from garbage collection.
+# See https://github.com/kojix2/LibUI/issues/8
+handler.MouseEvent   = (c1 = Fiddle::Closure::BlockCaller.new(0, [0]) {})
+handler.MouseCrossed = (c2 = Fiddle::Closure::BlockCaller.new(0, [0]) {})
+handler.DragBroken   = (c3 = Fiddle::Closure::BlockCaller.new(0, [0]) {})
+handler.KeyEvent     = (c4 = Fiddle::Closure::BlockCaller.new(1, [0]) { 0 })
+
+UI.freeInitError(init) unless init.nil?
+
+hbox = UI.new_horizontal_box
+UI.box_set_padded(hbox, 1)
+
+vbox = UI.new_vertical_box
+UI.box_set_padded(vbox, 1)
+UI.box_append(hbox, vbox, 0)
+UI.box_append(hbox, histogram, 1)
+
+datapoints = Array.new(10) do
+  UI.new_spinbox(0, 100).tap do |datapoint|
+    UI.spinbox_set_value(datapoint, Random.new.rand(90))
+    UI.spinbox_on_changed(datapoint) do
+      UI.area_queue_redraw_all(histogram)
+    end
+    UI.box_append(vbox, datapoint, 0)
+  end
+end
+
+def set_solid_brush(brush, color, alpha)
+  brush.Type = 0 # solid
+  brush.R = ((color >> 16) & 0xFF) / 255.0
+  brush.G = ((color >> 8) & 0xFF) / 255.0
+  brush.B = (color & 0xFF) / 255.0
+  brush.A = alpha
+  brush
+end
+
+set_solid_brush(brush, blue, 1.0)
+UI.color_button_set_color(color_button, brush.R, brush.G, brush.B, brush.A)
+
+UI.color_button_on_changed(color_button) do
+  UI.area_queue_redraw_all(histogram)
+end
+
+UI.box_append(vbox, color_button, 0)
+
+MAIN_WINDOW = UI.new_window('histogram example', 640, 480, 1)
+UI.window_set_margined(MAIN_WINDOW, 1)
+UI.window_set_child(MAIN_WINDOW, hbox)
+
+should_quit = proc do |_ptr|
+  UI.control_destroy(MAIN_WINDOW)
+  UI.quit
+  0
+end
+
+UI.window_on_closing(MAIN_WINDOW, should_quit)
+UI.on_should_quit(should_quit)
+UI.control_show(MAIN_WINDOW)
+
+UI.main
+UI.quit
+```
+
+[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+# https://github.com/jamescook/libui-ruby/blob/master/example/histogram.rb
+
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+X_OFF_LEFT   = 20
+Y_OFF_TOP    = 20
+X_OFF_RIGHT  = 20
+Y_OFF_BOTTOM = 20
+POINT_RADIUS = 5
+
+COLOR_BLUE   = 0x1E90FF
+
+def graph_size(area_width, area_height)
+  graph_width = area_width - X_OFF_LEFT - X_OFF_RIGHT
+  graph_height = area_height - Y_OFF_TOP - Y_OFF_BOTTOM
+  [graph_width, graph_height]
+end
+
+def point_locations(datapoints, width, height)
+  xincr = width / 9.0 # 10 - 1 to make the last point be at the end
+  yincr = height / 100.0
+
+  data = []
+  datapoints.each_with_index do |dp, i|
+    val = 100 - dp.value
+    data << [xincr * i, yincr * val]
+    i += 1
+  end
+
+  data
+end
+
+def graph_path(datapoints, width, height, should_extend, &block)
+  locations = point_locations(datapoints, width, height)
+  path {
+    first_location = locations[0] # x and y
+    figure(first_location[0], first_location[1]) {
+      locations.each do |loc|
+        line(loc[0], loc[1])
+      end
+      if should_extend
+        line(width, height)
+        line(0, height)
+        
+        closed true
+      end
+    }
+    
+    # now transform the coordinate space so (0, 0) is the top-left corner of the graph
+    transform {
+      translate X_OFF_LEFT, Y_OFF_TOP
+    }
+    
+    block.call
+  }
+end
+
+window('histogram example', 640, 480) {
+  margined true
+  
+  horizontal_box {
+    vertical_box {
+      stretchy false
+      
+      @datapoints = 10.times.map do
+        spinbox(0, 100) { |datapoint|
+          stretchy false
+          value Random.new.rand(90)
+          
+          on_changed do
+            @area.queue_redraw_all
+          end
+        }
+      end
+      
+      @color_button = color_button {
+        stretchy false
+        color COLOR_BLUE
+        
+        on_changed do
+          @area.queue_redraw_all
+        end
+      }
+    }
+    
+    @area = area {
+      on_draw do |area_draw_params|
+        path {
+          rectangle(0, 0, area_draw_params[:area_width], area_draw_params[:area_height])
+          
+          fill color: 0xFFFFFF
+        }
+        
+        graph_width, graph_height = *graph_size(area_draw_params[:area_width], area_draw_params[:area_height])
+      
+        path {
+          figure(X_OFF_LEFT, Y_OFF_TOP) {
+            line(X_OFF_LEFT, Y_OFF_TOP + graph_height)
+            line(X_OFF_LEFT + graph_width, Y_OFF_TOP + graph_height)
+          }
+          
+          stroke color: 0x000000, thickness: 2, miter_limit: 10
+        }
+      
+        # now create the fill for the graph below the graph line
+        graph_path(@datapoints, graph_width, graph_height, true) {
+          fill @color_button.color.merge(a: 0.5)
+        }
+        
+        # now draw the histogram line
+        graph_path(@datapoints, graph_width, graph_height, false) {
+          stroke @color_button.color.merge(thickness: 2, miter_limit: 10)
+        }
+      end
+    }
+  }
+}.show
+```
+
+### Basic Transform
+
+[examples/basic_transform.rb](examples/basic_transform.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/basic_transform.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/basic_transform'"
+```
+
+Mac
+
+![glimmer-dsl-libui-mac-basic-transform.png](images/glimmer-dsl-libui-mac-basic-transform.png)
+
+Linux
+
+![glimmer-dsl-libui-linux-basic-transform.png](images/glimmer-dsl-libui-linux-basic-transform.png)
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+window('Basic Transform', 350, 350) {
+  area {
+    path {
+      square(0, 0, 350)
+      
+      fill r: 255, g: 255, b: 0
+    }
+    40.times do |n|
+      path {
+        square(0, 0, 100)
+        
+        fill r: [255 - n*5, 0].max, g: [n*5, 255].min, b: 0, a: 0.5
+        stroke color: 0, thickness: 2
+        transform {
+          skew 0.15, 0.15
+          translate 50, 50
+          rotate 100, 100, -9 * n
+          scale 1.1, 1.1
+        }
       }
     end
   }

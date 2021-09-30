@@ -13,6 +13,7 @@
 - Ensure `matrix` `rotate` method accepts degrees (not radians)
 - Support `matrix` `multiply` method that accepts a `Glimmer::LibUI::MatrixProxy` object
 - Support `matrix` `invertible?` property that returns a Boolean
+- Automatically reparent an `area` that is added directly under `window` with `vertical_box`. This fixes issue with display of `area` added directly under `window` in Linux.
 
 ## 0.1.4
 
