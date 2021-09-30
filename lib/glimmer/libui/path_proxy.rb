@@ -20,6 +20,7 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 require 'glimmer/libui/control_proxy'
+require 'glimmer/libui/transformable'
 
 module Glimmer
   module LibUI
@@ -27,7 +28,7 @@ module Glimmer
     #
     # Follows the Proxy Design Pattern
     class PathProxy < ControlProxy
-#       include Transformable
+      include Transformable
     
       # TODO support mode without parent proxy
       def initialize(keyword, parent, args, &block)
@@ -61,9 +62,11 @@ module Glimmer
         build_control
         children.dup.each {|child| child.draw(area_draw_params)}
         ::LibUI.draw_path_end(@libui)
+        ::LibUI.draw_transform(area_draw_params[:context], @transform.libui) unless @transform.nil?
         ::LibUI.draw_fill(area_draw_params[:context], @libui, fill_draw_brush.to_ptr) unless fill.empty?
         ::LibUI.draw_stroke(area_draw_params[:context], @libui, stroke_draw_brush, draw_stroke_params) unless stroke.empty?
         ::LibUI.draw_free_path(@libui)
+        # TODO invert matrix
       end
       
       def draw_fill_mode
@@ -139,6 +142,10 @@ module Glimmer
       def destroy
         @parent_proxy&.children&.delete(self)
         ControlProxy.control_proxies.delete(self)
+      end
+      
+      def redraw
+        @parent_proxy&.queue_redraw_all
       end
       
       private

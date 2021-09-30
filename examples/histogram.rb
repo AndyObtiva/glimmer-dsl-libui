@@ -100,19 +100,19 @@ window('histogram example', 640, 480) {
         }
       
         # now transform the coordinate space so (0, 0) is the top-left corner of the graph
-#         @matrix = matrix {
-#           translate(X_OFF_LEFT, Y_OFF_TOP)
-#         }
+        @matrix = matrix {
+          translate X_OFF_LEFT, Y_OFF_TOP
+        }
       
         # now create the fill for the graph below the graph line
         graph_path(area_draw_params, @datapoints, graph_width, graph_height, true) {
-#           transform @matrix
+          transform @matrix
           fill @color_button.color.merge(a: 0.5)
         }
         
         # now draw the histogram line
         graph_path(area_draw_params, @datapoints, graph_width, graph_height, false) {
-#           transform @matrix
+          transform @matrix
           stroke @color_button.color.merge(thickness: 2, miter_limit: 10)
         }
       end
