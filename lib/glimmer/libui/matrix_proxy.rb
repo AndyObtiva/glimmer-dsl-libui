@@ -39,11 +39,69 @@ module Glimmer
         clone
       end
       
+      def m11(value = nil)
+        if value.nil?
+          @libui.M11
+        else
+          @libui.M11 = value.to_f
+        end
+      end
+      alias m11= m11
+      alias set_m11 m11
+      
+      def m12(value = nil)
+        if value.nil?
+          @libui.M12
+        else
+          @libui.M12 = value.to_f
+        end
+      end
+      alias m12= m12
+      alias set_m12 m12
+      
+      def m21(value = nil)
+        if value.nil?
+          @libui.M21
+        else
+          @libui.M21 = value.to_f
+        end
+      end
+      alias m21= m21
+      alias set_m21 m21
+      
+      def m22(value = nil)
+        if value.nil?
+          @libui.M22
+        else
+          @libui.M22 = value.to_f
+        end
+      end
+      alias m22= m22
+      alias set_m22 m22
+      
+      def m31(value = nil)
+        if value.nil?
+          @libui.M31
+        else
+          @libui.M31 = value.to_f
+        end
+      end
+      alias m31= m31
+      alias set_m31 m31
+      
+      def m32(value = nil)
+        if value.nil?
+          @libui.M32
+        else
+          @libui.M32 = value.to_f
+        end
+      end
+      alias m32= m32
+      alias set_m32 m32
+      
       def identity
         set_identity
       end
-      
-      # TODO provide attribute accessor methods for m11, m12, etc...
       
       def rotate(x = 0, y = 0, degrees)
         super(x, y, (Math::PI*2.0/360.0)*degrees)

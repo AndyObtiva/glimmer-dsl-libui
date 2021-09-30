@@ -32,7 +32,7 @@ def point_locations(datapoints, width, height)
   data
 end
 
-def graph_path(area_draw_params, datapoints, width, height, should_extend, &block)
+def graph_path(datapoints, width, height, should_extend, &block)
   locations = point_locations(datapoints, width, height)
   path {
     first_location = locations[0] # x and y
@@ -105,12 +105,12 @@ window('histogram example', 640, 480) {
         }
       
         # now create the fill for the graph below the graph line
-        graph_path(area_draw_params, @datapoints, graph_width, graph_height, true) {
+        graph_path(@datapoints, graph_width, graph_height, true) {
           fill @color_button.color.merge(a: 0.5)
         }
         
         # now draw the histogram line
-        graph_path(area_draw_params, @datapoints, graph_width, graph_height, false) {
+        graph_path(@datapoints, graph_width, graph_height, false) {
           stroke @color_button.color.merge(thickness: 2, miter_limit: 10)
         }
       end
