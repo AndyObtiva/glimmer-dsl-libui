@@ -115,6 +115,10 @@ module Glimmer
         super
       end
       
+      def multiply(matrix)
+        super(matrix.respond_to?(:libui) ? matrix.libui : matrix)
+      end
+      
       private
       
       def build_control

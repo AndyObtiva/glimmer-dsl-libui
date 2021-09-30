@@ -2,7 +2,6 @@
 
 ## Next
 
-- Support `matrix` `multiply` method
 - Support `matrix` `invertible` property
 - Support `matrix` `transform_point` method
 - Support `matrix` `transform_size` method

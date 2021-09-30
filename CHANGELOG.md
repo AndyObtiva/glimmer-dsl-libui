@@ -11,6 +11,7 @@
 - Support `path` `transform` property for building `matrix` objects (either through `path { transform {operations} }` directly or through `m1 = matrix {operations}; path { transform m1 }` to reuse a matrix)
 - Support `area` `transform` property for building `matrix` objects (either through `area { transform {operations} }` directly or through `m1 = matrix {operations}; area { transform m1 }` to reuse a matrix)
 - Ensure `matrix` `rotate` method accepts degrees (not radians)
+- Support `matrix` `multiply` method that accepts a `Glimmer::LibUI::MatrixProxy` object
 
 ## 0.1.4
 
