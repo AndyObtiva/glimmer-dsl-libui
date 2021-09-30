@@ -29,7 +29,7 @@ module Glimmer
     # Follows the Proxy Design Pattern
     class WindowProxy < ControlProxy
       DEFAULT_TITLE = ''
-      DEFAULT_WIDTH = 150
+      DEFAULT_WIDTH = 190
       DEFAULT_HEIGHT = 150
       DEFAULT_HAS_MENUBAR = 1
       

@@ -65,7 +65,7 @@ window('histogram example', 640, 480) {
       stretchy false
       
       @datapoints = 10.times.map do
-        spinbox(0, 100) { |datapoint|
+        spinbox(0, 100) {
           stretchy false
           value Random.new.rand(90)
           
