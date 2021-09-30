@@ -2,7 +2,6 @@
 
 ## Next
 
-- Eliminate need for passing `area_draw_params` to `path` when declared underneath `area` `on_draw` listener
 - Document what `area_draw_params` contains under Area API
 - Document declarative approach not caring about location of fill/stroke/transform
 

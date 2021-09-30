@@ -34,7 +34,7 @@ end
 
 def graph_path(area_draw_params, datapoints, width, height, should_extend, &block)
   locations = point_locations(datapoints, width, height)
-  path(area_draw_params) {
+  path {
     first_location = locations[0] # x and y
     figure(first_location[0], first_location[1]) {
       locations.each do |loc|
@@ -87,7 +87,7 @@ window('histogram example', 640, 480) {
     
     @area = area {
       on_draw do |area_draw_params|
-        path(area_draw_params) {
+        path {
           rectangle(0, 0, area_draw_params[:area_width], area_draw_params[:area_height])
           
           fill color: 0xFFFFFF
@@ -95,7 +95,7 @@ window('histogram example', 640, 480) {
         
         graph_width, graph_height = *graph_size(area_draw_params[:area_width], area_draw_params[:area_height])
       
-        path(area_draw_params) {
+        path {
           figure(X_OFF_LEFT, Y_OFF_TOP) {
             line(X_OFF_LEFT, Y_OFF_TOP + graph_height)
             line(X_OFF_LEFT + graph_width, Y_OFF_TOP + graph_height)

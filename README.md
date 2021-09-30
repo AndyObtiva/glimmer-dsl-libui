@@ -530,7 +530,7 @@ Learn more by checking out [examples](#examples).
 
 The `area` control is a canvas-like control for drawing paths that can be used in one of two ways:
 - Declaratively via stable paths: useful for stable paths that will not change later on. Simply nest `path` and figures like `rectangle` and all drawing logic is generated automatically. Path proxy objects are preserved across redraws assuming there would be few stable paths (mostly for decorative reasons).
-- Semi-declaratively via on_draw listener dynamic paths: useful for more dynamic paths that will definitely change. Open an `on_draw` listener block and nest `path(area_draw_params)` and figures like `rectangle` and all drawing logic is generated automatically. Path proxy objects are destroyed (thrown-away) at the end of drawing, thus having less memory overhead for drawing thousands of dynamic paths.
+- Semi-declaratively via on_draw listener dynamic paths: useful for more dynamic paths that will definitely change. Open an `on_draw` listener block and nest `path` and figures like `rectangle` and all drawing logic is generated automatically. Path proxy objects are destroyed (thrown-away) at the end of drawing, thus having less memory overhead for drawing thousands of dynamic paths.
 
 Here is an example of a declarative `area` with a stable path (you may copy/paste in [`girb`](#girb-glimmer-irb)):
 
@@ -569,7 +569,7 @@ window('Basic Area', 400, 400) {
   vertical_box {
     area {
       on_draw do |area_draw_params|
-        path(area_draw_params) { # a dynamic path is added semi-declaratively inside on_draw block
+        path { # a dynamic path is added semi-declaratively inside on_draw block
           rectangle(0, 0, 400, 400)
           
           fill r: 102, g: 102, b: 204, a: 1.0
@@ -2971,7 +2971,7 @@ window('Basic Area', 400, 400) {
   vertical_box {
     area {
       on_draw do |area_draw_params|
-        path(area_draw_params) { # a dynamic path is added semi-declaratively inside on_draw block
+        path { # a dynamic path is added semi-declaratively inside on_draw block
           rectangle(0, 0, 400, 400)
           
           fill r: 102, g: 102, b: 204, a: 1.0
@@ -3101,7 +3101,7 @@ window('Dynamic Area', 240, 500) {
     
     @area = area {
       on_draw do |area_draw_params|
-        path(area_draw_params) { # a dynamic path is added semi-declaratively inside on_draw block
+        path { # a dynamic path is added semi-declaratively inside on_draw block
           rectangle(@x_spinbox.value, @y_spinbox.value, @width_spinbox.value, @height_spinbox.value)
           
           fill r: @red_spinbox.value, g: @green_spinbox.value, b: @blue_spinbox.value, a: @alpha_spinbox.value / 100.0
@@ -3419,19 +3419,19 @@ include Glimmer
 window('Area Gallery', 400, 400) {
   area {
     on_draw do |area_draw_params|
-      path(area_draw_params) { # a dynamic path is added semi-declaratively inside on_draw block
+      path { # a dynamic path is added semi-declaratively inside on_draw block
         square(0, 0, 100)
         square(100, 100, 400)
         
         fill r: 102, g: 102, b: 204
       }
-      path(area_draw_params) { # a dynamic path is added semi-declaratively inside on_draw block
+      path { # a dynamic path is added semi-declaratively inside on_draw block
         rectangle(0, 100, 100, 400)
         rectangle(100, 0, 400, 100)
 
         fill r: 204, g: 102, b: 204
       }
-      path(area_draw_params) { # a dynamic path is added semi-declaratively inside on_draw block
+      path { # a dynamic path is added semi-declaratively inside on_draw block
         figure(100, 100) {
           line(100, 400)
           line(400, 100)
@@ -3443,7 +3443,7 @@ window('Area Gallery', 400, 400) {
         fill r: 202, g: 102, b: 104, a: 0.5
         stroke r: 0, g: 0, b: 0
       }
-      path(area_draw_params) { # a dynamic path is added semi-declaratively inside on_draw block
+      path { # a dynamic path is added semi-declaratively inside on_draw block
         figure(0, 0) {
           bezier(200, 100, 100, 200, 400, 100)
           bezier(300, 100, 100, 300, 100, 400)
@@ -3455,7 +3455,7 @@ window('Area Gallery', 400, 400) {
         fill r: 202, g: 102, b: 204, a: 0.5
         stroke thickness: 2, r: 0, g: 0, b: 0
       }
-      path(area_draw_params) { # a dynamic path is added semi-declaratively inside on_draw block
+      path { # a dynamic path is added semi-declaratively inside on_draw block
         arc(200, 200, 90, 0, 360, false)
 
         fill r: 202, g: 102, b: 204, a: 0.5
@@ -3476,7 +3476,7 @@ include Glimmer
 window('Area Gallery', 400, 400) {
   area {
     on_draw do |area_draw_params|
-      path(area_draw_params) { # a dynamic path is added semi-declaratively inside on_draw block
+      path { # a dynamic path is added semi-declaratively inside on_draw block
         square {
           x 0
           y 0
@@ -3490,7 +3490,7 @@ window('Area Gallery', 400, 400) {
         
         fill r: 102, g: 102, b: 204
       }
-      path(area_draw_params) { # a dynamic path is added semi-declaratively inside on_draw block
+      path { # a dynamic path is added semi-declaratively inside on_draw block
         rectangle {
           x 0
           y 100
@@ -3506,7 +3506,7 @@ window('Area Gallery', 400, 400) {
         
         fill r: 204, g: 102, b: 204
       }
-      path(area_draw_params) { # a dynamic path is added semi-declaratively inside on_draw block
+      path { # a dynamic path is added semi-declaratively inside on_draw block
         figure {
           x 100
           y 100
@@ -3530,7 +3530,7 @@ window('Area Gallery', 400, 400) {
         fill r: 202, g: 102, b: 104, a: 0.5
         stroke r: 0, g: 0, b: 0
       }
-      path(area_draw_params) { # a dynamic path is added semi-declaratively inside on_draw block
+      path { # a dynamic path is added semi-declaratively inside on_draw block
         figure {
           x 0
           y 0
@@ -3566,7 +3566,7 @@ window('Area Gallery', 400, 400) {
         fill r: 202, g: 102, b: 204, a: 0.5
         stroke thickness: 2, r: 0, g: 0, b: 0
       }
-      path(area_draw_params) { # a dynamic path is added semi-declaratively inside on_draw block
+      path { # a dynamic path is added semi-declaratively inside on_draw block
         arc {
           x_center 200
           y_center 200

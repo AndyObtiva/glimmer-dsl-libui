@@ -88,7 +88,7 @@ window('Dynamic Area', 240, 600) {
     
     @area = area {
       on_draw do |area_draw_params|
-        path(area_draw_params) { # a dynamic path is added semi-declaratively inside on_draw block
+        path { # a dynamic path is added semi-declaratively inside on_draw block
           rectangle(@x_spinbox.value, @y_spinbox.value, @width_spinbox.value, @height_spinbox.value)
           
           fill r: @red_spinbox.value, g: @green_spinbox.value, b: @blue_spinbox.value, a: @alpha_spinbox.value / 100.0

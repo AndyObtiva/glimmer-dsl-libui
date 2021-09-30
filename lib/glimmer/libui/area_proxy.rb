@@ -28,6 +28,11 @@ module Glimmer
     #
     # Follows the Proxy Design Pattern
     class AreaProxy < ControlProxy
+      class << self
+        # this attribute is only populated during on_draw call
+        attr_accessor :current_area_draw_params
+      end
+      
       include Glimmer::FiddleConsumer
       
       attr_reader :area_handler
@@ -80,8 +85,10 @@ module Glimmer
         @area_handler.Draw         = fiddle_closure_block_caller(0, [1, 1, 1]) do |_, _, area_draw_params|
           area_draw_params = ::LibUI::FFI::AreaDrawParams.new(area_draw_params)
           area_draw_params = area_draw_params_hash(area_draw_params)
+          AreaProxy.current_area_draw_params = area_draw_params
           children.dup.each {|child| child.draw(area_draw_params)}
           on_draw.each {|listener| listener.call(area_draw_params) }
+          AreaProxy.current_area_draw_params = nil
         end
         @area_handler.MouseEvent   = fiddle_closure_block_caller(0, [0]) {}
         @area_handler.MouseCrossed = fiddle_closure_block_caller(0, [0]) {}

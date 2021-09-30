@@ -5,7 +5,7 @@ include Glimmer
 window('Area Gallery', 400, 400) {
   area {
     on_draw do |area_draw_params|
-      path(area_draw_params) { # a dynamic path is added semi-declaratively inside on_draw block
+      path { # a dynamic path is added semi-declaratively inside on_draw block
         square {
           x 0
           y 0
@@ -19,7 +19,7 @@ window('Area Gallery', 400, 400) {
         
         fill r: 102, g: 102, b: 204
       }
-      path(area_draw_params) { # a dynamic path is added semi-declaratively inside on_draw block
+      path { # a dynamic path is added semi-declaratively inside on_draw block
         rectangle {
           x 0
           y 100
@@ -35,7 +35,7 @@ window('Area Gallery', 400, 400) {
         
         fill r: 204, g: 102, b: 204
       }
-      path(area_draw_params) { # a dynamic path is added semi-declaratively inside on_draw block
+      path { # a dynamic path is added semi-declaratively inside on_draw block
         figure {
           x 100
           y 100
@@ -59,7 +59,7 @@ window('Area Gallery', 400, 400) {
         fill r: 202, g: 102, b: 104, a: 0.5
         stroke r: 0, g: 0, b: 0
       }
-      path(area_draw_params) { # a dynamic path is added semi-declaratively inside on_draw block
+      path { # a dynamic path is added semi-declaratively inside on_draw block
         figure {
           x 0
           y 0
@@ -95,7 +95,7 @@ window('Area Gallery', 400, 400) {
         fill r: 202, g: 102, b: 204, a: 0.5
         stroke thickness: 2, r: 0, g: 0, b: 0
       }
-      path(area_draw_params) { # a dynamic path is added semi-declaratively inside on_draw block
+      path { # a dynamic path is added semi-declaratively inside on_draw block
         arc {
           x_center 200
           y_center 200

@@ -20,6 +20,7 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 require 'glimmer/libui/control_proxy'
+require 'glimmer/libui/area_proxy'
 require 'glimmer/libui/transformable'
 
 module Glimmer
@@ -51,8 +52,8 @@ module Glimmer
       
       def post_add_content
         super
-        if @parent_proxy.nil? && area_draw_params
-          draw(area_draw_params)
+        if @parent_proxy.nil? && AreaProxy.current_area_draw_params
+          draw(AreaProxy.current_area_draw_params)
           destroy
         end
       end
@@ -141,11 +142,6 @@ module Glimmer
         @draw_stroke_params
       end
       
-      # returns area_draw_params if built inside on_draw listener (not needed if declared outside)
-      def area_draw_params
-        @args[0] if @parent_proxy.nil?
-      end
-    
       def destroy
         @parent_proxy&.children&.delete(self)
         ControlProxy.control_proxies.delete(self)
