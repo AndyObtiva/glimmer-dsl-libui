@@ -42,7 +42,11 @@ module Glimmer
     
       def post_initialize_child(child)
         super
-        children << child
+        if child.is_a?(MatrixProxy)
+          self.transform = child
+        else
+          children << child
+        end
       end
       
       def post_add_content

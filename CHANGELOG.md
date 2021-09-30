@@ -7,7 +7,7 @@
 - Switch `color_button` `color` API to return a hash of `{:r, :g, :b, :a}` instead of an array for consistency with other libui APIs (like fill and stroke brush)
 - Implement `color_button` fine-grained setters (e.g. `cg.red = 144`)
 - Support hex colors in `color_button` (by passing an Integer 0xFFBBAA or String hex 'ffbbaa') and `path` `fill` and `stroke` (with `:color` key)
-- Support `path` `transform` property for building `matrix` objects
+- Support `path` `transform` property for building `matrix` objects (either `path { transform {operations} }` directly or `path { m1 = matrix {operations}; transform m1 }`)
 
 ## 0.1.4
 

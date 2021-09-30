@@ -55,5 +55,6 @@ module Glimmer
         end
       end
     end
+    TransformProxy = MatrixProxy # alias
   end
 end
