@@ -29,10 +29,52 @@ module Glimmer
       def boolean_to_integer(bool, allow_nil: true)
         bool.nil? ? (allow_nil ? nil : 0) : (bool ? 1 : 0)
       end
+      
+      def interpret_color(value)
+        if value.is_a?(Array) && value.last.is_a?(Hash)
+          options = value.last
+          value = value[0...-1]
+        end
+        value = value.first if value.is_a?(Array) && value.size == 1
+        value = value.to_s if value.is_a?(Symbol)
+        value = value[:color] if value.is_a?(Hash) && value[:color]
+        result = if value.is_a?(Array)
+          old_value = value
+          value = {
+            r: value[0],
+            g: value[1],
+            b: value[2],
+          }
+          value[:a] = value[3] unless value[3].nil?
+          value
+        elsif value.is_a?(Hash)
+          old_value = value
+          value = old_value.dup
+          value[:r] = value.delete(:red) if value[:red]
+          value[:g] = value.delete(:green) if value[:green]
+          value[:b] = value.delete(:blue) if value[:blue]
+          value[:a] = value.delete(:alpha) if value[:alpha]
+          value
+        elsif value.is_a?(String) && !value.start_with?('0x') && !value.downcase.match(/^((([1-9a-f]){6})|(([1-9a-f]){3}))$/)
+          color = Color::RGB.extract_colors(value).first
+          color.nil? ? {} : {
+            r: color.red,
+            g: color.green,
+            b: color.blue,
+          }
+        else
+          hex_to_rgb(value)
+        end
+        result.merge!(options) if options
+        result
+      end
     
       def hex_to_rgb(value)
         if value.is_a?(String)
-          value = "0x#{value}" if !value.start_with?('0x')
+          if !value.start_with?('0x')
+            value = value.chars.map {|char| [char, char]}.flatten.join if value.length == 3
+            value = "0x#{value}"
+          end
           value = value.to_i(16)
         end
         if value.is_a?(Integer)

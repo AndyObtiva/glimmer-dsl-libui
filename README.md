@@ -606,6 +606,8 @@ The `area_draw_params` argument for `on_draw` block is a hash consisting of the 
 
 In general, it is recommended to use declarative stable paths whenever feasible since they require less code and simpler maintenance. But, in more advanced cases, semi-declarative dynamic paths could be used instead, especially if there are thousands of dynamic paths that need maximum performance and low memory footprint.
 
+Note that when nesting an `area` directly underneath `window` (without a layout control like `vertical_box`), it is automatically reparented with `vertical_box` in between the `window` and `area` since it would not show up on Linux otherwise.
+
 To redraw an `area`, you may call the `#queue_redraw_all` method, or simply `#redraw`.
 
 A transform `matrix` can be set on a path by building a `matrix(m11 = nil, m12 = nil, m21 = nil, m22 = nil, m31 = nil, m32 = nil) {operations}` proxy object and then setting via `transform` property, or alternatively by building and setting the matrix in one call to `transform(m11 = nil, m12 = nil, m21 = nil, m22 = nil, m31 = nil, m32 = nil) {operations}` passing it the matrix arguments and/or content operations.
@@ -638,7 +640,7 @@ window('Basic Transform', 350, 350) {
         square(0, 0, 100)
         
         fill r: [255 - n*5, 0].max, g: [n*5, 255].min, b: 0, a: 0.5
-        stroke color: 0, thickness: 2
+        stroke :black, thickness: 2
         transform {
           skew 0.15, 0.15
           translate 50, 50
@@ -673,6 +675,12 @@ transform m1
 
 Note that `area`, `path`, and nested shapes are all truly declarative, meaning they do not care about the ordering of calls to `fill`, `stroke`, and `transform`. Furthermore, any transform that is applied is reversed at the end of the block, so you never have to worry about the ordering of `transform` calls among different paths. You simply set a transform on the `path`s that need it and it is guaranteed to be called before all its content is drawn, and then undone afterwards to avoid affecting later paths. Matrix `transform` can be set on an entire `area` too, applying to all nested `path`s.
 
+`fill` and `stroke` accept [X11](https://en.wikipedia.org/wiki/X11_color_names) color `Symbol`s/`String`s like `:skyblue` and `'sandybrown'` or 6-number hex or 3-number hex-shorthand (as `Integer` or `String` with or without `0x` prefix)
+
+Check [Basic Transform](#basic-transform) example for use of [X11](https://en.wikipedia.org/wiki/X11_color_names) colors.
+
+Check [Histogram](#histogram) example for use of hex colors.
+
 ### Smart Defaults and Conventions
 
 - `horizontal_box`, `vertical_box`, `grid`, and `form` controls have `padded` as `true` upon instantiation to ensure more user-friendly GUI by default
@@ -706,6 +714,9 @@ Note that `area`, `path`, and nested shapes are all truly declarative, meaning t
 - Observe `path` `fill` and `stroke` hashes for changes and automatically redraw containing area accordingly
 - All controls are protected from garbage collection until no longer needed (explicitly destroyed), so there is no need to worry about surprises.
 - All resources are freed automatically once no longer needed or left to garbage collection.
+- When nesting an `area` directly underneath `window` (without a layout control like `vertical_box`), it is automatically reparented with `vertical_box` in between the `window` and `area` since it would not show up on Linux otherwise.
+- Colors may be passed in as a hash of `:r`, `:g`, `:b`, `:a`, or `:red`, `:green`, `:blue`, `:alpha`, or [X11](https://en.wikipedia.org/wiki/X11_color_names) color like `:skyblue`, or 6-number hex or 3-number hex (as `Integer` or `String` with or without `0x` prefix)
+- Color alpha value defaults to `1.0` when not specified.
 
 ### API Gotchas
 
@@ -3974,7 +3985,7 @@ window('histogram example', 640, 480) {
         path {
           rectangle(0, 0, area_draw_params[:area_width], area_draw_params[:area_height])
           
-          fill color: 0xFFFFFF
+          fill 0xFFFFFF
         }
         
         graph_width, graph_height = *graph_size(area_draw_params[:area_width], area_draw_params[:area_height])
@@ -3985,7 +3996,7 @@ window('histogram example', 640, 480) {
             line(X_OFF_LEFT + graph_width, Y_OFF_TOP + graph_height)
           }
           
-          stroke color: 0x000000, thickness: 2, miter_limit: 10
+          stroke 0x000000, thickness: 2, miter_limit: 10
         }
       
         # now create the fill for the graph below the graph line
@@ -4046,7 +4057,7 @@ window('Basic Transform', 350, 350) {
         square(0, 0, 100)
         
         fill r: [255 - n*5, 0].max, g: [n*5, 255].min, b: 0, a: 0.5
-        stroke color: 0, thickness: 2
+        stroke :black, thickness: 2
         transform {
           skew 0.15, 0.15
           translate 50, 50

@@ -44,7 +44,7 @@ module Glimmer
             }
           else
             current_color = color
-            value = Glimmer::LibUI.hex_to_rgb(value)
+            value = Glimmer::LibUI.interpret_color(value)
             value[:r] ||= current_color[:r]
             value[:g] ||= current_color[:g]
             value[:b] ||= current_color[:b]

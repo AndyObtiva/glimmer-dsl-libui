@@ -65,12 +65,13 @@ module Glimmer
           @args[0].is_a?(Integer) ? @args[0] : @args[0].to_s == 'alternate' ? 1 : 0
         end
         
-        def fill(args = nil)
-          if args.nil?
+        def fill(*args)
+          args = args.first if args.size == 1 && (args.first.is_a?(Array) || args.first.is_a?(Hash) || args.first.is_a?(String) || args.first.is_a?(Symbol))
+          if args.empty?
             @fill ||= {}
           else
-            @fill = args
-            @fill[:a] = 1.0 if @fill[:a].nil?
+            @fill = Glimmer::LibUI.interpret_color(args)
+            @fill[:a] = 1.0 if @fill.is_a?(Hash) && @fill[:a].nil?
             @parent_proxy&.queue_redraw_all
           end
           @fill.tap do
@@ -89,12 +90,13 @@ module Glimmer
           @fill_draw_brush
         end
       
-        def stroke(args = nil)
-          if args.nil?
+        def stroke(*args)
+          args = args.first if args.size == 1 && (args.first.is_a?(Array) || args.first.is_a?(Hash) || args.first.is_a?(String) || args.first.is_a?(Symbol))
+          if args.empty?
             @stroke ||= {}
           else
-            @stroke = args
-            @stroke[:a] = 1.0 if @stroke[:a].nil?
+            @stroke = Glimmer::LibUI.interpret_color(args)
+            @stroke[:a] = 1.0 if @stroke.is_a?(Hash) && @stroke[:a].nil?
             @parent_proxy&.queue_redraw_all
           end
           @stroke.tap do
@@ -156,7 +158,6 @@ module Glimmer
           else
             draw_brush.Type = 0
           end
-          draw_brush_args = draw_brush_args.merge(Glimmer::LibUI.hex_to_rgb(draw_brush_args[:color])) if draw_brush_args[:color]
           draw_brush.R = (draw_brush_args[:r] || draw_brush_args[:red]).to_f / 255.0
           draw_brush.G = (draw_brush_args[:g] || draw_brush_args[:green]).to_f / 255.0
           draw_brush.B = (draw_brush_args[:b] || draw_brush_args[:blue]).to_f / 255.0

@@ -90,7 +90,7 @@ window('histogram example', 640, 480) {
         path {
           rectangle(0, 0, area_draw_params[:area_width], area_draw_params[:area_height])
           
-          fill color: 0xFFFFFF
+          fill 0xFFFFFF
         }
         
         graph_width, graph_height = *graph_size(area_draw_params[:area_width], area_draw_params[:area_height])
@@ -101,7 +101,7 @@ window('histogram example', 640, 480) {
             line(X_OFF_LEFT + graph_width, Y_OFF_TOP + graph_height)
           }
           
-          stroke color: 0x000000, thickness: 2, miter_limit: 10
+          stroke 0x000000, thickness: 2, miter_limit: 10
         }
       
         # now create the fill for the graph below the graph line
