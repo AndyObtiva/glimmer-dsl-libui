@@ -4,10 +4,10 @@ require 'glimmer-dsl-libui'
 
 include Glimmer
 
-window('hello world', 300, 200) { |w|
+window('hello world', 300, 200) {
   button('Button') {
     on_clicked do
-      msg_box(w, 'Information', 'You clicked the button')
+      msg_box('Information', 'You clicked the button')
     end
   }
   

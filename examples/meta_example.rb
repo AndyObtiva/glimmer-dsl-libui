@@ -43,7 +43,7 @@ class MetaExample
   end
   
   def launch
-    window('Meta-Example', 700, 500) { |w|
+    window('Meta-Example', 700, 500) {
       margined true
       
       horizontal_box {
@@ -93,7 +93,7 @@ class MetaExample
                   meta_example_file = File.join(Dir.home, '.meta_example.rb')
                   File.write(meta_example_file, @nwme.text)
                   result = `ruby -r #{glimmer_dsl_libui_file} #{meta_example_file} 2>&1`
-                  msg_box(w, 'Error Running Example', result) if result.include?('error')
+                  msg_box('Error Running Example', result) if result.include?('error')
                 rescue => e
                   puts 'Unable to write code changes! Running original example...'
                   system "ruby -r #{glimmer_dsl_libui_file} #{file_path_for(selected_example)}"

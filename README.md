@@ -249,10 +249,10 @@ require 'glimmer-dsl-libui'
 
 include Glimmer
 
-window('hello world', 300, 200) { |w|
+window('hello world', 300, 200) {
   button('Button') {
     on_clicked do
-      msg_box(w, 'Information', 'You clicked the button')
+      msg_box('Information', 'You clicked the button')
     end
   }
   
@@ -378,8 +378,8 @@ Control(Args) | Properties | Listeners
 `menu(text as String)` | None | None
 `menu_item(text as String)` | `checked` (Boolean) | `on_clicked`
 `multiline_entry` | `read_only` (Boolean), `text` (`String`) | `on_changed`
-`msg_box(window as Glimmer::LibUI::WindowProxy, title as String, description as String)` | None | None
-`msg_box_error(window as Glimmer::LibUI::WindowProxy, title as String, description as String)` | None | None
+`msg_box(window = main_window as Glimmer::LibUI::WindowProxy, title as String, description as String)` | None | None
+`msg_box_error(window = main_window as Glimmer::LibUI::WindowProxy, title as String, description as String)` | None | None
 `non_wrapping_multiline_entry` | `read_only` (Boolean), `text` (`String`) | `on_changed`
 `path` | `fill` (`Hash` of `:r` as `0`-`255`, `:g` as `0`-`255`, `:b` as `0`-`255`, `:a` as `0.0`-`1.0`), `stroke` (`Hash` of `:r` as `0`-`255`, `:g` as `0`-`255`, `:b` as `0`-`255`, `:a` as `0.0`-`1.0`, `:cap` as `Numeric`, `:join` as `Numeric`, `:thickness` as `Numeric`, `:miter_limit` as `Numeric` ) | None
 `preferences_menu_item` | None | `on_clicked`
@@ -794,7 +794,7 @@ class MetaExample
   end
   
   def launch
-    window('Meta-Example', 700, 500) { |w|
+    window('Meta-Example', 700, 500) {
       margined true
       
       horizontal_box {
@@ -816,7 +816,7 @@ class MetaExample
                 meta_example_file = File.join(Dir.home, '.meta_example.rb')
                 File.write(meta_example_file, @nwme.text)
                 result = `ruby -r #{glimmer_dsl_libui_file} #{meta_example_file} 2>&1`
-                msg_box(w, 'Error Running Example', result) if result.include?('error')
+                msg_box('Error Running Example', result) if result.include?('error')
               rescue => e
                 puts 'Unable to write code changes! Running original example...'
                 system "ruby -r #{glimmer_dsl_libui_file} #{file_path_for(@examples[@rbs.selected])}"
@@ -981,10 +981,10 @@ require 'glimmer-dsl-libui'
 
 include Glimmer
 
-window('hello world', 300, 200) { |w|
+window('hello world', 300, 200) {
   button('Button') {
     on_clicked do
-      msg_box(w, 'Information', 'You clicked the button')
+      msg_box('Information', 'You clicked the button')
     end
   }
   
@@ -1068,7 +1068,7 @@ require 'glimmer-dsl-libui'
 
 include Glimmer
 
-window('Basic Entry', 300, 50) { |w|
+window('Basic Entry', 300, 50) {
   horizontal_box {
     e = entry {
       # stretchy true # Smart default option for appending to horizontal_box
@@ -1084,7 +1084,7 @@ window('Basic Entry', 300, 50) { |w|
       
       on_clicked do
         text = e.text
-        msg_box(w, 'You entered', text)
+        msg_box('You entered', text)
       end
     }
   }
@@ -1339,23 +1339,22 @@ class TinyMidiPlayer
     end
   end
 
-  def show_version(main_window)
-    msg_box(main_window,
-               'Tiny Midi Player',
-               "Written in Ruby\n" \
-               "https://github.com/kojix2/libui\n" \
-               "Version #{VERSION}")
+  def show_version
+    msg_box('Tiny Midi Player',
+              "Written in Ruby\n" \
+                "https://github.com/kojix2/libui\n" \
+                "Version #{VERSION}")
   end
 
   def create_gui
     menu('Help') { |m|
       menu_item('Version') {
         on_clicked do
-          show_version(@main_window)
+          show_version
         end
       }
     }
-    @main_window = window('Tiny Midi Player', 200, 50) {
+    window('Tiny Midi Player', 200, 50) {
       horizontal_box {
         vertical_box {
           stretchy false
@@ -1371,7 +1370,7 @@ class TinyMidiPlayer
             end
           }
         }
-        
+
         combobox { |c|
           items @midi_files.map { |path| File.basename(path) }
           
@@ -1381,8 +1380,7 @@ class TinyMidiPlayer
           end
         }
       }
-    }
-    @main_window.show
+    }.show
   end
 end
 
@@ -1618,14 +1616,14 @@ include Glimmer
 menu('File') {
   menu_item('Open') {
     on_clicked do
-      file = open_file(MAIN_WINDOW)
+      file = open_file
       puts file unless file.nil?
     end
   }
 
   menu_item('Save') {
     on_clicked do
-      file = save_file(MAIN_WINDOW)
+      file = save_file
       puts file unless file.nil?
     end
   }
@@ -1668,7 +1666,7 @@ MAIN_WINDOW = window('Control Gallery', 600, 500) {
             stretchy false
 
             on_clicked do
-              msg_box(MAIN_WINDOW, 'Information', 'You clicked the button')
+              msg_box('Information', 'You clicked the button')
             end
           }
 
@@ -1676,7 +1674,7 @@ MAIN_WINDOW = window('Control Gallery', 600, 500) {
             stretchy false
 
             on_toggled do |c|
-              checked = c.checked == 1
+              checked = c.checked?
               MAIN_WINDOW.title = "Checkbox is #{checked}"
               c.text = "I am the checkbox (#{checked})"
             end
@@ -2130,7 +2128,7 @@ require 'glimmer-dsl-libui'
 
 include Glimmer
 
-window('Form') { |w|
+window('Form') {
   margined true
   
   vertical_box {
@@ -2146,7 +2144,7 @@ window('Form') { |w|
     
     button('Display Name') {
       on_clicked do
-        msg_box(w, 'Name', "#{@first_name_entry.text} #{@last_name_entry.text}")
+        msg_box('Name', "#{@first_name_entry.text} #{@last_name_entry.text}")
       end
     }
   }

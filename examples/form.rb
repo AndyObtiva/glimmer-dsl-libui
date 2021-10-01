@@ -4,7 +4,7 @@ require 'glimmer-dsl-libui'
 
 include Glimmer
 
-window('Form') { |w|
+window('Form') {
   margined true
   
   vertical_box {
@@ -20,7 +20,7 @@ window('Form') { |w|
     
     button('Display Name') {
       on_clicked do
-        msg_box(w, 'Name', "#{@first_name_entry.text} #{@last_name_entry.text}")
+        msg_box('Name', "#{@first_name_entry.text} #{@last_name_entry.text}")
       end
     }
   }

@@ -40,23 +40,22 @@ class TinyMidiPlayer
     end
   end
 
-  def show_version(main_window)
-    msg_box(main_window,
-               'Tiny Midi Player',
-               "Written in Ruby\n" \
-               "https://github.com/kojix2/libui\n" \
-               "Version #{VERSION}")
+  def show_version
+    msg_box('Tiny Midi Player',
+              "Written in Ruby\n" \
+                "https://github.com/kojix2/libui\n" \
+                "Version #{VERSION}")
   end
 
   def create_gui
     menu('Help') { |m|
       menu_item('Version') {
         on_clicked do
-          show_version(@main_window)
+          show_version
         end
       }
     }
-    @main_window = window('Tiny Midi Player', 200, 50) {
+    window('Tiny Midi Player', 200, 50) {
       horizontal_box {
         vertical_box {
           stretchy false
@@ -82,8 +81,7 @@ class TinyMidiPlayer
           end
         }
       }
-    }
-    @main_window.show
+    }.show
   end
 end
 

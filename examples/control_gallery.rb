@@ -7,14 +7,14 @@ include Glimmer
 menu('File') {
   menu_item('Open') {
     on_clicked do
-      file = open_file(MAIN_WINDOW)
+      file = open_file
       puts file unless file.nil?
     end
   }
 
   menu_item('Save') {
     on_clicked do
-      file = save_file(MAIN_WINDOW)
+      file = save_file
       puts file unless file.nil?
     end
   }
@@ -57,7 +57,7 @@ MAIN_WINDOW = window('Control Gallery', 600, 500) {
             stretchy false
 
             on_clicked do
-              msg_box(MAIN_WINDOW, 'Information', 'You clicked the button')
+              msg_box('Information', 'You clicked the button')
             end
           }
 

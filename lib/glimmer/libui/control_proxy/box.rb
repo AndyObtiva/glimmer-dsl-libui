@@ -58,4 +58,4 @@ module Glimmer
   end
 end
 
-Dir[File.expand_path('./box/*.rb', __dir__)].each {|f| require f}
+Dir[File.expand_path("./#{File.basename(__FILE__, '.rb')}/*.rb", __dir__)].each {|f| require f}

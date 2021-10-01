@@ -3,8 +3,6 @@
 ## Next
 
 - Prevent point_locations method from accessing spinbox control internals in histogram.rb (have the view push the data to the model instead to keep model decoupled from view)
-- Default values for `msg_box`/`msg_box_error` args if not supplied (assume main window automatically when window is not supplied)
-- Document autoparenting of `area` with `vertical_box` when added underneath `window` directly.
 
 ## Soon
 

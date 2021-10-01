@@ -18,6 +18,8 @@
 - Support 3-number hex color shorthand
 - Support ability to set fill/stroke to x11/Integer/String color directly (e.g. `fill 'steelblue'` , optionally with extra hash key/value pairs e.g. `fill 0x238232, a: 0.5`)
 - Support ability to set color_button.color to {color: x11/Integer/String}
+- Default main_window_proxy first argument for `msg_box`/`msg_box_error` (and empty strings for following args if not passed)
+- Default main_window_proxy argument for `open_file` and `save_file`
 
 ## 0.1.5
 

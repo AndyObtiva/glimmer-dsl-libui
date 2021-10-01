@@ -4,7 +4,7 @@ require 'glimmer-dsl-libui'
 
 include Glimmer
 
-window('Basic Entry', 300, 50) { |w|
+window('Basic Entry', 300, 50) {
   horizontal_box {
     e = entry {
       # stretchy true # Smart default option for appending to horizontal_box
@@ -20,7 +20,7 @@ window('Basic Entry', 300, 50) { |w|
       
       on_clicked do
         text = e.text
-        msg_box(w, 'You entered', text)
+        msg_box('You entered', text)
       end
     }
   }

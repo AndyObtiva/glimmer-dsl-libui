@@ -19,37 +19,19 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+require 'glimmer/libui/control_proxy'
+
 module Glimmer
   module LibUI
     class ControlProxy
-      # Common logic for all column proxy objects
-      module Column
-        def initialize(keyword, parent, args, &block)
-          @keyword = keyword
-          @parent_proxy = parent
-          @args = args
-          @block = block
-          @enabled = true
-          post_add_content if @block.nil?
-        end
-        
-        def name
-          @args.first
-        end
-        
-        # column index used in table append column API call
-        # expanded to ensure DualColumn index accounts for two columns acting as one
-        def column_index
-          @column_index ||= @parent_proxy.send(:next_column_index)
-        end
-        
-        # actual index within table columns (disregarding nil fillings that account for DualColumn instances)
-        def index
-          @parent_proxy.columns.compact.index(self)
+      module MessageBox
+        # Proxy for LibUI msg_box_error objects
+        #
+        # Follows the Proxy Design Pattern
+        class MsgBoxErrorProxy < ControlProxy
+          include MessageBox
         end
       end
     end
   end
 end
-
-Dir[File.expand_path("./#{File.basename(__FILE__, '.rb')}/*.rb", __dir__)].each {|f| require f}
