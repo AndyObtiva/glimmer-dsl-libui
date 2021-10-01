@@ -20,6 +20,7 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 require 'glimmer/libui/control_proxy'
+require 'glimmer/libui/control_proxy/dual_column'
 require 'glimmer/data_binding/observer'
 require 'glimmer/fiddle_consumer'
 
@@ -46,7 +47,7 @@ module Glimmer
           @cell_rows = []
           window_proxy.on_destroy do
             # the following unless condition is an exceptional condition stumbled upon that fails freeing the table model
-            ::LibUI.free_table_model(@model) unless @destroyed && parent_proxy.is_a?(Glimmer::LibUI::Box)
+            ::LibUI.free_table_model(@model) unless @destroyed && parent_proxy.is_a?(Box)
           end
         end
         
@@ -119,11 +120,11 @@ module Glimmer
           @model_handler.NumColumns   = fiddle_closure_block_caller(4) { @columns.map {|c| c.is_a?(DualColumn) ? 2 : 1}.sum }
           @model_handler.ColumnType   = fiddle_closure_block_caller(4, [1, 1, 4]) do |_, _, column|
             case @columns[column]
-            when TextColumnProxy, ButtonColumnProxy, NilClass
+            when Column::TextColumnProxy, Column::ButtonColumnProxy, NilClass
               0
-            when ImageColumnProxy, ImageTextColumnProxy
+            when Column::ImageColumnProxy, Column::ImageTextColumnProxy
               1
-            when CheckboxColumnProxy, CheckboxTextColumnProxy, ProgressBarColumnProxy
+            when Column::CheckboxColumnProxy, Column::CheckboxTextColumnProxy, Column::ProgressBarColumnProxy
               2
             end
           end
@@ -131,28 +132,28 @@ module Glimmer
           @model_handler.CellValue    = fiddle_closure_block_caller(1, [1, 1, 4, 4]) do |_, _, row, column|
             the_cell_rows = expanded_cell_rows
             case @columns[column]
-            when TextColumnProxy, ButtonColumnProxy, NilClass
+            when Column::TextColumnProxy, Column::ButtonColumnProxy, NilClass
               ::LibUI.new_table_value_string((expanded_cell_rows[row] && expanded_cell_rows[row][column]).to_s)
-            when ImageColumnProxy, ImageTextColumnProxy
+            when Column::ImageColumnProxy, Column::ImageTextColumnProxy
               ::LibUI.new_table_value_image((expanded_cell_rows[row] && (expanded_cell_rows[row][column].respond_to?(:libui) ? expanded_cell_rows[row][column].libui : expanded_cell_rows[row][column])))
-            when CheckboxColumnProxy, CheckboxTextColumnProxy
+            when Column::CheckboxColumnProxy, Column::CheckboxTextColumnProxy
               ::LibUI.new_table_value_int((expanded_cell_rows[row] && (expanded_cell_rows[row][column] == 1 || expanded_cell_rows[row][column].to_s.strip.downcase == 'true' ? 1 : 0)))
-            when ProgressBarColumnProxy
+            when Column::ProgressBarColumnProxy
               ::LibUI.new_table_value_int((expanded_cell_rows[row] && (expanded_cell_rows[row][column].to_i)))
             end
           end
           @model_handler.SetCellValue = fiddle_closure_block_caller(0, [1, 1, 4, 4, 1]) do |_, _, row, column, val|
             case @columns[column]
-            when TextColumnProxy
+            when Column::TextColumnProxy
               column = @columns[column].index
               @cell_rows[row] ||= []
               @cell_rows[row][column] = ::LibUI.table_value_string(val).to_s
             when NilClass
               column = @columns[column - 1].index
               @cell_rows[row][column][1] = ::LibUI.table_value_string(val).to_s
-            when ButtonColumnProxy
+            when Column::ButtonColumnProxy
               @columns[column].notify_listeners(:on_clicked, row)
-            when CheckboxColumnProxy, CheckboxTextColumnProxy
+            when Column::CheckboxColumnProxy, Column::CheckboxTextColumnProxy
               column = @columns[column].index
               @cell_rows[row] ||= []
               @cell_rows[row][column] = ::LibUI.table_value_int(val).to_i == 1

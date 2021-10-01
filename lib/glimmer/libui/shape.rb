@@ -58,8 +58,6 @@ module Glimmer
           end
         end
         
-        private
-        
         def constant_symbol(keyword)
           "#{keyword.camelcase(:upper)}".to_sym
         end
@@ -143,3 +141,5 @@ module Glimmer
     end
   end
 end
+
+Dir[File.expand_path('./shape/*.rb', __dir__)].each {|f| require f}

@@ -19,37 +19,26 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'glimmer/libui/control_proxy'
-
 module Glimmer
   module LibUI
-    module Box
-      APPEND_PROPERTIES = %w[stretchy]
-      
-      def post_initialize_child(child)
-        child.stretchy = true if child.stretchy.nil?
-        ::LibUI.box_append(@libui, child.libui, Glimmer::LibUI.boolean_to_integer(child.stretchy))
-        children << child
-      end
-      
-      def libui_api_keyword
-        'box'
-      end
-      
-      def children
-        @children ||= []
-      end
-      
-      def destroy_child(child)
-        ::LibUI.send("box_delete", @libui, children.index(child))
-        ControlProxy.control_proxies.delete(child)
-      end
-      
-      private
-      
-      def build_control
-        super.tap do
-          self.padded = true
+    class ControlProxy
+      module EditableColumn
+        def editable(value = nil)
+          if value.nil?
+            @editable = false if @editable.nil?
+            @editable
+          else
+            @editable = !!value
+          end
+        end
+        alias editable= editable
+        alias set_editable editable
+        alias editable? editable
+  
+        private
+        
+        def editable_value
+          (@parent_proxy.editable? || editable?) ? -2 : -1
         end
       end
     end

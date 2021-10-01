@@ -50,7 +50,5 @@ module Glimmer
   end
 end
 
-# TODO Consider moving all shapes underneath Shape namespace
 require 'glimmer/libui/control_proxy/path_proxy'
 require 'glimmer/libui/shape'
-Dir[File.expand_path('../../libui/shape/*.rb', __dir__)].each {|f| require f}

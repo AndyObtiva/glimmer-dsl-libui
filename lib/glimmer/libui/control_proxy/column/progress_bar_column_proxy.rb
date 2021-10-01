@@ -20,16 +20,24 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 require 'glimmer/libui/control_proxy'
-require 'glimmer/libui/box'
+require 'glimmer/libui/control_proxy/column'
 
 module Glimmer
   module LibUI
     class ControlProxy
-      # Proxy for LibUI horizontal box objects
-      #
-      # Follows the Proxy Design Pattern
-      class HorizontalBoxProxy < ControlProxy
-        include Box
+      module Column
+        # Proxy for LibUI progress bar column objects
+        #
+        # Follows the Proxy Design Pattern
+        class ProgressBarColumnProxy < ControlProxy
+          include Column
+              
+          private
+          
+          def build_control
+            @parent_proxy.append_progress_bar_column(name, column_index)
+          end
+        end
       end
     end
   end

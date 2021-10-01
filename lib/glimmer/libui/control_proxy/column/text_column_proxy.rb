@@ -20,25 +20,25 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 require 'glimmer/libui/control_proxy'
-require 'glimmer/libui/column'
-require 'glimmer/libui/dual_column'
-require 'glimmer/libui/editable_column'
+require 'glimmer/libui/control_proxy/column'
+require 'glimmer/libui/control_proxy/editable_column'
 
 module Glimmer
   module LibUI
     class ControlProxy
-      # Proxy for LibUI image text column objects
-      #
-      # Follows the Proxy Design Pattern
-      class ImageTextColumnProxy < ControlProxy
-        include Column
-        include DualColumn
-        include EditableColumn
-      
-        private
-        
-        def build_control
-          @parent_proxy.append_image_text_column(name, column_index, second_column_index, editable_value)
+      module Column
+        # Proxy for LibUI text column objects
+        #
+        # Follows the Proxy Design Pattern
+        class TextColumnProxy < ControlProxy
+          include Column
+          include EditableColumn
+              
+          private
+          
+          def build_control
+            @parent_proxy.append_text_column(name, column_index, editable_value)
+          end
         end
       end
     end

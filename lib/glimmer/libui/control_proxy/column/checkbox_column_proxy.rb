@@ -19,25 +19,27 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+require 'glimmer/libui/control_proxy'
+require 'glimmer/libui/control_proxy/column'
+require 'glimmer/libui/control_proxy/editable_column'
+
 module Glimmer
   module LibUI
-    module EnableableColumn
-      def enabled(value = nil)
-        if value.nil?
-          @enabled = true if @enabled.nil?
-          @enabled
-        else
-          @enabled = !!value
+    class ControlProxy
+      module Column
+        # Proxy for LibUI checkbox column objects
+        #
+        # Follows the Proxy Design Pattern
+        class CheckboxColumnProxy < ControlProxy
+          include Column
+          include EditableColumn
+          
+          private
+          
+          def build_control
+            @parent_proxy.append_checkbox_column(name, column_index, editable_value)
+          end
         end
-      end
-      alias enabled= enabled
-      alias set_enabled enabled
-      alias enabled? enabled
-
-      private
-      
-      def enabled_value
-        enabled? ? -2 : -1
       end
     end
   end

@@ -29,7 +29,9 @@ module Glimmer
         def exists?(keyword)
           ::LibUI.respond_to?("new_#{keyword}") ||
             ::LibUI.respond_to?(keyword) ||
-            ControlProxy.constants.include?("#{keyword.camelcase(:upper)}Proxy".to_sym)
+            ControlProxy.constants.include?(constant_symbol(keyword)) ||
+            ControlProxy::Box.constants.include?(constant_symbol(keyword)) ||
+            ControlProxy::Column.constants.include?(constant_symbol(keyword))
         end
         
         def create(keyword, parent, args, &block)
@@ -37,12 +39,11 @@ module Glimmer
         end
         
         def widget_proxy_class(keyword)
-          begin
-            class_name = "#{keyword.camelcase(:upper)}Proxy".to_sym
-            ControlProxy.const_get(class_name)
-          rescue
+          class_name = constant_symbol(keyword)
+          (ControlProxy.constants.include?(class_name) && ControlProxy.const_get(class_name)) ||
+            (ControlProxy::Box.constants.include?(class_name) && ControlProxy::Box.const_get(class_name)) ||
+            (ControlProxy::Column.constants.include?(class_name) && ControlProxy::Column.const_get(class_name)) ||
             ControlProxy
-          end
         end
         
         # autosave all controls in this array to avoid garbage collection
@@ -65,6 +66,10 @@ module Glimmer
         
         def new_control(keyword, args)
           ::LibUI.send("new_#{keyword}", *args)
+        end
+        
+        def constant_symbol(keyword)
+          "#{keyword.camelcase(:upper)}Proxy".to_sym
         end
       end
       
@@ -275,3 +280,5 @@ module Glimmer
     end
   end
 end
+
+Dir[File.expand_path('./control_proxy/*.rb', __dir__)].each {|f| require f}

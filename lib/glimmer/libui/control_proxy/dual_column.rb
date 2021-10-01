@@ -19,17 +19,21 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'glimmer/libui/control_proxy'
-require 'glimmer/libui/box'
-
 module Glimmer
   module LibUI
     class ControlProxy
-      # Proxy for LibUI vertical box objects
-      #
-      # Follows the Proxy Design Pattern
-      class VerticalBoxProxy < ControlProxy
-        include Box
+      # A dual column is one that represents two values (e.g. image and text or checkbox and text)
+      # It is meant to be included in a column proxy class that already includes Column
+      module DualColumn
+        def second_column_index
+          column_index + 1
+        end
+        
+        def column_index
+          @column_index ||= @parent_proxy.send(:next_column_index).tap do
+            @parent_proxy.send(:next_column_index)
+          end
+        end
       end
     end
   end

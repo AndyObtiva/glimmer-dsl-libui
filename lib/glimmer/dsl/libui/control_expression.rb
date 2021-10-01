@@ -46,6 +46,4 @@ module Glimmer
   end
 end
 
-# TODO Consider moving all controls underneath Control namespace
 require 'glimmer/libui/control_proxy'
-Dir[File.expand_path('../../libui/control_proxy/*.rb', __dir__)].each {|f| require f}

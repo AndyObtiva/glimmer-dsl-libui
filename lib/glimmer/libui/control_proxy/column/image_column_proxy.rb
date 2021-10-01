@@ -20,53 +20,23 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 require 'glimmer/libui/control_proxy'
-require 'glimmer/libui/column'
-require 'glimmer/libui/enableable_column'
+require 'glimmer/libui/control_proxy/column'
 
 module Glimmer
   module LibUI
     class ControlProxy
-      # Proxy for LibUI button column objects
-      #
-      # Follows the Proxy Design Pattern
-      class ButtonColumnProxy < ControlProxy
-        include Column
-        include EnableableColumn
+      module Column
+        # Proxy for LibUI image column objects
+        #
+        # Follows the Proxy Design Pattern
+        class ImageColumnProxy < ControlProxy
+          include Column
         
-        def on_clicked(&block)
-          # TODO consider generalizing into custom listeners and moving to ControlProxy
-          @on_clicked_procs ||= []
-          if block.nil?
-            @on_clicked_procs
-          else
-            @on_clicked_procs << block
-            block
+          private
+          
+          def build_control
+            @parent_proxy.append_image_column(name, column_index)
           end
-        end
-        
-        def can_handle_listener?(listener_name)
-          listener_name == 'on_clicked' || super
-        end
-        
-        def handle_listener(listener_name, &listener)
-          case listener_name
-          when 'on_clicked'
-            on_clicked(&listener)
-          else
-            super
-          end
-        end
-        
-        def notify_listeners(listener_name, *args)
-          @on_clicked_procs&.each do |on_clicked_proc|
-            on_clicked_proc.call(*args)
-          end
-        end
-            
-        private
-        
-        def build_control
-          @parent_proxy.append_button_column(name, column_index, enabled_value)
         end
       end
     end

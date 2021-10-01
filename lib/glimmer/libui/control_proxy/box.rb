@@ -20,23 +20,42 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 require 'glimmer/libui/control_proxy'
-require 'glimmer/libui/column'
 
 module Glimmer
   module LibUI
     class ControlProxy
-      # Proxy for LibUI progress bar column objects
-      #
-      # Follows the Proxy Design Pattern
-      class ProgressBarColumnProxy < ControlProxy
-        include Column
-            
+      module Box
+        APPEND_PROPERTIES = %w[stretchy]
+        
+        def post_initialize_child(child)
+          child.stretchy = true if child.stretchy.nil?
+          ::LibUI.box_append(@libui, child.libui, Glimmer::LibUI.boolean_to_integer(child.stretchy))
+          children << child
+        end
+        
+        def libui_api_keyword
+          'box'
+        end
+        
+        def children
+          @children ||= []
+        end
+        
+        def destroy_child(child)
+          ::LibUI.send("box_delete", @libui, children.index(child))
+          ControlProxy.control_proxies.delete(child)
+        end
+        
         private
         
         def build_control
-          @parent_proxy.append_progress_bar_column(name, column_index)
+          super.tap do
+            self.padded = true
+          end
         end
       end
     end
   end
 end
+
+Dir[File.expand_path('./box/*.rb', __dir__)].each {|f| require f}

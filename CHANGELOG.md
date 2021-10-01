@@ -5,8 +5,10 @@
 - Update default `window` `width` to `190`
 - Improve layout of examples/meta_example.rb
 - Enhance examples/meta_example.rb to enable choosing versions with a spinbox instead of adding them to examples list
-- Nest control proxies under Glimmer::LibUI::ControlProxy namespace
-- Nest shapes under Glimmer::LibUI::Shape namespace
+- Nest control proxies under `Glimmer::LibUI::ControlProxy` namespace
+- Nest shapes under `Glimmer::LibUI::Shape` namespace
+- Nest `vertical_box` and `horizontal_box` under `Glimmer::LibUI::ControlProxy::Box` namespace
+- Nest columns under `Glimmer::LibUI::ControlProxy::Column` namespace
 
 ## 0.1.5
 
