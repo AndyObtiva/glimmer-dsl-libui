@@ -121,9 +121,8 @@ module Glimmer
           @draw_stroke_params.Join = @stroke[:join] || 0 # miter
           @draw_stroke_params.Thickness = @stroke[:thickness] || 1
           @draw_stroke_params.MiterLimit = @stroke[:miter_limit] || 10 # DEFAULT_MITER_LIMIT
-          @draw_stroke_params_dashes ||= Fiddle::Pointer.malloc(8)
-          @draw_stroke_params.Dashes = @draw_stroke_params_dashes
-          @draw_stroke_params.NumDashes = @stroke[:num_dashes] || 0 # TODO reimplement this line correctly (perhaps no need to pass num dashes, yet dashes themselves and use their count here)
+          @draw_stroke_params.Dashes = @stroke[:dashes].to_a.pack('d*')
+          @draw_stroke_params.NumDashes = @stroke[:dashes].to_a.count
           @draw_stroke_params.DashPhase = @stroke[:dash_phase] || 0
           @draw_stroke_params
         end

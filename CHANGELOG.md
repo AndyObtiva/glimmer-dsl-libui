@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.1.7
+
+- Support `stroke` `:dashes`
+
 ## 0.1.6
 
 - Update default `window` `width` to `190`
