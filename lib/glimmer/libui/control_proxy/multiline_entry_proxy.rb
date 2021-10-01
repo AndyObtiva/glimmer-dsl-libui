@@ -35,3 +35,5 @@ module Glimmer
     end
   end
 end
+
+Dir[File.expand_path('./multiline_entry_proxy/*.rb', __dir__)].each {|f| require f}

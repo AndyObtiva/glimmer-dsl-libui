@@ -41,3 +41,5 @@ module Glimmer
     end
   end
 end
+
+Dir[File.expand_path('./menu_item_proxy/*.rb', __dir__)].each {|f| require f}

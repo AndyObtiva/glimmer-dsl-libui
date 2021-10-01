@@ -68,3 +68,5 @@ module Glimmer
     end
   end
 end
+
+Dir[File.expand_path('./date_time_picker_proxy/*.rb', __dir__)].each {|f| require f}

@@ -9,6 +9,10 @@
 - Nest shapes under `Glimmer::LibUI::Shape` namespace
 - Nest `vertical_box` and `horizontal_box` under `Glimmer::LibUI::ControlProxy::Box` namespace
 - Nest columns under `Glimmer::LibUI::ControlProxy::Column` namespace
+- Nest menu item proxies under `Glimmer::LibUI::ControlProxy::MenuItemProxy` namespace
+- Nest date time picker proxies under `Glimmer::LibUI::ControlProxy::DateTimePickerProxy` namespace
+- Nest multiline entry proxies under `Glimmer::LibUI::ControlProxy::MultinlineEntryProxy` namespace
+- Support `time_picker` control explicitly
 
 ## 0.1.5
 

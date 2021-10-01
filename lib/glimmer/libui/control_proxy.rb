@@ -31,7 +31,10 @@ module Glimmer
             ::LibUI.respond_to?(keyword) ||
             ControlProxy.constants.include?(constant_symbol(keyword)) ||
             ControlProxy::Box.constants.include?(constant_symbol(keyword)) ||
-            ControlProxy::Column.constants.include?(constant_symbol(keyword))
+            ControlProxy::Column.constants.include?(constant_symbol(keyword)) ||
+            ControlProxy::MultilineEntryProxy.constants.include?(constant_symbol(keyword)) ||
+            ControlProxy::DateTimePickerProxy.constants.include?(constant_symbol(keyword)) ||
+            ControlProxy::MenuItemProxy.constants.include?(constant_symbol(keyword))
         end
         
         def create(keyword, parent, args, &block)
@@ -43,6 +46,9 @@ module Glimmer
           (ControlProxy.constants.include?(class_name) && ControlProxy.const_get(class_name)) ||
             (ControlProxy::Box.constants.include?(class_name) && ControlProxy::Box.const_get(class_name)) ||
             (ControlProxy::Column.constants.include?(class_name) && ControlProxy::Column.const_get(class_name)) ||
+            (ControlProxy::MultilineEntryProxy.constants.include?(class_name) && ControlProxy::MultilineEntryProxy.const_get(class_name)) ||
+            (ControlProxy::DateTimePickerProxy.constants.include?(class_name) && ControlProxy::DateTimePickerProxy.const_get(class_name)) ||
+            (ControlProxy::MenuItemProxy.constants.include?(class_name) && ControlProxy::MenuItemProxy.const_get(class_name)) ||
             ControlProxy
         end
         

@@ -19,43 +19,22 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'glimmer/libui/control_proxy/menu_item_proxy'
+require 'glimmer/libui/control_proxy/date_time_picker_proxy'
 
 module Glimmer
   module LibUI
     class ControlProxy
-      # Proxy for LibUI quit menu item object
-      #
-      # Follows the Proxy Design Pattern
-      class QuitMenuItemProxy < MenuItemProxy
-        def can_handle_listener?(listener_name)
-          listener_name == 'on_clicked' || super
-        end
-      
-        def handle_listener(listener_name, &listener)
-          if listener_name == 'on_clicked'
-            @default_behavior_listener = Proc.new do
-              return_value = listener.call(self)
-              if return_value.is_a?(Numeric)
-                return_value
-              else
-                destroy
-                ::LibUI.quit
-                0
-              end
+      class DateTimePickerProxy < ControlProxy
+        # Proxy for LibUI date picker objects
+        #
+        # Follows the Proxy Design Pattern
+        class DatePickerProxy < DateTimePickerProxy
+          def time(value = nil)
+            if value.nil?
+              super.slice(:mday, :mon, :year, :wday, :yday)
+            else
+              super
             end
-            ::LibUI.on_should_quit(&@default_behavior_listener)
-          end
-        end
-      
-        private
-        
-        def build_control
-          @libui = @parent_proxy.append_quit_item(*@args)
-          handle_listener('on_clicked') do
-            ControlProxy.main_window_proxy&.destroy
-            ::LibUI.quit
-            0
           end
         end
       end

@@ -19,20 +19,20 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'glimmer/libui/control_proxy/date_time_picker_proxy'
+require 'glimmer/libui/control_proxy/menu_item_proxy'
 
 module Glimmer
   module LibUI
     class ControlProxy
-      # Proxy for LibUI date picker objects
-      #
-      # Follows the Proxy Design Pattern
-      class DatePickerProxy < DateTimePickerProxy
-        def time(value = nil)
-          if value.nil?
-            super.slice(:mday, :mon, :year, :wday, :yday)
-          else
-            super
+      class MenuItemProxy < ControlProxy
+        # Proxy for LibUI about menu item object
+        #
+        # Follows the Proxy Design Pattern
+        class AboutMenuItemProxy < MenuItemProxy
+          private
+          
+          def build_control
+            @libui = @parent_proxy.append_about_item(*@args)
           end
         end
       end
