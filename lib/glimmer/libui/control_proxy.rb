@@ -29,12 +29,7 @@ module Glimmer
         def exists?(keyword)
           ::LibUI.respond_to?("new_#{keyword}") ||
             ::LibUI.respond_to?(keyword) ||
-            ControlProxy.constants.include?(constant_symbol(keyword)) ||
-            ControlProxy::Box.constants.include?(constant_symbol(keyword)) ||
-            ControlProxy::Column.constants.include?(constant_symbol(keyword)) ||
-            ControlProxy::MultilineEntryProxy.constants.include?(constant_symbol(keyword)) ||
-            ControlProxy::DateTimePickerProxy.constants.include?(constant_symbol(keyword)) ||
-            ControlProxy::MenuItemProxy.constants.include?(constant_symbol(keyword))
+            descendant_keyword_constant_map.keys.include?(keyword)
         end
         
         def create(keyword, parent, args, &block)
@@ -43,13 +38,7 @@ module Glimmer
         
         def widget_proxy_class(keyword)
           class_name = constant_symbol(keyword)
-          (ControlProxy.constants.include?(class_name) && ControlProxy.const_get(class_name)) ||
-            (ControlProxy::Box.constants.include?(class_name) && ControlProxy::Box.const_get(class_name)) ||
-            (ControlProxy::Column.constants.include?(class_name) && ControlProxy::Column.const_get(class_name)) ||
-            (ControlProxy::MultilineEntryProxy.constants.include?(class_name) && ControlProxy::MultilineEntryProxy.const_get(class_name)) ||
-            (ControlProxy::DateTimePickerProxy.constants.include?(class_name) && ControlProxy::DateTimePickerProxy.const_get(class_name)) ||
-            (ControlProxy::MenuItemProxy.constants.include?(class_name) && ControlProxy::MenuItemProxy.const_get(class_name)) ||
-            ControlProxy
+          descendant_keyword_constant_map[keyword] || ControlProxy
         end
         
         # autosave all controls in this array to avoid garbage collection
@@ -76,6 +65,31 @@ module Glimmer
         
         def constant_symbol(keyword)
           "#{keyword.camelcase(:upper)}Proxy".to_sym
+        end
+        
+        def keyword(constant_symbol)
+          constant_symbol.to_s.underscore.sub(/_proxy$/, '')
+        end
+        
+        def descendant_keyword_constant_map
+          @descendant_keyword_constant_map ||= map_descendant_keyword_constants_for(self)
+        end
+        
+        def reset_descendant_keyword_constant_map
+          @descendant_keyword_constant_map = nil
+          descendant_keyword_constant_map
+        end
+        
+        def map_descendant_keyword_constants_for(klass, accumulator: {})
+          klass.constants.map do |constant_symbol|
+            [constant_symbol, klass.const_get(constant_symbol)]
+          end.select do |constant_symbol, constant|
+            constant.is_a?(Module) && !accumulator.values.include?(constant)
+          end.each do |constant_symbol, constant|
+            accumulator[keyword(constant_symbol)] = constant
+            map_descendant_keyword_constants_for(constant, accumulator: accumulator)
+          end
+          accumulator
         end
       end
       
