@@ -9,8 +9,9 @@ Y_OFF_TOP    = 20
 X_OFF_RIGHT  = 20
 Y_OFF_BOTTOM = 20
 POINT_RADIUS = 5
-
 COLOR_BLUE   = 0x1E90FF
+
+@datapoints   = 10.times.map {Random.new.rand(90)}
 
 def graph_size(area_width, area_height)
   graph_width = area_width - X_OFF_LEFT - X_OFF_RIGHT
@@ -18,22 +19,18 @@ def graph_size(area_width, area_height)
   [graph_width, graph_height]
 end
 
-def point_locations(datapoints, width, height)
+def point_locations(width, height)
   xincr = width / 9.0 # 10 - 1 to make the last point be at the end
   yincr = height / 100.0
 
-  data = []
-  datapoints.each_with_index do |dp, i|
-    val = 100 - dp.value
-    data << [xincr * i, yincr * val]
-    i += 1
+  @datapoints.each_with_index.map do |value, i|
+    val = 100 - value
+    [xincr * i, yincr * val]
   end
-
-  data
 end
 
-def graph_path(datapoints, width, height, should_extend, &block)
-  locations = point_locations(datapoints, width, height)
+def graph_path(width, height, should_extend, &block)
+  locations = point_locations(width, height)
   path {
     first_location = locations[0] # x and y
     figure(first_location[0], first_location[1]) {
@@ -48,7 +45,7 @@ def graph_path(datapoints, width, height, should_extend, &block)
       end
     }
     
-    # now transform the coordinate space so (0, 0) is the top-left corner of the graph
+    # apply a transform to the coordinate space for this path so (0, 0) is the top-left corner of the graph
     transform {
       translate X_OFF_LEFT, Y_OFF_TOP
     }
@@ -64,12 +61,13 @@ window('histogram example', 640, 480) {
     vertical_box {
       stretchy false
       
-      @datapoints = 10.times.map do
-        spinbox(0, 100) {
+      10.times do |i|
+        spinbox(0, 100) { |sb|
           stretchy false
-          value Random.new.rand(90)
+          value @datapoints[i]
           
           on_changed do
+            @datapoints[i] = sb.value
             @area.queue_redraw_all
           end
         }
@@ -105,12 +103,12 @@ window('histogram example', 640, 480) {
         }
       
         # now create the fill for the graph below the graph line
-        graph_path(@datapoints, graph_width, graph_height, true) {
+        graph_path(graph_width, graph_height, true) {
           fill @color_button.color.merge(a: 0.5)
         }
         
         # now draw the histogram line
-        graph_path(@datapoints, graph_width, graph_height, false) {
+        graph_path(graph_width, graph_height, false) {
           stroke @color_button.color.merge(thickness: 2, miter_limit: 10)
         }
       end

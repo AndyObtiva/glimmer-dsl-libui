@@ -2,14 +2,13 @@
 
 ## Next
 
-- Prevent point_locations method from accessing spinbox control internals in histogram.rb (have the view push the data to the model instead to keep model decoupled from view)
-
-## Soon
-
 - Support `area` listeners: `on_mouse_event`, `on_mouse_crossed`, `on_drag_broken`, `on_key_event`
 - Support `path` `fill`/`stroke` `:type` of `:linear_gradient`
 - Support `path` `fill`/`stroke` `:type` of `:radial_gradient`
 - Support `stroke` `:dashes`
+
+## Soon
+
 - New examples/basic_scrolling_area.rb
 - Support `scrolling_area` control and `size` property
 
