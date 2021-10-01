@@ -42,20 +42,27 @@ class MetaExample
             end
           }
           
-          button('Launch') {
+          horizontal_box {
             stretchy false
             
-            on_clicked do
-              begin
-                meta_example_file = File.join(Dir.home, '.meta_example.rb')
-                File.write(meta_example_file, @nwme.text)
-                result = `ruby -r #{glimmer_dsl_libui_file} #{meta_example_file} 2>&1`
-                msg_box(w, 'Error Running Example', result) if result.include?('error')
-              rescue => e
-                puts 'Unable to write code changes! Running original example...'
-                system "ruby -r #{glimmer_dsl_libui_file} #{file_path_for(@examples[@rbs.selected])}"
+            button('Launch') {
+              on_clicked do
+                begin
+                  meta_example_file = File.join(Dir.home, '.meta_example.rb')
+                  File.write(meta_example_file, @nwme.text)
+                  result = `ruby -r #{glimmer_dsl_libui_file} #{meta_example_file} 2>&1`
+                  msg_box(w, 'Error Running Example', result) if result.include?('error')
+                rescue => e
+                  puts 'Unable to write code changes! Running original example...'
+                  system "ruby -r #{glimmer_dsl_libui_file} #{file_path_for(@examples[@rbs.selected])}"
+                end
               end
-            end
+            }
+            button('Reset') {
+              on_clicked do
+                @nwme.text = File.read(file_path_for(@examples[@rbs.selected]))
+              end
+            }
           }
         }
         
