@@ -2,8 +2,6 @@
 
 ## Next
 
-- Nest control proxies under Glimmer::LibUI::ControlProxy namespace
-- Nest shapes under Glimmer::LibUI::Shape namespace
 - Support X11 color names (via `color` gem)
 - Support ability to set fill/stroke to x11/Integer/String color directly (optionally with extra hash key/value pairs)
 - Support ability to set color_button.color to {color: x11/Integer/String}

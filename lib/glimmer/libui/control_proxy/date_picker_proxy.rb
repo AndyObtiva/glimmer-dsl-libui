@@ -19,38 +19,23 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'glimmer/dsl/expression'
-require 'glimmer/dsl/parent_expression'
+require 'glimmer/libui/control_proxy/date_time_picker_proxy'
 
 module Glimmer
-  module DSL
-    module Libui
-      class ShapeExpression < Expression
-        include ParentExpression
-  
-        def can_interpret?(parent, keyword, *args, &block)
-          Glimmer::LibUI::Shape.exists?(keyword) and
-            (
-              parent.is_a?(Glimmer::LibUI::ControlProxy::PathProxy) or
-                parent.is_a?(Glimmer::LibUI::Shape)
-            )
+  module LibUI
+    class ControlProxy
+      # Proxy for LibUI date picker objects
+      #
+      # Follows the Proxy Design Pattern
+      class DatePickerProxy < DateTimePickerProxy
+        def time(value = nil)
+          if value.nil?
+            super.slice(:mday, :mon, :year, :wday, :yday)
+          else
+            super
+          end
         end
-  
-        def interpret(parent, keyword, *args, &block)
-          Glimmer::LibUI::Shape.create(keyword, parent, args, &block)
-        end
-        
-        def add_content(parent, keyword, *args, &block)
-          super
-          parent.post_add_content
-        end
-        
       end
     end
   end
 end
-
-# TODO Consider moving all shapes underneath Shape namespace
-require 'glimmer/libui/control_proxy/path_proxy'
-require 'glimmer/libui/shape'
-Dir[File.expand_path('../../libui/shape/*.rb', __dir__)].each {|f| require f}

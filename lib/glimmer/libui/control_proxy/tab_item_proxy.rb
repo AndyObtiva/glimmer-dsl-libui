@@ -19,38 +19,51 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'glimmer/dsl/expression'
-require 'glimmer/dsl/parent_expression'
+require 'glimmer/libui/control_proxy'
+require 'glimmer/libui/control_proxy/horizontal_box_proxy'
 
 module Glimmer
-  module DSL
-    module Libui
-      class ShapeExpression < Expression
-        include ParentExpression
-  
-        def can_interpret?(parent, keyword, *args, &block)
-          Glimmer::LibUI::Shape.exists?(keyword) and
-            (
-              parent.is_a?(Glimmer::LibUI::ControlProxy::PathProxy) or
-                parent.is_a?(Glimmer::LibUI::Shape)
-            )
-        end
-  
-        def interpret(parent, keyword, *args, &block)
-          Glimmer::LibUI::Shape.create(keyword, parent, args, &block)
+  module LibUI
+    class ControlProxy
+      # Proxy for LibUI tab item objects
+      #
+      # Follows the Proxy Design Pattern
+      class TabItemProxy < ControlProxy
+        attr_reader :index
+        
+        def initialize(keyword, parent, args, &block)
+          @keyword = keyword
+          @parent_proxy = parent
+          @args = args
+          @block = block
+          @enabled = 1
+          @index = @parent_proxy.num_pages
+          @content = @block&.call
+          build_control
         end
         
-        def add_content(parent, keyword, *args, &block)
-          super
-          parent.post_add_content
+        def name
+          @args.first
         end
         
+        def margined(value = nil)
+          if value.nil?
+            @parent_proxy.margined(@index)
+          else
+            @parent_proxy.margined(@index, value)
+          end
+        end
+        alias set_margined margined
+        alias margined= margined
+        alias margined? margined
+            
+        private
+        
+        def build_control
+          @content = HorizontalBoxProxy.new('horizontal_box', @libui, []) if @content.nil?
+          @libui = @parent_proxy.append(name, @content.libui)
+        end
       end
     end
   end
 end
-
-# TODO Consider moving all shapes underneath Shape namespace
-require 'glimmer/libui/control_proxy/path_proxy'
-require 'glimmer/libui/shape'
-Dir[File.expand_path('../../libui/shape/*.rb', __dir__)].each {|f| require f}

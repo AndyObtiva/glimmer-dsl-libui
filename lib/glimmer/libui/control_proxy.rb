@@ -29,7 +29,7 @@ module Glimmer
         def exists?(keyword)
           ::LibUI.respond_to?("new_#{keyword}") ||
             ::LibUI.respond_to?(keyword) ||
-            Glimmer::LibUI.constants.include?("#{keyword.camelcase(:upper)}Proxy".to_sym)
+            ControlProxy.constants.include?("#{keyword.camelcase(:upper)}Proxy".to_sym)
         end
         
         def create(keyword, parent, args, &block)
@@ -39,9 +39,9 @@ module Glimmer
         def widget_proxy_class(keyword)
           begin
             class_name = "#{keyword.camelcase(:upper)}Proxy".to_sym
-            Glimmer::LibUI.const_get(class_name)
+            ControlProxy.const_get(class_name)
           rescue
-            Glimmer::LibUI::ControlProxy
+            ControlProxy
           end
         end
         
@@ -52,7 +52,7 @@ module Glimmer
         end
         
         def main_window_proxy
-          control_proxies.find {|c| c.is_a?(Glimmer::LibUI::WindowProxy)}
+          control_proxies.find {|c| c.is_a?(WindowProxy)}
         end
         
         def menu_proxies

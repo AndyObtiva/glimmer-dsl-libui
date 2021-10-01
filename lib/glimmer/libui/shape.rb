@@ -20,6 +20,8 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 require 'glimmer/libui/parent'
+require 'glimmer/libui/control_proxy/area_proxy'
+require 'glimmer/libui/control_proxy/path_proxy'
 
 module Glimmer
   module LibUI
@@ -27,7 +29,7 @@ module Glimmer
     class Shape
       class << self
         def exists?(keyword)
-          Glimmer::LibUI.constants.include?(constant_symbol(keyword)) and
+          Shape.constants.include?(constant_symbol(keyword)) and
             shape_class(keyword).respond_to?(:ancestors) and
             shape_class(keyword).ancestors.include?(Shape)
         end
@@ -37,7 +39,7 @@ module Glimmer
         end
         
         def shape_class(keyword)
-          Glimmer::LibUI.const_get(constant_symbol(keyword))
+          Shape.const_get(constant_symbol(keyword))
         end
         
         def parameters(*params)
@@ -95,11 +97,11 @@ module Glimmer
       end
       
       def area_proxy
-        find_parent_in_ancestors { |parent| parent.nil? || parent.is_a?(AreaProxy) }
+        find_parent_in_ancestors { |parent| parent.nil? || parent.is_a?(ControlProxy::AreaProxy) }
       end
       
       def path_proxy
-        find_parent_in_ancestors { |parent| parent.nil? || parent.is_a?(PathProxy) }
+        find_parent_in_ancestors { |parent| parent.nil? || parent.is_a?(ControlProxy::PathProxy) }
       end
       
       def respond_to?(method_name, *args, &block)

@@ -20,14 +20,14 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 require 'glimmer/dsl/static_expression'
-require 'glimmer/libui/tab_item_proxy'
+require 'glimmer/libui/control_proxy/tab_item_proxy'
 
 module Glimmer
   module DSL
     module Libui
       class TabItemExpression < StaticExpression
         def interpret(parent, keyword, *args, &block)
-          Glimmer::LibUI::TabItemProxy.create(keyword, parent, args, &block)
+          Glimmer::LibUI::ControlProxy::TabItemProxy.create(keyword, parent, args, &block)
         end
       end
     end

@@ -19,38 +19,37 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'glimmer/dsl/expression'
-require 'glimmer/dsl/parent_expression'
+require 'glimmer/libui/control_proxy'
 
 module Glimmer
-  module DSL
-    module Libui
-      class ShapeExpression < Expression
-        include ParentExpression
-  
-        def can_interpret?(parent, keyword, *args, &block)
-          Glimmer::LibUI::Shape.exists?(keyword) and
-            (
-              parent.is_a?(Glimmer::LibUI::ControlProxy::PathProxy) or
-                parent.is_a?(Glimmer::LibUI::Shape)
-            )
-        end
-  
-        def interpret(parent, keyword, *args, &block)
-          Glimmer::LibUI::Shape.create(keyword, parent, args, &block)
+  module LibUI
+    class ControlProxy
+      # Proxy for LibUI group objects
+      #
+      # Follows the Proxy Design Pattern
+      class GroupProxy < ControlProxy
+        DEFAULT_TITLE = ''
+        
+        def post_initialize_child(child)
+          ::LibUI.group_set_child(@libui, child.libui)
         end
         
-        def add_content(parent, keyword, *args, &block)
+        def destroy_child(child)
+          ::LibUI.send("group_set_child", @libui, nil)
           super
-          parent.post_add_content
         end
+      
+        private
         
+        def build_control
+          construction_args = @args.dup
+          construction_args[0] = DEFAULT_TITLE if construction_args.size == 0
+          @libui = ControlProxy.new_control(@keyword, construction_args)
+          @libui.tap do
+            self.margined = true
+          end
+        end
       end
     end
   end
 end
-
-# TODO Consider moving all shapes underneath Shape namespace
-require 'glimmer/libui/control_proxy/path_proxy'
-require 'glimmer/libui/shape'
-Dir[File.expand_path('../../libui/shape/*.rb', __dir__)].each {|f| require f}

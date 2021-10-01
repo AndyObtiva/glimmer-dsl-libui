@@ -19,38 +19,25 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'glimmer/dsl/expression'
-require 'glimmer/dsl/parent_expression'
+require 'glimmer/libui/shape'
 
 module Glimmer
-  module DSL
-    module Libui
-      class ShapeExpression < Expression
-        include ParentExpression
-  
-        def can_interpret?(parent, keyword, *args, &block)
-          Glimmer::LibUI::Shape.exists?(keyword) and
-            (
-              parent.is_a?(Glimmer::LibUI::ControlProxy::PathProxy) or
-                parent.is_a?(Glimmer::LibUI::Shape)
-            )
-        end
-  
-        def interpret(parent, keyword, *args, &block)
-          Glimmer::LibUI::Shape.create(keyword, parent, args, &block)
-        end
-        
-        def add_content(parent, keyword, *args, &block)
+  module LibUI
+    class Shape
+      class Arc < Shape
+        parameters :x_center, :y_center, :radius, :start_angle, :sweep, :is_negative
+        parameter_defaults 0, 0, 0, 0, 360, false
+                
+        def draw(area_draw_params)
+          @args[5] ||= Glimmer::LibUI.boolean_to_integer(@args[5], allow_nil: false)
+          if parent.is_a?(Figure) && parent.x.nil? && parent.y.nil?
+            ::LibUI.draw_path_new_figure_with_arc(path_proxy.libui, *@args)
+          else
+            ::LibUI.draw_path_arc_to(path_proxy.libui, *@args)
+          end
           super
-          parent.post_add_content
         end
-        
       end
     end
   end
 end
-
-# TODO Consider moving all shapes underneath Shape namespace
-require 'glimmer/libui/control_proxy/path_proxy'
-require 'glimmer/libui/shape'
-Dir[File.expand_path('../../libui/shape/*.rb', __dir__)].each {|f| require f}

@@ -19,6 +19,8 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+require 'glimmer/libui/control_proxy/matrix_proxy'
+
 module Glimmer
   module LibUI
     # This is meant to be prepended (not included) because it changes behavior of instance draw method
@@ -28,7 +30,7 @@ module Glimmer
     # Expects transformable to implement redraw method
     module Transformable
       def post_initialize_child(child, add_child: true)
-        if child.is_a?(MatrixProxy)
+        if child.is_a?(ControlProxy::MatrixProxy)
           super(child, add_child: false)
           self.transform = child if child.keyword == 'transform'
         else

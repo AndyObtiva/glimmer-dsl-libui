@@ -19,38 +19,38 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'glimmer/dsl/expression'
-require 'glimmer/dsl/parent_expression'
+require 'glimmer/libui/control_proxy'
 
 module Glimmer
-  module DSL
-    module Libui
-      class ShapeExpression < Expression
-        include ParentExpression
-  
-        def can_interpret?(parent, keyword, *args, &block)
-          Glimmer::LibUI::Shape.exists?(keyword) and
-            (
-              parent.is_a?(Glimmer::LibUI::ControlProxy::PathProxy) or
-                parent.is_a?(Glimmer::LibUI::Shape)
-            )
-        end
-  
-        def interpret(parent, keyword, *args, &block)
-          Glimmer::LibUI::Shape.create(keyword, parent, args, &block)
+  module LibUI
+    class ControlProxy
+      class FormProxy < ControlProxy
+        APPEND_PROPERTIES = %w[label stretchy]
+        
+        def post_initialize_child(child)
+          child.label = '' if child.label.nil?
+          child.stretchy = true if child.stretchy.nil?
+          ::LibUI.form_append(@libui, child.label, child.libui, Glimmer::LibUI.boolean_to_integer(child.stretchy))
+          children << child
         end
         
-        def add_content(parent, keyword, *args, &block)
-          super
-          parent.post_add_content
+        def children
+          @children ||= []
         end
         
+        def destroy_child(child)
+          ::LibUI.send("form_delete", @libui, children.index(child))
+          ControlProxy.control_proxies.delete(child)
+        end
+        
+        private
+        
+        def build_control
+          super.tap do
+            self.padded = true
+          end
+        end
       end
     end
   end
 end
-
-# TODO Consider moving all shapes underneath Shape namespace
-require 'glimmer/libui/control_proxy/path_proxy'
-require 'glimmer/libui/shape'
-Dir[File.expand_path('../../libui/shape/*.rb', __dir__)].each {|f| require f}

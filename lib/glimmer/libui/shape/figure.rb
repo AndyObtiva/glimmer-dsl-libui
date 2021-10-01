@@ -19,38 +19,36 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'glimmer/dsl/expression'
-require 'glimmer/dsl/parent_expression'
+require 'glimmer/libui/shape'
 
 module Glimmer
-  module DSL
-    module Libui
-      class ShapeExpression < Expression
-        include ParentExpression
-  
-        def can_interpret?(parent, keyword, *args, &block)
-          Glimmer::LibUI::Shape.exists?(keyword) and
-            (
-              parent.is_a?(Glimmer::LibUI::ControlProxy::PathProxy) or
-                parent.is_a?(Glimmer::LibUI::Shape)
-            )
-        end
-  
-        def interpret(parent, keyword, *args, &block)
-          Glimmer::LibUI::Shape.create(keyword, parent, args, &block)
-        end
-        
-        def add_content(parent, keyword, *args, &block)
+  module LibUI
+    class Shape
+      # Represents a figure consisting of shapes (nested under path)
+      # Can optionally have `closed true` property (connecting last point to first point automatically)
+      class Figure < Shape
+        parameters :x, :y
+        parameter_defaults nil, nil
+      
+        def draw(area_draw_params)
+          ::LibUI.draw_path_new_figure(path_proxy.libui, *@args) unless @args.compact.empty? # TODO if args empty then wait till there is an arc child and it starts the figure
+          children.dup.each {|child| child.draw(area_draw_params)}
+          ::LibUI.draw_path_close_figure(path_proxy.libui) if closed?
           super
-          parent.post_add_content
         end
         
+        def closed(value = nil)
+          if value.nil?
+            @closed
+          else
+            @closed = value
+            area_proxy&.queue_redraw_all
+          end
+        end
+        alias closed= closed
+        alias set_closed closed
+        alias closed? closed
       end
     end
   end
 end
-
-# TODO Consider moving all shapes underneath Shape namespace
-require 'glimmer/libui/control_proxy/path_proxy'
-require 'glimmer/libui/shape'
-Dir[File.expand_path('../../libui/shape/*.rb', __dir__)].each {|f| require f}
