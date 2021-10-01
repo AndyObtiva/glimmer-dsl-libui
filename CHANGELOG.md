@@ -2,7 +2,7 @@
 
 ## 0.1.7
 
-- Support `stroke` `:dashes`
+- Support `stroke` `:dashes` and use in examples/area_gallery.rb
 - Support symbol values for draw_line_cap (`:round`, `:square`, `:flat`) and draw_line_join (`:miter`, `:round`, `:bevel`) and draw_fill_mode (`:winding` and `:alternate`)
 
 ## 0.1.6

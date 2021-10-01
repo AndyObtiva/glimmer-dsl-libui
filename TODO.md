@@ -2,8 +2,6 @@
 
 ## Next
 
-- Support `path` `fill`/`stroke` `:type` of `:linear_gradient`
-- Support `path` `fill`/`stroke` `:type` of `:radial_gradient`
 - Support `area` listeners: `on_mouse_event`, `on_mouse_crossed`, `on_drag_broken`, `on_key_event`
 - Update screenshot for area gallery
 
@@ -22,6 +20,8 @@
 - Add a 3rd tab to examples/grid.rb showcasing the halign and valign properties and provide symbol alternatives for their values like `:fill` (0), `:start` (1), `:center` (2), and `:end` (3)
 - Support examples/basic_draw_text.rb
 - Support `text` control
+- Support `path` `fill`/`stroke` `:type` of `:linear_gradient`
+- Support `path` `fill`/`stroke` `:type` of `:radial_gradient`
 - Create new examples not found in LibUI for everything not covered by the original examples
 - Support automatic `grid` horizontal or vertical layout by specifying `column_count` or `row_count`
 - Support control-specific operations that accept Ruby proxy objects instead of Fiddle pointer objects (mainly `insert_at` operations)
