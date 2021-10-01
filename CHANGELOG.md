@@ -13,7 +13,7 @@
 - Nest date time picker proxies under `Glimmer::LibUI::ControlProxy::DateTimePickerProxy` namespace
 - Nest multiline entry proxies under `Glimmer::LibUI::ControlProxy::MultinlineEntryProxy` namespace
 - Support `time_picker` control explicitly
-- Support X11 color names (via `color` gem)
+- Support X11 color names (via [color](https://github.com/halostatue/color) gem)
 - Support passing :red, :green, :blue, :alpha keys to fill/stroke (not just :r,:g,:b,:a)
 - Support 3-number hex color shorthand
 - Support ability to set fill/stroke to x11/Integer/String color directly (e.g. `fill 'steelblue'` , optionally with extra hash key/value pairs e.g. `fill 0x238232, a: 0.5`)

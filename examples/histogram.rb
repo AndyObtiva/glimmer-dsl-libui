@@ -29,6 +29,7 @@ def point_locations(width, height)
   end
 end
 
+# method-based custom control representing a graph path
 def graph_path(width, height, should_extend, &block)
   locations = point_locations(width, height)
   path {

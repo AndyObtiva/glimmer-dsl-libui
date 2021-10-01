@@ -1188,12 +1188,12 @@ ruby -r glimmer-dsl-libui -e "require 'examples/midi_player'"
 Mac
 
 ![glimmer-dsl-libui-mac-midi-player.png](images/glimmer-dsl-libui-mac-midi-player.png)
-![glimmer-dsl-libui-mac-midi-player-version-msg-box.png](images/glimmer-dsl-libui-mac-midi-player-version-msg-box.png)
+![glimmer-dsl-libui-mac-midi-player-msg-box.png](images/glimmer-dsl-libui-mac-midi-player-msg-box.png)
 
 Linux
 
 ![glimmer-dsl-libui-linux-midi-player.png](images/glimmer-dsl-libui-linux-midi-player.png)
-![glimmer-dsl-libui-linux-midi-player-version-msg-box.png](images/glimmer-dsl-libui-linux-midi-player-version-msg-box.png)
+![glimmer-dsl-libui-linux-midi-player-msg-box.png](images/glimmer-dsl-libui-linux-midi-player-msg-box.png)
 
 [LibUI](https://github.com/kojix2/LibUI) Original Version:
 
@@ -3922,6 +3922,7 @@ def point_locations(width, height)
   end
 end
 
+# method-based custom control representing a graph path
 def graph_path(width, height, should_extend, &block)
   locations = point_locations(width, height)
   path {
