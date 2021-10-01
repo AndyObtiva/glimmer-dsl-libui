@@ -38,7 +38,7 @@ window('Area Gallery', 400, 400) {
       }
 
       fill r: 202, g: 102, b: 204, a: 0.5
-      stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10]
+      stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
     }
     path { # declarative stable path
       arc(200, 200, 90, 0, 360, false)

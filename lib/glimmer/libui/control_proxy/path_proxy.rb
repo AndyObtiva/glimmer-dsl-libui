@@ -117,14 +117,36 @@ module Glimmer
         
         def draw_stroke_params
           @draw_stroke_params ||= ::LibUI::FFI::DrawStrokeParams.malloc
-          @draw_stroke_params.Cap = @stroke[:cap] || 0 # flat
-          @draw_stroke_params.Join = @stroke[:join] || 0 # miter
+          @draw_stroke_params.Cap = draw_line_cap # flat
+          @draw_stroke_params.Join = draw_line_join # miter
           @draw_stroke_params.Thickness = @stroke[:thickness] || 1
           @draw_stroke_params.MiterLimit = @stroke[:miter_limit] || 10 # DEFAULT_MITER_LIMIT
           @draw_stroke_params.Dashes = @stroke[:dashes].to_a.pack('d*')
           @draw_stroke_params.NumDashes = @stroke[:dashes].to_a.count
           @draw_stroke_params.DashPhase = @stroke[:dash_phase] || 0
           @draw_stroke_params
+        end
+        
+        def draw_line_cap
+          case @stroke && @stroke[:cap].to_s
+          when 'round'
+            1
+          when 'square'
+            2
+          else # 'flat'
+            0
+          end
+        end
+        
+        def draw_line_join
+          case @stroke && @stroke[:join].to_s
+          when 'round'
+            1
+          when 'bevel'
+            2
+          else # 'miter'
+            0
+          end
         end
         
         def destroy

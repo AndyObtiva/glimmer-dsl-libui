@@ -381,7 +381,7 @@ Control(Args) | Properties | Listeners
 `msg_box(window = main_window as Glimmer::LibUI::WindowProxy, title as String, description as String)` | None | None
 `msg_box_error(window = main_window as Glimmer::LibUI::WindowProxy, title as String, description as String)` | None | None
 `non_wrapping_multiline_entry` | `read_only` (Boolean), `text` (`String`) | `on_changed`
-`path` | `fill` (`Hash` of `:r` as `0`-`255`, `:g` as `0`-`255`, `:b` as `0`-`255`, `:a` as `0.0`-`1.0`), `stroke` (`Hash` of `:r` as `0`-`255`, `:g` as `0`-`255`, `:b` as `0`-`255`, `:a` as `0.0`-`1.0`, `:cap` as `Numeric`, `:join` as `Numeric`, `:thickness` as `Numeric`, `:miter_limit` as `Numeric` ) | None
+`path(draw_fill_mode = :winding)` | `fill` (`Hash` of `:r` as `0`-`255`, `:g` as `0`-`255`, `:b` as `0`-`255`, `:a` as `0.0`-`1.0`), `stroke` (`Hash` of `:r` as `0`-`255`, `:g` as `0`-`255`, `:b` as `0`-`255`, `:a` as `0.0`-`1.0`, `:cap` as (`:round`, `:square`, `:flat`), `:join` as (`:miter`, `:round`, `:bevel`), `:thickness` as `Numeric`, `:miter_limit` as `Numeric`, `:dashes` as `Array` of `Numeric` ) | None
 `preferences_menu_item` | None | `on_clicked`
 `progress_bar` | `value` (`Numeric`) | None
 `progress_bar_column(name as String)` | None | None
@@ -584,6 +584,8 @@ window('Basic Area', 400, 400) {
 ```
 
 Check [examples/dynamic_area.rb](#dynamic-area) for a more detailed semi-declarative example.
+
+`path` can receive a `draw_fill_mode` argument that can accept values `:winding` or `:alternate` and defaults to `:winding`.
 
 Available nested `path` shapes:
 - `rectangle(x as Numeric, y as Numeric, width as Numeric, height as Numeric)`
@@ -3367,13 +3369,13 @@ window('Area Gallery', 400, 400) {
       }
 
       fill r: 202, g: 102, b: 204, a: 0.5
-      stroke thickness: 2, r: 0, g: 0, b: 0
+      stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
     }
     path { # declarative stable path
       arc(200, 200, 90, 0, 360, false)
 
       fill r: 202, g: 102, b: 204, a: 0.5
-      stroke thickness: 2, r: 0, g: 0, b: 0
+      stroke r: 0, g: 0, b: 0, thickness: 2
     }
   }
 }.show
@@ -3476,7 +3478,7 @@ window('Area Gallery', 400, 400) {
       }
 
       fill r: 202, g: 102, b: 204, a: 0.5
-      stroke thickness: 2, r: 0, g: 0, b: 0
+      stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
     }
     path { # declarative stable path
       arc {
@@ -3489,7 +3491,7 @@ window('Area Gallery', 400, 400) {
       }
 
       fill r: 202, g: 102, b: 204, a: 0.5
-      stroke thickness: 2, r: 0, g: 0, b: 0
+      stroke r: 0, g: 0, b: 0, thickness: 2
     }
   }
 }.show
@@ -3539,13 +3541,13 @@ window('Area Gallery', 400, 400) {
         }
 
         fill r: 202, g: 102, b: 204, a: 0.5
-        stroke thickness: 2, r: 0, g: 0, b: 0
+        stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
       }
       path { # a dynamic path is added semi-declaratively inside on_draw block
         arc(200, 200, 90, 0, 360, false)
 
         fill r: 202, g: 102, b: 204, a: 0.5
-        stroke thickness: 2, r: 0, g: 0, b: 0
+        stroke r: 0, g: 0, b: 0, thickness: 2
       }
     end
   }
@@ -3650,7 +3652,7 @@ window('Area Gallery', 400, 400) {
         }
 
         fill r: 202, g: 102, b: 204, a: 0.5
-        stroke thickness: 2, r: 0, g: 0, b: 0
+        stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
       }
       path { # a dynamic path is added semi-declaratively inside on_draw block
         arc {
@@ -3663,7 +3665,7 @@ window('Area Gallery', 400, 400) {
         }
 
         fill r: 202, g: 102, b: 204, a: 0.5
-        stroke thickness: 2, r: 0, g: 0, b: 0
+        stroke r: 0, g: 0, b: 0, thickness: 2
       }
     end
   }

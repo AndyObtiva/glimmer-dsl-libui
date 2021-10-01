@@ -5,6 +5,7 @@
 - Support `path` `fill`/`stroke` `:type` of `:linear_gradient`
 - Support `path` `fill`/`stroke` `:type` of `:radial_gradient`
 - Support `area` listeners: `on_mouse_event`, `on_mouse_crossed`, `on_drag_broken`, `on_key_event`
+- Update screenshot for area gallery
 
 ## Soon
 
