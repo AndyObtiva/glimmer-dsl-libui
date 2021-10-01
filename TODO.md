@@ -2,8 +2,6 @@
 
 ## Next
 
-- New screenshots for examples/meta_example.rb
-- Have examples/meta_example.rb handle versions of examples with a combobox instead of adding them to master list
 - Nest control proxies under Glimmer::LibUI::ControlProxy namespace
 - Nest shapes under Glimmer::LibUI::Shape namespace
 - Support X11 color names (via `color` gem)

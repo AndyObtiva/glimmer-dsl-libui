@@ -4,6 +4,7 @@
 
 - Update default `window` `width` to `190`
 - Improve layout of examples/meta_example.rb
+- Enhance examples/meta_example.rb to enable choosing versions with a spinbox instead of adding them to examples list
 
 ## 0.1.5
 
