@@ -30,6 +30,8 @@ class MetaExample
       
       horizontal_box {
         vertical_box {
+          stretchy false
+          
           @rbs = radio_buttons {
             stretchy false
             items examples
@@ -39,6 +41,7 @@ class MetaExample
               @nwme.text = File.read(file_path_for(@examples[@rbs.selected]))
             end
           }
+          
           button('Launch') {
             stretchy false
             
@@ -55,10 +58,9 @@ class MetaExample
             end
           }
         }
-        vertical_box {
-          @nwme = non_wrapping_multiline_entry {
-            text File.read(file_path_for(@examples[@rbs.selected]))
-          }
+        
+        @nwme = non_wrapping_multiline_entry {
+          text File.read(file_path_for(@examples[@rbs.selected]))
         }
       }
     }.show

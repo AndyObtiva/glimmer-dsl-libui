@@ -3,6 +3,7 @@
 ## 0.1.6
 
 - Update default `window` `width` to `190`
+- Improve layout of examples/meta_example.rb
 
 ## 0.1.5
 

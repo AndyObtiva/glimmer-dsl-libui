@@ -2,6 +2,8 @@
 
 ## Next
 
+- New screenshots for examples/meta_example.rb
+- Have examples/meta_example.rb handle versions of examples with a combobox instead of adding them to master list
 - Nest control proxies under Glimmer::LibUI::ControlProxy namespace
 - Nest shapes under Glimmer::LibUI::Shape namespace
 - Support X11 color names (via `color` gem)
@@ -9,6 +11,7 @@
 - Support ability to set color_button.color to {color: x11/Integer/String}
 - Support passing red, green, blue, alpha keys to fill/stroke (not just r,g,b,a)
 - Prevent point_locations method from accessing spinbox control internals in histogram.rb (have the view push the data to the model instead to keep model decoupled from view)
+- Default values for `msg_box`/`msg_box_error` args if not supplied (assume main window automatically when window is not supplied)
 - Document autoparenting of `area` with `vertical_box` when added underneath `window` directly.
 
 ## Soon
@@ -31,7 +34,6 @@
 - Support examples/basic_draw_text.rb
 - Support `text` control
 - Create new examples not found in LibUI for everything not covered by the original examples
-- Default values for `msg_box`/`msg_box_error` args if not supplied (assume main window automatically when window is not supplied)
 - Support automatic `grid` horizontal or vertical layout by specifying `column_count` or `row_count`
 - Support control-specific operations that accept Ruby proxy objects instead of Fiddle pointer objects (mainly `insert_at` operations)
 - Support `table` `cell_value` block property to do custom cell value reading along with `num_rows` property
