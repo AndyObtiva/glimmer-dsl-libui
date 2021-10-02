@@ -36,7 +36,7 @@ module Glimmer
           attr_accessor :current_area_draw_params
         end
         
-        LISTENERS = ['on_draw', 'on_mouse_event', 'on_mouse_down', 'on_mouse_up']
+        LISTENERS = ['on_draw', 'on_mouse_event', 'on_mouse_down', 'on_mouse_up', 'on_mouse_drag_start', 'on_mouse_drag', 'on_mouse_drop']
         
         include Glimmer::FiddleConsumer
         include Parent
@@ -80,6 +80,9 @@ module Glimmer
             unless @last_area_mouse_event.nil?
               on_mouse_down.each { |listener| listener.call(area_mouse_event)} if area_mouse_event[:down] > 0 && @last_area_mouse_event[:down] == 0
               on_mouse_up.each { |listener| listener.call(area_mouse_event)} if area_mouse_event[:up] > 0 && @last_area_mouse_event[:up] == 0
+              on_mouse_drag_start.each { |listener| listener.call(area_mouse_event)} if area_mouse_event[:held] > 0 && @last_area_mouse_event[:held] == 0
+              on_mouse_drag.each { |listener| listener.call(area_mouse_event)} if area_mouse_event[:held] > 0
+              on_mouse_drop.each { |listener| listener.call(area_mouse_event)} if area_mouse_event[:held] == 0 && @last_area_mouse_event[:held] > 0
             end
             @last_area_mouse_event = area_mouse_event
           end

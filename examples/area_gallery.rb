@@ -58,5 +58,17 @@ window('Area Gallery', 400, 400) {
     on_mouse_up do |area_mouse_event|
       puts 'mouse up'
     end
+    
+    on_mouse_drag_start do |area_mouse_event|
+      puts 'drag start'
+    end
+    
+    on_mouse_drag do |area_mouse_event|
+      puts 'drag'
+    end
+    
+    on_mouse_drop do |area_mouse_event|
+      puts 'drop'
+    end
   }
 }.show
