@@ -141,7 +141,8 @@ module Glimmer
 
       def can_handle_listener?(listener_name)
         ::LibUI.respond_to?("#{libui_api_keyword}_#{listener_name}") ||
-          ::LibUI.respond_to?("control_#{listener_name}")
+          ::LibUI.respond_to?("control_#{listener_name}") ||
+          custom_listeners.include?(listener_name.to_s)
       end
       
       def handle_listener(listener_name, &listener)
@@ -150,6 +151,23 @@ module Glimmer
           ::LibUI.send("#{libui_api_keyword}_#{listener_name}", @libui, &safe_listener)
         elsif ::LibUI.respond_to?("control_#{listener_name}")
           ::LibUI.send("control_#{listener_name}", @libui, &safe_listener)
+        elsif custom_listeners.include?(listener_name.to_s)
+          handle_custom_listener(listener_name, &listener)
+        end
+      end
+      
+      def custom_listeners
+        self.class.constants.include?(:LISTENERS) ? self.class::LISTENERS : []
+      end
+      
+      def handle_custom_listener(listener_name, &listener)
+        instance_variable_name = "@#{listener_name}_procs"
+        instance_variable_set(instance_variable_name, []) if instance_variable_get(instance_variable_name).nil?
+        if listener.nil?
+          instance_variable_get(instance_variable_name)
+        else
+          instance_variable_get(instance_variable_name) << listener
+          listener
         end
       end
       
@@ -160,6 +178,7 @@ module Glimmer
             (append_properties.include?(method_name.to_s.sub(/\?$/, '')) && BOOLEAN_PROPERTIES.include?(method_name.to_s.sub(/\?$/, ''))) ||
             append_properties.include?(method_name.to_s.sub(/=$/, ''))
           ) ||
+          can_handle_listener?(method_name.to_s) ||
           super(method_name, true)
       end
       
@@ -178,6 +197,8 @@ module Glimmer
         elsif append_properties.include?(method_name.to_s) ||
             append_properties.include?(method_name.to_s.sub(/(=|\?)$/, ''))
           append_property(method_name, *args)
+        elsif can_handle_listener?(method_name.to_s)
+          handle_listener(method_name.to_s, &block)
         else
           super
         end

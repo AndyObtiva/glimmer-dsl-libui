@@ -36,6 +36,8 @@ module Glimmer
           attr_accessor :current_area_draw_params
         end
         
+        LISTENERS = ['on_draw', 'on_mouse_event']
+        
         include Glimmer::FiddleConsumer
         include Parent
         prepend Transformable
@@ -45,44 +47,6 @@ module Glimmer
         def post_add_content
           super
           install_listeners
-        end
-        
-        def on_draw(&block)
-          # TODO consider generalizing on_xyz methods with a super module
-          @on_draw_procs ||= []
-          if block.nil?
-            @on_draw_procs
-          else
-            @on_draw_procs << block
-            block
-          end
-        end
-        
-        def on_mouse_event(&block)
-          # TODO consider generalizing on_xyz methods with a super module
-          @on_mouse_event_procs ||= []
-          if block.nil?
-            @on_mouse_event_procs
-          else
-            @on_mouse_event_procs << block
-            block
-          end
-        end
-        
-        def can_handle_listener?(listener_name)
-          ['on_draw', 'on_mouse_event'].include?(listener_name.to_s) || super
-        end
-        
-        def handle_listener(listener_name, &listener)
-          # TODO refactor to be more dynamic logic
-          case listener_name.to_s
-          when 'on_draw'
-            on_draw(&listener)
-          when 'on_mouse_event'
-            on_mouse_event(&listener)
-          else
-            super
-          end
         end
         
         def draw(area_draw_params)
