@@ -2,8 +2,18 @@
 
 ## Next
 
-- Support `area` listeners: `on_mouse_event`, `on_mouse_crossed`, `on_drag_broken`, `on_key_event`
-- Update screenshot for area gallery
+- Support `area` listener: `on_mouse_down`
+- Support `area` listener: `on_mouse_up`
+- Support `area` listener: `on_mouse_enter`
+- Support `area` listener: `on_mouse_exit`
+- Support `area` listener: `on_mouse_hover`
+- Support `area` listener: `on_mouse_drag_start`
+- Support `area` listener: `on_mouse_drag`
+- Support `area` listener: `on_mouse_drop`
+- Support `area` listener: `on_mouse_crossed`
+- Support `area` listener: `on_drag_broken`
+- Support `area` listener: `on_key_event`
+- Use `area` listeners in examples/area_gallery.rb (all versions)
 
 ## Soon
 
@@ -53,6 +63,7 @@
 - Fold menus inside a `menu_bar` control
 - Support `matrix` `transform_point` method
 - Support `matrix` `transform_size` method
+- Support `matrix` operation noun names (e.g. `translation` for `translate`) to be more declarative
 
 # Refactoring
 

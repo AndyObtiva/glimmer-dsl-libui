@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.1.8
+
+- Support `area` listener: `on_mouse_event`
+
 ## 0.1.7
 
 - Support `stroke` `:dashes` and use in examples/area_gallery.rb

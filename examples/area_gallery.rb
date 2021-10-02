@@ -46,5 +46,9 @@ window('Area Gallery', 400, 400) {
       fill r: 202, g: 102, b: 204, a: 0.5
       stroke r: 0, g: 0, b: 0, thickness: 2
     }
+    
+    on_mouse_event do |area_mouse_event|
+      p area_mouse_event
+    end
   }
 }.show

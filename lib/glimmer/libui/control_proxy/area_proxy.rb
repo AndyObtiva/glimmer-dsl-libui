@@ -48,6 +48,7 @@ module Glimmer
         end
         
         def on_draw(&block)
+          # TODO consider generalizing on_xyz methods with a super module
           @on_draw_procs ||= []
           if block.nil?
             @on_draw_procs
@@ -57,14 +58,28 @@ module Glimmer
           end
         end
         
+        def on_mouse_event(&block)
+          # TODO consider generalizing on_xyz methods with a super module
+          @on_mouse_event_procs ||= []
+          if block.nil?
+            @on_mouse_event_procs
+          else
+            @on_mouse_event_procs << block
+            block
+          end
+        end
+        
         def can_handle_listener?(listener_name)
-          listener_name == 'on_draw' || super
+          ['on_draw', 'on_mouse_event'].include?(listener_name.to_s) || super
         end
         
         def handle_listener(listener_name, &listener)
-          case listener_name
+          # TODO refactor to be more dynamic logic
+          case listener_name.to_s
           when 'on_draw'
             on_draw(&listener)
+          when 'on_mouse_event'
+            on_mouse_event(&listener)
           else
             super
           end
@@ -94,7 +109,11 @@ module Glimmer
             draw(area_draw_params)
             AreaProxy.current_area_draw_params = nil
           end
-          @area_handler.MouseEvent   = fiddle_closure_block_caller(0, [0]) {}
+          @area_handler.MouseEvent   = fiddle_closure_block_caller(0, [1, 1, 1]) do |_, _, area_mouse_event|
+            area_mouse_event = ::LibUI::FFI::AreaMouseEvent.new(area_mouse_event)
+            area_mouse_event = area_mouse_event_hash(area_mouse_event)
+            on_mouse_event.each { |listener| listener.call(area_mouse_event)}
+          end
           @area_handler.MouseCrossed = fiddle_closure_block_caller(0, [0]) {}
           @area_handler.DragBroken   = fiddle_closure_block_caller(0, [0]) {}
           @area_handler.KeyEvent     = fiddle_closure_block_caller(0, [0]) {}
@@ -110,6 +129,42 @@ module Glimmer
             clip_width: area_draw_params.ClipWidth,
             clip_height: area_draw_params.ClipHeight,
           }
+        end
+        
+        def area_mouse_event_hash(area_mouse_event)
+          {
+            x: area_mouse_event.X,
+            y: area_mouse_event.Y,
+            area_width: area_mouse_event.AreaWidth,
+            area_height: area_mouse_event.AreaHeight,
+            down: area_mouse_event.Down,
+            up: area_mouse_event.Up,
+            count: area_mouse_event.Count,
+            modifers: modifiers_to_symbols(area_mouse_event.Modifiers),
+            held: area_mouse_event.Held1To64,
+          }
+        end
+        
+        def modifiers_to_symbols(modifiers_value)
+          symbols = []
+          modifiers_value = extract_symbol_from_modifiers_value(modifiers_value, symbols: symbols) while modifiers_value > 0
+          symbols
+        end
+        
+        def extract_symbol_from_modifiers_value(modifiers_value, symbols: )
+          if modifiers_value >= 8
+            symbols << :command
+            modifiers_value -= 8
+          elsif modifiers_value >= 4
+            symbols << :shift
+            modifiers_value -= 4
+          elsif modifiers_value >= 2
+            symbols << :alt
+            modifiers_value -= 2
+          elsif modifiers_value >= 1
+            symbols << :control
+            modifiers_value -= 1
+          end
         end
       end
     end
