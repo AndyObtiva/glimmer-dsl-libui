@@ -142,7 +142,7 @@ module Glimmer
       def can_handle_listener?(listener_name)
         ::LibUI.respond_to?("#{libui_api_keyword}_#{listener_name}") ||
           ::LibUI.respond_to?("control_#{listener_name}") ||
-          custom_listeners.include?(listener_name.to_s)
+          has_custom_listener?(listener_name)
       end
       
       def handle_listener(listener_name, &listener)
@@ -151,16 +151,27 @@ module Glimmer
           ::LibUI.send("#{libui_api_keyword}_#{listener_name}", @libui, &safe_listener)
         elsif ::LibUI.respond_to?("control_#{listener_name}")
           ::LibUI.send("control_#{listener_name}", @libui, &safe_listener)
-        elsif custom_listeners.include?(listener_name.to_s)
+        elsif has_custom_listener?(listener_name)
           handle_custom_listener(listener_name, &listener)
         end
+      end
+      
+      def has_custom_listener?(listener_name)
+        listener_name = listener_name.to_s
+        custom_listeners.include?(listener_name) || custom_listener_aliases.stringify_keys.keys.include?(listener_name)
       end
       
       def custom_listeners
         self.class.constants.include?(:LISTENERS) ? self.class::LISTENERS : []
       end
       
+      def custom_listener_aliases
+        self.class.constants.include?(:LISTENER_ALIASES) ? self.class::LISTENER_ALIASES : {}
+      end
+      
       def handle_custom_listener(listener_name, &listener)
+        listener_name = listener_name.to_s
+        listener_name = custom_listener_aliases.stringify_keys[listener_name] || listener_name
         instance_variable_name = "@#{listener_name}_procs"
         instance_variable_set(instance_variable_name, []) if instance_variable_get(instance_variable_name).nil?
         if listener.nil?

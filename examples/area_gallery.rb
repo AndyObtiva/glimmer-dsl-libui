@@ -51,6 +51,10 @@ window('Area Gallery', 400, 400) {
       p area_mouse_event
     end
     
+    on_mouse_moved do |area_mouse_event|
+      puts 'moved'
+    end
+    
     on_mouse_down do |area_mouse_event|
       puts 'mouse down'
     end
@@ -59,28 +63,28 @@ window('Area Gallery', 400, 400) {
       puts 'mouse up'
     end
     
-    on_mouse_drag_start do |area_mouse_event|
-      puts 'drag start'
+    on_mouse_drag_started do |area_mouse_event|
+      puts 'drag started'
     end
     
-    on_mouse_drag do |area_mouse_event|
-      puts 'drag'
+    on_mouse_dragged do |area_mouse_event|
+      puts 'dragged'
     end
     
-    on_mouse_drop do |area_mouse_event|
-      puts 'drop'
+    on_mouse_dropped do |area_mouse_event|
+      puts 'dropped'
     end
     
     on_mouse_crossed do |left|
       puts "left: #{left}"
     end
     
-    on_mouse_enter do
-      puts 'enter'
+    on_mouse_entered do |left|
+      puts 'entered'
     end
     
-    on_mouse_exit do
-      puts 'exit'
+    on_mouse_exited do |left|
+      puts 'exited'
     end
   }
 }.show
