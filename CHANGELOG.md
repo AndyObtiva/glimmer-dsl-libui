@@ -8,6 +8,9 @@
 - Support `area` listener: `on_mouse_drag_start`
 - Support `area` listener: `on_mouse_drag`
 - Support `area` listener: `on_mouse_drop`
+- Support `area` listener: `on_mouse_crossed`
+- Support `area` listener: `on_mouse_enter`
+- Support `area` listener: `on_mouse_exit`
 
 ## 0.1.7
 

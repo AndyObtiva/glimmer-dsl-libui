@@ -2,10 +2,7 @@
 
 ## Next
 
-- Support `area` listener: `on_mouse_crossed`
-- Support `area` listener: `on_mouse_enter`
-- Support `area` listener: `on_mouse_exit`
-- Support `area` listener: `on_mouse_hover`
+- Rename listeners to be in past tense
 - Support `area` listener: `on_drag_broken`
 - Support `area` listener: `on_key_event`
 - Use `area` listeners in examples/area_gallery.rb (all versions)

@@ -70,5 +70,17 @@ window('Area Gallery', 400, 400) {
     on_mouse_drop do |area_mouse_event|
       puts 'drop'
     end
+    
+    on_mouse_crossed do |left|
+      puts "left: #{left}"
+    end
+    
+    on_mouse_enter do
+      puts 'enter'
+    end
+    
+    on_mouse_exit do
+      puts 'exit'
+    end
   }
 }.show

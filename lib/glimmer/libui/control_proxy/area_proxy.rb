@@ -36,7 +36,7 @@ module Glimmer
           attr_accessor :current_area_draw_params
         end
         
-        LISTENERS = ['on_draw', 'on_mouse_event', 'on_mouse_down', 'on_mouse_up', 'on_mouse_drag_start', 'on_mouse_drag', 'on_mouse_drop']
+        LISTENERS = ['on_draw', 'on_mouse_event', 'on_mouse_down', 'on_mouse_up', 'on_mouse_drag_start', 'on_mouse_drag', 'on_mouse_drop', 'on_mouse_crossed', 'on_mouse_enter', 'on_mouse_exit']
         
         include Glimmer::FiddleConsumer
         include Parent
@@ -86,7 +86,15 @@ module Glimmer
             end
             @last_area_mouse_event = area_mouse_event
           end
-          @area_handler.MouseCrossed = fiddle_closure_block_caller(0, [0]) {}
+          @area_handler.MouseCrossed = fiddle_closure_block_caller(0, [1, 1, 4]) do |_, _, left|
+            left = Glimmer::LibUI.integer_to_boolean(left)
+            on_mouse_crossed.each { |listener| listener.call(left) }
+            if left
+              on_mouse_exit.each { |listener| listener.call(left) }
+            else
+              on_mouse_enter.each { |listener| listener.call(left) }
+            end
+          end
           @area_handler.DragBroken   = fiddle_closure_block_caller(0, [0]) {}
           @area_handler.KeyEvent     = fiddle_closure_block_caller(0, [0]) {}
         end
