@@ -11,6 +11,7 @@
 - Support `area` listener: `on_mouse_crossed`
 - Support `area` listener: `on_mouse_enter`
 - Support `area` listener: `on_mouse_exit`
+- Support `area` listener: `on_drag_broken`
 
 ## 0.1.7
 

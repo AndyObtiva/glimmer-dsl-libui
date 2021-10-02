@@ -75,15 +75,11 @@ window('Area Gallery', 400, 400) {
       puts 'dropped'
     end
     
-    on_mouse_crossed do |left|
-      puts "left: #{left}"
-    end
-    
-    on_mouse_entered do |left|
+    on_mouse_entered do
       puts 'entered'
     end
     
-    on_mouse_exited do |left|
+    on_mouse_exited do
       puts 'exited'
     end
   }

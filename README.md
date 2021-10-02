@@ -123,6 +123,42 @@ window('Area Gallery', 400, 400) {
       fill r: 202, g: 102, b: 204, a: 0.5
       stroke r: 0, g: 0, b: 0, thickness: 2
     }
+    
+    on_mouse_event do |area_mouse_event|
+      p area_mouse_event
+    end
+    
+    on_mouse_moved do |area_mouse_event|
+      puts 'moved'
+    end
+    
+    on_mouse_down do |area_mouse_event|
+      puts 'mouse down'
+    end
+    
+    on_mouse_up do |area_mouse_event|
+      puts 'mouse up'
+    end
+    
+    on_mouse_drag_started do |area_mouse_event|
+      puts 'drag started'
+    end
+    
+    on_mouse_dragged do |area_mouse_event|
+      puts 'dragged'
+    end
+    
+    on_mouse_dropped do |area_mouse_event|
+      puts 'dropped'
+    end
+    
+    on_mouse_entered do
+      puts 'entered'
+    end
+    
+    on_mouse_exited do
+      puts 'exited'
+    end
   }
 }.show
 ```
@@ -347,7 +383,7 @@ w.libui # => #<Fiddle::Pointer:0x00007fde53997980 ptr=0x00007fde51352a60 size=0 
 Control(Args) | Properties | Listeners
 ------------- | ---------- | ---------
 `about_menu_item` | None | `on_clicked`
-`area` | None | `on_draw`
+`area` | None | `on_draw(area_draw_params)`, `on_mouse_event(area_mouse_event)`, `on_mouse_down(area_mouse_event)`, `on_mouse_up(area_mouse_event)`, `on_mouse_drag_started(area_mouse_event)`, `on_mouse_dragged(area_mouse_event)`, `on_mouse_dropped(area_mouse_event)`, `on_mouse_entered`, `on_mouse_exited`
 `arc(x_center as Numeric, y_center as Numeric, radius as Numeric, start_angle as Numeric, sweep as Numeric, is_negative as Boolean)` | `x_center` (`Numeric`), `y_center` (`Numeric`), `radius` (`Numeric`), `start_angle` (`Numeric`), `sweep` (`Numeric`), `is_negative` (Boolean) | None
 `bezier(c1_x as Numeric, c1_y as Numeric, c2_x as Numeric, c2_y as Numeric, end_x as Numeric, end_y as Numeric)` | `c1_x` (`Numeric`), `c1_y` (`Numeric`), `c2_x` (`Numeric`), `c2_y` (`Numeric`), `end_x` (`Numeric`), `end_y` (`Numeric`) | None
 `button(text as String)` | `text` (`String`) | `on_clicked`
@@ -608,6 +644,29 @@ The `area_draw_params` argument for `on_draw` block is a hash consisting of the 
 
 In general, it is recommended to use declarative stable paths whenever feasible since they require less code and simpler maintenance. But, in more advanced cases, semi-declarative dynamic paths could be used instead, especially if there are thousands of dynamic paths that need maximum performance and low memory footprint.
 
+`area` supported mouse listeners are:
+- `on_mouse_event {|area_mouse_event| ...}`: general catch-all mouse event (recommend use fine-grained event below instead)
+- `on_mouse_down {|area_mouse_event)`
+- `on_mouse_up {|area_mouse_event)`
+- `on_mouse_drag_started {|area_mouse_event)`
+- `on_mouse_dragged {|area_mouse_event)`
+- `on_mouse_dropped {|area_mouse_event)`
+- `on_mouse_entered {...}`
+- `on_mouse_exited {...}`
+- `on_mouse_crossed {|left| ...}` (NOT RECOMMENDED; it does what `on_mouse_entered` and `on_mouse_exited` do by returning a `left` argument indicating if mouse left `area`)
+- `on_drag_broken {...}` (NOT RECOMMENDED; varies per platforms; use `on_mouse_dropped` instead)
+
+The `area_mouse_event` argument for mouse events that receive it (e.g. `on_mouse_up`, `on_mouse_dragged`) consist of the following keys:
+- `:x`: mouse x location in relation to area's top-left-corner
+- `:y`: mouse y location in relation to area's top-left-corner
+- `:area_width`: area current width
+- `:area_height`: area current height
+- `:down`: mouse pressed button (e.g. `1` is left button, `3` is right button)
+- `:up`: mouse depressed button (e.g. `1` is left button, `3` is right button)
+- `:count`: count of mouse clicks (e.g. `2` for double-click, `1` for single-click)
+- `:modifers`: `Array` of `Symbol`s from one of the following: `[:command, :shift, :alt, :control]`
+- `:held`: mouse held button during dragging (e.g. `1` is left button, `4` is right button)
+
 Note that when nesting an `area` directly underneath `window` (without a layout control like `vertical_box`), it is automatically reparented with `vertical_box` in between the `window` and `area` since it would not show up on Linux otherwise.
 
 To redraw an `area`, you may call the `#queue_redraw_all` method, or simply `#redraw`.
@@ -745,6 +804,8 @@ check out the [libui C headers](https://github.com/andlabs/libui/blob/master/ui.
 The following examples include reimplementions of the examples in the [LibUI](https://github.com/kojix2/LibUI) project utilizing the [Glimmer GUI DSL](#glimmer-gui-dsl-concepts) as well as brand new examples.
 
 To browse all examples, simply launch the [Meta-Example](examples/meta_example.rb), which lists all examples and displays each example's code when selected. It also enables code editing to facilitate experimentation and learning.
+
+(note that for examples that emit output to terminal/command-line via `p` or `puts`, you must run them directly to see output)
 
 [examples/meta_example.rb](examples/meta_example.rb)
 
@@ -3377,6 +3438,42 @@ window('Area Gallery', 400, 400) {
       fill r: 202, g: 102, b: 204, a: 0.5
       stroke r: 0, g: 0, b: 0, thickness: 2
     }
+    
+    on_mouse_event do |area_mouse_event|
+      p area_mouse_event
+    end
+    
+    on_mouse_moved do |area_mouse_event|
+      puts 'moved'
+    end
+    
+    on_mouse_down do |area_mouse_event|
+      puts 'mouse down'
+    end
+    
+    on_mouse_up do |area_mouse_event|
+      puts 'mouse up'
+    end
+    
+    on_mouse_drag_started do |area_mouse_event|
+      puts 'drag started'
+    end
+    
+    on_mouse_dragged do |area_mouse_event|
+      puts 'dragged'
+    end
+    
+    on_mouse_dropped do |area_mouse_event|
+      puts 'dropped'
+    end
+    
+    on_mouse_entered do
+      puts 'entered'
+    end
+    
+    on_mouse_exited do
+      puts 'exited'
+    end
   }
 }.show
 ```
@@ -3493,6 +3590,42 @@ window('Area Gallery', 400, 400) {
       fill r: 202, g: 102, b: 204, a: 0.5
       stroke r: 0, g: 0, b: 0, thickness: 2
     }
+    
+    on_mouse_event do |area_mouse_event|
+      p area_mouse_event
+    end
+    
+    on_mouse_moved do |area_mouse_event|
+      puts 'moved'
+    end
+    
+    on_mouse_down do |area_mouse_event|
+      puts 'mouse down'
+    end
+    
+    on_mouse_up do |area_mouse_event|
+      puts 'mouse up'
+    end
+    
+    on_mouse_drag_started do |area_mouse_event|
+      puts 'drag started'
+    end
+    
+    on_mouse_dragged do |area_mouse_event|
+      puts 'dragged'
+    end
+    
+    on_mouse_dropped do |area_mouse_event|
+      puts 'dropped'
+    end
+    
+    on_mouse_entered do
+      puts 'entered'
+    end
+    
+    on_mouse_exited do
+      puts 'exited'
+    end
   }
 }.show
 ```
@@ -3549,6 +3682,42 @@ window('Area Gallery', 400, 400) {
         fill r: 202, g: 102, b: 204, a: 0.5
         stroke r: 0, g: 0, b: 0, thickness: 2
       }
+    end
+        
+    on_mouse_event do |area_mouse_event|
+      p area_mouse_event
+    end
+    
+    on_mouse_moved do |area_mouse_event|
+      puts 'moved'
+    end
+    
+    on_mouse_down do |area_mouse_event|
+      puts 'mouse down'
+    end
+    
+    on_mouse_up do |area_mouse_event|
+      puts 'mouse up'
+    end
+    
+    on_mouse_drag_started do |area_mouse_event|
+      puts 'drag started'
+    end
+    
+    on_mouse_dragged do |area_mouse_event|
+      puts 'dragged'
+    end
+    
+    on_mouse_dropped do |area_mouse_event|
+      puts 'dropped'
+    end
+    
+    on_mouse_entered do
+      puts 'entered'
+    end
+    
+    on_mouse_exited do
+      puts 'exited'
     end
   }
 }.show
@@ -3667,6 +3836,42 @@ window('Area Gallery', 400, 400) {
         fill r: 202, g: 102, b: 204, a: 0.5
         stroke r: 0, g: 0, b: 0, thickness: 2
       }
+    end
+        
+    on_mouse_event do |area_mouse_event|
+      p area_mouse_event
+    end
+    
+    on_mouse_moved do |area_mouse_event|
+      puts 'moved'
+    end
+    
+    on_mouse_down do |area_mouse_event|
+      puts 'mouse down'
+    end
+    
+    on_mouse_up do |area_mouse_event|
+      puts 'mouse up'
+    end
+    
+    on_mouse_drag_started do |area_mouse_event|
+      puts 'drag started'
+    end
+    
+    on_mouse_dragged do |area_mouse_event|
+      puts 'dragged'
+    end
+    
+    on_mouse_dropped do |area_mouse_event|
+      puts 'dropped'
+    end
+    
+    on_mouse_entered do
+      puts 'entered'
+    end
+    
+    on_mouse_exited do
+      puts 'exited'
     end
   }
 }.show

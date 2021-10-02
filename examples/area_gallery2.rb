@@ -107,5 +107,41 @@ window('Area Gallery', 400, 400) {
       fill r: 202, g: 102, b: 204, a: 0.5
       stroke r: 0, g: 0, b: 0, thickness: 2
     }
+    
+    on_mouse_event do |area_mouse_event|
+      p area_mouse_event
+    end
+    
+    on_mouse_moved do |area_mouse_event|
+      puts 'moved'
+    end
+    
+    on_mouse_down do |area_mouse_event|
+      puts 'mouse down'
+    end
+    
+    on_mouse_up do |area_mouse_event|
+      puts 'mouse up'
+    end
+    
+    on_mouse_drag_started do |area_mouse_event|
+      puts 'drag started'
+    end
+    
+    on_mouse_dragged do |area_mouse_event|
+      puts 'dragged'
+    end
+    
+    on_mouse_dropped do |area_mouse_event|
+      puts 'dropped'
+    end
+    
+    on_mouse_entered do
+      puts 'entered'
+    end
+    
+    on_mouse_exited do
+      puts 'exited'
+    end
   }
 }.show

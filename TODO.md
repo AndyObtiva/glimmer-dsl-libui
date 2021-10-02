@@ -2,9 +2,7 @@
 
 ## Next
 
-- Support `area` listener: `on_drag_broken`
 - Support `area` listener: `on_key_event`
-- Use `area` listeners in examples/area_gallery.rb (all versions)
 
 ## Soon
 
