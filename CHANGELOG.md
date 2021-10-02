@@ -3,6 +3,8 @@
 ## 0.1.8
 
 - Support `area` listener: `on_mouse_event`
+- Support `area` listener: `on_mouse_down`
+- Support `area` listener: `on_mouse_up`
 
 ## 0.1.7
 

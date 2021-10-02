@@ -2,8 +2,6 @@
 
 ## Next
 
-- Support `area` listener: `on_mouse_down`
-- Support `area` listener: `on_mouse_up`
 - Support `area` listener: `on_mouse_enter`
 - Support `area` listener: `on_mouse_exit`
 - Support `area` listener: `on_mouse_hover`
