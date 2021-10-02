@@ -646,11 +646,11 @@ In general, it is recommended to use declarative stable paths whenever feasible 
 
 `area` supported mouse listeners are:
 - `on_mouse_event {|area_mouse_event| ...}`: general catch-all mouse event (recommend use fine-grained event below instead)
-- `on_mouse_down {|area_mouse_event)`
-- `on_mouse_up {|area_mouse_event)`
-- `on_mouse_drag_started {|area_mouse_event)`
-- `on_mouse_dragged {|area_mouse_event)`
-- `on_mouse_dropped {|area_mouse_event)`
+- `on_mouse_down {|area_mouse_event| ...}`
+- `on_mouse_up {|area_mouse_event| ...}`
+- `on_mouse_drag_started {|area_mouse_event| ...}`
+- `on_mouse_dragged {|area_mouse_event| ...}`
+- `on_mouse_dropped {|area_mouse_event| ...}`
 - `on_mouse_entered {...}`
 - `on_mouse_exited {...}`
 - `on_mouse_crossed {|left| ...}` (NOT RECOMMENDED; it does what `on_mouse_entered` and `on_mouse_exited` do by returning a `left` argument indicating if mouse left `area`)
