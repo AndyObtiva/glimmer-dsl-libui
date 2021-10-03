@@ -445,6 +445,7 @@ Control(Args) | Properties | Listeners
 `text_column(name as String)` | `editable` (Boolean) | None
 `time_picker` | `time` (`Hash` of keys: `sec` as `Integer`, `min` as `Integer`, `hour` as `Integer`) | `on_changed`
 `vertical_box` | `padded` (Boolean) | None
+`vertical_separator` | None | None
 `window(title as String, width as Integer, height as Integer, has_menubar as Boolean)` | `borderless` (Boolean), `content_size` (width `Numeric`, height `Numeric`), `fullscreen` (Boolean), `margined` (Boolean), `title` (`String`) | `on_closing`, `on_content_size_changed`, `on_destroy`
 
 ### Common Control Properties
@@ -2995,15 +2996,19 @@ Mac
 
 ![glimmer-dsl-libui-mac-form-table.png](images/glimmer-dsl-libui-mac-form-table.png)
 ![glimmer-dsl-libui-mac-form-table-contact-entered.png](images/glimmer-dsl-libui-mac-form-table-contact-entered.png)
+![glimmer-dsl-libui-mac-form-table-filtered.png](images/glimmer-dsl-libui-mac-form-table-filtered.png)
 
 Linux
 
 ![glimmer-dsl-libui-linux-form-table.png](images/glimmer-dsl-libui-linux-form-table.png)
 ![glimmer-dsl-libui-linux-form-table-contact-entered.png](images/glimmer-dsl-libui-linux-form-table-contact-entered.png)
+![glimmer-dsl-libui-linux-form-table-filtered.png](images/glimmer-dsl-libui-linux-form-table-filtered.png)
 
 New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
 
 ```ruby
+# frozen_string_literal: true
+
 require 'glimmer-dsl-libui'
 
 include Glimmer
@@ -3049,11 +3054,31 @@ window('Contacts', 600, 600) { |w|
           msg_box_error(w, 'Validation Error!', 'All fields are required! Please make sure to enter a value for all fields.')
         else
           data << new_row # automatically inserts a row into the table due to implicit data-binding
+          @unfiltered_data = data.dup
           @name_entry.text = ''
           @email_entry.text = ''
           @phone_entry.text = ''
           @city_entry.text = ''
           @state_entry.text = ''
+        end
+      end
+    }
+    
+    search_entry { |se|
+      stretchy false
+      
+      on_changed do
+        filter_value = se.text
+        @unfiltered_data ||= data.dup
+        # Unfilter first to remove any previous filters
+        data.replace(@unfiltered_data) # affects table indirectly through implicit data-binding
+        # Now, apply filter if entered
+        unless filter_value.empty?
+          data.filter! do |row_data| # affects table indirectly through implicit data-binding
+            row_data.any? do |cell|
+              cell.to_s.downcase.include?(filter_value.downcase)
+            end
+          end
         end
       end
     }

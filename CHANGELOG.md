@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.1.11
+
+- Amend examples/form_table.rb with use of a `search_entry` to support table filtering
+- Support `search_entry` control
+
 ## 0.1.10
 
 - Upgrade to glimmer 2.2.1

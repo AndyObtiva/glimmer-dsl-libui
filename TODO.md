@@ -2,19 +2,15 @@
 
 ## Next
 
+- New examples/login.rb
+- Support `password_entry` control
+- Update form_table screenshots
 
 ## Soon
 
-- New examples/basic_scrolling_area.rb
-- Support `scrolling_area` control and `size` property
 
 ## Future
 
-- New examples/search.rb
-- Support `search_entry` control
-- New examples/login.rb
-- Support `password_entry` control
-- Document `vertical_separator` control
 - Support examples/basic_draw_text.rb
 - Support `text` control
 - Support `path` `fill`/`stroke` `:type` of `:linear_gradient`

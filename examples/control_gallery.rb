@@ -78,7 +78,7 @@ MAIN_WINDOW = window('Control Gallery', 600, 500) {
           date_picker { stretchy false }
 
           time_picker { stretchy false }
-
+          
           date_time_picker { stretchy false }
 
           font_button { stretchy false }

@@ -45,11 +45,31 @@ window('Contacts', 600, 600) { |w|
           msg_box_error(w, 'Validation Error!', 'All fields are required! Please make sure to enter a value for all fields.')
         else
           data << new_row # automatically inserts a row into the table due to implicit data-binding
+          @unfiltered_data = data.dup
           @name_entry.text = ''
           @email_entry.text = ''
           @phone_entry.text = ''
           @city_entry.text = ''
           @state_entry.text = ''
+        end
+      end
+    }
+    
+    search_entry { |se|
+      stretchy false
+      
+      on_changed do
+        filter_value = se.text
+        @unfiltered_data ||= data.dup
+        # Unfilter first to remove any previous filters
+        data.replace(@unfiltered_data) # affects table indirectly through implicit data-binding
+        # Now, apply filter if entered
+        unless filter_value.empty?
+          data.filter! do |row_data| # affects table indirectly through implicit data-binding
+            row_data.any? do |cell|
+              cell.to_s.downcase.include?(filter_value.downcase)
+            end
+          end
         end
       end
     }
