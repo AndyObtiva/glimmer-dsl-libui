@@ -2,9 +2,7 @@
 
 ## Next
 
-- New examples/login.rb
-- Support `password_entry` control
-- Update form_table screenshots
+- Update form_table , login screenshots
 
 ## Soon
 

@@ -2,8 +2,11 @@
 
 ## 0.1.11
 
+- New examples/login.rb
 - Amend examples/form_table.rb with use of a `search_entry` to support table filtering
+- Support `password_entry` control
 - Support `search_entry` control
+- Fix issue with setting control `enabled` property
 
 ## 0.1.10
 

@@ -280,6 +280,7 @@ module Glimmer
         if value.nil?
           @enabled
         elsif value != @enabled
+          @enabled = value == 1 || value
           if value == 1 || value
             send_to_libui('enable')
           else
