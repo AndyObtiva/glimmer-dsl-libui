@@ -82,5 +82,17 @@ window('Area Gallery', 400, 400) {
     on_mouse_exited do
       puts 'exited'
     end
+    
+    on_key_event do |area_key_event|
+      p area_key_event
+    end
+    
+    on_key_up do |area_key_event|
+      puts 'key up'
+    end
+    
+    on_key_down do |area_key_event|
+      puts 'key down'
+    end
   }
 }.show

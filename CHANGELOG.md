@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.1.9
+
+- Support `area` listener: `on_key_event`
+- Support `area` listener: `on_key_down`
+- Support `area` listener: `on_key_up`
+
 ## 0.1.8
 
 - Support `area` listener: `on_mouse_event`

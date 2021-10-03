@@ -2,7 +2,7 @@
 
 ## Next
 
-- Support `area` listener: `on_key_event`
+- Interpret characters in key event while holding a modifer down (e.g. ! for 1 + shift)
 
 ## Soon
 
@@ -41,6 +41,7 @@
 - Automate OCRA support for Windows Native-Executable Packaging
 - Implement Mac Native-Executable Packaging (perhaps with https://github.com/create-dmg/create-dmg or https://github.com/sveinbjornt/Platypus)
 - Scaffold an application with support for gem and native-executable packaging
+- Easy Drag and Drop via `drag_source true`, `drag_and_move true`, and `on_drop { }` event
 
 ## Maybe
 

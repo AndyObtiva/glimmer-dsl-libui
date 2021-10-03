@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.1.8
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.1.9
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Maintainability](https://api.codeclimate.com/v1/badges/ce2853efdbecf6ebdc73/maintainability)](https://codeclimate.com/github/AndyObtiva/glimmer-dsl-libui/maintainability)
@@ -159,6 +159,18 @@ window('Area Gallery', 400, 400) {
     on_mouse_exited do
       puts 'exited'
     end
+    
+    on_key_event do |area_key_event|
+      p area_key_event
+    end
+    
+    on_key_up do |area_key_event|
+      puts 'key up'
+    end
+    
+    on_key_down do |area_key_event|
+      puts 'key down'
+    end
   }
 }.show
 ```
@@ -179,7 +191,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
 
 ## Table of Contents
 
-- [Glimmer DSL for LibUI 0.1.8](#-glimmer-dsl-for-libui-018)
+- [Glimmer DSL for LibUI 0.1.9](#-glimmer-dsl-for-libui-019)
   - [Glimmer GUI DSL Concepts](#glimmer-gui-dsl-concepts)
   - [Usage](#usage)
   - [Girb (Glimmer IRB)](#girb-glimmer-irb)
@@ -309,7 +321,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.1.8'
+gem 'glimmer-dsl-libui', '~> 0.1.9'
 ```
 
 Add `require 'glimmer-dsl-libui'` at the top, and then `include Glimmer` into the top-level main object for testing or into an actual class for serious usage.
@@ -383,7 +395,7 @@ w.libui # => #<Fiddle::Pointer:0x00007fde53997980 ptr=0x00007fde51352a60 size=0 
 Control(Args) | Properties | Listeners
 ------------- | ---------- | ---------
 `about_menu_item` | None | `on_clicked`
-`area` | None | `on_draw(area_draw_params)`, `on_mouse_event(area_mouse_event)`, `on_mouse_down(area_mouse_event)`, `on_mouse_up(area_mouse_event)`, `on_mouse_drag_started(area_mouse_event)`, `on_mouse_dragged(area_mouse_event)`, `on_mouse_dropped(area_mouse_event)`, `on_mouse_entered`, `on_mouse_exited`
+`area` | None | `on_draw(area_draw_params)`, `on_mouse_event(area_mouse_event)`, `on_mouse_down(area_mouse_event)`, `on_mouse_up(area_mouse_event)`, `on_mouse_drag_started(area_mouse_event)`, `on_mouse_dragged(area_mouse_event)`, `on_mouse_dropped(area_mouse_event)`, `on_mouse_entered`, `on_mouse_exited`, `on_key_event(area_key_event)`, `on_key_down(area_key_event)`, `on_key_up(area_key_event)`
 `arc(x_center as Numeric, y_center as Numeric, radius as Numeric, start_angle as Numeric, sweep as Numeric, is_negative as Boolean)` | `x_center` (`Numeric`), `y_center` (`Numeric`), `radius` (`Numeric`), `start_angle` (`Numeric`), `sweep` (`Numeric`), `is_negative` (Boolean) | None
 `bezier(c1_x as Numeric, c1_y as Numeric, c2_x as Numeric, c2_y as Numeric, end_x as Numeric, end_y as Numeric)` | `c1_x` (`Numeric`), `c1_y` (`Numeric`), `c2_x` (`Numeric`), `c2_y` (`Numeric`), `end_x` (`Numeric`), `end_y` (`Numeric`) | None
 `button(text as String)` | `text` (`String`) | `on_clicked`
@@ -645,7 +657,10 @@ The `area_draw_params` argument for `on_draw` block is a hash consisting of the 
 In general, it is recommended to use declarative stable paths whenever feasible since they require less code and simpler maintenance. But, in more advanced cases, semi-declarative dynamic paths could be used instead, especially if there are thousands of dynamic paths that need maximum performance and low memory footprint.
 
 `area` supported mouse listeners are:
-- `on_mouse_event {|area_mouse_event| ...}`: general catch-all mouse event (recommend use fine-grained event below instead)
+- `on_key_event {|area_key_event| ...}`: general catch-all key event (recommend using fine-grained key events below instead)
+- `on_key_down {|area_key_event| ...}`
+- `on_key_up {|area_key_event| ...}`
+- `on_mouse_event {|area_mouse_event| ...}`: general catch-all mouse event (recommend using fine-grained mouse events below instead)
 - `on_mouse_down {|area_mouse_event| ...}`
 - `on_mouse_up {|area_mouse_event| ...}`
 - `on_mouse_drag_started {|area_mouse_event| ...}`
@@ -656,7 +671,7 @@ In general, it is recommended to use declarative stable paths whenever feasible 
 - `on_mouse_crossed {|left| ...}` (NOT RECOMMENDED; it does what `on_mouse_entered` and `on_mouse_exited` do by returning a `left` argument indicating if mouse left `area`)
 - `on_drag_broken {...}` (NOT RECOMMENDED; varies per platforms; use `on_mouse_dropped` instead)
 
-The `area_mouse_event` argument for mouse events that receive it (e.g. `on_mouse_up`, `on_mouse_dragged`) consist of the following keys:
+The `area_mouse_event` `Hash` argument for mouse events that receive it (e.g. `on_mouse_up`, `on_mouse_dragged`) consist of the following hash keys:
 - `:x`: mouse x location in relation to area's top-left-corner
 - `:y`: mouse y location in relation to area's top-left-corner
 - `:area_width`: area current width
@@ -666,6 +681,13 @@ The `area_mouse_event` argument for mouse events that receive it (e.g. `on_mouse
 - `:count`: count of mouse clicks (e.g. `2` for double-click, `1` for single-click)
 - `:modifers`: `Array` of `Symbol`s from one of the following: `[:command, :shift, :alt, :control]`
 - `:held`: mouse held button during dragging (e.g. `1` is left button, `4` is right button)
+
+The `area_key_event` `Hash` argument for keyboard events that receive it (e.g. `on_key_up`, `on_key_down`) consist of the following hash keys:
+- `:key`: key character (`String`)
+- `:ext_key`: non-character extra key (`Symbol`) such as `:left`, `:right`, `:escape`, `:insert`
+- `:modifier`: modifier key pressed alone (e.g. `:shift` or `:control`)
+- `:modifiers`: modifier keys pressed simultaneously with `:key`, `:ext_key`, or `:modifier`
+- `:up`: indicates if key has been released or not (Boolean)
 
 Note that when nesting an `area` directly underneath `window` (without a layout control like `vertical_box`), it is automatically reparented with `vertical_box` in between the `window` and `area` since it would not show up on Linux otherwise.
 
@@ -3474,6 +3496,18 @@ window('Area Gallery', 400, 400) {
     on_mouse_exited do
       puts 'exited'
     end
+    
+    on_key_event do |area_key_event|
+      p area_key_event
+    end
+    
+    on_key_up do |area_key_event|
+      puts 'key up'
+    end
+    
+    on_key_down do |area_key_event|
+      puts 'key down'
+    end
   }
 }.show
 ```
@@ -3626,6 +3660,18 @@ window('Area Gallery', 400, 400) {
     on_mouse_exited do
       puts 'exited'
     end
+    
+    on_key_event do |area_key_event|
+      p area_key_event
+    end
+    
+    on_key_up do |area_key_event|
+      puts 'key up'
+    end
+    
+    on_key_down do |area_key_event|
+      puts 'key down'
+    end
   }
 }.show
 ```
@@ -3718,6 +3764,18 @@ window('Area Gallery', 400, 400) {
     
     on_mouse_exited do
       puts 'exited'
+    end
+    
+    on_key_event do |area_key_event|
+      p area_key_event
+    end
+    
+    on_key_up do |area_key_event|
+      puts 'key up'
+    end
+    
+    on_key_down do |area_key_event|
+      puts 'key down'
     end
   }
 }.show
@@ -3872,6 +3930,18 @@ window('Area Gallery', 400, 400) {
     
     on_mouse_exited do
       puts 'exited'
+    end
+    
+    on_key_event do |area_key_event|
+      p area_key_event
+    end
+    
+    on_key_up do |area_key_event|
+      puts 'key up'
+    end
+    
+    on_key_down do |area_key_event|
+      puts 'key down'
     end
   }
 }.show
