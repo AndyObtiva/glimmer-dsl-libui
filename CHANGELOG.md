@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.1.10
+
+- Upgrade to glimmer 2.2.1
+- Add `key_value` to `area_key_event` `Hash`
+- Add `ext_key_value` to `area_key_event` `Hash`
+
 ## 0.1.9
 
 - Support `area` listener: `on_key_event`

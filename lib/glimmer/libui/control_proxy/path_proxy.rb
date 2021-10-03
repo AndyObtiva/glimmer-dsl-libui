@@ -128,25 +128,11 @@ module Glimmer
         end
         
         def draw_line_cap
-          case @stroke && @stroke[:cap].to_s
-          when 'round'
-            1
-          when 'square'
-            2
-          else # 'flat'
-            0
-          end
+          pd Glimmer::LibUI.enum_symbol_to_value(:draw_line_cap, @stroke && @stroke[:cap])
         end
         
         def draw_line_join
-          case @stroke && @stroke[:join].to_s
-          when 'round'
-            1
-          when 'bevel'
-            2
-          else # 'miter'
-            0
-          end
+          pd Glimmer::LibUI.enum_symbol_to_value(:draw_line_join, @stroke && @stroke[:join])
         end
         
         def destroy
@@ -165,20 +151,7 @@ module Glimmer
         end
         
         def init_draw_brush(draw_brush, draw_brush_args)
-          case draw_brush_args[:type]
-          when Integer
-            draw_brush.Type = draw_brush_args[:type]
-          when :solid, 'solid'
-            draw_brush.Type = 0
-          when :linear_gradient, 'linear_gradient'
-            draw_brush.Type = 1
-          when :radial_gradient, 'radial_gradient'
-            draw_brush.Type = 2
-          when :image, 'image'
-            draw_brush.Type = 3
-          else
-            draw_brush.Type = 0
-          end
+          draw_brush.Type = Glimmer::LibUI.enum_symbol_to_value(:draw_brush_type, draw_brush_args[:type])
           draw_brush.R = (draw_brush_args[:r] || draw_brush_args[:red]).to_f / 255.0
           draw_brush.G = (draw_brush_args[:g] || draw_brush_args[:green]).to_f / 255.0
           draw_brush.B = (draw_brush_args[:b] || draw_brush_args[:blue]).to_f / 255.0

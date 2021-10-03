@@ -34,10 +34,6 @@ module Glimmer
         class << self
           # this attribute is only populated during on_draw call
           attr_accessor :current_area_draw_params
-          
-          def ext_key_symbols
-            @ext_key_symbols ||= ::LibUI.constants.select { |c| c.to_s.start_with?('ExtKey') }.map { |c| c.to_s.underscore.sub('ext_key_', '') }
-          end
         end
         
         LISTENERS = ['on_draw', 'on_mouse_event', 'on_mouse_move', 'on_mouse_down', 'on_mouse_up', 'on_mouse_drag_start', 'on_mouse_drag', 'on_mouse_drop', 'on_mouse_crossed', 'on_mouse_enter', 'on_mouse_exit', 'on_drag_broken', 'on_key_event', 'on_key_down', 'on_key_up']
@@ -155,7 +151,9 @@ module Glimmer
         def area_key_event_hash(area_key_event)
           {
             key: key_to_char(area_key_event.Key),
+            key_value: area_key_event.Key,
             ext_key: ext_key_to_symbol(area_key_event.ExtKey),
+            ext_key_value: area_key_event.ExtKey,
             modifier: modifiers_to_symbols(area_key_event.Modifier).first,
             modifiers: modifiers_to_symbols(area_key_event.Modifiers),
             up: Glimmer::LibUI.integer_to_boolean(area_key_event.Up),
@@ -167,7 +165,7 @@ module Glimmer
         end
         
         def ext_key_to_symbol(ext_key_value)
-          AreaProxy.ext_key_symbols[ext_key_value - 1].to_s.to_sym if ext_key_value > 0
+          Glimmer::LibUI.enum_symbols(:ext_key)[ext_key_value - 1].to_s.to_sym if ext_key_value > 0
         end
                 
         def modifiers_to_symbols(modifiers_value)

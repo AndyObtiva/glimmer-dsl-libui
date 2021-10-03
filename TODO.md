@@ -2,7 +2,7 @@
 
 ## Next
 
-- Interpret characters in key event while holding a modifer down (e.g. ! for 1 + shift)
+- Add a 3rd tab to examples/grid.rb showcasing the halign and valign properties and provide symbol alternatives for their values like `:fill` (0), `:start` (1), `:center` (2), and `:end` (3)
 
 ## Soon
 
@@ -16,7 +16,6 @@
 - New examples/login.rb
 - Support `password_entry` control
 - Document `vertical_separator` control
-- Add a 3rd tab to examples/grid.rb showcasing the halign and valign properties and provide symbol alternatives for their values like `:fill` (0), `:start` (1), `:center` (2), and `:end` (3)
 - Support examples/basic_draw_text.rb
 - Support `text` control
 - Support `path` `fill`/`stroke` `:type` of `:linear_gradient`
@@ -54,6 +53,7 @@
 - Support `matrix` `transform_point` method
 - Support `matrix` `transform_size` method
 - Support `matrix` operation noun names (e.g. `translation` for `translate`) to be more declarative
+- Interpret characters in key event while holding a modifer down (e.g. ! for 1 + shift)
 
 # Refactoring
 
