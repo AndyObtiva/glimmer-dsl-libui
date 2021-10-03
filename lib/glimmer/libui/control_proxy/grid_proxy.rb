@@ -36,7 +36,18 @@ module Glimmer
           child.halign = 0 if child.halign.nil?
           child.vexpand = false if child.vexpand.nil?
           child.valign = 0 if child.valign.nil?
-          ::LibUI.grid_append(@libui, child.libui, child.left, child.top, child.xspan, child.yspan, Glimmer::LibUI.boolean_to_integer(child.hexpand), child.halign, Glimmer::LibUI.boolean_to_integer(child.vexpand), child.valign)
+          ::LibUI.grid_append(
+            @libui,
+            child.libui,
+            child.left,
+            child.top,
+            child.xspan,
+            child.yspan,
+            Glimmer::LibUI.boolean_to_integer(child.hexpand),
+            Glimmer::LibUI.enum_symbol_to_value(:align, child.halign),
+            Glimmer::LibUI.boolean_to_integer(child.vexpand),
+            Glimmer::LibUI.enum_symbol_to_value(:align, child.valign)
+          )
           children << child
         end
         

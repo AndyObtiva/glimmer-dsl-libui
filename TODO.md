@@ -2,7 +2,6 @@
 
 ## Next
 
-- Add a 3rd tab to examples/grid.rb showcasing the halign and valign properties and provide symbol alternatives for their values like `:fill` (0), `:start` (1), `:center` (2), and `:end` (3)
 
 ## Soon
 

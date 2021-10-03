@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.1.9
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.1.10
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Maintainability](https://api.codeclimate.com/v1/badges/ce2853efdbecf6ebdc73/maintainability)](https://codeclimate.com/github/AndyObtiva/glimmer-dsl-libui/maintainability)
@@ -191,7 +191,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
 
 ## Table of Contents
 
-- [Glimmer DSL for LibUI 0.1.9](#-glimmer-dsl-for-libui-019)
+- [Glimmer DSL for LibUI 0.1.10](#-glimmer-dsl-for-libui-0110)
   - [Glimmer GUI DSL Concepts](#glimmer-gui-dsl-concepts)
   - [Usage](#usage)
   - [Girb (Glimmer IRB)](#girb-glimmer-irb)
@@ -321,7 +321,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.1.9'
+gem 'glimmer-dsl-libui', '~> 0.1.10'
 ```
 
 Add `require 'glimmer-dsl-libui'` at the top, and then `include Glimmer` into the top-level main object for testing or into an actual class for serious usage.
@@ -460,9 +460,9 @@ Control(Args) | Properties | Listeners
 - `xspan` [dsl-only] (`Integer`) [default=`1`]: available in [Glimmer GUI DSL](#glimmer-gui-dsl-concepts) when nested under `grid`
 - `yspan` [dsl-only] (`Integer`) [default=`1`]: available in [Glimmer GUI DSL](#glimmer-gui-dsl-concepts) when nested under `grid`
 - `hexpand` [dsl-only] (Boolean) [default=`false`]: available in [Glimmer GUI DSL](#glimmer-gui-dsl-concepts) when nested under `grid`
-- `halign` [dsl-only] (`Integer`) [default=`0`]: available in [Glimmer GUI DSL](#glimmer-gui-dsl-concepts) when nested under `grid`
+- `halign` [dsl-only] (`:fill`, `:start`, `:center`, or `:end`) [default=`:fill`]: available in [Glimmer GUI DSL](#glimmer-gui-dsl-concepts) when nested under `grid`
 - `vexpand` [dsl-only] (Boolean) [default=`false`]: available in [Glimmer GUI DSL](#glimmer-gui-dsl-concepts) when nested under `grid`
-- `valign` [dsl-only] (`Integer`) [default=`0`]: available in [Glimmer GUI DSL](#glimmer-gui-dsl-concepts) when nested under `grid`
+- `valign` [dsl-only] (`:fill`, `:start`, `:center`, or `:end`) [default=`:fill`]: available in [Glimmer GUI DSL](#glimmer-gui-dsl-concepts) when nested under `grid`
 
 ### Common Control Operations
 - `destroy`
@@ -788,7 +788,7 @@ Check [Histogram](#histogram) example for use of hex colors.
 - When destroying a control nested under a `form`, it is automatically deleted from the form's children
 - When destroying a control nested under a `window` or `group`, it is automatically unset as their child to allow successful destruction
 - For `date_time_picker`, `date_picker`, and `time_picker`, make sure `time` hash values for `mon`, `wday`, and `yday` are 1-based instead of [libui](https://github.com/andlabs/libui) original 0-based values, and return `dst` as Boolean instead of `isdst` as `1`/`0`
-- Smart defaults for `grid` child attributes are `left` (`0`), `top` (`0`), `xspan` (`1`), `yspan` (`1`), `hexpand` (`false`), `halign` (`0`), `vexpand` (`false`), and `valign` (`0`)
+- Smart defaults for `grid` child attributes are `left` (`0`), `top` (`0`), `xspan` (`1`), `yspan` (`1`), `hexpand` (`false`), `halign` (`:fill`), `vexpand` (`false`), and `valign` (`:fill`)
 - The `table` control automatically constructs required `TableModelHandler`, `TableModel`, and `TableParams`, calculating all their arguments from `cell_rows` and `editable` properties (e.g. `NumRows`) as well as nested columns (e.g. `text_column`)
 - Table model instances are automatically freed from memory after `window` is destroyed.
 - Table `cell_rows` data has implicit data-binding to table cell values for deletion, insertion, and change (done by diffing `cell_rows` value before and after change and auto-informing `table` of deletions [`LibUI.table_model_row_deleted`], insertions [`LibUI.table_model_row_deleted`], and changes [`LibUI.table_model_row_changed`]). When deleting data rows from `cell_rows` array, then actual rows from the `table` are automatically deleted. When inserting data rows into `cell_rows` array, then actual `table` rows are automatically inserted. When updating data rows in `cell_rows` array, then actual `table` rows are automatically updated.
@@ -2099,13 +2099,15 @@ ruby -r glimmer-dsl-libui -e "require 'examples/grid'"
 
 Mac
 
-![glimmer-dsl-libui-mac-grid-spanning.png](images/glimmer-dsl-libui-mac-grid-spanning.png)
-![glimmer-dsl-libui-mac-grid-expanding.png](images/glimmer-dsl-libui-mac-grid-expanding.png)
+![glimmer-dsl-libui-mac-grid-span.png](images/glimmer-dsl-libui-mac-grid-span.png)
+![glimmer-dsl-libui-mac-grid-expand.png](images/glimmer-dsl-libui-mac-grid-expand.png)
+![glimmer-dsl-libui-mac-grid-align.png](images/glimmer-dsl-libui-mac-grid-align.png)
 
 Linux
 
-![glimmer-dsl-libui-linux-grid-spanning.png](images/glimmer-dsl-libui-linux-grid-spanning.png)
-![glimmer-dsl-libui-linux-grid-expanding.png](images/glimmer-dsl-libui-linux-grid-expanding.png)
+![glimmer-dsl-libui-linux-grid-span.png](images/glimmer-dsl-libui-linux-grid-span.png)
+![glimmer-dsl-libui-linux-grid-expand.png](images/glimmer-dsl-libui-linux-grid-expand.png)
+![glimmer-dsl-libui-linux-grid-align.png](images/glimmer-dsl-libui-linux-grid-align.png)
 
 New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
 
@@ -2116,7 +2118,7 @@ include Glimmer
 
 window('Grid') {
   tab {
-    tab_item('Spanning') {
+    tab_item('Span') {
       grid {
         4.times { |top_value|
           4.times { |left_value|
@@ -2156,7 +2158,7 @@ window('Grid') {
         }
       }
     }
-    tab_item('Expanding') {
+    tab_item('Expand') {
       grid {
         label("(0, 0) hexpand/vexpand\nall available horizontal space is taken\nand\nall\navailable\nvertical\nspace\nis\ntaken") {
           left 0
@@ -2175,6 +2177,42 @@ window('Grid') {
         label("(1, 1)") {
           left 1
           top 1
+        }
+      }
+    }
+    tab_item('Align') {
+      grid {
+        label("(0, 0) halign/valign fill\nall available horizontal space is taken\nand\nall\navailable\nvertical\nspace\nis\ntaken") {
+          left 0
+          top 0
+          hexpand true unless OS.mac? # on Mac, only the first label is given all space, so avoid expanding
+          vexpand true unless OS.mac? # on Mac, only the first label is given all space, so avoid expanding
+          halign :fill
+          valign :fill
+        }
+        label("(1, 0) halign/valign start") {
+          left 1
+          top 0
+          hexpand true unless OS.mac? # on Mac, only the first label is given all space, so avoid expanding
+          vexpand true unless OS.mac? # on Mac, only the first label is given all space, so avoid expanding
+          halign :start
+          valign :start
+        }
+        label("(0, 1) halign/valign center") {
+          left 0
+          top 1
+          hexpand true unless OS.mac? # on Mac, only the first label is given all space, so avoid expanding
+          vexpand true unless OS.mac? # on Mac, only the first label is given all space, so avoid expanding
+          halign :center
+          valign :center
+        }
+        label("(1, 1) halign/valign end") {
+          left 1
+          top 1
+          hexpand true unless OS.mac? # on Mac, only the first label is given all space, so avoid expanding
+          vexpand true unless OS.mac? # on Mac, only the first label is given all space, so avoid expanding
+          halign :end
+          valign :end
         }
       }
     }

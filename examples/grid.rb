@@ -6,7 +6,7 @@ include Glimmer
 
 window('Grid') {
   tab {
-    tab_item('Spanning') {
+    tab_item('Span') {
       grid {
         4.times { |top_value|
           4.times { |left_value|
@@ -46,7 +46,7 @@ window('Grid') {
         }
       }
     }
-    tab_item('Expanding') {
+    tab_item('Expand') {
       grid {
         label("(0, 0) hexpand/vexpand\nall available horizontal space is taken\nand\nall\navailable\nvertical\nspace\nis\ntaken") {
           left 0
@@ -65,6 +65,42 @@ window('Grid') {
         label("(1, 1)") {
           left 1
           top 1
+        }
+      }
+    }
+    tab_item('Align') {
+      grid {
+        label("(0, 0) halign/valign fill\nall available horizontal space is taken\nand\nall\navailable\nvertical\nspace\nis\ntaken") {
+          left 0
+          top 0
+          hexpand true unless OS.mac? # on Mac, only the first label is given all space, so avoid expanding
+          vexpand true unless OS.mac? # on Mac, only the first label is given all space, so avoid expanding
+          halign :fill
+          valign :fill
+        }
+        label("(1, 0) halign/valign start") {
+          left 1
+          top 0
+          hexpand true unless OS.mac? # on Mac, only the first label is given all space, so avoid expanding
+          vexpand true unless OS.mac? # on Mac, only the first label is given all space, so avoid expanding
+          halign :start
+          valign :start
+        }
+        label("(0, 1) halign/valign center") {
+          left 0
+          top 1
+          hexpand true unless OS.mac? # on Mac, only the first label is given all space, so avoid expanding
+          vexpand true unless OS.mac? # on Mac, only the first label is given all space, so avoid expanding
+          halign :center
+          valign :center
+        }
+        label("(1, 1) halign/valign end") {
+          left 1
+          top 1
+          hexpand true unless OS.mac? # on Mac, only the first label is given all space, so avoid expanding
+          vexpand true unless OS.mac? # on Mac, only the first label is given all space, so avoid expanding
+          halign :end
+          valign :end
         }
       }
     }

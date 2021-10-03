@@ -95,13 +95,13 @@ module Glimmer
         @enum_symbols[enum_name] ||= ::LibUI.constants.select { |c| c.to_s.start_with?(enum_name.to_s.camelcase(:upper)) }.map { |c| c.to_s.underscore.sub("#{enum_name}_", '').to_sym }
       end
       
-      def enum_symbol_to_value(enum_name, enum_symbol)
+      def enum_symbol_to_value(enum_name, enum_symbol, default_index: 0)
         if enum_symbol.is_a?(Integer)
           enum_symbol
         elsif enum_symbols(enum_name).include?(enum_symbol.to_s.to_sym)
           ::LibUI.const_get("#{enum_name}_#{enum_symbol}".camelcase(:upper))
         else
-          enum_symbol_to_value(enum_name, enum_symbols(enum_name).first)
+          enum_symbol_to_value(enum_name, enum_symbols(enum_name)[default_index])
         end
       end
     end

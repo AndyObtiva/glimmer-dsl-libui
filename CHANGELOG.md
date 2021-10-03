@@ -3,6 +3,8 @@
 ## 0.1.10
 
 - Upgrade to glimmer 2.2.1
+- Add a 3rd tab to examples/grid.rb showcasing the halign and valign properties
+- Support `grid` `halign`/`valign` symbol values of `:fill` (default), `:start`, `:center`, `:end`
 - Add `key_value` to `area_key_event` `Hash`
 - Add `ext_key_value` to `area_key_event` `Hash`
 

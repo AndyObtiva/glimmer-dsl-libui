@@ -128,11 +128,11 @@ module Glimmer
         end
         
         def draw_line_cap
-          pd Glimmer::LibUI.enum_symbol_to_value(:draw_line_cap, @stroke && @stroke[:cap])
+          Glimmer::LibUI.enum_symbol_to_value(:draw_line_cap, @stroke && @stroke[:cap])
         end
         
         def draw_line_join
-          pd Glimmer::LibUI.enum_symbol_to_value(:draw_line_join, @stroke && @stroke[:join])
+          Glimmer::LibUI.enum_symbol_to_value(:draw_line_join, @stroke && @stroke[:join])
         end
         
         def destroy
