@@ -2,29 +2,29 @@
 
 ## Next
 
-- Update form_table , login screenshots
+- Support examples/basic_draw_text.rb
+- Support stable `text` control nestable under `area`
+- Support dynamic `text` control to be called in `area` `on_draw` listener
 
 ## Soon
 
+- Support supplying optional `uiTableTextColumnOptionalParams *textParams` to `text_column`
+- Support configuring `RowBackgroundColorModelColumn` in TableParams
 
 ## Future
 
-- Support examples/basic_draw_text.rb
-- Support `text` control
-- Support `path` `fill`/`stroke` `:type` of `:linear_gradient`
-- Support `path` `fill`/`stroke` `:type` of `:radial_gradient`
-- Create new examples not found in LibUI for everything not covered by the original examples
 - Support automatic `grid` horizontal or vertical layout by specifying `column_count` or `row_count`
-- Support control-specific operations that accept Ruby proxy objects instead of Fiddle pointer objects (mainly `insert_at` operations)
 - Support `table` `cell_value` block property to do custom cell value reading along with `num_rows` property
 - Support `table` `set_cell_value` block property to do custom cell value setting
-- Support custom `on_destroy` listener on all widgets, not just `window`
-- Support supplying optional `uiTableTextColumnOptionalParams *textParams` to `text_column`
-- Support configuring `RowBackgroundColorModelColumn` in TableParams
 - Support automatic table row change when performing a direct row/column update in `cell_rows` (e.g. `data[3][0] = 'new value'`) as opposed to a general row update (e.g. `data[3] = ['new value', 'other new value']` <- already supported)
-- Support `table` `on_changed` listener to report change otherwise `on_changed`
+- Support `table` `on_changed` listener to report changes
+- Support control-specific operations that accept Ruby proxy objects instead of Fiddle pointer objects (mainly `insert_at` operations)
+- Support custom `on_destroy` listener on all widgets, not just `window`
+- Support `path` `fill`/`stroke` `:type` of `:linear_gradient`
+- Support `path` `fill`/`stroke` `:type` of `:radial_gradient`
 
 ## Far Future
+
 - Support general property data-binding
 - Support table data-binding
 - Support combobox and editable_combobox property data-binding
@@ -34,6 +34,7 @@
 - Implement Mac Native-Executable Packaging (perhaps with https://github.com/create-dmg/create-dmg or https://github.com/sveinbjornt/Platypus)
 - Scaffold an application with support for gem and native-executable packaging
 - Easy Drag and Drop via `drag_source true`, `drag_and_move true`, and `on_drop { }` event
+- Create more advanced examples such as Tetris, Calculator, Tic Tac Toe, Connect 4, Clock, Metronome, Weather, Stock Ticker, Battleship, Game of Life
 
 ## Maybe
 

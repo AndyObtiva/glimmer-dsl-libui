@@ -234,6 +234,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
     - [Area Gallery](#area-gallery)
     - [Histogram](#histogram)
     - [Basic Transform](#basic-transform)
+    - [Login](#login)
   - [Contributing to glimmer-dsl-libui](#contributing-to-glimmer-dsl-libui)
   - [Help](#help)
     - [Issues](#issues)
@@ -429,6 +430,7 @@ Control(Args) | Properties | Listeners
 `msg_box(window = main_window as Glimmer::LibUI::WindowProxy, title as String, description as String)` | None | None
 `msg_box_error(window = main_window as Glimmer::LibUI::WindowProxy, title as String, description as String)` | None | None
 `non_wrapping_multiline_entry` | `read_only` (Boolean), `text` (`String`) | `on_changed`
+`password_entry` | `read_only` (Boolean), `text` (`String`) | `on_changed`
 `path(draw_fill_mode = :winding)` | `fill` (`Hash` of `:r` as `0`-`255`, `:g` as `0`-`255`, `:b` as `0`-`255`, `:a` as `0.0`-`1.0`), `stroke` (`Hash` of `:r` as `0`-`255`, `:g` as `0`-`255`, `:b` as `0`-`255`, `:a` as `0.0`-`1.0`, `:cap` as (`:round`, `:square`, `:flat`), `:join` as (`:miter`, `:round`, `:bevel`), `:thickness` as `Numeric`, `:miter_limit` as `Numeric`, `:dashes` as `Array` of `Numeric` ) | None
 `preferences_menu_item` | None | `on_clicked`
 `progress_bar` | `value` (`Numeric`) | None
@@ -436,6 +438,7 @@ Control(Args) | Properties | Listeners
 `quit_menu_item` | None | `on_clicked`
 `radio_buttons` | `selected` (`Integer`) | `on_selected`
 `rectangle(x as Numeric, y as Numeric, width as Numeric, height as Numeric)` |  `x` (`Numeric`), `y` (`Numeric`), `width` (`Numeric`), `height` (`Numeric`) | None
+`search_entry` | `read_only` (Boolean), `text` (`String`) | `on_changed`
 `slider(min as Numeric, max as Numeric)` | `value` (`Numeric`) | `on_changed`
 `spinbox(min as Numeric, max as Numeric)` | `value` (`Numeric`) | `on_changed`
 `square(x as Numeric, y as Numeric, length as Numeric)` | `x` (`Numeric`), `y` (`Numeric`), `length` (`Numeric`) | None
@@ -4405,6 +4408,80 @@ window('Basic Transform', 350, 350) {
         }
       }
     end
+  }
+}.show
+```
+
+### Login
+
+[examples/login.rb](examples/login.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/login.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/login'"
+```
+
+Mac
+
+![glimmer-dsl-libui-mac-login.png](images/glimmer-dsl-libui-mac-login.png)
+![glimmer-dsl-libui-mac-login-logged-in.png](images/glimmer-dsl-libui-mac-login-logged-in.png)
+
+Linux
+
+![glimmer-dsl-libui-linux-login.png](images/glimmer-dsl-libui-linux-login.png)
+![glimmer-dsl-libui-linux-login-logged-in.png](images/glimmer-dsl-libui-linux-login-logged-in.png)
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+window('Login') {
+  margined true
+  
+  vertical_box {
+    form {
+      @username_entry = entry {
+        label 'Username:'
+      }
+      
+      @password_entry = password_entry {
+        label 'Password:'
+      }
+    }
+    
+    horizontal_box {
+      @login_button = button('Login') {
+        on_clicked do
+          @username_entry.enabled = false
+          @password_entry.enabled = false
+          @login_button.enabled = false
+          @logout_button.enabled = true
+        end
+      }
+      
+      @logout_button = button('Logout') {
+        enabled false
+        
+        on_clicked do
+          @username_entry.text = ''
+          @password_entry.text = ''
+          @username_entry.enabled = true
+          @password_entry.enabled = true
+          @login_button.enabled = true
+          @logout_button.enabled = false
+        end
+      }
+    }
   }
 }.show
 ```

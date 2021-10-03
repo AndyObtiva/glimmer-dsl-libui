@@ -66,7 +66,7 @@ GEM
       rake
       rdoc
       semver2
-    jwt (2.2.3)
+    jwt (2.3.0)
     kamelcase (0.0.2)
       semver2 (~> 3)
     libui (0.0.11)
