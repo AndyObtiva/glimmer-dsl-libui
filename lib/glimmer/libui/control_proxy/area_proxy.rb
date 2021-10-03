@@ -55,6 +55,10 @@ module Glimmer
         
         attr_reader :area_handler
         
+        def libui_api_keyword
+          'area'
+        end
+        
         def post_add_content
           super
           install_listeners
@@ -193,3 +197,5 @@ module Glimmer
     end
   end
 end
+
+Dir[File.expand_path("./#{File.basename(__FILE__, '.rb')}/*.rb", __dir__)].each {|f| require f}
