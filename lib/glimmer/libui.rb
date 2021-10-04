@@ -27,11 +27,11 @@ module Glimmer
       include Glimmer::FiddleConsumer
       
       def integer_to_boolean(int, allow_nil: true)
-        int.nil? ? (allow_nil ? nil : false) : int == 1
+        int.nil? ? (allow_nil ? nil : false) : ((int.is_a?(TrueClass) || int.is_a?(FalseClass)) ? int : int == 1)
       end
       
       def boolean_to_integer(bool, allow_nil: true)
-        bool.nil? ? (allow_nil ? nil : 0) : (bool == true ? 1 : 0)
+        bool.nil? ? (allow_nil ? nil : 0) : (bool.is_a?(Integer) ? bool : (bool == true ? 1 : 0))
       end
       
       def degrees_to_radians(degrees)

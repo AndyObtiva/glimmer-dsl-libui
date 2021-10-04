@@ -87,57 +87,29 @@ class BasicRactor
     }
     
     menu('Difficulty') {
-      @easy_menu_item = check_menu_item('Easy') {
+      radio_menu_item('Easy') {
         on_clicked do
-          if @easy_menu_item.checked?
-            @time_max = TIME_MAX_EASY
-            @medium_menu_item.checked = false
-            @hard_menu_item.checked = false
-            @insane_menu_item.checked = false
-          else
-            @easy_menu_item.checked = true # maintain check
-          end
+          @time_max = TIME_MAX_EASY
         end
       }
       
-      @medium_menu_item = check_menu_item('Medium') {
+      radio_menu_item('Medium') {
         on_clicked do
-          if @medium_menu_item.checked?
-            @time_max = TIME_MAX_MEDIUM
-            @easy_menu_item.checked = false
-            @hard_menu_item.checked = false
-            @insane_menu_item.checked = false
-          else
-            @medium_menu_item.checked = true # maintain check
-          end
+          @time_max = TIME_MAX_MEDIUM
         end
       }
       
-      @hard_menu_item = check_menu_item('Hard') {
+      radio_menu_item('Hard') {
         checked true
         
         on_clicked do
-          if @hard_menu_item.checked?
-            @time_max = TIME_MAX_HARD
-            @easy_menu_item.checked = false
-            @medium_menu_item.checked = false
-            @insane_menu_item.checked = false
-          else
-            @hard_menu_item.checked = true # maintain check
-          end
+          @time_max = TIME_MAX_HARD
         end
       }
       
-      @insane_menu_item = check_menu_item('Insane') {
+      radio_menu_item('Insane') {
         on_clicked do
-          if @insane_menu_item.checked?
-            @time_max = TIME_MAX_INSANE
-            @easy_menu_item.checked = false
-            @medium_menu_item.checked = false
-            @hard_menu_item.checked = false
-          else
-            @insane_menu_item.checked = true # maintain check
-          end
+          @time_max = TIME_MAX_INSANE
         end
       }
     }
@@ -145,7 +117,7 @@ class BasicRactor
     menu('Help') {
       menu_item('Instructions') {
         on_clicked do
-          msg_box('Instructions', "Score goes down as circles are added.\nIf it reaches -20, you lose!\n\nClick circles to color and score!\nOnce score reaches 0, you win!\n\nBeware of concealed light-colored circles!\nThey are revealed once darker circles intersect them.")
+          msg_box('Instructions', "Score goes down as circles are added.\nIf it reaches -20, you lose!\n\nClick circles to color and score!\nOnce score reaches 0, you win!\n\nBeware of concealed light-colored circles!\nThey are revealed once darker circles intersect them.\n\nThere are four levels of difficulty.\nChange via difficulty menu if the game gets too tough.")
         end
       }
     }

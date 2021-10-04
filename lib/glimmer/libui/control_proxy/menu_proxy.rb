@@ -20,6 +20,7 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 require 'glimmer/libui/control_proxy'
+require 'glimmer/libui/parent'
 
 module Glimmer
   module LibUI
@@ -28,6 +29,8 @@ module Glimmer
       #
       # Follows the Proxy Design Pattern
       class MenuProxy < ControlProxy
+        include Parent
+        
         DEFAULT_TEXT = ''
         
         private
