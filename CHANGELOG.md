@@ -6,6 +6,7 @@
 - Support examples/timer.rb
 - Support degrees for arc arguments (instead of radians)
 - Support `circle` shape and use in examples/area_gallery.rb (all versions)
+- Support `Glimmer::LibUI.x11_colors` to obtain all available X11 color symbols
 
 ## 0.1.11
 

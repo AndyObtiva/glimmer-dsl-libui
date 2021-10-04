@@ -113,6 +113,10 @@ module Glimmer
         end
       end
       
+      def x11_colors
+        Color::RGB.constants.reject {|c| c.to_s.upcase == c.to_s}.map(&:to_s).map(&:underscore).map(&:to_sym)
+      end
+      
       def queue_main(&block)
         closure = fiddle_closure_block_caller(4, [0]) do
           block.call

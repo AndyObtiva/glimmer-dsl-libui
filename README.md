@@ -772,6 +772,8 @@ Note that `area`, `path`, and nested shapes are all truly declarative, meaning t
 
 `fill` and `stroke` accept [X11](https://en.wikipedia.org/wiki/X11_color_names) color `Symbol`s/`String`s like `:skyblue` and `'sandybrown'` or 6-number hex or 3-number hex-shorthand (as `Integer` or `String` with or without `0x` prefix)
 
+Available [X11](https://en.wikipedia.org/wiki/X11_color_names) colors can be obtained through `Glimmer::LibUI.x11_colors` method.
+
 Check [Basic Transform](#basic-transform) example for use of [X11](https://en.wikipedia.org/wiki/X11_color_names) colors.
 
 Check [Histogram](#histogram) example for use of hex colors.
