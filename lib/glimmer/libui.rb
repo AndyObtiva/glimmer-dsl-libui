@@ -117,20 +117,37 @@ module Glimmer
         Color::RGB.constants.reject {|c| c.to_s.upcase == c.to_s}.map(&:to_s).map(&:underscore).map(&:to_sym)
       end
       
+      # Queues block to execute at the nearest opportunity possible on the main GUI event loop
       def queue_main(&block)
         closure = fiddle_closure_block_caller(4, [0]) do
-          block.call
-          1
+          result = boolean_to_integer(block.call)
+          result = 1 if result.nil?
+          result
         end
         ::LibUI.queue_main(closure)
+        closure
       end
       
-      def timer(time_in_seconds, &block)
+      # Calls block on the main GUI event loop after time_in_seconds delay, repeating indefinitely by default
+      # If `repeat:` keyword arg is passed with an Integer value, it repeats for that number of times
+      # If `repeat:` keyword arg is passed with false or 0, then the block is only called onces
+      # If block returns false at any point, the timer is stopped from further repetitions regardless of `repeat:` keyword arg value
+      # If block returns true at any point, the timer continues for another repetition regardless of `repeat:` keyword arg value
+      def timer(time_in_seconds = 0.1, repeat: true, &block)
         closure = fiddle_closure_block_caller(4, [0]) do
-          block.call
-          1
+          result = boolean_to_integer(block.call)
+          repeat -= 1 if repeat.is_a?(Integer)
+          if result.nil?
+            if (repeat == true || (repeat.is_a?(Integer) && repeat > 0))
+              result = 1
+            else
+              result = 0
+            end
+          end
+          result
         end
         ::LibUI.timer(time_in_seconds * 1000.0, closure)
+        closure
       end
     end
   end

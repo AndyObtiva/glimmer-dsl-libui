@@ -5,6 +5,10 @@ require 'glimmer-dsl-libui'
 class Timer
   include Glimmer
   
+  SECOND_MAX = 59
+  MINUTE_MAX = 59
+  HOUR_MAX = 23
+  
   def initialize
     @pid = nil
     @midi_file = File.expand_path('../sounds/AlanWalker-Faded.mid', __dir__)
@@ -50,12 +54,13 @@ class Timer
           if seconds == 0
             if minutes > 0
               @min_spinbox.value = minutes -= 1
-              @sec_spinbox.value = seconds = 59
+              @sec_spinbox.value = seconds = SECOND_MAX
             end
             if minutes == 0
               if hours > 0
                 @hour_spinbox.value = hours -= 1
-                @min_spinbox.value = minutes = 59
+                @min_spinbox.value = minutes = MINUTE_MAX
+                @sec_spinbox.value = seconds = SECOND_MAX
               end
               if hours == 0 && minutes == 0 && seconds == 0
                 @start_button.enabled = true
@@ -81,21 +86,21 @@ class Timer
       group('Countdown') {
         vertical_box {
           horizontal_box {
-            @hour_spinbox = spinbox(0, 23) {
+            @hour_spinbox = spinbox(0, HOUR_MAX) {
               stretchy false
               value 0
             }
             label(':') {
               stretchy false
             }
-            @min_spinbox = spinbox(0, 60) {
+            @min_spinbox = spinbox(0, MINUTE_MAX) {
               stretchy false
               value 0
             }
             label(':') {
               stretchy false
             }
-            @sec_spinbox = spinbox(0, 60) {
+            @sec_spinbox = spinbox(0, SECOND_MAX) {
               stretchy false
               value 0
             }
