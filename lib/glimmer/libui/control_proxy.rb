@@ -223,7 +223,13 @@ module Glimmer
         elsif ::LibUI.respond_to?("#{libui_api_keyword}_set_#{method_name.to_s.sub(/=$/, '')}") && !args.empty?
           property = method_name.to_s.sub(/=$/, '')
           args[0] = Glimmer::LibUI.boolean_to_integer(args.first) if BOOLEAN_PROPERTIES.include?(property) && (args.first.is_a?(TrueClass) || args.first.is_a?(FalseClass))
-          ::LibUI.send("#{libui_api_keyword}_set_#{property}", @libui, *args)
+          if property.to_s == 'checked'
+            current_value = Glimmer::LibUI.integer_to_boolean(::LibUI.send("#{libui_api_keyword}_checked", @libui))
+            new_value = Glimmer::LibUI.integer_to_boolean(args[0])
+            ::LibUI.send("#{libui_api_keyword}_set_#{property}", @libui, *args) if new_value != current_value
+          else
+            ::LibUI.send("#{libui_api_keyword}_set_#{property}", @libui, *args)
+          end
         elsif ::LibUI.respond_to?("#{libui_api_keyword}_#{method_name}") && !args.empty?
           ::LibUI.send("#{libui_api_keyword}_#{method_name}", @libui, *args)
         elsif ::LibUI.respond_to?("control_#{method_name.to_s.sub(/\?$/, '')}") && args.empty?

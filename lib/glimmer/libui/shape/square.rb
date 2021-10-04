@@ -32,6 +32,10 @@ module Glimmer
           ::LibUI.draw_path_add_rectangle(path_proxy.libui, *@args, length)
           super
         end
+        
+        def include?(x, y)
+          x.between?(self.x, self.x + length) && y.between?(self.y, self.y + length)
+        end
       end
     end
   end

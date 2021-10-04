@@ -24,17 +24,25 @@ require 'glimmer/libui/shape'
 module Glimmer
   module LibUI
     class Shape
-      class Rectangle < Shape
-        parameters :x, :y, :width, :height
-        parameter_defaults 0, 0, 0, 0
-      
+      class Circle < Shape
+        parameters :x_center, :y_center, :radius
+        parameter_defaults 0, 0, 0
+                
         def draw(area_draw_params)
-          ::LibUI.draw_path_add_rectangle(path_proxy.libui, *@args)
+          arc_args = @args.dup
+          arc_args[3] = 0
+          arc_args[4] = Math::PI * 2.0
+          arc_args[5] = 0
+          if parent.is_a?(Figure) && parent.x.nil? && parent.y.nil?
+            ::LibUI.draw_path_new_figure_with_arc(path_proxy.libui, *arc_args)
+          else
+            ::LibUI.draw_path_arc_to(path_proxy.libui, *arc_args)
+          end
           super
         end
         
         def include?(x, y)
-          x.between?(self.x, self.x + width) && y.between?(self.y, self.y + height)
+          (x - x_center)**2 + (y - y_center)**2 < radius**2
         end
       end
     end

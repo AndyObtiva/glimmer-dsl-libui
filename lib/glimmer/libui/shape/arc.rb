@@ -29,11 +29,14 @@ module Glimmer
         parameter_defaults 0, 0, 0, 0, 360, false
                 
         def draw(area_draw_params)
-          @args[5] ||= Glimmer::LibUI.boolean_to_integer(@args[5], allow_nil: false)
+          arc_args = @args.dup
+          arc_args[3] = Glimmer::LibUI.degrees_to_radians(arc_args[3])
+          arc_args[4] = Glimmer::LibUI.degrees_to_radians(arc_args[4])
+          arc_args[5] = Glimmer::LibUI.boolean_to_integer(arc_args[5], allow_nil: false)
           if parent.is_a?(Figure) && parent.x.nil? && parent.y.nil?
-            ::LibUI.draw_path_new_figure_with_arc(path_proxy.libui, *@args)
+            ::LibUI.draw_path_new_figure_with_arc(path_proxy.libui, *arc_args)
           else
-            ::LibUI.draw_path_arc_to(path_proxy.libui, *@args)
+            ::LibUI.draw_path_arc_to(path_proxy.libui, *arc_args)
           end
           super
         end

@@ -118,10 +118,16 @@ window('Area Gallery', 400, 400) {
       stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
     }
     path { # declarative stable path
-      arc(200, 200, 90, 0, 360, false)
+      circle(200, 200, 90)
 
       fill r: 202, g: 102, b: 204, a: 0.5
       stroke r: 0, g: 0, b: 0, thickness: 2
+    }
+    path { # declarative stable path
+      arc(400, 220, 180, 90, 90, false)
+
+      fill r: 204, g: 102, b: 204, a: 0.5
+      stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
     }
     
     on_mouse_event do |area_mouse_event|
@@ -235,6 +241,8 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
     - [Histogram](#histogram)
     - [Basic Transform](#basic-transform)
     - [Login](#login)
+    - [Timer](#timer)
+    - [Color The Circles](#color-the-circles)
   - [Contributing to glimmer-dsl-libui](#contributing-to-glimmer-dsl-libui)
   - [Help](#help)
     - [Issues](#issues)
@@ -474,6 +482,8 @@ Control(Args) | Properties | Listeners
 - `enable`
 - `hide`
 - `show`
+- `Glimmer::LibUI::queue_main(&block)`: queues an operation to be run on the main event loop at the earliest opportunity possible
+- `Glimmer::LibUI::timer(time_in_seconds=0.1, repeat: true, &block)`: calls block after time_in_seconds has elapsed, repeating indefinitely unless repeat is false or an integer for finite number of repeats. Block can return false or true to override next repetition.
 
 ### Extra Dialogs
 
@@ -765,6 +775,8 @@ transform m1
 Note that `area`, `path`, and nested shapes are all truly declarative, meaning they do not care about the ordering of calls to `fill`, `stroke`, and `transform`. Furthermore, any transform that is applied is reversed at the end of the block, so you never have to worry about the ordering of `transform` calls among different paths. You simply set a transform on the `path`s that need it and it is guaranteed to be called before all its content is drawn, and then undone afterwards to avoid affecting later paths. Matrix `transform` can be set on an entire `area` too, applying to all nested `path`s.
 
 `fill` and `stroke` accept [X11](https://en.wikipedia.org/wiki/X11_color_names) color `Symbol`s/`String`s like `:skyblue` and `'sandybrown'` or 6-number hex or 3-number hex-shorthand (as `Integer` or `String` with or without `0x` prefix)
+
+Available [X11](https://en.wikipedia.org/wiki/X11_color_names) colors can be obtained through `Glimmer::LibUI.x11_colors` method.
 
 Check [Basic Transform](#basic-transform) example for use of [X11](https://en.wikipedia.org/wiki/X11_color_names) colors.
 
@@ -1438,7 +1450,7 @@ class TinyMidiPlayer
   end
 
   def create_gui
-    menu('Help') { |m|
+    menu('Help') {
       menu_item('Version') {
         on_clicked do
           show_version
@@ -3523,10 +3535,16 @@ window('Area Gallery', 400, 400) {
       stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
     }
     path { # declarative stable path
-      arc(200, 200, 90, 0, 360, false)
+      circle(200, 200, 90)
 
       fill r: 202, g: 102, b: 204, a: 0.5
       stroke r: 0, g: 0, b: 0, thickness: 2
+    }
+    path { # declarative stable path
+      arc(400, 220, 180, 90, 90, false)
+
+      fill r: 204, g: 102, b: 204, a: 0.5
+      stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
     }
     
     on_mouse_event do |area_mouse_event|
@@ -3680,17 +3698,27 @@ window('Area Gallery', 400, 400) {
       stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
     }
     path { # declarative stable path
-      arc {
+      circle {
         x_center 200
         y_center 200
         radius 90
-        start_angle 0
-        sweep 360
-        is_negative false
       }
 
       fill r: 202, g: 102, b: 204, a: 0.5
       stroke r: 0, g: 0, b: 0, thickness: 2
+    }
+    path { # declarative stable path
+      arc {
+        x_center 400
+        y_center 220
+        radius 180
+        start_angle 90
+        sweep 90
+        is_negative false
+      }
+
+      fill r: 204, g: 102, b: 204, a: 0.5
+      stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
     }
     
     on_mouse_event do |area_mouse_event|
@@ -3791,13 +3819,19 @@ window('Area Gallery', 400, 400) {
         stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
       }
       path { # a dynamic path is added semi-declaratively inside on_draw block
-        arc(200, 200, 90, 0, 360, false)
-
+        circle(200, 200, 90)
+  
         fill r: 202, g: 102, b: 204, a: 0.5
         stroke r: 0, g: 0, b: 0, thickness: 2
       }
+      path { # a dynamic path is added semi-declaratively inside on_draw block
+        arc(400, 220, 180, 90, 90, false)
+  
+        fill r: 204, g: 102, b: 204, a: 0.5
+        stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
+      }
     end
-        
+    
     on_mouse_event do |area_mouse_event|
       p area_mouse_event
     end
@@ -3950,20 +3984,30 @@ window('Area Gallery', 400, 400) {
         stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
       }
       path { # a dynamic path is added semi-declaratively inside on_draw block
-        arc {
+        circle {
           x_center 200
           y_center 200
           radius 90
-          start_angle 0
-          sweep 360
-          is_negative false
         }
-
+  
         fill r: 202, g: 102, b: 204, a: 0.5
         stroke r: 0, g: 0, b: 0, thickness: 2
       }
+      path { # a dynamic path is added semi-declaratively inside on_draw block
+        arc {
+          x_center 400
+          y_center 220
+          radius 180
+          start_angle 90
+          sweep 90
+          is_negative false
+        }
+  
+        fill r: 204, g: 102, b: 204, a: 0.5
+        stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
+      }
     end
-        
+    
     on_mouse_event do |area_mouse_event|
       p area_mouse_event
     end
@@ -4484,6 +4528,409 @@ window('Login') {
     }
   }
 }.show
+```
+
+### Timer
+
+[examples/timer.rb](examples/timer.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/timer.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/timer'"
+```
+
+Mac
+
+![glimmer-dsl-libui-mac-timer.png](images/glimmer-dsl-libui-mac-timer.png)
+![glimmer-dsl-libui-mac-timer-in-progress.png](images/glimmer-dsl-libui-mac-timer-in-progress.png)
+
+Linux
+
+![glimmer-dsl-libui-linux-timer.png](images/glimmer-dsl-libui-linux-timer.png)
+![glimmer-dsl-libui-linux-timer-in-progress.png](images/glimmer-dsl-libui-linux-timer-in-progress.png)
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+# frozen_string_literal: true
+
+require 'glimmer-dsl-libui'
+
+class Timer
+  include Glimmer
+  
+  SECOND_MAX = 59
+  MINUTE_MAX = 59
+  HOUR_MAX = 23
+  
+  def initialize
+    @pid = nil
+    @midi_file = File.expand_path('../sounds/AlanWalker-Faded.mid', __dir__)
+    at_exit { stop_midi }
+    setup_timer
+    create_gui
+  end
+
+  def stop_midi
+    if @pid
+      if @th.alive?
+        Process.kill(:SIGKILL, @pid)
+        @pid = nil
+      else
+        @pid = nil
+      end
+    end
+  end
+
+  def play_midi
+    stop_midi
+    if @pid.nil?
+      begin
+        @pid = spawn "timidity -G 0.0-10.0 #{@midi_file}"
+        @th = Process.detach @pid
+      rescue Errno::ENOENT
+        warn 'Timidty++ not found. Please install Timidity++.'
+        warn 'https://sourceforge.net/projects/timidity/'
+      end
+    end
+  end
+
+  def setup_timer
+    unless @setup_timer
+      Glimmer::LibUI.timer(1) do
+        if @started
+          seconds = @sec_spinbox.value
+          minutes = @min_spinbox.value
+          hours = @hour_spinbox.value
+          if seconds > 0
+            @sec_spinbox.value = seconds -= 1
+          end
+          if seconds == 0
+            if minutes > 0
+              @min_spinbox.value = minutes -= 1
+              @sec_spinbox.value = seconds = SECOND_MAX
+            end
+            if minutes == 0
+              if hours > 0
+                @hour_spinbox.value = hours -= 1
+                @min_spinbox.value = minutes = MINUTE_MAX
+                @sec_spinbox.value = seconds = SECOND_MAX
+              end
+              if hours == 0 && minutes == 0 && seconds == 0
+                @start_button.enabled = true
+                @stop_button.enabled = false
+                @started = false
+                unless @played
+                  play_midi
+                  @played = true
+                end
+              end
+            end
+          end
+        end
+      end
+      @setup_timer = true
+    end
+  end
+
+  def create_gui
+    window('Timer') {
+      margined true
+      
+      group('Countdown') {
+        vertical_box {
+          horizontal_box {
+            @hour_spinbox = spinbox(0, HOUR_MAX) {
+              stretchy false
+              value 0
+            }
+            label(':') {
+              stretchy false
+            }
+            @min_spinbox = spinbox(0, MINUTE_MAX) {
+              stretchy false
+              value 0
+            }
+            label(':') {
+              stretchy false
+            }
+            @sec_spinbox = spinbox(0, SECOND_MAX) {
+              stretchy false
+              value 0
+            }
+          }
+          horizontal_box {
+            @start_button = button('Start') {
+              on_clicked do
+                @start_button.enabled = false
+                @stop_button.enabled = true
+                @started = true
+                @played = false
+              end
+            }
+            
+            @stop_button = button('Stop') {
+              enabled false
+              
+              on_clicked do
+                @start_button.enabled = true
+                @stop_button.enabled = false
+                @started = false
+              end
+            }
+          }
+        }
+      }
+    }.show
+  end
+end
+
+Timer.new
+```
+
+### Color The Circles
+
+[examples/color_the_circles.rb](examples/color_the_circles.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/color_the_circles.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/color_the_circles'"
+```
+
+Mac
+
+![glimmer-dsl-libui-mac-color-the-circles.png](images/glimmer-dsl-libui-mac-color-the-circles.png)
+![glimmer-dsl-libui-mac-color-the-circles-lost.png](images/glimmer-dsl-libui-mac-color-the-circles-lost.png)
+![glimmer-dsl-libui-mac-color-the-circles-won.png](images/glimmer-dsl-libui-mac-color-the-circles-won.png)
+
+Linux
+
+![glimmer-dsl-libui-linux-color-the-circles.png](images/glimmer-dsl-libui-linux-color-the-circles.png)
+![glimmer-dsl-libui-linux-color-the-circles-lost.png](images/glimmer-dsl-libui-linux-color-the-circles-lost.png)
+![glimmer-dsl-libui-linux-color-the-circles-won.png](images/glimmer-dsl-libui-linux-color-the-circles-won.png)
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+require 'glimmer-dsl-libui'
+
+class ColorTheCircles
+  include Glimmer
+  
+  WINDOW_WIDTH = 800
+  WINDOW_HEIGHT = 600
+  CIRCLE_MIN_RADIUS = 15
+  CIRCLE_MAX_RADIUS = 50
+  MARGIN_WIDTH = 55
+  MARGIN_HEIGHT = 155
+  TIME_MAX_EASY = 4
+  TIME_MAX_MEDIUM = 3
+  TIME_MAX_HARD = 2
+  TIME_MAX_INSANE = 1
+  
+  attr_accessor :score
+  
+  def initialize
+    @circles_data = []
+    @score = 0
+    @time_max = TIME_MAX_HARD
+    register_observers
+    setup_circle_factory
+  end
+  
+  def register_observers
+    observer = Glimmer::DataBinding::Observer.proc do |new_score|
+      @score_label.text = new_score.to_s
+      if new_score == -20
+        msg_box('You Lost!', 'Sorry! Your score reached -20')
+        restart_game
+      elsif new_score == 0
+        msg_box('You Won!', 'Congratulations! Your score reached 0')
+        restart_game
+      end
+    end
+    observer.observe(self, :score) # automatically enhances self to become Glimmer::DataBinding::ObservableModel and notify observer on score attribute changes
+  end
+  
+  def setup_circle_factory
+    consumer = Proc.new do
+      if @circles_data.empty?
+        # start with 3 circles to make more challenging
+        add_circle until @circles_data.size > 3
+      else
+        add_circle
+      end
+      delay = rand * @time_max
+      Glimmer::LibUI.timer(delay, repeat: false, &consumer)
+    end
+    Glimmer::LibUI.queue_main(&consumer)
+  end
+  
+  def add_circle
+    circle_x_center = rand * (WINDOW_WIDTH - MARGIN_WIDTH - CIRCLE_MAX_RADIUS) + CIRCLE_MAX_RADIUS
+    circle_y_center = rand * (WINDOW_HEIGHT - MARGIN_HEIGHT - CIRCLE_MAX_RADIUS) + CIRCLE_MAX_RADIUS
+    circle_radius = rand * (CIRCLE_MAX_RADIUS - CIRCLE_MIN_RADIUS) + CIRCLE_MIN_RADIUS
+    stroke_color = Glimmer::LibUI.x11_colors.sample
+    @circles_data << {
+      args: [circle_x_center, circle_y_center, circle_radius],
+      fill: nil,
+      stroke: stroke_color
+    }
+    @area.queue_redraw_all
+    self.score -= 1 # notifies score observers automatically of change
+  end
+  
+  def restart_game
+    @score = 0 # update variable directly to avoid notifying observers
+    @circles_data.clear
+  end
+  
+  def launch
+    menu('Actions') {
+      menu_item('Restart') {
+        on_clicked do
+          restart_game
+        end
+      }
+      
+      quit_menu_item
+    }
+    
+    menu('Difficulty') {
+      radio_menu_item('Easy') {
+        on_clicked do
+          @time_max = TIME_MAX_EASY
+        end
+      }
+      
+      radio_menu_item('Medium') {
+        on_clicked do
+          @time_max = TIME_MAX_MEDIUM
+        end
+      }
+      
+      radio_menu_item('Hard') {
+        checked true
+        
+        on_clicked do
+          @time_max = TIME_MAX_HARD
+        end
+      }
+      
+      radio_menu_item('Insane') {
+        on_clicked do
+          @time_max = TIME_MAX_INSANE
+        end
+      }
+    }
+    
+    menu('Help') {
+      menu_item('Instructions') {
+        on_clicked do
+          msg_box('Instructions', "Score goes down as circles are added.\nIf it reaches -20, you lose!\n\nClick circles to color and score!\nOnce score reaches 0, you win!\n\nBeware of concealed light-colored circles!\nThey are revealed once darker circles intersect them.\n\nThere are four levels of difficulty.\nChange via difficulty menu if the game gets too tough.")
+        end
+      }
+    }
+    
+    window('Color The Circles', WINDOW_WIDTH, WINDOW_HEIGHT) {
+      margined true
+      
+      grid {
+        button('Restart') {
+          left 0
+          top 0
+          halign :center
+          
+          on_clicked do
+            restart_game
+          end
+        }
+        
+        label('Score goes down as circles are added. If it reaches -20, you lose!') {
+          left 0
+          top 1
+          halign :center
+        }
+        
+        label('Click circles to color and score! Once score reaches 0, you win!') {
+          left 0
+          top 2
+          halign :center
+        }
+        
+        horizontal_box {
+          left 0
+          top 3
+          halign :center
+          
+          label('Score:') {
+            stretchy false
+          }
+          
+          @score_label = label(@score.to_s) {
+            stretchy false
+          }
+        }
+        
+        vertical_box {
+          left 0
+          top 4
+          hexpand true
+          vexpand true
+          halign :fill
+          valign :fill
+          
+          @area = area {
+            on_draw do |area_draw_params|
+              path {
+                rectangle(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
+                
+                fill :white
+              }
+              
+              @circles_data.each do |circle_data|
+                path {
+                  circle_data[:circle] = circle(*circle_data[:args])
+                  
+                  fill circle_data[:fill]
+                  stroke circle_data[:stroke]
+                }
+              end
+            end
+            
+            on_mouse_down do |area_mouse_event|
+              clicked_circle_data = @circles_data.find do |circle_data|
+                circle_data[:fill].nil? && circle_data[:circle].include?(area_mouse_event[:x], area_mouse_event[:y])
+              end
+              if clicked_circle_data
+                clicked_circle_data[:fill] = clicked_circle_data[:stroke]
+                @area.queue_redraw_all
+                self.score += 1 # notifies score observers automatically of change
+              end
+            end
+          }
+        }
+        
+      }
+    }.show
+  end
+end
+
+ColorTheCircles.new.launch
 ```
 
 ## Contributing to glimmer-dsl-libui
