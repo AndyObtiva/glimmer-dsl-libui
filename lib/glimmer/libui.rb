@@ -31,7 +31,7 @@ module Glimmer
       end
       
       def boolean_to_integer(bool, allow_nil: true)
-        bool.nil? ? (allow_nil ? nil : 0) : (bool ? 1 : 0)
+        bool.nil? ? (allow_nil ? nil : 0) : (bool == true ? 1 : 0)
       end
       
       def degrees_to_radians(degrees)
