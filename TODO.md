@@ -4,7 +4,6 @@
 
 - Have color the circle push colored circles up behind uncolored circles
 - Fix non-Blocking dialog issues on Linux with color the circles
-- Have timer show msg box on finish
 - Document new examples (basic ractor and timer)
 - Update screenshots fo area gallery
 - Document `Glimmer::LibUI.timer` and `Glimmer::LibUI.queue_main` in detail

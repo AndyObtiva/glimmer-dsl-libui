@@ -11,13 +11,13 @@ class Timer
   
   def initialize
     @pid = nil
-    @midi_file = File.expand_path('../sounds/AlanWalker-Faded.mid', __dir__)
-    at_exit { stop_midi }
+    @alarm_file = File.expand_path('../sounds/AlanWalker-Faded.mid', __dir__)
+    at_exit { stop_alarm }
     setup_timer
     create_gui
   end
 
-  def stop_midi
+  def stop_alarm
     if @pid
       if @th.alive?
         Process.kill(:SIGKILL, @pid)
@@ -28,11 +28,11 @@ class Timer
     end
   end
 
-  def play_midi
-    stop_midi
+  def play_alarm
+    stop_alarm
     if @pid.nil?
       begin
-        @pid = spawn "timidity -G 0.0-10.0 #{@midi_file}"
+        @pid = spawn "timidity -G 0.0-10.0 #{@alarm_file}"
         @th = Process.detach @pid
       rescue Errno::ENOENT
         warn 'Timidty++ not found. Please install Timidity++.'
@@ -67,7 +67,8 @@ class Timer
                 @stop_button.enabled = false
                 @started = false
                 unless @played
-                  play_midi
+                  play_alarm
+                  msg_box('Alarm', 'Countdown Is Finished!')
                   @played = true
                 end
               end

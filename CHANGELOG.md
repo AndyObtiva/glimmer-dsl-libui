@@ -1,9 +1,13 @@
 # Change Log
 
+## 0.2.1
+
+- Have examples/timer.rb show `msg_box` on finish
+
 ## 0.2.0
 
 - Support examples/timer.rb
-- Support examples/basic_ractor.rb (use a ractor that randomly generates circle shapes of different sizes and locations, which show up where you gotta click on those circles to get filled (colored) and you score a point when you click them just like whack a mole)
+- Support examples/color_the_circles.rb
 - Support `timer` and `queue_main` with simple blocks through `Glimmer::LibUI.timer(time_in_seconds=0.1, repeat: true, &block)` and `Glimmer::LibUI.queue_main(&block)`
 - Support `radio_menu_item` (similar to `check_menu_item`, but auto-unchecks sibling `radio_menu_item`s when checked)
 - Support degrees for arc arguments (instead of radians)
