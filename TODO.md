@@ -2,6 +2,8 @@
 
 ## Next
 
+- Support examples/timer.rb
+- Support `timer` and `queue_main` with simple blocks as `Glimmer::LibUI.timer` and `Glimmer::LibUI.queue_main`
 - Support examples/basic_draw_text.rb
 - Support stable `text` control nestable under `area`
 - Support dynamic `text` control to be called in `area` `on_draw` listener
@@ -34,13 +36,13 @@
 - Implement Mac Native-Executable Packaging (perhaps with https://github.com/create-dmg/create-dmg or https://github.com/sveinbjornt/Platypus)
 - Scaffold an application with support for gem and native-executable packaging
 - Easy Drag and Drop via `drag_source true`, `drag_and_move true`, and `on_drop { }` event
-- Create more advanced examples such as Tetris, Calculator, Tic Tac Toe, Connect 4, Clock, Metronome, Weather, Stock Ticker, Battleship, Game of Life
+- Create more advanced examples such as Tetris, Calculator, Timer, Tic Tac Toe, Connect 4, Clock, Metronome, Weather, Stock Ticker, Battleship, Game of Life
 
 ## Maybe
 
 - Support Dynamic `path` `save` and `restore`
 - Support nested paths/shapes in Path DSL with relative positioning
-- Trap exit signal (CTRL+C) and close application gracefully
+- Trap exit signal (CTRL+C) and close application gracefully (it seems using ractors or sleep causes CTRL+C to work, could be a good workaround)
 - Support optionally passing arguments to columns for LibUI.append_column_xyz methods
 - Support `table` `on_changing` listener to intercept change and cancel it if needed (`on_changing`)
 - Fold menus inside a `menu_bar` control

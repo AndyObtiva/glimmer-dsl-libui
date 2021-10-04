@@ -1438,7 +1438,7 @@ class TinyMidiPlayer
   end
 
   def create_gui
-    menu('Help') { |m|
+    menu('Help') {
       menu_item('Version') {
         on_clicked do
           show_version
