@@ -19,9 +19,13 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+require 'glimmer/fiddle_consumer'
+
 module Glimmer
   module LibUI
     class << self
+      include Glimmer::FiddleConsumer
+      
       def integer_to_boolean(int, allow_nil: true)
         int.nil? ? (allow_nil ? nil : false) : int == 1
       end
@@ -103,6 +107,22 @@ module Glimmer
         else
           enum_symbol_to_value(enum_name, enum_symbols(enum_name)[default_index])
         end
+      end
+      
+      def queue_main(&block)
+        closure = fiddle_closure_block_caller(4, [0]) do
+          block.call
+          1
+        end
+        ::LibUI.queue_main(closure)
+      end
+      
+      def timer(time_in_seconds, &block)
+        closure = fiddle_closure_block_caller(4, [0]) do
+          block.call
+          1
+        end
+        ::LibUI.timer(time_in_seconds * 1000.0, closure)
       end
     end
   end

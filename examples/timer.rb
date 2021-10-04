@@ -4,14 +4,12 @@ require 'glimmer-dsl-libui'
 
 class Timer
   include Glimmer
-  include Glimmer::FiddleConsumer
   
-  VERSION = '0.0.1'
-
   def initialize
     @pid = nil
     @midi_file = File.expand_path('../sounds/AlanWalker-Faded.mid', __dir__)
     at_exit { stop_midi }
+    setup_timer
     create_gui
   end
 
@@ -39,39 +37,67 @@ class Timer
     end
   end
 
-  def show_version
-    msg_box('Timer',
-              "Written in Ruby\n" \
-                "https://github.com/AndyObtiva/glimmer-dsl-libui\n" \
-                "Version #{VERSION}")
+  def setup_timer
+    unless @setup_timer
+      Glimmer::LibUI.timer(1) do
+        if @started
+          seconds = @sec_spinbox.value
+          minutes = @min_spinbox.value
+          hours = @hour_spinbox.value
+          if seconds > 0
+            @sec_spinbox.value = seconds -= 1
+          end
+          if seconds == 0
+            if minutes > 0
+              @min_spinbox.value = minutes -= 1
+              @sec_spinbox.value = seconds = 59
+            end
+            if minutes == 0
+              if hours > 0
+                @hour_spinbox.value = hours -= 1
+                @min_spinbox.value = minutes = 59
+              end
+              if hours == 0 && minutes == 0 && seconds == 0
+                @start_button.enabled = true
+                @stop_button.enabled = false
+                @started = false
+                unless @played
+                  play_midi
+                  @played = true
+                end
+              end
+            end
+          end
+        end
+      end
+      @setup_timer = true
+    end
   end
 
   def create_gui
-    menu('Help') {
-      menu_item('Version') {
-        on_clicked do
-          show_version
-        end
-      }
-      quit_menu_item
-    }
-    
     window('Timer') {
       margined true
       
       group('Countdown') {
         vertical_box {
           horizontal_box {
-            @hour_spinbox = spinbox(0, 60) {
+            @hour_spinbox = spinbox(0, 23) {
               stretchy false
-              value 60
+              value 0
             }
             label(':') {
               stretchy false
             }
             @min_spinbox = spinbox(0, 60) {
               stretchy false
-              value 60
+              value 0
+            }
+            label(':') {
+              stretchy false
+            }
+            @sec_spinbox = spinbox(0, 60) {
+              stretchy false
+              value 0
             }
           }
           horizontal_box {
@@ -81,27 +107,6 @@ class Timer
                 @stop_button.enabled = true
                 @started = true
                 @played = false
-                if @closure.nil?
-                  @closure = fiddle_closure_block_caller(4, [0]) do
-                    if @started
-                      time = @min_spinbox.value
-                      if time > 0
-                        @min_spinbox.value = time -= 1
-                      end
-                      if time == 0
-                        @start_button.enabled = true
-                        @stop_button.enabled = false
-                        @started = false
-                        unless @played
-                          play_midi
-                          @played = true
-                        end
-                      end
-                    end
-                    1
-                  end
-                  ::LibUI.timer(1000, @closure)
-                end
               end
             }
             
