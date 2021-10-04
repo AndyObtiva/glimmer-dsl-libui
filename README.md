@@ -118,10 +118,16 @@ window('Area Gallery', 400, 400) {
       stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
     }
     path { # declarative stable path
-      arc(200, 200, 90, 0, 360, false)
+      circle(200, 200, 90)
 
       fill r: 202, g: 102, b: 204, a: 0.5
       stroke r: 0, g: 0, b: 0, thickness: 2
+    }
+    path { # declarative stable path
+      arc(400, 220, 180, 90, 90, false)
+
+      fill r: 204, g: 102, b: 204, a: 0.5
+      stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
     }
     
     on_mouse_event do |area_mouse_event|
@@ -3523,10 +3529,16 @@ window('Area Gallery', 400, 400) {
       stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
     }
     path { # declarative stable path
-      arc(200, 200, 90, 0, 360, false)
+      circle(200, 200, 90)
 
       fill r: 202, g: 102, b: 204, a: 0.5
       stroke r: 0, g: 0, b: 0, thickness: 2
+    }
+    path { # declarative stable path
+      arc(400, 220, 180, 90, 90, false)
+
+      fill r: 204, g: 102, b: 204, a: 0.5
+      stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
     }
     
     on_mouse_event do |area_mouse_event|
@@ -3680,17 +3692,27 @@ window('Area Gallery', 400, 400) {
       stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
     }
     path { # declarative stable path
-      arc {
+      circle {
         x_center 200
         y_center 200
         radius 90
-        start_angle 0
-        sweep 360
-        is_negative false
       }
 
       fill r: 202, g: 102, b: 204, a: 0.5
       stroke r: 0, g: 0, b: 0, thickness: 2
+    }
+    path { # declarative stable path
+      arc {
+        x_center 400
+        y_center 220
+        radius 180
+        start_angle 90
+        sweep 90
+        is_negative false
+      }
+
+      fill r: 204, g: 102, b: 204, a: 0.5
+      stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
     }
     
     on_mouse_event do |area_mouse_event|
@@ -3791,13 +3813,19 @@ window('Area Gallery', 400, 400) {
         stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
       }
       path { # a dynamic path is added semi-declaratively inside on_draw block
-        arc(200, 200, 90, 0, 360, false)
-
+        circle(200, 200, 90)
+  
         fill r: 202, g: 102, b: 204, a: 0.5
         stroke r: 0, g: 0, b: 0, thickness: 2
       }
+      path { # a dynamic path is added semi-declaratively inside on_draw block
+        arc(400, 220, 180, 90, 90, false)
+  
+        fill r: 204, g: 102, b: 204, a: 0.5
+        stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
+      }
     end
-        
+    
     on_mouse_event do |area_mouse_event|
       p area_mouse_event
     end
@@ -3950,20 +3978,30 @@ window('Area Gallery', 400, 400) {
         stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
       }
       path { # a dynamic path is added semi-declaratively inside on_draw block
-        arc {
+        circle {
           x_center 200
           y_center 200
           radius 90
-          start_angle 0
-          sweep 360
-          is_negative false
         }
-
+  
         fill r: 202, g: 102, b: 204, a: 0.5
         stroke r: 0, g: 0, b: 0, thickness: 2
       }
+      path { # a dynamic path is added semi-declaratively inside on_draw block
+        arc {
+          x_center 400
+          y_center 220
+          radius 180
+          start_angle 90
+          sweep 90
+          is_negative false
+        }
+  
+        fill r: 204, g: 102, b: 204, a: 0.5
+        stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
+      }
     end
-        
+    
     on_mouse_event do |area_mouse_event|
       p area_mouse_event
     end
