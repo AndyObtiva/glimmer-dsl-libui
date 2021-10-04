@@ -1,6 +1,6 @@
 require 'glimmer-dsl-libui'
 
-class BasicRactor
+class ColorTheCircles
   include Glimmer
   
   WINDOW_WIDTH = 800
@@ -39,33 +39,29 @@ class BasicRactor
   end
   
   def setup_circle_factory
-    @circle_factory = Ractor.new do
-      loop do
-        circle_x_center = rand * (WINDOW_WIDTH - MARGIN_WIDTH - CIRCLE_MAX_RADIUS) + CIRCLE_MAX_RADIUS
-        circle_y_center = rand * (WINDOW_HEIGHT - MARGIN_HEIGHT - CIRCLE_MAX_RADIUS) + CIRCLE_MAX_RADIUS
-        circle_radius = rand * (CIRCLE_MAX_RADIUS - CIRCLE_MIN_RADIUS) + CIRCLE_MIN_RADIUS
-        stroke_color = Glimmer::LibUI.x11_colors.sample
-        Ractor.yield({
-          args: [circle_x_center, circle_y_center, circle_radius],
-          fill: nil,
-          stroke: stroke_color
-        })
-      end
-    end
     consumer = Proc.new do
       if @circles_data.empty?
         # start with 3 circles to make more challenging
-        generate_circle until @circles_data.size > 3
+        add_circle until @circles_data.size > 3
       else
-        generate_circle
+        add_circle
       end
-      Glimmer::LibUI.timer(rand * @time_max, repeat: false, &consumer)
+      delay = rand * @time_max
+      Glimmer::LibUI.timer(delay, repeat: false, &consumer)
     end
     Glimmer::LibUI.queue_main(&consumer)
   end
   
-  def generate_circle
-    @circles_data << @circle_factory.take
+  def add_circle
+    circle_x_center = rand * (WINDOW_WIDTH - MARGIN_WIDTH - CIRCLE_MAX_RADIUS) + CIRCLE_MAX_RADIUS
+    circle_y_center = rand * (WINDOW_HEIGHT - MARGIN_HEIGHT - CIRCLE_MAX_RADIUS) + CIRCLE_MAX_RADIUS
+    circle_radius = rand * (CIRCLE_MAX_RADIUS - CIRCLE_MIN_RADIUS) + CIRCLE_MIN_RADIUS
+    stroke_color = Glimmer::LibUI.x11_colors.sample
+    @circles_data << {
+      args: [circle_x_center, circle_y_center, circle_radius],
+      fill: nil,
+      stroke: stroke_color
+    }
     @area.queue_redraw_all
     self.score -= 1 # notifies score observers automatically of change
   end
@@ -162,42 +158,48 @@ class BasicRactor
           }
         }
         
-        @area = area {
+        vertical_box {
           left 0
           top 4
+          hexpand true
+          vexpand true
           halign :fill
+          valign :fill
           
-          on_draw do |area_draw_params|
-            path {
-              rectangle(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
-              
-              fill :white
-            }
-            
-            @circles_data.each do |circle_data|
+          @area = area {
+            on_draw do |area_draw_params|
               path {
-                circle_data[:circle] = circle(*circle_data[:args])
+                rectangle(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
                 
-                fill circle_data[:fill]
-                stroke circle_data[:stroke]
+                fill :white
               }
+              
+              @circles_data.each do |circle_data|
+                path {
+                  circle_data[:circle] = circle(*circle_data[:args])
+                  
+                  fill circle_data[:fill]
+                  stroke circle_data[:stroke]
+                }
+              end
             end
-          end
-          
-          on_mouse_down do |area_mouse_event|
-            clicked_circle_data = @circles_data.find do |circle_data|
-              circle_data[:fill].nil? && circle_data[:circle].include?(area_mouse_event[:x], area_mouse_event[:y])
+            
+            on_mouse_down do |area_mouse_event|
+              clicked_circle_data = @circles_data.find do |circle_data|
+                circle_data[:fill].nil? && circle_data[:circle].include?(area_mouse_event[:x], area_mouse_event[:y])
+              end
+              if clicked_circle_data
+                clicked_circle_data[:fill] = clicked_circle_data[:stroke]
+                @area.queue_redraw_all
+                self.score += 1 # notifies score observers automatically of change
+              end
             end
-            if clicked_circle_data
-              clicked_circle_data[:fill] = clicked_circle_data[:stroke]
-              @area.queue_redraw_all
-              self.score += 1 # notifies score observers automatically of change
-            end
-          end
+          }
         }
+        
       }
     }.show
   end
 end
 
-BasicRactor.new.launch
+ColorTheCircles.new.launch
