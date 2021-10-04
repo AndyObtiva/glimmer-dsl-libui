@@ -7,6 +7,7 @@
 - Support degrees for arc arguments (instead of radians)
 - Support `circle` shape and use in examples/area_gallery.rb (all versions)
 - Support `Glimmer::LibUI.x11_colors` to obtain all available X11 color symbols
+- Support `#include?` method in `circle`, `rectangle`, and `square` to test containment of a point `x`,`y` coordinates
 
 ## 0.1.11
 

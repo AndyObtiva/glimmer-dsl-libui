@@ -5,7 +5,7 @@ class BasicRactor
   
   WINDOW_WIDTH = 800
   WINDOW_HEIGHT = 600
-  CIRCLE_MIN_RADIUS = 10
+  CIRCLE_MIN_RADIUS = 15
   CIRCLE_MAX_RADIUS = 50
   MARGIN_WIDTH = 55
   MARGIN_HEIGHT = 155
@@ -41,7 +41,11 @@ class BasicRactor
         circle_y_center = rand * (WINDOW_HEIGHT - MARGIN_HEIGHT - CIRCLE_MAX_RADIUS) + CIRCLE_MAX_RADIUS
         circle_radius = rand * (CIRCLE_MAX_RADIUS - CIRCLE_MIN_RADIUS) + CIRCLE_MIN_RADIUS
         stroke_color = Glimmer::LibUI.x11_colors.sample
-        Ractor.yield [[circle_x_center, circle_y_center, circle_radius], nil, stroke_color]
+        Ractor.yield({
+          args: [circle_x_center, circle_y_center, circle_radius],
+          fill: nil,
+          stroke: stroke_color
+        })
       end
     end
     consumer = Proc.new do
@@ -58,8 +62,8 @@ class BasicRactor
   
   def generate_circle
     @circles_data << @circle_factory.take
-    self.score -= 1 # notifies score observers automatically of change
     @area.queue_redraw_all
+    self.score -= 1 # notifies score observers automatically of change
   end
   
   def launch
@@ -116,24 +120,24 @@ class BasicRactor
               fill :white
             }
             
-            @circles_data.each do |circle_args, fill_color, stroke_color|
+            @circles_data.each do |circle_data|
               path {
-                circle(*circle_args)
+                circle_data[:circle] = circle(*circle_data[:args])
                 
-                fill fill_color
-                stroke stroke_color
+                fill circle_data[:fill]
+                stroke circle_data[:stroke]
               }
             end
           end
           
           on_mouse_down do |area_mouse_event|
-            clicked_circle_data = @circles_data.find do |circle_args, fill_color, stroke_color|
-              fill_color.nil? && (area_mouse_event[:x] - circle_args[0])**2 + (area_mouse_event[:y] - circle_args[1])**2 < circle_args[2]**2
+            clicked_circle_data = @circles_data.find do |circle_data|
+              circle_data[:fill].nil? && circle_data[:circle].include?(area_mouse_event[:x], area_mouse_event[:y])
             end
             if clicked_circle_data
-              self.score += 1 # notifies score observers automatically of change
-              clicked_circle_data[1] = clicked_circle_data[2]
+              clicked_circle_data[:fill] = clicked_circle_data[:stroke]
               @area.queue_redraw_all
+              self.score += 1 # notifies score observers automatically of change
             end
           end
         }

@@ -40,6 +40,10 @@ module Glimmer
           end
           super
         end
+        
+        def include?(x, y)
+          (x - x_center)**2 + (y - y_center)**2 < radius**2
+        end
       end
     end
   end
