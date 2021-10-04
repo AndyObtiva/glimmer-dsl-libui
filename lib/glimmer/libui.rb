@@ -34,6 +34,10 @@ module Glimmer
         bool.nil? ? (allow_nil ? nil : 0) : (bool ? 1 : 0)
       end
       
+      def degrees_to_radians(degrees)
+        ((Math::PI * 2.0) / 360.00) * degrees.to_f
+      end
+      
       def interpret_color(value)
         if value.is_a?(Array) && value.last.is_a?(Hash)
           options = value.last

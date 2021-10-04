@@ -3,7 +3,6 @@
 ## Next
 
 - Support examples/basic_ractor.rb (use a ractor that randomly generates arc shapes of different sizes and locations, which show up and have finite lifetimes before decay and disappearance from the screen; this is a game where you gotta click on those arcs before they disappear and they get filled (colored) and you score a point when you click them just like whack a mole)
-- Support degrees for arc arguments (instead of radians)
 - Support `circle` shape
 - Document new examples (basic ractor and timer)
 

@@ -4,6 +4,7 @@
 
 - Support `timer` and `queue_main` with simple blocks as `Glimmer::LibUI.timer` and `Glimmer::LibUI.queue_main`
 - Support examples/timer.rb
+- Support degrees for arc arguments (instead of radians)
 
 ## 0.1.11
 
