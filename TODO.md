@@ -7,6 +7,7 @@
 - Update screenshots fo area gallery
 - Document `Glimmer::LibUI.timer` and `Glimmer::LibUI.queue_main` in detail
 
+- Support `radio_menu_item` (similar to `check_menu_item`, but auto-unchecks sibling `radio_menu_item`s when checked)
 - Support examples/basic_draw_text.rb
 - Support stable `text` control nestable under `area`
 - Support dynamic `text` control to be called in `area` `on_draw` listener

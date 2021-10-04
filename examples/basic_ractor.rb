@@ -9,12 +9,17 @@ class BasicRactor
   CIRCLE_MAX_RADIUS = 50
   MARGIN_WIDTH = 55
   MARGIN_HEIGHT = 155
+  TIME_MAX_EASY = 4
+  TIME_MAX_MEDIUM = 3
+  TIME_MAX_HARD = 2
+  TIME_MAX_INSANE = 1
   
   attr_accessor :score
   
   def initialize
     @circles_data = []
     @score = 0
+    @time_max = TIME_MAX_HARD
     register_observers
     setup_circle_factory
   end
@@ -24,11 +29,10 @@ class BasicRactor
       @score_label.text = new_score.to_s
       if new_score == -20
         msg_box('You Lost!', 'Sorry! Your score reached -20')
-        @score = 0 # update variable directly to avoid notifying observers
-        @circles_data.clear
+        restart_game
       elsif new_score == 0
         msg_box('You Won!', 'Congratulations! Your score reached 0')
-        @circles_data.clear
+        restart_game
       end
     end
     observer.observe(self, :score) # automatically enhances self to become Glimmer::DataBinding::ObservableModel and notify observer on score attribute changes
@@ -55,7 +59,7 @@ class BasicRactor
       else
         generate_circle
       end
-      Glimmer::LibUI.timer(rand * 2, repeat: false, &consumer)
+      Glimmer::LibUI.timer(rand * @time_max, repeat: false, &consumer)
     end
     Glimmer::LibUI.queue_main(&consumer)
   end
@@ -66,7 +70,86 @@ class BasicRactor
     self.score -= 1 # notifies score observers automatically of change
   end
   
+  def restart_game
+    @score = 0 # update variable directly to avoid notifying observers
+    @circles_data.clear
+  end
+  
   def launch
+    menu('Actions') {
+      menu_item('Restart') {
+        on_clicked do
+          restart_game
+        end
+      }
+      
+      quit_menu_item
+    }
+    
+    menu('Difficulty') {
+      @easy_menu_item = check_menu_item('Easy') {
+        on_clicked do
+          if @easy_menu_item.checked?
+            @time_max = TIME_MAX_EASY
+            @medium_menu_item.checked = false
+            @hard_menu_item.checked = false
+            @insane_menu_item.checked = false
+          else
+            @easy_menu_item.checked = true # maintain check
+          end
+        end
+      }
+      
+      @medium_menu_item = check_menu_item('Medium') {
+        on_clicked do
+          if @medium_menu_item.checked?
+            @time_max = TIME_MAX_MEDIUM
+            @easy_menu_item.checked = false
+            @hard_menu_item.checked = false
+            @insane_menu_item.checked = false
+          else
+            @medium_menu_item.checked = true # maintain check
+          end
+        end
+      }
+      
+      @hard_menu_item = check_menu_item('Hard') {
+        checked true
+        
+        on_clicked do
+          if @hard_menu_item.checked?
+            @time_max = TIME_MAX_HARD
+            @easy_menu_item.checked = false
+            @medium_menu_item.checked = false
+            @insane_menu_item.checked = false
+          else
+            @hard_menu_item.checked = true # maintain check
+          end
+        end
+      }
+      
+      @insane_menu_item = check_menu_item('Insane') {
+        on_clicked do
+          if @insane_menu_item.checked?
+            @time_max = TIME_MAX_INSANE
+            @easy_menu_item.checked = false
+            @medium_menu_item.checked = false
+            @hard_menu_item.checked = false
+          else
+            @insane_menu_item.checked = true # maintain check
+          end
+        end
+      }
+    }
+    
+    menu('Help') {
+      menu_item('Instructions') {
+        on_clicked do
+          msg_box('Instructions', "Score goes down as circles are added.\nIf it reaches -20, you lose!\n\nClick circles to color and score!\nOnce score reaches 0, you win!\n\nBeware of concealed light-colored circles!\nThey are revealed once darker circles intersect them.")
+        end
+      }
+    }
+    
     window('Color The Circles', WINDOW_WIDTH, WINDOW_HEIGHT) {
       margined true
       
@@ -77,8 +160,7 @@ class BasicRactor
           halign :center
           
           on_clicked do
-            @score = 0 # update variable directly to avoid notifying observers
-            @circles_data.clear
+            restart_game
           end
         }
         
