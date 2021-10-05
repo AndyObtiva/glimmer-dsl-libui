@@ -2,9 +2,20 @@
 
 ## Next
 
+- free timer and queue_main closures from memory once 0 is returned for timer and always for queue_main
 - Support examples/basic_draw_text.rb
-- Support stable `text` control nestable under `area`
 - Support dynamic `text` control to be called in `area` `on_draw` listener
+- Support stable `text` control nestable under `area`
+- Support `string` control nestable under `text` to represent an attributed/unattributed string (depending on nestable properties)
+- Support `string` control property `font`
+- Support `string` control property `color`
+- Support `string` control property `background`
+- Support `string` control property `underline`
+- Support `text` control `default_font` property
+- Support enum symbols for `align` property of `text` control
+- Support enum symbols for `:italic` font descriptor key (in addition to numbers)
+- Support enum symbols for `:stretch` font descriptor key (in addition to numbers)
+- Support enum symbols for `:weight` font descriptor key (in addition to numbers)
 
 ## Soon
 
@@ -50,6 +61,7 @@
 - Interpret characters in key event while holding a modifer down (e.g. ! for 1 + shift)
 - Support animation
 - Consider making all event hashes and param hashes accept retrieval of their key values through method calls not just [] calls
+- Support nesting shapes directly under area to represent paths having one shape, and nesting fill/stroke within the shapes (not path)
 
 # Refactoring
 
