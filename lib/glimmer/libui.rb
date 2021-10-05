@@ -130,7 +130,7 @@ module Glimmer
       
       # Calls block on the main GUI event loop after time_in_seconds delay, repeating indefinitely by default
       # If `repeat:` keyword arg is passed with an Integer value, it repeats for that number of times
-      # If `repeat:` keyword arg is passed with false or 0, then the block is only called onces
+      # If `repeat:` keyword arg is passed with false or 0, then the block is only called once
       # If block returns false at any point, the timer is stopped from further repetitions regardless of `repeat:` keyword arg value
       # If block returns true at any point, the timer continues for another repetition regardless of `repeat:` keyword arg value
       def timer(time_in_seconds = 0.1, repeat: true, &block)

@@ -1276,9 +1276,7 @@ window('Notepad', 500, 300) {
 
 ### Midi Player
 
-This example has prerequisites:
-- Install [TiMidity](http://timidity.sourceforge.net) and ensure `timidity` command is in `PATH` (can be installed via [Homebrew](https://brew.sh) on Mac or [apt-get](https://help.ubuntu.com/community/AptGet/Howto) on Linux).
-- Add `*.mid` files to `~/Music` directory (you may copy the ones included in [sounds](sounds) directory)
+To run this example, install [TiMidity](http://timidity.sourceforge.net) and ensure `timidity` command is in `PATH` (can be installed via [Homebrew](https://brew.sh) on Mac or [apt-get](https://help.ubuntu.com/community/AptGet/Howto) on Linux).
 
 [examples/midi_player.rb](examples/midi_player.rb)
 
@@ -4537,6 +4535,8 @@ window('Login') {
 ```
 
 ### Timer
+
+To run this example, install [TiMidity](http://timidity.sourceforge.net) and ensure `timidity` command is in `PATH` (can be installed via [Homebrew](https://brew.sh) on Mac or [apt-get](https://help.ubuntu.com/community/AptGet/Howto) on Linux).
 
 [examples/timer.rb](examples/timer.rb)
 

@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.2.3
+
+- Update examples/midi_player.rb to read sounds locally from gem
+
 ## 0.2.2
 
 - Automatically add `vertical_box` parent to `area` if it did not have a box parent (otherwise, it seems not to show up on Linux, even when directly under `grid`)

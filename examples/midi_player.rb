@@ -9,7 +9,7 @@ class TinyMidiPlayer
 
   def initialize
     @pid = nil
-    @music_directory = File.expand_path(ARGV[0] || '~/Music/')
+    @music_directory = File.expand_path('../sounds', __dir__)
     @midi_files      = Dir.glob(File.join(@music_directory, '**/*.mid'))
                           .sort_by { |path| File.basename(path) }
     at_exit { stop_midi }

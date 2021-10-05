@@ -2,8 +2,6 @@
 
 ## Next
 
-- Update screenshots for area gallery
-
 - Support examples/basic_draw_text.rb
 - Support stable `text` control nestable under `area`
 - Support dynamic `text` control to be called in `area` `on_draw` listener
