@@ -2,7 +2,6 @@
 
 ## Next
 
-- Have color the circle push colored circles up behind uncolored circles
 - Fix non-Blocking dialog issues on Linux with color the circles
 - Document new examples (basic ractor and timer)
 - Update screenshots fo area gallery
@@ -55,6 +54,7 @@
 - Support `matrix` operation noun names (e.g. `translation` for `translate`) to be more declarative
 - Interpret characters in key event while holding a modifer down (e.g. ! for 1 + shift)
 - Support animation
+- Consider making all event hashes and param hashes accept retrieval of their key values through method calls not just [] calls
 
 # Refactoring
 

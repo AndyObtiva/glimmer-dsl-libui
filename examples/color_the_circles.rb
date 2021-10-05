@@ -77,9 +77,17 @@ class ColorTheCircles
     end
     if clicked_circle_data
       clicked_circle_data[:fill] = clicked_circle_data[:stroke]
+      push_colored_circle_behind_uncolored_circles(clicked_circle_data)
       @area.queue_redraw_all
       self.score += 1 # notifies score observers automatically of change
     end
+  end
+  
+  def push_colored_circle_behind_uncolored_circles(colored_circle_data)
+    removed_colored_circle_data = @circles_data.delete(colored_circle_data)
+    last_colored_circle_data = @circles_data.select {|cd| cd[:fill]}.last
+    last_colored_circle_data_index = @circles_data.index(last_colored_circle_data) || -1
+    @circles_data.insert(last_colored_circle_data_index + 1, removed_colored_circle_data)
   end
   
   def launch
