@@ -71,6 +71,17 @@ class ColorTheCircles
     @circles_data.clear
   end
   
+  def color_circle(x, y)
+    clicked_circle_data = @circles_data.find do |circle_data|
+      circle_data[:fill].nil? && circle_data[:circle].include?(x, y)
+    end
+    if clicked_circle_data
+      clicked_circle_data[:fill] = clicked_circle_data[:stroke]
+      @area.queue_redraw_all
+      self.score += 1 # notifies score observers automatically of change
+    end
+  end
+  
   def launch
     menu('Actions') {
       menu_item('Restart') {
@@ -185,14 +196,7 @@ class ColorTheCircles
             end
             
             on_mouse_down do |area_mouse_event|
-              clicked_circle_data = @circles_data.find do |circle_data|
-                circle_data[:fill].nil? && circle_data[:circle].include?(area_mouse_event[:x], area_mouse_event[:y])
-              end
-              if clicked_circle_data
-                clicked_circle_data[:fill] = clicked_circle_data[:stroke]
-                @area.queue_redraw_all
-                self.score += 1 # notifies score observers automatically of change
-              end
+              color_circle(area_mouse_event[:x], area_mouse_event[:y])
             end
           }
         }
