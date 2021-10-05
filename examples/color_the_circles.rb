@@ -20,6 +20,7 @@ class ColorTheCircles
     @circles_data = []
     @score = 0
     @time_max = TIME_MAX_HARD
+    @game_over = false
     register_observers
     setup_circle_factory
   end
@@ -28,9 +29,11 @@ class ColorTheCircles
     observer = Glimmer::DataBinding::Observer.proc do |new_score|
       @score_label.text = new_score.to_s
       if new_score == -20
+        @game_over = true
         msg_box('You Lost!', 'Sorry! Your score reached -20')
         restart_game
       elsif new_score == 0
+        @game_over = true
         msg_box('You Won!', 'Congratulations! Your score reached 0')
         restart_game
       end
@@ -40,11 +43,13 @@ class ColorTheCircles
   
   def setup_circle_factory
     consumer = Proc.new do
-      if @circles_data.empty?
-        # start with 3 circles to make more challenging
-        add_circle until @circles_data.size > 3
-      else
-        add_circle
+      unless @game_over
+        if @circles_data.empty?
+          # start with 3 circles to make more challenging
+          add_circle until @circles_data.size > 3
+        else
+          add_circle
+        end
       end
       delay = rand * @time_max
       Glimmer::LibUI.timer(delay, repeat: false, &consumer)
@@ -69,6 +74,7 @@ class ColorTheCircles
   def restart_game
     @score = 0 # update variable directly to avoid notifying observers
     @circles_data.clear
+    @game_over = false
   end
   
   def color_circle(x, y)

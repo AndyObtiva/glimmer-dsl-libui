@@ -4,6 +4,7 @@
 
 - Have examples/timer.rb show `msg_box` on finish
 - Have examples/color_the_circles.rb push colored circles when colored behind uncolored circles to keep uncolored circles visible
+- Fix non-blocking dialog issue on Linux with examples/color_the_circles.rb
 
 ## 0.2.0
 
