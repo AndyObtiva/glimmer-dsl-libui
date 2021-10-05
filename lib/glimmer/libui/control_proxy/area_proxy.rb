@@ -60,7 +60,18 @@ module Glimmer
         end
         
         def post_add_content
-          super
+          unless parent_proxy.is_a?(Box)
+            original_parent_proxy = @parent_proxy
+            @vertical_box_parent_proxy = ControlProxy.create('vertical_box', parent_proxy, []) {} # block prevents calling post add content
+            append_properties.each do |property|
+              @vertical_box_parent_proxy.append_property(property, append_property(property))
+            end
+            @vertical_box_parent_proxy.post_add_content
+            @parent_proxy = @vertical_box_parent_proxy
+            @vertical_box_parent_proxy.post_initialize_child(self)
+          else
+            super
+          end
           install_listeners
         end
         
@@ -72,7 +83,7 @@ module Glimmer
         def redraw
           queue_redraw_all
         end
-        
+          
         private
         
         def build_control

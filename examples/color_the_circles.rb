@@ -183,7 +183,7 @@ class ColorTheCircles
           }
         }
         
-        vertical_box {
+        @area = area {
           left 0
           top 4
           hexpand true
@@ -191,30 +191,27 @@ class ColorTheCircles
           halign :fill
           valign :fill
           
-          @area = area {
-            on_draw do |area_draw_params|
-              path {
-                rectangle(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
-                
-                fill :white
-              }
+          on_draw do |area_draw_params|
+            path {
+              rectangle(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
               
-              @circles_data.each do |circle_data|
-                path {
-                  circle_data[:circle] = circle(*circle_data[:args])
-                  
-                  fill circle_data[:fill]
-                  stroke circle_data[:stroke]
-                }
-              end
-            end
+              fill :white
+            }
             
-            on_mouse_down do |area_mouse_event|
-              color_circle(area_mouse_event[:x], area_mouse_event[:y])
+            @circles_data.each do |circle_data|
+              path {
+                circle_data[:circle] = circle(*circle_data[:args])
+                
+                fill circle_data[:fill]
+                stroke circle_data[:stroke]
+              }
             end
-          }
+          end
+          
+          on_mouse_down do |area_mouse_event|
+            color_circle(area_mouse_event[:x], area_mouse_event[:y])
+          end
         }
-        
       }
     }.show
   end

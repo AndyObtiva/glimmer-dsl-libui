@@ -2,7 +2,7 @@
 
 ## Next
 
-- Update screenshots fo area gallery
+- Update screenshots for area gallery
 
 - Support examples/basic_draw_text.rb
 - Support stable `text` control nestable under `area`
@@ -40,7 +40,7 @@
 
 ## Maybe
 
-- Support Dynamic `path` `save` and `restore`
+- Support Dynamic `path` `save` and `restore` calls
 - Support nested paths/shapes in Path DSL with relative positioning
 - Trap exit signal (CTRL+C) and close application gracefully (it seems using ractors or sleep causes CTRL+C to work, could be a good workaround)
 - Support optionally passing arguments to columns for LibUI.append_column_xyz methods
