@@ -149,6 +149,18 @@ module Glimmer
         ::LibUI.timer(time_in_seconds * 1000.0, closure)
         closure
       end
+      
+      def respond_to?(method_name, *args)
+        super || ::LibUI.respond_to?(method_name, *args)
+      end
+      
+      def method_missing(method_name, *args, &block)
+        if ::LibUI.respond_to?(method_name, true)
+          ::LibUI.send(method_name, *args, &block)
+        else
+          super
+        end
+      end
     end
   end
 end

@@ -205,6 +205,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
     - [Supported Controls](#supported-controls)
     - [Common Control Properties](#common-control-properties)
     - [Common Control Operations](#common-control-operations)
+    - [LibUI Operations](#libui-operations)
     - [Extra Dialogs](#extra-dialogs)
     - [Extra Operations](#extra-operations)
     - [Table API](#table-api)
@@ -482,8 +483,13 @@ Control(Args) | Properties | Listeners
 - `enable`
 - `hide`
 - `show`
+
+### LibUI Operations
+
+All operations that could normally be called on `LibUI` can also be called on `Glimmer::LibUI`, but some have enhancements as detailed below.
+
 - `Glimmer::LibUI::queue_main(&block)`: queues an operation to be run on the main event loop at the earliest opportunity possible
-- `Glimmer::LibUI::timer(time_in_seconds=0.1, repeat: true, &block)`: calls block after time_in_seconds has elapsed, repeating indefinitely unless repeat is false or an integer for finite number of repeats. Block can return false or true to override next repetition.
+- `Glimmer::LibUI::timer(time_in_seconds=0.1, repeat: true, &block)`: calls block after time_in_seconds has elapsed, repeating indefinitely unless repeat is `false` or an `Integer` for finite number of repeats. Block can return `false` or `true` to override next repetition.
 
 ### Extra Dialogs
 

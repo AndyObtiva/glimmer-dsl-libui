@@ -2,9 +2,7 @@
 
 ## Next
 
-- Document new examples (basic ractor and timer)
 - Update screenshots fo area gallery
-- Document `Glimmer::LibUI.timer` and `Glimmer::LibUI.queue_main` in detail
 
 - Support examples/basic_draw_text.rb
 - Support stable `text` control nestable under `area`
