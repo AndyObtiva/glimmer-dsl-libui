@@ -180,7 +180,7 @@ module Glimmer
         end
         
         def ext_key_to_symbol(ext_key_value)
-          Glimmer::LibUI.enum_symbols(:ext_key)[ext_key_value - 1].to_s.to_sym if ext_key_value > 0
+          Glimmer::LibUI.enum_value_to_symbol(:ext_key, ext_key_value)
         end
                 
         def modifiers_to_symbols(modifiers_value)

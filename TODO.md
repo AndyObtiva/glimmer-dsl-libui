@@ -2,7 +2,6 @@
 
 ## Next
 
-- free timer and queue_main closures from memory once 0 is returned for timer and always for queue_main
 - Support examples/basic_draw_text.rb
 - Support dynamic `text` control to be called in `area` `on_draw` listener
 - Support stable `text` control nestable under `area`

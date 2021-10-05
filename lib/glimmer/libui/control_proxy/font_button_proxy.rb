@@ -34,9 +34,9 @@ module Glimmer
           {
             family: @font_descriptor.Family.to_s,
             size: @font_descriptor.Size,
-            weight: @font_descriptor.Weight,
-            italic: @font_descriptor.Italic,
-            stretch: @font_descriptor.Stretch
+            weight: Glimmer::LibUI.enum_value_to_symbol(:text_weight, @font_descriptor.Weight),
+            italic: Glimmer::LibUI.enum_value_to_symbol(:text_italic, @font_descriptor.Italic),
+            stretch: Glimmer::LibUI.enum_value_to_symbol(:text_stretch, @font_descriptor.Stretch),
           }
         end
         

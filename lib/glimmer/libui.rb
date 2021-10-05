@@ -96,18 +96,28 @@ module Glimmer
         value
       end
       
-      # Returns ruby underscored symbols for enum values starting with enum name (camelcase, e.g. 'ext_key')
       def enum_symbols(enum_name)
-        enum_name = enum_name.to_s.underscore.to_sym
-        @enum_symbols ||= {}
-        @enum_symbols[enum_name] ||= ::LibUI.constants.select { |c| c.to_s.start_with?(enum_name.to_s.camelcase(:upper)) }.map { |c| c.to_s.underscore.sub("#{enum_name}_", '').to_sym }
+        enum_symbol_values(enum_name).keys
       end
       
-      def enum_symbol_to_value(enum_name, enum_symbol, default_index: 0)
+      # Returns ruby underscored symbols for enum values starting with enum name (camelcase, e.g. 'ext_key')
+      def enum_symbol_values(enum_name)
+        enum_name = enum_name.to_s.underscore.to_sym
+        @enum_symbols ||= {}
+        @enum_symbols[enum_name] ||= ::LibUI.constants.select { |c| c.to_s.start_with?(enum_name.to_s.camelcase(:upper)) }.map { |c| [c.to_s.underscore.sub("#{enum_name}_", '').to_sym, ::LibUI.const_get(c)] }.to_h
+      end
+      
+      def enum_value_to_symbol(enum_name, enum_value)
+        enum_symbol_values(enum_name).invert[enum_value]
+      end
+      
+      def enum_symbol_to_value(enum_name, enum_symbol, default_symbol: nil, default_index: 0)
         if enum_symbol.is_a?(Integer)
           enum_symbol
         elsif enum_symbols(enum_name).include?(enum_symbol.to_s.to_sym)
-          ::LibUI.const_get("#{enum_name}_#{enum_symbol}".camelcase(:upper))
+          enum_symbol_values(enum_name)[enum_symbol]
+        elsif default_symbol
+          enum_symbol_to_value(enum_name, default_symbol)
         else
           enum_symbol_to_value(enum_name, enum_symbols(enum_name)[default_index])
         end

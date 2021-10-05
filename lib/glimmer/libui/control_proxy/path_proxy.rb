@@ -34,13 +34,11 @@ module Glimmer
         include Parent
         prepend Transformable
       
-        # TODO support mode without parent proxy
         def initialize(keyword, parent, args, &block)
           @keyword = keyword
           @parent_proxy = parent
           @args = args
           @block = block
-          @enabled = true
           post_add_content if @block.nil?
         end
       

@@ -30,33 +30,33 @@ class BasicDrawText
             align 0
             default_font family: 'Georgia', size: 13, weight: 500, italic: 0, stretch: 4
             
-            alternating_color_string {
-              '  At last Ygramul sensed that something was coming toward ' \
-              'her. With the speed of lightning, she turned about, confronting ' \
-              'Atreyu with an enormous steel-blue face. Her single eye had a ' \
-              'vertical pupil, which stared at Atreyu with inconceivable malignancy. '
-            }
-            alternating_color_string {
-              '  A cry of fear escaped Bastian. '
-            }
-            alternating_color_string {
-              '  A cry of terror passed through the ravine and echoed from ' \
-              'side to side. Ygramul turned her eye to left and right, to see if ' \
-              'someone else had arrived, for that sound could not have been ' \
-              'made by the boy who stood there as though paralyzed with ' \
-              'horror. '
-            }
-            alternating_color_string {
-              '  Could she have heard my cry? Bastion wondered in alarm. ' \
-              "But that's not possible. "
-            }
-            alternating_color_string {
-              '  And then Atreyu heard Ygramuls voice. It was very high ' \
-              'and slightly hoarse, not at all the right kind of voice for that ' \
-              'enormous face. Her lips did not move as she spoke. It was the ' \
-              'buzzing of a great swarm of hornets that shaped itself into ' \
-              'words. '
-            }
+#             alternating_color_string {
+#               '  At last Ygramul sensed that something was coming toward ' \
+#               'her. With the speed of lightning, she turned about, confronting ' \
+#               'Atreyu with an enormous steel-blue face. Her single eye had a ' \
+#               'vertical pupil, which stared at Atreyu with inconceivable malignancy. '
+#             }
+#             alternating_color_string {
+#               '  A cry of fear escaped Bastian. '
+#             }
+#             alternating_color_string {
+#               '  A cry of terror passed through the ravine and echoed from ' \
+#               'side to side. Ygramul turned her eye to left and right, to see if ' \
+#               'someone else had arrived, for that sound could not have been ' \
+#               'made by the boy who stood there as though paralyzed with ' \
+#               'horror. '
+#             }
+#             alternating_color_string {
+#               '  Could she have heard my cry? Bastion wondered in alarm. ' \
+#               "But that's not possible. "
+#             }
+#             alternating_color_string {
+#               '  And then Atreyu heard Ygramuls voice. It was very high ' \
+#               'and slightly hoarse, not at all the right kind of voice for that ' \
+#               'enormous face. Her lips did not move as she spoke. It was the ' \
+#               'buzzing of a great swarm of hornets that shaped itself into ' \
+#               'words. '
+#             }
           }
         end
       }
