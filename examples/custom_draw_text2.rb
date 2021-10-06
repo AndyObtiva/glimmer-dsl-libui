@@ -48,6 +48,30 @@ class CustomDrawText
               @area.queue_redraw_all
             end
           }
+          combobox { |c|
+            label 'Underline Built-In Color'
+            items Glimmer::LibUI.enum_symbols(:underline_color).map(&:to_s).map(&:capitalize)
+            selected 'Custom'
+            
+            on_selected do
+              @underline_custom_color_button.enabled = c.selected_item == 'Custom'
+              if c.selected_item == 'Custom'
+                @underline_color = @underline_custom_color_button.color
+              else
+                @underline_color = c.selected_item.underscore
+                @underline_custom_color_button.color = :black
+              end
+              @area.queue_redraw_all
+            end
+          }
+          @underline_custom_color_button = color_button {
+            label 'Underline Custom Color'
+            
+            on_changed do
+              @underline_color = @underline_custom_color_button.color
+              @area.queue_redraw_all
+            end
+          }
         }
         
         @area = area {
@@ -60,6 +84,7 @@ class CustomDrawText
                 color @color
                 background @background
                 underline @underline
+                underline_color @underline_color
                 
                 '  At last Ygramul sensed that something was coming toward ' \
                 'her. With the speed of lightning, she turned about, confronting ' \

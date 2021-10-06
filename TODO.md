@@ -49,6 +49,7 @@
 - Support animation
 - Consider making all event hashes and param hashes accept retrieval of their key values through method calls not just [] calls
 - Support nesting shapes directly under area to represent paths having one shape, and nesting fill/stroke within the shapes (not path)
+- Consider auto-preventing app crashes (catch error) if someone mis-enters values for the GUI DSL (keeping GUI alive if possible)
 
 # Refactoring
 

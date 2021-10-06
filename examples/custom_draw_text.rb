@@ -44,6 +44,28 @@ class CustomDrawText
               @string.underline = c.selected_item.underscore
             end
           }
+          combobox { |c|
+            label 'Underline Built-In Color'
+            items Glimmer::LibUI.enum_symbols(:underline_color).map(&:to_s).map(&:capitalize)
+            selected 'Custom'
+            
+            on_selected do
+              @underline_custom_color_button.enabled = c.selected_item == 'Custom'
+              if c.selected_item == 'Custom'
+                @string.underline_color = @underline_custom_color_button.color
+              else
+                @string.underline_color = c.selected_item.underscore
+                @underline_custom_color_button.color = :black
+              end
+            end
+          }
+          @underline_custom_color_button = color_button {
+            label 'Underline Custom Color'
+            
+            on_changed do
+              @string.underline_color = @underline_custom_color_button.color
+            end
+          }
         }
         
         area {

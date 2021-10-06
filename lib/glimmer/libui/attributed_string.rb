@@ -70,7 +70,7 @@ module Glimmer
         end
       end
       alias background= background
-      alias background background
+      alias set_background background
       
       def underline(value = nil)
         if value.nil?
@@ -81,7 +81,18 @@ module Glimmer
         end
       end
       alias underline= underline
-      alias underline underline
+      alias set_underline underline
+      
+      def underline_color(value = nil)
+        if value.nil?
+          @underline_color
+        else
+          @underline_color = value
+          redraw
+        end
+      end
+      alias underline_color= underline_color
+      alias set_underline_color underline_color
       
       def post_add_content
         block_result = block&.call
@@ -103,6 +114,16 @@ module Glimmer
         unless underline.nil?
           underline_attribute = ::LibUI.new_underline_attribute(Glimmer::LibUI.enum_symbol_to_value(:underline, @underline))
           ::LibUI.attributed_string_set_attribute(@parent_proxy.attributed_string, underline_attribute, @start, @start + @string.size)
+        end
+        unless underline_color.nil?
+          if Glimmer::LibUI.enum_symbols(:underline_color).include?(underline_color.to_s.to_sym) && underline_color.to_s.to_sym != :custom
+            underline_color_attribute = ::LibUI.new_underline_color_attribute(Glimmer::LibUI.enum_symbol_to_value(:underline_color, @underline_color), 0, 0, 0, 0)
+            ::LibUI.attributed_string_set_attribute(@parent_proxy.attributed_string, underline_color_attribute, @start, @start + @string.size)
+          else
+            the_color = Glimmer::LibUI.interpret_color(@underline_color)
+            underline_color_attribute = ::LibUI.new_underline_color_attribute(0, the_color[:r].to_f / 255.0, the_color[:g].to_f / 255.0, the_color[:b].to_f / 255.0, the_color[:a] || 1.0)
+            ::LibUI.attributed_string_set_attribute(@parent_proxy.attributed_string, underline_color_attribute, @start, @start + @string.size)
+          end
         end
         unless font.nil?
           family_attribute = ::LibUI.new_family_attribute(font[:family])

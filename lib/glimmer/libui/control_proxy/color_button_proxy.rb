@@ -51,6 +51,8 @@ module Glimmer
             ::LibUI.color_button_set_color(@libui, value[:r].to_f / 255.0, value[:g].to_f / 255.0, value[:b].to_f / 255.0, value[:a])
           end
         end
+        alias color= color
+        alias set_color color
         
         def red(value = nil)
           if value.nil?

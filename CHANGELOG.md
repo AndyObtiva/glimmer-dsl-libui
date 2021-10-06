@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.2.5
+
+- Support attributed `string` `underline_color` property (built-in enum symbols and custom color)
+
 ## 0.2.4
 
 - Support examples/custom_draw_text.rb
