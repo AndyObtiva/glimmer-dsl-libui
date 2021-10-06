@@ -12,9 +12,9 @@ class BasicDrawText
     @index += 1
     string {
       if @index.odd?
-        color r: 0.5, g: 0, b: 0.25, a: 0.7
+        color r: 128, g: 0, b: 64, a: 0.7
       else
-        color r: 0, g: 0.5, b: 0, a: 0.7
+        color r: 0, g: 128, b: 0, a: 0.7
       end
       
       block.call + "\n\n"

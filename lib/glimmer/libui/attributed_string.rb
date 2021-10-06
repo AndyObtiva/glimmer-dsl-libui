@@ -69,7 +69,7 @@ module Glimmer
         @start = ::LibUI.attributed_string_len(@parent_proxy.attributed_string)
         ::LibUI.attributed_string_append_unattributed(@parent_proxy.attributed_string, @string)
         unless color.nil?
-          color_attribute = ::LibUI.new_color_attribute(@color[:r], @color[:g], @color[:b], @color[:a] || 1.0)
+          color_attribute = ::LibUI.new_color_attribute(@color[:r].to_f / 255.0, @color[:g].to_f / 255.0, @color[:b].to_f / 255.0, @color[:a] || 1.0)
           ::LibUI.attributed_string_set_attribute(@parent_proxy.attributed_string, color_attribute, @start, @start + @string.size)
         end
       end
