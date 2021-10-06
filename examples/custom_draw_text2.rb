@@ -79,7 +79,7 @@ class CustomDrawText
             text { # default arguments for x, y, and width are (0, 0, area_draw_params[:area_width])
               # align :left # default alignment
                 
-              @string = string {
+              string {
                 font @font
                 color @color
                 background @background

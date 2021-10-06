@@ -94,10 +94,25 @@ module Glimmer
       alias underline_color= underline_color
       alias set_underline_color underline_color
       
+      def open_type_features(value = nil)
+        if value.nil?
+          @open_type_features
+        else
+          @open_type_features = value
+          redraw
+        end
+      end
+      alias open_type_features= open_type_features
+      alias set_open_type_features open_type_features
+      
       def post_add_content
         block_result = block&.call
         @string = block_result if block_result.is_a?(String)
         @parent_proxy&.post_initialize_child(self)
+      end
+      
+      def post_initialize_child(child)
+        self.open_type_features = child if child.is_a?(Glimmer::LibUI::ControlProxy::OpenTypeFeaturesProxy)
       end
       
       def draw(area_draw_params)
@@ -137,10 +152,15 @@ module Glimmer
           stretch_attribute = ::LibUI.new_stretch_attribute(Glimmer::LibUI.enum_symbol_to_value(:text_stretch, font[:stretch]))
           ::LibUI.attributed_string_set_attribute(@parent_proxy.attributed_string, stretch_attribute, @start, @start + @string.size)
         end
+        unless open_type_features.nil?
+          open_type_features_attribute = ::LibUI.new_features_attribute(open_type_features.libui)
+          ::LibUI.attributed_string_set_attribute(@parent_proxy.attributed_string, open_type_features_attribute, @start, @start + @string.size)
+        end
         destroy if area_proxy.nil?
       end
       
       def destroy
+        open_type_features.destroy unless open_type_features.nil?
         @parent_proxy&.children&.delete(self)
       end
       

@@ -71,7 +71,7 @@ class CustomDrawText
         area {
           text { # default arguments for x, y, and width are (0, 0, area_draw_params[:area_width])
             # align :left # default alignment
-              
+            
             @string = string {
               '  At last Ygramul sensed that something was coming toward ' \
               'her. With the speed of lightning, she turned about, confronting ' \

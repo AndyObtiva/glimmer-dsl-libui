@@ -790,6 +790,28 @@ Check [Basic Transform](#basic-transform) example for use of [X11](https://en.wi
 
 Check [Histogram](#histogram) example for use of hex colors.
 
+To draw text, you simply nest a `text(x, y, width)` control under `area` or `on_draw` listener, and then nest attributed `string {}` controls underneath it.
+
+`string` can have one of the following properties:
+- `font`: font descriptor hash consisting of family, size, weight,
+- `color`: rgba, hex, or x11 color
+- `background`: rgba, hex, or x11 color
+- `underline`
+- `underline_color`
+- `open_type_features`
+
+
+```ruby
+  open_type_features {
+    open_type_tag 'l', 'i', 'g', 'a', 0
+    open_type_tag 'l', 'i', 'g', 'a', 1
+    open_type_tag 'l', 'i', 'g', 'a', 2
+    open_type_tag 'l', 'i', 'g', 'a', 3
+    open_type_tag 'l', 'i', 'g', 'a', 4
+  }
+
+```
+
 ### Smart Defaults and Conventions
 
 - `horizontal_box`, `vertical_box`, `grid`, and `form` controls have `padded` as `true` upon instantiation to ensure more user-friendly GUI by default
