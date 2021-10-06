@@ -28,6 +28,20 @@ module Glimmer
       #
       # Follows the Proxy Design Pattern
       class ComboboxProxy < ControlProxy
+        def selected(value = nil)
+          if value.nil?
+            super()
+          else
+            if value.is_a?(String)
+              super(items.index(value).to_i)
+            else
+              super
+            end
+          end
+        end
+        alias selected= selected
+        alias set_selected selected
+      
         def items(*values)
           values = values.first if values.first.is_a?(Array)
           if values.empty?
@@ -39,6 +53,10 @@ module Glimmer
         end
         alias set_items items
         alias items= items
+        
+        def selected_item
+          items[selected]
+        end
       end
     end
   end

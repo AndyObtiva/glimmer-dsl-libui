@@ -6,6 +6,9 @@
 - Support stable `text` control nestable under `area`
 - Support `string` control property `background`
 - Support `string` control property `font`
+- Support `string` control property `underline`
+- Enhance `combobox` to accept `String` value for `selected` item instead of just `Integer` index
+- Add `selected_item` read-only property to `combobox` to return selected item `String` value
 - Fix `color` property support for `string` to accept 255-based rgb values
 - Fix issue with alternating string colors in examples/basic_draw_text.rb
 

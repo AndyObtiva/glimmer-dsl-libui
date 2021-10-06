@@ -115,7 +115,7 @@ module Glimmer
         if enum_symbol.is_a?(Integer)
           enum_symbol
         elsif enum_symbols(enum_name).include?(enum_symbol.to_s.to_sym)
-          enum_symbol_values(enum_name)[enum_symbol]
+          enum_symbol_values(enum_name)[enum_symbol.to_s.to_sym]
         elsif default_symbol
           enum_symbol_to_value(enum_name, default_symbol)
         else

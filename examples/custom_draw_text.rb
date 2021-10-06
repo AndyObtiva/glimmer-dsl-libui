@@ -33,8 +33,14 @@ class CustomDrawText
               @string.background = cb.color
             end
           }
-          combobox {
+          combobox { |c|
             label 'Underline'
+            items Glimmer::LibUI.enum_symbols(:underline).map(&:to_s).map {|word| word.split('_').map(&:capitalize).join(' ')}
+            selected 'None'
+            
+            on_selected do
+              @string.underline = c.selected_item.underscore
+            end
           }
         }
         

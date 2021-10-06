@@ -2,7 +2,6 @@
 
 ## Next
 
-- Support `string` control property `underline`
 - Support `string` control property `open_type_features`
 
 ## Soon

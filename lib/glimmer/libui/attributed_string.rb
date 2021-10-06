@@ -73,8 +73,15 @@ module Glimmer
       alias background background
       
       def underline(value = nil)
-#         UI.attributed_string_set_attribute(@parent_proxy.attributed_string, color_attribute, start, start + @string.size)
+        if value.nil?
+          @underline
+        else
+          @underline = value
+          redraw
+        end
       end
+      alias underline= underline
+      alias underline underline
       
       def post_add_content
         block_result = block&.call
@@ -92,6 +99,10 @@ module Glimmer
         unless background.nil?
           background_attribute = ::LibUI.new_background_attribute(@background[:r].to_f / 255.0, @background[:g].to_f / 255.0, @background[:b].to_f / 255.0, @background[:a] || 1.0)
           ::LibUI.attributed_string_set_attribute(@parent_proxy.attributed_string, background_attribute, @start, @start + @string.size)
+        end
+        unless underline.nil?
+          underline_attribute = ::LibUI.new_underline_attribute(Glimmer::LibUI.enum_symbol_to_value(:underline, @underline))
+          ::LibUI.attributed_string_set_attribute(@parent_proxy.attributed_string, underline_attribute, @start, @start + @string.size)
         end
         unless font.nil?
           family_attribute = ::LibUI.new_family_attribute(font[:family])
