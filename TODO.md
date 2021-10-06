@@ -2,7 +2,6 @@
 
 ## Next
 
-- Support stable `text` control nestable under `area`
 - Support `string` control property `font`
 - Support `string` control property `background`
 - Support `string` control property `underline`

@@ -88,7 +88,7 @@ module Glimmer
         
         def width(value = nil)
           if value.nil?
-            @width ||= args[2] || (AreaProxy.current_area_draw_params && AreaProxy.current_area_draw_params[:width])
+            @width ||= args[2] || (AreaProxy.current_area_draw_params && AreaProxy.current_area_draw_params[:area_width])
           else
             @width = value
           end
@@ -135,7 +135,7 @@ module Glimmer
           @draw_text_layout_params.String = attributed_string
           @draw_text_layout_params.DefaultFont = default_font_descriptor
           @draw_text_layout_params.Width = width
-          @draw_text_layout_params.Align = Glimmer::LibUI.enum_symbol_to_value(:draw_text_align, align, default_symbol: :center)
+          @draw_text_layout_params.Align = Glimmer::LibUI.enum_symbol_to_value(:draw_text_align, align, default_symbol: :left)
           @draw_text_layout_params
         end
         

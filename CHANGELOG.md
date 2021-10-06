@@ -2,6 +2,7 @@
 
 ## 0.2.4
 
+- Support stable `text` control nestable under `area`
 - Fix issue with alternating string colors in examples/basic_draw_text.rb
 
 ## 0.2.3
