@@ -22,8 +22,12 @@ class CustomDrawText
               @string.color = cb.color
             end
           }
-          color_button {
+          color_button { |cb|
             label 'Background'
+            
+            on_changed do
+              @string.background = cb.color
+            end
           }
           combobox {
             label 'Underline'
