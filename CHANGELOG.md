@@ -5,6 +5,7 @@
 - Support examples/custom_draw_text.rb
 - Support stable `text` control nestable under `area`
 - Support `string` control property `background`
+- Support `string` control property `font`
 - Fix `color` property support for `string` to accept 255-based rgb values
 - Fix issue with alternating string colors in examples/basic_draw_text.rb
 

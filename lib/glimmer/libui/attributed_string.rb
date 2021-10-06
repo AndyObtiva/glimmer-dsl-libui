@@ -40,8 +40,15 @@ module Glimmer
       end
       
       def font(value = nil)
-#         UI.attributed_string_set_attribute(@parent_proxy.attributed_string, color_attribute, start, start + @string.size)
+        if value.nil?
+          @font
+        else
+          @font = value
+          redraw
+        end
       end
+      alias font= font
+      alias set_font font
       
       def color(value = nil)
         if value.nil?
@@ -85,6 +92,18 @@ module Glimmer
         unless background.nil?
           background_attribute = ::LibUI.new_background_attribute(@background[:r].to_f / 255.0, @background[:g].to_f / 255.0, @background[:b].to_f / 255.0, @background[:a] || 1.0)
           ::LibUI.attributed_string_set_attribute(@parent_proxy.attributed_string, background_attribute, @start, @start + @string.size)
+        end
+        unless font.nil?
+          family_attribute = ::LibUI.new_family_attribute(font[:family])
+          ::LibUI.attributed_string_set_attribute(@parent_proxy.attributed_string, family_attribute, @start, @start + @string.size)
+          size_attribute = ::LibUI.new_size_attribute(font[:size])
+          ::LibUI.attributed_string_set_attribute(@parent_proxy.attributed_string, size_attribute, @start, @start + @string.size)
+          weight_attribute = ::LibUI.new_weight_attribute(Glimmer::LibUI.enum_symbol_to_value(:text_weight, font[:weight]))
+          ::LibUI.attributed_string_set_attribute(@parent_proxy.attributed_string, weight_attribute, @start, @start + @string.size)
+          italic_attribute = ::LibUI.new_italic_attribute(Glimmer::LibUI.enum_symbol_to_value(:text_italic, font[:italic]))
+          ::LibUI.attributed_string_set_attribute(@parent_proxy.attributed_string, italic_attribute, @start, @start + @string.size)
+          stretch_attribute = ::LibUI.new_stretch_attribute(Glimmer::LibUI.enum_symbol_to_value(:text_stretch, font[:stretch]))
+          ::LibUI.attributed_string_set_attribute(@parent_proxy.attributed_string, stretch_attribute, @start, @start + @string.size)
         end
         destroy if area_proxy.nil?
       end

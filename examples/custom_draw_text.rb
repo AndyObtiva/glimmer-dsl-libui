@@ -12,8 +12,12 @@ class CustomDrawText
       
       vertical_box {
         form {
-          font_button {
+          font_button { |fb|
             label 'Font'
+            
+            on_changed do
+              @string.font = fb.font
+            end
           }
           color_button { |cb|
             label 'Color'
