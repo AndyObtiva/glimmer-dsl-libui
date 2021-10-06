@@ -7,7 +7,7 @@ class CustomDrawText
   include Glimmer
   
   def launch
-    window('Michael Ende (1929-1995) The Neverending Story', 600, 400) {
+    window('Michael Ende (1929-1995) The Neverending Story', 600, 500) {
       margined true
       
       vertical_box {
