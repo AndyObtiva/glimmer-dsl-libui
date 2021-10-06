@@ -40,7 +40,6 @@ module Glimmer
           super
           parent.post_add_content
         end
-        
       end
     end
   end

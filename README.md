@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.2.2
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.2.3
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Maintainability](https://api.codeclimate.com/v1/badges/ce2853efdbecf6ebdc73/maintainability)](https://codeclimate.com/github/AndyObtiva/glimmer-dsl-libui/maintainability)
@@ -197,7 +197,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
 
 ## Table of Contents
 
-- [Glimmer DSL for LibUI 0.2.2](#-glimmer-dsl-for-libui-022)
+- [Glimmer DSL for LibUI 0.2.3](#-glimmer-dsl-for-libui-023)
   - [Glimmer GUI DSL Concepts](#glimmer-gui-dsl-concepts)
   - [Usage](#usage)
   - [Girb (Glimmer IRB)](#girb-glimmer-irb)
@@ -244,6 +244,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
     - [Login](#login)
     - [Timer](#timer)
     - [Color The Circles](#color-the-circles)
+    - [Basic Draw Text](#basic-draw-text)
   - [Contributing to glimmer-dsl-libui](#contributing-to-glimmer-dsl-libui)
   - [Help](#help)
     - [Issues](#issues)
@@ -331,7 +332,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.2.2'
+gem 'glimmer-dsl-libui', '~> 0.2.3'
 ```
 
 Add `require 'glimmer-dsl-libui'` at the top, and then `include Glimmer` into the top-level main object for testing or into an actual class for serious usage.
@@ -1415,7 +1416,7 @@ class TinyMidiPlayer
 
   def initialize
     @pid = nil
-    @music_directory = File.expand_path(ARGV[0] || '~/Music/')
+    @music_directory = File.expand_path('../sounds', __dir__)
     @midi_files      = Dir.glob(File.join(@music_directory, '**/*.mid'))
                           .sort_by { |path| File.basename(path) }
     at_exit { stop_midi }
@@ -4937,6 +4938,102 @@ class ColorTheCircles
 end
 
 ColorTheCircles.new.launch
+```
+
+### Basic Draw Text
+
+[examples/basic_draw_text.rb](examples/basic_draw_text.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/basic_draw_text.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/basic_draw_text'"
+```
+
+Mac
+
+![glimmer-dsl-libui-mac-basic-draw-text.png](images/glimmer-dsl-libui-mac-basic-draw-text.png)
+
+Linux
+
+![glimmer-dsl-libui-linux-basic-draw-text.png](images/glimmer-dsl-libui-linux-basic-draw-text.png)
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+require 'glimmer-dsl-libui'
+
+# Michael Ende (1929-1995)
+# The Neverending Story is a fantasy novel by German writer Michael Ende,
+# The English version, translated by Ralph Manheim, was published in 1983.
+class BasicDrawText
+  include Glimmer
+  
+  def alternating_color_string(&block)
+    @index ||= 0
+    @index += 1
+    string {
+      if @index.odd?
+        color r: 0.5, g: 0, b: 0.25, a: 0.7
+      else
+        color r: 0, g: 0.5, b: 0, a: 0.7
+      end
+      
+      block.call + "\n\n"
+    }
+  end
+  
+  def launch
+    window('Michael Ende (1929-1995) The Neverending Story', 600, 400) {
+      margined true
+      
+      area {
+        on_draw do |area_draw_params|
+          text(0, 0, area_draw_params[:area_width]) {
+            align 0
+            default_font family: 'Georgia', size: 13, weight: 500, italic: 0, stretch: 4
+              
+            alternating_color_string {
+              '  At last Ygramul sensed that something was coming toward ' \
+              'her. With the speed of lightning, she turned about, confronting ' \
+              'Atreyu with an enormous steel-blue face. Her single eye had a ' \
+              'vertical pupil, which stared at Atreyu with inconceivable malignancy. '
+            }
+            alternating_color_string {
+              '  A cry of fear escaped Bastian. '
+            }
+            alternating_color_string {
+              '  A cry of terror passed through the ravine and echoed from ' \
+              'side to side. Ygramul turned her eye to left and right, to see if ' \
+              'someone else had arrived, for that sound could not have been ' \
+              'made by the boy who stood there as though paralyzed with ' \
+              'horror. '
+            }
+            alternating_color_string {
+              '  Could she have heard my cry? Bastion wondered in alarm. ' \
+              "But that's not possible. "
+            }
+            alternating_color_string {
+              '  And then Atreyu heard Ygramuls voice. It was very high ' \
+              'and slightly hoarse, not at all the right kind of voice for that ' \
+              'enormous face. Her lips did not move as she spoke. It was the ' \
+              'buzzing of a great swarm of hornets that shaped itself into ' \
+              'words. '
+            }
+          }
+        end
+      }
+    }.show
+  end
+end
+
+BasicDrawText.new.launch
 ```
 
 ## Contributing to glimmer-dsl-libui

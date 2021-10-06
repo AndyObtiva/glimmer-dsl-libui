@@ -3,6 +3,15 @@
 ## 0.2.3
 
 - Update examples/midi_player.rb to read sounds locally from gem
+- Support examples/basic_draw_text.rb
+- Support dynamic `text` control to be called in `area` `on_draw` listener
+- Support `text` control `default_font` property
+- Support `string` control nestable under `text` to represent an attributed/unattributed string (depending on nestable properties)
+- Support `string` control property `color`
+- Support enum symbols for `align` property of `text` control
+- Support enum symbols for `:italic` font descriptor key (in addition to numbers)
+- Support enum symbols for `:stretch` font descriptor key (in addition to numbers)
+- Support enum symbols for `:weight` font descriptor key (in addition to numbers)
 
 ## 0.2.2
 

@@ -51,10 +51,10 @@ module Glimmer
         end
         
         def draw(area_draw_params)
+          children.dup.each {|child| child.draw(area_draw_params)}
           build_control
-#           children.dup.each {|child| child.draw(area_draw_params)}
           ::LibUI.draw_text(area_draw_params[:context], @libui, x, y)
-#           ::LibUI.draw_free_text_layout(@libui)
+          ::LibUI.draw_free_text_layout(@libui)
         end
         
         def destroy
