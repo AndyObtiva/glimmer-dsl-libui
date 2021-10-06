@@ -2,7 +2,6 @@
 
 ## Next
 
-- Support font enum symbols in `default_font` property of `text` control
 - Support `string` control property `underline`
 - Support `string` control property `open_type_features`
 

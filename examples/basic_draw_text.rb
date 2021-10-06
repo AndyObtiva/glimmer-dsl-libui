@@ -27,7 +27,7 @@ class BasicDrawText
       area {
         text { # default arguments for x, y, and width are (0, 0, area_draw_params[:area_width])
           # align :left # default alignment
-          default_font family: 'Georgia', size: 13, weight: 500, italic: 0, stretch: 4
+          default_font family: 'Georgia', size: 13, weight: :medium, italic: :normal, stretch: :normal
             
           alternating_color_string(initial: true) {
             '  At last Ygramul sensed that something was coming toward ' \
