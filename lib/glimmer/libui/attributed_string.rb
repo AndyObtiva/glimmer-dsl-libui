@@ -48,12 +48,22 @@ module Glimmer
           @color
         else
           @color = Glimmer::LibUI.interpret_color(value)
+          redraw
         end
       end
+      alias color= color
+      alias set_color color
       
       def background(value = nil)
-#         UI.attributed_string_set_attribute(@parent_proxy.attributed_string, color_attribute, start, start + @string.size)
+        if value.nil?
+          @background
+        else
+          @background = Glimmer::LibUI.interpret_color(value)
+          redraw
+        end
       end
+      alias background= background
+      alias background background
       
       def underline(value = nil)
 #         UI.attributed_string_set_attribute(@parent_proxy.attributed_string, color_attribute, start, start + @string.size)
@@ -72,6 +82,11 @@ module Glimmer
           color_attribute = ::LibUI.new_color_attribute(@color[:r].to_f / 255.0, @color[:g].to_f / 255.0, @color[:b].to_f / 255.0, @color[:a] || 1.0)
           ::LibUI.attributed_string_set_attribute(@parent_proxy.attributed_string, color_attribute, @start, @start + @string.size)
         end
+        unless background.nil?
+          background_attribute = ::LibUI.new_background_attribute(@background[:r].to_f / 255.0, @background[:g].to_f / 255.0, @background[:b].to_f / 255.0, @background[:a] || 1.0)
+          ::LibUI.attributed_string_set_attribute(@parent_proxy.attributed_string, background_attribute, @start, @start + @string.size)
+        end
+        destroy if area_proxy.nil?
       end
       
       def destroy

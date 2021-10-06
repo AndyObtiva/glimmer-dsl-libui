@@ -51,6 +51,7 @@ module Glimmer
         end
         
         def draw(area_draw_params)
+          reset_attributed_string
           children.dup.each {|child| child.draw(area_draw_params)}
           build_control
           ::LibUI.draw_text(area_draw_params[:context], @libui, x, y)
@@ -97,7 +98,11 @@ module Glimmer
         alias set_width width
         
         def attributed_string
-          @attributed_string ||= ::LibUI.new_attributed_string('')
+          @attributed_string ||= reset_attributed_string
+        end
+        
+        def reset_attributed_string
+          @attributed_string = ::LibUI.new_attributed_string('')
         end
         
         def default_font(value = nil)

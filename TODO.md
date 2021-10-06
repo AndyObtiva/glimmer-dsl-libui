@@ -2,8 +2,8 @@
 
 ## Next
 
-- Support `string` control property `font`
 - Support `string` control property `background`
+- Support `string` control property `font`
 - Support `string` control property `underline`
 - Support `string` control property `open_type_features`
 
