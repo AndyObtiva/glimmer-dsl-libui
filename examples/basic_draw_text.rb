@@ -6,8 +6,8 @@ require 'glimmer-dsl-libui'
 class BasicDrawText
   include Glimmer
   
-  def alternating_color_string(&block)
-    @index ||= 0
+  def alternating_color_string(initial: false, &block)
+    @index = 0 if initial
     @index += 1
     string {
       if @index.odd?
@@ -30,7 +30,7 @@ class BasicDrawText
             align 0
             default_font family: 'Georgia', size: 13, weight: 500, italic: 0, stretch: 4
               
-            alternating_color_string {
+            alternating_color_string(initial: true) {
               '  At last Ygramul sensed that something was coming toward ' \
               'her. With the speed of lightning, she turned about, confronting ' \
               'Atreyu with an enormous steel-blue face. Her single eye had a ' \

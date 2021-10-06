@@ -4566,8 +4566,6 @@ Linux
 New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
 
 ```ruby
-# frozen_string_literal: true
-
 require 'glimmer-dsl-libui'
 
 class Timer
@@ -4579,13 +4577,13 @@ class Timer
   
   def initialize
     @pid = nil
-    @midi_file = File.expand_path('../sounds/AlanWalker-Faded.mid', __dir__)
-    at_exit { stop_midi }
+    @alarm_file = File.expand_path('../sounds/AlanWalker-Faded.mid', __dir__)
+    at_exit { stop_alarm }
     setup_timer
     create_gui
   end
 
-  def stop_midi
+  def stop_alarm
     if @pid
       if @th.alive?
         Process.kill(:SIGKILL, @pid)
@@ -4596,11 +4594,11 @@ class Timer
     end
   end
 
-  def play_midi
-    stop_midi
+  def play_alarm
+    stop_alarm
     if @pid.nil?
       begin
-        @pid = spawn "timidity -G 0.0-10.0 #{@midi_file}"
+        @pid = spawn "timidity -G 0.0-10.0 #{@alarm_file}"
         @th = Process.detach @pid
       rescue Errno::ENOENT
         warn 'Timidty++ not found. Please install Timidity++.'
@@ -4635,7 +4633,8 @@ class Timer
                 @stop_button.enabled = false
                 @started = false
                 unless @played
-                  play_midi
+                  play_alarm
+                  msg_box('Alarm', 'Countdown Is Finished!')
                   @played = true
                 end
               end
@@ -4964,7 +4963,123 @@ Linux
 
 ![glimmer-dsl-libui-linux-basic-draw-text.png](images/glimmer-dsl-libui-linux-basic-draw-text.png)
 
-New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+[LibUI](https://github.com/kojix2/LibUI) Original Version:
+
+```ruby
+require 'libui'
+
+UI = LibUI
+
+UI.init
+
+handler = UI::FFI::AreaHandler.malloc
+area    = UI.new_area(handler)
+
+# Michael Ende (1929-1995)
+# The Neverending Story is a fantasy novel by German writer Michael Ende,
+# The English version, translated by Ralph Manheim, was published in 1983.
+
+TITLE = 'Michael Ende (1929-1995) The Neverending Story'
+
+str1 = \
+  '  At last Ygramul sensed that something was coming toward ' \
+  'her. With the speed of lightning, she turned about, confronting ' \
+  'Atreyu with an enormous steel-blue face. Her single eye had a ' \
+  'vertical pupil, which stared at Atreyu with inconceivable malignancy. '
+
+str2 = \
+  '  A cry of fear escaped Bastian. '
+
+str3 = \
+  '  A cry of terror passed through the ravine and echoed from ' \
+  'side to side. Ygramul turned her eye to left and right, to see if ' \
+  'someone else had arrived, for that sound could not have been ' \
+  'made by the boy who stood there as though paralyzed with ' \
+  'horror. '
+
+str4 = \
+  '  Could she have heard my cry? Bastion wondered in alarm. ' \
+  "But that's not possible. "
+
+str5 = \
+  '  And then Atreyu heard Ygramuls voice. It was very high ' \
+  'and slightly hoarse, not at all the right kind of voice for that ' \
+  'enormous face. Her lips did not move as she spoke. It was the ' \
+  'buzzing of a great swarm of hornets that shaped itself into ' \
+  'words. '
+
+str = ''
+attr_str = UI.new_attributed_string(str)
+
+def attr_str.append(what, color)
+  case color
+  when :red
+    color_attribute = UI.new_color_attribute(0.0, 0.5, 0.0, 0.7)
+  when :green
+    color_attribute = UI.new_color_attribute(0.5, 0.0, 0.25, 0.7)
+  end
+  start = UI.attributed_string_len(self)
+  UI.attributed_string_append_unattributed(self, what)
+  UI.attributed_string_set_attribute(self, color_attribute, start, start + what.size)
+  UI.attributed_string_append_unattributed(self, "\n\n")
+end
+
+attr_str.append(str1, :green)
+attr_str.append(str2, :red)
+attr_str.append(str3, :green)
+attr_str.append(str4, :red)
+attr_str.append(str5, :green)
+
+Georgia = 'Georgia'
+
+handler_draw_event = Fiddle::Closure::BlockCaller.new(0, [1, 1, 1]) do |_, _, adp|
+  area_draw_params = UI::FFI::AreaDrawParams.new(adp)
+  default_font = UI::FFI::FontDescriptor.malloc
+  default_font.Family = Georgia
+  default_font.Size = 13
+  default_font.Weight = 500
+  default_font.Italic = 0
+  default_font.Stretch = 4
+  params = UI::FFI::DrawTextLayoutParams.malloc
+
+  # UI.font_button_font(font_button, default_font)
+  params.String = attr_str
+  params.DefaultFont = default_font
+  params.Width = area_draw_params.AreaWidth
+  params.Align = 0
+  text_layout = UI.draw_new_text_layout(params)
+  UI.draw_text(area_draw_params.Context, text_layout, 0, 0)
+  UI.draw_free_text_layout(text_layout)
+end
+
+handler.Draw         = handler_draw_event
+# Assigning to local variables
+# This is intended to protect Fiddle::Closure from garbage collection.
+handler.MouseEvent   = (c1 = Fiddle::Closure::BlockCaller.new(0, [0]) {})
+handler.MouseCrossed = (c2 = Fiddle::Closure::BlockCaller.new(0, [0]) {})
+handler.DragBroken   = (c3 = Fiddle::Closure::BlockCaller.new(0, [0]) {})
+handler.KeyEvent     = (c4 = Fiddle::Closure::BlockCaller.new(0, [0]) {})
+
+box = UI.new_vertical_box
+UI.box_set_padded(box, 1)
+UI.box_append(box, area, 1)
+
+main_window = UI.new_window(TITLE, 600, 400, 1)
+UI.window_set_margined(main_window, 1)
+UI.window_set_child(main_window, box)
+
+UI.window_on_closing(main_window) do
+  UI.control_destroy(main_window)
+  UI.quit
+  0
+end
+UI.control_show(main_window)
+
+UI.main
+UI.quit
+```
+
+[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
 
 ```ruby
 require 'glimmer-dsl-libui'
@@ -4975,8 +5090,8 @@ require 'glimmer-dsl-libui'
 class BasicDrawText
   include Glimmer
   
-  def alternating_color_string(&block)
-    @index ||= 0
+  def alternating_color_string(initial: false, &block)
+    @index = 0 if initial
     @index += 1
     string {
       if @index.odd?
@@ -4999,7 +5114,7 @@ class BasicDrawText
             align 0
             default_font family: 'Georgia', size: 13, weight: 500, italic: 0, stretch: 4
               
-            alternating_color_string {
+            alternating_color_string(initial: true) {
               '  At last Ygramul sensed that something was coming toward ' \
               'her. With the speed of lightning, she turned about, confronting ' \
               'Atreyu with an enormous steel-blue face. Her single eye had a ' \

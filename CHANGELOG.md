@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.2.4
+
+- Fix issue with alternating string colors in examples/basic_draw_text.rb
+
 ## 0.2.3
 
 - Update examples/midi_player.rb to read sounds locally from gem

@@ -29,7 +29,6 @@ module Glimmer
       # Follows the Proxy Design Pattern
       class ColorButtonProxy < ControlProxy
         def color(value = nil)
-          # TODO support hex color value
           if value.nil?
             @red ||= Fiddle::Pointer.malloc(8) # double
             @green ||= Fiddle::Pointer.malloc(8) # double
