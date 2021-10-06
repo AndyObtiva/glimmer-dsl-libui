@@ -135,9 +135,10 @@ module Glimmer
         
         def align(value = nil)
           if value.nil?
-            @align ||= {}
+            @align
           else
             @align = value
+            redraw
           end
         end
         alias align= align

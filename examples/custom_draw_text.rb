@@ -12,6 +12,8 @@ class CustomDrawText
       
       vertical_box {
         form {
+          stretchy false
+          
           font_button { |fb|
             label 'Font'
             
