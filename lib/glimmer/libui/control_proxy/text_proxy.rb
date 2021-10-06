@@ -92,6 +92,7 @@ module Glimmer
             @width ||= args[2] || (AreaProxy.current_area_draw_params && AreaProxy.current_area_draw_params[:area_width])
           else
             @width = value
+            redraw
           end
         end
         alias width= width
@@ -107,9 +108,16 @@ module Glimmer
         
         def default_font(value = nil)
           if value.nil?
-            @default_font ||= {}
+            @default_font ||= {
+              family: 'Helvetica',
+              size: 12.0,
+              weight: :normal,
+              italic: :normal,
+              stretch: :normal,
+            }
           else
             @default_font = value
+            redraw
           end
         end
         alias default_font= default_font

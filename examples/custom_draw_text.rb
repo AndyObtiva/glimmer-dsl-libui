@@ -69,7 +69,8 @@ class CustomDrawText
               'and slightly hoarse, not at all the right kind of voice for that ' \
               'enormous face. Her lips did not move as she spoke. It was the ' \
               'buzzing of a great swarm of hornets that shaped itself into ' \
-              'words. '
+              'words. ' \
+              "\n\n"
             }
           }
         }
