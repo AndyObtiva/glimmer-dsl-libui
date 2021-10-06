@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.2.6
+
+- Auto-free attributed string objects from memory
+
 ## 0.2.5
 
 - Support attributed `string` `underline_color` property (built-in enum symbols and custom color)

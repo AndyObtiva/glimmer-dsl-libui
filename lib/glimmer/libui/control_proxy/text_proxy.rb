@@ -56,6 +56,7 @@ module Glimmer
           build_control
           ::LibUI.draw_text(area_draw_params[:context], @libui, x, y)
           ::LibUI.draw_free_text_layout(@libui)
+          ::LibUI.free_attributed_string(@attributed_string)
         end
         
         def destroy
