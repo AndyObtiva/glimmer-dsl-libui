@@ -3,6 +3,7 @@
 ## Next
 
 - Default value of `text` `width` argument looks into x and adjusts by leaving the same space on the right side
+- Support setting image paths directly on image/image_text columns for `table` (do chunky png work internally)
 
 ## Soon
 

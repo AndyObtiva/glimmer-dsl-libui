@@ -64,7 +64,7 @@ module Glimmer
             @columns << :text
           when Column::TextColorColumnProxy
             @columns << :color
-          when Column::CheckboxTextColorColumnProxy
+          when Column::CheckboxTextColorColumnProxy, Column::ImageTextColorColumnProxy
             @columns << :text
             @columns << :color
           end
@@ -145,7 +145,7 @@ module Glimmer
             case @columns[column]
             when Column::TextColumnProxy, Column::ButtonColumnProxy, Column::TextColorColumnProxy, :text
               ::LibUI.new_table_value_string((expanded_cell_rows[row] && expanded_cell_rows[row][column]).to_s)
-            when Column::ImageColumnProxy, Column::ImageTextColumnProxy
+            when Column::ImageColumnProxy, Column::ImageTextColumnProxy, Column::ImageTextColorColumnProxy
               ::LibUI.new_table_value_image((expanded_cell_rows[row] && (expanded_cell_rows[row][column].respond_to?(:libui) ? expanded_cell_rows[row][column].libui : expanded_cell_rows[row][column])))
             when Column::CheckboxColumnProxy, Column::CheckboxTextColumnProxy, Column::CheckboxTextColorColumnProxy
               ::LibUI.new_table_value_int((expanded_cell_rows[row] && (expanded_cell_rows[row][column] == 1 || expanded_cell_rows[row][column].to_s.strip.downcase == 'true' ? 1 : 0)))
