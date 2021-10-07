@@ -2,6 +2,8 @@
 
 ## 0.2.8
 
+- Support `table` `on_changed` listener to report all changes (of operation type `:deleted`, `:changed`, `:inserted`)
+- Support `table` `on_edited` listener to report changes happening through direct table editing only
 - Default value of `text` `width` argument looks into x and adjusts by leaving the same space on the right side
 
 ## 0.2.7

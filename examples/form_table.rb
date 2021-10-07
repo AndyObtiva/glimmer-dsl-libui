@@ -82,6 +82,10 @@ window('Contacts', 600, 600) { |w|
       text_column('State')
 
       cell_rows data # implicit data-binding
+      
+      on_changed do |row, type, row_data|
+        puts "Row #{row} #{type}: #{row_data}"
+      end
     }
   }
 }.show

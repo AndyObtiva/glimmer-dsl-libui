@@ -35,6 +35,8 @@ module Glimmer
       class TableProxy < ControlProxy
         include Glimmer::FiddleConsumer
         
+        LISTENERS = ['on_changed', 'on_edited']
+        
         attr_reader :model_handler, :model, :table_params, :columns
       
         def initialize(keyword, parent, args, &block)
@@ -86,14 +88,19 @@ module Glimmer
                 if @cell_rows.size < @last_cell_rows.size && @last_cell_rows.include_all?(*@cell_rows)
                   @last_cell_rows.array_diff_indexes(@cell_rows).reverse.each do |row|
                     ::LibUI.table_model_row_deleted(model, row)
+                    on_changed.each {|listener| listener.call(row, :deleted, @last_cell_rows[row])}
                   end
                 elsif @cell_rows.size > @last_cell_rows.size && @cell_rows.include_all?(*@last_cell_rows)
                   @cell_rows.array_diff_indexes(@last_cell_rows).each do |row|
                     ::LibUI.table_model_row_inserted(model, row)
+                    on_changed.each {|listener| listener.call(row, :inserted, @cell_rows[row])}
                   end
                 else
                   @cell_rows.each_with_index do |new_row_data, row|
-                    ::LibUI.table_model_row_changed(model, row) if new_row_data != @last_cell_rows[row]
+                    if new_row_data != @last_cell_rows[row]
+                      ::LibUI.table_model_row_changed(model, row)
+                      on_changed.each {|listener| listener.call(row, :changed, @cell_rows[row])}
+                    end
                   end
                 end
                 @last_cell_rows = @cell_rows.clone
@@ -175,6 +182,8 @@ module Glimmer
               @cell_rows[row] ||= []
               @cell_rows[row][column] = ::LibUI.table_value_int(val).to_i == 1
             end
+            on_changed.each {|listener| listener.call(row, :changed, @cell_rows[row])}
+            on_edited.each {|listener| listener.call(row, @cell_rows[row])}
           end
           
           @model = ::LibUI.new_table_model(@model_handler)

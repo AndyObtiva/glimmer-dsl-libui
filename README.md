@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.2.7
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.2.8
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Maintainability](https://api.codeclimate.com/v1/badges/ce2853efdbecf6ebdc73/maintainability)](https://codeclimate.com/github/AndyObtiva/glimmer-dsl-libui/maintainability)
@@ -197,7 +197,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
 
 ## Table of Contents
 
-- [Glimmer DSL for LibUI 0.2.7](#-glimmer-dsl-for-libui-027)
+- [Glimmer DSL for LibUI 0.2.8](#-glimmer-dsl-for-libui-028)
   - [Glimmer GUI DSL Concepts](#glimmer-gui-dsl-concepts)
   - [Usage](#usage)
   - [Girb (Glimmer IRB)](#girb-glimmer-irb)
@@ -334,7 +334,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.2.7'
+gem 'glimmer-dsl-libui', '~> 0.2.8'
 ```
 
 Add `require 'glimmer-dsl-libui'` at the top, and then `include Glimmer` into the top-level main object for testing or into an actual class for serious usage.
@@ -460,7 +460,7 @@ Control(Args) | Properties | Listeners
 `string` | `font`, `color`, `background`, `underline`, `underline_color`, `open_type_features` | None
 `tab` | `margined` (Boolean), `num_pages` (`Integer`) | None
 `tab_item(name as String)` | `index` [read-only] (`Integer`), `margined` (Boolean), `name` [read-only] (`String`) | None
-`table` | `cell_rows` (`Array` (rows) of `Arrays` (row columns) of cell values (e.g. `String` values for `text_column` cells or `Array` of `image`/`String` for `image_text_column`)), `editable` as Boolean | None
+`table` | `cell_rows` (`Array` (rows) of `Arrays` (row columns) of cell values (e.g. `String` values for `text_column` cells or `Array` of `image`/`String` for `image_text_column`)), `editable` as Boolean | `on_changed {|row, type, row_data| ...}`, `on_edited {|row, row_data| ...}`
 `text(x = 0 as Numeric, y = 0 as Numeric, width = area_width as Numeric)` | `align`, `default_font` | None
 `text_column(name as String)` | `editable` (Boolean) | None
 `text_color_column(name as String)` | `editable` (Boolean) | None
@@ -2524,6 +2524,14 @@ window('Editable animal sounds', 300, 200) {
 
       cell_rows data
       editable true
+      
+      on_changed do |row, type, row_data| # fires on all changes (even ones happening through data array)
+        puts "Row #{row} #{type}: #{row_data}"
+      end
+      
+      on_edited do |row, row_data| # only fires on direct table editing
+        puts "Row #{row} edited: #{row_data}"
+      end
     }
   }
   
@@ -2882,6 +2890,10 @@ window('Animal sounds', 300, 200) {
       }
 
       cell_rows data # implicit data-binding
+      
+      on_changed do |row, type, row_data|
+        puts "Row #{row} #{type}: #{row_data}"
+      end
     }
   }
 }.show
@@ -3239,6 +3251,10 @@ window('Contacts', 600, 600) { |w|
       text_column('State')
 
       cell_rows data # implicit data-binding
+      
+      on_changed do |row, type, row_data|
+        puts "Row #{row} #{type}: #{row_data}"
+      end
     }
   }
 }.show

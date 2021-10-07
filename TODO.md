@@ -7,9 +7,6 @@
 
 ## Future
 
-- Support `table` `cell_value` block property to do custom cell value reading along with `num_rows` property
-- Support `table` `set_cell_value` block property to do custom cell value setting
-- Support `table` `on_changed` listener to report changes
 - Support automatic table row change when performing a direct row/column update in `cell_rows` (e.g. `data[3][0] = 'new value'`) as opposed to a general row update (e.g. `data[3] = ['new value', 'other new value']` <- already supported)
 - Support `path` `fill`/`stroke` `:type` of `:linear_gradient`
 - Support `path` `fill`/`stroke` `:type` of `:radial_gradient`
@@ -48,6 +45,8 @@
 - Support automatic `grid` horizontal or vertical layout by specifying `column_count` or `row_count`
 - Support custom `on_destroy` listener on all widgets, not just `window`
 - Support control-specific operations that accept Ruby proxy objects instead of Fiddle pointer objects (mainly `insert_at` operations)
+- Support `table` `cell_value` block property to do custom cell value reading along with `num_rows` property
+- Support `table` `set_cell_value` block property to do custom cell value setting
 
 # Refactoring
 

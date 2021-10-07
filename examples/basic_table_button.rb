@@ -24,6 +24,10 @@ window('Animal sounds', 300, 200) {
       }
 
       cell_rows data # implicit data-binding
+      
+      on_changed do |row, type, row_data|
+        puts "Row #{row} #{type}: #{row_data}"
+      end
     }
   }
 }.show
