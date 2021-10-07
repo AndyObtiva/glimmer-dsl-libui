@@ -8,6 +8,7 @@ include Glimmer
 f = File.open(File.expand_path('../icons/glimmer.png', __dir__))
 canvas = ChunkyPNG::Canvas.from_io(f)
 f.close
+canvas.resample_nearest_neighbor!(24, 24)
 data = canvas.to_rgba_stream
 width = canvas.width
 height = canvas.height

@@ -129,13 +129,13 @@ module Glimmer
           @model_handler.ColumnType   = fiddle_closure_block_caller(4, [1, 1, 4]) do |_, _, column|
             # TODO consider refactoring to use Glimmer::LibUI.enum_symbols(:table_value_type)
             case @columns[column]
-            when Column::TextColumnProxy, Column::ButtonColumnProxy, :text
+            when Column::TextColumnProxy, Column::ButtonColumnProxy, Column::TextColorColumnProxy, :text
               0
-            when Column::ImageColumnProxy, Column::ImageTextColumnProxy
+            when Column::ImageColumnProxy, Column::ImageTextColumnProxy, Column::ImageTextColorColumnProxy
               1
-            when Column::CheckboxColumnProxy, Column::CheckboxTextColumnProxy, Column::ProgressBarColumnProxy
+            when Column::CheckboxColumnProxy, Column::CheckboxTextColumnProxy, Column::CheckboxTextColorColumnProxy, Column::ProgressBarColumnProxy
               2
-            when :color
+            when Column::BackgroundColorColumnProxy, :color
               3
             end
           end

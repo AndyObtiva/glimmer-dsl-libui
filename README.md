@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.2.6
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.2.7
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Maintainability](https://api.codeclimate.com/v1/badges/ce2853efdbecf6ebdc73/maintainability)](https://codeclimate.com/github/AndyObtiva/glimmer-dsl-libui/maintainability)
@@ -197,7 +197,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
 
 ## Table of Contents
 
-- [Glimmer DSL for LibUI 0.2.6](#-glimmer-dsl-for-libui-026)
+- [Glimmer DSL for LibUI 0.2.7](#-glimmer-dsl-for-libui-027)
   - [Glimmer GUI DSL Concepts](#glimmer-gui-dsl-concepts)
   - [Usage](#usage)
   - [Girb (Glimmer IRB)](#girb-glimmer-irb)
@@ -235,6 +235,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
     - [Basic Table Checkbox](#basic-table-checkbox)
     - [Basic Table Checkbox Text](#basic-table-checkbox-text)
     - [Basic Table Progress Bar](#basic-table-progress-bar)
+    - [Basic Table Color](#basic-table-color)
     - [Form Table](#form-table)
     - [Basic Area](#basic-area)
     - [Dynamic Area](#dynamic-area)
@@ -333,7 +334,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.2.6'
+gem 'glimmer-dsl-libui', '~> 0.2.7'
 ```
 
 Add `require 'glimmer-dsl-libui'` at the top, and then `include Glimmer` into the top-level main object for testing or into an actual class for serious usage.
@@ -409,12 +410,14 @@ Control(Args) | Properties | Listeners
 `about_menu_item` | None | `on_clicked`
 `area` | None | `on_draw(area_draw_params)`, `on_mouse_event(area_mouse_event)`, `on_mouse_down(area_mouse_event)`, `on_mouse_up(area_mouse_event)`, `on_mouse_drag_started(area_mouse_event)`, `on_mouse_dragged(area_mouse_event)`, `on_mouse_dropped(area_mouse_event)`, `on_mouse_entered`, `on_mouse_exited`, `on_key_event(area_key_event)`, `on_key_down(area_key_event)`, `on_key_up(area_key_event)`
 `arc(x_center as Numeric, y_center as Numeric, radius as Numeric, start_angle as Numeric, sweep as Numeric, is_negative as Boolean)` | `x_center` (`Numeric`), `y_center` (`Numeric`), `radius` (`Numeric`), `start_angle` (`Numeric`), `sweep` (`Numeric`), `is_negative` (Boolean) | None
+`background_color_column(name as String)` | None | None
 `bezier(c1_x as Numeric, c1_y as Numeric, c2_x as Numeric, c2_y as Numeric, end_x as Numeric, end_y as Numeric)` | `c1_x` (`Numeric`), `c1_y` (`Numeric`), `c2_x` (`Numeric`), `c2_y` (`Numeric`), `end_x` (`Numeric`), `end_y` (`Numeric`) | None
 `button(text as String)` | `text` (`String`) | `on_clicked`
 `button_column(name as String)` | `enabled` (Boolean) | None
 `checkbox(text as String)` | `checked` (Boolean), `text` (`String`) | `on_toggled`
 `checkbox_column(name as String)` | `editable` (Boolean) | None
 `checkbox_text_column(name as String)` | `editable` (Boolean), `editable_checkbox` (Boolean), `editable_text` (Boolean) | None
+`checkbox_text_color_column(name as String)` | `editable` (Boolean), `editable_checkbox` (Boolean), `editable_text` (Boolean) | None
 `combobox` | `items` (`Array` of `String`), `selected` (`Integer`) | `on_selected`
 `color_button` | `color` (Array of `red` as `Float`, `green` as `Float`, `blue` as `Float`, `alpha` as `Float`), `red` as `Float`, `green` as `Float`, `blue` as `Float`, `alpha` as `Float` | `on_changed`
 `date_picker` | `time` (`Hash` of keys: `sec` as `Integer`, `min` as `Integer`, `hour` as `Integer`, `mday` as `Integer`, `mon` as `Integer`, `year` as `Integer`, `wday` as `Integer`, `yday` as `Integer`, `dst` as Boolean) | `on_changed`
@@ -432,6 +435,7 @@ Control(Args) | Properties | Listeners
 `image_part(pixels as String [encoded image rgba byte array], width as Numeric, height as Numeric, byte_stride as Numeric [usually width*4])` | None | None
 `image_column(name as String)` | None | None
 `image_text_column(name as String)` | None | None
+`image_text_color_column(name as String)` | None | None
 `label(text as String)` | `text` (`String`) | None
 `line(x as Numeric, y as Numeric)` | `x` (`Numeric`), `y` (`Numeric`) | None
 `matrix(m11 = nil as Numeric, m12 = nil as Numeric, m21 = nil as Numeric, m22 = nil as Numeric, m31 = nil as Numeric, m32 = nil as Numeric)` | `m11` (`Numeric`), `m12` (`Numeric`), `m21` (`Numeric`), `m22` (`Numeric`), `m31` (`Numeric`), `m32` (`Numeric`) | None
@@ -459,6 +463,7 @@ Control(Args) | Properties | Listeners
 `table` | `cell_rows` (`Array` (rows) of `Arrays` (row columns) of cell values (e.g. `String` values for `text_column` cells or `Array` of `image`/`String` for `image_text_column`)), `editable` as Boolean | None
 `text(x = 0 as Numeric, y = 0 as Numeric, width = area_width as Numeric)` | `align`, `default_font` | None
 `text_column(name as String)` | `editable` (Boolean) | None
+`text_color_column(name as String)` | `editable` (Boolean) | None
 `time_picker` | `time` (`Hash` of keys: `sec` as `Integer`, `min` as `Integer`, `hour` as `Integer`) | `on_changed`
 `vertical_box` | `padded` (Boolean) | None
 `vertical_separator` | None | None
@@ -512,12 +517,16 @@ All operations that could normally be called on `LibUI` can also be called on `G
 ### Table API
 
 The `table` control must first declare its columns via one of these column keywords (mentioned in [Supported Controls](#supported-controls)):
+  - `background_color_column`: expects color cell values
   - `button_column`: expects `String` cell values
   - `checkbox_column`: expects Boolean cell values
   - `checkbox_text_column`: expects dual-element `Array` of Boolean and `String` cell values
+  - `checkbox_text_color_column`: expects triple-element `Array` of Boolean, `String`, and color cell values
   - `image_column`: expects `image` cell values (produced by `image` and `image_part` keywords as per [Supported Controls](#supported-controls))
   - `image_text_column`: expects dual-element `Array` of `image` and `String` cell values
+  - `image_text_color_column`: expects triple-element `Array` of `image`, `String`, and color cell values
   - `text_column`: expects `String` cell values
+  - `text_color_column`: expects dual-element `Array` of `String` and color cell values
   - `progress_bar_column`: expects `Integer` cell values
   
 Afterwards, it must declare its `cell_rows` array (`Array` of `Array`s of column cell values) and whether it is `editable` (Boolean) for all its columns.
@@ -2586,7 +2595,7 @@ window('Editable column animal sounds', 400, 200) {
 
 ### Basic Table Image
 
-This example has a prerequisite of installing `chunky_png` Ruby gem:
+This example requires pre-installing `chunky_png` Ruby gem:
 
 ```
 gem install chunky_png -v1.4.0
@@ -3038,6 +3047,78 @@ window('Task Progress', 300, 200) {
           data[row] = [row_data[0], 100] # automatically updates table due to implicit data-binding
         end
       end
+    }
+  }
+}.show
+```
+
+### Basic Table Color
+
+This example requires pre-installing `chunky_png` Ruby gem:
+
+```
+gem install chunky_png -v1.4.0
+```
+
+[examples/basic_table_color.rb](examples/basic_table_color.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/basic_table_color.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/basic_table_color'"
+```
+
+Mac
+
+![glimmer-dsl-libui-mac-basic-table-color.png](images/glimmer-dsl-libui-mac-basic-table-color.png)
+
+Linux
+
+![glimmer-dsl-libui-linux-basic-table-color.png](images/glimmer-dsl-libui-linux-basic-table-color.png)
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+require 'glimmer-dsl-libui'
+require 'chunky_png'
+
+include Glimmer
+
+f = File.open(File.expand_path('../icons/glimmer.png', __dir__))
+canvas = ChunkyPNG::Canvas.from_io(f)
+f.close
+canvas.resample_nearest_neighbor!(24, 24)
+data = canvas.to_rgba_stream
+width = canvas.width
+height = canvas.height
+img = image {
+  image_part(data, width, height, width * 4)
+}
+
+data = [
+  [['cat', :red]      , ['meow', :blue]                  , [true, 'mammal', :green], [img, 'Glimmer', :dark_blue], {r: 255, g: 120, b: 0, a: 0.5}],
+  [['dog', :yellow]   , ['woof', {r: 240, g: 32, b: 32}] , [true, 'mammal', :green], [img, 'Glimmer', :dark_blue], :skyblue],
+  [['chicken', :beige], ['cock-a-doodle-doo', :blue]     , [false, 'mammal', :red] , [img, 'Glimmer', :beige], {r: 5, g: 120, b: 110}],
+  [['horse', :purple] , ['neigh', {r: 240, g: 32, b: 32}], [true, 'mammal', :green], [img, 'Glimmer', :dark_blue], '13a1fb'],
+  [['cow', :gray]     , ['moo', :blue]                   , [true, 'mammal', :green], [img, 'Glimmer', :brown], 0x12ff02]
+]
+
+window('Animals', 500, 200) {
+  horizontal_box {
+    table {
+      text_color_column('Animal')
+      text_color_column('Sound')
+      checkbox_text_color_column('Description')
+      image_text_color_column('GUI')
+      background_color_column('Mammal')
+
+      cell_rows data
     }
   }
 }.show
