@@ -76,7 +76,7 @@ class CustomDrawText
         
         @area = area {
           on_draw do |area_draw_params|
-            text { # default arguments for x, y, and width are (0, 0, area_draw_params[:area_width])
+            text { # default arguments for x, y, and width are (0, 0, area_draw_params[:area_width] - 2*x)
               # align :left # default alignment
                 
               string {

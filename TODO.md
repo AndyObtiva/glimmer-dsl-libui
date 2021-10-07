@@ -2,23 +2,17 @@
 
 ## Next
 
-- Default value of `text` `width` argument looks into x and adjusts by leaving the same space on the right side
-- Support setting image paths directly on image/image_text columns for `table` (do chunky png work internally)
-
 ## Soon
 
-- Support `path` `fill`/`stroke` `:type` of `:linear_gradient`
-- Support `path` `fill`/`stroke` `:type` of `:radial_gradient`
 
 ## Future
 
-- Support automatic `grid` horizontal or vertical layout by specifying `column_count` or `row_count`
 - Support `table` `cell_value` block property to do custom cell value reading along with `num_rows` property
 - Support `table` `set_cell_value` block property to do custom cell value setting
-- Support automatic table row change when performing a direct row/column update in `cell_rows` (e.g. `data[3][0] = 'new value'`) as opposed to a general row update (e.g. `data[3] = ['new value', 'other new value']` <- already supported)
 - Support `table` `on_changed` listener to report changes
-- Support control-specific operations that accept Ruby proxy objects instead of Fiddle pointer objects (mainly `insert_at` operations)
-- Support custom `on_destroy` listener on all widgets, not just `window`
+- Support automatic table row change when performing a direct row/column update in `cell_rows` (e.g. `data[3][0] = 'new value'`) as opposed to a general row update (e.g. `data[3] = ['new value', 'other new value']` <- already supported)
+- Support `path` `fill`/`stroke` `:type` of `:linear_gradient`
+- Support `path` `fill`/`stroke` `:type` of `:radial_gradient`
 
 ## Far Future
 
@@ -50,6 +44,10 @@
 - Support nesting shapes directly under area to represent paths having one shape, and nesting fill/stroke within the shapes (not path)
 - Consider auto-preventing app crashes (catch error) if someone mis-enters values for the GUI DSL (keeping GUI alive if possible)
 - Look into use of `free_control` vs `control_destroy` especially in cases of controls for which the latter method does not work
+- Support setting image paths directly on image/image_text columns for `table` (do chunky png work internally) (look into other formats than png)
+- Support automatic `grid` horizontal or vertical layout by specifying `column_count` or `row_count`
+- Support custom `on_destroy` listener on all widgets, not just `window`
+- Support control-specific operations that accept Ruby proxy objects instead of Fiddle pointer objects (mainly `insert_at` operations)
 
 # Refactoring
 

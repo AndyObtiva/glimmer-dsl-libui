@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.2.8
+
+- Default value of `text` `width` argument looks into x and adjusts by leaving the same space on the right side
+
 ## 0.2.7
 
 - New examples/basic_table_color.rb

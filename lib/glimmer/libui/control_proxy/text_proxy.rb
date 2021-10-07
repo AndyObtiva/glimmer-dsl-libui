@@ -90,7 +90,7 @@ module Glimmer
         
         def width(value = nil)
           if value.nil?
-            @width ||= args[2] || (AreaProxy.current_area_draw_params && AreaProxy.current_area_draw_params[:area_width])
+            @width ||= args[2] || (AreaProxy.current_area_draw_params && (AreaProxy.current_area_draw_params[:area_width] - 2*x))
           else
             @width = value
             redraw
