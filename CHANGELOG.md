@@ -4,6 +4,8 @@
 
 - New examples/basic_table_color.rb
 - Support `background_color_column` for `table`
+- Support `text_color_column` for `table`
+- Support `checkbox_text_color_column` for `table`
 
 ## 0.2.6
 

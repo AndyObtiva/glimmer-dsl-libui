@@ -58,16 +58,16 @@ module Glimmer
         
         def post_initialize_child(child)
           @columns << child
-          # add an extra complementary nil column if it is a dual column (i.e. ImageTextColumnProxy or CheckboxTextColumnProxy
-          if child.is_a?(DualColumn)
-            case child
-            when Column::ImageTextColumnProxy, Column::CheckboxTextColumnProxy
-              @columns << :text
-            when Column::TextColorColumnProxy
-              @columns << :color
-            end
+          # add extra complementary columns (:text, :color) if it is a dual/triple column (i.e. ImageTextColumnProxy or CheckboxTextColumnProxy
+          case child
+          when Column::ImageTextColumnProxy, Column::CheckboxTextColumnProxy
+            @columns << :text
+          when Column::TextColorColumnProxy
+            @columns << :color
+          when Column::CheckboxTextColorColumnProxy
+            @columns << :text
+            @columns << :color
           end
-          # TODO handle TripleColumn
         end
         
         def destroy
@@ -147,7 +147,7 @@ module Glimmer
               ::LibUI.new_table_value_string((expanded_cell_rows[row] && expanded_cell_rows[row][column]).to_s)
             when Column::ImageColumnProxy, Column::ImageTextColumnProxy
               ::LibUI.new_table_value_image((expanded_cell_rows[row] && (expanded_cell_rows[row][column].respond_to?(:libui) ? expanded_cell_rows[row][column].libui : expanded_cell_rows[row][column])))
-            when Column::CheckboxColumnProxy, Column::CheckboxTextColumnProxy
+            when Column::CheckboxColumnProxy, Column::CheckboxTextColumnProxy, Column::CheckboxTextColorColumnProxy
               ::LibUI.new_table_value_int((expanded_cell_rows[row] && (expanded_cell_rows[row][column] == 1 || expanded_cell_rows[row][column].to_s.strip.downcase == 'true' ? 1 : 0)))
             when Column::ProgressBarColumnProxy
               ::LibUI.new_table_value_int((expanded_cell_rows[row] && (expanded_cell_rows[row][column].to_i)))
