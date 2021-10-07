@@ -83,7 +83,7 @@ module Glimmer
           else
             @cell_rows = rows
             @cell_rows.tap do
-              @last_cell_rows = @cell_rows.clone
+              @last_cell_rows = array_deep_clone(@cell_rows)
               Glimmer::DataBinding::Observer.proc do
                 if @cell_rows.size < @last_cell_rows.size && @last_cell_rows.include_all?(*@cell_rows)
                   @last_cell_rows.array_diff_indexes(@cell_rows).reverse.each do |row|
@@ -103,7 +103,7 @@ module Glimmer
                     end
                   end
                 end
-                @last_cell_rows = @cell_rows.clone
+                @last_cell_rows = array_deep_clone(@cell_rows)
               end.observe(self, :cell_rows)
             end
           end
@@ -204,6 +204,16 @@ module Glimmer
         def next_column_index
           @next_column_index ||= -1
           @next_column_index += 1
+        end
+        
+        def array_deep_clone(array_or_object)
+          if array_or_object.is_a?(Array)
+            array_or_object.map do |element|
+              array_deep_clone(element)
+            end
+          else
+            array_or_object.clone
+          end
         end
       end
     end

@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 
 # Glimmer project owner gems
-gem 'glimmer', '~> 2.2.2' #, path: '../glimmer'
+gem 'glimmer', '~> 2.3.0' #, path: '../glimmer'
 # gem 'super_module', '~> 1.4.1'
 # gem 'puts_debuggerer', '~> 0.10.0', require: false
 # gem 'rake-tui', '>= 0.2.1'

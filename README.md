@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.2.8
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.2.9
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Maintainability](https://api.codeclimate.com/v1/badges/ce2853efdbecf6ebdc73/maintainability)](https://codeclimate.com/github/AndyObtiva/glimmer-dsl-libui/maintainability)
@@ -61,7 +61,7 @@ window('Task Progress', 300, 200) {
       
       on_clicked do
         data.each_with_index do |row_data, row|
-          data[row] = [row_data[0], 100] # automatically updates table due to implicit data-binding
+          data[row][1] = 100 # automatically updates table due to implicit data-binding
         end
       end
     }
@@ -197,7 +197,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
 
 ## Table of Contents
 
-- [Glimmer DSL for LibUI 0.2.8](#-glimmer-dsl-for-libui-028)
+- [Glimmer DSL for LibUI 0.2.9](#-glimmer-dsl-for-libui-029)
   - [Glimmer GUI DSL Concepts](#glimmer-gui-dsl-concepts)
   - [Usage](#usage)
   - [Girb (Glimmer IRB)](#girb-glimmer-irb)
@@ -334,7 +334,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.2.8'
+gem 'glimmer-dsl-libui', '~> 0.2.9'
 ```
 
 Add `require 'glimmer-dsl-libui'` at the top, and then `include Glimmer` into the top-level main object for testing or into an actual class for serious usage.
@@ -3056,7 +3056,7 @@ window('Task Progress', 300, 200) {
       
       on_clicked do
         data.each_with_index do |row_data, row|
-          data[row] = [row_data[0], 100] # automatically updates table due to implicit data-binding
+          data[row][1] = 100 # automatically updates table due to implicit data-binding
         end
       end
     }

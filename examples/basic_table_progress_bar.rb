@@ -26,7 +26,7 @@ window('Task Progress', 300, 200) {
       
       on_clicked do
         data.each_with_index do |row_data, row|
-          data[row] = [row_data[0], 100] # automatically updates table due to implicit data-binding
+          data[row][1] = 100 # automatically updates table due to implicit data-binding
         end
       end
     }

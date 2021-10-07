@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.2.9
+
+- Upgrade to glimmer 2.3.0
+- Use glimmer 2.3.0 to support automatic table row change when performing a direct deep row/column update in `cell_rows` (e.g. `data[3][0] = 'new value'`) as opposed to a general shallow row update (e.g. `data[3] = ['new value', 'other new value']` <- already supported)
+
 ## 0.2.8
 
 - Support `table` `on_changed` listener to report all changes (of operation type `:deleted`, `:changed`, `:inserted`)
