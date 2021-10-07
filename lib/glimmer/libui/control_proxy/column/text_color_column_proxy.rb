@@ -19,27 +19,30 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+require 'glimmer/libui/control_proxy'
+require 'glimmer/libui/control_proxy/column'
+require 'glimmer/libui/control_proxy/dual_column'
+require 'glimmer/libui/control_proxy/editable_column'
+
 module Glimmer
   module LibUI
     class ControlProxy
-      module EditableColumn
-        def editable(value = nil)
-          if value.nil?
-            @editable = false if @editable.nil?
-            @editable
-          else
-            @editable = !!value
+      module Column
+        # Proxy for LibUI text color column objects
+        #
+        # Follows the Proxy Design Pattern
+        class TextColorColumnProxy < ControlProxy
+          include Column
+          include DualColumn
+          include EditableColumn
+              
+          private
+          
+          def build_control
+            table_text_column_optional_params = ::LibUI::FFI::TableTextColumnOptionalParams.malloc
+            table_text_column_optional_params.ColorModelColumn = second_column_index
+            @parent_proxy.append_text_column(name, column_index, editable_value, table_text_column_optional_params)
           end
-        end
-        alias editable= editable
-        alias set_editable editable
-        alias editable? editable
-  
-        private
-        
-        def editable_value
-          # TODO consider relying on enum symbol :table_model_column
-          (@parent_proxy.editable? || editable?) ? -2 : -1
         end
       end
     end

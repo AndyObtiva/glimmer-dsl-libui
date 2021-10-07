@@ -3,6 +3,7 @@
 ## Next
 
 - Support supplying optional `uiTableTextColumnOptionalParams *textParams` to `text_column`
+- Default value of text width looks into x and adjusts by leaving the same space on the right side
 
 ## Soon
 

@@ -59,7 +59,15 @@ module Glimmer
         def post_initialize_child(child)
           @columns << child
           # add an extra complementary nil column if it is a dual column (i.e. ImageTextColumnProxy or CheckboxTextColumnProxy
-          @columns << nil if child.is_a?(DualColumn)
+          if child.is_a?(DualColumn)
+            case child
+            when Column::ImageTextColumnProxy, Column::CheckboxTextColumnProxy
+              @columns << :text
+            when Column::TextColorColumnProxy
+              @columns << :color
+            end
+          end
+          # TODO handle TripleColumn
         end
         
         def destroy
@@ -119,20 +127,23 @@ module Glimmer
           @model_handler = ::LibUI::FFI::TableModelHandler.malloc
           @model_handler.NumColumns   = fiddle_closure_block_caller(4) { @columns.map {|c| c.is_a?(DualColumn) ? 2 : 1}.sum }
           @model_handler.ColumnType   = fiddle_closure_block_caller(4, [1, 1, 4]) do |_, _, column|
+            # TODO consider refactoring to use Glimmer::LibUI.enum_symbols(:table_value_type)
             case @columns[column]
-            when Column::TextColumnProxy, Column::ButtonColumnProxy, NilClass
+            when Column::TextColumnProxy, Column::ButtonColumnProxy, :text
               0
             when Column::ImageColumnProxy, Column::ImageTextColumnProxy
               1
             when Column::CheckboxColumnProxy, Column::CheckboxTextColumnProxy, Column::ProgressBarColumnProxy
               2
+            when :color
+              3
             end
           end
           @model_handler.NumRows      = fiddle_closure_block_caller(4) { cell_rows.count }
           @model_handler.CellValue    = fiddle_closure_block_caller(1, [1, 1, 4, 4]) do |_, _, row, column|
             the_cell_rows = expanded_cell_rows
             case @columns[column]
-            when Column::TextColumnProxy, Column::ButtonColumnProxy, NilClass
+            when Column::TextColumnProxy, Column::ButtonColumnProxy, Column::TextColorColumnProxy, :text
               ::LibUI.new_table_value_string((expanded_cell_rows[row] && expanded_cell_rows[row][column]).to_s)
             when Column::ImageColumnProxy, Column::ImageTextColumnProxy
               ::LibUI.new_table_value_image((expanded_cell_rows[row] && (expanded_cell_rows[row][column].respond_to?(:libui) ? expanded_cell_rows[row][column].libui : expanded_cell_rows[row][column])))
@@ -143,6 +154,9 @@ module Glimmer
             when Column::BackgroundColorColumnProxy
               background_color = Glimmer::LibUI.interpret_color(expanded_cell_rows[row] && expanded_cell_rows[row][column])
               ::LibUI.new_table_value_color(background_color[:r] / 255.0, background_color[:g] / 255.0, background_color[:b] / 255.0, background_color[:a] || 1.0)
+            when :color
+              color = Glimmer::LibUI.interpret_color(expanded_cell_rows[row] && expanded_cell_rows[row][column])
+              ::LibUI.new_table_value_color(color[:r] / 255.0, color[:g] / 255.0, color[:b] / 255.0, color[:a] || 1.0)
             end
           end
           @model_handler.SetCellValue = fiddle_closure_block_caller(0, [1, 1, 4, 4, 1]) do |_, _, row, column, val|
@@ -151,7 +165,7 @@ module Glimmer
               column = @columns[column].index
               @cell_rows[row] ||= []
               @cell_rows[row][column] = ::LibUI.table_value_string(val).to_s
-            when NilClass
+            when :text
               column = @columns[column - 1].index
               @cell_rows[row][column][1] = ::LibUI.table_value_string(val).to_s
             when Column::ButtonColumnProxy
@@ -166,7 +180,7 @@ module Glimmer
           @model = ::LibUI.new_table_model(@model_handler)
           
           # figure out and reserve column indices for columns
-          @columns.each { |column| column.column_index }
+          @columns.each { |column| column.respond_to?(:column_index) && column.column_index }
           
           @table_params = ::LibUI::FFI::TableParams.malloc
           @table_params.Model = @model
@@ -174,7 +188,7 @@ module Glimmer
           
           @libui = ControlProxy.new_control(@keyword, [@table_params])
           @libui.tap do
-            @columns.each {|column| column&.send(:build_control) }
+            @columns.each {|column| column.respond_to?(:build_control, true) && column.send(:build_control) }
           end
         end
         
