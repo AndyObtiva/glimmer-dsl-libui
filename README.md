@@ -453,9 +453,11 @@ Control(Args) | Properties | Listeners
 `slider(min as Numeric, max as Numeric)` | `value` (`Numeric`) | `on_changed`
 `spinbox(min as Numeric, max as Numeric)` | `value` (`Numeric`) | `on_changed`
 `square(x as Numeric, y as Numeric, length as Numeric)` | `x` (`Numeric`), `y` (`Numeric`), `length` (`Numeric`) | None
+`string` | `font`, `color`, `background`, `underline`, `underline_color`, `open_type_features` | None
 `tab` | `margined` (Boolean), `num_pages` (`Integer`) | None
 `tab_item(name as String)` | `index` [read-only] (`Integer`), `margined` (Boolean), `name` [read-only] (`String`) | None
 `table` | `cell_rows` (`Array` (rows) of `Arrays` (row columns) of cell values (e.g. `String` values for `text_column` cells or `Array` of `image`/`String` for `image_text_column`)), `editable` as Boolean | None
+`text(x = 0 as Numeric, y = 0 as Numeric, width = area_width as Numeric)` | `align`, `default_font` | None
 `text_column(name as String)` | `editable` (Boolean) | None
 `time_picker` | `time` (`Hash` of keys: `sec` as `Integer`, `min` as `Integer`, `hour` as `Integer`) | `on_changed`
 `vertical_box` | `padded` (Boolean) | None
@@ -798,10 +800,10 @@ To draw `text` in an `area`, you simply nest a `text(x, y, width)` control direc
 
 `string` can have the following properties:
 - `font`: font descriptor hash consisting of `:family`, `:size`, `:weight` (`[:minimum, :thin, :ultra_light, :light, :book, :normal, :medium, :semi_bold, :bold, :ultra_bold, :heavy, :ultra_heavy, :maximum]`), `:italic` (`[:normal, :oblique, :italic]`), and `:stretch` (`[:ultra_condensed, :extra_condensed, :condensed, :semi_condensed, :normal, :semi_expanded, :expanded, :extra_expanded, :ultra_expanded]`) key values
-- `color`: rgba, hex, or x11 color
-- `background`: rgba, hex, or x11 color
+- `color`: rgba, hex, or [X11](https://en.wikipedia.org/wiki/X11_color_names) color
+- `background`: rgba, hex, or [X11](https://en.wikipedia.org/wiki/X11_color_names) color
 - `underline`: one of `:none`, `:single`, `:double`, `:suggestion`, `:color_custom`, `:color_spelling`, `:color_grammar`, `:color_auxiliary`
-- `underline_color`: one of `:spelling`, `:grammar`, `:auxiliary`, rgba, hex, or x11 color
+- `underline_color`: one of `:spelling`, `:grammar`, `:auxiliary`, rgba, hex, or [X11](https://en.wikipedia.org/wiki/X11_color_names) color
 - `open_type_features`: it must have a block containing `open_type_tag` occurrances, which take the a, b, c, d arguments plus a number at the end.
 
 Example (you may copy/paste in [`girb`](#girb-glimmer-irb)):
@@ -875,7 +877,7 @@ window('area text drawing') {
 
 - There is no proper way to destroy `grid` children due to [libui](https://github.com/andlabs/libui) not offering any API for deleting them from `grid` (no `grid_delete` similar to `box_delete` for `horizontal_box` and `vertical_box`).
 - `table` `checkbox_column` and `checkbox_text_column` checkbox editing only works on Windows and Linux (not Mac) due to a current limitation in [libui](https://github.com/andlabs/ui/issues/357).
-- It seems that `arc` `start_angle` and `sweep` properties are ignored by [libui](https://github.com/andlabs/libui) and always set to `0` and `360` respectively, producing a full circle.
+- `text` `align` property seems not to work on the Mac ([libui](https://github.com/andlabs/libui) has an [issue](https://github.com/andlabs/libui/pull/407) about it)
 
 ### Original API
 
@@ -5441,11 +5443,11 @@ class CustomDrawText
             text { # default arguments for x, y, and width are (0, 0, area_draw_params[:area_width])
               # align :left # default alignment
                 
-              @string = string {
-                font @font unless @font.nil?
-                color @color unless @color.nil?
-                background @background unless @background.nil?
-                underline @underline unless @underline.nil?
+              string {
+                font @font
+                color @color
+                background @background
+                underline @underline
                 
                 '  At last Ygramul sensed that something was coming toward ' \
                 'her. With the speed of lightning, she turned about, confronting ' \

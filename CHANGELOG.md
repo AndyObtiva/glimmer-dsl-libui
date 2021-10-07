@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.2.7
+
+- New examples/basic_table_color.rb
+- Support `background_color_column` for `table`
+
 ## 0.2.6
 
 - Support `string` control property: `open_type_features`

@@ -2,10 +2,12 @@
 
 ## Next
 
+- Support supplying optional `uiTableTextColumnOptionalParams *textParams` to `text_column`
+
 ## Soon
 
-- Support supplying optional `uiTableTextColumnOptionalParams *textParams` to `text_column`
-- Support configuring `RowBackgroundColorModelColumn` in TableParams
+- Support `path` `fill`/`stroke` `:type` of `:linear_gradient`
+- Support `path` `fill`/`stroke` `:type` of `:radial_gradient`
 
 ## Future
 
@@ -16,8 +18,6 @@
 - Support `table` `on_changed` listener to report changes
 - Support control-specific operations that accept Ruby proxy objects instead of Fiddle pointer objects (mainly `insert_at` operations)
 - Support custom `on_destroy` listener on all widgets, not just `window`
-- Support `path` `fill`/`stroke` `:type` of `:linear_gradient`
-- Support `path` `fill`/`stroke` `:type` of `:radial_gradient`
 
 ## Far Future
 

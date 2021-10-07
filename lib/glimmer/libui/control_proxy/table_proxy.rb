@@ -140,6 +140,9 @@ module Glimmer
               ::LibUI.new_table_value_int((expanded_cell_rows[row] && (expanded_cell_rows[row][column] == 1 || expanded_cell_rows[row][column].to_s.strip.downcase == 'true' ? 1 : 0)))
             when Column::ProgressBarColumnProxy
               ::LibUI.new_table_value_int((expanded_cell_rows[row] && (expanded_cell_rows[row][column].to_i)))
+            when Column::BackgroundColorColumnProxy
+              background_color = Glimmer::LibUI.interpret_color(expanded_cell_rows[row] && expanded_cell_rows[row][column])
+              ::LibUI.new_table_value_color(background_color[:r] / 255.0, background_color[:g] / 255.0, background_color[:b] / 255.0, background_color[:a] || 1.0)
             end
           end
           @model_handler.SetCellValue = fiddle_closure_block_caller(0, [1, 1, 4, 4, 1]) do |_, _, row, column, val|
@@ -162,9 +165,12 @@ module Glimmer
           
           @model = ::LibUI.new_table_model(@model_handler)
           
+          # figure out and reserve column indices for columns
+          @columns.each { |column| column.column_index }
+          
           @table_params = ::LibUI::FFI::TableParams.malloc
           @table_params.Model = @model
-          @table_params.RowBackgroundColorModelColumn = -1
+          @table_params.RowBackgroundColorModelColumn = @columns.find {|column| column.is_a?(Column::BackgroundColorColumnProxy)}&.column_index || -1
           
           @libui = ControlProxy.new_control(@keyword, [@table_params])
           @libui.tap do
