@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.2.5
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.2.6
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Maintainability](https://api.codeclimate.com/v1/badges/ce2853efdbecf6ebdc73/maintainability)](https://codeclimate.com/github/AndyObtiva/glimmer-dsl-libui/maintainability)
@@ -197,7 +197,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
 
 ## Table of Contents
 
-- [Glimmer DSL for LibUI 0.2.5](#-glimmer-dsl-for-libui-025)
+- [Glimmer DSL for LibUI 0.2.6](#-glimmer-dsl-for-libui-026)
   - [Glimmer GUI DSL Concepts](#glimmer-gui-dsl-concepts)
   - [Usage](#usage)
   - [Girb (Glimmer IRB)](#girb-glimmer-irb)
@@ -333,7 +333,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.2.5'
+gem 'glimmer-dsl-libui', '~> 0.2.6'
 ```
 
 Add `require 'glimmer-dsl-libui'` at the top, and then `include Glimmer` into the top-level main object for testing or into an actual class for serious usage.
@@ -790,26 +790,48 @@ Check [Basic Transform](#basic-transform) example for use of [X11](https://en.wi
 
 Check [Histogram](#histogram) example for use of hex colors.
 
-To draw text, you simply nest a `text(x, y, width)` control under `area` or `on_draw` listener, and then nest attributed `string {}` controls underneath it.
+To draw `text` in an `area`, you simply nest a `text(x, y, width)` control directly under `area` or inside a `on_draw` listener, and then nest attributed `string {string_value}` controls underneath it returning an actual `String` (think of them as the `<span>` element in html, which contains a string of text).
 
-`string` can have one of the following properties:
-- `font`: font descriptor hash consisting of family, size, weight,
+`text` control can have the following properties:
+- `default_font`:
+- `align`: `:left` (default), `:center`, or `:right` (`align` currently seems not to work on the Mac)
+
+`string` can have the following properties:
+- `font`: font descriptor hash consisting of `:family`, `:size`, `:weight` (`[:minimum, :thin, :ultra_light, :light, :book, :normal, :medium, :semi_bold, :bold, :ultra_bold, :heavy, :ultra_heavy, :maximum]`), `:italic` (`[:normal, :oblique, :italic]`), and `:stretch` (`[:ultra_condensed, :extra_condensed, :condensed, :semi_condensed, :normal, :semi_expanded, :expanded, :extra_expanded, :ultra_expanded]`) key values
 - `color`: rgba, hex, or x11 color
 - `background`: rgba, hex, or x11 color
-- `underline`
-- `underline_color`
-- `open_type_features`
+- `underline`: one of `:none`, `:single`, `:double`, `:suggestion`, `:color_custom`, `:color_spelling`, `:color_grammar`, `:color_auxiliary`
+- `underline_color`: one of `:spelling`, `:grammar`, `:auxiliary`, rgba, hex, or x11 color
+- `open_type_features`: it must have a block containing `open_type_tag` occurrances, which take the a, b, c, d arguments plus a number at the end.
 
+Example (you may copy/paste in [`girb`](#girb-glimmer-irb)):
 
 ```ruby
-  open_type_features {
-    open_type_tag 'l', 'i', 'g', 'a', 0
-    open_type_tag 'l', 'i', 'g', 'a', 1
-    open_type_tag 'l', 'i', 'g', 'a', 2
-    open_type_tag 'l', 'i', 'g', 'a', 3
-    open_type_tag 'l', 'i', 'g', 'a', 4
+window('area text drawing') {
+  area {
+    text {
+      default_font family: 'Helvetica', size: 12, weight: :normal, italic: :normal, stretch: :normal
+        
+      string {
+        font family: 'Georgia', size: 13, weight: :medium, italic: :normal, stretch: :normal
+        color r: 230, g: 100, b: 50, a: 0.5
+        background r: 230, g: 200, b: 250, a: 0.8
+        underline :single
+        underline_color :spelling
+        open_type_features {
+          open_type_tag 'l', 'i', 'g', 'a', 0
+          open_type_tag 'l', 'i', 'g', 'a', 1
+        }
+        
+        "This is a test\n\n"
+      }
+      
+      string {
+        'This is another test'
+      }
+    }
   }
-
+}.show
 ```
 
 ### Smart Defaults and Conventions

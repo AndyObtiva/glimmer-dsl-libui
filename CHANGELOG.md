@@ -2,6 +2,7 @@
 
 ## 0.2.6
 
+- Support `string` control property: `open_type_features`
 - Auto-free attributed string objects from memory
 
 ## 0.2.5
@@ -12,9 +13,9 @@
 
 - Support examples/custom_draw_text.rb
 - Support stable `text` control nestable under `area`
-- Support `string` control property `background`
-- Support `string` control property `font`
-- Support `string` control property `underline`
+- Support `string` control property: `background`
+- Support `string` control property: `font`
+- Support `string` control property: `underline`
 - Enhance `combobox` to accept `String` value for `selected` item instead of just `Integer` index
 - Add `selected_item` read-only property to `combobox` to return selected item `String` value
 - Fix `color` property support for `string` to accept 255-based rgb values
@@ -27,7 +28,7 @@
 - Support dynamic `text` control to be called in `area` `on_draw` listener
 - Support `text` control `default_font` property
 - Support `string` control nestable under `text` to represent an attributed/unattributed string (depending on nestable properties)
-- Support `string` control property `color`
+- Support `string` control property: `color`
 - Support enum symbols for `align` property of `text` control
 - Support enum symbols for `:italic` font descriptor key (in addition to numbers)
 - Support enum symbols for `:stretch` font descriptor key (in addition to numbers)

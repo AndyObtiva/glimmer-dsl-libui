@@ -2,8 +2,6 @@
 
 ## Next
 
-- Support `string` control property `open_type_features`
-
 ## Soon
 
 - Support supplying optional `uiTableTextColumnOptionalParams *textParams` to `text_column`
