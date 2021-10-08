@@ -2,10 +2,10 @@
 
 ## Next
 
-- document open type features in more detail linking to Microsoft webpages about it
-- consider using text in area gallery example
 - Support `path` `fill`/`stroke` `:type` of `:linear_gradient`
 - Support `path` `fill`/`stroke` `:type` of `:radial_gradient`
+- document open type features in more detail linking to Microsoft webpages about it
+- consider using text in area gallery example
 - Highlight far-feature features like scaffolding, data-binding, and custom keyword support
 - Document how to declare method-based custom controls (without class-based custom keyword support, coming in the future)
 - Update variable names in meta-example to be more meaningful

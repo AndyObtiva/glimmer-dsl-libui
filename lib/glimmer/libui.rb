@@ -44,8 +44,8 @@ module Glimmer
           value = value[0...-1]
         end
         value = value.first if value.is_a?(Array) && value.size == 1
-        value = value.to_s if value.is_a?(Symbol)
         value = value[:color] if value.is_a?(Hash) && value[:color]
+        value = value.to_s if value.is_a?(Symbol)
         result = if value.is_a?(Array)
           old_value = value
           value = {

@@ -69,7 +69,6 @@ module Glimmer
             @fill ||= {}
           else
             @fill = Glimmer::LibUI.interpret_color(args)
-            @fill[:a] = 1.0 if @fill.is_a?(Hash) && @fill[:a].nil?
             @parent_proxy&.queue_redraw_all
           end
           @fill.tap do
@@ -94,7 +93,6 @@ module Glimmer
             @stroke ||= {}
           else
             @stroke = Glimmer::LibUI.interpret_color(args)
-            @stroke[:a] = 1.0 if @stroke.is_a?(Hash) && @stroke[:a].nil?
             @parent_proxy&.queue_redraw_all
           end
           @stroke.tap do
@@ -149,11 +147,38 @@ module Glimmer
         end
         
         def init_draw_brush(draw_brush, draw_brush_args)
+          if draw_brush_args[:r] || draw_brush_args[:g] || draw_brush_args[:b] || draw_brush_args[:a]
+            draw_brush_args[:type] ||= :solid
+          elsif draw_brush_args[:outer_radius]
+            draw_brush_args[:type] ||= :radial_gradient
+          else
+            draw_brush_args[:type] ||= :linear_gradient
+          end
           draw_brush.Type = Glimmer::LibUI.enum_symbol_to_value(:draw_brush_type, draw_brush_args[:type])
-          draw_brush.R = (draw_brush_args[:r] || draw_brush_args[:red]).to_f / 255.0
-          draw_brush.G = (draw_brush_args[:g] || draw_brush_args[:green]).to_f / 255.0
-          draw_brush.B = (draw_brush_args[:b] || draw_brush_args[:blue]).to_f / 255.0
-          draw_brush.A = (draw_brush_args[:a] || draw_brush_args[:alpha])
+          if draw_brush.Type == 0
+            draw_brush.R = (draw_brush_args[:r] || draw_brush_args[:red]).to_f / 255.0
+            draw_brush.G = (draw_brush_args[:g] || draw_brush_args[:green]).to_f / 255.0
+            draw_brush.B = (draw_brush_args[:b] || draw_brush_args[:blue]).to_f / 255.0
+            draw_brush.A = (draw_brush_args[:a] || draw_brush_args[:alpha] || 1.0)
+          else
+            draw_brush.X0 = draw_brush_args[:x0].to_f
+            draw_brush.Y0 = draw_brush_args[:y0].to_f
+            draw_brush.X1 = draw_brush_args[:x1].to_f
+            draw_brush.Y1 = draw_brush_args[:y1].to_f
+            draw_brush.OuterRadius = draw_brush_args[:outer_radius].to_f if draw_brush.Type == 2
+            stop_structs = draw_brush_args[:stops].to_a.map do |stop|
+              ::LibUI::FFI::DrawBrushGradientStop.malloc.tap do |stop_struct|
+                stop_struct.Pos = stop[:pos].to_f
+                stop_color = Glimmer::LibUI.interpret_color(stop)
+                stop_struct.R = stop_color[:r].to_f / 255.0
+                stop_struct.G = stop_color[:g].to_f / 255.0
+                stop_struct.B = stop_color[:b].to_f / 255.0
+                stop_struct.A = stop_color[:a] || 1.0
+              end
+            end
+            draw_brush.NumStops = stop_structs.count
+            draw_brush.Stops = stop_structs.map(&:to_ptr).map(&:to_s).reduce(:+)
+          end
         end
       end
     end
