@@ -221,6 +221,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
     - [Table API](#table-api)
     - [Area API](#area-api)
     - [Smart Defaults and Conventions](#smart-defaults-and-conventions)
+    - [Custom Keywords](#custom-keywords)
     - [API Gotchas](#api-gotchas)
     - [Original API](#original-api)
   - [Glimmer Style Guide](#glimmer-style-guide)
@@ -257,6 +258,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
     - [Color The Circles](#color-the-circles)
     - [Basic Draw Text](#basic-draw-text)
     - [Custom Draw Text](#custom-draw-text)
+    - [Method-Based Custom Keyword](#method-based-custom-keyword)
   - [Contributing to glimmer-dsl-libui](#contributing-to-glimmer-dsl-libui)
   - [Help](#help)
     - [Issues](#issues)
@@ -891,6 +893,104 @@ window('area text drawing') {
 - When nesting an `area` directly underneath `window` (without a layout control like `vertical_box`), it is automatically reparented with `vertical_box` in between the `window` and `area` since it would not show up on Linux otherwise.
 - Colors may be passed in as a hash of `:r`, `:g`, `:b`, `:a`, or `:red`, `:green`, `:blue`, `:alpha`, or [X11](https://en.wikipedia.org/wiki/X11_color_names) color like `:skyblue`, or 6-number hex or 3-number hex (as `Integer` or `String` with or without `0x` prefix)
 - Color alpha value defaults to `1.0` when not specified.
+
+### Custom Keywords
+
+To define custom keywords, simply define a method representing the custom control you want. To make reusable, you can define in modules and simply include the modules in the view classes that need them.
+
+Example that defines `field`, `address_form`, `label_pair`, and `address` keywords (you may copy/paste in [`girb`](#girb-glimmer-irb)):
+
+```ruby
+require 'glimmer-dsl-libui'
+require 'facets'
+
+include Glimmer
+
+Address = Struct.new(:street, :p_o_box, :city, :state, :zip_code)
+
+def field(model, property)
+  property = property.to_s
+  entry { |e|
+    label property.underscore.split('_').map(&:capitalize).join(' ')
+    text model.send(property).to_s
+
+    on_changed do
+      model.send("#{property}=", e.text)
+    end
+  }
+end
+
+def address_form(address)
+  form {
+    field(address, :street)
+    field(address, :p_o_box)
+    field(address, :city)
+    field(address, :state)
+    field(address, :zip_code)
+  }
+end
+
+def label_pair(model, attribute, value)
+  name_label = nil
+  value_label = nil
+  horizontal_box {
+    name_label = label(attribute.to_s.underscore.split('_').map(&:capitalize).join(' '))
+    value_label = label(value.to_s)
+  }
+  Glimmer::DataBinding::Observer.proc do
+    value_label.text = model.send(attribute)
+  end.observe(model, attribute)
+end
+
+def address(address)
+  vertical_box {
+    address.each_pair do |attribute, value|
+      label_pair(address, attribute, value)
+    end
+  }
+end
+
+address1 = Address.new('123 Main St', '23923', 'Denver', 'Colorado', '80014')
+address2 = Address.new('2038 Park Ave', '83272', 'Boston', 'Massachusetts', '02101')
+
+window('Method-Based Custom Keyword') {
+  margined true
+  
+  horizontal_box {
+    vertical_box {
+      label('Address 1') {
+        stretchy false
+      }
+      address_form(address1)
+      horizontal_separator {
+        stretchy false
+      }
+      label('Address 1 (Saved)') {
+        stretchy false
+      }
+      address(address1)
+    }
+    vertical_separator {
+      stretchy false
+    }
+    vertical_box {
+      label('Address 2') {
+        stretchy false
+      }
+      address_form(address2)
+      horizontal_separator {
+        stretchy false
+      }
+      label('Address 2 (Saved)') {
+        stretchy false
+      }
+      address(address2)
+    }
+  }
+}.show
+```
+
+![glimmer-dsl-libui-mac-method-based-custom-keyword.png](images/glimmer-dsl-libui-mac-method-based-custom-keyword.png)
 
 ### API Gotchas
 
@@ -5691,7 +5791,122 @@ class CustomDrawText
 end
 
 CustomDrawText.new.launch
+```
 
+### Method-Based Custom Keyword
+
+[examples/method_based_custom_keyword.rb](examples/method_based_custom_keyword.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/method_based_custom_keyword.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/method_based_custom_keyword'"
+```
+
+Mac
+
+![glimmer-dsl-libui-mac-method-based-custom-keyword.png](images/glimmer-dsl-libui-mac-method-based-custom-keyword.png)
+
+Linux
+
+![glimmer-dsl-libui-linux-method-based-custom-keyword.png](images/glimmer-dsl-libui-linux-method-based-custom-keyword.png)
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+require 'glimmer-dsl-libui'
+require 'facets'
+
+include Glimmer
+
+Address = Struct.new(:street, :p_o_box, :city, :state, :zip_code)
+
+def field(model, property)
+  property = property.to_s
+  entry { |e|
+    label property.underscore.split('_').map(&:capitalize).join(' ')
+    text model.send(property).to_s
+
+    on_changed do
+      model.send("#{property}=", e.text)
+    end
+  }
+end
+
+def address_form(address)
+  form {
+    field(address, :street)
+    field(address, :p_o_box)
+    field(address, :city)
+    field(address, :state)
+    field(address, :zip_code)
+  }
+end
+
+def label_pair(model, attribute, value)
+  name_label = nil
+  value_label = nil
+  horizontal_box {
+    name_label = label(attribute.to_s.underscore.split('_').map(&:capitalize).join(' '))
+    value_label = label(value.to_s)
+  }
+  Glimmer::DataBinding::Observer.proc do
+    value_label.text = model.send(attribute)
+  end.observe(model, attribute)
+end
+
+def address(address)
+  vertical_box {
+    address.each_pair do |attribute, value|
+      label_pair(address, attribute, value)
+    end
+  }
+end
+
+address1 = Address.new('123 Main St', '23923', 'Denver', 'Colorado', '80014')
+address2 = Address.new('2038 Park Ave', '83272', 'Boston', 'Massachusetts', '02101')
+
+window('Method-Based Custom Keyword') {
+  margined true
+  
+  horizontal_box {
+    vertical_box {
+      label('Address 1') {
+        stretchy false
+      }
+      address_form(address1)
+      horizontal_separator {
+        stretchy false
+      }
+      label('Address 1 (Saved)') {
+        stretchy false
+      }
+      address(address1)
+    }
+    vertical_separator {
+      stretchy false
+    }
+    vertical_box {
+      label('Address 2') {
+        stretchy false
+      }
+      address_form(address2)
+      horizontal_separator {
+        stretchy false
+      }
+      label('Address 2 (Saved)') {
+        stretchy false
+      }
+      address(address2)
+    }
+  }
+}.show
 ```
 
 ## Contributing to glimmer-dsl-libui

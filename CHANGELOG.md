@@ -2,6 +2,8 @@
 
 ## 0.2.10
 
+- New examples/method_based_custom_keyword.rb
+- Update examples/form.rb to have two more fields
 - Update color_button example to show how to preset initial color
 - Support `path` `fill`/`stroke` `:type` of `:linear_gradient`
 - Support `path` `fill`/`stroke` `:type` of `:radial_gradient`

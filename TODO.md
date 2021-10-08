@@ -2,7 +2,7 @@
 
 ## Next
 
-- Document how to declare method-based custom controls (without class-based custom keyword support, coming in the future)
+- Document packaging
 
 - Rewrite LibUI applications in Glimmer DSL for LibUI
 
