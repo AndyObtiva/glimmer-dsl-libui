@@ -918,8 +918,6 @@ The following examples include reimplementions of the examples in the [LibUI](ht
 
 To browse all examples, simply launch the [Meta-Example](examples/meta_example.rb), which lists all examples and displays each example's code when selected. It also enables code editing to facilitate experimentation and learning.
 
-(note that for examples that emit output to terminal/command-line via `p` or `puts`, you must run them directly to see output)
-
 [examples/meta_example.rb](examples/meta_example.rb)
 
 Run with this command from the root of the project if you cloned the project:

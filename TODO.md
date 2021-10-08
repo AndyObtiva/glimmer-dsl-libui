@@ -2,8 +2,6 @@
 
 ## Next
 
-- Fix meta-example GUI freezing after running an example until it is closed (which unfreezes meta-example)
-
 - Document open type features in more detail linking to Microsoft webpages about it
 - Document how to declare method-based custom controls (without class-based custom keyword support, coming in the future)
 - Highlight far-feature features like scaffolding, data-binding, and custom keyword support
@@ -57,6 +55,7 @@ None
 - Support `table` `cell_value` block property to do custom cell value reading along with `num_rows` property
 - Support `table` `set_cell_value` block property to do custom cell value setting
 - Use equivalents of chunky_png to support different image formats for image columns in `table`
+- Fix meta-example GUI freezing after running an example until it is closed (which unfreezes meta-example)
 
 # Refactoring
 

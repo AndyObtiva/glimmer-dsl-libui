@@ -7,6 +7,7 @@
 - Support `path` `fill`/`stroke` `:type` of `:radial_gradient`
 - Add text to Area Gallery examples
 - Update variable names in examples/meta_example.rb to be more meaningful
+- Update examples/meta_example.rb to show terminal/command-line output for run examples
 
 ## 0.2.9
 

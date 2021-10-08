@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require 'glimmer-dsl-libui'
 require 'facets'
 
@@ -40,6 +38,18 @@ class MetaExample
   
   def selected_example
     examples[@selected_example_index]
+  end
+  
+  def run_example(example)
+    command = "ruby -r #{glimmer_dsl_libui_file} #{example} 2>&1"
+    result = ''
+    IO.popen(command) do |f|
+      f.each_line do |line|
+        result << line
+        puts line
+      end
+    end
+    msg_box('Error Running Example', result) if result.downcase.include?('error')
   end
   
   def launch
@@ -92,11 +102,11 @@ class MetaExample
                 begin
                   meta_example_file = File.join(Dir.home, '.meta_example.rb')
                   File.write(meta_example_file, @code_entry.text)
-                  result = `ruby -r #{glimmer_dsl_libui_file} #{meta_example_file} 2>&1`
-                  msg_box('Error Running Example', result) if result.include?('error')
+                  run_example(meta_example_file)
                 rescue => e
+                  puts e.full_message
                   puts 'Unable to write code changes! Running original example...'
-                  system "ruby -r #{glimmer_dsl_libui_file} #{file_path_for(selected_example)}"
+                  run_example(file_path_for(selected_example))
                 end
               end
             }
