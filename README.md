@@ -456,7 +456,7 @@ Control(Args) | Properties | Listeners
 `msg_box_error(window = main_window as Glimmer::LibUI::WindowProxy, title as String, description as String)` | None | None
 `non_wrapping_multiline_entry` | `read_only` (Boolean), `text` (`String`) | `on_changed`
 `password_entry` | `read_only` (Boolean), `text` (`String`) | `on_changed`
-`path(draw_fill_mode = :winding)` | `fill` (`Hash` of `:r` as `0`-`255`, `:g` as `0`-`255`, `:b` as `0`-`255`, `:a` as `0.0`-`1.0`), `stroke` (`Hash` of `:r` as `0`-`255`, `:g` as `0`-`255`, `:b` as `0`-`255`, `:a` as `0.0`-`1.0`, `:cap` as (`:round`, `:square`, `:flat`), `:join` as (`:miter`, `:round`, `:bevel`), `:thickness` as `Numeric`, `:miter_limit` as `Numeric`, `:dashes` as `Array` of `Numeric` ) | None
+`path(draw_fill_mode = :winding)` | `fill` (`Hash` of `:r` as `0`-`255`, `:g` as `0`-`255`, `:b` as `0`-`255`, `:a` as `0.0`-`1.0`, hex, or [X11](https://en.wikipedia.org/wiki/X11_color_names) color), `stroke` (`Hash` of `:r` as `0`-`255`, `:g` as `0`-`255`, `:b` as `0`-`255`, `:a` as `0.0`-`1.0`, hex, or [X11](https://en.wikipedia.org/wiki/X11_color_names) color), `:cap` as (`:round`, `:square`, `:flat`), `:join` as (`:miter`, `:round`, `:bevel`), `:thickness` as `Numeric`, `:miter_limit` as `Numeric`, `:dashes` as `Array` of `Numeric` ) | None
 `preferences_menu_item` | None | `on_clicked`
 `progress_bar` | `value` (`Numeric`) | None
 `progress_bar_column(name as String)` | None | None
@@ -467,7 +467,7 @@ Control(Args) | Properties | Listeners
 `slider(min as Numeric, max as Numeric)` | `value` (`Numeric`) | `on_changed`
 `spinbox(min as Numeric, max as Numeric)` | `value` (`Numeric`) | `on_changed`
 `square(x as Numeric, y as Numeric, length as Numeric)` | `x` (`Numeric`), `y` (`Numeric`), `length` (`Numeric`) | None
-`string` | `font`, `color`, `background`, `underline`, `underline_color`, `open_type_features` | None
+`string` | `font`, `color` (`Hash` of `:r` as `0`-`255`, `:g` as `0`-`255`, `:b` as `0`-`255`, `:a` as `0.0`-`1.0`, hex, or [X11](https://en.wikipedia.org/wiki/X11_color_names) color), `background` (`Hash` of `:r` as `0`-`255`, `:g` as `0`-`255`, `:b` as `0`-`255`, `:a` as `0.0`-`1.0`, hex, or [X11](https://en.wikipedia.org/wiki/X11_color_names) color), `underline`, `underline_color` (`Hash` of `:r` as `0`-`255`, `:g` as `0`-`255`, `:b` as `0`-`255`, `:a` as `0.0`-`1.0`, hex, or [X11](https://en.wikipedia.org/wiki/X11_color_names) color), `open_type_features` | None
 `tab` | `margined` (Boolean), `num_pages` (`Integer`) | None
 `tab_item(name as String)` | `index` [read-only] (`Integer`), `margined` (Boolean), `name` [read-only] (`String`) | None
 `table` | `cell_rows` (`Array` (rows) of `Arrays` (row columns) of cell values (e.g. `String` values for `text_column` cells or `Array` of `image`/`String` for `image_text_column`)), `editable` as Boolean | `on_changed {|row, type, row_data| ...}`, `on_edited {|row, row_data| ...}`
@@ -823,7 +823,7 @@ To draw `text` in an `area`, you simply nest a `text(x, y, width)` control direc
 - `background`: rgba, hex, or [X11](https://en.wikipedia.org/wiki/X11_color_names) color
 - `underline`: one of `:none`, `:single`, `:double`, `:suggestion`, `:color_custom`, `:color_spelling`, `:color_grammar`, `:color_auxiliary`
 - `underline_color`: one of `:spelling`, `:grammar`, `:auxiliary`, rgba, hex, or [X11](https://en.wikipedia.org/wiki/X11_color_names) color
-- `open_type_features`: it must have a block containing `open_type_tag` occurrances, which take the a, b, c, d arguments plus a number at the end.
+- `open_type_features`: Open Type Features (https://www.microsoft.com/typography/otspec/featuretags.htm) consist of `open_type_tag`s nested in content block, which accept (`a`, `b`, `c`, `d`, `Integer`) arguments.
 
 Example (you may copy/paste in [`girb`](#girb-glimmer-irb)):
 
@@ -900,8 +900,10 @@ window('area text drawing') {
 
 ### Original API
 
-To learn more about the [LibUI](https://github.com/kojix2/LibUI) API exposed through [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui),
-check out the [libui C headers](https://github.com/andlabs/libui/blob/master/ui.h)
+To learn more about the [LibUI](https://github.com/kojix2/LibUI) API exposed through [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui):
+- Check out [LibUI ffi.rb](https://github.com/kojix2/LibUI/blob/main/lib/libui/ffi.rb)
+- Check out the [libui C headers](https://github.com/andlabs/libui/blob/master/ui.h)
+- Check out the [Go UI (Golang LibUI) documentation](https://pkg.go.dev/github.com/andlabs/ui) for an alternative well-documented [libui](https://github.com/andlabs/libui) reference.
 
 ## Glimmer Style Guide
 

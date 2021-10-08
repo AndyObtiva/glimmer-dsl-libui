@@ -2,11 +2,7 @@
 
 ## Next
 
-- Document open type features in more detail linking to Microsoft webpages about it
 - Document how to declare method-based custom controls (without class-based custom keyword support, coming in the future)
-- Highlight far-future features like scaffolding, data-binding, and custom keyword support
-
-- Declare Glimmer DSL for LibUI Beta and generally feature-complete (while noting that C libui is still mid-alpha)
 
 - Rewrite LibUI applications in Glimmer DSL for LibUI
 
