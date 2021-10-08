@@ -50,16 +50,16 @@ class MetaExample
         vertical_box {
           stretchy false
           
-          @rbs = radio_buttons {
+          @example_radio_buttons = radio_buttons {
             stretchy false
             items examples_with_versions
             selected @selected_example_index
             
             on_selected do
-              @selected_example_index = @rbs.selected
+              @selected_example_index = @example_radio_buttons.selected
               example = selected_example
-              @nwme.text = File.read(file_path_for(example))
-              @sb.value = 1
+              @code_entry.text = File.read(file_path_for(example))
+              @version_spinbox.value = 1
             end
           }
           
@@ -68,17 +68,17 @@ class MetaExample
               stretchy false
             }
             
-            @sb = spinbox(1, 100) {
+            @version_spinbox = spinbox(1, 100) {
               value 1
               
               on_changed do
                 example = selected_example
-                if @sb.value > version_count_for(example)
-                  @sb.value -= 1
+                if @version_spinbox.value > version_count_for(example)
+                  @version_spinbox.value -= 1
                 else
-                  version_number = @sb.value == 1 ? '' : @sb.value
+                  version_number = @version_spinbox.value == 1 ? '' : @version_spinbox.value
                   example = "#{selected_example}#{version_number}"
-                  @nwme.text = File.read(file_path_for(example))
+                  @code_entry.text = File.read(file_path_for(example))
                 end
               end
             }
@@ -91,7 +91,7 @@ class MetaExample
               on_clicked do
                 begin
                   meta_example_file = File.join(Dir.home, '.meta_example.rb')
-                  File.write(meta_example_file, @nwme.text)
+                  File.write(meta_example_file, @code_entry.text)
                   result = `ruby -r #{glimmer_dsl_libui_file} #{meta_example_file} 2>&1`
                   msg_box('Error Running Example', result) if result.include?('error')
                 rescue => e
@@ -102,13 +102,13 @@ class MetaExample
             }
             button('Reset') {
               on_clicked do
-                @nwme.text = File.read(file_path_for(selected_example))
+                @code_entry.text = File.read(file_path_for(selected_example))
               end
             }
           }
         }
         
-        @nwme = non_wrapping_multiline_entry {
+        @code_entry = non_wrapping_multiline_entry {
           text File.read(file_path_for(selected_example))
         }
       }

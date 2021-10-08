@@ -2,7 +2,6 @@
 
 ## Next
 
-- Update variable names in meta-example to be more meaningful
 - Fix meta-example GUI freezing after running an example until it is closed (which unfreezes meta-example)
 
 - Document open type features in more detail linking to Microsoft webpages about it

@@ -945,28 +945,48 @@ Linux
 New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
 
 ```ruby
+# frozen_string_literal: true
+
 require 'glimmer-dsl-libui'
 require 'facets'
 
 class MetaExample
   include Glimmer
   
+  def initialize
+    @selected_example_index = 0
+  end
+  
   def examples
     if @examples.nil?
       example_files = Dir.glob(File.join(File.expand_path('.', __dir__), '**', '*.rb'))
       example_file_names = example_files.map { |f| File.basename(f, '.rb') }
-      example_file_names = example_file_names.reject { |f| f == 'meta_example' }
+      example_file_names = example_file_names.reject { |f| f == 'meta_example' || f.match(/\d$/) }
       @examples = example_file_names.map { |f| f.underscore.titlecase }
     end
     @examples
+  end
+  
+  def examples_with_versions
+    examples.map do |example|
+      version_count_for(example) > 1 ? "#{example} (#{version_count_for(example)} versions)" : example
+    end
   end
   
   def file_path_for(example)
     File.join(File.expand_path('.', __dir__), "#{example.underscore}.rb")
   end
   
+  def version_count_for(example)
+    Dir.glob(File.join(File.expand_path('.', __dir__), "#{example.underscore}*.rb")).select {|file| file.match(/\d\.rb$/)}.count + 1
+  end
+  
   def glimmer_dsl_libui_file
     File.expand_path('../lib/glimmer-dsl-libui', __dir__)
+  end
+  
+  def selected_example
+    examples[@selected_example_index]
   end
   
   def launch
@@ -975,35 +995,68 @@ class MetaExample
       
       horizontal_box {
         vertical_box {
-          @rbs = radio_buttons {
+          stretchy false
+          
+          @example_radio_buttons = radio_buttons {
             stretchy false
-            items examples
-            selected 0
+            items examples_with_versions
+            selected @selected_example_index
             
             on_selected do
-              @nwme.text = File.read(file_path_for(@examples[@rbs.selected]))
+              @selected_example_index = @example_radio_buttons.selected
+              example = selected_example
+              @code_entry.text = File.read(file_path_for(example))
+              @version_spinbox.value = 1
             end
           }
-          button('Launch') {
+          
+          horizontal_box {
+            label('Version') {
+              stretchy false
+            }
+            
+            @version_spinbox = spinbox(1, 100) {
+              value 1
+              
+              on_changed do
+                example = selected_example
+                if @version_spinbox.value > version_count_for(example)
+                  @version_spinbox.value -= 1
+                else
+                  version_number = @version_spinbox.value == 1 ? '' : @version_spinbox.value
+                  example = "#{selected_example}#{version_number}"
+                  @code_entry.text = File.read(file_path_for(example))
+                end
+              end
+            }
+          }
+          
+          horizontal_box {
             stretchy false
             
-            on_clicked do
-              begin
-                meta_example_file = File.join(Dir.home, '.meta_example.rb')
-                File.write(meta_example_file, @nwme.text)
-                result = `ruby -r #{glimmer_dsl_libui_file} #{meta_example_file} 2>&1`
-                msg_box('Error Running Example', result) if result.include?('error')
-              rescue => e
-                puts 'Unable to write code changes! Running original example...'
-                system "ruby -r #{glimmer_dsl_libui_file} #{file_path_for(@examples[@rbs.selected])}"
+            button('Launch') {
+              on_clicked do
+                begin
+                  meta_example_file = File.join(Dir.home, '.meta_example.rb')
+                  File.write(meta_example_file, @code_entry.text)
+                  result = `ruby -r #{glimmer_dsl_libui_file} #{meta_example_file} 2>&1`
+                  msg_box('Error Running Example', result) if result.include?('error')
+                rescue => e
+                  puts 'Unable to write code changes! Running original example...'
+                  system "ruby -r #{glimmer_dsl_libui_file} #{file_path_for(selected_example)}"
+                end
               end
-            end
+            }
+            button('Reset') {
+              on_clicked do
+                @code_entry.text = File.read(file_path_for(selected_example))
+              end
+            }
           }
         }
-        vertical_box {
-          @nwme = non_wrapping_multiline_entry {
-            text File.read(file_path_for(@examples[@rbs.selected]))
-          }
+        
+        @code_entry = non_wrapping_multiline_entry {
+          text File.read(file_path_for(selected_example))
         }
       }
     }.show
