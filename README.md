@@ -84,14 +84,15 @@ window('Area Gallery', 400, 400) {
     path { # declarative stable path
       square(0, 0, 100)
       square(100, 100, 400)
-      
+
       fill r: 102, g: 102, b: 204
     }
     path { # declarative stable path
       rectangle(0, 100, 100, 400)
       rectangle(100, 0, 400, 100)
-      
-      fill r: 204, g: 102, b: 204
+
+      # linear gradient (has x0, y0, x1, y1, and stops)
+      fill x0: 10, y0: 10, x1: 350, y1: 350, stops: [{pos: 0.25, r: 204, g: 102, b: 204}, {pos: 0.75, r: 102, g: 102, b: 204}]
     }
     path { # declarative stable path
       figure(100, 100) {
@@ -118,16 +119,25 @@ window('Area Gallery', 400, 400) {
       stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
     }
     path { # declarative stable path
+      arc(400, 220, 180, 90, 90, false)
+
+      # radial gradient (has an outer_radius in addition to x0, y0, x1, y1, and stops)
+      fill outer_radius: 90, x0: 0, y0: 0, x1: 500, y1: 500, stops: [{pos: 0.25, r: 102, g: 102, b: 204, a: 0.5}, {pos: 0.75, r: 204, g: 102, b: 204}]
+      stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
+    }
+    path { # declarative stable path
       circle(200, 200, 90)
 
       fill r: 202, g: 102, b: 204, a: 0.5
       stroke r: 0, g: 0, b: 0, thickness: 2
     }
-    path { # declarative stable path
-      arc(400, 220, 180, 90, 90, false)
-
-      fill r: 204, g: 102, b: 204, a: 0.5
-      stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
+    text(160, 40, 100) { # x, y, width
+      string {
+        font family: 'Times', size: 14
+        color :black
+        
+        'Area Gallery'
+      }
     }
     
     on_mouse_event do |area_mouse_event|
@@ -3652,14 +3662,15 @@ window('Area Gallery', 400, 400) {
     path { # declarative stable path
       square(0, 0, 100)
       square(100, 100, 400)
-      
+
       fill r: 102, g: 102, b: 204
     }
     path { # declarative stable path
       rectangle(0, 100, 100, 400)
       rectangle(100, 0, 400, 100)
-      
-      fill r: 204, g: 102, b: 204
+
+      # linear gradient (has x0, y0, x1, y1, and stops)
+      fill x0: 10, y0: 10, x1: 350, y1: 350, stops: [{pos: 0.25, r: 204, g: 102, b: 204}, {pos: 0.75, r: 102, g: 102, b: 204}]
     }
     path { # declarative stable path
       figure(100, 100) {
@@ -3686,16 +3697,25 @@ window('Area Gallery', 400, 400) {
       stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
     }
     path { # declarative stable path
+      arc(400, 220, 180, 90, 90, false)
+
+      # radial gradient (has an outer_radius in addition to x0, y0, x1, y1, and stops)
+      fill outer_radius: 90, x0: 0, y0: 0, x1: 500, y1: 500, stops: [{pos: 0.25, r: 102, g: 102, b: 204, a: 0.5}, {pos: 0.75, r: 204, g: 102, b: 204}]
+      stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
+    }
+    path { # declarative stable path
       circle(200, 200, 90)
 
       fill r: 202, g: 102, b: 204, a: 0.5
       stroke r: 0, g: 0, b: 0, thickness: 2
     }
-    path { # declarative stable path
-      arc(400, 220, 180, 90, 90, false)
-
-      fill r: 204, g: 102, b: 204, a: 0.5
-      stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
+    text(160, 40, 100) { # x, y, width
+      string {
+        font family: 'Times', size: 14
+        color :black
+        
+        'Area Gallery'
+      }
     }
     
     on_mouse_event do |area_mouse_event|
@@ -3786,7 +3806,8 @@ window('Area Gallery', 400, 400) {
         height 100
       }
       
-      fill r: 204, g: 102, b: 204
+      # linear gradient (has x0, y0, x1, y1, and stops)
+      fill x0: 10, y0: 10, x1: 350, y1: 350, stops: [{pos: 0.25, r: 204, g: 102, b: 204}, {pos: 0.75, r: 102, g: 102, b: 204}]
     }
     path { # declarative stable path
       figure {
@@ -3849,16 +3870,6 @@ window('Area Gallery', 400, 400) {
       stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
     }
     path { # declarative stable path
-      circle {
-        x_center 200
-        y_center 200
-        radius 90
-      }
-
-      fill r: 202, g: 102, b: 204, a: 0.5
-      stroke r: 0, g: 0, b: 0, thickness: 2
-    }
-    path { # declarative stable path
       arc {
         x_center 400
         y_center 220
@@ -3868,8 +3879,31 @@ window('Area Gallery', 400, 400) {
         is_negative false
       }
 
-      fill r: 204, g: 102, b: 204, a: 0.5
+      # radial gradient (has an outer_radius in addition to x0, y0, x1, y1, and stops)
+      fill outer_radius: 90, x0: 0, y0: 0, x1: 500, y1: 500, stops: [{pos: 0.25, r: 102, g: 102, b: 204, a: 0.5}, {pos: 0.75, r: 204, g: 102, b: 204}]
       stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
+    }
+    path { # declarative stable path
+      circle {
+        x_center 200
+        y_center 200
+        radius 90
+      }
+
+      fill r: 202, g: 102, b: 204, a: 0.5
+      stroke r: 0, g: 0, b: 0, thickness: 2
+    }
+    text {
+      x 160
+      y 40
+      width 100
+      
+      string {
+        font family: 'Times', size: 14
+        color :black
+        
+        'Area Gallery'
+      }
     }
     
     on_mouse_event do |area_mouse_event|
@@ -3943,7 +3977,8 @@ window('Area Gallery', 400, 400) {
         rectangle(0, 100, 100, 400)
         rectangle(100, 0, 400, 100)
 
-        fill r: 204, g: 102, b: 204
+        # linear gradient (has x0, y0, x1, y1, and stops)
+        fill x0: 10, y0: 10, x1: 350, y1: 350, stops: [{pos: 0.25, r: 204, g: 102, b: 204}, {pos: 0.75, r: 102, g: 102, b: 204}]
       }
       path { # a dynamic path is added semi-declaratively inside on_draw block
         figure(100, 100) {
@@ -3970,16 +4005,25 @@ window('Area Gallery', 400, 400) {
         stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
       }
       path { # a dynamic path is added semi-declaratively inside on_draw block
+        arc(400, 220, 180, 90, 90, false)
+  
+        # radial gradient (has an outer_radius in addition to x0, y0, x1, y1, and stops)
+        fill outer_radius: 90, x0: 0, y0: 0, x1: 500, y1: 500, stops: [{pos: 0.25, r: 102, g: 102, b: 204, a: 0.5}, {pos: 0.75, r: 204, g: 102, b: 204}]
+        stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
+      }
+      path { # a dynamic path is added semi-declaratively inside on_draw block
         circle(200, 200, 90)
   
         fill r: 202, g: 102, b: 204, a: 0.5
         stroke r: 0, g: 0, b: 0, thickness: 2
       }
-      path { # a dynamic path is added semi-declaratively inside on_draw block
-        arc(400, 220, 180, 90, 90, false)
-  
-        fill r: 204, g: 102, b: 204, a: 0.5
-        stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
+      text(160, 40, 100) { # x, y, width
+        string {
+          font family: 'Times', size: 14
+          color :black
+          
+          'Area Gallery'
+        }
       }
     end
     
@@ -4072,7 +4116,8 @@ window('Area Gallery', 400, 400) {
           height 100
         }
         
-        fill r: 204, g: 102, b: 204
+        # linear gradient (has x0, y0, x1, y1, and stops)
+        fill x0: 10, y0: 10, x1: 350, y1: 350, stops: [{pos: 0.25, r: 204, g: 102, b: 204}, {pos: 0.75, r: 102, g: 102, b: 204}]
       }
       path { # a dynamic path is added semi-declaratively inside on_draw block
         figure {
@@ -4135,16 +4180,6 @@ window('Area Gallery', 400, 400) {
         stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
       }
       path { # a dynamic path is added semi-declaratively inside on_draw block
-        circle {
-          x_center 200
-          y_center 200
-          radius 90
-        }
-  
-        fill r: 202, g: 102, b: 204, a: 0.5
-        stroke r: 0, g: 0, b: 0, thickness: 2
-      }
-      path { # a dynamic path is added semi-declaratively inside on_draw block
         arc {
           x_center 400
           y_center 220
@@ -4154,8 +4189,31 @@ window('Area Gallery', 400, 400) {
           is_negative false
         }
   
-        fill r: 204, g: 102, b: 204, a: 0.5
+        # radial gradient (has an outer_radius in addition to x0, y0, x1, y1, and stops)
+        fill outer_radius: 90, x0: 0, y0: 0, x1: 500, y1: 500, stops: [{pos: 0.25, r: 102, g: 102, b: 204, a: 0.5}, {pos: 0.75, r: 204, g: 102, b: 204}]
         stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
+      }
+      path { # a dynamic path is added semi-declaratively inside on_draw block
+        circle {
+          x_center 200
+          y_center 200
+          radius 90
+        }
+  
+        fill r: 202, g: 102, b: 204, a: 0.5
+        stroke r: 0, g: 0, b: 0, thickness: 2
+      }
+      text {
+        x 160
+        y 40
+        width 100
+        
+        string {
+          font family: 'Times', size: 14
+          color :black
+          
+          'Area Gallery'
+        }
       }
     end
     

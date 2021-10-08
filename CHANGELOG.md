@@ -3,6 +3,9 @@
 ## 0.2.10
 
 - Update color_button example to show how to preset initial color
+- Support `path` `fill`/`stroke` `:type` of `:linear_gradient`
+- Support `path` `fill`/`stroke` `:type` of `:radial_gradient`
+- Add text to Area Gallery examples
 
 ## 0.2.9
 

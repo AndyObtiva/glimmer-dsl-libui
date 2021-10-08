@@ -2,16 +2,16 @@
 
 ## Next
 
-- Support `path` `fill`/`stroke` `:type` of `:linear_gradient`
-- Support `path` `fill`/`stroke` `:type` of `:radial_gradient`
-- document open type features in more detail linking to Microsoft webpages about it
-- consider using text in area gallery example
-- Highlight far-feature features like scaffolding, data-binding, and custom keyword support
-- Document how to declare method-based custom controls (without class-based custom keyword support, coming in the future)
 - Update variable names in meta-example to be more meaningful
 - Fix meta-example GUI freezing after running an example until it is closed (which unfreezes meta-example)
-- Rewrite LibUI applications in Glimmer DSL for LibUI
+
+- Document open type features in more detail linking to Microsoft webpages about it
+- Document how to declare method-based custom controls (without class-based custom keyword support, coming in the future)
+- Highlight far-feature features like scaffolding, data-binding, and custom keyword support
+
 - Declare Glimmer DSL for LibUI Beta and generally feature-complete (while noting that C libui is still mid-alpha)
+
+- Rewrite LibUI applications in Glimmer DSL for LibUI
 
 ## Soon
 
@@ -63,3 +63,4 @@ None
 
 - Refactor column proxies code to be more dynamic and enable autosupport of new columns in the future
 - Split attribute getter/setter methods that accept value as nil or empty with separate getter and setter methods and ensure calls to libui setters are routed to attr= methods
+- Use enum symbols everwhere enum values are used directly
