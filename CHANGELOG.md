@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.2.10
+
+- Update color_button example to show how to preset initial color
+
 ## 0.2.9
 
 - Upgrade to glimmer 2.3.0

@@ -2060,6 +2060,8 @@ include Glimmer
 
 window('color button', 230) {
   color_button { |cb|
+    color :blue
+    
     on_changed do
       rgba = cb.color
       p rgba
