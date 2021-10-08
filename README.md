@@ -224,6 +224,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
     - [Custom Keywords](#custom-keywords)
     - [API Gotchas](#api-gotchas)
     - [Original API](#original-api)
+  - [Packaging](#packaging)
   - [Glimmer Style Guide](#glimmer-style-guide)
   - [Examples](#examples)
     - [Basic Window](#basic-window)
@@ -1004,6 +1005,16 @@ To learn more about the [LibUI](https://github.com/kojix2/LibUI) API exposed thr
 - Check out [LibUI ffi.rb](https://github.com/kojix2/LibUI/blob/main/lib/libui/ffi.rb)
 - Check out the [libui C headers](https://github.com/andlabs/libui/blob/master/ui.h)
 - Check out the [Go UI (Golang LibUI) documentation](https://pkg.go.dev/github.com/andlabs/ui) for an alternative well-documented [libui](https://github.com/andlabs/libui) reference.
+
+## Packaging
+
+I am documenting options for packaging, which I have not tried myself, but figured they would still be useful to add to the README.md until I can expand further effort into supporting packaging.
+
+For Windows, the [LibUI](https://github.com/kojix2/LibUI) project recommends [OCRA](https://github.com/larsch/ocra) (One-Click Ruby Application), which builds Windows executables from Ruby source.
+
+For Mac, consider [Platybus](https://github.com/sveinbjornt/Platypus) (builds a native Mac app from a Ruby script)
+
+For Linux, simply package your app as a [Ruby Gem](https://guides.rubygems.org/what-is-a-gem/) and [build rpm package from Ruby Gem](https://www.redpill-linpro.com/sysadvent/2015/12/07/building-rpms-from-gems.html) or [build deb package from Ruby Gem](https://openpreservation.org/blogs/building-debian-package-ruby-program/).
 
 ## Glimmer Style Guide
 

@@ -2,9 +2,7 @@
 
 ## Next
 
-- Document packaging
-
-- Rewrite LibUI applications in Glimmer DSL for LibUI
+None
 
 ## Soon
 
