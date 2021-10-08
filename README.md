@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.2.9
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.2.10
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Maintainability](https://api.codeclimate.com/v1/badges/ce2853efdbecf6ebdc73/maintainability)](https://codeclimate.com/github/AndyObtiva/glimmer-dsl-libui/maintainability)
@@ -14,10 +14,10 @@ The main trade-off in using [Glimmer DSL for LibUI](https://rubygems.org/gems/gl
 - Declarative DSL syntax that visually maps to the GUI control hierarchy
 - Convention over configuration via smart defaults and automation of low-level details
 - Requiring the least amount of syntax possible to build GUI
-- Bidirectional Data-Binding to declaratively wire and automatically synchronize GUI with Business Models
 - Custom Control support
-- Scaffolding for new custom controls, apps, and gems
-- Native-Executable packaging on Mac, Windows, and Linux.
+- [Far Future Plan] Bidirectional Data-Binding to declaratively wire and automatically synchronize GUI with Business Models
+- [Far Future Plan] Scaffolding for new custom controls, apps, and gems
+- [Far Future Plan] Native-Executable packaging on Mac, Windows, and Linux.
 
 Hello, World!
 
@@ -196,7 +196,7 @@ window('Area Gallery', 400, 400) {
 
 [Check Out Many More Examples Over Here!](#examples)
 
-NOTE: [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) is in early alpha mode (only supports included [examples](#examples)). Please help make better by contributing, adopting for small or low risk projects, and providing feedback. It is still an early alpha, so the more feedback and issues you report the better.
+NOTE: [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) is feature-complete and in beta mode (though the C [libui](https://github.com/andlabs/libui) is still mid-alpha). Please help make better by contributing, adopting for small or low risk projects, and providing feedback. The more feedback and issues you report the better.
 
 Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interested in:
 - [glimmer-dsl-swt](https://github.com/AndyObtiva/glimmer-dsl-swt): Glimmer DSL for SWT (JRuby Desktop Development GUI Framework)
@@ -207,7 +207,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
 
 ## Table of Contents
 
-- [Glimmer DSL for LibUI 0.2.9](#-glimmer-dsl-for-libui-029)
+- [Glimmer DSL for LibUI 0.2.10](#-glimmer-dsl-for-libui-0210)
   - [Glimmer GUI DSL Concepts](#glimmer-gui-dsl-concepts)
   - [Usage](#usage)
   - [Girb (Glimmer IRB)](#girb-glimmer-irb)
@@ -344,7 +344,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.2.9'
+gem 'glimmer-dsl-libui', '~> 0.2.10'
 ```
 
 Add `require 'glimmer-dsl-libui'` at the top, and then `include Glimmer` into the top-level main object for testing or into an actual class for serious usage.
