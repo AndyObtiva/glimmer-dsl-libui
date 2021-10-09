@@ -5,7 +5,7 @@ include Glimmer
 
 Address = Struct.new(:street, :p_o_box, :city, :state, :zip_code)
 
-def field(model, property)
+def form_field(model, property)
   property = property.to_s
   entry { |e|
     label property.underscore.split('_').map(&:capitalize).join(' ')
@@ -19,11 +19,11 @@ end
 
 def address_form(address)
   form {
-    field(address, :street)
-    field(address, :p_o_box)
-    field(address, :city)
-    field(address, :state)
-    field(address, :zip_code)
+    form_field(address, :street)
+    form_field(address, :p_o_box)
+    form_field(address, :city)
+    form_field(address, :state)
+    form_field(address, :zip_code)
   }
 end
 
@@ -58,29 +58,39 @@ window('Method-Based Custom Keyword') {
       label('Address 1') {
         stretchy false
       }
+      
       address_form(address1)
+      
       horizontal_separator {
         stretchy false
       }
+      
       label('Address 1 (Saved)') {
         stretchy false
       }
+      
       address(address1)
     }
+    
     vertical_separator {
       stretchy false
     }
+    
     vertical_box {
       label('Address 2') {
         stretchy false
       }
+      
       address_form(address2)
+      
       horizontal_separator {
         stretchy false
       }
+      
       label('Address 2 (Saved)') {
         stretchy false
       }
+      
       address(address2)
     }
   }

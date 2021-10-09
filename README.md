@@ -10,6 +10,8 @@
 
 The main trade-off in using [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) as opposed to [Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt) or [Glimmer DSL for Tk](https://github.com/AndyObtiva/glimmer-dsl-tk) is the fact that [SWT](https://www.eclipse.org/swt/) and [Tk](https://www.tcl.tk/) are more mature than mid-alpha [libui](https://github.com/andlabs/libui) as GUI toolkits. Still, if there is only a need to build a small simple application, [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) could be a good convenient choice due to having zero prerequisites beyond the dependencies included in the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui). Also, just like [Glimmer DSL for Tk](https://github.com/AndyObtiva/glimmer-dsl-tk), its apps start instantly and have a small memory footprint. [LibUI](https://github.com/kojix2/LibUI) is a promising new GUI toolkit that might prove quite worthy in the future.
 
+**(Note: although LibUI works on Windows, this project has not been tested on Windows yet. It has only been verified on Mac x64 and Linux x64)**
+
 [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) aims to provide a DSL similar to the [Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt) to enable more productive desktop development in Ruby with:
 - Declarative DSL syntax that visually maps to the GUI control hierarchy
 - Convention over configuration via smart defaults and automation of low-level details
@@ -899,7 +901,7 @@ window('area text drawing') {
 
 To define custom keywords, simply define a method representing the custom control you want. To make reusable, you can define in modules and simply include the modules in the view classes that need them.
 
-Example that defines `field`, `address_form`, `label_pair`, and `address` keywords (you may copy/paste in [`girb`](#girb-glimmer-irb)):
+Example that defines `form_field`, `address_form`, `label_pair`, and `address` keywords (you may copy/paste in [`girb`](#girb-glimmer-irb)):
 
 ```ruby
 require 'glimmer-dsl-libui'
@@ -909,7 +911,7 @@ include Glimmer
 
 Address = Struct.new(:street, :p_o_box, :city, :state, :zip_code)
 
-def field(model, property)
+def form_field(model, property)
   property = property.to_s
   entry { |e|
     label property.underscore.split('_').map(&:capitalize).join(' ')
@@ -923,11 +925,11 @@ end
 
 def address_form(address)
   form {
-    field(address, :street)
-    field(address, :p_o_box)
-    field(address, :city)
-    field(address, :state)
-    field(address, :zip_code)
+    form_field(address, :street)
+    form_field(address, :p_o_box)
+    form_field(address, :city)
+    form_field(address, :state)
+    form_field(address, :zip_code)
   }
 end
 
@@ -962,29 +964,39 @@ window('Method-Based Custom Keyword') {
       label('Address 1') {
         stretchy false
       }
+      
       address_form(address1)
+      
       horizontal_separator {
         stretchy false
       }
+      
       label('Address 1 (Saved)') {
         stretchy false
       }
+      
       address(address1)
     }
+    
     vertical_separator {
       stretchy false
     }
+    
     vertical_box {
       label('Address 2') {
         stretchy false
       }
+      
       address_form(address2)
+      
       horizontal_separator {
         stretchy false
       }
+      
       label('Address 2 (Saved)') {
         stretchy false
       }
+      
       address(address2)
     }
   }
@@ -1056,8 +1068,6 @@ Linux
 New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
 
 ```ruby
-# frozen_string_literal: true
-
 require 'glimmer-dsl-libui'
 require 'facets'
 
@@ -1098,6 +1108,18 @@ class MetaExample
   
   def selected_example
     examples[@selected_example_index]
+  end
+  
+  def run_example(example)
+    command = "ruby -r #{glimmer_dsl_libui_file} #{example} 2>&1"
+    result = ''
+    IO.popen(command) do |f|
+      f.each_line do |line|
+        result << line
+        puts line
+      end
+    end
+    msg_box('Error Running Example', result) if result.downcase.include?('error')
   end
   
   def launch
@@ -1150,11 +1172,11 @@ class MetaExample
                 begin
                   meta_example_file = File.join(Dir.home, '.meta_example.rb')
                   File.write(meta_example_file, @code_entry.text)
-                  result = `ruby -r #{glimmer_dsl_libui_file} #{meta_example_file} 2>&1`
-                  msg_box('Error Running Example', result) if result.include?('error')
+                  run_example(meta_example_file)
                 rescue => e
+                  puts e.full_message
                   puts 'Unable to write code changes! Running original example...'
-                  system "ruby -r #{glimmer_dsl_libui_file} #{file_path_for(selected_example)}"
+                  run_example(file_path_for(selected_example))
                 end
               end
             }
@@ -2518,11 +2540,21 @@ window('Form') {
       @last_name_entry = entry {
         label 'Last Name' # label property is available when control is nested under form
       }
+      
+      @phone_entry = entry {
+        label 'Phone' # label property is available when control is nested under form
+      }
+      
+      @email_entry = entry {
+        label 'Email' # label property is available when control is nested under form
+      }
     }
     
-    button('Display Name') {
+    button('Display Info') {
+      stretchy false
+      
       on_clicked do
-        msg_box('Name', "#{@first_name_entry.text} #{@last_name_entry.text}")
+        msg_box('Info', "#{@first_name_entry.text} #{@last_name_entry.text} has phone #{@phone_entry.text} and email #{@email_entry.text}")
       end
     }
   }
@@ -5838,7 +5870,7 @@ include Glimmer
 
 Address = Struct.new(:street, :p_o_box, :city, :state, :zip_code)
 
-def field(model, property)
+def form_field(model, property)
   property = property.to_s
   entry { |e|
     label property.underscore.split('_').map(&:capitalize).join(' ')
@@ -5852,11 +5884,11 @@ end
 
 def address_form(address)
   form {
-    field(address, :street)
-    field(address, :p_o_box)
-    field(address, :city)
-    field(address, :state)
-    field(address, :zip_code)
+    form_field(address, :street)
+    form_field(address, :p_o_box)
+    form_field(address, :city)
+    form_field(address, :state)
+    form_field(address, :zip_code)
   }
 end
 
@@ -5891,29 +5923,39 @@ window('Method-Based Custom Keyword') {
       label('Address 1') {
         stretchy false
       }
+      
       address_form(address1)
+      
       horizontal_separator {
         stretchy false
       }
+      
       label('Address 1 (Saved)') {
         stretchy false
       }
+      
       address(address1)
     }
+    
     vertical_separator {
       stretchy false
     }
+    
     vertical_box {
       label('Address 2') {
         stretchy false
       }
+      
       address_form(address2)
+      
       horizontal_separator {
         stretchy false
       }
+      
       label('Address 2 (Saved)') {
         stretchy false
       }
+      
       address(address2)
     }
   }

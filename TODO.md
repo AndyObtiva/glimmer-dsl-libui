@@ -2,7 +2,10 @@
 
 ## Next
 
-None
+- Fix issue with running Basic Table Color sample from gem (works fine from locally cloned project)
+- Fix issues with running examples in Windows:
+  - Area Gallery and Color The Circles close right after starting
+  - Basic Table Button causes a double delete on first delete button click
 
 ## Soon
 
@@ -27,6 +30,7 @@ None
 
 ## Maybe
 
+- Support hex colors as `String` with '#' prefix (e.g. '#ffaa92')
 - Support Dynamic `path` `save` and `restore` calls
 - Support nested paths/shapes in Path DSL with relative positioning
 - Trap exit signal (CTRL+C) and close application gracefully (it seems using ractors or sleep causes CTRL+C to work, could be a good workaround)
