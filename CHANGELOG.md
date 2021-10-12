@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.2.11
+
+- Fix issue with running examples that rely on local assets from gem (they work fine from locally cloned project)
+- Fix issue with not showing puts output in Basic Table Button and Editable Table examples when run from Meta Example
+
 ## 0.2.10
 
 - New examples/method_based_custom_keyword.rb

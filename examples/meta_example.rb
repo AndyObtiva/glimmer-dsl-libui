@@ -1,5 +1,6 @@
 require 'glimmer-dsl-libui'
 require 'facets'
+require 'fileutils'
 
 class MetaExample
   include Glimmer
@@ -100,9 +101,13 @@ class MetaExample
             button('Launch') {
               on_clicked do
                 begin
-                  meta_example_file = File.join(Dir.home, '.meta_example.rb')
-                  File.write(meta_example_file, @code_entry.text)
-                  run_example(meta_example_file)
+                  parent_dir = File.join(Dir.home, '.glimmer-dsl-libui', 'examples')
+                  FileUtils.mkdir_p(parent_dir)
+                  example_file = File.join(parent_dir, "#{selected_example.underscore}.rb")
+                  File.write(example_file, @code_entry.text)
+                  FileUtils.cp_r(File.expand_path('../icons', __dir__), File.dirname(parent_dir))
+                  FileUtils.cp_r(File.expand_path('../sounds', __dir__), File.dirname(parent_dir))
+                  run_example(example_file)
                 rescue => e
                   puts e.full_message
                   puts 'Unable to write code changes! Running original example...'

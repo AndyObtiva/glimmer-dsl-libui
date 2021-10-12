@@ -27,6 +27,7 @@ window('Animal sounds', 300, 200) {
       
       on_changed do |row, type, row_data|
         puts "Row #{row} #{type}: #{row_data}"
+        $stdout.flush
       end
     }
   }

@@ -23,10 +23,12 @@ window('Editable animal sounds', 300, 200) {
       
       on_changed do |row, type, row_data| # fires on all changes (even ones happening through data array)
         puts "Row #{row} #{type}: #{row_data}"
+        $stdout.flush
       end
       
       on_edited do |row, row_data| # only fires on direct table editing
         puts "Row #{row} edited: #{row_data}"
+        $stdout.flush
       end
     }
   }

@@ -2,7 +2,6 @@
 
 ## Next
 
-- Fix issue with running Basic Table Color sample from gem (works fine from locally cloned project)
 - Fix issues with running examples in Windows:
   - Area Gallery and Color The Circles close right after starting
   - Basic Table Button causes a double delete on first delete button click
