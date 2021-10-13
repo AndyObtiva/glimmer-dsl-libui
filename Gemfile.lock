@@ -46,14 +46,14 @@ GEM
       faraday (>= 0.8, < 2)
       hashie (~> 3.5, >= 3.5.2)
       oauth2 (~> 1.0)
-    glimmer (2.3.0)
+    glimmer (2.4.0)
       array_include_methods (~> 1.4.0)
       facets (>= 3.1.0, < 4.0.0)
     hashie (3.6.0)
     highline (2.0.3)
     jar-dependencies (0.4.1)
-    json (2.5.1)
-    json (2.5.1-java)
+    json (2.6.0)
+    json (2.6.0-java)
     juwelier (2.4.9)
       builder
       bundler
@@ -143,13 +143,14 @@ GEM
 
 PLATFORMS
   universal-java-1.8
+  x86_64-darwin-19
   x86_64-darwin-20
 
 DEPENDENCIES
   chunky_png (~> 1.4.0)
   color (~> 1.8)
   coveralls (= 0.8.23)
-  glimmer (~> 2.3.0)
+  glimmer (~> 2.4.0)
   juwelier (>= 2.4.9, < 3.0.0)
   libui (~> 0.0.11)
   os (>= 1.0.0, < 2.0.0)
@@ -160,4 +161,4 @@ DEPENDENCIES
   simplecov-lcov (~> 0.7.0)
 
 BUNDLED WITH
-   2.2.27
+   2.2.29

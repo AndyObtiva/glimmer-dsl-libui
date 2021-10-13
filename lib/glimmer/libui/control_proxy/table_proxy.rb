@@ -104,7 +104,7 @@ module Glimmer
                   end
                 end
                 @last_cell_rows = array_deep_clone(@cell_rows)
-              end.observe(self, :cell_rows)
+              end.observe(self, :cell_rows, recursive: true)
             end
           end
         end

@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.2.12
+
+- Upgrade to glimmer 2.4.0
+
 ## 0.2.11
 
 - Fix issue with running examples that rely on local assets from gem (they work fine from locally cloned project)
