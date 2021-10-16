@@ -54,6 +54,7 @@ None
 - Support `table` `set_cell_value` block property to do custom cell value setting
 - Use equivalents of chunky_png to support different image formats for image columns in `table`
 - Fix meta-example GUI freezing after running an example until it is closed (which unfreezes meta-example)
+- Automatically call `Glimmer::LibUI.queue_main` when operating on GUI from a different thread
 
 # Refactoring
 
