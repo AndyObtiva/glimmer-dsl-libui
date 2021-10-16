@@ -3,6 +3,7 @@
 ## 0.2.12
 
 - Upgrade to glimmer 2.4.0
+- Upgrade to LibUI 0.0.12
 
 ## 0.2.11
 
