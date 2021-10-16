@@ -55,11 +55,9 @@ window('Area Gallery', 400, 400) {
       stroke r: 0, g: 0, b: 0, thickness: 2
     }
     text(160, 40, 100) { # x, y, width
-      string {
+      string('Area Gallery') {
         font family: 'Times', size: 14
         color :black
-        
-        'Area Gallery'
       }
     }
     

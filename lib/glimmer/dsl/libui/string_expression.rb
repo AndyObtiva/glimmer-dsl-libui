@@ -32,11 +32,18 @@ module Glimmer
         
         def can_interpret?(parent, keyword, *args, &block)
           super and
-            parent.is_a?(Glimmer::LibUI::ControlProxy::TextProxy)
+            (
+              parent.is_a?(Glimmer::LibUI::ControlProxy::TextProxy) or
+              parent.is_a?(Glimmer::LibUI::AttributedString)
+            )
         end
   
         def interpret(parent, keyword, *args, &block)
-          Glimmer::LibUI::AttributedString.new(keyword, parent, args, &block)
+          if parent.is_a?(Glimmer::LibUI::ControlProxy::TextProxy)
+            Glimmer::LibUI::AttributedString.new(keyword, parent, args, &block)
+          else
+            parent.string = args.join
+          end
         end
         
         def add_content(parent, keyword, *args, &block)

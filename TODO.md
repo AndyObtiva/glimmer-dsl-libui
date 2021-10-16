@@ -6,7 +6,6 @@
   - Area Gallery and Color The Circles close right after starting
   - Basic Table Button causes a double delete on first delete button click
   - Basic Transform shows an uncentered different graphic than Mac and Linux
-- Support editing `string` attribute of attributed `string` object (automatically redrawing)
 
 ## Soon
 

@@ -16,7 +16,6 @@ class BasicDrawText
       else
         color r: 0, g: 128, b: 0, a: 0.7
       end
-      
       block.call + "\n\n"
     }
   end

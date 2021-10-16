@@ -27,7 +27,6 @@ require 'glimmer/libui/control_proxy/transformable'
 module Glimmer
   module LibUI
     class AttributedString
-      attr_accessor :string
       attr_reader :block, :keyword, :parent_proxy, :args
     
       def initialize(keyword, parent_proxy, args, &block)
@@ -38,6 +37,17 @@ module Glimmer
         @block = block
         post_add_content if @block.nil?
       end
+      
+      def string(value = nil)
+        if value.nil?
+          @string
+        else
+          @string = value
+          redraw
+        end
+      end
+      alias string= string
+      alias set_string string
       
       def font(value = nil)
         if value.nil?
@@ -106,7 +116,7 @@ module Glimmer
       alias set_open_type_features open_type_features
       
       def post_add_content
-        block_result = block&.call
+        block_result = @block&.call
         @string = block_result if block_result.is_a?(String)
         @parent_proxy&.post_initialize_child(self)
       end

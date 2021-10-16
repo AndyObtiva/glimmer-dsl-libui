@@ -4,6 +4,8 @@
 
 - Upgrade to glimmer 2.4.0
 - Upgrade to LibUI 0.0.12
+- Support passing `string` value as an argument to attributed `string` keyword
+- Support setting `string` value as a property on attributed `string` keyword (automatically redrawing)
 
 ## 0.2.11
 
