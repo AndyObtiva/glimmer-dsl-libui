@@ -3,6 +3,8 @@
 ## 0.2.13
 
 - Fix examples/basic_table_button.rb double-deletion issue on Windows via a temporary workaround (generating an extra empty row on Windows only)
+- Fix examples/basic_table_checkbox.rb , examples/basic_table_checkbox_text.rb , and examples/basic_table_color.rb on Windows
+- Fix girb on Windows
 
 ## 0.2.12
 

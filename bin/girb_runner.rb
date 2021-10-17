@@ -27,7 +27,7 @@ require_relative '../lib/glimmer-dsl-libui'
 
 include Glimmer
 
-GIRB_RUNNER_EXIT_FILE = "#{Etc.getpwuid.dir}/.girb_runner_exit"
+GIRB_RUNNER_EXIT_FILE = "#{Dir.home}/.girb_runner_exit"
 FileUtils.rm_rf GIRB_RUNNER_EXIT_FILE
 
 @exit_method = method(:exit)
