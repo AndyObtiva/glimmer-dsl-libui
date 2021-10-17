@@ -12,7 +12,7 @@ data = [
   %w[cow moo delete]
 ]
 
-window('Animal sounds', 300, 200) {
+window('Animal sounds', 400, 200) {
   horizontal_box {
     table {
       text_column('Animal')

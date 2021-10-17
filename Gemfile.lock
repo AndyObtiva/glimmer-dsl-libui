@@ -75,6 +75,8 @@ GEM
     multipart-post (2.1.1)
     nokogiri (1.12.5-java)
       racc (~> 1.4)
+    nokogiri (1.12.5-x64-mingw32)
+      racc (~> 1.4)
     nokogiri (1.12.5-x86_64-darwin)
       racc (~> 1.4)
     oauth2 (1.4.7)
@@ -143,6 +145,7 @@ GEM
 
 PLATFORMS
   universal-java-1.8
+  x64-mingw32
   x86_64-darwin-19
   x86_64-darwin-20
 

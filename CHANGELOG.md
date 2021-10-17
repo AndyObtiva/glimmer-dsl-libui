@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.2.13
+
+- Fix examples/basic_table_button.rb double-deletion issue on Windows via a temporary workaround (generating an extra empty row on Windows only)
+
 ## 0.2.12
 
 - Upgrade to glimmer 2.4.0

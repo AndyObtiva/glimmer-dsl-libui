@@ -146,7 +146,7 @@ module Glimmer
               3
             end
           end
-          @model_handler.NumRows      = fiddle_closure_block_caller(4) { cell_rows.count }
+          @model_handler.NumRows      = fiddle_closure_block_caller(4) { cell_rows.count + (OS.windows? ? 1 : 0) } # Note: there is a bug in Windows delete of columns, which requires bumping this by 1 to fix
           @model_handler.CellValue    = fiddle_closure_block_caller(1, [1, 1, 4, 4]) do |_, _, row, column|
             the_cell_rows = expanded_cell_rows
             case @columns[column]
