@@ -151,16 +151,26 @@ module Glimmer
           end
         end
         unless font.nil?
-          family_attribute = ::LibUI.new_family_attribute(font[:family])
-          ::LibUI.attributed_string_set_attribute(@parent_proxy.attributed_string, family_attribute, @start, @start + @string.size)
-          size_attribute = ::LibUI.new_size_attribute(font[:size])
-          ::LibUI.attributed_string_set_attribute(@parent_proxy.attributed_string, size_attribute, @start, @start + @string.size)
-          weight_attribute = ::LibUI.new_weight_attribute(Glimmer::LibUI.enum_symbol_to_value(:text_weight, font[:weight]))
-          ::LibUI.attributed_string_set_attribute(@parent_proxy.attributed_string, weight_attribute, @start, @start + @string.size)
-          italic_attribute = ::LibUI.new_italic_attribute(Glimmer::LibUI.enum_symbol_to_value(:text_italic, font[:italic]))
-          ::LibUI.attributed_string_set_attribute(@parent_proxy.attributed_string, italic_attribute, @start, @start + @string.size)
-          stretch_attribute = ::LibUI.new_stretch_attribute(Glimmer::LibUI.enum_symbol_to_value(:text_stretch, font[:stretch]))
-          ::LibUI.attributed_string_set_attribute(@parent_proxy.attributed_string, stretch_attribute, @start, @start + @string.size)
+          if font[:family]
+            family_attribute = ::LibUI.new_family_attribute(font[:family])
+            ::LibUI.attributed_string_set_attribute(@parent_proxy.attributed_string, family_attribute, @start, @start + @string.size)
+          end
+          if font[:size]
+            size_attribute = ::LibUI.new_size_attribute(font[:size])
+            ::LibUI.attributed_string_set_attribute(@parent_proxy.attributed_string, size_attribute, @start, @start + @string.size)
+          end
+          if font[:weight]
+            weight_attribute = ::LibUI.new_weight_attribute(Glimmer::LibUI.enum_symbol_to_value(:text_weight, font[:weight]))
+            ::LibUI.attributed_string_set_attribute(@parent_proxy.attributed_string, weight_attribute, @start, @start + @string.size)
+          end
+          if font[:italic]
+            italic_attribute = ::LibUI.new_italic_attribute(Glimmer::LibUI.enum_symbol_to_value(:text_italic, font[:italic]))
+            ::LibUI.attributed_string_set_attribute(@parent_proxy.attributed_string, italic_attribute, @start, @start + @string.size)
+          end
+          if font[:stretch]
+            stretch_attribute = ::LibUI.new_stretch_attribute(Glimmer::LibUI.enum_symbol_to_value(:text_stretch, font[:stretch]))
+            ::LibUI.attributed_string_set_attribute(@parent_proxy.attributed_string, stretch_attribute, @start, @start + @string.size)
+          end
         end
         unless open_type_features.nil?
           open_type_features_attribute = ::LibUI.new_features_attribute(open_type_features.libui)

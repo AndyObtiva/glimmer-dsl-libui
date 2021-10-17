@@ -5,8 +5,18 @@
 - Fix examples/basic_table_button.rb double-deletion issue on Windows via a temporary workaround (generating an extra empty row on Windows only)
 - Fix examples/basic_table_checkbox.rb , examples/basic_table_checkbox_text.rb , and examples/basic_table_color.rb on Windows
 - Fix examples/basic_table_progress_bar.rb crash due to an issue on Windows when switching from -1 to a positive value
+- Fix examples/area_gallery.rb (all its versions) by disabling arc/circle on Windows where they don't work due to issue in libui
 - Fix girb on Windows
 - Removed redundant `table` on_change notification
+- Fix issue with supplying a font without all its keys (e.g. missing `:weight`) to attributed `string` nested under `text`, tolerating missing font keys.
+- Fix issue with examples/color_the_circles.rb when clicking outside the playing area causing this error:
+```
+examples/color_the_circles.rb:82:in `block in color_circle': undefined method `include?' for nil:NilClass (NoMethodError)
+        from examples/color_the_circles.rb:81:in `each'
+        from examples/color_the_circles.rb:81:in `find'
+        from examples/color_the_circles.rb:81:in `color_circle'
+        from examples/color_the_circles.rb:212:in `block (4 levels) in launch'
+```
 
 ## 0.2.12
 

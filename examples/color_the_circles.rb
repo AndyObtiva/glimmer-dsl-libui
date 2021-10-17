@@ -79,7 +79,7 @@ class ColorTheCircles
   
   def color_circle(x, y)
     clicked_circle_data = @circles_data.find do |circle_data|
-      circle_data[:fill].nil? && circle_data[:circle].include?(x, y)
+      circle_data[:fill].nil? && circle_data[:circle]&.include?(x, y)
     end
     if clicked_circle_data
       clicked_circle_data[:fill] = clicked_circle_data[:stroke]
@@ -190,24 +190,24 @@ class ColorTheCircles
           vexpand true
           halign :fill
           valign :fill
-          
+
           on_draw do |area_draw_params|
             path {
               rectangle(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
-              
+
               fill :white
             }
-            
+
             @circles_data.each do |circle_data|
               path {
                 circle_data[:circle] = circle(*circle_data[:args])
-                
+
                 fill circle_data[:fill]
                 stroke circle_data[:stroke]
               }
             end
           end
-          
+
           on_mouse_down do |area_mouse_event|
             color_circle(area_mouse_event[:x], area_mouse_event[:y])
           end
