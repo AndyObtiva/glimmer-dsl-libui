@@ -4,7 +4,9 @@
 
 - Fix examples/basic_table_button.rb double-deletion issue on Windows via a temporary workaround (generating an extra empty row on Windows only)
 - Fix examples/basic_table_checkbox.rb , examples/basic_table_checkbox_text.rb , and examples/basic_table_color.rb on Windows
+- Fix examples/basic_table_progress_bar.rb crash due to an issue on Windows when switching from -1 to a positive value
 - Fix girb on Windows
+- Removed redundant `table` on_change notification
 
 ## 0.2.12
 

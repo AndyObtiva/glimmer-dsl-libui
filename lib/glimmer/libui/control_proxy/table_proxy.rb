@@ -84,7 +84,7 @@ module Glimmer
             @cell_rows = rows
             @cell_rows.tap do
               @last_cell_rows = array_deep_clone(@cell_rows)
-              Glimmer::DataBinding::Observer.proc do
+              Glimmer::DataBinding::Observer.proc do |new_cell_rows|
                 if @cell_rows.size < @last_cell_rows.size && @last_cell_rows.include_all?(*@cell_rows)
                   @last_cell_rows.array_diff_indexes(@cell_rows).reverse.each do |row|
                     ::LibUI.table_model_row_deleted(model, row)
@@ -103,6 +103,7 @@ module Glimmer
                     end
                   end
                 end
+                @last_last_cell_rows = array_deep_clone(@last_cell_rows)
                 @last_cell_rows = array_deep_clone(@cell_rows)
               end.observe(self, :cell_rows, recursive: true)
             end
@@ -112,7 +113,11 @@ module Glimmer
         alias set_cell_rows cell_rows
         
         def expanded_cell_rows
-          cell_rows.map do |row|
+          expand(cell_rows)
+        end
+        
+        def expand(cell_rows)
+          cell_rows.to_a.map do |row|
             row.flatten(1)
           end
         end
@@ -146,7 +151,10 @@ module Glimmer
               3
             end
           end
-          @model_handler.NumRows      = fiddle_closure_block_caller(4) { cell_rows.count + (OS.windows? ? 1 : 0) } # Note: there is a bug in Windows delete of columns, which requires bumping this by 1 to fix
+          @model_handler.NumRows      = fiddle_closure_block_caller(4) do
+            # Note: there is a double-delete bug in Windows when performing table_model_row_deleted, which requires pre-adding and extra empty row
+            cell_rows.count + (OS.windows? ? 1 : 0)
+          end
           @model_handler.CellValue    = fiddle_closure_block_caller(1, [1, 1, 4, 4]) do |_, _, row, column|
             the_cell_rows = expanded_cell_rows
             case @columns[column]
@@ -161,7 +169,16 @@ module Glimmer
             when Column::CheckboxColumnProxy, Column::CheckboxTextColumnProxy, Column::CheckboxTextColorColumnProxy
               ::LibUI.new_table_value_int(((expanded_cell_rows[row] && (expanded_cell_rows[row][column] == 1 || expanded_cell_rows[row][column].to_s.strip.downcase == 'true' ? 1 : 0))) || 0)
             when Column::ProgressBarColumnProxy
-              ::LibUI.new_table_value_int((expanded_cell_rows[row] && expanded_cell_rows[row][column]).to_i)
+              value = (expanded_cell_rows[row] && expanded_cell_rows[row][column]).to_i
+              expanded_last_last_cell_rows = expand(@last_last_cell_rows)
+              old_value = (expanded_last_last_cell_rows[row] && expanded_last_last_cell_rows[row][column]).to_i
+              if OS.windows? && old_value == -1 && value >= 0
+                Glimmer::Config.logger.error('Switching a progress bar value from -1 to a positive value is not supported in Windows')
+                cell_rows[row][column] = -1
+                ::LibUI.new_table_value_int(old_value)
+              else
+                ::LibUI.new_table_value_int((expanded_cell_rows[row] && expanded_cell_rows[row][column]).to_i)
+              end
             when Column::BackgroundColorColumnProxy
               background_color = Glimmer::LibUI.interpret_color(expanded_cell_rows[row] && expanded_cell_rows[row][column]) || {r: 255, g: 255, b: 255}
               ::LibUI.new_table_value_color(background_color[:r] / 255.0, background_color[:g] / 255.0, background_color[:b] / 255.0, background_color[:a] || 1.0)
@@ -186,7 +203,6 @@ module Glimmer
               @cell_rows[row] ||= []
               @cell_rows[row][column] = ::LibUI.table_value_int(val).to_i == 1
             end
-            on_changed.each {|listener| listener.call(row, :changed, @cell_rows[row])}
             on_edited.each {|listener| listener.call(row, @cell_rows[row])}
           end
           

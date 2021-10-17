@@ -14,6 +14,7 @@ IMAGE_ROWS = []
 5.times do |i|
   url = format('https://www.ghibli.jp/gallery/thumb-redturtle%03d.png', (i + 1))
   puts "Processing Image: #{url}"
+  $stdout.flush # for Windows
   f = URI.open(url)
   canvas = ChunkyPNG::Canvas.from_io(f)
   f.close

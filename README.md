@@ -1014,6 +1014,7 @@ window('Method-Based Custom Keyword') {
 - `table` `checkbox_column` and `checkbox_text_column` checkbox editing only works on Windows and Linux (not Mac) due to a current limitation in [libui](https://github.com/andlabs/ui/issues/357).
 - `text` `align` property seems not to work on the Mac ([libui](https://github.com/andlabs/libui) has an [issue](https://github.com/andlabs/libui/pull/407) about it)
 - `table` controls on Windows intentionally get an extra empty row at the end because if any row were to be deleted for the first time, double-deletion happens due to an issue in [libui](https://github.com/andlabs/libui) on Windows.
+- `table` `progress_bar` column on Windows cannot be updated with a positive value if it started initially with `-1` (it ignores update to avoid crashing due to an issue in [libui](https://github.com/andlabs/libui) on Windows.
 
 ### Original API
 

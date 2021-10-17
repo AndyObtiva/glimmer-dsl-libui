@@ -48,6 +48,7 @@ class MetaExample
       f.each_line do |line|
         result << line
         puts line
+        $stdout.flush # for Windows
       end
     end
     msg_box('Error Running Example', result) if result.downcase.include?('error')
