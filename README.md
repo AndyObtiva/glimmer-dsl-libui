@@ -9,13 +9,11 @@
 
 The main trade-off in using [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) as opposed to [Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt) or [Glimmer DSL for Tk](https://github.com/AndyObtiva/glimmer-dsl-tk) is the fact that [SWT](https://www.eclipse.org/swt/) and [Tk](https://www.tcl.tk/) are more mature than mid-alpha [libui](https://github.com/andlabs/libui) as GUI toolkits. Still, if there is only a need to build a small simple application, [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) could be a good convenient choice due to having zero prerequisites beyond the dependencies included in the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui). Also, just like [Glimmer DSL for Tk](https://github.com/AndyObtiva/glimmer-dsl-tk), its apps start instantly and have a small memory footprint. [LibUI](https://github.com/kojix2/LibUI) is a promising new GUI toolkit that might prove quite worthy in the future.
 
-**(Note: although LibUI works on Windows, this project has not been tested on Windows yet. It has only been verified on Mac x64 and Linux x64. Issue reporting for Windows is appreciated in the meantime.)**
-
 [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) aims to provide a DSL similar to the [Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt) to enable more productive desktop development in Ruby with:
 - Declarative DSL syntax that visually maps to the GUI control hierarchy
 - Convention over configuration via smart defaults and automation of low-level details
 - Requiring the least amount of syntax possible to build GUI
-- Custom Control support
+- Custom Keyword support
 - [Far Future Plan] Bidirectional Data-Binding to declaratively wire and automatically synchronize GUI with Business Models
 - [Far Future Plan] Scaffolding for new custom controls, apps, and gems
 - [Far Future Plan] Native-Executable packaging on Mac, Windows, and Linux.
@@ -213,7 +211,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
   - [Usage](#usage)
   - [Girb (Glimmer IRB)](#girb-glimmer-irb)
   - [API](#api)
-    - [Supported Controls](#supported-controls)
+    - [Supported Keywords](#supported-keywords)
     - [Common Control Properties](#common-control-properties)
     - [Common Control Operations](#common-control-operations)
     - [LibUI Operations](#libui-operations)
@@ -261,6 +259,9 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
     - [Basic Draw Text](#basic-draw-text)
     - [Custom Draw Text](#custom-draw-text)
     - [Method-Based Custom Keyword](#method-based-custom-keyword)
+  - [Applications](#applications)
+    - [Manga2PDF](#manga2pdf)
+    - [Befunge98 GUI](#befunge98-gui)
   - [Contributing to glimmer-dsl-libui](#contributing-to-glimmer-dsl-libui)
   - [Help](#help)
     - [Issues](#issues)
@@ -281,10 +282,10 @@ The Glimmer GUI DSL provides object-oriented declarative hierarchical syntax for
 - Requires the minimum amount of syntax needed to describe an app's GUI
 
 The Glimmer GUI DSL follows these simple concepts in mapping from [LibUI](https://github.com/kojix2/LibUI) syntax:
-- **Control**: [LibUI](https://github.com/kojix2/LibUI) controls may be declared by lower-case underscored name (aka keyword) (e.g. `window` or `button`). Behind the scenes, they are represented by keyword methods that map to corresponding `LibUI.new_keyword` methods receiving args (e.g. `window('hello world', 300, 200, true)`).
-- **Content/Properties/Listeners Block**: Any keyword may be optionally followed by a Ruby curly-brace multi-line-block containing nested controls (content) and/or properties (attributes) (e.g. `window('hello world', 300, 200, true) {button('greet')}`). It optionally receives one arg representing the control (e.g. `button('greet') {|b| on_clicked { puts b.text}}`)
-- **Property**: Control properties may be declared inside keyword blocks with lower-case underscored name followed by property value args (e.g. `title "hello world"` inside `group`). Behind the scenes, properties correspond to `control_set_property` methods.
-- **Listener**: Control listeners may be declared inside keyword blocks with listener lower-case underscored name beginning with `on_` and receiving required block handler (e.g. `on_clicked {puts 'clicked'}` inside `button`). Behind the scenes, listeners correspond to `control_on_event` methods.
+- **Control(args)**: [LibUI](https://github.com/kojix2/LibUI) controls may be declared by lower-case underscored name (aka keyword) (e.g. `window` or `button`). Behind the scenes, they are represented by keyword methods that map to corresponding `LibUI.new_keyword` methods receiving args (e.g. `window('hello world', 300, 200, true)`).
+- **Content Block** (Properties/Listeners/Controls): Any keyword may be optionally followed by a Ruby curly-brace multi-line content block containing properties (attributes), listeners, and/or nested controls (e.g. `window {title 'hello world'; on_closing {puts 'Bye'}; button('greet')}`). Content block optionally receives one arg representing the control (e.g. `button('greet') {|b| on_clicked { puts b.text}}`)
+- **Property**: Control properties may be declared inside keyword blocks with lower-case underscored name followed by property value args (e.g. `title "hello world"` inside `group`). Behind the scenes, properties correspond to `LibUI.control_set_property` methods.
+- **Listener**: Control listeners may be declared inside keyword blocks with listener lower-case underscored name beginning with `on_` and receiving required block handler (e.g. `on_clicked {puts 'clicked'}` inside `button`). Optionally, the listener block can receive an arg representing the control (e.g. `on_clicked {|btn| puts btn.text}`). Behind the scenes, listeners correspond to `LibUI.control_on_event` methods.
 
 Example of an app written in [LibUI](https://github.com/kojix2/LibUI)'s procedural imperative syntax:
 
@@ -408,7 +409,7 @@ w.set_title 'aloha'
 puts w.title # => aloha
 ```
 
-Controls are wrapped as Ruby proxy objects, having a `#libui` method to obtain the wrapped Fiddle pointer object. Ruby proxy objects rely on composition (via [Proxy Design Pattern](https://en.wikipedia.org/wiki/Proxy_pattern)) instead of inheritance to shield consumers from having to deal with lower-level details unless absolutely needed.
+Controls are wrapped as Ruby proxy objects, having a `#libui` method to obtain the wrapped [LibUI](https://github.com/kojix2/LibUI) Fiddle pointer object. Ruby proxy objects rely on composition (via [Proxy Design Pattern](https://en.wikipedia.org/wiki/Proxy_pattern)) instead of inheritance to shield consumers from having to deal with lower-level details unless absolutely needed.
 
 Example (you may copy/paste in [`girb`](#girb-glimmer-irb)):
 
@@ -417,7 +418,9 @@ w = window('hello world') # => #<Glimmer::LibUI::WindowProxy:0x00007fde4ea39fb0
 w.libui # => #<Fiddle::Pointer:0x00007fde53997980 ptr=0x00007fde51352a60 size=0 free=0x0000000000000000>
 ```
 
-### Supported Controls
+### Supported Keywords
+
+These are all the supported keywords. Note that some keywords do not represent controls, but produce objects that are used as the property values of controls (e.g. `image` builds objects to use in `cell_rows` for a `table` with an image column)
 
 Control(Args) | Properties | Listeners
 ------------- | ---------- | ---------
@@ -516,8 +519,8 @@ All operations that could normally be called on `LibUI` can also be called on `G
 
 ### Extra Dialogs
 
-- `open_file(window as Glimmer::LibUI::WindowProxy)`: returns selected file (`String`) or `nil` if cancelled
-- `save_file(window as Glimmer::LibUI::WindowProxy)`: returns selected file (`String`) or `nil` if cancelled
+- `open_file(window as Glimmer::LibUI::WindowProxy = ControlProxy::main_window_proxy)`: returns selected file (`String`) or `nil` if cancelled
+- `save_file(window as Glimmer::LibUI::WindowProxy = ControlProxy::main_window_proxy)`: returns selected file (`String`) or `nil` if cancelled
 
 ### Extra Operations
 
@@ -530,13 +533,13 @@ All operations that could normally be called on `LibUI` can also be called on `G
 
 ### Table API
 
-The `table` control must first declare its columns via one of these column keywords (mentioned in [Supported Controls](#supported-controls)):
+The `table` control must first declare its columns via one of these column keywords (mentioned in [Supported Keywords](#supported-keywords)):
   - `background_color_column`: expects color cell values
   - `button_column`: expects `String` cell values
   - `checkbox_column`: expects Boolean cell values
   - `checkbox_text_column`: expects dual-element `Array` of Boolean and `String` cell values
   - `checkbox_text_color_column`: expects triple-element `Array` of Boolean, `String`, and color cell values
-  - `image_column`: expects `image` cell values (produced by `image` and `image_part` keywords as per [Supported Controls](#supported-controls))
+  - `image_column`: expects `image` cell values (produced by `image` and `image_part` keywords as per [Supported Keywords](#supported-keywords))
   - `image_text_column`: expects dual-element `Array` of `image` and `String` cell values
   - `image_text_color_column`: expects triple-element `Array` of `image`, `String`, and color cell values
   - `text_column`: expects `String` cell values
@@ -598,11 +601,31 @@ window('Contacts', 600, 600) { |w|
           msg_box_error(w, 'Validation Error!', 'All fields are required! Please make sure to enter a value for all fields.')
         else
           data << new_row # automatically inserts a row into the table due to implicit data-binding
+          @unfiltered_data = data.dup
           @name_entry.text = ''
           @email_entry.text = ''
           @phone_entry.text = ''
           @city_entry.text = ''
           @state_entry.text = ''
+        end
+      end
+    }
+    
+    search_entry { |se|
+      stretchy false
+      
+      on_changed do
+        filter_value = se.text
+        @unfiltered_data ||= data.dup
+        # Unfilter first to remove any previous filters
+        data.replace(@unfiltered_data) # affects table indirectly through implicit data-binding
+        # Now, apply filter if entered
+        unless filter_value.empty?
+          data.filter! do |row_data| # affects table indirectly through implicit data-binding
+            row_data.any? do |cell|
+              cell.to_s.downcase.include?(filter_value.downcase)
+            end
+          end
         end
       end
     }
@@ -615,6 +638,10 @@ window('Contacts', 600, 600) { |w|
       text_column('State')
 
       cell_rows data # implicit data-binding
+      
+      on_changed do |row, type, row_data|
+        puts "Row #{row} #{type}: #{row_data}"
+      end
     }
   }
 }.show
@@ -627,8 +654,8 @@ Learn more by checking out [examples](#examples).
 ### Area API
 
 The `area` control is a canvas-like control for drawing paths that can be used in one of two ways:
-- Declaratively via stable paths: useful for stable paths that will not change later on. Simply nest `path` and figures like `rectangle` and all drawing logic is generated automatically. Path proxy objects are preserved across redraws assuming there would be few stable paths (mostly for decorative reasons).
-- Semi-declaratively via on_draw listener dynamic paths: useful for more dynamic paths that will definitely change. Open an `on_draw` listener block that receives a `area_draw_params` argument and nest `path` and figures like `rectangle` and all drawing logic is generated automatically. Path proxy objects are destroyed (thrown-away) at the end of drawing, thus having less memory overhead for drawing thousands of dynamic paths.
+- Declaratively via stable paths: useful for stable paths that will not change often later on. Simply nest `path` and figures like `rectangle` and all drawing logic is generated automatically. Path proxy objects are preserved across redraws assuming there would be relatively few stable paths (mostly for decorative reasons).
+- Semi-declaratively via on_draw listener dynamic paths: useful for more dynamic paths that will definitely change very often. Open an `on_draw` listener block that receives a `area_draw_params` argument and nest `path` and figures like `rectangle` and all drawing logic is generated automatically. Path proxy objects are destroyed (thrown-away) at the end of drawing, thus having less memory overhead for drawing thousands of dynamic paths.
 
 Here is an example of a declarative `area` with a stable path (you may copy/paste in [`girb`](#girb-glimmer-irb)):
 
@@ -1013,12 +1040,13 @@ window('Method-Based Custom Keyword') {
 ### API Gotchas
 
 - There is no proper way to destroy `grid` children due to [libui](https://github.com/andlabs/libui) not offering any API for deleting them from `grid` (no `grid_delete` similar to `box_delete` for `horizontal_box` and `vertical_box`).
-- `table` `checkbox_column` and `checkbox_text_column` checkbox editing only works on Windows and Linux (not Mac) due to a current limitation in [libui](https://github.com/andlabs/ui/issues/357).
+- `table` `checkbox_column` and `checkbox_text_column` checkbox editing only works on Linux and Windows (not Mac) due to a current limitation in [libui](https://github.com/andlabs/ui/issues/357).
 - `text` `align` property seems not to work on the Mac ([libui](https://github.com/andlabs/libui) has an [issue](https://github.com/andlabs/libui/pull/407) about it)
-- `text` `string` `background` does not work on Windows due to an issue in [libui](https://github.com/andlabs/libui).
-- `arc` shape does not work on Windows due to an issue in [libui](https://github.com/andlabs/libui).
+- `text` `string` `background` does not work on Windows due to an [issue in libui](https://github.com/andlabs/libui/issues/347).
+- `arc` shape does not work on Windows unless a figure is started due to implementation of [libui](https://github.com/andlabs/libui).
 - `table` controls on Windows intentionally get an extra empty row at the end because if any row were to be deleted for the first time, double-deletion happens due to an issue in [libui](https://github.com/andlabs/libui) on Windows.
 - `table` `progress_bar` column on Windows cannot be updated with a positive value if it started initially with `-1` (it ignores update to avoid crashing due to an issue in [libui](https://github.com/andlabs/libui) on Windows.
+- It seems that [libui](https://github.com/andlabs/libui) does not support nesting multiple `area` controls under a `grid` as only the first one shows up in that scenario. To workaround that limitation, use a `vertical_box` with nested `horizontal_box`s instead to include multiple `area`s in a GUI.
 
 ### Original API
 
@@ -1033,7 +1061,7 @@ I am documenting options for packaging, which I have not tried myself, but figur
 
 For Windows, the [LibUI](https://github.com/kojix2/LibUI) project recommends [OCRA](https://github.com/larsch/ocra) (One-Click Ruby Application), which builds Windows executables from Ruby source.
 
-For Mac, consider [Platybus](https://github.com/sveinbjornt/Platypus) (builds a native Mac app from a Ruby script)
+For Mac, consider [Platypus](https://github.com/sveinbjornt/Platypus) (builds a native Mac app from a Ruby script)
 
 For Linux, simply package your app as a [Ruby Gem](https://guides.rubygems.org/what-is-a-gem/) and [build rpm package from Ruby Gem](https://www.redpill-linpro.com/sysadvent/2015/12/07/building-rpms-from-gems.html) or [build deb package from Ruby Gem](https://openpreservation.org/blogs/building-debian-package-ruby-program/).
 
@@ -3384,8 +3412,6 @@ Linux
 New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
 
 ```ruby
-# frozen_string_literal: true
-
 require 'glimmer-dsl-libui'
 
 include Glimmer
@@ -5990,6 +6016,26 @@ window('Method-Based Custom Keyword') {
   }
 }.show
 ```
+
+## Applications
+
+Here are some applications built with [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui)
+
+### Manga2PDF
+
+Download and merge manga images into a single pdf file.
+
+https://github.com/PinGunter/manga2pdf
+
+![manga2pdf screenshot](https://raw.githubusercontent.com/PinGunter/manga2pdf/master/screenshots/manga2pdf-gui.png)
+
+### Befunge98 GUI
+
+Ruby implementation of the Befunge-98 programmming language.
+
+https://github.com/AndyObtiva/befunge98/tree/gui
+
+![befunge98 gui screenshot](https://raw.githubusercontent.com/AndyObtiva/befunge98/master/gui/glimmer-dsl-libui/befunge98_gui_glimmer_dsl_libui/screenshots/befunge98_gui_glimmer_dsl_libui_example.png)
 
 ## Contributing to glimmer-dsl-libui
 

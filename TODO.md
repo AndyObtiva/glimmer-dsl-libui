@@ -2,13 +2,45 @@
 
 ## Next
 
+- Auto-program these shifted keys into area key event (given that libui does not do it):
+```ruby
+SHIFTED_KEYCODE_CHARACTERS = {
+  '`' => '~',
+  '1' => '!',
+  '2' => '@',
+  '3' => '#',
+  '4' => '$',
+  '5' => '%',
+  '6' => '^',
+  '7' => '&',
+  '8' => '*',
+  '9' => '(',
+  '10' => ')',
+  '-' => '_',
+  '=' => '+',
+  ',' => '<',
+  '.' => '>',
+  '/' => '?',
+  ';' => ':',
+  ''' => '"',
+  '[' => '{',
+  ']' => '}',
+  '\' => '|',
+}
+```
+- Retake screenshots for Color The Shapes on Mac and Linux
+- Tolerate `nil` input for any widget `String` attributes or args (e.g. `entry` `text` attribute)
+- Override `#inspect` method for area (and path/text) since it can contain many shapes, making its printout too large
+
 - Fix issues with running examples on Windows:
   - Color The Shapes closes after losing
   - Basic Transform shows an uncentered different graphic on Windows than Mac and Linux
+- Document all examples with Windows screenshots
+
 
 ## Soon
 
-None
+- Support `message_box` as an alias for `msg_box` (and `message_box_error` for `msg_box_error` too)
 
 ## Future
 

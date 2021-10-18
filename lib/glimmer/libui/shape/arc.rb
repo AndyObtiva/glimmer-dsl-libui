@@ -36,7 +36,11 @@ module Glimmer
           if parent.is_a?(Figure) && parent.x.nil? && parent.y.nil?
             ::LibUI.draw_path_new_figure_with_arc(path_proxy.libui, *arc_args)
           else
-            ::LibUI.draw_path_arc_to(path_proxy.libui, *arc_args)
+            if OS.windows? && parent.children.find {|child| child.is_a?(Arc)} == self
+              ::LibUI.draw_path_new_figure_with_arc(path_proxy.libui, *arc_args)
+            else
+              ::LibUI.draw_path_arc_to(path_proxy.libui, *arc_args)
+            end
           end
           super
         end

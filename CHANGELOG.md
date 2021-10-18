@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.2.14
+
+- Fix issue regarding arcs on Windows by auto-starting a figure if not started already (on Mac and Linux that is not needed)
+
 ## 0.2.13
 
 - Rename examples/color_the_circles.rb to examples/color_the_shapes.rb to fix/make compatible with Windows by rendering only Squares on Windows, but Squares and Circles on Mac/Linux
