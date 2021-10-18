@@ -2,6 +2,7 @@
 
 ## 0.2.13
 
+- Rename examples/color_the_circles.rb to examples/color_the_shapes.rb to fix/make compatible with Windows by rendering only Squares on Windows, but Squares and Circles on Mac/Linux
 - Fix examples/basic_table_button.rb double-deletion issue on Windows via a temporary workaround (generating an extra empty row on Windows only)
 - Fix examples/basic_table_checkbox.rb , examples/basic_table_checkbox_text.rb , and examples/basic_table_color.rb on Windows
 - Fix examples/basic_table_progress_bar.rb crash due to an issue on Windows when switching from -1 to a positive value

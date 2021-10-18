@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.2.12
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.2.13
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -119,19 +119,21 @@ window('Area Gallery', 400, 400) {
       fill r: 202, g: 102, b: 204, a: 0.5
       stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
     }
-    path { # declarative stable path
-      arc(400, 220, 180, 90, 90, false)
-
-      # radial gradient (has an outer_radius in addition to x0, y0, x1, y1, and stops)
-      fill outer_radius: 90, x0: 0, y0: 0, x1: 500, y1: 500, stops: [{pos: 0.25, r: 102, g: 102, b: 204, a: 0.5}, {pos: 0.75, r: 204, g: 102, b: 204}]
-      stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
-    }
-    path { # declarative stable path
-      circle(200, 200, 90)
-
-      fill r: 202, g: 102, b: 204, a: 0.5
-      stroke r: 0, g: 0, b: 0, thickness: 2
-    }
+    unless OS.windows?
+      path { # declarative stable path
+        arc(400, 220, 180, 90, 90, false)
+  
+        # radial gradient (has an outer_radius in addition to x0, y0, x1, y1, and stops)
+        fill outer_radius: 90, x0: 0, y0: 0, x1: 500, y1: 500, stops: [{pos: 0.25, r: 102, g: 102, b: 204, a: 0.5}, {pos: 0.75, r: 204, g: 102, b: 204}]
+        stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
+      }
+      path { # declarative stable path
+        circle(200, 200, 90)
+  
+        fill r: 202, g: 102, b: 204, a: 0.5
+        stroke r: 0, g: 0, b: 0, thickness: 2
+      }
+    end
     text(160, 40, 100) { # x, y, width
       string('Area Gallery') {
         font family: 'Times', size: 14
@@ -255,7 +257,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
     - [Basic Transform](#basic-transform)
     - [Login](#login)
     - [Timer](#timer)
-    - [Color The Circles](#color-the-circles)
+    - [Color The Shapes](#color-the-shapes)
     - [Basic Draw Text](#basic-draw-text)
     - [Custom Draw Text](#custom-draw-text)
     - [Method-Based Custom Keyword](#method-based-custom-keyword)
@@ -346,7 +348,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.2.12'
+gem 'glimmer-dsl-libui', '~> 0.2.13'
 ```
 
 Add `require 'glimmer-dsl-libui'` at the top, and then `include Glimmer` into the top-level main object for testing or into an actual class for serious usage.
@@ -1628,11 +1630,11 @@ class TinyMidiPlayer
 
       UI.new_horizontal_box.tap do |hbox|
         UI.new_vertical_box.tap do |vbox|
-          UI.new_button('ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¶').tap do |button1|
+          UI.new_button('▶').tap do |button1|
             UI.button_on_clicked(button1) { play_midi }
             UI.box_append(vbox, button1, 1)
           end
-          UI.new_button('ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â ').tap do |button2|
+          UI.new_button('■').tap do |button2|
             UI.button_on_clicked(button2) { stop_midi }
             UI.box_append(vbox, button2, 1)
           end
@@ -1726,12 +1728,12 @@ class TinyMidiPlayer
         vertical_box {
           stretchy false
           
-          button('ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¶') {
+          button('▶') {
             on_clicked do
               play_midi
             end
           }
-          button('ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â ') {
+          button('■') {
             on_clicked do
               stop_midi
             end
@@ -3899,19 +3901,21 @@ window('Area Gallery', 400, 400) {
       fill r: 202, g: 102, b: 204, a: 0.5
       stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
     }
-    path { # declarative stable path
-      arc(400, 220, 180, 90, 90, false)
-
-      # radial gradient (has an outer_radius in addition to x0, y0, x1, y1, and stops)
-      fill outer_radius: 90, x0: 0, y0: 0, x1: 500, y1: 500, stops: [{pos: 0.25, r: 102, g: 102, b: 204, a: 0.5}, {pos: 0.75, r: 204, g: 102, b: 204}]
-      stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
-    }
-    path { # declarative stable path
-      circle(200, 200, 90)
-
-      fill r: 202, g: 102, b: 204, a: 0.5
-      stroke r: 0, g: 0, b: 0, thickness: 2
-    }
+    unless OS.windows?
+      path { # declarative stable path
+        arc(400, 220, 180, 90, 90, false)
+  
+        # radial gradient (has an outer_radius in addition to x0, y0, x1, y1, and stops)
+        fill outer_radius: 90, x0: 0, y0: 0, x1: 500, y1: 500, stops: [{pos: 0.25, r: 102, g: 102, b: 204, a: 0.5}, {pos: 0.75, r: 204, g: 102, b: 204}]
+        stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
+      }
+      path { # declarative stable path
+        circle(200, 200, 90)
+  
+        fill r: 202, g: 102, b: 204, a: 0.5
+        stroke r: 0, g: 0, b: 0, thickness: 2
+      }
+    end
     text(160, 40, 100) { # x, y, width
       string('Area Gallery') {
         font family: 'Times', size: 14
@@ -4070,30 +4074,32 @@ window('Area Gallery', 400, 400) {
       fill r: 202, g: 102, b: 204, a: 0.5
       stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
     }
-    path { # declarative stable path
-      arc {
-        x_center 400
-        y_center 220
-        radius 180
-        start_angle 90
-        sweep 90
-        is_negative false
+    unless OS.windows?
+      path { # declarative stable path
+        arc {
+          x_center 400
+          y_center 220
+          radius 180
+          start_angle 90
+          sweep 90
+          is_negative false
+        }
+  
+        # radial gradient (has an outer_radius in addition to x0, y0, x1, y1, and stops)
+        fill outer_radius: 90, x0: 0, y0: 0, x1: 500, y1: 500, stops: [{pos: 0.25, r: 102, g: 102, b: 204, a: 0.5}, {pos: 0.75, r: 204, g: 102, b: 204}]
+        stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
       }
-
-      # radial gradient (has an outer_radius in addition to x0, y0, x1, y1, and stops)
-      fill outer_radius: 90, x0: 0, y0: 0, x1: 500, y1: 500, stops: [{pos: 0.25, r: 102, g: 102, b: 204, a: 0.5}, {pos: 0.75, r: 204, g: 102, b: 204}]
-      stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
-    }
-    path { # declarative stable path
-      circle {
-        x_center 200
-        y_center 200
-        radius 90
+      path { # declarative stable path
+        circle {
+          x_center 200
+          y_center 200
+          radius 90
+        }
+  
+        fill r: 202, g: 102, b: 204, a: 0.5
+        stroke r: 0, g: 0, b: 0, thickness: 2
       }
-
-      fill r: 202, g: 102, b: 204, a: 0.5
-      stroke r: 0, g: 0, b: 0, thickness: 2
-    }
+    end
     text {
       x 160
       y 40
@@ -4205,19 +4211,21 @@ window('Area Gallery', 400, 400) {
         fill r: 202, g: 102, b: 204, a: 0.5
         stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
       }
-      path { # a dynamic path is added semi-declaratively inside on_draw block
-        arc(400, 220, 180, 90, 90, false)
-  
-        # radial gradient (has an outer_radius in addition to x0, y0, x1, y1, and stops)
-        fill outer_radius: 90, x0: 0, y0: 0, x1: 500, y1: 500, stops: [{pos: 0.25, r: 102, g: 102, b: 204, a: 0.5}, {pos: 0.75, r: 204, g: 102, b: 204}]
-        stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
-      }
-      path { # a dynamic path is added semi-declaratively inside on_draw block
-        circle(200, 200, 90)
-  
-        fill r: 202, g: 102, b: 204, a: 0.5
-        stroke r: 0, g: 0, b: 0, thickness: 2
-      }
+      unless OS.windows?
+        path { # a dynamic path is added semi-declaratively inside on_draw block
+          arc(400, 220, 180, 90, 90, false)
+    
+          # radial gradient (has an outer_radius in addition to x0, y0, x1, y1, and stops)
+          fill outer_radius: 90, x0: 0, y0: 0, x1: 500, y1: 500, stops: [{pos: 0.25, r: 102, g: 102, b: 204, a: 0.5}, {pos: 0.75, r: 204, g: 102, b: 204}]
+          stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
+        }
+        path { # a dynamic path is added semi-declaratively inside on_draw block
+          circle(200, 200, 90)
+    
+          fill r: 202, g: 102, b: 204, a: 0.5
+          stroke r: 0, g: 0, b: 0, thickness: 2
+        }
+      end
       text(160, 40, 100) { # x, y, width
         string('Area Gallery') {
           font family: 'Times', size: 14
@@ -4378,30 +4386,32 @@ window('Area Gallery', 400, 400) {
         fill r: 202, g: 102, b: 204, a: 0.5
         stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
       }
-      path { # a dynamic path is added semi-declaratively inside on_draw block
-        arc {
-          x_center 400
-          y_center 220
-          radius 180
-          start_angle 90
-          sweep 90
-          is_negative false
+      unless OS.windows?
+        path { # a dynamic path is added semi-declaratively inside on_draw block
+          arc {
+            x_center 400
+            y_center 220
+            radius 180
+            start_angle 90
+            sweep 90
+            is_negative false
+          }
+    
+          # radial gradient (has an outer_radius in addition to x0, y0, x1, y1, and stops)
+          fill outer_radius: 90, x0: 0, y0: 0, x1: 500, y1: 500, stops: [{pos: 0.25, r: 102, g: 102, b: 204, a: 0.5}, {pos: 0.75, r: 204, g: 102, b: 204}]
+          stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
         }
-  
-        # radial gradient (has an outer_radius in addition to x0, y0, x1, y1, and stops)
-        fill outer_radius: 90, x0: 0, y0: 0, x1: 500, y1: 500, stops: [{pos: 0.25, r: 102, g: 102, b: 204, a: 0.5}, {pos: 0.75, r: 204, g: 102, b: 204}]
-        stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
-      }
-      path { # a dynamic path is added semi-declaratively inside on_draw block
-        circle {
-          x_center 200
-          y_center 200
-          radius 90
+        path { # a dynamic path is added semi-declaratively inside on_draw block
+          circle {
+            x_center 200
+            y_center 200
+            radius 90
+          }
+    
+          fill r: 202, g: 102, b: 204, a: 0.5
+          stroke r: 0, g: 0, b: 0, thickness: 2
         }
-  
-        fill r: 202, g: 102, b: 204, a: 0.5
-        stroke r: 0, g: 0, b: 0, thickness: 2
-      }
+      end
       text {
         x 160
         y 40
@@ -5104,70 +5114,74 @@ end
 Timer.new
 ```
 
-### Color The Circles
+### Color The Shapes
 
-[examples/color_the_circles.rb](examples/color_the_circles.rb)
+[examples/color_the_shapes.rb](examples/color_the_shapes.rb)
 
 Run with this command from the root of the project if you cloned the project:
 
 ```
-ruby -r './lib/glimmer-dsl-libui' examples/color_the_circles.rb
+ruby -r './lib/glimmer-dsl-libui' examples/color_the_shapes.rb
 ```
 
 Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
 
 ```
-ruby -r glimmer-dsl-libui -e "require 'examples/color_the_circles'"
+ruby -r glimmer-dsl-libui -e "require 'examples/color_the_shapes'"
 ```
 
 Mac
 
-![glimmer-dsl-libui-mac-color-the-circles.png](images/glimmer-dsl-libui-mac-color-the-circles.png)
-![glimmer-dsl-libui-mac-color-the-circles-lost.png](images/glimmer-dsl-libui-mac-color-the-circles-lost.png)
-![glimmer-dsl-libui-mac-color-the-circles-won.png](images/glimmer-dsl-libui-mac-color-the-circles-won.png)
+![glimmer-dsl-libui-mac-color-the-shapes.png](images/glimmer-dsl-libui-mac-color-the-shapes.png)
+![glimmer-dsl-libui-mac-color-the-shapes-lost.png](images/glimmer-dsl-libui-mac-color-the-shapes-lost.png)
+![glimmer-dsl-libui-mac-color-the-shapes-won.png](images/glimmer-dsl-libui-mac-color-the-shapes-won.png)
 
 Linux
 
-![glimmer-dsl-libui-linux-color-the-circles.png](images/glimmer-dsl-libui-linux-color-the-circles.png)
-![glimmer-dsl-libui-linux-color-the-circles-lost.png](images/glimmer-dsl-libui-linux-color-the-circles-lost.png)
-![glimmer-dsl-libui-linux-color-the-circles-won.png](images/glimmer-dsl-libui-linux-color-the-circles-won.png)
+![glimmer-dsl-libui-linux-color-the-shapes.png](images/glimmer-dsl-libui-linux-color-the-shapes.png)
+![glimmer-dsl-libui-linux-color-the-shapes-lost.png](images/glimmer-dsl-libui-linux-color-the-shapes-lost.png)
+![glimmer-dsl-libui-linux-color-the-shapes-won.png](images/glimmer-dsl-libui-linux-color-the-shapes-won.png)
 
 New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
 
 ```ruby
 require 'glimmer-dsl-libui'
 
-class ColorTheCircles
+class ColorTheShapes
   include Glimmer
   
   WINDOW_WIDTH = 800
   WINDOW_HEIGHT = 600
-  CIRCLE_MIN_RADIUS = 15
-  CIRCLE_MAX_RADIUS = 50
+  SHAPE_MIN_SIZE = 15
+  SHAPE_MAX_SIZE = 100
   MARGIN_WIDTH = 55
   MARGIN_HEIGHT = 155
   TIME_MAX_EASY = 4
   TIME_MAX_MEDIUM = 3
   TIME_MAX_HARD = 2
   TIME_MAX_INSANE = 1
+  SHAPES = ['square'] + (OS.windows? ? [] : ['circle'])
   
   attr_accessor :score
   
   def initialize
-    @circles_data = []
+    @shapes_data = []
     @score = 0
     @time_max = TIME_MAX_HARD
+    @game_over = false
     register_observers
-    setup_circle_factory
+    setup_shape_factory
   end
   
   def register_observers
     observer = Glimmer::DataBinding::Observer.proc do |new_score|
       @score_label.text = new_score.to_s
       if new_score == -20
+        @game_over = true
         msg_box('You Lost!', 'Sorry! Your score reached -20')
         restart_game
       elsif new_score == 0
+        @game_over = true
         msg_box('You Won!', 'Congratulations! Your score reached 0')
         restart_game
       end
@@ -5175,13 +5189,15 @@ class ColorTheCircles
     observer.observe(self, :score) # automatically enhances self to become Glimmer::DataBinding::ObservableModel and notify observer on score attribute changes
   end
   
-  def setup_circle_factory
+  def setup_shape_factory
     consumer = Proc.new do
-      if @circles_data.empty?
-        # start with 3 circles to make more challenging
-        add_circle until @circles_data.size > 3
-      else
-        add_circle
+      unless @game_over
+        if @shapes_data.empty?
+          # start with 3 shapes to make more challenging
+          add_shape until @shapes_data.size > 3
+        else
+          add_shape
+        end
       end
       delay = rand * @time_max
       Glimmer::LibUI.timer(delay, repeat: false, &consumer)
@@ -5189,13 +5205,13 @@ class ColorTheCircles
     Glimmer::LibUI.queue_main(&consumer)
   end
   
-  def add_circle
-    circle_x_center = rand * (WINDOW_WIDTH - MARGIN_WIDTH - CIRCLE_MAX_RADIUS) + CIRCLE_MAX_RADIUS
-    circle_y_center = rand * (WINDOW_HEIGHT - MARGIN_HEIGHT - CIRCLE_MAX_RADIUS) + CIRCLE_MAX_RADIUS
-    circle_radius = rand * (CIRCLE_MAX_RADIUS - CIRCLE_MIN_RADIUS) + CIRCLE_MIN_RADIUS
+  def add_shape
+    shape_x = rand * (WINDOW_WIDTH - MARGIN_WIDTH - SHAPE_MAX_SIZE) + SHAPE_MAX_SIZE
+    shape_y = rand * (WINDOW_HEIGHT - MARGIN_HEIGHT - SHAPE_MAX_SIZE) + SHAPE_MAX_SIZE
+    shape_size = rand * (SHAPE_MAX_SIZE - SHAPE_MIN_SIZE) + SHAPE_MIN_SIZE
     stroke_color = Glimmer::LibUI.x11_colors.sample
-    @circles_data << {
-      args: [circle_x_center, circle_y_center, circle_radius],
+    @shapes_data << {
+      args: [shape_x, shape_y, shape_size],
       fill: nil,
       stroke: stroke_color
     }
@@ -5205,9 +5221,29 @@ class ColorTheCircles
   
   def restart_game
     @score = 0 # update variable directly to avoid notifying observers
-    @circles_data.clear
+    @shapes_data.clear
+    @game_over = false
   end
   
+  def color_shape(x, y)
+    clicked_shape_data = @shapes_data.find do |shape_data|
+      shape_data[:fill].nil? && shape_data[:shape]&.include?(x, y)
+    end
+    if clicked_shape_data
+      clicked_shape_data[:fill] = clicked_shape_data[:stroke]
+      push_colored_shape_behind_uncolored_shapes(clicked_shape_data)
+      @area.queue_redraw_all
+      self.score += 1 # notifies score observers automatically of change
+    end
+  end
+  
+  def push_colored_shape_behind_uncolored_shapes(colored_shape_data)
+    removed_colored_shape_data = @shapes_data.delete(colored_shape_data)
+    last_colored_shape_data = @shapes_data.select {|cd| cd[:fill]}.last
+    last_colored_shape_data_index = @shapes_data.index(last_colored_shape_data) || -1
+    @shapes_data.insert(last_colored_shape_data_index + 1, removed_colored_shape_data)
+  end
+
   def launch
     menu('Actions') {
       menu_item('Restart') {
@@ -5250,12 +5286,12 @@ class ColorTheCircles
     menu('Help') {
       menu_item('Instructions') {
         on_clicked do
-          msg_box('Instructions', "Score goes down as circles are added.\nIf it reaches -20, you lose!\n\nClick circles to color and score!\nOnce score reaches 0, you win!\n\nBeware of concealed light-colored circles!\nThey are revealed once darker circles intersect them.\n\nThere are four levels of difficulty.\nChange via difficulty menu if the game gets too tough.")
+          msg_box('Instructions', "Score goes down as shapes are added.\nIf it reaches -20, you lose!\n\nClick shapes to color and score!\nOnce score reaches 0, you win!\n\nBeware of concealed light-colored shapes!\nThey are revealed once darker shapes intersect them.\n\nThere are four levels of difficulty.\nChange via difficulty menu if the game gets too tough.")
         end
       }
     }
     
-    window('Color The Circles', WINDOW_WIDTH, WINDOW_HEIGHT) {
+    window('Color The Shapes', WINDOW_WIDTH, WINDOW_HEIGHT) {
       margined true
       
       grid {
@@ -5269,13 +5305,13 @@ class ColorTheCircles
           end
         }
         
-        label('Score goes down as circles are added. If it reaches -20, you lose!') {
+        label('Score goes down as shapes are added. If it reaches -20, you lose!') {
           left 0
           top 1
           halign :center
         }
         
-        label('Click circles to color and score! Once score reaches 0, you win!') {
+        label('Click shapes to color and score! Once score reaches 0, you win!') {
           left 0
           top 2
           halign :center
@@ -5295,51 +5331,41 @@ class ColorTheCircles
           }
         }
         
-        vertical_box {
+        @area = area {
           left 0
           top 4
           hexpand true
           vexpand true
           halign :fill
           valign :fill
-          
-          @area = area {
-            on_draw do |area_draw_params|
+
+          on_draw do |area_draw_params|
+            path {
+              rectangle(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
+
+              fill :white
+            }
+
+            @shapes_data.each do |shape_data|
               path {
-                rectangle(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
-                
-                fill :white
+                shape_data[:shape] = send(SHAPES.sample, *shape_data[:args])
+
+                fill shape_data[:fill]
+                stroke shape_data[:stroke]
               }
-              
-              @circles_data.each do |circle_data|
-                path {
-                  circle_data[:circle] = circle(*circle_data[:args])
-                  
-                  fill circle_data[:fill]
-                  stroke circle_data[:stroke]
-                }
-              end
             end
-            
-            on_mouse_down do |area_mouse_event|
-              clicked_circle_data = @circles_data.find do |circle_data|
-                circle_data[:fill].nil? && circle_data[:circle].include?(area_mouse_event[:x], area_mouse_event[:y])
-              end
-              if clicked_circle_data
-                clicked_circle_data[:fill] = clicked_circle_data[:stroke]
-                @area.queue_redraw_all
-                self.score += 1 # notifies score observers automatically of change
-              end
-            end
-          }
+          end
+
+          on_mouse_down do |area_mouse_event|
+            color_shape(area_mouse_event[:x], area_mouse_event[:y])
+          end
         }
-        
       }
     }.show
   end
 end
 
-ColorTheCircles.new.launch
+ColorTheShapes.new.launch
 ```
 
 ### Basic Draw Text

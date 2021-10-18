@@ -2,11 +2,9 @@
 
 ## Next
 
-- Fix issues with running examples in Windows:
-  - Area Gallery closes right after starting
-  = Color The Circles closes right after starting
-  - Basic Transform shows an uncentered different graphic than Mac and Linux
-- Update Color the Circles to Color the Shapes (as circles do not work on Windows at the moment)
+- Fix issues with running examples on Windows:
+  - Color The Shapes closes after losing
+  - Basic Transform shows an uncentered different graphic on Windows than Mac and Linux
 
 ## Soon
 

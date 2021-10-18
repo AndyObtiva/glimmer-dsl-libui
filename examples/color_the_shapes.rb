@@ -1,28 +1,29 @@
 require 'glimmer-dsl-libui'
 
-class ColorTheCircles
+class ColorTheShapes
   include Glimmer
   
   WINDOW_WIDTH = 800
   WINDOW_HEIGHT = 600
-  CIRCLE_MIN_RADIUS = 15
-  CIRCLE_MAX_RADIUS = 50
+  SHAPE_MIN_SIZE = 15
+  SHAPE_MAX_SIZE = 100
   MARGIN_WIDTH = 55
   MARGIN_HEIGHT = 155
   TIME_MAX_EASY = 4
   TIME_MAX_MEDIUM = 3
   TIME_MAX_HARD = 2
   TIME_MAX_INSANE = 1
+  SHAPES = ['square'] + (OS.windows? ? [] : ['circle'])
   
   attr_accessor :score
   
   def initialize
-    @circles_data = []
+    @shapes_data = []
     @score = 0
     @time_max = TIME_MAX_HARD
     @game_over = false
     register_observers
-    setup_circle_factory
+    setup_shape_factory
   end
   
   def register_observers
@@ -41,14 +42,14 @@ class ColorTheCircles
     observer.observe(self, :score) # automatically enhances self to become Glimmer::DataBinding::ObservableModel and notify observer on score attribute changes
   end
   
-  def setup_circle_factory
+  def setup_shape_factory
     consumer = Proc.new do
       unless @game_over
-        if @circles_data.empty?
-          # start with 3 circles to make more challenging
-          add_circle until @circles_data.size > 3
+        if @shapes_data.empty?
+          # start with 3 shapes to make more challenging
+          add_shape until @shapes_data.size > 3
         else
-          add_circle
+          add_shape
         end
       end
       delay = rand * @time_max
@@ -57,13 +58,13 @@ class ColorTheCircles
     Glimmer::LibUI.queue_main(&consumer)
   end
   
-  def add_circle
-    circle_x_center = rand * (WINDOW_WIDTH - MARGIN_WIDTH - CIRCLE_MAX_RADIUS) + CIRCLE_MAX_RADIUS
-    circle_y_center = rand * (WINDOW_HEIGHT - MARGIN_HEIGHT - CIRCLE_MAX_RADIUS) + CIRCLE_MAX_RADIUS
-    circle_radius = rand * (CIRCLE_MAX_RADIUS - CIRCLE_MIN_RADIUS) + CIRCLE_MIN_RADIUS
+  def add_shape
+    shape_x = rand * (WINDOW_WIDTH - MARGIN_WIDTH - SHAPE_MAX_SIZE) + SHAPE_MAX_SIZE
+    shape_y = rand * (WINDOW_HEIGHT - MARGIN_HEIGHT - SHAPE_MAX_SIZE) + SHAPE_MAX_SIZE
+    shape_size = rand * (SHAPE_MAX_SIZE - SHAPE_MIN_SIZE) + SHAPE_MIN_SIZE
     stroke_color = Glimmer::LibUI.x11_colors.sample
-    @circles_data << {
-      args: [circle_x_center, circle_y_center, circle_radius],
+    @shapes_data << {
+      args: [shape_x, shape_y, shape_size],
       fill: nil,
       stroke: stroke_color
     }
@@ -73,29 +74,29 @@ class ColorTheCircles
   
   def restart_game
     @score = 0 # update variable directly to avoid notifying observers
-    @circles_data.clear
+    @shapes_data.clear
     @game_over = false
   end
   
-  def color_circle(x, y)
-    clicked_circle_data = @circles_data.find do |circle_data|
-      circle_data[:fill].nil? && circle_data[:circle]&.include?(x, y)
+  def color_shape(x, y)
+    clicked_shape_data = @shapes_data.find do |shape_data|
+      shape_data[:fill].nil? && shape_data[:shape]&.include?(x, y)
     end
-    if clicked_circle_data
-      clicked_circle_data[:fill] = clicked_circle_data[:stroke]
-      push_colored_circle_behind_uncolored_circles(clicked_circle_data)
+    if clicked_shape_data
+      clicked_shape_data[:fill] = clicked_shape_data[:stroke]
+      push_colored_shape_behind_uncolored_shapes(clicked_shape_data)
       @area.queue_redraw_all
       self.score += 1 # notifies score observers automatically of change
     end
   end
   
-  def push_colored_circle_behind_uncolored_circles(colored_circle_data)
-    removed_colored_circle_data = @circles_data.delete(colored_circle_data)
-    last_colored_circle_data = @circles_data.select {|cd| cd[:fill]}.last
-    last_colored_circle_data_index = @circles_data.index(last_colored_circle_data) || -1
-    @circles_data.insert(last_colored_circle_data_index + 1, removed_colored_circle_data)
+  def push_colored_shape_behind_uncolored_shapes(colored_shape_data)
+    removed_colored_shape_data = @shapes_data.delete(colored_shape_data)
+    last_colored_shape_data = @shapes_data.select {|cd| cd[:fill]}.last
+    last_colored_shape_data_index = @shapes_data.index(last_colored_shape_data) || -1
+    @shapes_data.insert(last_colored_shape_data_index + 1, removed_colored_shape_data)
   end
-  
+
   def launch
     menu('Actions') {
       menu_item('Restart') {
@@ -138,12 +139,12 @@ class ColorTheCircles
     menu('Help') {
       menu_item('Instructions') {
         on_clicked do
-          msg_box('Instructions', "Score goes down as circles are added.\nIf it reaches -20, you lose!\n\nClick circles to color and score!\nOnce score reaches 0, you win!\n\nBeware of concealed light-colored circles!\nThey are revealed once darker circles intersect them.\n\nThere are four levels of difficulty.\nChange via difficulty menu if the game gets too tough.")
+          msg_box('Instructions', "Score goes down as shapes are added.\nIf it reaches -20, you lose!\n\nClick shapes to color and score!\nOnce score reaches 0, you win!\n\nBeware of concealed light-colored shapes!\nThey are revealed once darker shapes intersect them.\n\nThere are four levels of difficulty.\nChange via difficulty menu if the game gets too tough.")
         end
       }
     }
     
-    window('Color The Circles', WINDOW_WIDTH, WINDOW_HEIGHT) {
+    window('Color The Shapes', WINDOW_WIDTH, WINDOW_HEIGHT) {
       margined true
       
       grid {
@@ -157,13 +158,13 @@ class ColorTheCircles
           end
         }
         
-        label('Score goes down as circles are added. If it reaches -20, you lose!') {
+        label('Score goes down as shapes are added. If it reaches -20, you lose!') {
           left 0
           top 1
           halign :center
         }
         
-        label('Click circles to color and score! Once score reaches 0, you win!') {
+        label('Click shapes to color and score! Once score reaches 0, you win!') {
           left 0
           top 2
           halign :center
@@ -198,18 +199,18 @@ class ColorTheCircles
               fill :white
             }
 
-            @circles_data.each do |circle_data|
+            @shapes_data.each do |shape_data|
               path {
-                circle_data[:circle] = circle(*circle_data[:args])
+                shape_data[:shape] = send(SHAPES.sample, *shape_data[:args])
 
-                fill circle_data[:fill]
-                stroke circle_data[:stroke]
+                fill shape_data[:fill]
+                stroke shape_data[:stroke]
               }
             end
           end
 
           on_mouse_down do |area_mouse_event|
-            color_circle(area_mouse_event[:x], area_mouse_event[:y])
+            color_shape(area_mouse_event[:x], area_mouse_event[:y])
           end
         }
       }
@@ -217,4 +218,4 @@ class ColorTheCircles
   end
 end
 
-ColorTheCircles.new.launch
+ColorTheShapes.new.launch

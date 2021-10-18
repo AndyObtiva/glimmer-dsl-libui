@@ -173,7 +173,7 @@ module Glimmer
               expanded_last_last_cell_rows = expand(@last_last_cell_rows)
               old_value = (expanded_last_last_cell_rows[row] && expanded_last_last_cell_rows[row][column]).to_i
               if OS.windows? && old_value == -1 && value >= 0
-                Glimmer::Config.logger.error('Switching a progress bar value from -1 to a positive value is not supported in Windows')
+                Glimmer::Config.logger.error('Switching a progress bar value from -1 to a positive value is not supported on Windows')
                 cell_rows[row][column] = -1
                 ::LibUI.new_table_value_int(old_value)
               else
