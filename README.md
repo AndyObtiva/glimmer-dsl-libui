@@ -919,6 +919,7 @@ window('area text drawing') {
 - Table `cell_rows` data has implicit data-binding to table cell values for deletion, insertion, and change (done by diffing `cell_rows` value before and after change and auto-informing `table` of deletions [`LibUI.table_model_row_deleted`], insertions [`LibUI.table_model_row_deleted`], and changes [`LibUI.table_model_row_changed`]). When deleting data rows from `cell_rows` array, then actual rows from the `table` are automatically deleted. When inserting data rows into `cell_rows` array, then actual `table` rows are automatically inserted. When updating data rows in `cell_rows` array, then actual `table` rows are automatically updated.
 - `image` instances are automatically freed from memory after `window` is destroyed.
 - `image` `width` and `height` can be left off if it has one `image_part` only as they default to the same `width` and `height` of the `image_part`
+- Automatically provide shifted `:key` characters in `area_key_event` provided in `area` key listeners `on_key_event`, `on_key_down`, and `on_key_up`
 - `area` paths are specified declaratively with figures underneath (e.g. `rectangle`) and `area` draw listener is automatically generated
 - Observe figure properties (e.g. `rectangle` `width`) for changes and automatically redraw containing area accordingly
 - Observe `path` `fill` and `stroke` hashes for changes and automatically redraw containing area accordingly

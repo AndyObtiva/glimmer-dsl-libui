@@ -48,6 +48,30 @@ module Glimmer
           on_mouse_exited: 'on_mouse_exit',
           on_drag_break: 'on_drag_broken',
         }
+        SHIFTED_KEY_CODE_CHARS = {
+          '`' => '~',
+          '1' => '!',
+          '2' => '@',
+          '3' => '#',
+          '4' => '$',
+          '5' => '%',
+          '6' => '^',
+          '7' => '&',
+          '8' => '*',
+          '9' => '(',
+          '10' => ')',
+          '-' => '_',
+          '=' => '+',
+          ',' => '<',
+          '.' => '>',
+          '/' => '?',
+          ';' => ':',
+          "'" => '"',
+          '[' => '{',
+          ']' => '}',
+          "\\" => '|',
+        }
+
         
         include Glimmer::FiddleConsumer
         include Parent
@@ -164,19 +188,27 @@ module Glimmer
         end
         
         def area_key_event_hash(area_key_event)
+          modifiers = modifiers_to_symbols(area_key_event.Modifiers)
           {
-            key: key_to_char(area_key_event.Key),
+            key: key_to_char(area_key_event.Key, modifiers),
             key_value: area_key_event.Key,
             ext_key: ext_key_to_symbol(area_key_event.ExtKey),
             ext_key_value: area_key_event.ExtKey,
             modifier: modifiers_to_symbols(area_key_event.Modifier).first,
-            modifiers: modifiers_to_symbols(area_key_event.Modifiers),
+            modifiers: modifiers,
             up: Glimmer::LibUI.integer_to_boolean(area_key_event.Up),
           }
         end
         
-        def key_to_char(key)
-          key.chr if key > 0
+        def key_to_char(key, modifiers = [])
+          if key > 0
+            char = key.chr
+            if modifiers == [:shift]
+              SHIFTED_KEY_CODE_CHARS[char]
+            else
+              char
+            end
+          end
         end
         
         def ext_key_to_symbol(ext_key_value)

@@ -2,32 +2,6 @@
 
 ## Next
 
-- Auto-program these shifted keys into area key event (given that libui does not do it):
-```ruby
-SHIFTED_KEYCODE_CHARACTERS = {
-  '`' => '~',
-  '1' => '!',
-  '2' => '@',
-  '3' => '#',
-  '4' => '$',
-  '5' => '%',
-  '6' => '^',
-  '7' => '&',
-  '8' => '*',
-  '9' => '(',
-  '10' => ')',
-  '-' => '_',
-  '=' => '+',
-  ',' => '<',
-  '.' => '>',
-  '/' => '?',
-  ';' => ':',
-  ''' => '"',
-  '[' => '{',
-  ']' => '}',
-  '\' => '|',
-}
-```
 - Retake screenshots for Color The Shapes on Mac and Linux
 - Tolerate `nil` input for any widget `String` attributes or args (e.g. `entry` `text` attribute)
 - Override `#inspect` method for area (and path/text) since it can contain many shapes, making its printout too large
@@ -41,6 +15,8 @@ SHIFTED_KEYCODE_CHARACTERS = {
 ## Soon
 
 - Support `message_box` as an alias for `msg_box` (and `message_box_error` for `msg_box_error` too)
+- (API Changing) Rename `key_value` and `ext_key_value` to `key_code` and `ext_key_code` in `area_key_event` `Hash`
+- Support nesting shapes directly under area to represent paths having one shape, and nesting fill/stroke within the shapes (not path)
 
 ## Future
 
@@ -74,7 +50,6 @@ None
 - Interpret characters in key event while holding a modifer down (e.g. ! for 1 + shift)
 - Support animation
 - Consider making all event hashes and param hashes accept retrieval of their key values through method calls not just [] calls
-- Support nesting shapes directly under area to represent paths having one shape, and nesting fill/stroke within the shapes (not path)
 - Consider auto-preventing app crashes (catch error) if someone mis-enters values for the GUI DSL (keeping GUI alive if possible)
 - Look into use of `free_control` vs `control_destroy` especially in cases of controls for which the latter method does not work
 - Support setting image paths directly on image/image_text columns for `table` (do chunky png work internally) (look into other formats than png)

@@ -2,6 +2,7 @@
 
 ## 0.2.14
 
+- Automatically provide shifted `:key` characters in `area_key_event` provided in `area` key listeners `on_key_event`, `on_key_down`, and `on_key_up` given that libui does not support out of the box (e.g. `!` for SHIFT+1)
 - Fix issue regarding arcs on Windows by auto-starting a figure if not started already (on Mac and Linux that is not needed)
 
 ## 0.2.13
