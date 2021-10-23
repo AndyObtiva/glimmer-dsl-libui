@@ -2,9 +2,7 @@
 
 ## Next
 
-- Fix Color The Shapes on Mac/Linux
 - Revise examples/meta_example.rb to avoid blocking upon launching examples
-- Retake screenshots for Color The Shapes on Mac and Linux
 
 - Fix issues with running examples on Windows:
   - Color The Shapes closes after losing
