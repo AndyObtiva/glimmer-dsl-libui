@@ -2,8 +2,6 @@
 
 ## Next
 
-- Revise examples/meta_example.rb to avoid blocking upon launching examples
-
 - Fix issues with running examples on Windows:
   - Color The Shapes closes after losing
   - Basic Transform shows an uncentered different graphic on Windows than Mac and Linux
