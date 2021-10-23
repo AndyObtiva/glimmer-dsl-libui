@@ -33,6 +33,8 @@ module Glimmer
         end
   
         def interpret(parent, keyword, *args, &block)
+          @@inverted_keyword_aliases = Glimmer::LibUI::ControlProxy::KEYWORD_ALIASES.invert unless defined?(@@inverted_keyword_aliases)
+          keyword = @@inverted_keyword_aliases[keyword] || keyword
           Glimmer::LibUI::ControlProxy.create(keyword, parent, args, &block)
         end
         

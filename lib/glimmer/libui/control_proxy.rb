@@ -37,7 +37,6 @@ module Glimmer
         end
         
         def widget_proxy_class(keyword)
-          class_name = constant_symbol(keyword)
           descendant_keyword_constant_map[keyword] || ControlProxy
         end
         
@@ -72,7 +71,7 @@ module Glimmer
         end
         
         def descendant_keyword_constant_map
-          @descendant_keyword_constant_map ||= map_descendant_keyword_constants_for(self)
+          @descendant_keyword_constant_map ||= add_aliases_to_keyword_constant_map(map_descendant_keyword_constants_for(self))
         end
         
         def reset_descendant_keyword_constant_map
@@ -91,7 +90,21 @@ module Glimmer
           end
           accumulator
         end
+        
+        private
+        
+        def add_aliases_to_keyword_constant_map(keyword_constant_map)
+          KEYWORD_ALIASES.each do |keyword, alias_keyword|
+            keyword_constant_map[alias_keyword] = keyword_constant_map[keyword]
+          end
+          keyword_constant_map
+        end
       end
+      
+      KEYWORD_ALIASES = {
+        'msg_box'       => 'message_box',
+        'msg_box_error' => 'message_box_error',
+      }
       
       BOOLEAN_PROPERTIES = %w[
         padded

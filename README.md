@@ -458,6 +458,8 @@ Keyword(Args) | Properties | Listeners
 `matrix(m11 = nil as Numeric, m12 = nil as Numeric, m21 = nil as Numeric, m22 = nil as Numeric, m31 = nil as Numeric, m32 = nil as Numeric)` | `m11` (`Numeric`), `m12` (`Numeric`), `m21` (`Numeric`), `m22` (`Numeric`), `m31` (`Numeric`), `m32` (`Numeric`) | None
 `menu(text as String)` | None | None
 `menu_item(text as String)` | `checked` (Boolean) | `on_clicked`
+`message_box` (alias for `msg_box`; see for arguments) | None | None
+`message_box_error` (alias for `msg_box_error`; see for arguments) | None | None
 `multiline_entry` | `read_only` (Boolean), `text` (`String`) | `on_changed`
 `msg_box(window = main_window as Glimmer::LibUI::WindowProxy, title as String, description as String)` | None | None
 `msg_box_error(window = main_window as Glimmer::LibUI::WindowProxy, title as String, description as String)` | None | None

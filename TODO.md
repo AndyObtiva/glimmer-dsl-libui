@@ -2,18 +2,17 @@
 
 ## Next
 
+- Fix Color The Shapes on Mac/Linux
+- Revise examples/meta_example.rb to avoid blocking upon launching examples
 - Retake screenshots for Color The Shapes on Mac and Linux
-- Override `#inspect` method for area (and path/text) since it can contain many shapes, making its printout too large
 
 - Fix issues with running examples on Windows:
   - Color The Shapes closes after losing
   - Basic Transform shows an uncentered different graphic on Windows than Mac and Linux
 - Document all examples with Windows screenshots
 
-
 ## Soon
 
-- Support `message_box` as an alias for `msg_box` (and `message_box_error` for `msg_box_error` too)
 - (API Changing) Rename `key_value` and `ext_key_value` to `key_code` and `ext_key_code` in `area_key_event` `Hash`
 - Support nesting shapes directly under area to represent paths having one shape, and nesting fill/stroke within the shapes (not path)
 
@@ -60,6 +59,7 @@ None
 - Use equivalents of chunky_png to support different image formats for image columns in `table`
 - Fix meta-example GUI freezing after running an example until it is closed (which unfreezes meta-example)
 - Automatically call `Glimmer::LibUI.queue_main` when operating on GUI from a different thread
+- Override `#inspect` method for area, path, text, and/or other controls in case they contain many shapes, to prevent their printout from being too large
 
 # Refactoring
 
