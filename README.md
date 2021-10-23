@@ -282,7 +282,7 @@ The Glimmer GUI DSL provides object-oriented declarative hierarchical syntax for
 - Requires the minimum amount of syntax needed to describe an app's GUI
 
 The Glimmer GUI DSL follows these simple concepts in mapping from [LibUI](https://github.com/kojix2/LibUI) syntax:
-- **Control(args)**: [LibUI](https://github.com/kojix2/LibUI) controls may be declared by lower-case underscored name (aka keyword) (e.g. `window` or `button`). Behind the scenes, they are represented by keyword methods that map to corresponding `LibUI.new_keyword` methods receiving args (e.g. `window('hello world', 300, 200, true)`).
+- **Keyword(args)**: [LibUI](https://github.com/kojix2/LibUI) controls may be declared by lower-case underscored name (aka keyword) (e.g. `window` or `button`). Behind the scenes, they are represented by keyword methods that map to corresponding `LibUI.new_keyword` methods receiving args (e.g. `window('hello world', 300, 200, true)`).
 - **Content Block** (Properties/Listeners/Controls): Any keyword may be optionally followed by a Ruby curly-brace multi-line content block containing properties (attributes), listeners, and/or nested controls (e.g. `window {title 'hello world'; on_closing {puts 'Bye'}; button('greet')}`). Content block optionally receives one arg representing the control (e.g. `button('greet') {|b| on_clicked { puts b.text}}`)
 - **Property**: Control properties may be declared inside keyword blocks with lower-case underscored name followed by property value args (e.g. `title "hello world"` inside `group`). Behind the scenes, properties correspond to `LibUI.control_set_property` methods.
 - **Listener**: Control listeners may be declared inside keyword blocks with listener lower-case underscored name beginning with `on_` and receiving required block handler (e.g. `on_clicked {puts 'clicked'}` inside `button`). Optionally, the listener block can receive an arg representing the control (e.g. `on_clicked {|btn| puts btn.text}`). Behind the scenes, listeners correspond to `LibUI.control_on_event` methods.
@@ -422,7 +422,7 @@ w.libui # => #<Fiddle::Pointer:0x00007fde53997980 ptr=0x00007fde51352a60 size=0 
 
 These are all the supported keywords. Note that some keywords do not represent controls, but produce objects that are used as the property values of controls (e.g. `image` builds objects to use in `cell_rows` for a `table` with an image column)
 
-Control(Args) | Properties | Listeners
+Keyword(Args) | Properties | Listeners
 ------------- | ---------- | ---------
 `about_menu_item` | None | `on_clicked`
 `area` | None | `on_draw(area_draw_params)`, `on_mouse_event(area_mouse_event)`, `on_mouse_down(area_mouse_event)`, `on_mouse_up(area_mouse_event)`, `on_mouse_drag_started(area_mouse_event)`, `on_mouse_dragged(area_mouse_event)`, `on_mouse_dropped(area_mouse_event)`, `on_mouse_entered`, `on_mouse_exited`, `on_key_event(area_key_event)`, `on_key_down(area_key_event)`, `on_key_up(area_key_event)`

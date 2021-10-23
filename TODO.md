@@ -3,7 +3,6 @@
 ## Next
 
 - Retake screenshots for Color The Shapes on Mac and Linux
-- Tolerate `nil` input for any widget `String` attributes or args (e.g. `entry` `text` attribute)
 - Override `#inspect` method for area (and path/text) since it can contain many shapes, making its printout too large
 
 - Fix issues with running examples on Windows:
