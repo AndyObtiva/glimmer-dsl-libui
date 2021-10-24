@@ -46,12 +46,12 @@ class MetaExample
       command = "ruby -r #{glimmer_dsl_libui_file} #{example} 2>&1"
       result = ''
       IO.popen(command) do |f|
-        sleep(0.01) # yield to main thread
+        sleep(0.0001) # yield to main thread
         f.each_line do |line|
           result << line
           puts line
           $stdout.flush # for Windows
-          sleep(0.01) # yield to main thread
+          sleep(0.0001) # yield to main thread
         end
       end
       Glimmer::LibUI.queue_main { msg_box('Error Running Example', result) } if result.downcase.include?('error')

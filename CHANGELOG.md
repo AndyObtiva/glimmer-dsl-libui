@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.2.15
+
+- Make examples/meta_example.rb output catch up more quickly with event puts statements
+
 ## 0.2.14
 
 - Revise examples/meta_example.rb to avoid blocking upon launching examples, thus permitting launching multiple examples at the same time

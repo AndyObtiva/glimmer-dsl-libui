@@ -1149,15 +1149,20 @@ class MetaExample
   end
   
   def run_example(example)
-    command = "ruby -r #{glimmer_dsl_libui_file} #{example} 2>&1"
-    result = ''
-    IO.popen(command) do |f|
-      f.each_line do |line|
-        result << line
-        puts line
+    Thread.new do
+      command = "ruby -r #{glimmer_dsl_libui_file} #{example} 2>&1"
+      result = ''
+      IO.popen(command) do |f|
+        sleep(0.0001) # yield to main thread
+        f.each_line do |line|
+          result << line
+          puts line
+          $stdout.flush # for Windows
+          sleep(0.0001) # yield to main thread
+        end
       end
+      Glimmer::LibUI.queue_main { msg_box('Error Running Example', result) } if result.downcase.include?('error')
     end
-    msg_box('Error Running Example', result) if result.downcase.include?('error')
   end
   
   def launch
@@ -6028,6 +6033,10 @@ Ruby implementation of the Befunge-98 programmming language.
 https://github.com/AndyObtiva/befunge98/tree/gui
 
 ![befunge98 gui screenshot](https://raw.githubusercontent.com/AndyObtiva/befunge98/master/gui/glimmer-dsl-libui/befunge98_gui_glimmer_dsl_libui/screenshots/befunge98_gui_glimmer_dsl_libui_example.png)
+
+### i3off Gtk Ruby
+
+https://github.com/iraamaro/i3off-gtk-ruby
 
 ## Contributing to glimmer-dsl-libui
 
