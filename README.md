@@ -260,13 +260,15 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
   - [Applications](#applications)
     - [Manga2PDF](#manga2pdf)
     - [Befunge98 GUI](#befunge98-gui)
-  - [Contributing to glimmer-dsl-libui](#contributing-to-glimmer-dsl-libui)
+    - [i3off Gtk Ruby](#i3off-gtk-ruby)
+  - [Process](#process)
+  - [Resources](#resources)
   - [Help](#help)
     - [Issues](#issues)
     - [Chat](#chat)
-  - [Process](#process)
   - [Planned Features and Feature Suggestions](#planned-features-and-feature-suggestions)
   - [Change Log](#change-log)
+  - [Contributing](#contributing)
   - [Contributors](#contributors)
   - [License](#license)
 
@@ -6038,7 +6040,37 @@ https://github.com/AndyObtiva/befunge98/tree/gui
 
 https://github.com/iraamaro/i3off-gtk-ruby
 
-## Contributing to glimmer-dsl-libui
+## Process
+
+[Glimmer Process](https://github.com/AndyObtiva/glimmer/blob/master/PROCESS.md)
+
+## Resources
+
+- [libui C Library](https://github.com/andlabs/libui)
+- [LibUI Ruby Bindings](https://github.com/kojix2/LibUI)
+- [Code Master Blog](https://andymaleh.blogspot.com/search/label/LibUI)
+
+## Help
+
+### Issues
+
+If you encounter [issues](https://github.com/AndyObtiva/glimmer-dsl-libui/issues) that are not reported, discover missing features that are not mentioned in [TODO.md](TODO.md), or think up better ways to use [libui](https://github.com/andlabs/libui) than what is possible with [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui), you may submit an [issue](https://github.com/AndyObtiva/glimmer-dsl-libui/issues/new) or [pull request](https://github.com/AndyObtiva/glimmer-dsl-libui/compare) on [GitHub](https://github.com).
+
+### Chat
+
+If you need live help, try to [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
+## Planned Features and Feature Suggestions
+
+These features have been planned or suggested. You might see them in a future version of [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui). You are welcome to contribute more feature suggestions.
+
+[TODO.md](TODO.md)
+
+## Change Log
+
+[CHANGELOG.md](CHANGELOG.md)
+
+## Contributing
 
 -   Check out the latest master to make sure the feature hasn't been
     implemented or the bug hasn't been fixed yet.
@@ -6053,32 +6085,6 @@ https://github.com/iraamaro/i3off-gtk-ruby
     you want to have your own version, or is otherwise necessary, that
     is fine, but please isolate to its own commit so I can cherry-pick
     around it.
-
-## Help
-
-### Issues
-
-You may submit [issues](https://github.com/AndyObtiva/glimmer/issues) on [GitHub](https://github.com/AndyObtiva/glimmer/issues).
-
-[Click here to submit an issue.](https://github.com/AndyObtiva/glimmer/issues)
-
-### Chat
-
-If you need live help, try to [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
-## Process
-
-[Glimmer Process](https://github.com/AndyObtiva/glimmer/blob/master/PROCESS.md)
-
-## Planned Features and Feature Suggestions
-
-These features have been planned or suggested. You might see them in a future version of [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui). You are welcome to contribute more feature suggestions.
-
-[TODO.md](TODO.md)
-
-## Change Log
-
-[CHANGELOG.md](CHANGELOG.md)
 
 ## Contributors
 

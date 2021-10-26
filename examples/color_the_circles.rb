@@ -30,8 +30,11 @@ class ColorTheCircles
       @score_label.text = new_score.to_s
       if new_score == -20
         @game_over = true
+        pd 'displaying msg box'; $stdout.flush
         msg_box('You Lost!', 'Sorry! Your score reached -20')
+        pd 'restarting game'; $stdout.flush
         restart_game
+        pd 'done restarting game'; $stdout.flush
       elsif new_score == 0
         @game_over = true
         msg_box('You Won!', 'Congratulations! Your score reached 0')
@@ -43,6 +46,7 @@ class ColorTheCircles
   
   def setup_circle_factory
     consumer = Proc.new do
+      pd @game_over; $stdout.flush
       unless @game_over
         if @circles_data.empty?
           # start with 3 circles to make more challenging
@@ -52,6 +56,8 @@ class ColorTheCircles
         end
       end
       delay = rand * @time_max
+      pd delay; $stdout.flush
+      pd 'scheduling timer'; $stdout.flush
       Glimmer::LibUI.timer(delay, repeat: false, &consumer)
     end
     Glimmer::LibUI.queue_main(&consumer)
@@ -72,8 +78,11 @@ class ColorTheCircles
   end
   
   def restart_game
+    pd 'zeroing score'; $stdout.flush
     @score = 0 # update variable directly to avoid notifying observers
+    pd 'clearing circles data'; $stdout.flush
     @circles_data.clear
+    pd 'switching game over boolean'; $stdout.flush
     @game_over = false
   end
   
