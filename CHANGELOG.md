@@ -3,6 +3,7 @@
 ## 0.2.15
 
 - Make examples/meta_example.rb output catch up more quickly with event puts statements
+- Fix examples/color_the_circles.rb on Windows (it was crashing upon losing)
 
 ## 0.2.14
 

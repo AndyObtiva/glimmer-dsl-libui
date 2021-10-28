@@ -146,7 +146,6 @@ module Glimmer
       def timer(time_in_seconds = 0.1, repeat: true, &block)
         closure = fiddle_closure_block_caller(4, [0]) do
           result = boolean_to_integer(block.call)
-          pd result; $stdout.flush
           repeat -= 1 if repeat.is_a?(Integer)
           if result.nil?
             if (repeat == true || (repeat.is_a?(Integer) && repeat > 0))

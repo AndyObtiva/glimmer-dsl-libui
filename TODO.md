@@ -2,9 +2,7 @@
 
 ## Next
 
-- Fix issues with running examples on Windows:
-  - Color The Shapes closes after losing
-  - Basic Transform shows an uncentered different graphic on Windows than Mac and Linux
+- Basic Transform example on Windows shows an uncentered different graphic than what is shown on Mac and Linux
 - Document all examples with Windows screenshots
 
 ## Soon
