@@ -1076,6 +1076,7 @@ window('Method-Based Custom Keyword') {
 - `table` controls on Windows intentionally get an extra empty row at the end because if any row were to be deleted for the first time, double-deletion happens due to an issue in [libui](https://github.com/andlabs/libui) on Windows.
 - `table` `progress_bar` column on Windows cannot be updated with a positive value if it started initially with `-1` (it ignores update to avoid crashing due to an issue in [libui](https://github.com/andlabs/libui) on Windows.
 - It seems that [libui](https://github.com/andlabs/libui) does not support nesting multiple `area` controls under a `grid` as only the first one shows up in that scenario. To workaround that limitation, use a `vertical_box` with nested `horizontal_box`s instead to include multiple `area`s in a GUI.
+- As per the code of [examples/basic_transform.rb](#basic-transform), Windows requires different ordering of transforms than Mac and Linux.
 
 ### Original API
 
