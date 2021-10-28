@@ -2,6 +2,7 @@
 
 ## 0.2.16
 
+- Document all examples with Windows screenshots
 - Fix examples/basic_transform.rb issue on Windows where it shows an uncentered different graphic than what is shown on Mac and Linux
 
 ## 0.2.15

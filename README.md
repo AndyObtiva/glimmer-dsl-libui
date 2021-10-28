@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.2.15
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.2.16
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -28,7 +28,16 @@ include Glimmer
 window('hello world').show
 ```
 
+Mac
+
 ![glimmer-dsl-libui-mac-basic-window.png](images/glimmer-dsl-libui-mac-basic-window.png)
+
+Windows
+
+![glimmer-dsl-libui-windows-basic-window.png](images/glimmer-dsl-libui-windows-basic-window.png)
+
+Linux
+
 ![glimmer-dsl-libui-linux-basic-window.png](images/glimmer-dsl-libui-linux-basic-window.png)
 
 Basic Table Progress Bar
@@ -68,7 +77,16 @@ window('Task Progress', 300, 200) {
 }.show
 ```
 
+Mac
+
 ![glimmer-dsl-libui-mac-basic-table-progress-bar.png](images/glimmer-dsl-libui-mac-basic-table-progress-bar.png)
+
+Windows
+
+![glimmer-dsl-libui-windows-basic-table-progress-bar.png](images/glimmer-dsl-libui-windows-basic-table-progress-bar.png)
+
+Linux
+
 ![glimmer-dsl-libui-linux-basic-table-progress-bar.png](images/glimmer-dsl-libui-linux-basic-table-progress-bar.png)
 
 Area Gallery
@@ -188,7 +206,16 @@ window('Area Gallery', 400, 400) {
 }.show
 ```
 
+Mac
+
 ![glimmer-dsl-libui-mac-area-gallery.png](images/glimmer-dsl-libui-mac-area-gallery.png)
+
+Windows
+
+![glimmer-dsl-libui-windows-area-gallery.png](images/glimmer-dsl-libui-windows-area-gallery.png)
+
+Linux
+
 ![glimmer-dsl-libui-linux-area-gallery.png](images/glimmer-dsl-libui-linux-area-gallery.png)
 
 [Check Out Many More Examples Over Here!](#examples)
@@ -349,7 +376,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.2.15'
+gem 'glimmer-dsl-libui', '~> 0.2.16'
 ```
 
 Add `require 'glimmer-dsl-libui'` at the top, and then `include Glimmer` into the top-level main object for testing or into an actual class for serious usage.
@@ -1046,7 +1073,6 @@ window('Method-Based Custom Keyword') {
 - `table` `checkbox_column` and `checkbox_text_column` checkbox editing only works on Linux and Windows (not Mac) due to a current limitation in [libui](https://github.com/andlabs/ui/issues/357).
 - `text` `align` property seems not to work on the Mac ([libui](https://github.com/andlabs/libui) has an [issue](https://github.com/andlabs/libui/pull/407) about it)
 - `text` `string` `background` does not work on Windows due to an [issue in libui](https://github.com/andlabs/libui/issues/347).
-- `arc` shape does not work on Windows unless a figure is started due to implementation of [libui](https://github.com/andlabs/libui).
 - `table` controls on Windows intentionally get an extra empty row at the end because if any row were to be deleted for the first time, double-deletion happens due to an issue in [libui](https://github.com/andlabs/libui) on Windows.
 - `table` `progress_bar` column on Windows cannot be updated with a positive value if it started initially with `-1` (it ignores update to avoid crashing due to an issue in [libui](https://github.com/andlabs/libui) on Windows.
 - It seems that [libui](https://github.com/andlabs/libui) does not support nesting multiple `area` controls under a `grid` as only the first one shows up in that scenario. To workaround that limitation, use a `vertical_box` with nested `horizontal_box`s instead to include multiple `area`s in a GUI.
@@ -1100,6 +1126,10 @@ ruby -r glimmer-dsl-libui -e "require 'examples/meta_example'"
 Mac
 
 ![glimmer-dsl-libui-mac-meta-example.png](images/glimmer-dsl-libui-mac-meta-example.png)
+
+Windows
+
+![glimmer-dsl-libui-windows-meta-example.png](images/glimmer-dsl-libui-windows-meta-example.png)
 
 Linux
 
@@ -1265,6 +1295,10 @@ Mac
 
 ![glimmer-dsl-libui-mac-basic-window.png](images/glimmer-dsl-libui-mac-basic-window.png)
 
+Windows
+
+![glimmer-dsl-libui-windows-basic-window.png](images/glimmer-dsl-libui-windows-basic-window.png)
+
 Linux
 
 ![glimmer-dsl-libui-linux-basic-window.png](images/glimmer-dsl-libui-linux-basic-window.png)
@@ -1345,6 +1379,11 @@ Mac
 ![glimmer-dsl-libui-mac-basic-button.png](images/glimmer-dsl-libui-mac-basic-button.png)
 ![glimmer-dsl-libui-mac-basic-button-msg-box.png](images/glimmer-dsl-libui-mac-basic-button-msg-box.png)
 
+Windows
+
+![glimmer-dsl-libui-windows-basic-button.png](images/glimmer-dsl-libui-windows-basic-button.png)
+![glimmer-dsl-libui-windows-basic-button-msg-box.png](images/glimmer-dsl-libui-windows-basic-button-msg-box.png)
+
 Linux
 
 ![glimmer-dsl-libui-linux-basic-button.png](images/glimmer-dsl-libui-linux-basic-button.png)
@@ -1421,6 +1460,11 @@ Mac
 
 ![glimmer-dsl-libui-mac-basic-entry.png](images/glimmer-dsl-libui-mac-basic-entry.png)
 ![glimmer-dsl-libui-mac-basic-entry-msg-box.png](images/glimmer-dsl-libui-mac-basic-entry-msg-box.png)
+
+Windows
+
+![glimmer-dsl-libui-windows-basic-entry.png](images/glimmer-dsl-libui-windows-basic-entry.png)
+![glimmer-dsl-libui-windows-basic-entry-msg-box.png](images/glimmer-dsl-libui-windows-basic-entry-msg-box.png)
 
 Linux
 
@@ -1522,6 +1566,10 @@ Mac
 
 ![glimmer-dsl-libui-mac-simple-notepad.png](images/glimmer-dsl-libui-mac-simple-notepad.png)
 
+Windows
+
+![glimmer-dsl-libui-windows-simple-notepad.png](images/glimmer-dsl-libui-windows-simple-notepad.png)
+
 Linux
 
 ![glimmer-dsl-libui-linux-simple-notepad.png](images/glimmer-dsl-libui-linux-simple-notepad.png)
@@ -1594,6 +1642,11 @@ Mac
 
 ![glimmer-dsl-libui-mac-midi-player.png](images/glimmer-dsl-libui-mac-midi-player.png)
 ![glimmer-dsl-libui-mac-midi-player-msg-box.png](images/glimmer-dsl-libui-mac-midi-player-msg-box.png)
+
+Windows
+
+![glimmer-dsl-libui-windows-midi-player.png](images/glimmer-dsl-libui-windows-midi-player.png)
+![glimmer-dsl-libui-windows-midi-player-msg-box.png](images/glimmer-dsl-libui-windows-midi-player-msg-box.png)
 
 Linux
 
@@ -1811,6 +1864,10 @@ ruby -r glimmer-dsl-libui -e "require 'examples/control_gallery'"
 Mac
 
 ![glimmer-dsl-libui-mac-control-gallery.png](images/glimmer-dsl-libui-mac-control-gallery.png)
+
+Windows
+
+![glimmer-dsl-libui-windows-control-gallery.png](images/glimmer-dsl-libui-windows-control-gallery.png)
 
 Linux
 
@@ -2203,6 +2260,11 @@ Mac
 ![glimmer-dsl-libui-mac-font-button.png](images/glimmer-dsl-libui-mac-font-button.png)
 ![glimmer-dsl-libui-mac-font-button-selection.png](images/glimmer-dsl-libui-mac-font-button-selection.png)
 
+Windows
+
+![glimmer-dsl-libui-windows-font-button.png](images/glimmer-dsl-libui-windows-font-button.png)
+![glimmer-dsl-libui-windows-font-button-selection.png](images/glimmer-dsl-libui-windows-font-button-selection.png)
+
 Linux
 
 ![glimmer-dsl-libui-linux-font-button.png](images/glimmer-dsl-libui-linux-font-button.png)
@@ -2287,6 +2349,11 @@ Mac
 ![glimmer-dsl-libui-mac-color-button.png](images/glimmer-dsl-libui-mac-color-button.png)
 ![glimmer-dsl-libui-mac-color-button-selection.png](images/glimmer-dsl-libui-mac-color-button-selection.png)
 
+Windows
+
+![glimmer-dsl-libui-windows-color-button.png](images/glimmer-dsl-libui-windows-color-button.png)
+![glimmer-dsl-libui-windows-color-button-selection.png](images/glimmer-dsl-libui-windows-color-button-selection.png)
+
 Linux
 
 ![glimmer-dsl-libui-linux-color-button.png](images/glimmer-dsl-libui-linux-color-button.png)
@@ -2299,7 +2366,7 @@ require 'glimmer-dsl-libui'
 
 include Glimmer
 
-window('color button', 230) {
+window('color button', 240) {
   color_button { |cb|
     color :blue
     
@@ -2330,6 +2397,10 @@ ruby -r glimmer-dsl-libui -e "require 'examples/date_time_picker'"
 Mac
 
 ![glimmer-dsl-libui-mac-date-time-picker.png](images/glimmer-dsl-libui-mac-date-time-picker.png)
+
+Windows
+
+![glimmer-dsl-libui-windows-date-time-picker.png](images/glimmer-dsl-libui-windows-date-time-picker.png)
 
 Linux
 
@@ -2422,6 +2493,12 @@ Mac
 ![glimmer-dsl-libui-mac-grid-span.png](images/glimmer-dsl-libui-mac-grid-span.png)
 ![glimmer-dsl-libui-mac-grid-expand.png](images/glimmer-dsl-libui-mac-grid-expand.png)
 ![glimmer-dsl-libui-mac-grid-align.png](images/glimmer-dsl-libui-mac-grid-align.png)
+
+Windows
+
+![glimmer-dsl-libui-windows-grid-span.png](images/glimmer-dsl-libui-windows-grid-span.png)
+![glimmer-dsl-libui-windows-grid-expand.png](images/glimmer-dsl-libui-windows-grid-expand.png)
+![glimmer-dsl-libui-windows-grid-align.png](images/glimmer-dsl-libui-windows-grid-align.png)
 
 Linux
 
@@ -2561,6 +2638,11 @@ Mac
 ![glimmer-dsl-libui-mac-form.png](images/glimmer-dsl-libui-mac-form.png)
 ![glimmer-dsl-libui-mac-form-msg-box.png](images/glimmer-dsl-libui-mac-form-msg-box.png)
 
+Windows
+
+![glimmer-dsl-libui-windows-form.png](images/glimmer-dsl-libui-windows-form.png)
+![glimmer-dsl-libui-windows-form-msg-box.png](images/glimmer-dsl-libui-windows-form-msg-box.png)
+
 Linux
 
 ![glimmer-dsl-libui-linux-form.png](images/glimmer-dsl-libui-linux-form.png)
@@ -2625,6 +2707,10 @@ ruby -r glimmer-dsl-libui -e "require 'examples/basic_table'"
 Mac
 
 ![glimmer-dsl-libui-mac-basic-table.png](images/glimmer-dsl-libui-mac-basic-table.png)
+
+Windows
+
+![glimmer-dsl-libui-windows-basic-table.png](images/glimmer-dsl-libui-windows-basic-table.png)
 
 Linux
 
@@ -2748,6 +2834,12 @@ Mac
 ![glimmer-dsl-libui-mac-editable-table-editing.png](images/glimmer-dsl-libui-mac-editable-table-editing.png)
 ![glimmer-dsl-libui-mac-editable-table-edited.png](images/glimmer-dsl-libui-mac-editable-table-edited.png)
 
+Windows
+
+![glimmer-dsl-libui-windows-editable-table.png](images/glimmer-dsl-libui-windows-editable-table.png)
+![glimmer-dsl-libui-windows-editable-table-editing.png](images/glimmer-dsl-libui-windows-editable-table-editing.png)
+![glimmer-dsl-libui-windows-editable-table-edited.png](images/glimmer-dsl-libui-windows-editable-table-edited.png)
+
 Linux
 
 ![glimmer-dsl-libui-linux-editable-table.png](images/glimmer-dsl-libui-linux-editable-table.png)
@@ -2815,6 +2907,11 @@ Mac
 ![glimmer-dsl-libui-mac-editable-column-table-editing.png](images/glimmer-dsl-libui-mac-editable-column-table-editing.png)
 ![glimmer-dsl-libui-mac-editable-column-table-edited.png](images/glimmer-dsl-libui-mac-editable-column-table-edited.png)
 
+Windows
+
+![glimmer-dsl-libui-windows-editable-column-table-editing.png](images/glimmer-dsl-libui-windows-editable-column-table-editing.png)
+![glimmer-dsl-libui-windows-editable-column-table-edited.png](images/glimmer-dsl-libui-windows-editable-column-table-edited.png)
+
 Linux
 
 ![glimmer-dsl-libui-linux-editable-column-table-editing.png](images/glimmer-dsl-libui-linux-editable-column-table-editing.png)
@@ -2881,6 +2978,10 @@ ruby -r glimmer-dsl-libui -e "require 'examples/basic_table_image'"
 Mac
 
 ![glimmer-dsl-libui-mac-basic-table-image.png](images/glimmer-dsl-libui-mac-basic-table-image.png)
+
+Windows
+
+![glimmer-dsl-libui-windows-basic-table-image.png](images/glimmer-dsl-libui-windows-basic-table-image.png)
 
 Linux
 
@@ -3040,6 +3141,10 @@ Mac
 
 ![glimmer-dsl-libui-mac-basic-table-image-text.png](images/glimmer-dsl-libui-mac-basic-table-image-text.png)
 
+Windows
+
+![glimmer-dsl-libui-windows-basic-table-image-text.png](images/glimmer-dsl-libui-windows-basic-table-image-text.png)
+
 Linux
 
 ![glimmer-dsl-libui-linux-basic-table-image-text.png](images/glimmer-dsl-libui-linux-basic-table-image-text.png)
@@ -3111,6 +3216,11 @@ Mac
 ![glimmer-dsl-libui-mac-basic-table-button.png](images/glimmer-dsl-libui-mac-basic-table-button.png)
 ![glimmer-dsl-libui-mac-basic-table-button-deleted.png](images/glimmer-dsl-libui-mac-basic-table-button-deleted.png)
 
+Windows
+
+![glimmer-dsl-libui-windows-basic-table-button.png](images/glimmer-dsl-libui-windows-basic-table-button.png)
+![glimmer-dsl-libui-windows-basic-table-button-deleted.png](images/glimmer-dsl-libui-windows-basic-table-button-deleted.png)
+
 Linux
 
 ![glimmer-dsl-libui-linux-basic-table-button.png](images/glimmer-dsl-libui-linux-basic-table-button.png)
@@ -3172,6 +3282,10 @@ Mac
 
 ![glimmer-dsl-libui-mac-basic-table-checkbox.png](images/glimmer-dsl-libui-mac-basic-table-checkbox.png)
 
+Windows
+
+![glimmer-dsl-libui-windows-basic-table-checkbox.png](images/glimmer-dsl-libui-windows-basic-table-checkbox.png)
+
 Linux
 
 ![glimmer-dsl-libui-linux-basic-table-checkbox.png](images/glimmer-dsl-libui-linux-basic-table-checkbox.png)
@@ -3224,6 +3338,10 @@ Mac
 
 ![glimmer-dsl-libui-mac-basic-table-checkbox-text.png](images/glimmer-dsl-libui-mac-basic-table-checkbox-text.png)
 
+Windows
+
+![glimmer-dsl-libui-windows-basic-table-checkbox-text.png](images/glimmer-dsl-libui-windows-basic-table-checkbox-text.png)
+
 Linux
 
 ![glimmer-dsl-libui-linux-basic-table-checkbox-text.png](images/glimmer-dsl-libui-linux-basic-table-checkbox-text.png)
@@ -3275,6 +3393,10 @@ ruby -r glimmer-dsl-libui -e "require 'examples/basic_table_progress_bar'"
 Mac
 
 ![glimmer-dsl-libui-mac-basic-table-progress-bar.png](images/glimmer-dsl-libui-mac-basic-table-progress-bar.png)
+
+Windows
+
+![glimmer-dsl-libui-windows-basic-table-progress-bar.png](images/glimmer-dsl-libui-windows-basic-table-progress-bar.png)
 
 Linux
 
@@ -3343,6 +3465,10 @@ Mac
 
 ![glimmer-dsl-libui-mac-basic-table-color.png](images/glimmer-dsl-libui-mac-basic-table-color.png)
 
+Windows
+
+![glimmer-dsl-libui-windows-basic-table-color.png](images/glimmer-dsl-libui-windows-basic-table-color.png)
+
 Linux
 
 ![glimmer-dsl-libui-linux-basic-table-color.png](images/glimmer-dsl-libui-linux-basic-table-color.png)
@@ -3410,6 +3536,12 @@ Mac
 ![glimmer-dsl-libui-mac-form-table.png](images/glimmer-dsl-libui-mac-form-table.png)
 ![glimmer-dsl-libui-mac-form-table-contact-entered.png](images/glimmer-dsl-libui-mac-form-table-contact-entered.png)
 ![glimmer-dsl-libui-mac-form-table-filtered.png](images/glimmer-dsl-libui-mac-form-table-filtered.png)
+
+Windows
+
+![glimmer-dsl-libui-windows-form-table.png](images/glimmer-dsl-libui-windows-form-table.png)
+![glimmer-dsl-libui-windows-form-table-contact-entered.png](images/glimmer-dsl-libui-windows-form-table-contact-entered.png)
+![glimmer-dsl-libui-windows-form-table-filtered.png](images/glimmer-dsl-libui-windows-form-table-filtered.png)
 
 Linux
 
@@ -3530,6 +3662,10 @@ ruby -r glimmer-dsl-libui -e "require 'examples/basic_area'"
 Mac
 
 ![glimmer-dsl-libui-mac-basic-area.png](images/glimmer-dsl-libui-mac-basic-area.png)
+
+Windows
+
+![glimmer-dsl-libui-windows-basic-area.png](images/glimmer-dsl-libui-windows-basic-area.png)
 
 Linux
 
@@ -3653,6 +3789,11 @@ Mac
 
 ![glimmer-dsl-libui-mac-dynamic-area.png](images/glimmer-dsl-libui-mac-dynamic-area.png)
 ![glimmer-dsl-libui-mac-dynamic-area-updated.png](images/glimmer-dsl-libui-mac-dynamic-area-updated.png)
+
+Windows
+
+![glimmer-dsl-libui-windows-dynamic-area.png](images/glimmer-dsl-libui-windows-dynamic-area.png)
+![glimmer-dsl-libui-windows-dynamic-area-updated.png](images/glimmer-dsl-libui-windows-dynamic-area-updated.png)
 
 Linux
 
@@ -3884,6 +4025,10 @@ ruby -r glimmer-dsl-libui -e "require 'examples/area_gallery'"
 Mac
 
 ![glimmer-dsl-libui-mac-area-gallery.png](images/glimmer-dsl-libui-mac-area-gallery.png)
+
+Windows
+
+![glimmer-dsl-libui-windows-area-gallery.png](images/glimmer-dsl-libui-windows-area-gallery.png)
 
 Linux
 
@@ -4523,6 +4668,10 @@ Mac
 
 ![glimmer-dsl-libui-mac-histogram.png](images/glimmer-dsl-libui-mac-histogram.png)
 
+Windows
+
+![glimmer-dsl-libui-windows-histogram.png](images/glimmer-dsl-libui-windows-histogram.png)
+
 Linux
 
 ![glimmer-dsl-libui-linux-histogram.png](images/glimmer-dsl-libui-linux-histogram.png)
@@ -4864,6 +5013,10 @@ Mac
 
 ![glimmer-dsl-libui-mac-basic-transform.png](images/glimmer-dsl-libui-mac-basic-transform.png)
 
+Windows
+
+![glimmer-dsl-libui-windows-basic-transform.png](images/glimmer-dsl-libui-windows-basic-transform.png)
+
 Linux
 
 ![glimmer-dsl-libui-linux-basic-transform.png](images/glimmer-dsl-libui-linux-basic-transform.png)
@@ -4920,6 +5073,11 @@ Mac
 
 ![glimmer-dsl-libui-mac-login.png](images/glimmer-dsl-libui-mac-login.png)
 ![glimmer-dsl-libui-mac-login-logged-in.png](images/glimmer-dsl-libui-mac-login-logged-in.png)
+
+Windows
+
+![glimmer-dsl-libui-windows-login.png](images/glimmer-dsl-libui-windows-login.png)
+![glimmer-dsl-libui-windows-login-logged-in.png](images/glimmer-dsl-libui-windows-login-logged-in.png)
 
 Linux
 
@@ -4996,6 +5154,11 @@ Mac
 
 ![glimmer-dsl-libui-mac-timer.png](images/glimmer-dsl-libui-mac-timer.png)
 ![glimmer-dsl-libui-mac-timer-in-progress.png](images/glimmer-dsl-libui-mac-timer-in-progress.png)
+
+Windows
+
+![glimmer-dsl-libui-windows-timer.png](images/glimmer-dsl-libui-windows-timer.png)
+![glimmer-dsl-libui-windows-timer-in-progress.png](images/glimmer-dsl-libui-windows-timer-in-progress.png)
 
 Linux
 
@@ -5161,6 +5324,12 @@ Mac
 ![glimmer-dsl-libui-mac-color-the-circles.png](images/glimmer-dsl-libui-mac-color-the-circles.png)
 ![glimmer-dsl-libui-mac-color-the-circles-lost.png](images/glimmer-dsl-libui-mac-color-the-circles-lost.png)
 ![glimmer-dsl-libui-mac-color-the-circles-won.png](images/glimmer-dsl-libui-mac-color-the-circles-won.png)
+
+Windows
+
+![glimmer-dsl-libui-windows-color-the-circles.png](images/glimmer-dsl-libui-windows-color-the-circles.png)
+![glimmer-dsl-libui-windows-color-the-circles-lost.png](images/glimmer-dsl-libui-windows-color-the-circles-lost.png)
+![glimmer-dsl-libui-windows-color-the-circles-won.png](images/glimmer-dsl-libui-windows-color-the-circles-won.png)
 
 Linux
 
@@ -5412,6 +5581,10 @@ ruby -r glimmer-dsl-libui -e "require 'examples/basic_draw_text'"
 Mac
 
 ![glimmer-dsl-libui-mac-basic-draw-text.png](images/glimmer-dsl-libui-mac-basic-draw-text.png)
+
+Windows
+
+![glimmer-dsl-libui-windows-basic-draw-text.png](images/glimmer-dsl-libui-windows-basic-draw-text.png)
 
 Linux
 
@@ -5696,6 +5869,11 @@ Mac
 ![glimmer-dsl-libui-mac-custom-draw-text.png](images/glimmer-dsl-libui-mac-custom-draw-text.png)
 ![glimmer-dsl-libui-mac-custom-draw-text-changed.png](images/glimmer-dsl-libui-mac-custom-draw-text-changed.png)
 
+Windows
+
+![glimmer-dsl-libui-windows-custom-draw-text.png](images/glimmer-dsl-libui-windows-custom-draw-text.png)
+![glimmer-dsl-libui-windows-custom-draw-text-changed.png](images/glimmer-dsl-libui-windows-custom-draw-text-changed.png)
+
 Linux
 
 ![glimmer-dsl-libui-linux-custom-draw-text.png](images/glimmer-dsl-libui-linux-custom-draw-text.png)
@@ -5909,6 +6087,10 @@ ruby -r glimmer-dsl-libui -e "require 'examples/method_based_custom_keyword'"
 Mac
 
 ![glimmer-dsl-libui-mac-method-based-custom-keyword.png](images/glimmer-dsl-libui-mac-method-based-custom-keyword.png)
+
+Windows
+
+![glimmer-dsl-libui-windows-method-based-custom-keyword.png](images/glimmer-dsl-libui-windows-method-based-custom-keyword.png)
 
 Linux
 
