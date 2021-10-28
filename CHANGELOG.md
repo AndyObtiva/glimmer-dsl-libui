@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.2.16
+
+- Fix examples/basic_transform.rb issue on Windows where it shows an uncentered different graphic than what is shown on Mac and Linux
+
 ## 0.2.15
 
 - Make examples/meta_example.rb output catch up more quickly with event puts statements

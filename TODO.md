@@ -2,7 +2,6 @@
 
 ## Next
 
-- Basic Transform example on Windows shows an uncentered different graphic than what is shown on Mac and Linux
 - Document all examples with Windows screenshots
 
 ## Soon
