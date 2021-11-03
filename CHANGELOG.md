@@ -6,6 +6,7 @@
 - Improve examples/tetris.rb with bevel block 3D look
 - Update examples/area_gallery.rb to add uses of `polygon`, `polyline`, and `polybezier`
 - Refactor examples/histogram.rb to utilize new `polygon` and `polyline` keywords
+- Support `area` `request_auto_redraw`, `pause_auto_redraw`, and `resume_auto_redraw`, operations, and `auto_redraw_enabled` property.
 
 ## 0.2.17
 

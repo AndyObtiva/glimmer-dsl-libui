@@ -2,6 +2,8 @@
 
 ## Next
 
+- Document `area` `request_auto_redraw`, `pause_auto_redraw`, and `resume_auto_redraw`, operations, and `auto_redraw_enabled` property.
+
 - Improve Tetris example with score lane (indicating next Tetromino, score, level, and lines)
 - Improve Tetris example with menus
 
@@ -56,6 +58,7 @@ None
 - Fix meta-example GUI freezing after running an example until it is closed (which unfreezes meta-example)
 - Automatically call `Glimmer::LibUI.queue_main` when operating on GUI from a different thread
 - Override `#inspect` method for area, path, text, and/or other controls in case they contain many shapes, to prevent their printout from being too large
+- Implement functionality to delay queuing area redraws until post_add_content has been called (area definition is done). Maybe offer an option to enable redrawing before area is closed too.
 
 # Refactoring
 

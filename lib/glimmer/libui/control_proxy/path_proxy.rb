@@ -68,12 +68,15 @@ module Glimmer
           if args.empty?
             @fill ||= {}
           else
-            @fill = Glimmer::LibUI.interpret_color(args)
-            @parent_proxy&.queue_redraw_all
+            new_color = Glimmer::LibUI.interpret_color(args)
+            if new_color != @fill
+              @fill = new_color
+              request_auto_redraw
+            end
           end
           @fill.tap do
             @fill_observer ||= Glimmer::DataBinding::Observer.proc do
-              @parent_proxy&.queue_redraw_all
+              request_auto_redraw
             end
             @fill_observer.observe(@fill)
           end
@@ -92,12 +95,15 @@ module Glimmer
           if args.empty?
             @stroke ||= {}
           else
-            @stroke = Glimmer::LibUI.interpret_color(args)
-            @parent_proxy&.queue_redraw_all
+            new_color = Glimmer::LibUI.interpret_color(args)
+            if new_color != @stroke
+              @stroke = Glimmer::LibUI.interpret_color(args)
+              request_auto_redraw
+            end
           end
           @stroke.tap do
             @stroke_observer ||= Glimmer::DataBinding::Observer.proc do
-              @parent_proxy&.queue_redraw_all
+              request_auto_redraw
             end
             @stroke_observer.observe(@stroke)
           end
@@ -137,7 +143,11 @@ module Glimmer
         end
         
         def redraw
-          @parent_proxy&.queue_redraw_all
+          @parent_proxy&.redraw
+        end
+        
+        def request_auto_redraw
+          @parent_proxy&.request_auto_redraw
         end
         
         private

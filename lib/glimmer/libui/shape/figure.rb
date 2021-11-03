@@ -41,8 +41,10 @@ module Glimmer
           if value.nil?
             @closed
           else
-            @closed = value
-            area_proxy&.queue_redraw_all
+            if !!value != !!@closed
+              @closed = value
+              request_auto_redraw
+            end
           end
         end
         alias closed= closed

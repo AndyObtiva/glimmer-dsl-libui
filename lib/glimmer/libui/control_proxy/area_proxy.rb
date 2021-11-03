@@ -109,6 +109,31 @@ module Glimmer
           queue_redraw_all
         end
           
+        def request_auto_redraw
+          # TODO implement functionality to delay queuing area redraws until post_add_content has been called (area definition is done). Maybe offer an option to enable redrawing before area is closed too.
+          queue_redraw_all if auto_redraw_enabled?
+        end
+        
+        def auto_redraw_enabled(value = nil)
+          if value.nil?
+            @auto_redraw_enabled = true if @auto_redraw_enabled.nil?
+            @auto_redraw_enabled
+          else
+            @auto_redraw_enabled = !!value
+          end
+        end
+        alias auto_redraw_enabled? auto_redraw_enabled
+        alias auto_redraw_enabled= auto_redraw_enabled
+        alias set_auto_redraw_enabled auto_redraw_enabled
+        
+        def pause_auto_redraw
+          self.auto_redraw_enabled = false
+        end
+          
+        def resume_auto_redraw
+          self.auto_redraw_enabled = true
+        end
+          
         private
         
         def build_control

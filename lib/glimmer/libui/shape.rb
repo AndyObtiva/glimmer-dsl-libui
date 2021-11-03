@@ -87,7 +87,11 @@ module Glimmer
       end
       
       def redraw
-        area_proxy&.queue_redraw_all
+        area_proxy&.auto_redraw
+      end
+      
+      def request_auto_redraw
+        area_proxy&.request_auto_redraw
       end
       
       def destroy
@@ -113,8 +117,10 @@ module Glimmer
           method_name = method_name.to_s
           parameter_index = self.class.parameters.index(method_name_parameter)
           if method_name.start_with?('set_') || method_name.end_with?('=') || !args.empty?
-            @args[parameter_index] = args.first
-            area_proxy&.queue_redraw_all
+            if args.first != @args[parameter_index]
+              @args[parameter_index] = args.first
+              request_auto_redraw
+            end
           else
             @args[parameter_index]
           end
