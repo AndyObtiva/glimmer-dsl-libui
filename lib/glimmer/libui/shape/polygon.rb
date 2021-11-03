@@ -29,10 +29,12 @@ module Glimmer
         parameter_defaults []
       
         def draw(area_draw_params)
-          unless point_array.to_a.compact.empty?
-            ::LibUI.draw_path_new_figure(path_proxy.libui, point_array[0], point_array[1])
-            ((point_array.size - 2) / 2).times do |n|
-              ::LibUI.draw_path_line_to(path_proxy.libui, point_array[(n * 2) + 2], point_array[(n * 2) + 3])
+          alternating_x_y_array = point_array.to_a.compact.flatten
+          unless alternating_x_y_array.empty?
+            ::LibUI.draw_path_new_figure(path_proxy.libui, alternating_x_y_array[0], alternating_x_y_array[1])
+            ((alternating_x_y_array.size - 2) / 2).times do |n|
+              point_alternating_x_y_index = n * 2
+              ::LibUI.draw_path_line_to(path_proxy.libui, alternating_x_y_array[point_alternating_x_y_index + 2], alternating_x_y_array[point_alternating_x_y_index + 3])
             end
             ::LibUI.draw_path_close_figure(path_proxy.libui)
           end

@@ -4,7 +4,7 @@
 
 - Support `polygon` (closed figure of lines), `polyline` (open figure of lines), and `polybezier` (open figure of beziers) shape keywords to use under `path`
 - Update examples/area_gallery.rb to add uses of `polygon`, `polyline`, and `polybezier`
-- Refactor examples/histogram.rb to utilize new `polyline` and `polygon` keywords
+- Refactor examples/histogram.rb to utilize new `polygon` and `polyline` keywords
 
 ## 0.2.17
 

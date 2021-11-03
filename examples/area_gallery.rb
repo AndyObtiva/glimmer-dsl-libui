@@ -55,18 +55,18 @@ window('Area Gallery', 400, 400) {
       stroke r: 0, g: 0, b: 0, thickness: 2
     }
     path { # declarative stable path
-      polygon(370, 150, 325, 275, 325, 125, 370, 250)
+      polygon([370, 150], [325, 275], [325, 125], [370, 250])
 
       fill r: 202, g: 102, b: 204, a: 0.5
       stroke r: 0, g: 0, b: 0, thickness: 2
     }
     path { # declarative stable path
-      polyline(150, 50, 175, 25, 225, 25, 250, 50)
+      polyline([150, 50], [175, 25], [225, 25], [250, 50])
 
       stroke r: 0, g: 0, b: 0, thickness: 2
     }
     path { # declarative stable path
-      polybezier(212, 212, 125, 175, 150, 350, 300, 300, 450, 250, 350, 250, 400, 400)
+      polybezier([212, 212], [125, 175, 150, 350, 300, 300], [450, 250, 350, 250, 400, 400])
 
       stroke r: 0, g: 0, b: 0, thickness: 2
     }
