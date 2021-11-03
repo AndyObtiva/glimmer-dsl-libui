@@ -112,31 +112,24 @@ window('Area Gallery', 400, 400) {
       fill x0: 10, y0: 10, x1: 350, y1: 350, stops: [{pos: 0.25, r: 204, g: 102, b: 204}, {pos: 0.75, r: 102, g: 102, b: 204}]
     }
     path { # declarative stable path
-      figure(100, 100) {
-        line(100, 400)
-        line(400, 100)
-        line(400, 400)
-
-        closed true
-      }
-
+      polygon(100, 100, 100, 400, 400, 100, 400, 400)
+      
       fill r: 202, g: 102, b: 104, a: 0.5
       stroke r: 0, g: 0, b: 0
     }
     path { # declarative stable path
-      figure(0, 0) {
-        bezier(200, 100, 100, 200, 400, 100)
-        bezier(300, 100, 100, 300, 100, 400)
-        bezier(100, 300, 300, 100, 400, 400)
-
-        closed true
-      }
+      polybezier(0, 0, 200, 100, 100, 200, 400, 100, 300, 100, 100, 300, 100, 400, 100, 300, 300, 100, 400, 400)
 
       fill r: 202, g: 102, b: 204, a: 0.5
       stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
     }
     path { # declarative stable path
-      arc(400, 220, 180, 90, 90, false)
+      polyline(100, 100, 400, 100, 100, 400, 400, 400, 0, 0)
+    
+      stroke r: 0, g: 0, b: 0, thickness: 2
+    }
+    path { # declarative stable path
+      arc(404, 216, 190, 90, 90, false)
 
       # radial gradient (has an outer_radius in addition to x0, y0, x1, y1, and stops)
       fill outer_radius: 90, x0: 0, y0: 0, x1: 500, y1: 500, stops: [{pos: 0.25, r: 102, g: 102, b: 204, a: 0.5}, {pos: 0.75, r: 204, g: 102, b: 204}]
@@ -148,9 +141,9 @@ window('Area Gallery', 400, 400) {
       fill r: 202, g: 102, b: 204, a: 0.5
       stroke r: 0, g: 0, b: 0, thickness: 2
     }
-    text(160, 40, 100) { # x, y, width
+    text(161, 40, 100) { # x, y, width
       string('Area Gallery') {
-        font family: 'Times', size: 14
+        font family: 'Arial', size: 14
         color :black
       }
     }
@@ -4065,31 +4058,24 @@ window('Area Gallery', 400, 400) {
       fill x0: 10, y0: 10, x1: 350, y1: 350, stops: [{pos: 0.25, r: 204, g: 102, b: 204}, {pos: 0.75, r: 102, g: 102, b: 204}]
     }
     path { # declarative stable path
-      figure(100, 100) {
-        line(100, 400)
-        line(400, 100)
-        line(400, 400)
-
-        closed true
-      }
-
+      polygon(100, 100, 100, 400, 400, 100, 400, 400)
+      
       fill r: 202, g: 102, b: 104, a: 0.5
       stroke r: 0, g: 0, b: 0
     }
     path { # declarative stable path
-      figure(0, 0) {
-        bezier(200, 100, 100, 200, 400, 100)
-        bezier(300, 100, 100, 300, 100, 400)
-        bezier(100, 300, 300, 100, 400, 400)
-
-        closed true
-      }
+      polybezier(0, 0, 200, 100, 100, 200, 400, 100, 300, 100, 100, 300, 100, 400, 100, 300, 300, 100, 400, 400)
 
       fill r: 202, g: 102, b: 204, a: 0.5
       stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
     }
     path { # declarative stable path
-      arc(400, 220, 180, 90, 90, false)
+      polyline(100, 100, 400, 100, 100, 400, 400, 400, 0, 0)
+    
+      stroke r: 0, g: 0, b: 0, thickness: 2
+    }
+    path { # declarative stable path
+      arc(404, 216, 190, 90, 90, false)
 
       # radial gradient (has an outer_radius in addition to x0, y0, x1, y1, and stops)
       fill outer_radius: 90, x0: 0, y0: 0, x1: 500, y1: 500, stops: [{pos: 0.25, r: 102, g: 102, b: 204, a: 0.5}, {pos: 0.75, r: 204, g: 102, b: 204}]
@@ -4101,9 +4087,9 @@ window('Area Gallery', 400, 400) {
       fill r: 202, g: 102, b: 204, a: 0.5
       stroke r: 0, g: 0, b: 0, thickness: 2
     }
-    text(160, 40, 100) { # x, y, width
+    text(161, 40, 100) { # x, y, width
       string('Area Gallery') {
-        font family: 'Times', size: 14
+        font family: 'Arial', size: 14
         color :black
       }
     }
@@ -4252,18 +4238,42 @@ window('Area Gallery', 400, 400) {
           end_x 400
           end_y 400
         }
-
-        closed true
       }
 
       fill r: 202, g: 102, b: 204, a: 0.5
       stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
     }
     path { # declarative stable path
+      polyline(100, 100, 400, 100, 100, 400, 400, 400, 0, 0)
+      figure {
+        x 100
+        y 100
+        
+        line {
+          x 400
+          y 100
+        }
+        line {
+          x 100
+          y 400
+        }
+        line {
+          x 400
+          y 400
+        }
+        line {
+          x 0
+          y 0
+        }
+      }
+    
+      stroke r: 0, g: 0, b: 0, thickness: 2
+    }
+    path { # declarative stable path
       arc {
-        x_center 400
-        y_center 220
-        radius 180
+        x_center 404
+        y_center 216
+        radius 190
         start_angle 90
         sweep 90
         is_negative false
@@ -4284,12 +4294,12 @@ window('Area Gallery', 400, 400) {
       stroke r: 0, g: 0, b: 0, thickness: 2
     }
     text {
-      x 160
+      x 161
       y 40
       width 100
       
       string {
-        font family: 'Times', size: 14
+        font family: 'Arial', size: 14
         color :black
         
         'Area Gallery'
@@ -4360,42 +4370,35 @@ window('Area Gallery', 400, 400) {
       path { # a dynamic path is added semi-declaratively inside on_draw block
         square(0, 0, 100)
         square(100, 100, 400)
-        
+  
         fill r: 102, g: 102, b: 204
       }
       path { # a dynamic path is added semi-declaratively inside on_draw block
         rectangle(0, 100, 100, 400)
         rectangle(100, 0, 400, 100)
-
+  
         # linear gradient (has x0, y0, x1, y1, and stops)
         fill x0: 10, y0: 10, x1: 350, y1: 350, stops: [{pos: 0.25, r: 204, g: 102, b: 204}, {pos: 0.75, r: 102, g: 102, b: 204}]
       }
       path { # a dynamic path is added semi-declaratively inside on_draw block
-        figure(100, 100) {
-          line(100, 400)
-          line(400, 100)
-          line(400, 400)
-
-          closed true
-        }
-
+        polygon(100, 100, 100, 400, 400, 100, 400, 400)
+        
         fill r: 202, g: 102, b: 104, a: 0.5
         stroke r: 0, g: 0, b: 0
       }
       path { # a dynamic path is added semi-declaratively inside on_draw block
-        figure(0, 0) {
-          bezier(200, 100, 100, 200, 400, 100)
-          bezier(300, 100, 100, 300, 100, 400)
-          bezier(100, 300, 300, 100, 400, 400)
-
-          closed true
-        }
-
+        polybezier(0, 0, 200, 100, 100, 200, 400, 100, 300, 100, 100, 300, 100, 400, 100, 300, 300, 100, 400, 400)
+  
         fill r: 202, g: 102, b: 204, a: 0.5
         stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
       }
       path { # a dynamic path is added semi-declaratively inside on_draw block
-        arc(400, 220, 180, 90, 90, false)
+        polyline(100, 100, 400, 100, 100, 400, 400, 400, 0, 0)
+      
+        stroke r: 0, g: 0, b: 0, thickness: 2
+      }
+      path { # a dynamic path is added semi-declaratively inside on_draw block
+        arc(404, 216, 190, 90, 90, false)
   
         # radial gradient (has an outer_radius in addition to x0, y0, x1, y1, and stops)
         fill outer_radius: 90, x0: 0, y0: 0, x1: 500, y1: 500, stops: [{pos: 0.25, r: 102, g: 102, b: 204, a: 0.5}, {pos: 0.75, r: 204, g: 102, b: 204}]
@@ -4407,9 +4410,9 @@ window('Area Gallery', 400, 400) {
         fill r: 202, g: 102, b: 204, a: 0.5
         stroke r: 0, g: 0, b: 0, thickness: 2
       }
-      text(160, 40, 100) { # x, y, width
+      text(161, 40, 100) { # x, y, width
         string('Area Gallery') {
-          font family: 'Times', size: 14
+          font family: 'Arial', size: 14
           color :black
         }
       }
@@ -4524,10 +4527,10 @@ window('Area Gallery', 400, 400) {
             x 400
             y 400
           }
-
+  
           closed true
         }
-
+  
         fill r: 202, g: 102, b: 104, a: 0.5
         stroke r: 0, g: 0, b: 0
       }
@@ -4560,18 +4563,42 @@ window('Area Gallery', 400, 400) {
             end_x 400
             end_y 400
           }
-
-          closed true
         }
-
+  
         fill r: 202, g: 102, b: 204, a: 0.5
         stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
       }
       path { # a dynamic path is added semi-declaratively inside on_draw block
+        polyline(100, 100, 400, 100, 100, 400, 400, 400, 0, 0)
+        figure {
+          x 100
+          y 100
+          
+          line {
+            x 400
+            y 100
+          }
+          line {
+            x 100
+            y 400
+          }
+          line {
+            x 400
+            y 400
+          }
+          line {
+            x 0
+            y 0
+          }
+        }
+      
+        stroke r: 0, g: 0, b: 0, thickness: 2
+      }
+      path { # a dynamic path is added semi-declaratively inside on_draw block
         arc {
-          x_center 400
-          y_center 220
-          radius 180
+          x_center 404
+          y_center 216
+          radius 190
           start_angle 90
           sweep 90
           is_negative false
@@ -4592,12 +4619,12 @@ window('Area Gallery', 400, 400) {
         stroke r: 0, g: 0, b: 0, thickness: 2
       }
       text {
-        x 160
+        x 161
         y 40
         width 100
         
         string {
-          font family: 'Times', size: 14
+          font family: 'Arial', size: 14
           color :black
           
           'Area Gallery'

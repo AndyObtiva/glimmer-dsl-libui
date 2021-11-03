@@ -18,28 +18,21 @@ window('Area Gallery', 400, 400) {
       fill x0: 10, y0: 10, x1: 350, y1: 350, stops: [{pos: 0.25, r: 204, g: 102, b: 204}, {pos: 0.75, r: 102, g: 102, b: 204}]
     }
     path { # declarative stable path
-      figure(100, 100) {
-        line(100, 400)
-        line(400, 100)
-        line(400, 400)
-
-        closed true
-      }
-
+      polygon(100, 100, 100, 400, 400, 100, 400, 400)
+      
       fill r: 202, g: 102, b: 104, a: 0.5
       stroke r: 0, g: 0, b: 0
     }
     path { # declarative stable path
-      figure(0, 0) {
-        bezier(200, 100, 100, 200, 400, 100)
-        bezier(300, 100, 100, 300, 100, 400)
-        bezier(100, 300, 300, 100, 400, 400)
-
-        closed true
-      }
+      polybezier(0, 0, 200, 100, 100, 200, 400, 100, 300, 100, 100, 300, 100, 400, 100, 300, 300, 100, 400, 400)
 
       fill r: 202, g: 102, b: 204, a: 0.5
       stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
+    }
+    path { # declarative stable path
+      polyline(100, 100, 400, 100, 100, 400, 400, 400, 0, 0)
+    
+      stroke r: 0, g: 0, b: 0, thickness: 2
     }
     path { # declarative stable path
       arc(404, 216, 190, 90, 90, false)
@@ -54,25 +47,9 @@ window('Area Gallery', 400, 400) {
       fill r: 202, g: 102, b: 204, a: 0.5
       stroke r: 0, g: 0, b: 0, thickness: 2
     }
-    path { # declarative stable path
-      polygon([370, 150], [325, 275], [325, 125], [370, 250])
-
-      fill r: 202, g: 102, b: 204, a: 0.5
-      stroke r: 0, g: 0, b: 0, thickness: 2
-    }
-    path { # declarative stable path
-      polyline([150, 50], [175, 25], [225, 25], [250, 50])
-
-      stroke r: 0, g: 0, b: 0, thickness: 2
-    }
-    path { # declarative stable path
-      polybezier([212, 212], [125, 175, 150, 350, 300, 300], [450, 250, 350, 250, 400, 400])
-
-      stroke r: 0, g: 0, b: 0, thickness: 2
-    }
-    text(164, 40, 100) { # x, y, width
+    text(161, 40, 100) { # x, y, width
       string('Area Gallery') {
-        font family: 'Times', size: 14
+        font family: 'Arial', size: 14
         color :black
       }
     }

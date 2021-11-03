@@ -8,42 +8,35 @@ window('Area Gallery', 400, 400) {
       path { # a dynamic path is added semi-declaratively inside on_draw block
         square(0, 0, 100)
         square(100, 100, 400)
-        
+  
         fill r: 102, g: 102, b: 204
       }
       path { # a dynamic path is added semi-declaratively inside on_draw block
         rectangle(0, 100, 100, 400)
         rectangle(100, 0, 400, 100)
-
+  
         # linear gradient (has x0, y0, x1, y1, and stops)
         fill x0: 10, y0: 10, x1: 350, y1: 350, stops: [{pos: 0.25, r: 204, g: 102, b: 204}, {pos: 0.75, r: 102, g: 102, b: 204}]
       }
       path { # a dynamic path is added semi-declaratively inside on_draw block
-        figure(100, 100) {
-          line(100, 400)
-          line(400, 100)
-          line(400, 400)
-
-          closed true
-        }
-
+        polygon(100, 100, 100, 400, 400, 100, 400, 400)
+        
         fill r: 202, g: 102, b: 104, a: 0.5
         stroke r: 0, g: 0, b: 0
       }
       path { # a dynamic path is added semi-declaratively inside on_draw block
-        figure(0, 0) {
-          bezier(200, 100, 100, 200, 400, 100)
-          bezier(300, 100, 100, 300, 100, 400)
-          bezier(100, 300, 300, 100, 400, 400)
-
-          closed true
-        }
-
+        polybezier(0, 0, 200, 100, 100, 200, 400, 100, 300, 100, 100, 300, 100, 400, 100, 300, 300, 100, 400, 400)
+  
         fill r: 202, g: 102, b: 204, a: 0.5
         stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
       }
       path { # a dynamic path is added semi-declaratively inside on_draw block
-        arc(400, 220, 180, 90, 90, false)
+        polyline(100, 100, 400, 100, 100, 400, 400, 400, 0, 0)
+      
+        stroke r: 0, g: 0, b: 0, thickness: 2
+      }
+      path { # a dynamic path is added semi-declaratively inside on_draw block
+        arc(404, 216, 190, 90, 90, false)
   
         # radial gradient (has an outer_radius in addition to x0, y0, x1, y1, and stops)
         fill outer_radius: 90, x0: 0, y0: 0, x1: 500, y1: 500, stops: [{pos: 0.25, r: 102, g: 102, b: 204, a: 0.5}, {pos: 0.75, r: 204, g: 102, b: 204}]
@@ -55,9 +48,9 @@ window('Area Gallery', 400, 400) {
         fill r: 202, g: 102, b: 204, a: 0.5
         stroke r: 0, g: 0, b: 0, thickness: 2
       }
-      text(160, 40, 100) { # x, y, width
+      text(161, 40, 100) { # x, y, width
         string('Area Gallery') {
-          font family: 'Times', size: 14
+          font family: 'Arial', size: 14
           color :black
         }
       }

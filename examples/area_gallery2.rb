@@ -88,18 +88,42 @@ window('Area Gallery', 400, 400) {
           end_x 400
           end_y 400
         }
-
-        closed true
       }
 
       fill r: 202, g: 102, b: 204, a: 0.5
       stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
     }
     path { # declarative stable path
+      polyline(100, 100, 400, 100, 100, 400, 400, 400, 0, 0)
+      figure {
+        x 100
+        y 100
+        
+        line {
+          x 400
+          y 100
+        }
+        line {
+          x 100
+          y 400
+        }
+        line {
+          x 400
+          y 400
+        }
+        line {
+          x 0
+          y 0
+        }
+      }
+    
+      stroke r: 0, g: 0, b: 0, thickness: 2
+    }
+    path { # declarative stable path
       arc {
-        x_center 400
-        y_center 220
-        radius 180
+        x_center 404
+        y_center 216
+        radius 190
         start_angle 90
         sweep 90
         is_negative false
@@ -120,12 +144,12 @@ window('Area Gallery', 400, 400) {
       stroke r: 0, g: 0, b: 0, thickness: 2
     }
     text {
-      x 160
+      x 161
       y 40
       width 100
       
       string {
-        font family: 'Times', size: 14
+        font family: 'Arial', size: 14
         color :black
         
         'Area Gallery'
