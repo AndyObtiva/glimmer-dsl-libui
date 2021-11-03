@@ -3,6 +3,7 @@
 ## 0.2.18
 
 - Support `polygon` (closed figure of lines), `polyline` (open figure of lines), and `polybezier` (open figure of beziers) shape keywords to use under `path`
+- Improve examples/tetris.rb with bevel block 3D look
 - Update examples/area_gallery.rb to add uses of `polygon`, `polyline`, and `polybezier`
 - Refactor examples/histogram.rb to utilize new `polygon` and `polyline` keywords
 

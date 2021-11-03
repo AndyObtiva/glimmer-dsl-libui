@@ -28,6 +28,7 @@ class Tetris
   
   BLOCK_SIZE = 25
   BEVEL_CONSTANT = 20
+  COLOR_GRAY = {r: 192, g: 192, b: 192}
     
   attr_reader :game
   
@@ -67,7 +68,7 @@ class Tetris
           block[:right_bevel_edge].fill = {r: color[:r] - BEVEL_CONSTANT, g: color[:g] - BEVEL_CONSTANT, b: color[:b] - BEVEL_CONSTANT}
           block[:bottom_bevel_edge].fill = {r: color[:r] - BEVEL_CONSTANT, g: color[:g] - BEVEL_CONSTANT, b: color[:b] - BEVEL_CONSTANT}
           block[:left_bevel_edge].fill = {r: color[:r] - BEVEL_CONSTANT, g: color[:g] - BEVEL_CONSTANT, b: color[:b] - BEVEL_CONSTANT}
-          block[:border_square].stroke = color == Model::Block::COLOR_CLEAR ? :gray : color
+          block[:border_square].stroke = new_color == Model::Block::COLOR_CLEAR ? COLOR_GRAY : color
         end.observe(@game.playfield[row][column], :color)
       end
     end
@@ -113,35 +114,37 @@ class Tetris
     block = {}
     bevel_pixel_size = 0.16 * block_size.to_f
     color = Glimmer::LibUI.interpret_color(Model::Block::COLOR_CLEAR)
+    x = column * block_size
+    y = row * block_size
     block[:background_square] = path {
-      square(column * block_size, row * block_size, block_size)
+      square(x, y, block_size)
       
       fill Model::Block::COLOR_CLEAR
     }
     block[:top_bevel_edge] = path {
-      polygon(0, 0, block_size, 0, block_size - bevel_pixel_size, bevel_pixel_size, bevel_pixel_size, bevel_pixel_size)
+      polygon(x, y, x + block_size, y, x + block_size - bevel_pixel_size, y + bevel_pixel_size, x + bevel_pixel_size, y + bevel_pixel_size)
       
       fill r: color[:r] + 4*BEVEL_CONSTANT, g: color[:g] + 4*BEVEL_CONSTANT, b: color[:b] + 4*BEVEL_CONSTANT
     }
     block[:right_bevel_edge] = path {
-      polygon(block_size, 0, block_size - bevel_pixel_size, bevel_pixel_size, block_size - bevel_pixel_size, block_size - bevel_pixel_size, block_size, block_size)
+      polygon(x + block_size, y, x + block_size - bevel_pixel_size, y + bevel_pixel_size, x + block_size - bevel_pixel_size, y + block_size - bevel_pixel_size, x + block_size, y + block_size)
       
       fill r: color[:r] - BEVEL_CONSTANT, g: color[:g] - BEVEL_CONSTANT, b: color[:b] - BEVEL_CONSTANT
     }
     block[:bottom_bevel_edge] = path {
-      polygon(block_size, block_size, 0, block_size, bevel_pixel_size, block_size - bevel_pixel_size, block_size - bevel_pixel_size, block_size - bevel_pixel_size)
+      polygon(x + block_size, y + block_size, x, y + block_size, x + bevel_pixel_size, y + block_size - bevel_pixel_size, x + block_size - bevel_pixel_size, y + block_size - bevel_pixel_size)
       
       fill r: color[:r] - BEVEL_CONSTANT, g: color[:g] - BEVEL_CONSTANT, b: color[:b] - BEVEL_CONSTANT
     }
     block[:left_bevel_edge] = path {
-      polygon(0, 0, 0, block_size, bevel_pixel_size, block_size - bevel_pixel_size, bevel_pixel_size, bevel_pixel_size)
+      polygon(x, y, x, y + block_size, x + bevel_pixel_size, y + block_size - bevel_pixel_size, x + bevel_pixel_size, y + bevel_pixel_size)
       
       fill r: color[:r] - BEVEL_CONSTANT, g: color[:g] - BEVEL_CONSTANT, b: color[:b] - BEVEL_CONSTANT
     }
     block[:border_square] = path {
-      square(0, 0, block_size)
+      square(x, y, block_size)
       
-      stroke :gray
+      stroke COLOR_GRAY
     }
     block
   end
