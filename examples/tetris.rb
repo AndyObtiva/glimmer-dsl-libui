@@ -1,4 +1,4 @@
-# Copyright (c) 2020-2021 Andy Maleh
+# Copyright (c) 2021 Andy Maleh
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -32,9 +32,22 @@ class Tetris
   
   def initialize
     @game = Model::Game.new
-        
     create_gui
-    
+    register_observers
+  end
+  
+  def launch
+    @game.start!
+    @main_window.show
+  end
+  
+  def create_gui
+    @main_window = window('Glimmer Tetris', Model::Game::PLAYFIELD_WIDTH * BLOCK_SIZE, Model::Game::PLAYFIELD_HEIGHT * BLOCK_SIZE) {
+      playfield(playfield_width: Model::Game::PLAYFIELD_WIDTH, playfield_height: Model::Game::PLAYFIELD_HEIGHT, block_size: BLOCK_SIZE)
+    }
+  end
+  
+  def register_observers
     Glimmer::DataBinding::Observer.proc do |game_over|
       if game_over
         show_game_over_dialog
@@ -52,17 +65,6 @@ class Tetris
     end
   end
   
-  def launch
-    @game.start!
-    @main_window.show
-  end
-  
-  def create_gui
-    @main_window = window('Glimmer Tetris', Model::Game::PLAYFIELD_WIDTH * BLOCK_SIZE, Model::Game::PLAYFIELD_HEIGHT * BLOCK_SIZE) {
-      playfield(playfield_width: Model::Game::PLAYFIELD_WIDTH, playfield_height: Model::Game::PLAYFIELD_HEIGHT, block_size: BLOCK_SIZE)
-    }
-  end
-  
   def playfield(playfield_width: , playfield_height: , block_size: )
     area {
       @blocks = playfield_height.times.map do |row|
@@ -71,7 +73,7 @@ class Tetris
         end
       end
       
-      on_key_down { |key_event|
+      on_key_down do |key_event|
         case key_event
         in ext_key: :down
           game.down!
@@ -95,7 +97,7 @@ class Tetris
         else
           # Do Nothing
         end
-      }
+      end
     }
   end
   
