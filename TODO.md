@@ -2,12 +2,14 @@
 
 ## Next
 
-- (API Changing) Rename `key_value` and `ext_key_value` to `key_code` and `ext_key_code` in `area_key_event` `Hash`
-- Support nesting shapes directly under area to represent paths having one shape, and nesting fill/stroke within the shapes (not path)
+- Tetris example
 
 ## Soon
 
-None
+- Tic Tac Toe example 
+- Snake example
+- (API Changing) Rename `key_value` and `ext_key_value` to `key_code` and `ext_key_code` in `area_key_event` `Hash`
+- Support nesting shapes directly under area to represent paths having one shape, and nesting fill/stroke within the shapes (not path)
 
 ## Future
 
@@ -24,7 +26,7 @@ None
 - Implement Mac Native-Executable Packaging (perhaps with https://github.com/create-dmg/create-dmg or https://github.com/sveinbjornt/Platypus)
 - Scaffold an application with support for gem and native-executable packaging
 - Easy Drag and Drop via `drag_source true`, `drag_and_move true`, and `on_drop { }` event
-- Create more advanced examples such as Tetris, Calculator, Tic Tac Toe, Connect 4, Clock, Metronome, Weather, Stock Ticker, Battleship, Game of Life
+- Create more advanced examples such as Calculator, Connect 4, Clock, Metronome, Weather, Stock Ticker, Battleship, Game of Life
 
 ## Maybe
 
