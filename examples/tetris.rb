@@ -27,6 +27,7 @@ class Tetris
   include Glimmer
   
   BLOCK_SIZE = 25
+  BEVEL_CONSTANT = 20
     
   attr_reader :game
   

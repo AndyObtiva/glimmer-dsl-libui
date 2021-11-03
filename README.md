@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.2.16
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.2.17
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -284,6 +284,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
     - [Basic Draw Text](#basic-draw-text)
     - [Custom Draw Text](#custom-draw-text)
     - [Method-Based Custom Keyword](#method-based-custom-keyword)
+    - [Tetris](#tetris)
   - [Applications](#applications)
     - [Manga2PDF](#manga2pdf)
     - [Befunge98 GUI](#befunge98-gui)
@@ -376,7 +377,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.2.16'
+gem 'glimmer-dsl-libui', '~> 0.2.17'
 ```
 
 Add `require 'glimmer-dsl-libui'` at the top, and then `include Glimmer` into the top-level main object for testing or into an actual class for serious usage.
@@ -6197,6 +6198,134 @@ window('Method-Based Custom Keyword') {
     }
   }
 }.show
+```
+
+### Tetris
+
+[examples/tetris.rb](examples/tetris.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/tetris.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/tetris'"
+```
+
+Mac
+
+![glimmer-dsl-libui-mac-tetris.png](images/glimmer-dsl-libui-mac-tetris.png)
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+require 'glimmer-dsl-libui'
+
+require_relative 'tetris/model/game'
+
+class Tetris
+  include Glimmer
+  
+  BLOCK_SIZE = 25
+  BEVEL_CONSTANT = 20
+    
+  attr_reader :game
+  
+  def initialize
+    @game = Model::Game.new
+    create_gui
+    register_observers
+  end
+  
+  def launch
+    @game.start!
+    @main_window.show
+  end
+  
+  def create_gui
+    @main_window = window('Glimmer Tetris', Model::Game::PLAYFIELD_WIDTH * BLOCK_SIZE, Model::Game::PLAYFIELD_HEIGHT * BLOCK_SIZE) {
+      playfield(playfield_width: Model::Game::PLAYFIELD_WIDTH, playfield_height: Model::Game::PLAYFIELD_HEIGHT, block_size: BLOCK_SIZE)
+    }
+  end
+  
+  def register_observers
+    Glimmer::DataBinding::Observer.proc do |game_over|
+      if game_over
+        show_game_over_dialog
+      else
+        start_moving_tetrominos_down
+      end
+    end.observe(@game, :game_over)
+    
+    Model::Game::PLAYFIELD_HEIGHT.times do |row|
+      Model::Game::PLAYFIELD_HEIGHT.times do |column|
+        Glimmer::DataBinding::Observer.proc do |new_color|
+          @blocks[row][column].fill = new_color
+        end.observe(@game.playfield[row][column], :color)
+      end
+    end
+  end
+  
+  def playfield(playfield_width: , playfield_height: , block_size: )
+    area {
+      @blocks = playfield_height.times.map do |row|
+        playfield_width.times.map do |column|
+          block(row: row, column: column, block_size: block_size)
+        end
+      end
+      
+      on_key_down do |key_event|
+        case key_event
+        in ext_key: :down
+          game.down!
+        in ext_key: :up
+          case game.up_arrow_action
+          when :instant_down
+            game.down!(instant: true)
+          when :rotate_right
+            game.rotate!(:right)
+          when :rotate_left
+            game.rotate!(:left)
+          end
+        in ext_key: :left
+          game.left!
+        in ext_key: :right
+          game.right!
+        in modifier: :shift
+          game.rotate!(:right)
+        in modifier: :control
+          game.rotate!(:left)
+        else
+          # Do Nothing
+        end
+      end
+    }
+  end
+  
+  def block(row: , column: , block_size: )
+    path {
+      square(column * block_size, row * block_size, block_size)
+      
+      fill Model::Block::COLOR_CLEAR
+    }
+  end
+  
+  def start_moving_tetrominos_down
+    Glimmer::LibUI.timer(@game.delay) do
+      @game.down! if !@game.game_over? && !@game.paused?
+    end
+  end
+  
+  def show_game_over_dialog
+    msg_box('Game Over', "Score: #{@game.high_scores.first.score}")
+  end
+end
+
+Tetris.new.launch
 ```
 
 ## Applications

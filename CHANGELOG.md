@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.2.17
+
+- Tetris example - basic version with simple color squares
+
 ## 0.2.16
 
 - Document all examples with Windows screenshots
