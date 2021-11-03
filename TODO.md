@@ -5,7 +5,6 @@
 - Improve Tetris example with bevel block look
 - Improve Tetris example with score lane (indicating next Tetromino, score, level, and lines)
 - Improve Tetris example with menus
-- Support `polygon` and `polyline` shape keywords to use under `path`
 
 ## Soon
 

@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.2.18
+
+- Support `polygon` (closed figure of lines), `polyline` (open figure of lines), and `polybezier` (open figure of beziers) shape keywords to use under `path`
+- Update examples/area_gallery.rb to add uses of `polygon`, `polyline`, and `polybezier`
+- Refactor examples/histogram.rb to utilize new `polyline` and `polygon` keywords
+
 ## 0.2.17
 
 - Tetris example - basic version with simple color squares

@@ -494,6 +494,9 @@ Keyword(Args) | Properties | Listeners
 `non_wrapping_multiline_entry` | `read_only` (Boolean), `text` (`String`) | `on_changed`
 `password_entry` | `read_only` (Boolean), `text` (`String`) | `on_changed`
 `path(draw_fill_mode = :winding)` | `fill` (`Hash` of `:r` as `0`-`255`, `:g` as `0`-`255`, `:b` as `0`-`255`, `:a` as `0.0`-`1.0`, hex, or [X11](https://en.wikipedia.org/wiki/X11_color_names) color), `stroke` (`Hash` of `:r` as `0`-`255`, `:g` as `0`-`255`, `:b` as `0`-`255`, `:a` as `0.0`-`1.0`, hex, or [X11](https://en.wikipedia.org/wiki/X11_color_names) color), `:cap` as (`:round`, `:square`, `:flat`), `:join` as (`:miter`, `:round`, `:bevel`), `:thickness` as `Numeric`, `:miter_limit` as `Numeric`, `:dashes` as `Array` of `Numeric` ) | None
+`polygon(point_array as Array of Arrays of Numeric or Array of Numeric)` | `point_array` (`Array of Arrays of Numeric or Array of Numeric`) | None
+`polyline(point_array as Array of Arrays of Numeric or Array of Numeric)` | `point_array` (`Array of Arrays of Numeric or Array of Numeric`) | None
+`polybezier(point_array as Array of Arrays of Numeric or Array of Numeric)` | `point_array` (`Array of Arrays of Numeric or Array of Numeric`) | None
 `preferences_menu_item` | None | `on_clicked`
 `progress_bar` | `value` (`Numeric`) | None
 `progress_bar_column(name as String)` | None | None
@@ -745,6 +748,9 @@ Available nested `path` shapes:
 - `arc(x_center as Numeric, y_center as Numeric, radius as Numeric, start_angle as Numeric, sweep as Numeric, is_negative as Boolean)`
 - `line(x as Numeric, y as Numeric)`
 - `bezier(c1_x as Numeric, c1_y as Numeric, c2_x as Numeric, c2_y as Numeric, end_x as Numeric, end_y as Numeric)`
+- `polygon(point_array as Array of Arrays of Numeric or Array of Numeric)`: closed figure of lines; can receive points as [[x1, y1], [x2, y2], ...] or [x1, y1, x2, y2, ...]
+- `polyline(point_array as Array of Arrays of Numeric or Array of Numeric)`: open figure of lines; can receive points as [[x1, y1], [x2, y2], ...] or [x1, y1, x2, y2, ...]
+- `polybezier(point_array as Array of Arrays of Numeric or Array of Numeric)`: open figure of beziers; can receive points as [[start_x1, start_y1], [c1_x2, c1_y2, c2_x2, c2_y2, end_x2, end_y2], [c1_x3, c1_y3, c2_x3, c2_y3, end_x3, end_y3], ...] or [start_x1, start_y1, c1_x2, c1_y2, c2_x2, c2_y2, end_x2, end_y2, c1_x3, c1_y3, c2_x3, c2_y3, end_x3, end_y3, ...]
 - `figure(x=nil as Numeric, y=nil as Numeric)` (composite that can contain other shapes) (can set `closed true` to connect last point to first point automatically)
 
 Check [examples/area_gallery.rb](#area-gallery) for an overiew of all `path` shapes.
@@ -4908,20 +4914,13 @@ end
 
 # method-based custom control representing a graph path
 def graph_path(width, height, should_extend, &block)
-  locations = point_locations(width, height)
+  locations = point_locations(width, height).flatten
   path {
-    first_location = locations[0] # x and y
-    figure(first_location[0], first_location[1]) {
-      locations.each do |loc|
-        line(loc[0], loc[1])
-      end
-      if should_extend
-        line(width, height)
-        line(0, height)
-        
-        closed true
-      end
-    }
+    if should_extend
+      polygon(locations + [width, height, 0, height])
+    else
+      polyline(locations)
+    end
     
     # apply a transform to the coordinate space for this path so (0, 0) is the top-left corner of the graph
     transform {

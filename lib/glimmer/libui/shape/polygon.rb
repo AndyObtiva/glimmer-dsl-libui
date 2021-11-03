@@ -19,37 +19,26 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'glimmer/dsl/expression'
-require 'glimmer/dsl/parent_expression'
+require 'glimmer/libui/shape'
 
 module Glimmer
-  module DSL
-    module Libui
-      class ShapeExpression < Expression
-        include ParentExpression
-  
-        def can_interpret?(parent, keyword, *args, &block)
-          Glimmer::LibUI::Shape.exists?(keyword) and
-            (
-              parent.is_a?(Glimmer::LibUI::ControlProxy::PathProxy) or
-                parent.is_a?(Glimmer::LibUI::Shape)
-            )
-        end
-  
-        def interpret(parent, keyword, *args, &block)
-          args = [args] if args.size > 1 && Glimmer::LibUI::Shape.shape_class(keyword).parameters.size == 1
-          Glimmer::LibUI::Shape.create(keyword, parent, args, &block)
-        end
-        
-        def add_content(parent, keyword, *args, &block)
+  module LibUI
+    class Shape
+      class Polygon < Shape
+        parameters :point_array
+        parameter_defaults []
+      
+        def draw(area_draw_params)
+          unless point_array.to_a.compact.empty?
+            ::LibUI.draw_path_new_figure(path_proxy.libui, point_array[0], point_array[1])
+            ((point_array.size - 2) / 2).times do |n|
+              ::LibUI.draw_path_line_to(path_proxy.libui, point_array[(n * 2) + 2], point_array[(n * 2) + 3])
+            end
+            ::LibUI.draw_path_close_figure(path_proxy.libui)
+          end
           super
-          parent.post_add_content
         end
-        
       end
     end
   end
 end
-
-require 'glimmer/libui/control_proxy/path_proxy'
-require 'glimmer/libui/shape'

@@ -31,20 +31,13 @@ end
 
 # method-based custom control representing a graph path
 def graph_path(width, height, should_extend, &block)
-  locations = point_locations(width, height)
+  locations = point_locations(width, height).flatten
   path {
-    first_location = locations[0] # x and y
-    figure(first_location[0], first_location[1]) {
-      locations.each do |loc|
-        line(loc[0], loc[1])
-      end
-      if should_extend
-        line(width, height)
-        line(0, height)
-        
-        closed true
-      end
-    }
+    if should_extend
+      polygon(locations + [width, height, 0, height])
+    else
+      polyline(locations)
+    end
     
     # apply a transform to the coordinate space for this path so (0, 0) is the top-left corner of the graph
     transform {

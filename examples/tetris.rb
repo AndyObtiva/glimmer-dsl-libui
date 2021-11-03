@@ -60,7 +60,14 @@ class Tetris
     Model::Game::PLAYFIELD_HEIGHT.times do |row|
       Model::Game::PLAYFIELD_HEIGHT.times do |column|
         Glimmer::DataBinding::Observer.proc do |new_color|
-          @blocks[row][column].fill = new_color
+          color = Glimmer::LibUI.interpret_color(new_color)
+          block = @blocks[row][column]
+          block[:background_square].fill = color
+          block[:top_bevel_edge].fill = {r: color[:r] + 4*BEVEL_CONSTANT, g: color[:g] + 4*BEVEL_CONSTANT, b: color[:b] + 4*BEVEL_CONSTANT}
+          block[:right_bevel_edge].fill = {r: color[:r] - BEVEL_CONSTANT, g: color[:g] - BEVEL_CONSTANT, b: color[:b] - BEVEL_CONSTANT}
+          block[:bottom_bevel_edge].fill = {r: color[:r] - BEVEL_CONSTANT, g: color[:g] - BEVEL_CONSTANT, b: color[:b] - BEVEL_CONSTANT}
+          block[:left_bevel_edge].fill = {r: color[:r] - BEVEL_CONSTANT, g: color[:g] - BEVEL_CONSTANT, b: color[:b] - BEVEL_CONSTANT}
+          block[:border_square].stroke = color == Model::Block::COLOR_CLEAR ? :gray : color
         end.observe(@game.playfield[row][column], :color)
       end
     end
@@ -103,11 +110,40 @@ class Tetris
   end
   
   def block(row: , column: , block_size: )
-    path {
+    block = {}
+    bevel_pixel_size = 0.16 * block_size.to_f
+    color = Glimmer::LibUI.interpret_color(Model::Block::COLOR_CLEAR)
+    block[:background_square] = path {
       square(column * block_size, row * block_size, block_size)
       
       fill Model::Block::COLOR_CLEAR
     }
+    block[:top_bevel_edge] = path {
+      polygon(0, 0, block_size, 0, block_size - bevel_pixel_size, bevel_pixel_size, bevel_pixel_size, bevel_pixel_size)
+      
+      fill r: color[:r] + 4*BEVEL_CONSTANT, g: color[:g] + 4*BEVEL_CONSTANT, b: color[:b] + 4*BEVEL_CONSTANT
+    }
+    block[:right_bevel_edge] = path {
+      polygon(block_size, 0, block_size - bevel_pixel_size, bevel_pixel_size, block_size - bevel_pixel_size, block_size - bevel_pixel_size, block_size, block_size)
+      
+      fill r: color[:r] - BEVEL_CONSTANT, g: color[:g] - BEVEL_CONSTANT, b: color[:b] - BEVEL_CONSTANT
+    }
+    block[:bottom_bevel_edge] = path {
+      polygon(block_size, block_size, 0, block_size, bevel_pixel_size, block_size - bevel_pixel_size, block_size - bevel_pixel_size, block_size - bevel_pixel_size)
+      
+      fill r: color[:r] - BEVEL_CONSTANT, g: color[:g] - BEVEL_CONSTANT, b: color[:b] - BEVEL_CONSTANT
+    }
+    block[:left_bevel_edge] = path {
+      polygon(0, 0, 0, block_size, bevel_pixel_size, block_size - bevel_pixel_size, bevel_pixel_size, bevel_pixel_size)
+      
+      fill r: color[:r] - BEVEL_CONSTANT, g: color[:g] - BEVEL_CONSTANT, b: color[:b] - BEVEL_CONSTANT
+    }
+    block[:border_square] = path {
+      square(0, 0, block_size)
+      
+      stroke :gray
+    }
+    block
   end
   
   def start_moving_tetrominos_down
