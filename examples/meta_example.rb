@@ -11,7 +11,7 @@ class MetaExample
   
   def examples
     if @examples.nil?
-      example_files = Dir.glob(File.join(File.expand_path('.', __dir__), '**', '*.rb'))
+      example_files = Dir.glob(File.join(File.expand_path('.', __dir__), '*.rb'))
       example_file_names = example_files.map { |f| File.basename(f, '.rb') }
       example_file_names = example_file_names.reject { |f| f == 'meta_example' || f.match(/\d$/) }
       @examples = example_file_names.map { |f| f.underscore.titlecase }
@@ -110,6 +110,8 @@ class MetaExample
                   FileUtils.mkdir_p(parent_dir)
                   example_file = File.join(parent_dir, "#{selected_example.underscore}.rb")
                   File.write(example_file, @code_entry.text)
+                  example_supporting_directory = File.expand_path(selected_example.underscore, __dir__)
+                  FileUtils.cp_r(example_supporting_directory, parent_dir) if Dir.exist?(example_supporting_directory)
                   FileUtils.cp_r(File.expand_path('../icons', __dir__), File.dirname(parent_dir))
                   FileUtils.cp_r(File.expand_path('../sounds', __dir__), File.dirname(parent_dir))
                   run_example(example_file)
