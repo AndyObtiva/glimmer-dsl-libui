@@ -2,6 +2,8 @@
 
 ## Next
 
+- Implement `bounds` property for all shapes (useful to avoid auto redrawing outside changed region)
+- Update Tetris to auto-redraw only changed regions of playfield
 - Document `area` `request_auto_redraw`, `pause_auto_redraw`, and `resume_auto_redraw`, operations, and `auto_redraw_enabled` property.
 
 - Improve Tetris example with score lane (indicating next Tetromino, score, level, and lines)

@@ -133,7 +133,7 @@ module Glimmer
         def resume_auto_redraw
           self.auto_redraw_enabled = true
         end
-          
+        
         private
         
         def build_control
