@@ -2,12 +2,6 @@
 
 ## Next
 
-- Implement `bounds` property for all shapes (useful to avoid auto redrawing outside changed region)
-- Update Tetris to auto-redraw only changed regions of playfield
-- Try DrawingContext Save and Restore methods to optimize performance
-- Try groupong path shapes of the same color in Tetris under one path as a performance improvement
-- Document `area` `request_auto_redraw`, `pause_auto_redraw`, and `resume_auto_redraw`, operations, and `auto_redraw_enabled` property.
-
 - Improve Tetris example with score lane (indicating next Tetromino, score, level, and lines)
 - Improve Tetris example with menus
 
@@ -63,6 +57,7 @@ None
 - Automatically call `Glimmer::LibUI.queue_main` when operating on GUI from a different thread
 - Override `#inspect` method for area, path, text, and/or other controls in case they contain many shapes, to prevent their printout from being too large
 - Implement functionality to delay queuing area redraws until post_add_content has been called (area definition is done). Maybe offer an option to enable redrawing before area is closed too.
+- Implement `bounds` property for all shapes
 
 # Refactoring
 
