@@ -2,7 +2,6 @@
 
 ## Next
 
-- Improve Tetris example with score lane (indicating next Tetromino, score, level, and lines)
 - Improve Tetris example with menus
 
 ## Soon

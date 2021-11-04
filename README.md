@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.2.18
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.2.19
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -370,7 +370,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.2.18'
+gem 'glimmer-dsl-libui', '~> 0.2.19'
 ```
 
 Add `require 'glimmer-dsl-libui'` at the top, and then `include Glimmer` into the top-level main object for testing or into an actual class for serious usage.
@@ -446,7 +446,7 @@ These are all the supported keywords. Note that some keywords do not represent c
 Keyword(Args) | Properties | Listeners
 ------------- | ---------- | ---------
 `about_menu_item` | None | `on_clicked`
-`area` | None | `on_draw(area_draw_params)`, `on_mouse_event(area_mouse_event)`, `on_mouse_down(area_mouse_event)`, `on_mouse_up(area_mouse_event)`, `on_mouse_drag_started(area_mouse_event)`, `on_mouse_dragged(area_mouse_event)`, `on_mouse_dropped(area_mouse_event)`, `on_mouse_entered`, `on_mouse_exited`, `on_key_event(area_key_event)`, `on_key_down(area_key_event)`, `on_key_up(area_key_event)`
+`area` | `auto_draw_enabled` | `on_draw(area_draw_params)`, `on_mouse_event(area_mouse_event)`, `on_mouse_down(area_mouse_event)`, `on_mouse_up(area_mouse_event)`, `on_mouse_drag_started(area_mouse_event)`, `on_mouse_dragged(area_mouse_event)`, `on_mouse_dropped(area_mouse_event)`, `on_mouse_entered`, `on_mouse_exited`, `on_key_event(area_key_event)`, `on_key_down(area_key_event)`, `on_key_up(area_key_event)`
 `arc(x_center as Numeric, y_center as Numeric, radius as Numeric, start_angle as Numeric, sweep as Numeric, is_negative as Boolean)` | `x_center` (`Numeric`), `y_center` (`Numeric`), `radius` (`Numeric`), `start_angle` (`Numeric`), `sweep` (`Numeric`), `is_negative` (Boolean) | None
 `background_color_column(name as String)` | None | None
 `bezier(c1_x as Numeric, c1_y as Numeric, c2_x as Numeric, c2_y as Numeric, end_x as Numeric, end_y as Numeric)` | `c1_x` (`Numeric`), `c1_y` (`Numeric`), `c2_x` (`Numeric`), `c2_y` (`Numeric`), `end_x` (`Numeric`), `end_y` (`Numeric`) | None
@@ -6252,6 +6252,8 @@ Mac
 
 ![glimmer-dsl-libui-mac-tetris.png](images/glimmer-dsl-libui-mac-tetris.png)
 
+![glimmer-dsl-libui-mac-tetris-game-over.png](images/glimmer-dsl-libui-mac-tetris-game-over.png)
+
 New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
 
 ```ruby
@@ -6270,18 +6272,30 @@ class Tetris
   
   def initialize
     @game = Model::Game.new
-    create_gui
-    register_observers
   end
   
   def launch
+    create_gui
+    register_observers
     @game.start!
     @main_window.show
   end
   
   def create_gui
-    @main_window = window('Glimmer Tetris', Model::Game::PLAYFIELD_WIDTH * BLOCK_SIZE, Model::Game::PLAYFIELD_HEIGHT * BLOCK_SIZE) {
-      playfield(playfield_width: Model::Game::PLAYFIELD_WIDTH, playfield_height: Model::Game::PLAYFIELD_HEIGHT, block_size: BLOCK_SIZE)
+    @main_window = window('Glimmer Tetris') {
+      content_size Model::Game::PLAYFIELD_WIDTH * BLOCK_SIZE, Model::Game::PLAYFIELD_HEIGHT * BLOCK_SIZE + 98
+      
+      vertical_box {
+        label { # filler
+          stretchy false
+        }
+        
+        score_board(block_size: BLOCK_SIZE) {
+          stretchy false
+        }
+        
+        @playfield_blocks = playfield(playfield_width: Model::Game::PLAYFIELD_WIDTH, playfield_height: Model::Game::PLAYFIELD_HEIGHT, block_size: BLOCK_SIZE)
+      }
     }
   end
   
@@ -6295,11 +6309,11 @@ class Tetris
     end.observe(@game, :game_over)
     
     Model::Game::PLAYFIELD_HEIGHT.times do |row|
-      Model::Game::PLAYFIELD_HEIGHT.times do |column|
+      Model::Game::PLAYFIELD_WIDTH.times do |column|
         Glimmer::DataBinding::Observer.proc do |new_color|
           Glimmer::LibUI.queue_main do
             color = Glimmer::LibUI.interpret_color(new_color)
-            block = @blocks[row][column]
+            block = @playfield_blocks[row][column]
             block[:background_square].fill = color
             block[:top_bevel_edge].fill = {r: color[:r] + 4*BEVEL_CONSTANT, g: color[:g] + 4*BEVEL_CONSTANT, b: color[:b] + 4*BEVEL_CONSTANT}
             block[:right_bevel_edge].fill = {r: color[:r] - BEVEL_CONSTANT, g: color[:g] - BEVEL_CONSTANT, b: color[:b] - BEVEL_CONSTANT}
@@ -6310,27 +6324,65 @@ class Tetris
         end.observe(@game.playfield[row][column], :color)
       end
     end
+    
+    Model::Game::PREVIEW_PLAYFIELD_HEIGHT.times do |row|
+      Model::Game::PREVIEW_PLAYFIELD_WIDTH.times do |column|
+        Glimmer::DataBinding::Observer.proc do |new_color|
+          Glimmer::LibUI.queue_main do
+            color = Glimmer::LibUI.interpret_color(new_color)
+            block = @preview_playfield_blocks[row][column]
+            block[:background_square].fill = color
+            block[:top_bevel_edge].fill = {r: color[:r] + 4*BEVEL_CONSTANT, g: color[:g] + 4*BEVEL_CONSTANT, b: color[:b] + 4*BEVEL_CONSTANT}
+            block[:right_bevel_edge].fill = {r: color[:r] - BEVEL_CONSTANT, g: color[:g] - BEVEL_CONSTANT, b: color[:b] - BEVEL_CONSTANT}
+            block[:bottom_bevel_edge].fill = {r: color[:r] - BEVEL_CONSTANT, g: color[:g] - BEVEL_CONSTANT, b: color[:b] - BEVEL_CONSTANT}
+            block[:left_bevel_edge].fill = {r: color[:r] - BEVEL_CONSTANT, g: color[:g] - BEVEL_CONSTANT, b: color[:b] - BEVEL_CONSTANT}
+            block[:border_square].stroke = new_color == Model::Block::COLOR_CLEAR ? COLOR_GRAY : color
+          end
+        end.observe(@game.preview_playfield[row][column], :color)
+      end
+    end
+
+    Glimmer::DataBinding::Observer.proc do |new_score|
+      Glimmer::LibUI.queue_main do
+        @score_label.text = new_score.to_s
+      end
+    end.observe(@game, :score)
+
+    Glimmer::DataBinding::Observer.proc do |new_lines|
+      Glimmer::LibUI.queue_main do
+        @lines_label.text = new_lines.to_s
+      end
+    end.observe(@game, :lines)
+
+    Glimmer::DataBinding::Observer.proc do |new_level|
+      Glimmer::LibUI.queue_main do
+        @level_label.text = new_level.to_s
+      end
+    end.observe(@game, :level)
   end
   
-  def playfield(playfield_width: , playfield_height: , block_size: )
-    @blocks = []
+  def playfield(playfield_width: , playfield_height: , block_size: , &extra_content)
+    blocks = []
     vertical_box {
       padded false
       
       playfield_height.times.map do |row|
-        @blocks << []
+        blocks << []
         horizontal_box {
           padded false
           
           playfield_width.times.map do |column|
-            @blocks.last << block(row: row, column: column, block_size: block_size)
+            blocks.last << block(row: row, column: column, block_size: block_size)
           end
         }
       end
+      
+      extra_content&.call
     }
+    blocks
   end
   
-  def block(row: , column: , block_size: )
+  def block(row: , column: , block_size: , &extra_content)
     block = {}
     bevel_pixel_size = 0.16 * block_size.to_f
     color = Glimmer::LibUI.interpret_color(Model::Block::COLOR_CLEAR)
@@ -6370,6 +6422,8 @@ class Tetris
         case key_event
         in ext_key: :down
           game.down!
+        in key: ' '
+          game.down!(instant: true)
         in ext_key: :up
           case game.up_arrow_action
           when :instant_down
@@ -6391,8 +6445,63 @@ class Tetris
           # Do Nothing
         end
       end
+      
+      extra_content&.call
     }
     block
+  end
+  
+  def score_board(block_size: , &extra_content)
+    vertical_box {
+      horizontal_box {
+        label # filler
+        @preview_playfield_blocks = playfield(playfield_width: Model::Game::PREVIEW_PLAYFIELD_WIDTH, playfield_height: Model::Game::PREVIEW_PLAYFIELD_HEIGHT, block_size: block_size)
+        label # filler
+      }
+
+      horizontal_box {
+        label # filler
+        grid {
+          stretchy false
+          
+          label('Score') {
+            left 0
+            top 0
+            halign :fill
+          }
+          @score_label = label {
+            left 0
+            top 1
+            halign :center
+          }
+    
+          label('Lines') {
+            left 1
+            top 0
+            halign :fill
+          }
+          @lines_label = label {
+            left 1
+            top 1
+            halign :center
+          }
+    
+          label('Level') {
+            left 2
+            top 0
+            halign :fill
+          }
+          @level_label = label {
+            left 2
+            top 1
+            halign :center
+          }
+        }
+        label # filler
+      }
+    
+      extra_content&.call
+    }
   end
   
   def start_moving_tetrominos_down

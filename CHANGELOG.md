@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.2.19
+
+- Improve examples/tetris.rb with a score board (indicating next Tetromino, score, level, and lines)
+- Add instant down action to examples/tetris.rb upon hitting the space button
+
 ## 0.2.18
 
 - Support `polygon` (closed figure of lines), `polyline` (open figure of lines), and `polybezier` (open figure of beziers) shape keywords to use under `path`
