@@ -85,11 +85,13 @@ class Tetris
       
       def clear_high_scores!
         high_scores.clear
+        save_high_scores!
       end
       
       def add_high_score!
         self.added_high_score = true
         high_scores.prepend(PastGame.new("Player #{high_scores.count + 1}", score, lines, level))
+        save_high_scores!
       end
       
       def save_high_scores!

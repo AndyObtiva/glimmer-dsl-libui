@@ -6236,6 +6236,8 @@ window('Method-Based Custom Keyword') {
 
 ### Tetris
 
+Glimmer Tetris utilizes many small areas to represent Tetromino blocks because this ensures smaller redraws per tetromino block color change, thus higher performance than having one area that gets redrawn on every little change.
+
 [examples/tetris.rb](examples/tetris.rb)
 
 Run with this command from the root of the project if you cloned the project:
@@ -6270,8 +6272,6 @@ class Tetris
   BEVEL_CONSTANT = 20
   COLOR_GRAY = {r: 192, g: 192, b: 192}
     
-  attr_reader :game
-  
   def initialize
     @game = Model::Game.new
   end
@@ -6284,8 +6284,11 @@ class Tetris
   end
   
   def create_gui
+    menu_bar
+    
     @main_window = window('Glimmer Tetris') {
       content_size Model::Game::PLAYFIELD_WIDTH * BLOCK_SIZE, Model::Game::PLAYFIELD_HEIGHT * BLOCK_SIZE + 98
+      resizable false
       
       vertical_box {
         label { # filler
@@ -6304,8 +6307,10 @@ class Tetris
   def register_observers
     Glimmer::DataBinding::Observer.proc do |game_over|
       if game_over
+        @pause_menu_item.enabled = false
         show_game_over_dialog
       else
+        @pause_menu_item.enabled = true
         start_moving_tetrominos_down
       end
     end.observe(@game, :game_over)
@@ -6361,6 +6366,76 @@ class Tetris
         @level_label.text = new_level.to_s
       end
     end.observe(@game, :level)
+  end
+  
+  def menu_bar
+    menu('Game') {
+      @pause_menu_item = check_menu_item('Pause') {
+        enabled false
+        
+        on_clicked do
+          @game.paused = @pause_menu_item.checked?
+        end
+      }
+      menu_item('Restart') {
+        on_clicked do
+          @game.restart!
+        end
+      }
+      separator_menu_item
+      menu_item('Exit') {
+        on_clicked do
+          exit(0)
+        end
+      }
+      quit_menu_item if OS.mac?
+    }
+    
+    menu('View') {
+      menu_item('Show High Scores') {
+        on_clicked do
+          show_high_scores
+        end
+      }
+      menu_item('Clear High Scores') {
+        on_clicked {
+          @game.clear_high_scores!
+        }
+      }
+    }
+
+    menu('Options') {
+      radio_menu_item('Instant Down on Up Arrow') {
+        on_clicked do
+          @game.instant_down_on_up = true
+        end
+      }
+      radio_menu_item('Rotate Right on Up Arrow') {
+        on_clicked do
+          @game.rotate_right_on_up = true
+        end
+      }
+      radio_menu_item('Rotate Left on Up Arrow') {
+        on_clicked do
+          @game.rotate_left_on_up = true
+        end
+      }
+    }
+
+    menu('Help') {
+      if OS.mac?
+        about_menu_item {
+          on_clicked do
+            show_about_dialog
+          end
+        }
+      end
+      menu_item('About') {
+        on_clicked do
+          show_about_dialog
+        end
+      }
+    }
   end
   
   def playfield(playfield_width: , playfield_height: , block_size: , &extra_content)
@@ -6423,26 +6498,26 @@ class Tetris
       on_key_down do |key_event|
         case key_event
         in ext_key: :down
-          game.down!
+          @game.down!
         in key: ' '
-          game.down!(instant: true)
+          @game.down!(instant: true)
         in ext_key: :up
-          case game.up_arrow_action
+          case @game.up_arrow_action
           when :instant_down
-            game.down!(instant: true)
+            @game.down!(instant: true)
           when :rotate_right
-            game.rotate!(:right)
+            @game.rotate!(:right)
           when :rotate_left
-            game.rotate!(:left)
+            @game.rotate!(:left)
           end
         in ext_key: :left
-          game.left!
+          @game.left!
         in ext_key: :right
-          game.right!
+          @game.right!
         in modifier: :shift
-          game.rotate!(:right)
+          @game.rotate!(:right)
         in modifier: :control
-          game.rotate!(:left)
+          @game.rotate!(:left)
         else
           # Do Nothing
         end
@@ -6514,8 +6589,27 @@ class Tetris
   
   def show_game_over_dialog
     Glimmer::LibUI.queue_main do
-      msg_box('Game Over', "Score: #{@game.high_scores.first.score}\nLines: #{@game.high_scores.first.lines}\nLevel: #{@game.high_scores.first.level}")
+      msg_box('Game Over!', "Score: #{@game.high_scores.first.score}\nLines: #{@game.high_scores.first.lines}\nLevel: #{@game.high_scores.first.level}")
       @game.restart!
+    end
+  end
+  
+  def show_high_scores
+    Glimmer::LibUI.queue_main do
+      if @game.high_scores.empty?
+        high_scores_string = "No games have been scored yet."
+      else
+        high_scores_string = @game.high_scores.map do |high_score|
+          "#{high_score.name} | Score: #{high_score.score} | Lines: #{high_score.lines} | Level: #{high_score.level}"
+        end.join("\n")
+      end
+      msg_box('High Scores', high_scores_string)
+    end
+  end
+  
+  def show_about_dialog
+    Glimmer::LibUI.queue_main do
+      msg_box('About', 'Glimmer Tetris - Glimmer DSL for LibUI Example - Copyright (c) 2021 Andy Maleh')
     end
   end
 end

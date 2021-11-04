@@ -2,11 +2,10 @@
 
 ## Next
 
-- Improve Tetris example with menus
+- Tic Tac Toe example
 
 ## Soon
 
-- Tic Tac Toe example
 - Snake example
 - (API Changing) Rename `key_value` and `ext_key_value` to `key_code` and `ext_key_code` in `area_key_event` `Hash`
 - Support nesting shapes directly under area to represent paths having one shape, and nesting fill/stroke within the shapes (not path)

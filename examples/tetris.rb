@@ -122,54 +122,43 @@ class Tetris
       separator_menu_item
       menu_item('Exit') {
         on_clicked do
-          @main_window.close
+          exit(0)
         end
       }
       quit_menu_item if OS.mac?
     }
     
     menu('View') {
-      menu('High Scores') {
-        @show_high_scores_menu_item = menu_item('Show') {
-          on_clicked do
-            show_high_scores if @show_high_scores_menu_item.checked?
-          end
-        }
-        menu_item('Clear') {
-          on_clicked {
-            @game.clear_high_scores!
-          }
+      menu_item('Show High Scores') {
+        on_clicked do
+          show_high_scores
+        end
+      }
+      menu_item('Clear High Scores') {
+        on_clicked {
+          @game.clear_high_scores!
         }
       }
     }
 
-#     menu {
-#       text '&Options'
-#       menu_item(:check) {
-#         text '&Beeping'
-#         accelerator COMMAND_KEY, :b
-#         selection <=> [game, :beeping]
-#       }
-#       menu {
-#         text 'Up Arrow'
-#         menu_item(:radio) {
-#           text '&Instant Down'
-#           accelerator COMMAND_KEY, :shift, :i
-#           selection <=> [game, :instant_down_on_up, computed_by: :up_arrow_action]
-#         }
-#         menu_item(:radio) {
-#           text 'Rotate &Right'
-#           accelerator COMMAND_KEY, :shift, :r
-#           selection <=> [game, :rotate_right_on_up, computed_by: :up_arrow_action]
-#         }
-#         menu_item(:radio) {
-#           text 'Rotate &Left'
-#           accelerator COMMAND_KEY, :shift, :l
-#           selection <=> [game, :rotate_left_on_up, computed_by: :up_arrow_action]
-#         }
-#       }
-#     } # end of menu
-#
+    menu('Options') {
+      radio_menu_item('Instant Down on Up Arrow') {
+        on_clicked do
+          @game.instant_down_on_up = true
+        end
+      }
+      radio_menu_item('Rotate Right on Up Arrow') {
+        on_clicked do
+          @game.rotate_right_on_up = true
+        end
+      }
+      radio_menu_item('Rotate Left on Up Arrow') {
+        on_clicked do
+          @game.rotate_left_on_up = true
+        end
+      }
+    }
+
     menu('Help') {
       if OS.mac?
         about_menu_item {
@@ -337,23 +326,27 @@ class Tetris
   
   def show_game_over_dialog
     Glimmer::LibUI.queue_main do
-      msg_box('Game Over', "Score: #{@game.high_scores.first.score}\nLines: #{@game.high_scores.first.lines}\nLevel: #{@game.high_scores.first.level}")
+      msg_box('Game Over!', "Score: #{@game.high_scores.first.score}\nLines: #{@game.high_scores.first.lines}\nLevel: #{@game.high_scores.first.level}")
       @game.restart!
     end
   end
   
   def show_high_scores
     Glimmer::LibUI.queue_main do
-      high_scores_string = @game.high_scores.map do |high_score|
-        "Player: #{high_score.name} | Score: #{high_score.score} | Lines: #{high_score.lines} | Level: #{high_score.level}"
-      end.join("\n")
+      if @game.high_scores.empty?
+        high_scores_string = "No games have been scored yet."
+      else
+        high_scores_string = @game.high_scores.map do |high_score|
+          "#{high_score.name} | Score: #{high_score.score} | Lines: #{high_score.lines} | Level: #{high_score.level}"
+        end.join("\n")
+      end
       msg_box('High Scores', high_scores_string)
     end
   end
   
   def show_about_dialog
     Glimmer::LibUI.queue_main do
-      msg_box('About', 'Glimmer Tetris - Copyright (c) 2021 Andy Maleh')
+      msg_box('About', 'Glimmer Tetris - Glimmer DSL for LibUI Example - Copyright (c) 2021 Andy Maleh')
     end
   end
 end
