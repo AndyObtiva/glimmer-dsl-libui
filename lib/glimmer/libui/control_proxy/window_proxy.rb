@@ -104,13 +104,13 @@ module Glimmer
             height = height[0, 8].unpack1('i')
             [width, height]
           else
-            if resizable?
-              super
-              @width = args[0]
-              @height = args[1]
-            end
+            args = args.first if args.size == 1 && args.first.is_a?(Array)
+            super
+            @width = args[0]
+            @height = args[1]
           end
         end
+        alias content_size= content_size
         alias set_content_size content_size
         
         def resizable(value = nil)

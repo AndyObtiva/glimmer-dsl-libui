@@ -4,6 +4,7 @@
 
 - Support `window` `resizable` property (`resizable false` means one cannot resize `window`)
 - Prevent examples/tetris.rb `window` from being resized
+- Support calling `window.content_size = [x, y]` as an alternative to `window.set_content_size(x, y)`
 - Fix issue with hooking `on_content_size_changed` listener to `window`
 - Fix issue with using `window` `content_size` property getter
 
