@@ -70,6 +70,7 @@ module Glimmer
           else
             new_color = Glimmer::LibUI.interpret_color(args)
             if new_color != @fill
+              @fill_observer&.unobserve(@fill) if @fill
               @fill = new_color
               request_auto_redraw
             end
@@ -97,6 +98,7 @@ module Glimmer
           else
             new_color = Glimmer::LibUI.interpret_color(args)
             if new_color != @stroke
+              @stroke_observer&.unobserve(@stroke) if @stroke
               @stroke = Glimmer::LibUI.interpret_color(args)
               request_auto_redraw
             end

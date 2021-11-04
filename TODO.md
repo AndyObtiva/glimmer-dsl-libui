@@ -4,6 +4,8 @@
 
 - Implement `bounds` property for all shapes (useful to avoid auto redrawing outside changed region)
 - Update Tetris to auto-redraw only changed regions of playfield
+- Try DrawingContext Save and Restore methods to optimize performance
+- Try groupong path shapes of the same color in Tetris under one path as a performance improvement
 - Document `area` `request_auto_redraw`, `pause_auto_redraw`, and `resume_auto_redraw`, operations, and `auto_redraw_enabled` property.
 
 - Improve Tetris example with score lane (indicating next Tetromino, score, level, and lines)

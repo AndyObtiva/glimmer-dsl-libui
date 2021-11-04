@@ -61,15 +61,17 @@ class Tetris
     Model::Game::PLAYFIELD_HEIGHT.times do |row|
       Model::Game::PLAYFIELD_HEIGHT.times do |column|
         Glimmer::DataBinding::Observer.proc do |new_color|
-          color = Glimmer::LibUI.interpret_color(new_color)
-          block = @blocks[row][column]
-          block[:background_square].fill = color
-          block[:top_bevel_edge].fill = {r: color[:r] + 4*BEVEL_CONSTANT, g: color[:g] + 4*BEVEL_CONSTANT, b: color[:b] + 4*BEVEL_CONSTANT}
-          block[:right_bevel_edge].fill = {r: color[:r] - BEVEL_CONSTANT, g: color[:g] - BEVEL_CONSTANT, b: color[:b] - BEVEL_CONSTANT}
-          block[:bottom_bevel_edge].fill = {r: color[:r] - BEVEL_CONSTANT, g: color[:g] - BEVEL_CONSTANT, b: color[:b] - BEVEL_CONSTANT}
-          block[:left_bevel_edge].fill = {r: color[:r] - BEVEL_CONSTANT, g: color[:g] - BEVEL_CONSTANT, b: color[:b] - BEVEL_CONSTANT}
-          block[:border_square].stroke = new_color == Model::Block::COLOR_CLEAR ? COLOR_GRAY : color
-          @playfield.queue_redraw_all
+          Glimmer::LibUI.queue_main do
+            color = Glimmer::LibUI.interpret_color(new_color)
+            block = @blocks[row][column]
+            block[:background_square].fill = color
+            block[:top_bevel_edge].fill = {r: color[:r] + 4*BEVEL_CONSTANT, g: color[:g] + 4*BEVEL_CONSTANT, b: color[:b] + 4*BEVEL_CONSTANT}
+            block[:right_bevel_edge].fill = {r: color[:r] - BEVEL_CONSTANT, g: color[:g] - BEVEL_CONSTANT, b: color[:b] - BEVEL_CONSTANT}
+            block[:bottom_bevel_edge].fill = {r: color[:r] - BEVEL_CONSTANT, g: color[:g] - BEVEL_CONSTANT, b: color[:b] - BEVEL_CONSTANT}
+            block[:left_bevel_edge].fill = {r: color[:r] - BEVEL_CONSTANT, g: color[:g] - BEVEL_CONSTANT, b: color[:b] - BEVEL_CONSTANT}
+            block[:border_square].stroke = new_color == Model::Block::COLOR_CLEAR ? COLOR_GRAY : color
+            @playfield.queue_redraw_all
+          end
         end.observe(@game.playfield[row][column], :color)
       end
     end
@@ -159,7 +161,10 @@ class Tetris
   end
   
   def show_game_over_dialog
-    msg_box('Game Over', "Score: #{@game.high_scores.first.score}")
+    Glimmer::LibUI.queue_main do
+      msg_box('Game Over', "Score: #{@game.high_scores.first.score}\nLines: #{@game.high_scores.first.lines}\nLevel: #{@game.high_scores.first.level}")
+      @game.restart!
+    end
   end
 end
 
