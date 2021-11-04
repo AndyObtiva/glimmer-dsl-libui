@@ -78,6 +78,7 @@ module Glimmer
           when 'on_destroy'
             on_destroy(&listener)
           else
+            default_behavior_listener = nil
             if listener_name == 'on_closing'
               default_behavior_listener = Proc.new do
                 return_value = listener.call(self)
@@ -90,9 +91,45 @@ module Glimmer
                 end
               end
             end
-            super(listener_name, &default_behavior_listener)
+            super(listener_name, &(default_behavior_listener || listener))
           end
         end
+        
+        def content_size(*args)
+          if args.empty?
+            width = Fiddle::Pointer.malloc(8)
+            height = Fiddle::Pointer.malloc(8)
+            ::LibUI.window_content_size(@libui, width, height)
+            width = width[0, 8].unpack1('i')
+            height = height[0, 8].unpack1('i')
+            [width, height]
+          else
+            if resizable?
+              super
+              @width = args[0]
+              @height = args[1]
+            end
+          end
+        end
+        alias set_content_size content_size
+        
+        def resizable(value = nil)
+          if value.nil?
+            @resizable = true if @resizable.nil?
+            @resizable
+          else
+            @resizable = value
+            if !@resizable && !@resizable_listener_registered
+              handle_listener('on_content_size_changed') do
+                set_content_size(@width, @height) unless @resizable
+              end
+              @resizable_listener_registered = true
+            end
+          end
+        end
+        alias resizable? resizable
+        alias resizable= resizable
+        alias set_resizable resizable
       
         private
         
@@ -107,6 +144,8 @@ module Glimmer
           construction_args[2] = DEFAULT_HEIGHT if construction_args.size == 2
           construction_args[3] = DEFAULT_HAS_MENUBAR if construction_args.size == 3
           construction_args[3] = Glimmer::LibUI.boolean_to_integer(construction_args[3]) if construction_args.size == 4 && (construction_args[3].is_a?(TrueClass) || construction_args[3].is_a?(FalseClass))
+          @width = construction_args[1]
+          @height = construction_args[2]
           @libui = ControlProxy.new_control(@keyword, construction_args)
           @libui.tap do
             handle_listener('on_closing') do

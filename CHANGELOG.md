@@ -1,5 +1,12 @@
 # Change Log
 
+## 0.2.20
+
+- Support `window` `resizable` property (`resizable false` means one cannot resize `window`)
+- Prevent examples/tetris.rb `window` from being resized
+- Fix issue with hooking `on_content_size_changed` listener to `window`
+- Fix issue with using `window` `content_size` property getter
+
 ## 0.2.19
 
 - Improve examples/tetris.rb with a score board (indicating next Tetromino, score, level, and lines)

@@ -456,6 +456,7 @@ Keyword(Args) | Properties | Listeners
 `checkbox_column(name as String)` | `editable` (Boolean) | None
 `checkbox_text_column(name as String)` | `editable` (Boolean), `editable_checkbox` (Boolean), `editable_text` (Boolean) | None
 `checkbox_text_color_column(name as String)` | `editable` (Boolean), `editable_checkbox` (Boolean), `editable_text` (Boolean) | None
+`check_menu_item(text as String)` | `checked` (Boolean) | `on_clicked`
 `combobox` | `items` (`Array` of `String`), `selected` (`Integer`) | `on_selected`
 `color_button` | `color` (Array of `red` as `Float`, `green` as `Float`, `blue` as `Float`, `alpha` as `Float`), `red` as `Float`, `green` as `Float`, `blue` as `Float`, `alpha` as `Float` | `on_changed`
 `date_picker` | `time` (`Hash` of keys: `sec` as `Integer`, `min` as `Integer`, `hour` as `Integer`, `mday` as `Integer`, `mon` as `Integer`, `year` as `Integer`, `wday` as `Integer`, `yday` as `Integer`, `dst` as Boolean) | `on_changed`
@@ -478,7 +479,7 @@ Keyword(Args) | Properties | Listeners
 `line(x as Numeric, y as Numeric)` | `x` (`Numeric`), `y` (`Numeric`) | None
 `matrix(m11 = nil as Numeric, m12 = nil as Numeric, m21 = nil as Numeric, m22 = nil as Numeric, m31 = nil as Numeric, m32 = nil as Numeric)` | `m11` (`Numeric`), `m12` (`Numeric`), `m21` (`Numeric`), `m22` (`Numeric`), `m31` (`Numeric`), `m32` (`Numeric`) | None
 `menu(text as String)` | None | None
-`menu_item(text as String)` | `checked` (Boolean) | `on_clicked`
+`menu_item(text as String)` | None | `on_clicked`
 `message_box` (alias for `msg_box`; see for arguments) | None | None
 `message_box_error` (alias for `msg_box_error`; see for arguments) | None | None
 `multiline_entry` | `read_only` (Boolean), `text` (`String`) | `on_changed`
@@ -497,6 +498,7 @@ Keyword(Args) | Properties | Listeners
 `radio_buttons` | `selected` (`Integer`) | `on_selected`
 `rectangle(x as Numeric, y as Numeric, width as Numeric, height as Numeric)` |  `x` (`Numeric`), `y` (`Numeric`), `width` (`Numeric`), `height` (`Numeric`) | None
 `search_entry` | `read_only` (Boolean), `text` (`String`) | `on_changed`
+`separator_menu_item` | None | None
 `slider(min as Numeric, max as Numeric)` | `value` (`Numeric`) | `on_changed`
 `spinbox(min as Numeric, max as Numeric)` | `value` (`Numeric`) | `on_changed`
 `square(x as Numeric, y as Numeric, length as Numeric)` | `x` (`Numeric`), `y` (`Numeric`), `length` (`Numeric`) | None
@@ -510,7 +512,7 @@ Keyword(Args) | Properties | Listeners
 `time_picker` | `time` (`Hash` of keys: `sec` as `Integer`, `min` as `Integer`, `hour` as `Integer`) | `on_changed`
 `vertical_box` | `padded` (Boolean) | None
 `vertical_separator` | None | None
-`window(title as String, width as Integer, height as Integer, has_menubar as Boolean)` | `borderless` (Boolean), `content_size` (width `Numeric`, height `Numeric`), `fullscreen` (Boolean), `margined` (Boolean), `title` (`String`) | `on_closing`, `on_content_size_changed`, `on_destroy`
+`window(title as String, width as Integer, height as Integer, has_menubar as Boolean)` | `borderless` (Boolean), `content_size` (width `Numeric`, height `Numeric`), `fullscreen` (Boolean), `margined` (Boolean), `title` (`String`), `resizable` (Boolean) | `on_closing`, `on_content_size_changed`, `on_destroy`
 
 ### Common Control Properties
 - `enabled` (Boolean)

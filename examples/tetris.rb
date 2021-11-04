@@ -9,8 +9,6 @@ class Tetris
   BEVEL_CONSTANT = 20
   COLOR_GRAY = {r: 192, g: 192, b: 192}
     
-  attr_reader :game
-  
   def initialize
     @game = Model::Game.new
   end
@@ -23,8 +21,11 @@ class Tetris
   end
   
   def create_gui
+    menu_bar
+    
     @main_window = window('Glimmer Tetris') {
       content_size Model::Game::PLAYFIELD_WIDTH * BLOCK_SIZE, Model::Game::PLAYFIELD_HEIGHT * BLOCK_SIZE + 98
+      resizable false
       
       vertical_box {
         label { # filler
@@ -43,8 +44,10 @@ class Tetris
   def register_observers
     Glimmer::DataBinding::Observer.proc do |game_over|
       if game_over
+        @pause_menu_item.enabled = false
         show_game_over_dialog
       else
+        @pause_menu_item.enabled = true
         start_moving_tetrominos_down
       end
     end.observe(@game, :game_over)
@@ -100,6 +103,87 @@ class Tetris
         @level_label.text = new_level.to_s
       end
     end.observe(@game, :level)
+  end
+  
+  def menu_bar
+    menu('Game') {
+      @pause_menu_item = check_menu_item('Pause') {
+        enabled false
+        
+        on_clicked do
+          @game.paused = @pause_menu_item.checked?
+        end
+      }
+      menu_item('Restart') {
+        on_clicked do
+          @game.restart!
+        end
+      }
+      separator_menu_item
+      menu_item('Exit') {
+        on_clicked do
+          @main_window.close
+        end
+      }
+      quit_menu_item if OS.mac?
+    }
+    
+    menu('View') {
+      menu('High Scores') {
+        @show_high_scores_menu_item = menu_item('Show') {
+          on_clicked do
+            show_high_scores if @show_high_scores_menu_item.checked?
+          end
+        }
+        menu_item('Clear') {
+          on_clicked {
+            @game.clear_high_scores!
+          }
+        }
+      }
+    }
+
+#     menu {
+#       text '&Options'
+#       menu_item(:check) {
+#         text '&Beeping'
+#         accelerator COMMAND_KEY, :b
+#         selection <=> [game, :beeping]
+#       }
+#       menu {
+#         text 'Up Arrow'
+#         menu_item(:radio) {
+#           text '&Instant Down'
+#           accelerator COMMAND_KEY, :shift, :i
+#           selection <=> [game, :instant_down_on_up, computed_by: :up_arrow_action]
+#         }
+#         menu_item(:radio) {
+#           text 'Rotate &Right'
+#           accelerator COMMAND_KEY, :shift, :r
+#           selection <=> [game, :rotate_right_on_up, computed_by: :up_arrow_action]
+#         }
+#         menu_item(:radio) {
+#           text 'Rotate &Left'
+#           accelerator COMMAND_KEY, :shift, :l
+#           selection <=> [game, :rotate_left_on_up, computed_by: :up_arrow_action]
+#         }
+#       }
+#     } # end of menu
+#
+    menu('Help') {
+      if OS.mac?
+        about_menu_item {
+          on_clicked do
+            show_about_dialog
+          end
+        }
+      end
+      menu_item('About') {
+        on_clicked do
+          show_about_dialog
+        end
+      }
+    }
   end
   
   def playfield(playfield_width: , playfield_height: , block_size: , &extra_content)
@@ -162,26 +246,26 @@ class Tetris
       on_key_down do |key_event|
         case key_event
         in ext_key: :down
-          game.down!
+          @game.down!
         in key: ' '
-          game.down!(instant: true)
+          @game.down!(instant: true)
         in ext_key: :up
-          case game.up_arrow_action
+          case @game.up_arrow_action
           when :instant_down
-            game.down!(instant: true)
+            @game.down!(instant: true)
           when :rotate_right
-            game.rotate!(:right)
+            @game.rotate!(:right)
           when :rotate_left
-            game.rotate!(:left)
+            @game.rotate!(:left)
           end
         in ext_key: :left
-          game.left!
+          @game.left!
         in ext_key: :right
-          game.right!
+          @game.right!
         in modifier: :shift
-          game.rotate!(:right)
+          @game.rotate!(:right)
         in modifier: :control
-          game.rotate!(:left)
+          @game.rotate!(:left)
         else
           # Do Nothing
         end
@@ -255,6 +339,21 @@ class Tetris
     Glimmer::LibUI.queue_main do
       msg_box('Game Over', "Score: #{@game.high_scores.first.score}\nLines: #{@game.high_scores.first.lines}\nLevel: #{@game.high_scores.first.level}")
       @game.restart!
+    end
+  end
+  
+  def show_high_scores
+    Glimmer::LibUI.queue_main do
+      high_scores_string = @game.high_scores.map do |high_score|
+        "Player: #{high_score.name} | Score: #{high_score.score} | Lines: #{high_score.lines} | Level: #{high_score.level}"
+      end.join("\n")
+      msg_box('High Scores', high_scores_string)
+    end
+  end
+  
+  def show_about_dialog
+    Glimmer::LibUI.queue_main do
+      msg_box('About', 'Glimmer Tetris - Copyright (c) 2021 Andy Maleh')
     end
   end
 end
