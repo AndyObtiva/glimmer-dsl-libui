@@ -2,7 +2,7 @@
 
 ## 0.2.20
 
-- Improve examples/tetris.rb with menus and high score dialog
+- Improve examples/tetris.rb with menus, high score dialog, and options
 - Prevent examples/tetris.rb `window` from being resized
 - Support `window` `resizable` property (`resizable false` means one cannot resize `window`)
 - Support calling `window.content_size = [x, y]` as an alternative to `window.set_content_size(x, y)`
