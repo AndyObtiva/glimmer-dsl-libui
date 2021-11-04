@@ -6258,6 +6258,7 @@ class Tetris
   
   BLOCK_SIZE = 25
   BEVEL_CONSTANT = 20
+  COLOR_GRAY = {r: 192, g: 192, b: 192}
     
   attr_reader :game
   
@@ -6290,19 +6291,74 @@ class Tetris
     Model::Game::PLAYFIELD_HEIGHT.times do |row|
       Model::Game::PLAYFIELD_HEIGHT.times do |column|
         Glimmer::DataBinding::Observer.proc do |new_color|
-          @blocks[row][column].fill = new_color
+          Glimmer::LibUI.queue_main do
+            color = Glimmer::LibUI.interpret_color(new_color)
+            block = @blocks[row][column]
+            block[:background_square].fill = color
+            block[:top_bevel_edge].fill = {r: color[:r] + 4*BEVEL_CONSTANT, g: color[:g] + 4*BEVEL_CONSTANT, b: color[:b] + 4*BEVEL_CONSTANT}
+            block[:right_bevel_edge].fill = {r: color[:r] - BEVEL_CONSTANT, g: color[:g] - BEVEL_CONSTANT, b: color[:b] - BEVEL_CONSTANT}
+            block[:bottom_bevel_edge].fill = {r: color[:r] - BEVEL_CONSTANT, g: color[:g] - BEVEL_CONSTANT, b: color[:b] - BEVEL_CONSTANT}
+            block[:left_bevel_edge].fill = {r: color[:r] - BEVEL_CONSTANT, g: color[:g] - BEVEL_CONSTANT, b: color[:b] - BEVEL_CONSTANT}
+            block[:border_square].stroke = new_color == Model::Block::COLOR_CLEAR ? COLOR_GRAY : color
+          end
         end.observe(@game.playfield[row][column], :color)
       end
     end
   end
   
   def playfield(playfield_width: , playfield_height: , block_size: )
-    area {
-      @blocks = playfield_height.times.map do |row|
-        playfield_width.times.map do |column|
-          block(row: row, column: column, block_size: block_size)
-        end
+    @blocks = []
+    vertical_box {
+      padded false
+      
+      playfield_height.times.map do |row|
+        @blocks << []
+        horizontal_box {
+          padded false
+          
+          playfield_width.times.map do |column|
+            @blocks.last << block(row: row, column: column, block_size: block_size)
+          end
+        }
       end
+    }
+  end
+  
+  def block(row: , column: , block_size: )
+    block = {}
+    bevel_pixel_size = 0.16 * block_size.to_f
+    color = Glimmer::LibUI.interpret_color(Model::Block::COLOR_CLEAR)
+    area {
+      block[:background_square] = path {
+        square(0, 0, block_size)
+        
+        fill color
+      }
+      block[:top_bevel_edge] = path {
+        polygon(0, 0, block_size, 0, block_size - bevel_pixel_size, bevel_pixel_size, bevel_pixel_size, bevel_pixel_size)
+  
+        fill r: color[:r] + 4*BEVEL_CONSTANT, g: color[:g] + 4*BEVEL_CONSTANT, b: color[:b] + 4*BEVEL_CONSTANT
+      }
+      block[:right_bevel_edge] = path {
+        polygon(block_size, 0, block_size - bevel_pixel_size, bevel_pixel_size, block_size - bevel_pixel_size, block_size - bevel_pixel_size, block_size, block_size)
+  
+        fill r: color[:r] - BEVEL_CONSTANT, g: color[:g] - BEVEL_CONSTANT, b: color[:b] - BEVEL_CONSTANT
+      }
+      block[:bottom_bevel_edge] = path {
+        polygon(block_size, block_size, 0, block_size, bevel_pixel_size, block_size - bevel_pixel_size, block_size - bevel_pixel_size, block_size - bevel_pixel_size)
+  
+        fill r: color[:r] - BEVEL_CONSTANT, g: color[:g] - BEVEL_CONSTANT, b: color[:b] - BEVEL_CONSTANT
+      }
+      block[:left_bevel_edge] = path {
+        polygon(0, 0, 0, block_size, bevel_pixel_size, block_size - bevel_pixel_size, bevel_pixel_size, bevel_pixel_size)
+  
+        fill r: color[:r] - BEVEL_CONSTANT, g: color[:g] - BEVEL_CONSTANT, b: color[:b] - BEVEL_CONSTANT
+      }
+      block[:border_square] = path {
+        square(0, 0, block_size)
+  
+        stroke COLOR_GRAY
+      }
       
       on_key_down do |key_event|
         case key_event
@@ -6330,14 +6386,7 @@ class Tetris
         end
       end
     }
-  end
-  
-  def block(row: , column: , block_size: )
-    path {
-      square(column * block_size, row * block_size, block_size)
-      
-      fill Model::Block::COLOR_CLEAR
-    }
+    block
   end
   
   def start_moving_tetrominos_down
@@ -6347,7 +6396,10 @@ class Tetris
   end
   
   def show_game_over_dialog
-    msg_box('Game Over', "Score: #{@game.high_scores.first.score}")
+    Glimmer::LibUI.queue_main do
+      msg_box('Game Over', "Score: #{@game.high_scores.first.score}\nLines: #{@game.high_scores.first.lines}\nLevel: #{@game.high_scores.first.level}")
+      @game.restart!
+    end
   end
 end
 
