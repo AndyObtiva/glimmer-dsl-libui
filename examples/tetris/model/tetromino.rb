@@ -31,9 +31,9 @@ class Tetris
       LETTER_COLORS = {
         I: :cyan,
         J: :blue,
-        L: :dark_yellow,
+        L: :olive,
         O: :yellow,
-        S: :green,
+        S: :lime,
         T: :magenta,
         Z: :red,
       }
