@@ -2,11 +2,10 @@
 
 ## Next
 
-- `Glimmer::LibUI::enum_names`
+- Snake example
 
 ## Soon
 
-- Snake example
 - Add screenshots for Tetris, Tic Tac Toe, and Snake from all operating systems
 - (API Changing) Rename `key_value` and `ext_key_value` to `key_code` and `ext_key_code` in `area_key_event` `Hash`
 - Consider making all event hashes and param hashes accept retrieval of their key values through method calls not just `[key]` calls (utilize `hash-proxy` gem to solve this problem)

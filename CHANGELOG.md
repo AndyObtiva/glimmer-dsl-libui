@@ -3,7 +3,9 @@
 ## 0.2.21
 
 - examples/tic_tac_toe.rb
-- Fix issue with retrieving `Glimmer::LibUI::enum_symbols` for `:at`
+- `Glimmer::LibUI::enum_names` provides all possible enum names to use with `Glimmer::LibUI::enum_symbols(enum_name)`
+- Document all `Glimmer::LibUI` custom operations
+- Fix issue with retrieving `Glimmer::LibUI::enum_symbols` for `:at` enum name
 
 ## 0.2.20
 

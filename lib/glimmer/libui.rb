@@ -101,21 +101,25 @@ module Glimmer
       end
       
       def enum_names
-        underscored_constant_names = ::LibUI.constants.map {|constant| constant.to_s.underscore}
-        possible_enum_names = []
-        underscored_constant_names.sort_by(&:size).each do |underscored_constant_name|
-          underscored_constant_name_segments = underscored_constant_name.split('_')
-          enum_name_possibilities = underscored_constant_name_segments.size.times.map do |n|
-            underscored_constant_name_segments[0..n].join('_')
-          end.reverse
-          possible_enum_name = enum_name_possibilities.find do |enum_name_possibility|
-            (underscored_constant_names - [underscored_constant_name]).detect do |underscored_constant_name|
-              condition = underscored_constant_name.include?(enum_name_possibility)
-            end
-          end
-          possible_enum_names << possible_enum_name unless possible_enum_name.nil? || possible_enum_names.detect {|discovered_enum_name| possible_enum_name.include?(discovered_enum_name) || discovered_enum_name.include?(possible_enum_name)}
-        end.uniq.compact
-        (possible_enum_names.map(&:to_sym) + [:attribute_type, :draw_text_align, :underline_color] - [:for_each, :window_resize_edge_bottom, :window_resize_edge_top]).sort
+       [
+         :align,
+         :at,
+         :attribute_type,
+         :draw_brush_type,
+         :draw_fill_mode,
+         :draw_line_cap,
+         :draw_line_join,
+         :draw_text_align,
+         :ext_key,
+         :modifier,
+         :table_model_column,
+         :table_value_type,
+         :text_italic,
+         :text_stretch,
+         :text_weight,
+         :underline,
+         :underline_color
+       ]
       end
       
       # Returns ruby underscored symbols for enum values starting with enum name (camelcase, e.g. 'ext_key')
