@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.2.21
+
+- examples/tic_tac_toe.rb
+
 ## 0.2.20
 
 - Improve examples/tetris.rb with menus, high score dialog, and options

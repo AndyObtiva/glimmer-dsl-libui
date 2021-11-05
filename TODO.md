@@ -3,11 +3,14 @@
 ## Next
 
 - Tic Tac Toe example
+- Document `Glimmer::LibUI::enum_symbols` and all possible values for it
 
 ## Soon
 
 - Snake example
+- Add screenshots for Tetris, Tic Tac Toe, and Snake from all operating systems
 - (API Changing) Rename `key_value` and `ext_key_value` to `key_code` and `ext_key_code` in `area_key_event` `Hash`
+- Consider making all event hashes and param hashes accept retrieval of their key values through method calls not just `[key]` calls (utilize `hash-proxy` gem to solve this problem)
 - Support nesting shapes directly under area to represent paths having one shape, and nesting fill/stroke within the shapes (not path)
 
 ## Future
@@ -41,7 +44,6 @@ None
 - Support `matrix` operation noun names (e.g. `translation` for `translate`) to be more declarative
 - Interpret characters in key event while holding a modifer down (e.g. ! for 1 + shift)
 - Support animation
-- Consider making all event hashes and param hashes accept retrieval of their key values through method calls not just [] calls
 - Consider auto-preventing app crashes (catch error) if someone mis-enters values for the GUI DSL (keeping GUI alive if possible)
 - Look into use of `free_control` vs `control_destroy` especially in cases of controls for which the latter method does not work
 - Support setting image paths directly on image/image_text columns for `table` (do chunky png work internally) (look into other formats than png)

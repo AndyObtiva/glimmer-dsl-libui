@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.2.20
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.2.21
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -278,6 +278,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
     - [Custom Draw Text](#custom-draw-text)
     - [Method-Based Custom Keyword](#method-based-custom-keyword)
     - [Tetris](#tetris)
+    - [Tic Tac Toe](#tic-tac-toe)
   - [Applications](#applications)
     - [Manga2PDF](#manga2pdf)
     - [Befunge98 GUI](#befunge98-gui)
@@ -370,7 +371,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.2.20'
+gem 'glimmer-dsl-libui', '~> 0.2.21'
 ```
 
 Add `require 'glimmer-dsl-libui'` at the top, and then `include Glimmer` into the top-level main object for testing or into an actual class for serious usage.
@@ -1090,8 +1091,8 @@ window('Method-Based Custom Keyword') {
 
 To learn more about the [LibUI](https://github.com/kojix2/LibUI) API exposed through [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui):
 - Check out [LibUI ffi.rb](https://github.com/kojix2/LibUI/blob/main/lib/libui/ffi.rb)
-- Check out the [libui C headers](https://github.com/andlabs/libui/blob/master/ui.h)
-- Check out the [Go UI (Golang LibUI) documentation](https://pkg.go.dev/github.com/andlabs/ui) for an alternative well-documented [libui](https://github.com/andlabs/libui) reference.
+- Check out the [libui C Headers](https://github.com/andlabs/libui/blob/master/ui.h)
+- Check out the [Go UI (Golang LibUI) API Documentation](https://pkg.go.dev/github.com/andlabs/ui) for an alternative well-documented [libui](https://github.com/andlabs/libui) reference.
 
 ## Packaging
 
@@ -6236,7 +6237,7 @@ window('Method-Based Custom Keyword') {
 
 ### Tetris
 
-Glimmer Tetris utilizes many small areas to represent Tetromino blocks because this ensures smaller redraws per tetromino block color change, thus higher performance than having one area that gets redrawn on every little change.
+Glimmer Tetris utilizes many small areas to represent Tetromino blocks because this ensures smaller redraws per tetromino block color change, thus achieving higher performance than redrawing one large area on every little change.
 
 [examples/tetris.rb](examples/tetris.rb)
 
@@ -6619,6 +6620,122 @@ end
 Tetris.new.launch
 ```
 
+### Tic Tac Toe
+
+[examples/tic_tac_toe.rb](examples/tic_tac_toe.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/tic_tac_toe.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/tic_tac_toe'"
+```
+
+Mac
+
+![glimmer-dsl-libui-mac-tic-tac-toe.png](images/glimmer-dsl-libui-mac-tic-tac-toe.png)
+
+![glimmer-dsl-libui-mac-tic-tac-toe-player-o-wins.png](images/glimmer-dsl-libui-mac-tic-tac-toe-player-o-wins.png)
+
+![glimmer-dsl-libui-mac-tic-tac-toe-player-x-wins.png](images/glimmer-dsl-libui-mac-tic-tac-toe-player-x-wins.png)
+
+![glimmer-dsl-libui-mac-tic-tac-toe-draw.png](images/glimmer-dsl-libui-mac-tic-tac-toe-draw.png)
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+require 'glimmer-dsl-libui'
+
+require_relative "tic_tac_toe/board"
+
+class TicTacToe
+  include Glimmer
+
+  def initialize
+    @tic_tac_toe_board = Board.new
+  end
+  
+  def launch
+    create_gui
+    register_observers
+    @main_window.show
+  end
+  
+  def register_observers
+    Glimmer::DataBinding::Observer.proc do |game_status|
+      display_win_message if game_status == Board::WIN
+      display_draw_message if game_status == Board::DRAW
+    end.observe(@tic_tac_toe_board, :game_status)
+    
+    3.times.map do |row|
+      3.times.map do |column|
+        Glimmer::DataBinding::Observer.proc do |sign|
+          @cells[row][column].string = sign
+        end.observe(@tic_tac_toe_board[row + 1, column + 1], :sign) # board model is 1-based
+      end
+    end
+  end
+
+  def create_gui
+    @main_window = window('Tic-Tac-Toe', 180, 180) {
+      resizable false
+      
+      @cells = []
+      vertical_box {
+        padded false
+        
+        3.times.map do |row|
+          @cells << []
+          horizontal_box {
+            padded false
+            
+            3.times.map do |column|
+              area {
+                path {
+                  square(0, 0, 60)
+                  
+                  stroke :black, thickness: 2
+                }
+                text(23, 19) {
+                  @cells[row] << string('') {
+                    font family: 'Arial', size: 20
+                  }
+                }
+                on_mouse_up do
+                  @tic_tac_toe_board.mark(row + 1, column + 1) # board model is 1-based
+                end
+              }
+            end
+          }
+        end
+      }
+    }
+  end
+
+  def display_win_message
+    display_game_over_message("Player #{@tic_tac_toe_board.winning_sign} has won!")
+  end
+
+  def display_draw_message
+    display_game_over_message("Draw!")
+  end
+
+  def display_game_over_message(message_text)
+    Glimmer::LibUI.queue_main do
+      msg_box('Game Over', message_text)
+      @tic_tac_toe_board.reset!
+    end
+  end
+end
+
+TicTacToe.new.launch
+```
+
 ## Applications
 
 Here are some applications built with [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui)
@@ -6649,9 +6766,10 @@ https://github.com/iraamaro/i3off-gtk-ruby
 
 ## Resources
 
-- [libui C Library](https://github.com/andlabs/libui)
-- [LibUI Ruby Bindings](https://github.com/kojix2/LibUI)
 - [Code Master Blog](https://andymaleh.blogspot.com/search/label/LibUI)
+- [LibUI Ruby Bindings](https://github.com/kojix2/LibUI)
+- [libui C Library](https://github.com/andlabs/libui)
+- [Go UI (Golang LibUI) API Documentation](https://pkg.go.dev/github.com/andlabs/ui)
 
 ## Help
 
