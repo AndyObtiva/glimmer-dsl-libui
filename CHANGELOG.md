@@ -3,6 +3,7 @@
 ## 0.2.21
 
 - examples/tic_tac_toe.rb
+- Fix issue with retrieving `Glimmer::LibUI::enum_symbols` for `:at`
 
 ## 0.2.20
 

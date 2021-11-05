@@ -546,6 +546,31 @@ All operations that could normally be called on `LibUI` can also be called on `G
 - `Glimmer::LibUI::queue_main(&block)`: queues an operation to be run on the main event loop at the earliest opportunity possible
 - `Glimmer::LibUI::timer(time_in_seconds=0.1, repeat: true, &block)`: calls block after time_in_seconds has elapsed, repeating indefinitely unless repeat is `false` or an `Integer` for finite number of repeats. Block can return `false` or `true` to override next repetition.
 
+There are additional useful `Glimmer::LibUI` operations that are not found in `LibUI`, which mostly help if you would like to do advanced lower level [LibUI](https://github.com/kojix2/LibUI) programming:
+- `Glimmer::LibUI::integer_to_boolean(int, allow_nil: true)`
+- `Glimmer::LibUI::boolean_to_integer(int, allow_nil: true)`
+- `Glimmer::LibUI::degrees_to_radians(degrees)`
+- `Glimmer::LibUI::interpret_color(value)`: interprets a color in any form like `String`, `Symbol`, or hex into an rgb `Hash`
+- `Glimmer::LibUI::hex_to_rgb(value)`: converts a hex color to an rgb `Hash`
+- `Glimmer::LibUI::enum_symbols(enum_name)`: returns all possible values for an enum. `enum_name` can be:
+  - `:draw_brush_type`: `[:solid, :linear_gradient, :radial_gradient, :image]`
+  - `:draw_line_cap`: `[:flat, :round, :square]`
+  - `:draw_line_join`: `[:miter, :round, :bevel]`
+  - `:draw_fill_mode`: `[:winding, :alternate]`
+  - `:attribute_type`: for attributed `string`s - `[:family, :size, weight, :italic, :stretch, :color, :background, :underline, :underline_color, :features]`
+  - `:text_weight`: `[:minimum, :thin, :ultra_light, :light, :book, :normal, :medium, :semi_bold, :bold, :ultra_bold, :heavy, :ultra_heavy, :maximum]`
+  - `:text_italic`: `[:normal, :oblique, :italic]`
+  - `:text_stretch`: `[:ultra_condensed, :extra_condensed, :condensed, :semi_condensed, :normal, :semi_expanded, :expanded, :extra_expanded, :ultra_expanded]`
+  - `:underline`: `[:none, :single, :double, :suggestion, :color_custom, :color_spelling, :color_grammar, :color_auxiliary]
+  - `:underline_color`: `[:custom, :spelling, :grammar, :auxiliary]`
+  - `:draw_text_align`: `[:left, :center, :right]`
+  - `:modifier`: `[:ctrl, :alt, :shift, :super]`
+  - `:ext_key`: `[:escape, :insert, :delete, :home, :end, :page_up, :page_down, :up, :down, :left, :right, :f1, :f2, :f3, :f4, :f5, :f6, :f7, :f8, :f9, :f10, :f11, :f12, :n0, :n1, :n2, :n3, :n4, :n5, :n6, :n7, :n8, :n9, :n_dot, :n_enter, :n_add, :n_subtract, :n_multiply, :n_divide]
+  - `:at`: for inserting `grid` controls - `[:leading, :top, :trailing, :bottom]`
+  - `:align`: `[:fill, :start, :center, :end]`
+  - `:table_value_type`: `[:string, :image, :int, :color]`
+  - `:table_model_column`: `[:never_editable, :always_editable]`
+
 ### Extra Dialogs
 
 - `open_file(window as Glimmer::LibUI::WindowProxy = ControlProxy::main_window_proxy)`: returns selected file (`String`) or `nil` if cancelled

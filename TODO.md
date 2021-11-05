@@ -2,8 +2,7 @@
 
 ## Next
 
-- Tic Tac Toe example
-- Document `Glimmer::LibUI::enum_symbols` and all possible values for it
+- `Glimmer::LibUI::enum_names`
 
 ## Soon
 

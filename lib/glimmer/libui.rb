@@ -100,11 +100,35 @@ module Glimmer
         enum_symbol_values(enum_name).keys
       end
       
+      def enum_names
+        underscored_constant_names = ::LibUI.constants.map {|constant| constant.to_s.underscore}
+        possible_enum_names = []
+        underscored_constant_names.sort_by(&:size).each do |underscored_constant_name|
+          underscored_constant_name_segments = underscored_constant_name.split('_')
+          enum_name_possibilities = underscored_constant_name_segments.size.times.map do |n|
+            underscored_constant_name_segments[0..n].join('_')
+          end.reverse
+          possible_enum_name = enum_name_possibilities.find do |enum_name_possibility|
+            (underscored_constant_names - [underscored_constant_name]).detect do |underscored_constant_name|
+              condition = underscored_constant_name.include?(enum_name_possibility)
+            end
+          end
+          possible_enum_names << possible_enum_name unless possible_enum_name.nil? || possible_enum_names.detect {|discovered_enum_name| possible_enum_name.include?(discovered_enum_name) || discovered_enum_name.include?(possible_enum_name)}
+        end.uniq.compact
+        (possible_enum_names.map(&:to_sym) + [:attribute_type, :draw_text_align, :underline_color] - [:for_each, :window_resize_edge_bottom, :window_resize_edge_top]).sort
+      end
+      
       # Returns ruby underscored symbols for enum values starting with enum name (camelcase, e.g. 'ext_key')
       def enum_symbol_values(enum_name)
         enum_name = enum_name.to_s.underscore.to_sym
         @enum_symbols ||= {}
-        @enum_symbols[enum_name] ||= ::LibUI.constants.select { |c| c.to_s.start_with?(enum_name.to_s.camelcase(:upper)) }.map { |c| [c.to_s.underscore.sub("#{enum_name}_", '').to_sym, ::LibUI.const_get(c)] }.to_h
+        @enum_symbols[enum_name] ||= ::LibUI.constants.select do |c|
+          c.to_s.match(/#{enum_name.to_s.camelcase(:upper)}[A-Z]/)
+        end.map do |c|
+          [c.to_s.underscore.sub("#{enum_name}_", '').to_sym, ::LibUI.const_get(c)]
+        end.reject do |key, value|
+          enum_name == :underline && key.to_s.start_with?('color')
+        end.to_h
       end
       
       def enum_value_to_symbol(enum_name, enum_value)
