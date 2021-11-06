@@ -43,7 +43,7 @@ class MetaExample
   
   def run_example(example)
     Thread.new do
-      command = "ruby -r #{glimmer_dsl_libui_file} #{example} 2>&1"
+      command = "#{RbConfig.ruby} -r #{glimmer_dsl_libui_file} #{example} 2>&1"
       result = ''
       IO.popen(command) do |f|
         sleep(0.0001) # yield to main thread
