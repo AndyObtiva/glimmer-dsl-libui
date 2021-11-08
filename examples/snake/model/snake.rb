@@ -7,7 +7,7 @@ class Snake
       
       # cells are from tail to head
       # turn cells are from tail to head
-      attr_reader :cells, :turn_cells, :orientation, :grid
+      attr_accessor :cells, :turn_cells, :orientation, :grid
       
       def initialize(grid)
         @grid = grid
@@ -17,9 +17,9 @@ class Snake
       def generate(initial_cell: nil, initial_orientation: nil)
         initial_cell = initial_cell || @grid.cells.flatten.reject(&:content).sample
         initial_cell.content = self
-        @cells = [initial_cell]
-        @turn_cells = []
-        @orientation = initial_orientation || ORIENTATIONS.sample
+        self.cells = [initial_cell]
+        self.turn_cells = []
+        self.orientation = initial_orientation || ORIENTATIONS.sample
         initial_cell.orientation = @orientation
       end
       
@@ -33,10 +33,11 @@ class Snake
       end
       
       def move_by_one_cell
+        old_cells = @cells.map(&:dup)
         @cells = @cells.map do |cell|
           cell_orientation = cell.orientation
           cell.clear
-          case cell_orientation
+          new_cell = case cell_orientation
           when :east
             @grid.cells[cell.row][(cell.column + 1) % @grid.width]
           when :west
@@ -46,6 +47,8 @@ class Snake
           when :north
             @grid.cells[(cell.row - 1) % @grid.height][cell.column]
           end
+          new_cell.orientation = cell_orientation
+          new_cell
         end
         # TODO handle turn cells
       end
@@ -54,6 +57,17 @@ class Snake
       end
       
       def turn_right
+        case @orientation
+        when :east
+          @cells.last.orientation = self.orientation = :south
+        when :west
+          @cells.last.orientation = self.orientation = :north
+        when :south
+          @cells.last.orientation = self.orientation = :west
+        when :north
+          @cells.last.orientation = self.orientation = :east
+        end
+        @turn_cells << @cells.last
       end
       
       def grow

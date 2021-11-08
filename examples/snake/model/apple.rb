@@ -1,7 +1,7 @@
 class Snake
   module Model
     class Apple
-      attr_reader :cell, :grid
+      attr_accessor :cell, :grid
 #       attr_accessor :eaten
 #       alias eaten? eaten
       

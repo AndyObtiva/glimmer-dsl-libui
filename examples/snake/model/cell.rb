@@ -2,8 +2,7 @@ class Snake
   module Model
     class Cell
       # orientation is needed for snake occuppied cells (but not apple cells)
-      attr_reader :row, :column, :grid
-      attr_accessor :content, :orientation
+      attr_accessor :row, :column, :grid, :content, :orientation
       
       def initialize(grid: ,row: ,column: )
         @row = row

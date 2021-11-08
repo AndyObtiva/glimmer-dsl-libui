@@ -181,4 +181,22 @@ RSpec.describe 'Snake' do
     expect(subject.snake.cells.last).to eq(subject.grid.cells.last.first)
     expect(subject.snake.turn_cells).to be_empty
   end
+  
+  it 'starts snake going east, turns right south, and moves by one cell south' do
+    subject.start
+    
+    subject.snake.generate(initial_cell: subject.grid.cells.first.first, initial_orientation: :east)
+    
+    subject.snake.turn_right
+    
+    expect(subject.snake.turn_cells.size).to eq(1)
+    expect(subject.snake.turn_cells).to include(subject.grid.cells.first.first)
+    expect(subject.snake.turn_cells.last.orientation).to eq(:south)
+    
+    subject.snake.move_by_one_cell
+    expect(subject.snake.cells.size).to eq(1)
+    expect(subject.snake.cells.last).to eq(subject.grid.cells[1].first)
+    expect(subject.snake.cells.last.orientation).to eq(:south)
+    expect(subject.snake.orientation).to eq(:south)
+  end
 end

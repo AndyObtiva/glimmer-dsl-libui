@@ -6,7 +6,7 @@ class Snake
       WIDTH_DEFAULT = 40
       HEIGHT_DEFAULT = 40
       
-      attr_reader :width, :height, :cells
+      attr_accessor :width, :height, :cells
       
       def initialize(width = WIDTH_DEFAULT, height = HEIGHT_DEFAULT)
         @width = width
