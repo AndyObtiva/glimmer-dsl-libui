@@ -12,8 +12,13 @@ class Snake
       
       # generates a new location from scratch or via dependency injection of what cell is (for testing purposes)
       def generate(initial_row: nil, initial_column: nil)
-        self.row = initial_row || rand(@game.height)
-        self.column = initial_column || rand(@game.width)
+        if initial_row && initial_column
+          self.row, self.column = initial_row, initial_column
+        else
+          self.row, self.column = @game.height.times.zip(@game.width.times).reject do |row, column|
+            @game.snake.vertebrae.map {|v| [v.row, v.column]}.include?([row, column])
+          end.sample
+        end
       end
       
       def remove

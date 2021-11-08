@@ -41,6 +41,7 @@ class Snake
       end
       
       def move
+        @old_tail = @vertebrae.first.dup
         @vertebrae.each do |vertebra|
           case vertebra.orientation
           when :east
@@ -53,6 +54,10 @@ class Snake
             vertebra.row = (vertebra.row - 1) % @game.height
           end
         end
+        if head.row == @game.apple.row && head.column == @game.apple.column
+          grow
+          @game.apple.generate
+        end
       end
       
       def turn_right
@@ -64,6 +69,7 @@ class Snake
       end
       
       def grow
+        @vertebrae.prepend(@old_tail)
       end
       
       # inspect is overridden to prevent printing very long stack traces
