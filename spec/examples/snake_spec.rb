@@ -31,10 +31,10 @@ RSpec.describe 'Snake' do
     subject.start
     
     expect(subject.snake).to be_a(Snake::Model::Snake)
-    expect(subject.snake.head_cell).to be_a(Snake::Model::Cell)
-    expect(subject.snake.head_cell.row).to be_between(0, subject.grid.height)
-    expect(subject.snake.head_cell.column).to be_between(0, subject.grid.width)
-    expect(subject.snake.cells).to eq([subject.snake.head_cell])
+    expect(subject.snake.cells.size).to eq(1)
+    expect(subject.snake.cells.last).to be_a(Snake::Model::Cell)
+    expect(subject.snake.cells.last.row).to be_between(0, subject.grid.height)
+    expect(subject.snake.cells.last.column).to be_between(0, subject.grid.width)
     expect(subject.snake.turn_cells).to eq([])
     expect(Snake::Model::Snake::ORIENTATIONS).to include(subject.snake.orientation)
     expect(subject.snake.length).to eq(1)
@@ -49,8 +49,8 @@ RSpec.describe 'Snake' do
   it 'moves snake of length 1 by one cell east without going through a wall' do
     subject.start
     
-    subject.snake.generate(initial_head_cell: subject.grid.cells.first.first, initial_orientation: :east)
-    expect(subject.snake.head_cell).to eq(subject.grid.cells.first.first)
+    subject.snake.generate(initial_cell: subject.grid.cells.first.first, initial_orientation: :east)
+    expect(subject.snake.cells.last).to eq(subject.grid.cells.first.first)
     expect(subject.snake.orientation).to eq(:east)
     subject.apple.generate(initial_cell: subject.grid.cells[20][20])
     expect(subject.apple.cell).to eq(subject.grid.cells[20][20])
@@ -58,7 +58,7 @@ RSpec.describe 'Snake' do
     subject.snake.move_by_one_cell
     
     expect(subject.grid.cells.first.first.content).to be_nil
-    expect(subject.snake.head_cell).to eq(subject.grid.cells.first[1])
+    expect(subject.snake.cells.last).to eq(subject.grid.cells.first[1])
     expect(subject.snake.cells).to eq([subject.grid.cells.first[1]])
     expect(subject.snake.turn_cells).to be_empty
   end

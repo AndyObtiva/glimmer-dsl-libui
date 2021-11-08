@@ -7,19 +7,20 @@ class Snake
       
       # cells are from tail to head
       # turn cells are from tail to head
-      attr_reader :head_cell, :cells, :turn_cells, :orientation, :grid
+      attr_reader :cells, :turn_cells, :orientation, :grid
       
       def initialize(grid)
         @grid = grid
       end
       
       # generates a new snake location and orientation from scratch or via dependency injection of what head_cell and orientation are (for testing purposes)
-      def generate(initial_head_cell: nil, initial_orientation: nil)
-        @head_cell = initial_head_cell || @grid.cells.flatten.reject(&:content).sample
-        @head_cell.content = self
-        @cells = [@head_cell]
+      def generate(initial_cell: nil, initial_orientation: nil)
+        initial_cell = initial_cell || @grid.cells.flatten.reject(&:content).sample
+        initial_cell.content = self
+        @cells = [initial_cell]
         @turn_cells = []
         @orientation = initial_orientation || ORIENTATIONS.sample
+        initial_cell.orientation = @orientation
       end
       
       def length
@@ -27,20 +28,20 @@ class Snake
       end
       
       def clear_cell(cell)
-        @head_cell = nil if @head_cell == cell
-        @turn_cells.delete(cell)
         @cells.delete(cell)
+        @turn_cells.delete(cell)
       end
       
       def move_by_one_cell
-        case @orientation
-        when :east
-          previous_head_cell = @head_cell
-          @head_cell.clear
-          @head_cell = @grid.cells[previous_head_cell.row][previous_head_cell.column + 1]
-          @cells = [@head_cell]
-          # TODO handle turn cells and all cells correctly
+        @cells = @cells.map do |cell|
+          cell_orientation = cell.orientation
+          cell.clear
+          case cell_orientation
+          when :east
+            @grid.cells[cell.row][cell.column + 1]
+          end
         end
+        # TODO handle turn cells
       end
       
       def turn_left
