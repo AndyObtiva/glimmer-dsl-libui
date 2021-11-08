@@ -200,7 +200,7 @@ RSpec.describe Snake::Model::Game do
     expect(subject.snake.head.orientation).to eq(new_direction)
   end
   
-  it 'starts snake going east, moves by one cell, turns right south, and moves by one cell south' do
+  it 'starts snake going west, moves by one cell, turns right north, and moves by one cell south' do
     direction = :west
     subject.start
     
@@ -219,7 +219,7 @@ RSpec.describe Snake::Model::Game do
     expect(subject.snake.head.orientation).to eq(new_direction)
   end
   
-  it 'starts snake going east, moves by one cell, turns right south, and moves by one cell south' do
+  it 'starts snake going south, moves by one cell, turns right west, and moves by one cell south' do
     direction = :south
     subject.start
     
@@ -238,7 +238,7 @@ RSpec.describe Snake::Model::Game do
     expect(subject.snake.head.orientation).to eq(new_direction)
   end
   
-  it 'starts snake going east, moves by one cell, turns right south, and moves by one cell south' do
+  it 'starts snake going north, moves by one cell, turns right east, and moves by one cell south' do
     direction = :north
     subject.start
     
@@ -257,19 +257,102 @@ RSpec.describe Snake::Model::Game do
     expect(subject.snake.head.orientation).to eq(new_direction)
   end
   
-  xit 'starts snake going east, moves by one cell, turns right south, and eats apple while moving by one cell south' do
+  it 'starts snake going east, moves by one cell, turns left north, and moves by one cell south' do
+    direction = :east
     subject.start
     
-    subject.snake.generate(initial_cell: subject.vertebrae.first.first, initial_orientation: :east)
-    subject.apple.generate(initial_cell: subject.vertebrae[1][1])
+    subject.snake.generate(initial_row: 39, initial_column: 0, initial_orientation: direction)
+    subject.apple.generate(initial_row: 20, initial_column: 20)
     
-    subject.snake.turn_right
-    
-    expect(subject.snake.head.orientation).to eq(:south)
-    
+    new_direction = :north
     subject.snake.move
-    expect(subject.snake.vertebrae.size).to eq(2)
-    expect(subject.snake.head).to eq(subject.vertebrae[1].first)
-    expect(subject.snake.head.orientation).to eq(:south)
+    subject.snake.turn_left
+    expect(subject.snake.head.orientation).to eq(new_direction)
+    subject.snake.move
+    
+    expect(subject.snake.length).to eq(1)
+    expect(subject.snake.head.row).to eq(38)
+    expect(subject.snake.head.column).to eq(1)
+    expect(subject.snake.head.orientation).to eq(new_direction)
+  end
+  
+  it 'starts snake going west, moves by one cell, turns left south, and moves by one cell south' do
+    direction = :west
+    subject.start
+    
+    subject.snake.generate(initial_row: 0, initial_column: 39, initial_orientation: direction)
+    subject.apple.generate(initial_row: 20, initial_column: 20)
+    
+    new_direction = :south
+    subject.snake.move
+    subject.snake.turn_left
+    expect(subject.snake.head.orientation).to eq(new_direction)
+    subject.snake.move
+    
+    expect(subject.snake.length).to eq(1)
+    expect(subject.snake.head.row).to eq(1)
+    expect(subject.snake.head.column).to eq(38)
+    expect(subject.snake.head.orientation).to eq(new_direction)
+  end
+  
+  it 'starts snake going south, moves by one cell, turns left east, and moves by one cell south' do
+    direction = :south
+    subject.start
+    
+    subject.snake.generate(initial_row: 0, initial_column: 0, initial_orientation: direction)
+    subject.apple.generate(initial_row: 20, initial_column: 20)
+    
+    new_direction = :east
+    subject.snake.move
+    subject.snake.turn_left
+    expect(subject.snake.head.orientation).to eq(new_direction)
+    subject.snake.move
+    
+    expect(subject.snake.length).to eq(1)
+    expect(subject.snake.head.row).to eq(1)
+    expect(subject.snake.head.column).to eq(1)
+    expect(subject.snake.head.orientation).to eq(new_direction)
+  end
+  
+  it 'starts snake going north, moves by one cell, turns left west, and moves by one cell south' do
+    direction = :north
+    subject.start
+    
+    subject.snake.generate(initial_row: 39, initial_column: 39, initial_orientation: direction)
+    subject.apple.generate(initial_row: 20, initial_column: 20)
+    
+    new_direction = :west
+    subject.snake.move
+    subject.snake.turn_left
+    expect(subject.snake.head.orientation).to eq(new_direction)
+    subject.snake.move
+    
+    expect(subject.snake.length).to eq(1)
+    expect(subject.snake.head.row).to eq(38)
+    expect(subject.snake.head.column).to eq(38)
+    expect(subject.snake.head.orientation).to eq(new_direction)
+  end
+  
+  xit 'starts snake going east, moves by one cell, turns right south, and eats apple while moving by one cell south' do
+    direction = :east
+    subject.start
+    
+    subject.snake.generate(initial_row: 0, initial_column: 0, initial_orientation: direction)
+    subject.apple.generate(initial_row: 1, initial_column: 1)
+    
+    new_direction = :south
+    subject.snake.move
+    subject.snake.turn_left
+    expect(subject.snake.head.orientation).to eq(new_direction)
+    subject.snake.move
+    
+    expect(subject.snake.length).to eq(2)
+    expect(subject.snake.verbetrae[0].row).to eq(0)
+    expect(subject.snake.verbetrae[0].column).to eq(1)
+    expect(subject.snake.verbetrae[0].column).to eq(1)
+    expect(subject.snake.verbetrae[0].orientation).to eq(new_direction)
+    expect(subject.snake.verbetrae[1].row).to eq(1)
+    expect(subject.snake.verbetrae[1].column).to eq(1)
+    expect(subject.snake.verbetrae[1].orientation).to eq(new_direction)
   end
 end

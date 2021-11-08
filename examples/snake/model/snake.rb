@@ -5,6 +5,13 @@ class Snake
     class Snake
 #       attr_accessor :collided
 #       alias collided? collided
+      RIGHT_TURN_MAP = {
+        north: :east,
+        east: :south,
+        south: :west,
+        west: :north
+      }
+      LEFT_TURN_MAP = RIGHT_TURN_MAP.invert
       
       attr_reader :game
       # vertebrae and joins are ordered from tail to head
@@ -48,20 +55,12 @@ class Snake
         end
       end
       
-      def turn_left
+      def turn_right
+        head.orientation = RIGHT_TURN_MAP[head.orientation]
       end
       
-      def turn_right
-        case head.orientation
-        when :east
-          head.orientation = :south
-        when :west
-          head.orientation = :north
-        when :south
-          head.orientation = :west
-        when :north
-          head.orientation = :east
-        end
+      def turn_left
+        head.orientation = LEFT_TURN_MAP[head.orientation]
       end
       
       def grow
