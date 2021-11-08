@@ -46,11 +46,20 @@ RSpec.describe 'Snake' do
     expect(subject.apple.cell.column).to be_between(0, subject.grid.width)
   end
   
-#   it 'moves snake head by one cell without going through a wall' do
-#     subject.start
-#
-#     original_snake_head_cell_row = subject.snake.head_cell.row
-#     original_snake_head_cell_column = subject.snake.head_cell.column
-#     subject.snake.move_by_one_cell
-#   end
+  it 'moves snake of length 1 by one cell east without going through a wall' do
+    subject.start
+    
+    subject.snake.generate(initial_head_cell: subject.grid.cells.first.first, initial_orientation: :east)
+    expect(subject.snake.head_cell).to eq(subject.grid.cells.first.first)
+    expect(subject.snake.orientation).to eq(:east)
+    subject.apple.generate(initial_cell: subject.grid.cells[20][20])
+    expect(subject.apple.cell).to eq(subject.grid.cells[20][20])
+    
+    subject.snake.move_by_one_cell
+    
+    expect(subject.grid.cells.first.first.content).to be_nil
+    expect(subject.snake.head_cell).to eq(subject.grid.cells.first[1])
+    expect(subject.snake.cells).to eq([subject.grid.cells.first[1]])
+    expect(subject.snake.turn_cells).to be_empty
+  end
 end

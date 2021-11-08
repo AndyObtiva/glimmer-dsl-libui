@@ -1,7 +1,7 @@
 class Snake
   module Model
     class Apple
-      attr_reader :grid, :cell
+      attr_reader :cell, :grid
 #       attr_accessor :eaten
 #       alias eaten? eaten
       
@@ -9,8 +9,9 @@ class Snake
         @grid = grid
       end
       
-      def generate
-        @cell = @grid.cells.flatten.reject(&:content).sample
+      # generates a new snake location and orientation from scratch or via dependency injection of what cell is (for testing purposes)
+      def generate(initial_cell: nil)
+        @cell = initial_cell || @grid.cells.flatten.reject(&:content).sample
         @cell.content = self
       end
       
@@ -20,7 +21,7 @@ class Snake
     
       # inspect is overridden to prevent printing very long stack traces
       def inspect
-        "#{super[0, 60]}... >"
+        "#{super[0, 120]}... >"
       end
     end
   end

@@ -28,7 +28,7 @@ class Snake
       
       # inspect is overridden to prevent printing very long stack traces
       def inspect
-        "#{super[0, 60]}... >"
+        "#{super[0, 75]}... >"
       end
     end
   end

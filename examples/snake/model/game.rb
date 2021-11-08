@@ -5,7 +5,7 @@ require_relative 'apple'
 class Snake
   module Model
     class Game
-      attr_reader :grid, :snake, :apple
+      attr_reader :snake, :apple, :grid
       
       def initialize
         @grid = Grid.new
@@ -21,7 +21,7 @@ class Snake
       
       # inspect is overridden to prevent printing very long stack traces
       def inspect
-        "#{super[0, 60]}... >"
+        "#{super[0, 75]}... >"
       end
     end
   end
