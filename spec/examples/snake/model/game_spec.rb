@@ -408,4 +408,48 @@ RSpec.describe Snake::Model::Game do
     expect(subject.snake.vertebrae[2].column).to eq(2)
     expect(subject.snake.vertebrae[2].orientation).to eq(:south)
   end
+  
+  it 'starts snake going east, moves, turns right south, eats apple while moving south, turns left, eats apple while moving east, turns left, eats apple while moving north, turns left, collides while moving west and game is over' do
+    direction = :east
+    subject.start
+    
+    subject.snake.generate(initial_row: 0, initial_column: 0, initial_orientation: direction)
+    subject.apple.generate(initial_row: 1, initial_column: 1)
+    
+    subject.snake.move # 0, 1
+    subject.snake.turn_right
+    subject.snake.move # 1, 1 eats apple
+    subject.apple.generate(initial_row: 1, initial_column: 2)
+    subject.snake.turn_left
+    subject.snake.move # 1, 2 eats apple
+    subject.apple.generate(initial_row: 1, initial_column: 3)
+    subject.snake.move # 1, 3 eats apple
+    subject.apple.generate(initial_row: 1, initial_column: 4)
+    subject.snake.move # 1, 4 eats apple
+    subject.snake.turn_left
+    subject.snake.move # 0, 4
+    subject.snake.turn_left
+    subject.snake.move # 0, 3
+    subject.snake.turn_left
+    subject.snake.move # 1, 3 (collision)
+    
+    expect(subject).to be_over
+    expect(subject.snake).to be_collided
+    expect(subject.snake.length).to eq(5)
+    expect(subject.snake.vertebrae[0].row).to eq(1)
+    expect(subject.snake.vertebrae[0].column).to eq(2)
+    expect(subject.snake.vertebrae[0].orientation).to eq(:east)
+    expect(subject.snake.vertebrae[1].row).to eq(1)
+    expect(subject.snake.vertebrae[1].column).to eq(3)
+    expect(subject.snake.vertebrae[1].orientation).to eq(:east)
+    expect(subject.snake.vertebrae[2].row).to eq(1)
+    expect(subject.snake.vertebrae[2].column).to eq(4)
+    expect(subject.snake.vertebrae[2].orientation).to eq(:north)
+    expect(subject.snake.vertebrae[3].row).to eq(0)
+    expect(subject.snake.vertebrae[3].column).to eq(4)
+    expect(subject.snake.vertebrae[3].orientation).to eq(:west)
+    expect(subject.snake.vertebrae[4].row).to eq(0)
+    expect(subject.snake.vertebrae[4].column).to eq(3)
+    expect(subject.snake.vertebrae[4].orientation).to eq(:south)
+  end
 end

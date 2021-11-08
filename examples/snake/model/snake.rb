@@ -3,8 +3,8 @@ require_relative 'vertebra'
 class Snake
   module Model
     class Snake
-#       attr_accessor :collided
-#       alias collided? collided
+      attr_accessor :collided
+      alias collided? collided
       RIGHT_TURN_MAP = {
         north: :east,
         east: :south,
@@ -23,6 +23,7 @@ class Snake
       
       # generates a new snake location and orientation from scratch or via dependency injection of what head_cell and orientation are (for testing purposes)
       def generate(initial_row: nil, initial_column: nil, initial_orientation: nil)
+        self.collided = false
         initial_vertebra = Vertebra.new(snake: self, row: initial_row, column: initial_column, orientation: initial_orientation)
         self.vertebrae = [initial_vertebra]
       end
@@ -57,11 +58,16 @@ class Snake
         when :north
           @new_head.row = (@new_head.row - 1) % @game.height
         end
-        @vertebrae.append(@new_head)
-        @vertebrae.delete(tail)
-        if head.row == @game.apple.row && head.column == @game.apple.column
-          grow
-          @game.apple.generate
+        if @vertebrae.map {|v| [v.row, v.column]}.include?([@new_head.row, @new_head.column])
+          self.collided = true
+          @game.over = true
+        else
+          @vertebrae.append(@new_head)
+          @vertebrae.delete(tail)
+          if head.row == @game.apple.row && head.column == @game.apple.column
+            grow
+            @game.apple.generate
+          end
         end
       end
       
