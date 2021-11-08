@@ -14,6 +14,8 @@ RSpec.describe Snake::Model::Game do
     expect(subject.apple).to be_nil
     subject.start
     
+    expect(subject).to_not be_over
+    expect(subject.score).to eq(0)
     expect(subject.snake).to be_a(Snake::Model::Snake)
     expect(subject.snake.length).to eq(1)
     expect(subject.snake.head).to be_a(Snake::Model::Vertebra)
@@ -434,6 +436,7 @@ RSpec.describe Snake::Model::Game do
     subject.snake.move # 1, 3 (collision)
     
     expect(subject).to be_over
+    expect(subject.score).to eq(50 * 4)
     expect(subject.snake).to be_collided
     expect(subject.snake.length).to eq(5)
     expect(subject.snake.vertebrae[0].row).to eq(1)

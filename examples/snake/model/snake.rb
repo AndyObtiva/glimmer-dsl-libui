@@ -3,8 +3,7 @@ require_relative 'vertebra'
 class Snake
   module Model
     class Snake
-      attr_accessor :collided
-      alias collided? collided
+      SCORE_EAT_APPLE = 50
       RIGHT_TURN_MAP = {
         north: :east,
         east: :south,
@@ -12,6 +11,9 @@ class Snake
         west: :north
       }
       LEFT_TURN_MAP = RIGHT_TURN_MAP.invert
+      
+      attr_accessor :collided
+      alias collided? collided
       
       attr_reader :game
       # vertebrae and joins are ordered from tail to head
@@ -80,6 +82,7 @@ class Snake
       end
       
       def grow
+        @game.score += SCORE_EAT_APPLE
         @vertebrae.prepend(@old_tail)
       end
       

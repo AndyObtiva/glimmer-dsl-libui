@@ -8,7 +8,7 @@ class Snake
       HEIGHT_DEFAULT = 40
       
       attr_reader :width, :height
-      attr_accessor :snake, :apple, :over
+      attr_accessor :snake, :apple, :over, :score
       alias over? over
       # TODO implement scoring on snake eating apples
       
@@ -19,6 +19,7 @@ class Snake
       
       def start
         self.over = false
+        self.score = 0
         self.snake = Snake.new(self)
         self.snake.generate
         self.apple = Apple.new(self)
