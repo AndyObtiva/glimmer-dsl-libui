@@ -38,7 +38,7 @@ class Snake
           cell.clear
           case cell_orientation
           when :east
-            @grid.cells[cell.row][cell.column + 1]
+            @grid.cells[cell.row][(cell.column + 1) % @grid.width]
           end
         end
         # TODO handle turn cells
