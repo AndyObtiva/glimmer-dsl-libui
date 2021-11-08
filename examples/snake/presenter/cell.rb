@@ -2,7 +2,7 @@ class Snake
   module Presenter
     class Cell
       COLOR_CLEAR = :white
-      COLOR_SNAKE = :olive
+      COLOR_SNAKE = :green
       COLOR_APPLE = :red
     
       attr_reader :row, :column, :grid

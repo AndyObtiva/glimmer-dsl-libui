@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.2.21
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.2.22
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -280,6 +280,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
     - [Method-Based Custom Keyword](#method-based-custom-keyword)
     - [Tetris](#tetris)
     - [Tic Tac Toe](#tic-tac-toe)
+    - [Snake](#snake)
   - [Applications](#applications)
     - [Manga2PDF](#manga2pdf)
     - [Befunge98 GUI](#befunge98-gui)
@@ -372,7 +373,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.2.21'
+gem 'glimmer-dsl-libui', '~> 0.2.22'
 ```
 
 Add `require 'glimmer-dsl-libui'` at the top, and then `include Glimmer` into the top-level main object for testing or into an actual class for serious usage.
@@ -6764,6 +6765,125 @@ class TicTacToe
 end
 
 TicTacToe.new.launch
+```
+
+### Snake
+
+Snake provides an example of building a desktop application [test-first](/spec/examples/snake/model/game_spec.rb) following the MVP ([Model](/examples/snake/model/game.rb) / [View](/examples/snake.rb) / [Presenter](/examples/snake/presenter/grid.rb)) architectural pattern.
+
+[examples/snake.rb](examples/snake.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/snake.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/snake'"
+```
+
+Mac
+
+![glimmer-dsl-libui-mac-snake.png](images/glimmer-dsl-libui-mac-snake.png)
+
+![glimmer-dsl-libui-mac-snake-game-over.png](images/glimmer-dsl-libui-mac-snake-game-over.png)
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+require 'glimmer-dsl-libui'
+require 'glimmer/data_binding/observer'
+
+require_relative 'snake/presenter/grid'
+
+class Snake
+  CELL_SIZE = 15
+  SNAKE_MOVE_DELAY = 0.1
+  include Glimmer
+  
+  def initialize
+    @game = Model::Game.new
+    @grid = Presenter::Grid.new(@game)
+    @game.start
+    create_gui
+    register_observers
+  end
+  
+  def launch
+    @main_window.show
+  end
+  
+  def register_observers
+    @game.height.times do |row|
+      @game.width.times do |column|
+        Glimmer::DataBinding::Observer.proc do |new_color|
+          @cell_grid[row][column].fill = new_color
+        end.observe(@grid.cells[row][column], :color)
+      end
+    end
+    
+    Glimmer::DataBinding::Observer.proc do |game_over|
+      Glimmer::LibUI.queue_main do
+        if game_over
+          msg_box('Game Over!', "Score: #{@game.score}")
+          @game.start
+        end
+      end
+    end.observe(@game, :over)
+    
+    Glimmer::LibUI.timer(SNAKE_MOVE_DELAY) do
+      unless @game.over?
+        @game.snake.move
+        @main_window.title = "Glimmer Snake (Score: #{@game.score})"
+      end
+    end
+  end
+  
+  def create_gui
+    @cell_grid = []
+    @main_window = window('Glimmer Snake', @game.width * CELL_SIZE, @game.height * CELL_SIZE) {
+      resizable false
+      
+      vertical_box {
+        padded false
+        
+        @game.height.times do |row|
+          @cell_grid << []
+          horizontal_box {
+            padded false
+            
+            @game.width.times do |column|
+              area {
+                @cell_grid.last << path {
+                  square(0, 0, CELL_SIZE)
+                  
+                  fill Presenter::Cell::COLOR_CLEAR
+                }
+                
+                on_key_up do |area_key_event|
+                  orientation_and_key = [@game.snake.head.orientation, area_key_event[:ext_key]]
+                  case orientation_and_key
+                  in [:north, :right] | [:east, :down] | [:south, :left] | [:west, :up]
+                    @game.snake.turn_right
+                  in [:north, :left] | [:west, :down] | [:south, :right] | [:east, :up]
+                    @game.snake.turn_left
+                  else
+                    # No Op
+                  end
+                end
+              }
+            end
+          }
+        end
+      }
+    }
+  end
+end
+
+Snake.new.launch
 ```
 
 ## Applications

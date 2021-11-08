@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.2.22
+
+- examples/snake.rb implemented test-first
+
 ## 0.2.21
 
 - examples/tic_tac_toe.rb

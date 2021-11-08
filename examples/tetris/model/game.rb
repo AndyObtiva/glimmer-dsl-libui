@@ -113,7 +113,7 @@ class Tetris
       end
       
       def tetris_dir
-        @tetris_dir ||= File.join(File.expand_path('~'), '.glimmer-tetris')
+        @tetris_dir ||= File.join(Dir.home, '.glimmer-tetris')
       end
       
       def tetris_high_score_file

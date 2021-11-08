@@ -1,3 +1,5 @@
+require 'fileutils'
+
 require_relative 'snake'
 require_relative 'apple'
 
@@ -6,9 +8,10 @@ class Snake
     class Game
       WIDTH_DEFAULT = 40
       HEIGHT_DEFAULT = 40
+      FILE_HIGH_SCORE = File.expand_path(File.join(Dir.home, '.glimmer-snake'))
       
       attr_reader :width, :height
-      attr_accessor :snake, :apple, :over, :score
+      attr_accessor :snake, :apple, :over, :score, :high_score
       alias over? over
       # TODO implement scoring on snake eating apples
       
@@ -17,6 +20,20 @@ class Snake
         @height = height
         @snake = Snake.new(self)
         @apple = Apple.new(self)
+        FileUtils.touch(FILE_HIGH_SCORE)
+        @high_score = File.read(FILE_HIGH_SCORE).to_i rescue 0
+      end
+      
+      def score=(new_score)
+        @score = new_score
+        self.high_score = @score if @score > @high_score
+      end
+      
+      def high_score=(new_high_score)
+        @high_score = new_high_score
+        File.write(FILE_HIGH_SCORE, @high_score.to_s)
+      rescue => e
+        puts e.full_message
       end
       
       def start
