@@ -15,8 +15,8 @@ RSpec.describe 'Snake' do
     expect(subject.grid.cells.size).to eq(40)
     expect(subject.grid.cells.map(&:size).uniq).to eq([40])
     subject.grid.cells.each_with_index do |row_cells, row|
-      subject.grid.cells[row].each_with_index do |column_cells, column|
-        the_cell = subject.grid.cells[row][column]
+      subject.grid.cells[row].each_with_index do |cell, column|
+        the_cell = cell
         expect(the_cell.grid).to eq(subject.grid)
         expect(the_cell.row).to eq(row)
         expect(the_cell.column).to eq(column)
@@ -25,13 +25,32 @@ RSpec.describe 'Snake' do
     end
   end
   
-  xit 'generates snake head and apple in random cells on start' do
+  it 'starts game by generating snake head and apple in random cells' do
     expect(subject.snake).to be_nil
     expect(subject.apple).to be_nil
     subject.start
     
-    expect(subject.snake).to_not be_nil
-#     expect(subject.snake.head_cell.x).to be_greater_than
-    expect(subject.apple).to_not be_nil
+    expect(subject.snake).to be_a(Snake::Model::Snake)
+    expect(subject.snake.head_cell).to be_a(Snake::Model::Cell)
+    expect(subject.snake.head_cell.row).to be_between(0, subject.grid.height)
+    expect(subject.snake.head_cell.column).to be_between(0, subject.grid.width)
+    expect(subject.snake.cells).to eq([subject.snake.head_cell])
+    expect(subject.snake.turn_cells).to eq([])
+    expect(Snake::Model::Snake::ORIENTATIONS).to include(subject.snake.orientation)
+    expect(subject.snake.length).to eq(1)
+    
+    expect(subject.apple).to be_a(Snake::Model::Apple)
+    expect(subject.apple.cell).to be_a(Snake::Model::Cell)
+    expect(subject.snake.cells).to_not include(subject.apple.cell)
+    expect(subject.apple.cell.row).to be_between(0, subject.grid.height)
+    expect(subject.apple.cell.column).to be_between(0, subject.grid.width)
   end
+  
+#   it 'moves snake head by one cell without going through a wall' do
+#     subject.start
+#
+#     original_snake_head_cell_row = subject.snake.head_cell.row
+#     original_snake_head_cell_column = subject.snake.head_cell.column
+#     subject.snake.move_by_one_cell
+#   end
 end

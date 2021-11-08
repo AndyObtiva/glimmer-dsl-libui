@@ -17,6 +17,19 @@ class Snake
           end
         end
       end
+      
+      def clear
+        @cells.each do |row_cells|
+          row_cells.each do |cell|
+            cell.clear
+          end
+        end
+      end
+      
+      # inspect is overridden to prevent printing very long stack traces
+      def inspect
+        "#{super[0, 60]}... >"
+      end
     end
   end
 end
