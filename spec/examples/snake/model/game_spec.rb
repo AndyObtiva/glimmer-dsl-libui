@@ -380,7 +380,7 @@ RSpec.describe Snake::Model::Game do
     expect(subject.snake.vertebrae[2].orientation).to eq(:east)
   end
   
-  xit 'starts snake going east, moves, turns right south, eats apple while moving south, turns left, eats apple while moving east, turns right, moves south' do
+  it 'starts snake going east, moves, turns right south, eats apple while moving south, turns left, eats apple while moving east, turns right, moves south' do
     direction = :east
     subject.start
     
@@ -394,17 +394,16 @@ RSpec.describe Snake::Model::Game do
     subject.snake.turn_left
     subject.snake.move # eats apple
     subject.apple.generate(initial_row: 20, initial_column: 20)
-#     subject.snake.turn_right
-#     subject.snake.move
+    subject.snake.turn_right
+    subject.snake.move
     
-#     expect(subject.snake.length).to eq(3)
-    pd subject.snake.vertebrae
+    expect(subject.snake.length).to eq(3)
     expect(subject.snake.vertebrae[0].row).to eq(1)
     expect(subject.snake.vertebrae[0].column).to eq(1)
     expect(subject.snake.vertebrae[0].orientation).to eq(:east)
     expect(subject.snake.vertebrae[1].row).to eq(1)
     expect(subject.snake.vertebrae[1].column).to eq(2)
-    expect(subject.snake.vertebrae[1].orientation).to eq(:east)
+    expect(subject.snake.vertebrae[1].orientation).to eq(:south)
     expect(subject.snake.vertebrae[2].row).to eq(2)
     expect(subject.snake.vertebrae[2].column).to eq(2)
     expect(subject.snake.vertebrae[2].orientation).to eq(:south)
