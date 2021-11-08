@@ -113,4 +113,39 @@ RSpec.describe 'Snake' do
     expect(subject.snake.cells.last).to eq(subject.grid.cells.first.last)
     expect(subject.snake.turn_cells).to be_empty
   end
+  
+  
+  it 'moves snake of length 1 by one cell south without going through a wall' do
+    subject.start
+    
+    subject.snake.generate(initial_cell: subject.grid.cells.first.first, initial_orientation: :south)
+    expect(subject.snake.cells.last).to eq(subject.grid.cells.first.first)
+    expect(subject.snake.orientation).to eq(:south)
+    subject.apple.generate(initial_cell: subject.grid.cells[20][20])
+    expect(subject.apple.cell).to eq(subject.grid.cells[20][20])
+    
+    subject.snake.move_by_one_cell
+    
+    expect(subject.grid.cells.first.first.content).to be_nil
+    expect(subject.snake.cells.size).to eq(1)
+    expect(subject.snake.cells.last).to eq(subject.grid.cells[1].first)
+    expect(subject.snake.turn_cells).to be_empty
+  end
+  
+  it 'moves snake of length 1 by one cell south going through a wall' do
+    subject.start
+    
+    subject.snake.generate(initial_cell: subject.grid.cells.last.first, initial_orientation: :south)
+    expect(subject.snake.cells.last).to eq(subject.grid.cells.last.first)
+    expect(subject.snake.orientation).to eq(:south)
+    subject.apple.generate(initial_cell: subject.grid.cells[20][20])
+    expect(subject.apple.cell).to eq(subject.grid.cells[20][20])
+    
+    subject.snake.move_by_one_cell
+    
+    expect(subject.grid.cells.first.last.content).to be_nil
+    expect(subject.snake.cells.size).to eq(1)
+    expect(subject.snake.cells.last).to eq(subject.grid.cells.first.first)
+    expect(subject.snake.turn_cells).to be_empty
+  end
 end
