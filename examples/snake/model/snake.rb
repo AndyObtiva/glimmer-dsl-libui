@@ -1,73 +1,67 @@
+require_relative 'vertebra'
+  
 class Snake
   module Model
     class Snake
-      ORIENTATIONS = %i[north east south west]
 #       attr_accessor :collided
 #       alias collided? collided
       
-      # cells are from tail to head
-      # turn cells are from tail to head
-      attr_accessor :cells, :turn_cells, :orientation, :grid
+      attr_reader :game
+      # vertebrae and joins are ordered from tail to head
+      attr_accessor :vertebrae
       
-      def initialize(grid)
-        @grid = grid
+      def initialize(game)
+        @game = game
       end
       
       # generates a new snake location and orientation from scratch or via dependency injection of what head_cell and orientation are (for testing purposes)
-      def generate(initial_cell: nil, initial_orientation: nil)
-        initial_cell = initial_cell || @grid.cells.flatten.reject(&:content).sample
-        initial_cell.content = self
-        self.cells = [initial_cell]
-        self.turn_cells = []
-        self.orientation = initial_orientation || ORIENTATIONS.sample
-        initial_cell.orientation = @orientation
+      def generate(initial_row: nil, initial_column: nil, initial_orientation: nil)
+        initial_vertebra = Vertebra.new(snake: self, row: initial_row, column: initial_column, orientation: initial_orientation)
+        self.vertebrae = [initial_vertebra]
       end
       
       def length
-        @cells.length
+        @vertebrae.length
       end
       
-      def clear_cell(cell)
-        @cells.delete(cell)
-        @turn_cells.delete(cell)
+      def head
+        @vertebrae.last
       end
       
-      def move_by_one_cell
-        old_cells = @cells.map(&:dup)
-        @cells = @cells.map do |cell|
-          cell_orientation = cell.orientation
-          cell.clear
-          new_cell = case cell_orientation
+      def remove
+        self.vertebrae.clear
+        self.joins.clear
+      end
+      
+      def move
+        @vertebrae.each do |vertebra|
+          case vertebra.orientation
           when :east
-            @grid.cells[cell.row][(cell.column + 1) % @grid.width]
+            vertebra.column = (vertebra.column + 1) % @game.width
           when :west
-            @grid.cells[cell.row][(cell.column - 1) % @grid.width]
+            vertebra.column = (vertebra.column - 1) % @game.width
           when :south
-            @grid.cells[(cell.row + 1) % @grid.height][cell.column]
+            vertebra.row = (vertebra.row + 1) % @game.height
           when :north
-            @grid.cells[(cell.row - 1) % @grid.height][cell.column]
+            vertebra.row = (vertebra.row - 1) % @game.height
           end
-          new_cell.orientation = cell_orientation
-          new_cell
         end
-        # TODO handle turn cells
       end
       
       def turn_left
       end
       
       def turn_right
-        case @orientation
+        case head.orientation
         when :east
-          @cells.last.orientation = self.orientation = :south
+          head.orientation = :south
         when :west
-          @cells.last.orientation = self.orientation = :north
+          head.orientation = :north
         when :south
-          @cells.last.orientation = self.orientation = :west
+          head.orientation = :west
         when :north
-          @cells.last.orientation = self.orientation = :east
+          head.orientation = :east
         end
-        @turn_cells << @cells.last
       end
       
       def grow

@@ -1,6 +1,7 @@
 class Snake
   module Model
     class Cell
+      ORIENTATIONS = %i[north east south west]
       # orientation is needed for snake occuppied cells (but not apple cells)
       attr_accessor :row, :column, :grid, :content, :orientation
       

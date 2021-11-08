@@ -1,22 +1,25 @@
-require_relative 'grid'
 require_relative 'snake'
 require_relative 'apple'
 
 class Snake
   module Model
     class Game
-      attr_reader :snake, :apple, :grid
+      WIDTH_DEFAULT = 40
+      HEIGHT_DEFAULT = 40
       
-      def initialize
-        @grid = Grid.new
+      attr_reader :width, :height
+      attr_accessor :snake, :apple
+      
+      def initialize(width = WIDTH_DEFAULT, height = HEIGHT_DEFAULT)
+        @width = width
+        @height = height
       end
       
       def start
-        @grid.clear
-        @snake = Snake.new(@grid)
-        @snake.generate
-        @apple = Apple.new(@grid)
-        @apple.generate
+        self.snake = Snake.new(self)
+        self.snake.generate
+        self.apple = Apple.new(self)
+        self.apple.generate
       end
       
       # inspect is overridden to prevent printing very long stack traces
