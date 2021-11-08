@@ -35,25 +35,30 @@ class Snake
         @vertebrae.last
       end
       
+      def tail
+        @vertebrae.first
+      end
+      
       def remove
         self.vertebrae.clear
         self.joins.clear
       end
       
       def move
-        @old_tail = @vertebrae.first.dup
-        @vertebrae.each do |vertebra|
-          case vertebra.orientation
-          when :east
-            vertebra.column = (vertebra.column + 1) % @game.width
-          when :west
-            vertebra.column = (vertebra.column - 1) % @game.width
-          when :south
-            vertebra.row = (vertebra.row + 1) % @game.height
-          when :north
-            vertebra.row = (vertebra.row - 1) % @game.height
-          end
+        @old_tail = tail.dup
+        @new_head = head.dup
+        case @new_head.orientation
+        when :east
+          @new_head.column = (@new_head.column + 1) % @game.width
+        when :west
+          @new_head.column = (@new_head.column - 1) % @game.width
+        when :south
+          @new_head.row = (@new_head.row + 1) % @game.height
+        when :north
+          @new_head.row = (@new_head.row - 1) % @game.height
         end
+        @vertebrae.append(@new_head)
+        @vertebrae.delete(tail)
         if head.row == @game.apple.row && head.column == @game.apple.column
           grow
           @game.apple.generate

@@ -29,7 +29,7 @@ RSpec.describe Snake::Model::Game do
     expect(subject.apple.column).to be_between(0, subject.width)
   end
   
-  it 'moves snake of length 1 by one cell east without going through a wall' do
+  it 'moves snake of length 1 east without going through a wall' do
     direction = :east
     subject.start
     
@@ -48,7 +48,7 @@ RSpec.describe Snake::Model::Game do
     expect(subject.snake.head.column).to eq(1)
   end
   
-  it 'moves snake of length 1 by one cell east going through a wall' do
+  it 'moves snake of length 1 east going through a wall' do
     direction = :east
     subject.start
     
@@ -67,7 +67,7 @@ RSpec.describe Snake::Model::Game do
     expect(subject.snake.head.column).to eq(0)
   end
   
-  it 'moves snake of length 1 by one cell west without going through a wall' do
+  it 'moves snake of length 1 west without going through a wall' do
     direction = :west
     subject.start
     
@@ -86,7 +86,7 @@ RSpec.describe Snake::Model::Game do
     expect(subject.snake.head.column).to eq(38)
   end
   
-  it 'moves snake of length 1 by one cell west going through a wall' do
+  it 'moves snake of length 1 west going through a wall' do
     direction = :west
     subject.start
     
@@ -105,7 +105,7 @@ RSpec.describe Snake::Model::Game do
     expect(subject.snake.head.column).to eq(39)
   end
   
-  it 'moves snake of length 1 by one cell south without going through a wall' do
+  it 'moves snake of length 1 south without going through a wall' do
     direction = :south
     subject.start
     
@@ -124,7 +124,7 @@ RSpec.describe Snake::Model::Game do
     expect(subject.snake.head.column).to eq(0)
   end
   
-  it 'moves snake of length 1 by one cell south going through a wall' do
+  it 'moves snake of length 1 south going through a wall' do
     direction = :south
     subject.start
     
@@ -143,7 +143,7 @@ RSpec.describe Snake::Model::Game do
     expect(subject.snake.head.column).to eq(0)
   end
   
-  it 'moves snake of length 1 by one cell north without going through a wall' do
+  it 'moves snake of length 1 north without going through a wall' do
     direction = :north
     subject.start
     
@@ -162,7 +162,7 @@ RSpec.describe Snake::Model::Game do
     expect(subject.snake.head.column).to eq(0)
   end
   
-  it 'moves snake of length 1 by one cell north going through a wall' do
+  it 'moves snake of length 1 north going through a wall' do
     direction = :north
     subject.start
     
@@ -181,7 +181,7 @@ RSpec.describe Snake::Model::Game do
     expect(subject.snake.head.column).to eq(0)
   end
   
-  it 'starts snake going east, moves by one cell, turns right south, and moves by one cell south' do
+  it 'starts snake going east, moves, turns right south, and moves south' do
     direction = :east
     subject.start
     
@@ -200,7 +200,7 @@ RSpec.describe Snake::Model::Game do
     expect(subject.snake.head.orientation).to eq(new_direction)
   end
   
-  it 'starts snake going west, moves by one cell, turns right north, and moves by one cell south' do
+  it 'starts snake going west, moves, turns right north, and moves south' do
     direction = :west
     subject.start
     
@@ -219,7 +219,7 @@ RSpec.describe Snake::Model::Game do
     expect(subject.snake.head.orientation).to eq(new_direction)
   end
   
-  it 'starts snake going south, moves by one cell, turns right west, and moves by one cell south' do
+  it 'starts snake going south, moves, turns right west, and moves south' do
     direction = :south
     subject.start
     
@@ -238,7 +238,7 @@ RSpec.describe Snake::Model::Game do
     expect(subject.snake.head.orientation).to eq(new_direction)
   end
   
-  it 'starts snake going north, moves by one cell, turns right east, and moves by one cell south' do
+  it 'starts snake going north, moves, turns right east, and moves south' do
     direction = :north
     subject.start
     
@@ -257,7 +257,7 @@ RSpec.describe Snake::Model::Game do
     expect(subject.snake.head.orientation).to eq(new_direction)
   end
   
-  it 'starts snake going east, moves by one cell, turns left north, and moves by one cell south' do
+  it 'starts snake going east, moves, turns left north, and moves south' do
     direction = :east
     subject.start
     
@@ -276,7 +276,7 @@ RSpec.describe Snake::Model::Game do
     expect(subject.snake.head.orientation).to eq(new_direction)
   end
   
-  it 'starts snake going west, moves by one cell, turns left south, and moves by one cell south' do
+  it 'starts snake going west, moves, turns left south, and moves south' do
     direction = :west
     subject.start
     
@@ -295,7 +295,7 @@ RSpec.describe Snake::Model::Game do
     expect(subject.snake.head.orientation).to eq(new_direction)
   end
   
-  it 'starts snake going south, moves by one cell, turns left east, and moves by one cell south' do
+  it 'starts snake going south, moves, turns left east, and moves south' do
     direction = :south
     subject.start
     
@@ -314,7 +314,7 @@ RSpec.describe Snake::Model::Game do
     expect(subject.snake.head.orientation).to eq(new_direction)
   end
   
-  it 'starts snake going north, moves by one cell, turns left west, and moves by one cell south' do
+  it 'starts snake going north, moves, turns left west, and moves south' do
     direction = :north
     subject.start
     
@@ -333,7 +333,7 @@ RSpec.describe Snake::Model::Game do
     expect(subject.snake.head.orientation).to eq(new_direction)
   end
   
-  it 'starts snake going east, moves by one cell, turns right south, and eats apple while moving by one cell south' do
+  it 'starts snake going east, moves, turns right south, and eats apple while moving south' do
     direction = :east
     subject.start
     
@@ -343,7 +343,6 @@ RSpec.describe Snake::Model::Game do
     new_direction = :south
     subject.snake.move
     subject.snake.turn_right
-    expect(subject.snake.head.orientation).to eq(new_direction)
     subject.snake.move
     
     expect(subject.snake.length).to eq(2)
@@ -353,5 +352,61 @@ RSpec.describe Snake::Model::Game do
     expect(subject.snake.vertebrae[1].row).to eq(1)
     expect(subject.snake.vertebrae[1].column).to eq(1)
     expect(subject.snake.vertebrae[1].orientation).to eq(new_direction)
+  end
+  
+  it 'starts snake going east, moves, turns right south, eats apple while moving south, turns left, eats apple while moving east' do
+    direction = :east
+    subject.start
+    
+    subject.snake.generate(initial_row: 0, initial_column: 0, initial_orientation: direction)
+    subject.apple.generate(initial_row: 1, initial_column: 1)
+    
+    subject.snake.move
+    subject.snake.turn_right
+    subject.snake.move # eats apple
+    subject.apple.generate(initial_row: 1, initial_column: 2)
+    subject.snake.turn_left
+    subject.snake.move # eats apple
+    
+    expect(subject.snake.length).to eq(3)
+    expect(subject.snake.vertebrae[0].row).to eq(0)
+    expect(subject.snake.vertebrae[0].column).to eq(1)
+    expect(subject.snake.vertebrae[0].orientation).to eq(:south)
+    expect(subject.snake.vertebrae[1].row).to eq(1)
+    expect(subject.snake.vertebrae[1].column).to eq(1)
+    expect(subject.snake.vertebrae[1].orientation).to eq(:east)
+    expect(subject.snake.vertebrae[2].row).to eq(1)
+    expect(subject.snake.vertebrae[2].column).to eq(2)
+    expect(subject.snake.vertebrae[2].orientation).to eq(:east)
+  end
+  
+  xit 'starts snake going east, moves, turns right south, eats apple while moving south, turns left, eats apple while moving east, turns right, moves south' do
+    direction = :east
+    subject.start
+    
+    subject.snake.generate(initial_row: 0, initial_column: 0, initial_orientation: direction)
+    subject.apple.generate(initial_row: 1, initial_column: 1)
+    
+    subject.snake.move
+    subject.snake.turn_right
+    subject.snake.move # eats apple
+    subject.apple.generate(initial_row: 1, initial_column: 2)
+    subject.snake.turn_left
+    subject.snake.move # eats apple
+    subject.apple.generate(initial_row: 20, initial_column: 20)
+#     subject.snake.turn_right
+#     subject.snake.move
+    
+#     expect(subject.snake.length).to eq(3)
+    pd subject.snake.vertebrae
+    expect(subject.snake.vertebrae[0].row).to eq(1)
+    expect(subject.snake.vertebrae[0].column).to eq(1)
+    expect(subject.snake.vertebrae[0].orientation).to eq(:east)
+    expect(subject.snake.vertebrae[1].row).to eq(1)
+    expect(subject.snake.vertebrae[1].column).to eq(2)
+    expect(subject.snake.vertebrae[1].orientation).to eq(:east)
+    expect(subject.snake.vertebrae[2].row).to eq(2)
+    expect(subject.snake.vertebrae[2].column).to eq(2)
+    expect(subject.snake.vertebrae[2].orientation).to eq(:south)
   end
 end
