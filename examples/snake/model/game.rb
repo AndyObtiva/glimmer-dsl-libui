@@ -15,14 +15,14 @@ class Snake
       def initialize(width = WIDTH_DEFAULT, height = HEIGHT_DEFAULT)
         @width = width
         @height = height
+        @snake = Snake.new(self)
+        @apple = Apple.new(self)
       end
       
       def start
         self.over = false
         self.score = 0
-        self.snake = Snake.new(self)
         self.snake.generate
-        self.apple = Apple.new(self)
         self.apple.generate
       end
       

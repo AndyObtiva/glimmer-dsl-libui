@@ -10,8 +10,6 @@ RSpec.describe Snake::Model::Game do
   end
   
   it 'starts game by generating snake and apple in random locations' do
-    expect(subject.snake).to be_nil
-    expect(subject.apple).to be_nil
     subject.start
     
     expect(subject).to_not be_over

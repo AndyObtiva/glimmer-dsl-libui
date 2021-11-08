@@ -3,8 +3,6 @@ class Snake
     class Apple
       attr_reader :game
       attr_accessor :row, :column
-#       attr_accessor :eaten
-#       alias eaten? eaten
       
       def initialize(game)
         @game = game

@@ -1,9 +1,12 @@
 class Snake
-  module Model
+  module Presenter
     class Cell
-      ORIENTATIONS = %i[north east south west]
-      # orientation is needed for snake occuppied cells (but not apple cells)
-      attr_accessor :row, :column, :grid, :content, :orientation
+      COLOR_CLEAR = :white
+      COLOR_SNAKE = :olive
+      COLOR_APPLE = :red
+    
+      attr_reader :row, :column, :grid
+      attr_accessor :color
       
       def initialize(grid: ,row: ,column: )
         @row = row
@@ -12,9 +15,7 @@ class Snake
       end
       
       def clear
-        @content&.clear_cell(self)
-        @content = nil
-        @orientation = nil
+        self.color = COLOR_CLEAR unless color == COLOR_CLEAR
       end
       
       # inspect is overridden to prevent printing very long stack traces
