@@ -13,7 +13,6 @@ class Snake
       attr_reader :width, :height
       attr_accessor :snake, :apple, :over, :score, :high_score
       alias over? over
-      # TODO implement scoring on snake eating apples
       
       def initialize(width = WIDTH_DEFAULT, height = HEIGHT_DEFAULT)
         @width = width

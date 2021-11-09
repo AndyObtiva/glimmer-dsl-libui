@@ -6292,6 +6292,14 @@ Mac
 
 ![glimmer-dsl-libui-mac-tetris-high-scores.png](images/glimmer-dsl-libui-mac-tetris-high-scores.png)
 
+Linux
+
+![glimmer-dsl-libui-linux-tetris.png](images/glimmer-dsl-libui-linux-tetris.png)
+
+![glimmer-dsl-libui-linux-tetris-game-over.png](images/glimmer-dsl-libui-linux-tetris-game-over.png)
+
+![glimmer-dsl-libui-linux-tetris-high-scores.png](images/glimmer-dsl-libui-linux-tetris-high-scores.png)
+
 New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
 
 ```ruby
@@ -6790,6 +6798,12 @@ Mac
 ![glimmer-dsl-libui-mac-snake.png](images/glimmer-dsl-libui-mac-snake.png)
 
 ![glimmer-dsl-libui-mac-snake-game-over.png](images/glimmer-dsl-libui-mac-snake-game-over.png)
+
+Linux
+
+![glimmer-dsl-libui-linux-snake.png](images/glimmer-dsl-libui-linux-snake.png)
+
+![glimmer-dsl-libui-linux-snake-game-over.png](images/glimmer-dsl-libui-linux-snake-game-over.png)
 
 New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
 
