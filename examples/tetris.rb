@@ -153,6 +153,8 @@ class Tetris
         end
       }
       radio_menu_item('Rotate Left on Up Arrow') {
+        checked true
+
         on_clicked do
           @game.rotate_left_on_up = true
         end
