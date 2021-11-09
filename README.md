@@ -6548,7 +6548,19 @@ class Tetris
       on_key_down do |key_event|
         case key_event
         in ext_key: :down
-          @game.down!
+          if OS.windows?
+            # rate limit downs in Windows as they go too fast when key is held
+            @queued_downs ||= 0
+            if @queued_downs < 2
+              @queued_downs += 1
+              Glimmer::LibUI.timer(0.01, repeat: false) do
+                @game.down! if @queued_downs < 2
+                @queued_downs -= 1
+              end
+            end
+          else
+            @game.down!
+          end
         in key: ' '
           @game.down!(instant: true)
         in ext_key: :up
@@ -6632,8 +6644,11 @@ class Tetris
   end
   
   def start_moving_tetrominos_down
-    Glimmer::LibUI.timer(@game.delay) do
-      @game.down! if !@game.game_over? && !@game.paused?
+    unless @tetrominos_start_moving_down
+      @tetrominos_start_moving_down = true
+      Glimmer::LibUI.timer(@game.delay) do
+        @game.down! if !@game.game_over? && !@game.paused?
+      end
     end
   end
   

@@ -235,9 +235,7 @@ class Tetris
       on_key_down do |key_event|
         case key_event
         in ext_key: :down
-          if !OS.windows?
-            @game.down!
-          else
+          if OS.windows?
             # rate limit downs in Windows as they go too fast when key is held
             @queued_downs ||= 0
             if @queued_downs < 2
@@ -247,6 +245,8 @@ class Tetris
                 @queued_downs -= 1
               end
             end
+          else
+            @game.down!
           end
         in key: ' '
           @game.down!(instant: true)
