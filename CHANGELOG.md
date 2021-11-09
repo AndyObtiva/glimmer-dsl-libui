@@ -2,6 +2,7 @@
 
 ## 0.2.23
 
+- Improve examples/tetris.rb by having high score dialog pause the game if running and resume after closed
 - Adjust Area Gallery example text size to 11 in Windows/Linux
 - Fix `Glimmer::LibUI::timer {}` behavior so that the block return value will not affect repetition outcome if it is `Integer` (only Booleans affect it)
 - Fix Tetris down button for Windows (it was going too fast before making tetrominos invisible before they hit the bottom)

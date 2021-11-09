@@ -348,6 +348,8 @@ class Tetris
   
   def show_high_scores
     Glimmer::LibUI.queue_main do
+      game_paused = !!@game.paused
+      @game.paused = true
       if @game.high_scores.empty?
         high_scores_string = "No games have been scored yet."
       else
@@ -356,6 +358,7 @@ class Tetris
         end.join("\n")
       end
       msg_box('High Scores', high_scores_string)
+      @game.paused = game_paused
     end
   end
   
