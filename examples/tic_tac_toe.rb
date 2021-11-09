@@ -52,7 +52,7 @@ class TicTacToe
                 }
                 text(23, 19) {
                   @cells[row] << string('') {
-                    font family: 'Arial', size: 20
+                    font family: 'Arial', size: OS.mac? ? 20 : 16
                   }
                 }
                 on_mouse_up do
