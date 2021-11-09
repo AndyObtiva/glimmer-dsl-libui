@@ -2,13 +2,12 @@
 
 ## Next
 
-- Add screenshots for Tetris, Tic Tac Toe, and Snake from Windows
+- Support nesting shapes directly under area to represent paths having one shape, and nesting fill/stroke within the shapes (not path)
 
 ## Soon
 
 - (API Changing) Rename `key_value` and `ext_key_value` to `key_code` and `ext_key_code` in `area_key_event` `Hash`
 - Consider making all event hashes and param hashes accept retrieval of their key values through method calls not just `[key]` calls (utilize `hash-proxy` gem to solve this problem)
-- Support nesting shapes directly under area to represent paths having one shape, and nesting fill/stroke within the shapes (not path)
 
 ## Future
 
