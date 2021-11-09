@@ -50,7 +50,7 @@ window('Area Gallery', 400, 400) {
       }
       text(161, 40, 100) { # x, y, width
         string('Area Gallery') {
-          font family: 'Arial', size: 14
+          font family: 'Arial', size: (OS.mac? ? 14 : 11)
           color :black
         }
       }

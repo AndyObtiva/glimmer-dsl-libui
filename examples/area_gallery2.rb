@@ -149,7 +149,7 @@ window('Area Gallery', 400, 400) {
       width 100
       
       string {
-        font family: 'Arial', size: 14
+        font family: 'Arial', size: (OS.mac? ? 14 : 11)
         color :black
         
         'Area Gallery'
