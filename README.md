@@ -6685,6 +6685,16 @@ Mac
 
 ![glimmer-dsl-libui-mac-tic-tac-toe-draw.png](images/glimmer-dsl-libui-mac-tic-tac-toe-draw.png)
 
+Linux
+
+![glimmer-dsl-libui-linux-tic-tac-toe.png](images/glimmer-dsl-libui-linux-tic-tac-toe.png)
+
+![glimmer-dsl-libui-linux-tic-tac-toe-player-o-wins.png](images/glimmer-dsl-libui-linux-tic-tac-toe-player-o-wins.png)
+
+![glimmer-dsl-libui-linux-tic-tac-toe-player-x-wins.png](images/glimmer-dsl-libui-linux-tic-tac-toe-player-x-wins.png)
+
+![glimmer-dsl-libui-linux-tic-tac-toe-draw.png](images/glimmer-dsl-libui-linux-tic-tac-toe-draw.png)
+
 New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
 
 ```ruby
