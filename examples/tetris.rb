@@ -245,7 +245,6 @@ class Tetris
               Glimmer::LibUI.timer(0.01, repeat: false) do
                 @game.down! if @queued_downs < 2
                 @queued_downs -= 1
-                nil # must not return an integer to avoid confusing it with the libui C boolean
               end
             end
           end

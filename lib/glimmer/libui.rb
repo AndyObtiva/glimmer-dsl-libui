@@ -26,12 +26,12 @@ module Glimmer
     class << self
       include Glimmer::FiddleConsumer
       
-      def integer_to_boolean(int, allow_nil: true)
-        int.nil? ? (allow_nil ? nil : false) : ((int.is_a?(TrueClass) || int.is_a?(FalseClass)) ? int : (int.is_a?(Integer) ? int == 1 : (allow_nil ? nil : false)))
+      def integer_to_boolean(int, allow_nil: true, allow_boolean: true)
+        int.nil? ? (allow_nil ? nil : false) : (allow_boolean && (int.is_a?(TrueClass) || int.is_a?(FalseClass)) ? int : (int.is_a?(Integer) ? int == 1 : (allow_nil ? nil : false)))
       end
       
-      def boolean_to_integer(bool, allow_nil: true)
-        bool.nil? ? (allow_nil ? nil : 0) : (bool.is_a?(Integer) ? bool : (bool.is_a?(TrueClass) || bool.is_a?(FalseClass) ? (bool == true ? 1 : 0) : (allow_nil ? nil : 0)))
+      def boolean_to_integer(bool, allow_nil: true, allow_integer: true)
+        bool.nil? ? (allow_nil ? nil : 0) : (allow_integer && bool.is_a?(Integer) ? bool : (bool.is_a?(TrueClass) || bool.is_a?(FalseClass) ? (bool == true ? 1 : 0) : (allow_nil ? nil : 0)))
       end
       
       def degrees_to_radians(degrees)
@@ -173,7 +173,7 @@ module Glimmer
       # If block returns true at any point, the timer continues for another repetition regardless of `repeat:` keyword arg value
       def timer(time_in_seconds = 0.1, repeat: true, &block)
         closure = fiddle_closure_block_caller(4, [0]) do
-          result = boolean_to_integer(block.call)
+          result = boolean_to_integer(block.call, allow_integer: false)
           repeat -= 1 if repeat.is_a?(Integer)
           if result.nil?
             if (repeat == true || (repeat.is_a?(Integer) && repeat > 0))
