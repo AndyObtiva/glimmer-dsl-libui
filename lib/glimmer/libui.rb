@@ -83,6 +83,7 @@ module Glimmer
             value = value.chars.map {|char| [char, char]}.flatten.join if value.length == 3
             value = "0x#{value}"
           end
+          value = "0x#{value[1..-1]}" if value.start_with?('#')
           value = value.to_i(16)
         end
         if value.is_a?(Integer)

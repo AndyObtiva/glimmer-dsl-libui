@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.2.24
+
+- Support hex colors as `String` with `'#'` prefix (e.g. '#ffaa92')
+
 ## 0.2.23
 
 - Improve examples/tetris.rb by having high score dialog pause the game if running and resume after closed
