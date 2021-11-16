@@ -480,7 +480,7 @@ Keyword(Args) | Properties | Listeners
 `group(text as String)` | `margined` (Boolean), `title` (`String`) | None
 `horizontal_box` | `padded` (Boolean) | None
 `horizontal_separator` | None | None
-`image(file as String = nil, width as Numeric = nil, height as Numeric = nil)` | None | None
+`image(file as String = nil, width as Numeric = nil, height as Numeric = nil)` | `file` (`String` path or URL), `width`, `height` | None
 `image_part(pixels as String [encoded image rgba byte array], width as Numeric, height as Numeric, byte_stride as Numeric [usually width*4])` | None | None
 `image_column(name as String)` | None | None
 `image_text_column(name as String)` | None | None
@@ -885,9 +885,9 @@ Linux
 **(ALPHA FEATURE)**
 
 [libui](https://github.com/andlabs/libui) does not support `image` rendering outside of `table` yet.
-However, [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) adds a special `image` custom control that renders an image unto an `area` pixel by pixel (and when possible to optimize, line by line).
+However, [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) adds a special `image(file as String path or web URL, width as Numeric, height as Numeric)` custom control that renders an image unto an `area` pixel by pixel (and when possible to optimize, line by line).
 
-Given that it is very new and not a [libui](https://github.com/andlabs/libui)-native control, please keep these notes in mind:
+Given that it is very new and is not a [libui](https://github.com/andlabs/libui)-native control, please keep these notes in mind:
 - It only supports the `.png` file format.
 - [libui](https://github.com/andlabs/libui) pixel-by-pixel rendering performance is slow.
 - Including an `image` inside an `area` `on_draw` listener improves performance due to not retaining pixel/line data in memory.
