@@ -20,6 +20,7 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 require 'glimmer/libui/control_proxy'
+require 'glimmer/libui/control_proxy/image_part_proxy'
 require 'glimmer/libui/image_path_renderer'
 require 'glimmer/data_binding/observer'
 require 'glimmer/libui/control_proxy/transformable'
@@ -63,15 +64,13 @@ module Glimmer
         end
         
         def file(value = nil)
-          if area_image?
-            if value.nil?
-              @args[0]
-            else
-              @args[0] = value
-              if @content_added
-                post_add_content
-                request_auto_redraw
-              end
+          if value.nil?
+            @args[0]
+          else
+            @args[0] = value
+            if @content_added
+              post_add_content
+              request_auto_redraw
             end
           end
         end
@@ -80,16 +79,12 @@ module Glimmer
       
         def width(value = nil)
           if value.nil?
-            area_image? ? @args[1] : @args[0]
+            @args[1]
           else
-            if area_image?
-              @args[1] = value
-              if @content_added
-                post_add_content
-                request_auto_redraw
-              end
-            else
-              @args[0] = value
+            @args[1] = value
+            if area_image? && @content_added
+              post_add_content
+              request_auto_redraw
             end
           end
         end
@@ -98,16 +93,12 @@ module Glimmer
       
         def height(value = nil)
           if value.nil?
-            area_image? ? @args[2] : @args[1]
+            @args[2]
           else
-            if area_image?
-              @args[2] = value
-              if @content_added
-                post_add_content
-                request_auto_redraw
-              end
-            else
-              @args[1] = value
+            @args[2] = value
+            if area_image? && @content_added
+              post_add_content
+              request_auto_redraw
             end
           end
         end
@@ -133,8 +124,7 @@ module Glimmer
         
         def area_image?
           @parent_proxy&.is_a?(AreaProxy) or
-            AreaProxy.current_area_draw_params or
-            @args[0].is_a?(String) # first arg is file
+            AreaProxy.current_area_draw_params
         end
         
         def destroy
@@ -146,8 +136,13 @@ module Glimmer
         
         def build_control
           unless area_image? # image object
-            @args = [@children.first.args[1], @children.first.args[2]] if @children.size == 1 && (@args[0].nil? || @args[1].nil?)
-            super
+            if file
+              load_image
+              ImagePartProxy.new('image_part', self, [@data, width, height, width * 4])
+            end
+            @args[1] = @children.first.args[1] if @children.size == 1 && @args[1].nil?
+            @args[2] = @children.first.args[2] if @children.size == 1 && @args[2].nil?
+            @libui = ControlProxy.new_control(@keyword, [width, height])
             @libui.tap do
               @children.each {|child| child&.send(:build_control) }
             end
@@ -163,6 +158,7 @@ module Glimmer
           @data = canvas.to_rgba_stream
           self.width = canvas.width
           self.height = canvas.height
+          [@data, width, height]
         end
         
         def parse_pixels

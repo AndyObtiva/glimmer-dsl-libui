@@ -1,10 +1,20 @@
 # frozen_string_literal: true
 
 require 'glimmer-dsl-libui'
+require 'chunky_png'
 
 include Glimmer
 
-img = image(File.expand_path('../icons/glimmer.png', __dir__), 24, 24)
+f = File.open(File.expand_path('../icons/glimmer.png', __dir__))
+canvas = ChunkyPNG::Canvas.from_io(f)
+f.close
+canvas.resample_nearest_neighbor!(24, 24)
+data = canvas.to_rgba_stream
+width = canvas.width
+height = canvas.height
+img = image {
+  image_part(data, width, height, width * 4)
+}
 
 data = [
   [['cat', :red]      , ['meow', :blue]                  , [true, 'mammal', :green], [img, 'Glimmer', :dark_blue], {r: 255, g: 120, b: 0, a: 0.5}],

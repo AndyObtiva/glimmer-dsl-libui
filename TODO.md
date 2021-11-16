@@ -3,7 +3,6 @@
 ## Next
 
 - Support Web URL as `image` control file
-- Support building `image_column` `image` objects in a `table` via `file` property (simplify through automation of use of `image_part` for `.png` image files given that `chunky_png` is now included in the gem)
 - Add `key_code` as alias to `key_value` in `area_key_event` `Hash`
 - Divide Area API into subsections in README for easier navigatibility
 - examples/basic_scrolling_area.rb (note that area dimensions must be greater than its window dimensions)
