@@ -27,25 +27,44 @@ color_maps = height.times.map do |y|
     {x: x, y: y, color: {r: r, g: g, b: b, a: a}}
   end
 end.flatten
+puts "#{color_maps.size} pixels to render..."; $stdout.flush
 
 puts 'Parsing shapes...'; $stdout.flush
 
 shape_maps = []
-color_maps.each_with_index do |color_map, index|
+original_color_maps = color_maps.dup
+indexed_original_color_maps = Hash[original_color_maps.each_with_index.to_a]
+color_maps.each do |color_map|
+  index = indexed_original_color_maps[color_map]
   @rectangle_start_x ||= color_map[:x]
+  @rectangle_start_y ||= color_map[:y]
   @rectangle_width ||= 1
-  if color_map[:x] < width - 1 && color_map[:color] == color_maps[index + 1][:color]
+  @rectangle_height ||= 1
+  if color_map[:x] < width - 1 && color_map[:color] == original_color_maps[index + 1][:color]
     @rectangle_width += 1
   else
-    if color_map[:x] > 0 && color_map[:color] == color_maps[index - 1][:color]
-      shape_maps << {x: @rectangle_start_x, y: color_map[:y], width: @rectangle_width, height: 1, color: color_map[:color]}
+    if color_map[:x] > 0 && color_map[:color] == original_color_maps[index - 1][:color]
+      groupable_color_map_y = @rectangle_start_y + 1
+      while groupable_color_map_y < height && (deletable_color_maps = original_color_maps[(groupable_color_map_y*width + @rectangle_start_x), @rectangle_width].to_a).all? {|cm| cm[:color] == color_map[:color]}
+        @rectangle_height += 1
+        groupable_color_map_y += 1
+        (@rectangle_start_x...(@rectangle_start_x + @rectangle_width)).each do |x|
+          index_to_delete = groupable_color_map_y*width + x
+          color_maps.delete_at(index_to_delete)
+        end
+      end
+      shape_maps << {x: @rectangle_start_x, y: @rectangle_start_y, width: @rectangle_width, height: @rectangle_height, color: color_map[:color]}
     else
       shape_maps << {x: color_map[:x], y: color_map[:y], width: 1, height: 1, color: color_map[:color]}
     end
     @rectangle_width = 1
+    @rectangle_height = 1
     @rectangle_start_x = color_map[:x] == width - 1 ? 0 : color_map[:x] + 1
+    @rectangle_start_y = color_map[:x] == width - 1 ? color_map[:y] + 1 : color_map[:y]
   end
 end
+pd color_maps.size
+pd original_color_maps.size
 puts "#{shape_maps.size} shapes to render..."; $stdout.flush
 
 puts 'Rendering image...'; $stdout.flush
