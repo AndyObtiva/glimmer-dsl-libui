@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.3.0
+
+- New `image` Glimmer custom control that can be nested under `area` to render an image (it is not part of LibUI, so it has some performance caveats, but is better than nothing; it is fast with smaller images)
+
 ## 0.2.24
 
 - Support hex colors as `String` with `'#'` prefix (e.g. '#ffaa92')

@@ -3,7 +3,6 @@
 ## Next
 
 - (API Changing) Rename `key_value` and `ext_key_value` to `key_code` and `ext_key_code` in `area_key_event` `Hash`
-- `image_area` Glimmer custom widget for rendering an image on an area
 
 ## Soon
 

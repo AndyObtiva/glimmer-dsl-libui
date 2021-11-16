@@ -473,7 +473,7 @@ Keyword(Args) | Properties | Listeners
 `group(text as String)` | `margined` (Boolean), `title` (`String`) | None
 `horizontal_box` | `padded` (Boolean) | None
 `horizontal_separator` | None | None
-`image(width as Numeric, height as Numeric)` | None | None
+`image(file as String = nil, width as Numeric = nil, height as Numeric = nil)` | None | None
 `image_part(pixels as String [encoded image rgba byte array], width as Numeric, height as Numeric, byte_stride as Numeric [usually width*4])` | None | None
 `image_column(name as String)` | None | None
 `image_text_column(name as String)` | None | None
@@ -961,6 +961,174 @@ window('area text drawing') {
   }
 }.show
 ```
+
+#### Image Glimmer Custom Control
+
+**(ALPHA FEATURE)**
+
+Unfortunately, [libui](https://github.com/andlabs/libui) does not support an `image` control yet.
+However, [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) does the impossible task of adding a special `image` Glimmer custom control
+that provides a feature that is not in C [libui](https://github.com/andlabs/libui).
+It attempts to do so by rendering an image unto an `area` pixel by pixel (and when possible to optimize, line by line).
+
+As a result, it has several caveats:
+- [libui](https://github.com/andlabs/libui) pixel-by-pixel rendering performance is slow
+- Including an `image` inside an `area` `on_draw` listener improves performance due to not retaining pixel/line data in memory.
+- Supplying `width` and `height` (2nd and 3rd arguments) greatly improves performance when shrinking image
+
+Currently, it is recommended to use `image` with very small `width` and `height` values only.
+
+Setting a `transform` `matrix` is supported under `image` just like for `path` and `text` under `area`.
+
+Example of using `image` declaratively (you may copy/paste in [`girb`](#girb-glimmer-irb)):
+
+![Basic Image](/images/glimmer-dsl-libui-mac-basic-image.png)
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+window('Basic Image', 96, 96) {
+  area {
+    image(File.expand_path('icons/glimmer.png', __dir__), 96, 96)
+  }
+}.show
+```
+
+Example of better performance via `on_draw` (you may copy/paste in [`girb`](#girb-glimmer-irb)):
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+window('Basic Image', 96, 96) {
+  area {
+    on_draw do |area_draw_params|
+      image(File.expand_path('icons/glimmer.png', __dir__), 96, 96)
+    end
+  }
+}.show
+```
+
+Example of using `image` declaratively with explicit attributes (you may copy/paste in [`girb`](#girb-glimmer-irb)):
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+window('Basic Image', 96, 96) {
+  area {
+    image {
+      file File.expand_path('icons/glimmer.png', __dir__)
+      width 96
+      height 96
+    }
+  }
+}.show
+```
+
+Example of better performance via `on_draw` with explicit attributes (you may copy/paste in [`girb`](#girb-glimmer-irb)):
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+window('Basic Image', 96, 96) {
+  area {
+    on_draw do |area_draw_params|
+      image {
+        file File.expand_path('icons/glimmer.png', __dir__)
+        width 96
+        height 96
+      }
+    end
+  }
+}.show
+```
+
+If you need to render an image pixel by pixel for an extremely special scenario, you may use this example as a guide, including a line-merge optimization for neighboring pixels with the same color:
+
+```ruby
+# This is the manual way of rendering an image unto an area control.
+# It could come in handy in special situations.
+# Otherwise, it is recommended to simply utilize the `image` control that
+# can be nested under area or area on_draw listener to automate all this work.
+
+require 'glimmer-dsl-libui'
+require 'chunky_png'
+
+include Glimmer
+
+puts 'Parsing image...'; $stdout.flush
+
+f = File.open(File.expand_path('icons/glimmer.png', __dir__))
+canvas = ChunkyPNG::Canvas.from_io(f)
+f.close
+canvas.resample_nearest_neighbor!(96, 96)
+data = canvas.to_rgba_stream
+width = canvas.width
+height = canvas.height
+puts "Image width: #{width}"
+puts "Image height: #{height}"
+
+puts 'Parsing colors...'; $stdout.flush
+
+color_maps = height.times.map do |y|
+  width.times.map do |x|
+    r = data[(y*width + x)*4].ord
+    g = data[(y*width + x)*4 + 1].ord
+    b = data[(y*width + x)*4 + 2].ord
+    a = data[(y*width + x)*4 + 3].ord
+    {x: x, y: y, color: {r: r, g: g, b: b, a: a}}
+  end
+end.flatten
+puts "#{color_maps.size} pixels to render..."; $stdout.flush
+
+puts 'Parsing shapes...'; $stdout.flush
+
+shape_maps = []
+original_color_maps = color_maps.dup
+indexed_original_color_maps = Hash[original_color_maps.each_with_index.to_a]
+color_maps.each do |color_map|
+  index = indexed_original_color_maps[color_map]
+  @rectangle_start_x ||= color_map[:x]
+  @rectangle_width ||= 1
+  if color_map[:x] < width - 1 && color_map[:color] == original_color_maps[index + 1][:color]
+    @rectangle_width += 1
+  else
+    if color_map[:x] > 0 && color_map[:color] == original_color_maps[index - 1][:color]
+      shape_maps << {x: @rectangle_start_x, y: color_map[:y], width: @rectangle_width, height: 1, color: color_map[:color]}
+    else
+      shape_maps << {x: color_map[:x], y: color_map[:y], width: 1, height: 1, color: color_map[:color]}
+    end
+    @rectangle_width = 1
+    @rectangle_start_x = color_map[:x] == width - 1 ? 0 : color_map[:x] + 1
+  end
+end
+puts "#{shape_maps.size} shapes to render..."; $stdout.flush
+
+puts 'Rendering image...'; $stdout.flush
+
+window('Basic Image', 96, 96) {
+  area {
+    on_draw do |area_draw_params|
+      shape_maps.each do |shape_map|
+        path {
+          rectangle(shape_map[:x], shape_map[:y], shape_map[:width], shape_map[:height])
+
+          fill shape_map[:color]
+        }
+      end
+    end
+  }
+}.show
+```
+
+Check out [examples/basic_image.rb](#basic-image) (all version) for examples of using `image` Glimmer custom control.
 
 ### Smart Defaults and Conventions
 
