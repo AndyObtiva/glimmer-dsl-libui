@@ -218,6 +218,7 @@ module Glimmer
           {
             key: key_to_char(area_key_event.Key, modifiers),
             key_value: area_key_event.Key,
+            key_code: area_key_event.Key,
             ext_key: ext_key_to_symbol(area_key_event.ExtKey),
             ext_key_value: area_key_event.ExtKey,
             modifier: modifiers_to_symbols(area_key_event.Modifier).first,

@@ -821,7 +821,7 @@ The `area_mouse_event` `Hash` argument for mouse events that receive it (e.g. `o
 
 The `area_key_event` `Hash` argument for keyboard events that receive it (e.g. `on_key_up`, `on_key_down`) consist of the following hash keys:
 - `:key`: key character (`String`)
-- `:key_value`: key value (`Integer`). Useful in rare cases for numeric processing of keys instead of dealing with as `:key` character `String`
+- `:key_value` (alias: `:key_code`): key code value (`Integer`). Useful in rare cases for numeric processing of keys instead of dealing with as `:key` character `String`
 - `:ext_key`: non-character extra key (`Symbol`) from `Glimmer::LibUI.enum_symbols(:ext_key)` such as `:left`, `:right`, `:escape`, `:insert`
 - `:ext_key_value`: non-character extra key value (`Integer`). Useful in rare cases for numeric processing of extra keys instead of dealing with as `:ext_key` `Symbol`
 - `:modifier`: modifier key pressed alone (e.g. `:shift` or `:control`)
