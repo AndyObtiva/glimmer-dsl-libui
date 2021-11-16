@@ -3280,6 +3280,41 @@ UI.quit
 # This example displays images that can be freely downloaded from the Studio Ghibli website.
 
 require 'glimmer-dsl-libui'
+
+include Glimmer
+
+IMAGE_ROWS = []
+
+50.times do |i|
+  url = format('https://www.ghibli.jp/gallery/thumb-redturtle%03d.png', (i + 1))
+  puts "Processing Image: #{url}"; $stdout.flush # for Windows
+  IMAGE_ROWS << [image(url)] # array of one column cell
+rescue StandardError => e
+  warn url, e.message
+end
+
+window('The Red Turtle', 310, 350, false) {
+  horizontal_box {
+    table {
+      image_column('www.ghibli.jp/works/red-turtle')
+      
+      cell_rows IMAGE_ROWS
+    }
+  }
+  
+  on_closing do
+    puts 'Bye Bye'
+  end
+}.show
+```
+
+[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 2 (manual construction of `image` from `image_part`):
+
+```ruby
+# NOTE:
+# This example displays images that can be freely downloaded from the Studio Ghibli website.
+
+require 'glimmer-dsl-libui'
 require 'chunky_png'
 require 'open-uri'
 
@@ -3350,6 +3385,42 @@ Linux
 ![glimmer-dsl-libui-linux-basic-table-image-text.png](images/glimmer-dsl-libui-linux-basic-table-image-text.png)
 
 New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+# NOTE:
+# This example displays images that can be freely downloaded from the Studio Ghibli website.
+
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+IMAGE_ROWS = []
+
+5.times do |i|
+  url = format('https://www.ghibli.jp/gallery/thumb-redturtle%03d.png', (i + 1))
+  puts "Processing Image: #{url}"; $stdout.flush # for Windows
+  text = url.sub('https://www.ghibli.jp/gallery/thumb-redturtle', '').sub('.png', '')
+  img = image(url)
+  IMAGE_ROWS << [[img, text], [img, text]] # cell values are dual-element arrays
+rescue StandardError => e
+  warn url, e.message
+end
+
+window('The Red Turtle', 670, 350) {
+  horizontal_box {
+    table {
+      image_text_column('image/number')
+      image_text_column('image/number (editable)') {
+        editable true
+      }
+      
+      cell_rows IMAGE_ROWS
+    }
+  }
+}.show
+```
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 2 (manual construction of `image` from `image_part`):
 
 ```ruby
 # NOTE:
