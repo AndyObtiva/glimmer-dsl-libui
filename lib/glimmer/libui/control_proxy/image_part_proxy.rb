@@ -34,7 +34,6 @@ module Glimmer
           @args = args
           @block = block
           @enabled = true
-          @children = []
           post_add_content if @block.nil?
         end
         

@@ -54,7 +54,8 @@ None
 - Override `#inspect` method for area, path, text, and/or other controls in case they contain many shapes, to prevent their printout from being too large
 - Implement functionality to delay queuing area redraws until post_add_content has been called (area definition is done). Maybe offer an option to enable redrawing before area is closed too.
 - Implement `bounds` property for all shapes
-- Support SVG image_area
+- Support SVG `image` control
+- Support Web URL as `image` control file
 
 # Refactoring
 

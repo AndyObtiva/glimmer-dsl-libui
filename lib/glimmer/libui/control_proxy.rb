@@ -207,11 +207,11 @@ module Glimmer
       end
       
       def respond_to_libui?(method_name, *args, &block)
-        ::LibUI.respond_to?("control_#{method_name}") ||
-          (::LibUI.respond_to?("control_#{method_name.to_s.sub(/\?$/, '')}") && BOOLEAN_PROPERTIES.include?(method_name.to_s.sub(/\?$/, '')) ) ||
-          ::LibUI.respond_to?("control_set_#{method_name.to_s.sub(/=$/, '')}") ||
-          ::LibUI.respond_to?("#{libui_api_keyword}_#{method_name}") ||
-          (::LibUI.respond_to?("#{libui_api_keyword}_#{method_name.to_s.sub(/\?$/, '')}") && BOOLEAN_PROPERTIES.include?(method_name.to_s.sub(/\?$/, '')) ) ||
+        ::LibUI.respond_to?("control_#{method_name}") or
+          (::LibUI.respond_to?("control_#{method_name.to_s.sub(/\?$/, '')}") && BOOLEAN_PROPERTIES.include?(method_name.to_s.sub(/\?$/, '')) ) or
+          ::LibUI.respond_to?("control_set_#{method_name.to_s.sub(/=$/, '')}") or
+          ::LibUI.respond_to?("#{libui_api_keyword}_#{method_name}") or
+          (::LibUI.respond_to?("#{libui_api_keyword}_#{method_name.to_s.sub(/\?$/, '')}") && BOOLEAN_PROPERTIES.include?(method_name.to_s.sub(/\?$/, '')) ) or
           ::LibUI.respond_to?("#{libui_api_keyword}_set_#{method_name.to_s.sub(/=$/, '')}")
       end
       
