@@ -20,6 +20,7 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 require 'glimmer/libui/control_proxy'
+require 'glimmer/libui/image_path_renderer'
 require 'glimmer/data_binding/observer'
 require 'glimmer/libui/control_proxy/transformable'
 
@@ -32,33 +33,6 @@ module Glimmer
       #
       # Follows the Proxy Design Pattern
       class ImageProxy < ControlProxy
-        class ImagePathRenderer
-          include Glimmer
-          
-          def initialize(area_proxy, shapes)
-            @area_proxy = area_proxy
-            @shapes = shapes
-          end
-          
-          def render
-            work = Proc.new do
-              @shapes.each do |shape|
-                path {
-                  rectangle(shape[:x], shape[:y], shape[:width], shape[:height])
-        
-                  fill shape[:color]
-                }
-              end
-            end
-            if @area_proxy.nil?
-              # Ensure it renders without a parent
-              Glimmer::DSL::Engine.add_content(nil, Glimmer::DSL::Libui::ControlExpression.new, 'image', &work)
-            else
-              work.call
-            end
-          end
-        end
-        
         include Parent
         prepend Transformable
         

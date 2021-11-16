@@ -2,11 +2,11 @@
 
 ## Next
 
-- (API Changing) Rename `key_value` and `ext_key_value` to `key_code` and `ext_key_code` in `area_key_event` `Hash`
+- Add `key_code` as alias to `key_value` in `area_key_event` `Hash`
+- Support nesting shapes directly under area to represent paths having one shape, and nesting fill/stroke within the shapes (not path)
 
 ## Soon
 
-- Support nesting shapes directly under area to represent paths having one shape, and nesting fill/stroke within the shapes (not path)
 - Consider making all event hashes and param hashes accept retrieval of their key values through method calls not just `[key]` calls (utilize `hash-proxy` gem to solve this problem)
 
 ## Future

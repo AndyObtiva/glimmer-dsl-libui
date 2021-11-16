@@ -27,8 +27,8 @@ module Glimmer
     class ControlProxy
       class << self
         def exists?(keyword)
-          ::LibUI.respond_to?("new_#{keyword}") ||
-            ::LibUI.respond_to?(keyword) ||
+          ::LibUI.respond_to?("new_#{keyword}") or
+            ::LibUI.respond_to?(keyword) or
             descendant_keyword_constant_map.keys.include?(keyword)
         end
         

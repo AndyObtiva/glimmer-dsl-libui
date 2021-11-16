@@ -238,6 +238,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
     - [Extra Operations](#extra-operations)
     - [Table API](#table-api)
     - [Area API](#area-api)
+      - [Image Glimmer Custom Control](#image-glimmer-custom-control)
     - [Smart Defaults and Conventions](#smart-defaults-and-conventions)
     - [Custom Keywords](#custom-keywords)
     - [API Gotchas](#api-gotchas)
@@ -1051,7 +1052,7 @@ window('Basic Image', 96, 96) {
 }.show
 ```
 
-If you need to render an image pixel by pixel for an extremely special scenario, you may use this example as a guide, including a line-merge optimization for neighboring pixels with the same color:
+If you need to render an image pixel by pixel (e.g. to support a format other than `.png`) for very exceptional scenarios, you may use this example as a guide, including a line-merge optimization for neighboring horizontal pixels with the same color:
 
 ```ruby
 # This is the manual way of rendering an image unto an area control.
