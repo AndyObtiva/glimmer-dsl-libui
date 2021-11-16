@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.2.24
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.3.0
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -375,7 +375,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.2.24'
+gem 'glimmer-dsl-libui', '~> 0.3.0'
 ```
 
 Add `require 'glimmer-dsl-libui'` at the top, and then `include Glimmer` into the top-level main object for testing or into an actual class for serious usage.
@@ -968,19 +968,17 @@ window('area text drawing') {
 
 **(ALPHA FEATURE)**
 
-Unfortunately, [libui](https://github.com/andlabs/libui) does not support an `image` control yet.
-However, [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) does the impossible task of adding a special `image` Glimmer custom control
-that provides a feature that is not in C [libui](https://github.com/andlabs/libui).
-It attempts to do so by rendering an image unto an `area` pixel by pixel (and when possible to optimize, line by line).
+[libui](https://github.com/andlabs/libui) does not support `image` rendering outside of `table` yet.
+However, [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) adds a special `image` custom control that renders an image unto an `area` pixel by pixel (and when possible to optimize, line by line).
 
-As a result, it has several caveats:
+Given that it is not a [libui](https://github.com/andlabs/libui)-native control, please keep these notes in mind:
 - [libui](https://github.com/andlabs/libui) pixel-by-pixel rendering performance is slow
 - Including an `image` inside an `area` `on_draw` listener improves performance due to not retaining pixel/line data in memory.
 - Supplying `width` and `height` (2nd and 3rd arguments) greatly improves performance when shrinking image
 
 Currently, it is recommended to use `image` with very small `width` and `height` values only.
 
-Setting a `transform` `matrix` is supported under `image` just like for `path` and `text` under `area`.
+Setting a `transform` `matrix` is supported under `image` just like it is under `path` and `text` inside `area`.
 
 Example of using `image` declaratively (you may copy/paste in [`girb`](#girb-glimmer-irb)):
 
@@ -3166,13 +3164,7 @@ window('Editable column animal sounds', 400, 200) {
 
 ### Basic Table Image
 
-This example requires pre-installing `chunky_png` Ruby gem:
-
-```
-gem install chunky_png -v1.4.0
-```
-
-Also, note that behavior varies per platform (i.e. how `table` chooses to size images by default).
+Note that behavior varies per platform (i.e. how `table` chooses to size images by default).
 
 [examples/basic_table_image.rb](examples/basic_table_image.rb)
 
@@ -3328,13 +3320,7 @@ window('The Red Turtle', 310, 350, false) {
 
 ### Basic Table Image Text
 
-This example has a prerequisite of installing `chunky_png` Ruby gem:
-
-```
-gem install chunky_png -v1.4.0
-```
-
-Also, note that behavior varies per platform (i.e. how `table` chooses to size images by default).
+Note that behavior varies per platform (i.e. how `table` chooses to size images by default).
 
 [examples/basic_table_image_text.rb](examples/basic_table_image_text.rb)
 
@@ -3653,12 +3639,6 @@ window('Task Progress', 300, 200) {
 ```
 
 ### Basic Table Color
-
-This example requires pre-installing `chunky_png` Ruby gem:
-
-```
-gem install chunky_png -v1.4.0
-```
 
 [examples/basic_table_color.rb](examples/basic_table_color.rb)
 

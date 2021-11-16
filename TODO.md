@@ -2,8 +2,9 @@
 
 ## Next
 
+- Support building `image_column` `image` objects in a `table` via `file` property (simplify through automation of use of `image_part` for `.png` image files given that `chunky_png` is now included in the gem)
 - Add `key_code` as alias to `key_value` in `area_key_event` `Hash`
-- Support nesting shapes directly under area to represent paths having one shape, and nesting fill/stroke within the shapes (not path)
+- Support nesting shapes directly under `area` to represent paths having one shape, and nesting fill/stroke within the shapes (not `path`)
 
 ## Soon
 
@@ -53,7 +54,8 @@ None
 - Override `#inspect` method for area, path, text, and/or other controls in case they contain many shapes, to prevent their printout from being too large
 - Implement functionality to delay queuing area redraws until post_add_content has been called (area definition is done). Maybe offer an option to enable redrawing before area is closed too.
 - Implement `bounds` property for all shapes
-- Support SVG `image` control
+- Support SVG `image` control by rendering on `area`
+- Support Bitmap `image` control file format
 - Support Web URL as `image` control file
 
 # Refactoring

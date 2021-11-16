@@ -4,7 +4,7 @@
 
 - Upgrade to glimmer 2.4.1
 - Add `chunky_png` gem to support `.png` images natively
-- New `image` Glimmer custom control that can be nested under `area` to render an image (it is not part of LibUI, so it has some performance caveats, but is better than nothing; it is fast with smaller images)
+- New `image` Glimmer custom control that can be nested under `area` to render an image (it is not part of LibUI, so it has some performance caveats, but is better than nothing and is fast with smaller image width/height)
 
 ## 0.2.24
 
