@@ -5,6 +5,8 @@
 - Support building `image_column` `image` objects in a `table` via `file` property (simplify through automation of use of `image_part` for `.png` image files given that `chunky_png` is now included in the gem)
 - Support Web URL as `image` control `file` property
 - Add `key_code` as alias to `key_value` in `area_key_event` `Hash`
+- Fix issue with editing `text_color_column` in `table` having `editable true` property
+- Fix issue with editing `checkbox_text_column` text in `table` having `editable true` or `editable_text true` property
 
 ## 0.3.0
 

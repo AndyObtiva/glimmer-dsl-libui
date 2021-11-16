@@ -21,6 +21,7 @@
 
 require 'glimmer/libui/control_proxy'
 require 'glimmer/libui/control_proxy/dual_column'
+require 'glimmer/libui/control_proxy/triple_column'
 require 'glimmer/data_binding/observer'
 require 'glimmer/fiddle_consumer'
 
@@ -137,7 +138,7 @@ module Glimmer
         
         def build_control
           @model_handler = ::LibUI::FFI::TableModelHandler.malloc
-          @model_handler.NumColumns   = fiddle_closure_block_caller(4) { @columns.map {|c| c.is_a?(DualColumn) ? 2 : 1}.sum }
+          @model_handler.NumColumns   = fiddle_closure_block_caller(4) { @columns.map {|c| c.is_a?(DualColumn) ? 2 : (c.is_a?(TripleColumn) ? 3 : 1)}.sum }
           @model_handler.ColumnType   = fiddle_closure_block_caller(4, [1, 1, 4]) do |_, _, column|
             # TODO consider refactoring to use Glimmer::LibUI.enum_symbols(:table_value_type)
             case @columns[column]
@@ -193,15 +194,27 @@ module Glimmer
               column = @columns[column].index
               @cell_rows[row] ||= []
               @cell_rows[row][column] = ::LibUI.table_value_string(val).to_s
+            when Column::TextColorColumnProxy
+              column = @columns[column].index
+              @cell_rows[row] ||= []
+              @cell_rows[row][column] ||= []
+              @cell_rows[row][column][0] = ::LibUI.table_value_string(val).to_s
             when :text
               column = @columns[column - 1].index
+              @cell_rows[row] ||= []
+              @cell_rows[row][column] ||= []
               @cell_rows[row][column][1] = ::LibUI.table_value_string(val).to_s
             when Column::ButtonColumnProxy
               @columns[column].notify_listeners(:on_clicked, row)
-            when Column::CheckboxColumnProxy, Column::CheckboxTextColumnProxy
+            when Column::CheckboxColumnProxy
               column = @columns[column].index
               @cell_rows[row] ||= []
               @cell_rows[row][column] = ::LibUI.table_value_int(val).to_i == 1
+            when Column::CheckboxTextColumnProxy
+              column = @columns[column].index
+              @cell_rows[row] ||= []
+              @cell_rows[row][column] ||= []
+              @cell_rows[row][column][0] = ::LibUI.table_value_int(val).to_i == 1
             end
             on_edited.each {|listener| listener.call(row, @cell_rows[row])}
           end

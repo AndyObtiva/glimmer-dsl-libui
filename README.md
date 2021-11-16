@@ -244,7 +244,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
       - [Colors](#colors)
       - [Area Draw Params](#area-draw-params)
       - [Area Listeners](#area-listeners)
-      - [Area Methods/Attributes)(#area-methods-attributes)
+      - [Area Methods/Attributes](#area-methods-attributes)
       - [Area Transform Matrix](#area-transform-matrix)
     - [Smart Defaults and Conventions](#smart-defaults-and-conventions)
     - [Custom Keywords](#custom-keywords)
@@ -748,7 +748,17 @@ window('Basic Area', 400, 400) {
 }.show
 ```
 
+Mac
+
 ![glimmer-dsl-libui-mac-basic-area.png](images/glimmer-dsl-libui-mac-basic-area.png)
+
+Windows
+
+![glimmer-dsl-libui-windows-basic-area.png](images/glimmer-dsl-libui-windows-basic-area.png)
+
+Linux
+
+![glimmer-dsl-libui-linux-basic-area.png](images/glimmer-dsl-libui-linux-basic-area.png)
 
 Here is the same example using a semi-declarative `area` with `on_draw` listener that receives a `area_draw_params` argument and a dynamic path (you may copy/paste in [`girb`](#girb-glimmer-irb)):
 
@@ -792,6 +802,18 @@ Available nested `path` shapes:
 - `figure(x=nil as Numeric, y=nil as Numeric)` (composite that can contain other shapes) (can set `closed true` to connect last point to first point automatically)
 
 Check [examples/area_gallery.rb](#area-gallery) for an overiew of all `path` shapes.
+
+Mac
+
+![glimmer-dsl-libui-mac-area-gallery.png](images/glimmer-dsl-libui-mac-area-gallery.png)
+
+Windows
+
+![glimmer-dsl-libui-windows-area-gallery.png](images/glimmer-dsl-libui-windows-area-gallery.png)
+
+Linux
+
+![glimmer-dsl-libui-linux-area-gallery.png](images/glimmer-dsl-libui-linux-area-gallery.png)
 
 #### Area Text
 
@@ -844,6 +866,20 @@ window('area text drawing') {
 }.show
 ```
 
+You may checkout [examples/basic_draw_text.rb](#basic-draw-text) and [examples/custom_draw_text.rb](#custom-draw-text) for examples of using `text` inside `area`.
+
+Mac
+
+![glimmer-dsl-libui-mac-custom-draw-text-changed.png](images/glimmer-dsl-libui-mac-custom-draw-text-changed.png)
+
+Windows
+
+![glimmer-dsl-libui-windows-custom-draw-text-changed.png](images/glimmer-dsl-libui-windows-custom-draw-text-changed.png)
+
+Linux
+
+![glimmer-dsl-libui-linux-custom-draw-text-changed.png](images/glimmer-dsl-libui-linux-custom-draw-text-changed.png)
+
 #### Area Image
 
 **(ALPHA FEATURE)**
@@ -863,7 +899,13 @@ Setting a `transform` `matrix` is supported under `image` just like it is under 
 
 Example of using `image` declaratively (you may copy/paste in [`girb`](#girb-glimmer-irb)):
 
-![Basic Image](/images/glimmer-dsl-libui-mac-basic-image.png)
+Mac
+
+![glimmer-dsl-libui-mac-basic-image.png](images/glimmer-dsl-libui-mac-basic-image.png)
+
+Windows
+
+![glimmer-dsl-libui-windows-basic-image.png](images/glimmer-dsl-libui-windows-basic-image.png)
 
 ```ruby
 require 'glimmer-dsl-libui'
@@ -1302,7 +1344,8 @@ window('Method-Based Custom Keyword') {
 ### API Gotchas
 
 - There is no proper way to destroy `grid` children due to [libui](https://github.com/andlabs/libui) not offering any API for deleting them from `grid` (no `grid_delete` similar to `box_delete` for `horizontal_box` and `vertical_box`).
-- `table` `checkbox_column` and `checkbox_text_column` checkbox editing only works on Linux and Windows (not Mac) due to a current limitation in [libui](https://github.com/andlabs/ui/issues/357).
+- `table` `checkbox_column` checkbox editing only works on Linux and Windows (not Mac) due to a current limitation in [libui](https://github.com/andlabs/ui/issues/357).
+- `table` `checkbox_text_column` checkbox editing only works on Linux (not Mac or Windows) due to a current limitation in [libui](https://github.com/andlabs/ui/issues/357).
 - `text` `align` property seems not to work on the Mac ([libui](https://github.com/andlabs/libui) has an [issue](https://github.com/andlabs/libui/pull/407) about it)
 - `text` `string` `background` does not work on Windows due to an [issue in libui](https://github.com/andlabs/libui/issues/347).
 - `table` controls on Windows intentionally get an extra empty row at the end because if any row were to be deleted for the first time, double-deletion happens due to an issue in [libui](https://github.com/andlabs/libui) on Windows.

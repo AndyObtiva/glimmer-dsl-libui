@@ -2,6 +2,7 @@
 
 ## Next
 
+- Fix issue with editing `table` text of an `image_text_column`
 - examples/basic_scrolling_area.rb (note that area dimensions must be greater than its window dimensions)
 
 ## Soon

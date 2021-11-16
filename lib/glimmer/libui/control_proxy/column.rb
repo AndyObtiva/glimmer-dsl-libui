@@ -43,9 +43,9 @@ module Glimmer
           @column_index ||= @parent_proxy.send(:next_column_index)
         end
         
-        # actual index within table columns (disregarding nil fillings that account for DualColumn instances)
+        # actual index within table columns (disregarding extra fillings that account for DualColumn instances)
         def index
-          @parent_proxy.columns.compact.index(self)
+          @parent_proxy.columns.select {|c| c.is_a?(Column)}.index(self)
         end
       end
     end
