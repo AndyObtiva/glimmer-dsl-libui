@@ -2,12 +2,15 @@
 
 ## Next
 
+- Support Web URL as `image` control file
 - Support building `image_column` `image` objects in a `table` via `file` property (simplify through automation of use of `image_part` for `.png` image files given that `chunky_png` is now included in the gem)
 - Add `key_code` as alias to `key_value` in `area_key_event` `Hash`
-- Support nesting shapes directly under `area` to represent paths having one shape, and nesting fill/stroke within the shapes (not `path`)
+- Divide Area API into subsections in README for easier navigatibility
+- examples/basic_scrolling_area.rb (note that area dimensions must be greater than its window dimensions)
 
 ## Soon
 
+- Support nesting shapes directly under `area` to represent paths having one shape, and nesting fill/stroke within the shapes (not `path`)
 - Consider making all event hashes and param hashes accept retrieval of their key values through method calls not just `[key]` calls (utilize `hash-proxy` gem to solve this problem)
 
 ## Future
@@ -56,7 +59,9 @@ None
 - Implement `bounds` property for all shapes
 - Support SVG `image` control by rendering on `area`
 - Support Bitmap `image` control file format
-- Support Web URL as `image` control file
+- Support row/column alternative syntax to left/top in `grid`(and maybe x/y too)
+- Support `timer` keyword as shortcut for `Glimmer::LibUI.timer`
+- Support `main` keyword as shortcut for `Glimmer::LibUI.queue_main`
 
 # Refactoring
 
