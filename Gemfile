@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 
 # Glimmer project owner gems
-gem 'glimmer', '~> 2.4.0' #, path: '../glimmer'
+gem 'glimmer', '~> 2.4.1' #, path: '../glimmer'
 # gem 'super_module', '~> 1.4.1'
 # gem 'puts_debuggerer', '~> 0.10.0', require: false
 # gem 'rake-tui', '>= 0.2.1'
@@ -14,6 +14,7 @@ gem 'color', '~> 1.8'
 # gem 'rake', '>= 10.1.0', '< 14.0.0'
 # gem 'text-table', '>= 1.2.4', '< 2.0.0'
 gem 'libui', '~> 0.0.12'
+gem 'chunky_png', '~> 1.4.0'
 
 # Add dependencies to develop your gem here.
 # Include everything needed to run rake, tests, features, etc.

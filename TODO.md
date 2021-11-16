@@ -2,11 +2,12 @@
 
 ## Next
 
-- Support nesting shapes directly under area to represent paths having one shape, and nesting fill/stroke within the shapes (not path)
+- (API Changing) Rename `key_value` and `ext_key_value` to `key_code` and `ext_key_code` in `area_key_event` `Hash`
+- `image_area` Glimmer custom widget for rendering an image on an area
 
 ## Soon
 
-- (API Changing) Rename `key_value` and `ext_key_value` to `key_code` and `ext_key_code` in `area_key_event` `Hash`
+- Support nesting shapes directly under area to represent paths having one shape, and nesting fill/stroke within the shapes (not path)
 - Consider making all event hashes and param hashes accept retrieval of their key values through method calls not just `[key]` calls (utilize `hash-proxy` gem to solve this problem)
 
 ## Future
@@ -53,6 +54,7 @@ None
 - Override `#inspect` method for area, path, text, and/or other controls in case they contain many shapes, to prevent their printout from being too large
 - Implement functionality to delay queuing area redraws until post_add_content has been called (area definition is done). Maybe offer an option to enable redrawing before area is closed too.
 - Implement `bounds` property for all shapes
+- Support SVG image_area
 
 # Refactoring
 
