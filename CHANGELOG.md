@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.3.2
+
+- Fix issue with attempting to free `image` as an object from memory by mistake when used as a control (not an object for `table`)
+
 ## 0.3.1
 
 - Support building `image_column` `image` objects in a `table` via `file` property (simplify through automation of use of `image_part` for `.png` image files given that `chunky_png` is now included in the gem)

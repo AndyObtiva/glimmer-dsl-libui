@@ -123,8 +123,7 @@ module Glimmer
         end
         
         def area_image?
-          @parent_proxy&.is_a?(AreaProxy) or
-            AreaProxy.current_area_draw_params
+          @area_image ||= !!(@parent_proxy&.is_a?(AreaProxy) || AreaProxy.current_area_draw_params)
         end
         
         def destroy
