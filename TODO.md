@@ -2,7 +2,6 @@
 
 ## Next
 
-- Support Web URL as `image` control file
 - Add `key_code` as alias to `key_value` in `area_key_event` `Hash`
 - Divide Area API into subsections in README for easier navigatibility
 - examples/basic_scrolling_area.rb (note that area dimensions must be greater than its window dimensions)

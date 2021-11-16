@@ -147,13 +147,25 @@ module Glimmer
               @children.each {|child| child&.send(:build_control) }
             end
           end
+        rescue => e
+          Glimmer::Config.logger.error {"Failed to load image file: #{file}"}
+          Glimmer::Config.logger.error {e.full_message}
+          raise e
         end
         
         def load_image
           require 'chunky_png'
-          f = File.open(file)
-          canvas = ChunkyPNG::Canvas.from_io(f)
-          f.close
+          canvas = nil
+          if file.start_with?('http')
+            require 'net/http'
+            require 'open-uri'
+            uri = URI(file)
+            canvas = ChunkyPNG::Canvas.from_string(Net::HTTP.get(uri))
+          else
+            f = File.open(file)
+            canvas = ChunkyPNG::Canvas.from_io(f)
+            f.close
+          end
           canvas.resample_nearest_neighbor!(width, height) if width && height
           @data = canvas.to_rgba_stream
           self.width = canvas.width

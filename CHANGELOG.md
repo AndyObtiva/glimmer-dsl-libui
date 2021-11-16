@@ -3,6 +3,7 @@
 ## 0.3.1
 
 - Support building `image_column` `image` objects in a `table` via `file` property (simplify through automation of use of `image_part` for `.png` image files given that `chunky_png` is now included in the gem)
+- Support Web URL as `image` control `file` property
 
 ## 0.3.0
 

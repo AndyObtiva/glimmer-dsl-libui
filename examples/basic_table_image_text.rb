@@ -4,8 +4,6 @@
 # This example displays images that can be freely downloaded from the Studio Ghibli website.
 
 require 'glimmer-dsl-libui'
-require 'chunky_png'
-require 'open-uri'
 
 include Glimmer
 
@@ -13,8 +11,7 @@ IMAGE_ROWS = []
 
 5.times do |i|
   url = format('https://www.ghibli.jp/gallery/thumb-redturtle%03d.png', (i + 1))
-  puts "Processing Image: #{url}"
-  $stdout.flush # for Windows
+  puts "Processing Image: #{url}"; $stdout.flush # for Windows
   text = url.sub('https://www.ghibli.jp/gallery/thumb-redturtle', '').sub('.png', '')
   img = image(url)
   IMAGE_ROWS << [[img, text], [img, text]] # cell values are dual-element arrays
