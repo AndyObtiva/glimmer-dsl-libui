@@ -270,6 +270,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
     - [Basic Area](#basic-area)
     - [Dynamic Area](#dynamic-area)
     - [Area Gallery](#area-gallery)
+    - [Basic Image](#basic-image)
     - [Histogram](#histogram)
     - [Basic Transform](#basic-transform)
     - [Login](#login)
@@ -1012,7 +1013,7 @@ window('Basic Image', 96, 96) {
 }.show
 ```
 
-Example of using `image` declaratively with explicit attributes (you may copy/paste in [`girb`](#girb-glimmer-irb)):
+Example of using `image` declaratively with explicit properties (you may copy/paste in [`girb`](#girb-glimmer-irb)):
 
 ```ruby
 require 'glimmer-dsl-libui'
@@ -1030,7 +1031,7 @@ window('Basic Image', 96, 96) {
 }.show
 ```
 
-Example of better performance via `on_draw` with explicit attributes (you may copy/paste in [`girb`](#girb-glimmer-irb)):
+Example of better performance via `on_draw` with explicit properties (you may copy/paste in [`girb`](#girb-glimmer-irb)):
 
 ```ruby
 require 'glimmer-dsl-libui'
@@ -1128,7 +1129,7 @@ window('Basic Image', 96, 96) {
 }.show
 ```
 
-Check out [examples/basic_image.rb](#basic-image) (all version) for examples of using `image` Glimmer custom control.
+Check out [examples/basic_image.rb](#basic-image) (all versions) for examples of using `image` Glimmer custom control.
 
 ### Smart Defaults and Conventions
 
@@ -1152,7 +1153,7 @@ Check out [examples/basic_image.rb](#basic-image) (all version) for examples of 
 - When destroying a control nested under a `form`, it is automatically deleted from the form's children
 - When destroying a control nested under a `window` or `group`, it is automatically unset as their child to allow successful destruction
 - For `date_time_picker`, `date_picker`, and `time_picker`, make sure `time` hash values for `mon`, `wday`, and `yday` are 1-based instead of [libui](https://github.com/andlabs/libui) original 0-based values, and return `dst` as Boolean instead of `isdst` as `1`/`0`
-- Smart defaults for `grid` child attributes are `left` (`0`), `top` (`0`), `xspan` (`1`), `yspan` (`1`), `hexpand` (`false`), `halign` (`:fill`), `vexpand` (`false`), and `valign` (`:fill`)
+- Smart defaults for `grid` child properties are `left` (`0`), `top` (`0`), `xspan` (`1`), `yspan` (`1`), `hexpand` (`false`), `halign` (`:fill`), `vexpand` (`false`), and `valign` (`:fill`)
 - The `table` control automatically constructs required `TableModelHandler`, `TableModel`, and `TableParams`, calculating all their arguments from `cell_rows` and `editable` properties (e.g. `NumRows`) as well as nested columns (e.g. `text_column`)
 - Table model instances are automatically freed from memory after `window` is destroyed.
 - Table `cell_rows` data has implicit data-binding to table cell values for deletion, insertion, and change (done by diffing `cell_rows` value before and after change and auto-informing `table` of deletions [`LibUI.table_model_row_deleted`], insertions [`LibUI.table_model_row_deleted`], and changes [`LibUI.table_model_row_changed`]). When deleting data rows from `cell_rows` array, then actual rows from the `table` are automatically deleted. When inserting data rows into `cell_rows` array, then actual `table` rows are automatically inserted. When updating data rows in `cell_rows` array, then actual `table` rows are automatically updated.
@@ -4888,6 +4889,196 @@ window('Area Gallery', 400, 400) {
     
     on_key_down do |area_key_event|
       puts 'key down'
+    end
+  }
+}.show
+```
+
+### Basic Image
+
+[examples/basic_image.rb](examples/basic_image.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/basic_image.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/basic_image'"
+```
+
+Mac
+
+![glimmer-dsl-libui-mac-basic-image.png](images/glimmer-dsl-libui-mac-basic-image.png)
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+window('Basic Image', 96, 96) {
+  area {
+    # image is not a real LibUI control. It is built in Glimmer as a custom control that renders
+    # tiny pixels/lines as rectangle paths. As such, it does not have good performance, but can
+    # be used in exceptional circumstances where an image control is really needed.
+    #
+    # Furthermore, adding image directly under area is even slower due to taking up more memory for every
+    # image pixel rendered. Check basic_image2.rb for a faster alternative using on_draw manually.
+    #
+    # It is recommended to pass width/height args to shrink image and achieve faster performance.
+    image(File.expand_path('../icons/glimmer.png', __dir__), 96, 96)
+  }
+}.show
+```
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 2 (better performance via `on_draw`):
+
+```ruby
+# frozen_string_literal: true
+
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+window('Basic Image', 96, 96) {
+  area {
+    on_draw do |area_draw_params|
+      image(File.expand_path('../icons/glimmer.png', __dir__), 96, 96)
+    end
+  }
+}.show
+```
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 3 (explicit properties):
+
+```ruby
+# frozen_string_literal: true
+
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+window('Basic Image', 96, 96) {
+  area {
+    # image is not a real LibUI control. It is built in Glimmer as a custom control that renders
+    # tiny pixels/lines as rectangle paths. As such, it does not have good performance, but can
+    # be used in exceptional circumstances where an image control is really needed.
+    #
+    # Furthermore, adding image directly under area is even slower due to taking up more memory for every
+    # image pixel rendered. Check basic_image4.rb for a faster alternative using on_draw manually.
+    #
+    # It is recommended to pass width/height args to shrink image and achieve faster performance.
+    image {
+      file File.expand_path('../icons/glimmer.png', __dir__)
+      width 96
+      height 96
+    }
+  }
+}.show
+```
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 4 (better performance with `on_draw` when setting explicit properties):
+
+```ruby
+# frozen_string_literal: true
+
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+window('Basic Image', 96, 96) {
+  area {
+    on_draw do |area_draw_params|
+      image {
+        file File.expand_path('../icons/glimmer.png', __dir__)
+        width 96
+        height 96
+      }
+    end
+  }
+}.show
+```
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 5 (fully manual pixel-by-pixel rendering):
+
+```ruby
+# frozen_string_literal: true
+
+# This is the manual way of rendering an image unto an area control.
+# It could come in handy in special situations.
+# Otherwise, it is recommended to simply utilize the `image` control that
+# can be nested under area or area on_draw listener to automate all this work.
+
+require 'glimmer-dsl-libui'
+require 'chunky_png'
+
+include Glimmer
+
+puts 'Parsing image...'; $stdout.flush
+
+f = File.open(File.expand_path('../icons/glimmer.png', __dir__))
+canvas = ChunkyPNG::Canvas.from_io(f)
+f.close
+canvas.resample_nearest_neighbor!(96, 96)
+data = canvas.to_rgba_stream
+width = canvas.width
+height = canvas.height
+puts "Image width: #{width}"
+puts "Image height: #{height}"
+
+puts 'Parsing colors...'; $stdout.flush
+
+color_maps = height.times.map do |y|
+  width.times.map do |x|
+    r = data[(y*width + x)*4].ord
+    g = data[(y*width + x)*4 + 1].ord
+    b = data[(y*width + x)*4 + 2].ord
+    a = data[(y*width + x)*4 + 3].ord
+    {x: x, y: y, color: {r: r, g: g, b: b, a: a}}
+  end
+end.flatten
+puts "#{color_maps.size} pixels to render..."; $stdout.flush
+
+puts 'Parsing shapes...'; $stdout.flush
+
+shape_maps = []
+original_color_maps = color_maps.dup
+indexed_original_color_maps = Hash[original_color_maps.each_with_index.to_a]
+color_maps.each do |color_map|
+  index = indexed_original_color_maps[color_map]
+  @rectangle_start_x ||= color_map[:x]
+  @rectangle_width ||= 1
+  if color_map[:x] < width - 1 && color_map[:color] == original_color_maps[index + 1][:color]
+    @rectangle_width += 1
+  else
+    if color_map[:x] > 0 && color_map[:color] == original_color_maps[index - 1][:color]
+      shape_maps << {x: @rectangle_start_x, y: color_map[:y], width: @rectangle_width, height: 1, color: color_map[:color]}
+    else
+      shape_maps << {x: color_map[:x], y: color_map[:y], width: 1, height: 1, color: color_map[:color]}
+    end
+    @rectangle_width = 1
+    @rectangle_start_x = color_map[:x] == width - 1 ? 0 : color_map[:x] + 1
+  end
+end
+puts "#{shape_maps.size} shapes to render..."; $stdout.flush
+
+puts 'Rendering image...'; $stdout.flush
+
+window('Basic Image', 96, 96) {
+  area {
+    on_draw do |area_draw_params|
+      shape_maps.each do |shape_map|
+        path {
+          rectangle(shape_map[:x], shape_map[:y], shape_map[:width], shape_map[:height])
+
+          fill shape_map[:color]
+        }
+      end
     end
   }
 }.show
