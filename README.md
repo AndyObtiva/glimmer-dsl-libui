@@ -238,7 +238,14 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
     - [Extra Operations](#extra-operations)
     - [Table API](#table-api)
     - [Area API](#area-api)
-      - [Image Glimmer Custom Control](#image-glimmer-custom-control)
+      - [Area Path Shapes](#area-path-shapes)
+      - [Area Text](#area-text)
+      - [Area Image](#area-image)
+      - [Colors](#colors)
+      - [Area Draw Params](#area-draw-params)
+      - [Area Listeners](#area-listeners)
+      - [Area Methods/Attributes)(#area-methods-attributes)
+      - [Area Transform Matrix](#area-transform-matrix)
     - [Smart Defaults and Conventions](#smart-defaults-and-conventions)
     - [Custom Keywords](#custom-keywords)
     - [API Gotchas](#api-gotchas)
@@ -717,6 +724,8 @@ The `area` control is a canvas-like control for drawing paths that can be used i
 - Declaratively via stable paths: useful for stable paths that will not change often later on. Simply nest `path` and figures like `rectangle` and all drawing logic is generated automatically. Path proxy objects are preserved across redraws assuming there would be relatively few stable paths (mostly for decorative reasons).
 - Semi-declaratively via on_draw listener dynamic paths: useful for more dynamic paths that will definitely change very often. Open an `on_draw` listener block that receives a `area_draw_params` argument and nest `path` and figures like `rectangle` and all drawing logic is generated automatically. Path proxy objects are destroyed (thrown-away) at the end of drawing, thus having less memory overhead for drawing thousands of dynamic paths.
 
+Note that when nesting an `area` directly underneath `window` (without a layout control like `vertical_box`), it is automatically reparented with `vertical_box` in between the `window` and `area` since it would not show up on Linux otherwise.
+
 Here is an example of a declarative `area` with a stable path (you may copy/paste in [`girb`](#girb-glimmer-irb)):
 
 ```ruby
@@ -767,6 +776,8 @@ window('Basic Area', 400, 400) {
 
 Check [examples/dynamic_area.rb](#dynamic-area) for a more detailed semi-declarative example.
 
+#### Area Path Shapes
+
 `path` can receive a `draw_fill_mode` argument that can accept values `:winding` or `:alternate` and defaults to `:winding`.
 
 Available nested `path` shapes:
@@ -782,136 +793,7 @@ Available nested `path` shapes:
 
 Check [examples/area_gallery.rb](#area-gallery) for an overiew of all `path` shapes.
 
-The `area_draw_params` argument for `on_draw` block is a hash consisting of the following keys:
-- `:context`: the drawing context object
-- `:area_width`: area width
-- `:area_height`: area height
-- `:clip_x`: clip region top-left x coordinate
-- `:clip_y`: clip region top-left y coordinate
-- `:clip_width`: clip region width
-- `:clip_height`: clip region height
-
-In general, it is recommended to use declarative stable paths whenever feasible since they require less code and simpler maintenance. But, in more advanced cases, semi-declarative dynamic paths could be used instead, especially if there are thousands of dynamic paths that need maximum performance and low memory footprint.
-
-`area` supported mouse listeners are:
-- `on_key_event {|area_key_event| ...}`: general catch-all key event (recommend using fine-grained key events below instead)
-- `on_key_down {|area_key_event| ...}`
-- `on_key_up {|area_key_event| ...}`
-- `on_mouse_event {|area_mouse_event| ...}`: general catch-all mouse event (recommend using fine-grained mouse events below instead)
-- `on_mouse_down {|area_mouse_event| ...}`
-- `on_mouse_up {|area_mouse_event| ...}`
-- `on_mouse_drag_started {|area_mouse_event| ...}`
-- `on_mouse_dragged {|area_mouse_event| ...}`
-- `on_mouse_dropped {|area_mouse_event| ...}`
-- `on_mouse_entered {...}`
-- `on_mouse_exited {...}`
-- `on_mouse_crossed {|left| ...}` (NOT RECOMMENDED; it does what `on_mouse_entered` and `on_mouse_exited` do by returning a `left` argument indicating if mouse left `area`)
-- `on_drag_broken {...}` (NOT RECOMMENDED; varies per platforms; use `on_mouse_dropped` instead)
-
-The `area_mouse_event` `Hash` argument for mouse events that receive it (e.g. `on_mouse_up`, `on_mouse_dragged`) consist of the following hash keys:
-- `:x`: mouse x location in relation to area's top-left-corner
-- `:y`: mouse y location in relation to area's top-left-corner
-- `:area_width`: area current width
-- `:area_height`: area current height
-- `:down`: mouse pressed button (e.g. `1` is left button, `3` is right button)
-- `:up`: mouse depressed button (e.g. `1` is left button, `3` is right button)
-- `:count`: count of mouse clicks (e.g. `2` for double-click, `1` for single-click)
-- `:modifers`: `Array` of `Symbol`s from one of the following: `[:command, :shift, :alt, :control]`
-- `:held`: mouse held button during dragging (e.g. `1` is left button, `4` is right button)
-
-The `area_key_event` `Hash` argument for keyboard events that receive it (e.g. `on_key_up`, `on_key_down`) consist of the following hash keys:
-- `:key`: key character (`String`)
-- `:key_value` (alias: `:key_code`): key code value (`Integer`). Useful in rare cases for numeric processing of keys instead of dealing with as `:key` character `String`
-- `:ext_key`: non-character extra key (`Symbol`) from `Glimmer::LibUI.enum_symbols(:ext_key)` such as `:left`, `:right`, `:escape`, `:insert`
-- `:ext_key_value`: non-character extra key value (`Integer`). Useful in rare cases for numeric processing of extra keys instead of dealing with as `:ext_key` `Symbol`
-- `:modifier`: modifier key pressed alone (e.g. `:shift` or `:control`)
-- `:modifiers`: modifier keys pressed simultaneously with `:key`, `:ext_key`, or `:modifier`
-- `:up`: indicates if key has been released or not (Boolean)
-
-Note that when nesting an `area` directly underneath `window` (without a layout control like `vertical_box`), it is automatically reparented with `vertical_box` in between the `window` and `area` since it would not show up on Linux otherwise.
-
-To redraw an `area`, you may call the `#queue_redraw_all` method, or simply `#redraw`.
-
-`area` has the following Glimmer-added API methods/attributes:
-- `request_auto_redraw`: requests auto redraw upon changes to nested stable `path` or shapes
-- `pause_auto_redraw`: pause auto redraw upon changes to nested stable `path` or shapes (useful to avoid too many micro-change redraws, to group all redraws as one after many micro-changes)
-- `resume_auto_redraw`: resume auto redraw upon changes to nested stable `path` or shapes
-- `auto_redraw_enabled`/`auto_redraw_enabled?`/`auto_redraw_enabled=`: an attribute to disable/enable auto redraw on an `area` upon changes to nested stable `path` or shapes
-
-A transform `matrix` can be set on a path by building a `matrix(m11 = nil, m12 = nil, m21 = nil, m22 = nil, m31 = nil, m32 = nil) {operations}` proxy object and then setting via `transform` property, or alternatively by building and setting the matrix in one call to `transform(m11 = nil, m12 = nil, m21 = nil, m22 = nil, m31 = nil, m32 = nil) {operations}` passing it the matrix arguments and/or content operations.
-
-When instantiating a `matrix` object, it always starts with identity matrix.
-
-Here are the following operations that can be performed in a `matrix` body:
-- `identity` [alias: `set_identity`]: resets matrix to identity matrix
-- `translate(x as Numeric, y as Numeric)`
-- `scale(x_center = 0 as Numeric, y_center = 0 as Numeric, x as Numeric, y as Numeric)`
-- `skew(x = 0 as Numeric, y = 0 as Numeric, x_amount as Numeric, y_amount as Numeric)`
-- `rotate(x = 0 as Numeric, y = 0 as Numeric, degrees as Numeric)`
-
-Example of using transform matrix (you may copy/paste in [`girb`](#girb-glimmer-irb)):
-
-```ruby
-require 'glimmer-dsl-libui'
-
-include Glimmer
-
-window('Basic Transform', 350, 350) {
-  area {
-    path {
-      square(0, 0, 350)
-      
-      fill r: 255, g: 255, b: 0
-    }
-    40.times do |n|
-      path {
-        square(0, 0, 100)
-        
-        fill r: [255 - n*5, 0].max, g: [n*5, 255].min, b: 0, a: 0.5
-        stroke :black, thickness: 2
-        transform {
-          skew 0.15, 0.15
-          translate 50, 50
-          rotate 100, 100, -9 * n
-          scale 1.1, 1.1
-        }
-      }
-    end
-  }
-}.show
-```
-
-Keep in mind that this part could be written differently when there is a need to reuse the matrix:
-
-```ruby
-transform {
-  translate 100, 100
-  rotate 100, 100, -9 * n
-}
-```
-
-Alternatively:
-
-```ruby
-m1 = matrix {
-  translate 100, 100
-  rotate 100, 100, -9 * n
-}
-transform m1
-# and then reuse m1 elsewhere too
-```
-
-You can set a `matrix`/`transform` on `area` directly to conveniently apply to all nested `path`s too.
-
-Note that `area`, `path`, and nested shapes are all truly declarative, meaning they do not care about the ordering of calls to `fill`, `stroke`, and `transform`. Furthermore, any transform that is applied is reversed at the end of the block, so you never have to worry about the ordering of `transform` calls among different paths. You simply set a transform on the `path`s that need it and it is guaranteed to be called before all its content is drawn, and then undone afterwards to avoid affecting later paths. Matrix `transform` can be set on an entire `area` too, applying to all nested `path`s.
-
-`fill` and `stroke` accept [X11](https://en.wikipedia.org/wiki/X11_color_names) color `Symbol`s/`String`s like `:skyblue` and `'sandybrown'` or 6-char hex or 3-char hex-shorthand (as `Integer` or `String` with or without `0x` prefix)
-
-Available [X11 colors](https://en.wikipedia.org/wiki/X11_color_names) can be obtained through `Glimmer::LibUI.x11_colors` method.
-
-Check [Basic Transform](#basic-transform) example for use of [X11](https://en.wikipedia.org/wiki/X11_color_names) colors.
-
-Check [Histogram](#histogram) example for use of hex colors.
+#### Area Text
 
 To draw `text` in an `area`, you simply nest a `text(x, y, width)` control directly under `area` or inside a `on_draw` listener, and then nest attributed `string {[attributes]; string_value}` controls underneath it returning an actual `String` (think of them as the `<span>` or `<p>` element in html, which contains a string of text). Alternatively, you can nest attributed `string(string_value) {[attributes]}` if `string_value` is a short single-line string. An attributed `string` value can be changed dynamically via its `string` property.
 
@@ -962,7 +844,7 @@ window('area text drawing') {
 }.show
 ```
 
-#### Image Glimmer Custom Control
+#### Area Image
 
 **(ALPHA FEATURE)**
 
@@ -1130,6 +1012,145 @@ window('Basic Image', 96, 96) {
 One final note is that in Linux, table images grow and shrink with the image size unlike on the Mac where table row heights are constant regardless of image sizes. As such, you may be able to repurpose a table with a single image column and a single row as an image control with more native libui rendering if you are only targeting Linux with your app.
 
 Check out [examples/basic_image.rb](#basic-image) (all versions) for examples of using `image` Glimmer custom control.
+
+#### Colors
+
+`fill` and `stroke` accept [X11](https://en.wikipedia.org/wiki/X11_color_names) color `Symbol`s/`String`s like `:skyblue` and `'sandybrown'` or 6-char hex or 3-char hex-shorthand (as `Integer` or `String` with or without `0x` prefix)
+
+Available [X11 colors](https://en.wikipedia.org/wiki/X11_color_names) can be obtained through `Glimmer::LibUI.x11_colors` method.
+
+Check [Basic Transform](#basic-transform) example for use of [X11](https://en.wikipedia.org/wiki/X11_color_names) colors.
+
+Check [Histogram](#histogram) example for use of hex colors.
+
+#### Area Draw Params
+
+The `area_draw_params` argument for `on_draw` block is a hash consisting of the following keys:
+- `:context`: the drawing context object
+- `:area_width`: area width
+- `:area_height`: area height
+- `:clip_x`: clip region top-left x coordinate
+- `:clip_y`: clip region top-left y coordinate
+- `:clip_width`: clip region width
+- `:clip_height`: clip region height
+
+In general, it is recommended to use declarative stable paths whenever feasible since they require less code and simpler maintenance. But, in more advanced cases, semi-declarative dynamic paths could be used instead, especially if there are thousands of dynamic paths that need maximum performance and low memory footprint.
+
+#### Area Listeners
+
+`area` supported listeners are:
+- `on_key_event {|area_key_event| ...}`: general catch-all key event (recommend using fine-grained key events below instead)
+- `on_key_down {|area_key_event| ...}`
+- `on_key_up {|area_key_event| ...}`
+- `on_mouse_event {|area_mouse_event| ...}`: general catch-all mouse event (recommend using fine-grained mouse events below instead)
+- `on_mouse_down {|area_mouse_event| ...}`
+- `on_mouse_up {|area_mouse_event| ...}`
+- `on_mouse_drag_started {|area_mouse_event| ...}`
+- `on_mouse_dragged {|area_mouse_event| ...}`
+- `on_mouse_dropped {|area_mouse_event| ...}`
+- `on_mouse_entered {...}`
+- `on_mouse_exited {...}`
+- `on_mouse_crossed {|left| ...}` (NOT RECOMMENDED; it does what `on_mouse_entered` and `on_mouse_exited` do by returning a `left` argument indicating if mouse left `area`)
+- `on_drag_broken {...}` (NOT RECOMMENDED; varies per platforms; use `on_mouse_dropped` instead)
+
+The `area_mouse_event` `Hash` argument for mouse events that receive it (e.g. `on_mouse_up`, `on_mouse_dragged`) consist of the following hash keys:
+- `:x`: mouse x location in relation to area's top-left-corner
+- `:y`: mouse y location in relation to area's top-left-corner
+- `:area_width`: area current width
+- `:area_height`: area current height
+- `:down`: mouse pressed button (e.g. `1` is left button, `3` is right button)
+- `:up`: mouse depressed button (e.g. `1` is left button, `3` is right button)
+- `:count`: count of mouse clicks (e.g. `2` for double-click, `1` for single-click)
+- `:modifers`: `Array` of `Symbol`s from one of the following: `[:command, :shift, :alt, :control]`
+- `:held`: mouse held button during dragging (e.g. `1` is left button, `4` is right button)
+
+The `area_key_event` `Hash` argument for keyboard events that receive it (e.g. `on_key_up`, `on_key_down`) consist of the following hash keys:
+- `:key`: key character (`String`)
+- `:key_value` (alias: `:key_code`): key code value (`Integer`). Useful in rare cases for numeric processing of keys instead of dealing with as `:key` character `String`
+- `:ext_key`: non-character extra key (`Symbol`) from `Glimmer::LibUI.enum_symbols(:ext_key)` such as `:left`, `:right`, `:escape`, `:insert`
+- `:ext_key_value`: non-character extra key value (`Integer`). Useful in rare cases for numeric processing of extra keys instead of dealing with as `:ext_key` `Symbol`
+- `:modifier`: modifier key pressed alone (e.g. `:shift` or `:control`)
+- `:modifiers`: modifier keys pressed simultaneously with `:key`, `:ext_key`, or `:modifier`
+- `:up`: indicates if key has been released or not (Boolean)
+
+#### Area Methods/Attributes
+
+To redraw an `area`, you may call the `#queue_redraw_all` method, or simply `#redraw`.
+
+`area` has the following Glimmer-added API methods/attributes:
+- `request_auto_redraw`: requests auto redraw upon changes to nested stable `path` or shapes
+- `pause_auto_redraw`: pause auto redraw upon changes to nested stable `path` or shapes (useful to avoid too many micro-change redraws, to group all redraws as one after many micro-changes)
+- `resume_auto_redraw`: resume auto redraw upon changes to nested stable `path` or shapes
+- `auto_redraw_enabled`/`auto_redraw_enabled?`/`auto_redraw_enabled=`: an attribute to disable/enable auto redraw on an `area` upon changes to nested stable `path` or shapes
+
+#### Area Transform Matrix
+
+A transform `matrix` can be set on a path by building a `matrix(m11 = nil, m12 = nil, m21 = nil, m22 = nil, m31 = nil, m32 = nil) {operations}` proxy object and then setting via `transform` property, or alternatively by building and setting the matrix in one call to `transform(m11 = nil, m12 = nil, m21 = nil, m22 = nil, m31 = nil, m32 = nil) {operations}` passing it the matrix arguments and/or content operations.
+
+When instantiating a `matrix` object, it always starts with identity matrix.
+
+Here are the following operations that can be performed in a `matrix` body:
+- `identity` [alias: `set_identity`]: resets matrix to identity matrix
+- `translate(x as Numeric, y as Numeric)`
+- `scale(x_center = 0 as Numeric, y_center = 0 as Numeric, x as Numeric, y as Numeric)`
+- `skew(x = 0 as Numeric, y = 0 as Numeric, x_amount as Numeric, y_amount as Numeric)`
+- `rotate(x = 0 as Numeric, y = 0 as Numeric, degrees as Numeric)`
+
+Example of using transform matrix (you may copy/paste in [`girb`](#girb-glimmer-irb)):
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+window('Basic Transform', 350, 350) {
+  area {
+    path {
+      square(0, 0, 350)
+      
+      fill r: 255, g: 255, b: 0
+    }
+    40.times do |n|
+      path {
+        square(0, 0, 100)
+        
+        fill r: [255 - n*5, 0].max, g: [n*5, 255].min, b: 0, a: 0.5
+        stroke :black, thickness: 2
+        transform {
+          skew 0.15, 0.15
+          translate 50, 50
+          rotate 100, 100, -9 * n
+          scale 1.1, 1.1
+        }
+      }
+    end
+  }
+}.show
+```
+
+Keep in mind that this part could be written differently when there is a need to reuse the matrix:
+
+```ruby
+transform {
+  translate 100, 100
+  rotate 100, 100, -9 * n
+}
+```
+
+Alternatively:
+
+```ruby
+m1 = matrix {
+  translate 100, 100
+  rotate 100, 100, -9 * n
+}
+transform m1
+# and then reuse m1 elsewhere too
+```
+
+You can set a `matrix`/`transform` on `area` directly to conveniently apply to all nested `path`s too.
+
+Note that `area`, `path`, and nested shapes are all truly declarative, meaning they do not care about the ordering of calls to `fill`, `stroke`, and `transform`. Furthermore, any transform that is applied is reversed at the end of the block, so you never have to worry about the ordering of `transform` calls among different paths. You simply set a transform on the `path`s that need it and it is guaranteed to be called before all its content is drawn, and then undone afterwards to avoid affecting later paths. Matrix `transform` can be set on an entire `area` too, applying to all nested `path`s.
 
 ### Smart Defaults and Conventions
 

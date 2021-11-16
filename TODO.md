@@ -2,7 +2,6 @@
 
 ## Next
 
-- Divide Area API into subsections in README for easier navigatibility
 - examples/basic_scrolling_area.rb (note that area dimensions must be greater than its window dimensions)
 
 ## Soon
