@@ -5,6 +5,10 @@
 
 [Glimmer](https://github.com/AndyObtiva/glimmer) DSL for [LibUI](https://github.com/kojix2/LibUI) is a prerequisite-free Ruby desktop development GUI library. No need to pre-install any prerequisites. Just install the gem and have platform-independent native GUI that just works!
 
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-control-gallery.png](images/glimmer-dsl-libui-mac-control-gallery.png) | ![glimmer-dsl-libui-windows-control-gallery.png](images/glimmer-dsl-libui-windows-control-gallery.png) | ![glimmer-dsl-libui-linux-control-gallery.png](images/glimmer-dsl-libui-linux-control-gallery.png)
+
 [LibUI](https://github.com/kojix2/LibUI) is a thin [Ruby](https://www.ruby-lang.org/en/) wrapper around [libui](https://github.com/andlabs/libui), a relatively new C GUI library that renders native controls on every platform (similar to [SWT](https://www.eclipse.org/swt/), but without the heavy weight of the [Java Virtual Machine](https://www.java.com/en/)).
 
 The main trade-off in using [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) as opposed to [Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt) or [Glimmer DSL for Tk](https://github.com/AndyObtiva/glimmer-dsl-tk) is the fact that [SWT](https://www.eclipse.org/swt/) and [Tk](https://www.tcl.tk/) are more mature than mid-alpha [libui](https://github.com/andlabs/libui) as GUI toolkits. Still, if there is only a need to build a small simple application, [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) could be a good convenient choice due to having zero prerequisites beyond the dependencies included in the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui). Also, just like [Glimmer DSL for Tk](https://github.com/AndyObtiva/glimmer-dsl-tk), its apps start instantly and have a small memory footprint. [LibUI](https://github.com/kojix2/LibUI) is a promising new GUI toolkit that might prove quite worthy in the future.
@@ -28,17 +32,9 @@ include Glimmer
 window('hello world').show
 ```
 
-Mac
-
-![glimmer-dsl-libui-mac-basic-window.png](images/glimmer-dsl-libui-mac-basic-window.png)
-
-Windows
-
-![glimmer-dsl-libui-windows-basic-window.png](images/glimmer-dsl-libui-windows-basic-window.png)
-
-Linux
-
-![glimmer-dsl-libui-linux-basic-window.png](images/glimmer-dsl-libui-linux-basic-window.png)
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-basic-window.png](images/glimmer-dsl-libui-mac-basic-window.png) | ![glimmer-dsl-libui-windows-basic-window.png](images/glimmer-dsl-libui-windows-basic-window.png) | ![glimmer-dsl-libui-linux-basic-window.png](images/glimmer-dsl-libui-linux-basic-window.png)
 
 Basic Table Progress Bar
 
@@ -77,17 +73,9 @@ window('Task Progress', 300, 200) {
 }.show
 ```
 
-Mac
-
-![glimmer-dsl-libui-mac-basic-table-progress-bar.png](images/glimmer-dsl-libui-mac-basic-table-progress-bar.png)
-
-Windows
-
-![glimmer-dsl-libui-windows-basic-table-progress-bar.png](images/glimmer-dsl-libui-windows-basic-table-progress-bar.png)
-
-Linux
-
-![glimmer-dsl-libui-linux-basic-table-progress-bar.png](images/glimmer-dsl-libui-linux-basic-table-progress-bar.png)
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-basic-table-progress-bar.png](images/glimmer-dsl-libui-mac-basic-table-progress-bar.png) | ![glimmer-dsl-libui-windows-basic-table-progress-bar.png](images/glimmer-dsl-libui-windows-basic-table-progress-bar.png) | ![glimmer-dsl-libui-linux-basic-table-progress-bar.png](images/glimmer-dsl-libui-linux-basic-table-progress-bar.png)
 
 Area Gallery
 
@@ -199,17 +187,9 @@ window('Area Gallery', 400, 400) {
 }.show
 ```
 
-Mac
-
-![glimmer-dsl-libui-mac-area-gallery.png](images/glimmer-dsl-libui-mac-area-gallery.png)
-
-Windows
-
-![glimmer-dsl-libui-windows-area-gallery.png](images/glimmer-dsl-libui-windows-area-gallery.png)
-
-Linux
-
-![glimmer-dsl-libui-linux-area-gallery.png](images/glimmer-dsl-libui-linux-area-gallery.png)
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-area-gallery.png](images/glimmer-dsl-libui-mac-area-gallery.png) | ![glimmer-dsl-libui-windows-area-gallery.png](images/glimmer-dsl-libui-windows-area-gallery.png) | ![glimmer-dsl-libui-linux-area-gallery.png](images/glimmer-dsl-libui-linux-area-gallery.png)
 
 [Check Out Many More Examples Over Here!](#examples)
 
@@ -724,7 +704,7 @@ Learn more by checking out [examples](#examples).
 
 The `area` control is a canvas-like control for drawing paths that can be used in one of two ways:
 - Declaratively via stable paths: useful for stable paths that will not change often later on. Simply nest `path` and figures like `rectangle` and all drawing logic is generated automatically. Path proxy objects are preserved across redraws assuming there would be relatively few stable paths (mostly for decorative reasons).
-- Semi-declaratively via on_draw listener dynamic paths: useful for more dynamic paths that will definitely change very often. Open an `on_draw` listener block that receives a `area_draw_params` argument and nest `path` and figures like `rectangle` and all drawing logic is generated automatically. Path proxy objects are destroyed (thrown-away) at the end of drawing, thus having less memory overhead for drawing thousands of dynamic paths.
+- Semi-declaratively via on_draw listener dynamic paths: useful for more dynamic paths that will definitely change very often. Open an `on_draw` listener block that receives an [`area_draw_params`](#area-draw-params) argument and nest `path` and figures like `rectangle` and all drawing logic is generated automatically. Path proxy objects are destroyed (thrown-away) at the end of drawing, thus having less memory overhead for drawing thousands of dynamic paths.
 
 Note that when nesting an `area` directly underneath `window` (without a layout control like `vertical_box`), it is automatically reparented with `vertical_box` in between the `window` and `area` since it would not show up on Linux otherwise.
 
@@ -750,19 +730,11 @@ window('Basic Area', 400, 400) {
 }.show
 ```
 
-Mac
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-basic-area.png](images/glimmer-dsl-libui-mac-basic-area.png) | ![glimmer-dsl-libui-windows-basic-area.png](images/glimmer-dsl-libui-windows-basic-area.png) | ![glimmer-dsl-libui-linux-basic-area.png](images/glimmer-dsl-libui-linux-basic-area.png)
 
-![glimmer-dsl-libui-mac-basic-area.png](images/glimmer-dsl-libui-mac-basic-area.png)
-
-Windows
-
-![glimmer-dsl-libui-windows-basic-area.png](images/glimmer-dsl-libui-windows-basic-area.png)
-
-Linux
-
-![glimmer-dsl-libui-linux-basic-area.png](images/glimmer-dsl-libui-linux-basic-area.png)
-
-Here is the same example using a semi-declarative `area` with `on_draw` listener that receives a `area_draw_params` argument and a dynamic path (you may copy/paste in [`girb`](#girb-glimmer-irb)):
+Here is the same example using a semi-declarative `area` with `on_draw` listener that receives a [`area_draw_params`](#area-draw-params) argument and a dynamic path (you may copy/paste in [`girb`](#girb-glimmer-irb)):
 
 ```ruby
 require 'glimmer-dsl-libui'
@@ -805,17 +777,9 @@ Available nested `path` shapes:
 
 Check [examples/area_gallery.rb](#area-gallery) for an overiew of all `path` shapes.
 
-Mac
-
-![glimmer-dsl-libui-mac-area-gallery.png](images/glimmer-dsl-libui-mac-area-gallery.png)
-
-Windows
-
-![glimmer-dsl-libui-windows-area-gallery.png](images/glimmer-dsl-libui-windows-area-gallery.png)
-
-Linux
-
-![glimmer-dsl-libui-linux-area-gallery.png](images/glimmer-dsl-libui-linux-area-gallery.png)
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-area-gallery.png](images/glimmer-dsl-libui-mac-area-gallery.png) | ![glimmer-dsl-libui-windows-area-gallery.png](images/glimmer-dsl-libui-windows-area-gallery.png) | ![glimmer-dsl-libui-linux-area-gallery.png](images/glimmer-dsl-libui-linux-area-gallery.png)
 
 #### Area Text
 
@@ -870,17 +834,9 @@ window('area text drawing') {
 
 You may checkout [examples/basic_draw_text.rb](#basic-draw-text) and [examples/custom_draw_text.rb](#custom-draw-text) for examples of using `text` inside `area`.
 
-Mac
-
-![glimmer-dsl-libui-mac-custom-draw-text-changed.png](images/glimmer-dsl-libui-mac-custom-draw-text-changed.png)
-
-Windows
-
-![glimmer-dsl-libui-windows-custom-draw-text-changed.png](images/glimmer-dsl-libui-windows-custom-draw-text-changed.png)
-
-Linux
-
-![glimmer-dsl-libui-linux-custom-draw-text-changed.png](images/glimmer-dsl-libui-linux-custom-draw-text-changed.png)
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-custom-draw-text-changed.png](images/glimmer-dsl-libui-mac-custom-draw-text-changed.png) | ![glimmer-dsl-libui-windows-custom-draw-text-changed.png](images/glimmer-dsl-libui-windows-custom-draw-text-changed.png) | ![glimmer-dsl-libui-linux-custom-draw-text-changed.png](images/glimmer-dsl-libui-linux-custom-draw-text-changed.png)
 
 #### Area Image
 
@@ -897,17 +853,13 @@ Given that it is very new and is not a [libui](https://github.com/andlabs/libui)
 
 Currently, it is recommended to use `image` with very small `width` and `height` values only.
 
-Setting a `transform` `matrix` is supported under `image` just like it is under `path` and `text` inside `area`.
+Setting a [`transform` `matrix`](#area-transform-matrix) is supported under `image` just like it is under `path` and `text` inside `area`.
 
 Example of using `image` declaratively (you may copy/paste in [`girb`](#girb-glimmer-irb)):
 
-Mac
-
-![glimmer-dsl-libui-mac-basic-image.png](images/glimmer-dsl-libui-mac-basic-image.png)
-
-Windows
-
-![glimmer-dsl-libui-windows-basic-image.png](images/glimmer-dsl-libui-windows-basic-image.png)
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-basic-image.png](images/glimmer-dsl-libui-mac-basic-image.png) | ![glimmer-dsl-libui-windows-basic-image.png](images/glimmer-dsl-libui-windows-basic-image.png) | ![glimmer-dsl-libui-linux-basic-image.png](images/glimmer-dsl-libui-linux-basic-image.png)
 
 ```ruby
 require 'glimmer-dsl-libui'
@@ -1401,17 +1353,9 @@ Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/
 ruby -r glimmer-dsl-libui -e "require 'examples/meta_example'"
 ```
 
-Mac
-
-![glimmer-dsl-libui-mac-meta-example.png](images/glimmer-dsl-libui-mac-meta-example.png)
-
-Windows
-
-![glimmer-dsl-libui-windows-meta-example.png](images/glimmer-dsl-libui-windows-meta-example.png)
-
-Linux
-
-![glimmer-dsl-libui-linux-meta-example.png](images/glimmer-dsl-libui-linux-meta-example.png)
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-meta-example.png](images/glimmer-dsl-libui-mac-meta-example.png) | ![glimmer-dsl-libui-windows-meta-example.png](images/glimmer-dsl-libui-windows-meta-example.png) | ![glimmer-dsl-libui-linux-meta-example.png](images/glimmer-dsl-libui-linux-meta-example.png)
 
 New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
 
@@ -1569,17 +1513,9 @@ Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/
 ruby -r glimmer-dsl-libui -e "require 'examples/basic_window'"
 ```
 
-Mac
-
-![glimmer-dsl-libui-mac-basic-window.png](images/glimmer-dsl-libui-mac-basic-window.png)
-
-Windows
-
-![glimmer-dsl-libui-windows-basic-window.png](images/glimmer-dsl-libui-windows-basic-window.png)
-
-Linux
-
-![glimmer-dsl-libui-linux-basic-window.png](images/glimmer-dsl-libui-linux-basic-window.png)
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-basic-window.png](images/glimmer-dsl-libui-mac-basic-window.png) | ![glimmer-dsl-libui-windows-basic-window.png](images/glimmer-dsl-libui-windows-basic-window.png) | ![glimmer-dsl-libui-linux-basic-window.png](images/glimmer-dsl-libui-linux-basic-window.png)
 
 [LibUI](https://github.com/kojix2/LibUI) Original Version:
 
@@ -1652,20 +1588,9 @@ Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/
 ruby -r glimmer-dsl-libui -e "require 'examples/basic_button'"
 ```
 
-Mac
-
-![glimmer-dsl-libui-mac-basic-button.png](images/glimmer-dsl-libui-mac-basic-button.png)
-![glimmer-dsl-libui-mac-basic-button-msg-box.png](images/glimmer-dsl-libui-mac-basic-button-msg-box.png)
-
-Windows
-
-![glimmer-dsl-libui-windows-basic-button.png](images/glimmer-dsl-libui-windows-basic-button.png)
-![glimmer-dsl-libui-windows-basic-button-msg-box.png](images/glimmer-dsl-libui-windows-basic-button-msg-box.png)
-
-Linux
-
-![glimmer-dsl-libui-linux-basic-button.png](images/glimmer-dsl-libui-linux-basic-button.png)
-![glimmer-dsl-libui-linux-basic-button-msg-box.png](images/glimmer-dsl-libui-linux-basic-button-msg-box.png)
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-basic-button.png](images/glimmer-dsl-libui-mac-basic-button.png) ![glimmer-dsl-libui-mac-basic-button-msg-box.png](images/glimmer-dsl-libui-mac-basic-button-msg-box.png) | ![glimmer-dsl-libui-windows-basic-button.png](images/glimmer-dsl-libui-windows-basic-button.png) ![glimmer-dsl-libui-windows-basic-button-msg-box.png](images/glimmer-dsl-libui-windows-basic-button-msg-box.png) | ![glimmer-dsl-libui-linux-basic-button.png](images/glimmer-dsl-libui-linux-basic-button.png) ![glimmer-dsl-libui-linux-basic-button-msg-box.png](images/glimmer-dsl-libui-linux-basic-button-msg-box.png)
 
 [LibUI](https://github.com/kojix2/LibUI) Original Version:
 
@@ -1734,20 +1659,9 @@ Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/
 ruby -r glimmer-dsl-libui -e "require 'examples/basic_entry'"
 ```
 
-Mac
-
-![glimmer-dsl-libui-mac-basic-entry.png](images/glimmer-dsl-libui-mac-basic-entry.png)
-![glimmer-dsl-libui-mac-basic-entry-msg-box.png](images/glimmer-dsl-libui-mac-basic-entry-msg-box.png)
-
-Windows
-
-![glimmer-dsl-libui-windows-basic-entry.png](images/glimmer-dsl-libui-windows-basic-entry.png)
-![glimmer-dsl-libui-windows-basic-entry-msg-box.png](images/glimmer-dsl-libui-windows-basic-entry-msg-box.png)
-
-Linux
-
-![glimmer-dsl-libui-linux-basic-entry.png](images/glimmer-dsl-libui-linux-basic-entry.png)
-![glimmer-dsl-libui-linux-basic-entry-msg-box.png](images/glimmer-dsl-libui-linux-basic-entry-msg-box.png)
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-basic-entry.png](images/glimmer-dsl-libui-mac-basic-entry.png) ![glimmer-dsl-libui-mac-basic-entry-msg-box.png](images/glimmer-dsl-libui-mac-basic-entry-msg-box.png) | ![glimmer-dsl-libui-windows-basic-entry.png](images/glimmer-dsl-libui-windows-basic-entry.png) ![glimmer-dsl-libui-windows-basic-entry-msg-box.png](images/glimmer-dsl-libui-windows-basic-entry-msg-box.png) | ![glimmer-dsl-libui-linux-basic-entry.png](images/glimmer-dsl-libui-linux-basic-entry.png) ![glimmer-dsl-libui-linux-basic-entry-msg-box.png](images/glimmer-dsl-libui-linux-basic-entry-msg-box.png)
 
 [LibUI](https://github.com/kojix2/LibUI) Original Version:
 
@@ -1840,17 +1754,9 @@ Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/
 ruby -r glimmer-dsl-libui -e "require 'examples/simple_notepad'"
 ```
 
-Mac
-
-![glimmer-dsl-libui-mac-simple-notepad.png](images/glimmer-dsl-libui-mac-simple-notepad.png)
-
-Windows
-
-![glimmer-dsl-libui-windows-simple-notepad.png](images/glimmer-dsl-libui-windows-simple-notepad.png)
-
-Linux
-
-![glimmer-dsl-libui-linux-simple-notepad.png](images/glimmer-dsl-libui-linux-simple-notepad.png)
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-simple-notepad.png](images/glimmer-dsl-libui-mac-simple-notepad.png) | ![glimmer-dsl-libui-windows-simple-notepad.png](images/glimmer-dsl-libui-windows-simple-notepad.png) | ![glimmer-dsl-libui-linux-simple-notepad.png](images/glimmer-dsl-libui-linux-simple-notepad.png)
 
 [LibUI](https://github.com/kojix2/LibUI) Original Version:
 
@@ -1916,20 +1822,9 @@ Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/
 ruby -r glimmer-dsl-libui -e "require 'examples/midi_player'"
 ```
 
-Mac
-
-![glimmer-dsl-libui-mac-midi-player.png](images/glimmer-dsl-libui-mac-midi-player.png)
-![glimmer-dsl-libui-mac-midi-player-msg-box.png](images/glimmer-dsl-libui-mac-midi-player-msg-box.png)
-
-Windows
-
-![glimmer-dsl-libui-windows-midi-player.png](images/glimmer-dsl-libui-windows-midi-player.png)
-![glimmer-dsl-libui-windows-midi-player-msg-box.png](images/glimmer-dsl-libui-windows-midi-player-msg-box.png)
-
-Linux
-
-![glimmer-dsl-libui-linux-midi-player.png](images/glimmer-dsl-libui-linux-midi-player.png)
-![glimmer-dsl-libui-linux-midi-player-msg-box.png](images/glimmer-dsl-libui-linux-midi-player-msg-box.png)
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-midi-player.png](images/glimmer-dsl-libui-mac-midi-player.png) ![glimmer-dsl-libui-mac-midi-player-msg-box.png](images/glimmer-dsl-libui-mac-midi-player-msg-box.png) | ![glimmer-dsl-libui-windows-midi-player.png](images/glimmer-dsl-libui-windows-midi-player.png) ![glimmer-dsl-libui-windows-midi-player-msg-box.png](images/glimmer-dsl-libui-windows-midi-player-msg-box.png) | ![glimmer-dsl-libui-linux-midi-player.png](images/glimmer-dsl-libui-linux-midi-player.png) ![glimmer-dsl-libui-linux-midi-player-msg-box.png](images/glimmer-dsl-libui-linux-midi-player-msg-box.png)
 
 [LibUI](https://github.com/kojix2/LibUI) Original Version:
 
@@ -2139,17 +2034,9 @@ Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/
 ruby -r glimmer-dsl-libui -e "require 'examples/control_gallery'"
 ```
 
-Mac
-
-![glimmer-dsl-libui-mac-control-gallery.png](images/glimmer-dsl-libui-mac-control-gallery.png)
-
-Windows
-
-![glimmer-dsl-libui-windows-control-gallery.png](images/glimmer-dsl-libui-windows-control-gallery.png)
-
-Linux
-
-![glimmer-dsl-libui-linux-control-gallery.png](images/glimmer-dsl-libui-linux-control-gallery.png)
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-control-gallery.png](images/glimmer-dsl-libui-mac-control-gallery.png) | ![glimmer-dsl-libui-windows-control-gallery.png](images/glimmer-dsl-libui-windows-control-gallery.png) | ![glimmer-dsl-libui-linux-control-gallery.png](images/glimmer-dsl-libui-linux-control-gallery.png)
 
 [LibUI](https://github.com/kojix2/LibUI) Original Version:
 
@@ -2533,20 +2420,9 @@ Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/
 ruby -r glimmer-dsl-libui -e "require 'examples/font_button'"
 ```
 
-Mac
-
-![glimmer-dsl-libui-mac-font-button.png](images/glimmer-dsl-libui-mac-font-button.png)
-![glimmer-dsl-libui-mac-font-button-selection.png](images/glimmer-dsl-libui-mac-font-button-selection.png)
-
-Windows
-
-![glimmer-dsl-libui-windows-font-button.png](images/glimmer-dsl-libui-windows-font-button.png)
-![glimmer-dsl-libui-windows-font-button-selection.png](images/glimmer-dsl-libui-windows-font-button-selection.png)
-
-Linux
-
-![glimmer-dsl-libui-linux-font-button.png](images/glimmer-dsl-libui-linux-font-button.png)
-![glimmer-dsl-libui-linux-font-button-selection.png](images/glimmer-dsl-libui-linux-font-button-selection.png)
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-font-button.png](images/glimmer-dsl-libui-mac-font-button.png) ![glimmer-dsl-libui-mac-font-button-selection.png](images/glimmer-dsl-libui-mac-font-button-selection.png) | ![glimmer-dsl-libui-windows-font-button.png](images/glimmer-dsl-libui-windows-font-button.png) ![glimmer-dsl-libui-windows-font-button-selection.png](images/glimmer-dsl-libui-windows-font-button-selection.png) | ![glimmer-dsl-libui-linux-font-button.png](images/glimmer-dsl-libui-linux-font-button.png) ![glimmer-dsl-libui-linux-font-button-selection.png](images/glimmer-dsl-libui-linux-font-button-selection.png)
 
 [LibUI](https://github.com/kojix2/LibUI) Original Version:
 
@@ -2622,20 +2498,9 @@ Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/
 ruby -r glimmer-dsl-libui -e "require 'examples/color_button'"
 ```
 
-Mac
-
-![glimmer-dsl-libui-mac-color-button.png](images/glimmer-dsl-libui-mac-color-button.png)
-![glimmer-dsl-libui-mac-color-button-selection.png](images/glimmer-dsl-libui-mac-color-button-selection.png)
-
-Windows
-
-![glimmer-dsl-libui-windows-color-button.png](images/glimmer-dsl-libui-windows-color-button.png)
-![glimmer-dsl-libui-windows-color-button-selection.png](images/glimmer-dsl-libui-windows-color-button-selection.png)
-
-Linux
-
-![glimmer-dsl-libui-linux-color-button.png](images/glimmer-dsl-libui-linux-color-button.png)
-![glimmer-dsl-libui-linux-color-button-selection.png](images/glimmer-dsl-libui-linux-color-button-selection.png)
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-color-button.png](images/glimmer-dsl-libui-mac-color-button.png) ![glimmer-dsl-libui-mac-color-button-selection.png](images/glimmer-dsl-libui-mac-color-button-selection.png) | ![glimmer-dsl-libui-windows-color-button.png](images/glimmer-dsl-libui-windows-color-button.png) ![glimmer-dsl-libui-windows-color-button-selection.png](images/glimmer-dsl-libui-windows-color-button-selection.png) | ![glimmer-dsl-libui-linux-color-button.png](images/glimmer-dsl-libui-linux-color-button.png) ![glimmer-dsl-libui-linux-color-button-selection.png](images/glimmer-dsl-libui-linux-color-button-selection.png)
 
 New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
 
@@ -2672,17 +2537,9 @@ Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/
 ruby -r glimmer-dsl-libui -e "require 'examples/date_time_picker'"
 ```
 
-Mac
-
-![glimmer-dsl-libui-mac-date-time-picker.png](images/glimmer-dsl-libui-mac-date-time-picker.png)
-
-Windows
-
-![glimmer-dsl-libui-windows-date-time-picker.png](images/glimmer-dsl-libui-windows-date-time-picker.png)
-
-Linux
-
-![glimmer-dsl-libui-linux-date-time-picker.png](images/glimmer-dsl-libui-linux-date-time-picker.png)
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-date-time-picker.png](images/glimmer-dsl-libui-mac-date-time-picker.png) | ![glimmer-dsl-libui-windows-date-time-picker.png](images/glimmer-dsl-libui-windows-date-time-picker.png) | ![glimmer-dsl-libui-linux-date-time-picker.png](images/glimmer-dsl-libui-linux-date-time-picker.png)
 
 [LibUI](https://github.com/kojix2/LibUI) Original Version:
 
@@ -2766,23 +2623,9 @@ Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/
 ruby -r glimmer-dsl-libui -e "require 'examples/grid'"
 ```
 
-Mac
-
-![glimmer-dsl-libui-mac-grid-span.png](images/glimmer-dsl-libui-mac-grid-span.png)
-![glimmer-dsl-libui-mac-grid-expand.png](images/glimmer-dsl-libui-mac-grid-expand.png)
-![glimmer-dsl-libui-mac-grid-align.png](images/glimmer-dsl-libui-mac-grid-align.png)
-
-Windows
-
-![glimmer-dsl-libui-windows-grid-span.png](images/glimmer-dsl-libui-windows-grid-span.png)
-![glimmer-dsl-libui-windows-grid-expand.png](images/glimmer-dsl-libui-windows-grid-expand.png)
-![glimmer-dsl-libui-windows-grid-align.png](images/glimmer-dsl-libui-windows-grid-align.png)
-
-Linux
-
-![glimmer-dsl-libui-linux-grid-span.png](images/glimmer-dsl-libui-linux-grid-span.png)
-![glimmer-dsl-libui-linux-grid-expand.png](images/glimmer-dsl-libui-linux-grid-expand.png)
-![glimmer-dsl-libui-linux-grid-align.png](images/glimmer-dsl-libui-linux-grid-align.png)
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-grid-span.png](images/glimmer-dsl-libui-mac-grid-span.png) ![glimmer-dsl-libui-mac-grid-expand.png](images/glimmer-dsl-libui-mac-grid-expand.png) ![glimmer-dsl-libui-mac-grid-align.png](images/glimmer-dsl-libui-mac-grid-align.png) | ![glimmer-dsl-libui-windows-grid-span.png](images/glimmer-dsl-libui-windows-grid-span.png) ![glimmer-dsl-libui-windows-grid-expand.png](images/glimmer-dsl-libui-windows-grid-expand.png) ![glimmer-dsl-libui-windows-grid-align.png](images/glimmer-dsl-libui-windows-grid-align.png) | ![glimmer-dsl-libui-linux-grid-span.png](images/glimmer-dsl-libui-linux-grid-span.png) ![glimmer-dsl-libui-linux-grid-expand.png](images/glimmer-dsl-libui-linux-grid-expand.png) ![glimmer-dsl-libui-linux-grid-align.png](images/glimmer-dsl-libui-linux-grid-align.png)
 
 New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
 
@@ -2911,20 +2754,9 @@ Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/
 ruby -r glimmer-dsl-libui -e "require 'examples/form'"
 ```
 
-Mac
-
-![glimmer-dsl-libui-mac-form.png](images/glimmer-dsl-libui-mac-form.png)
-![glimmer-dsl-libui-mac-form-msg-box.png](images/glimmer-dsl-libui-mac-form-msg-box.png)
-
-Windows
-
-![glimmer-dsl-libui-windows-form.png](images/glimmer-dsl-libui-windows-form.png)
-![glimmer-dsl-libui-windows-form-msg-box.png](images/glimmer-dsl-libui-windows-form-msg-box.png)
-
-Linux
-
-![glimmer-dsl-libui-linux-form.png](images/glimmer-dsl-libui-linux-form.png)
-![glimmer-dsl-libui-linux-form-msg-box.png](images/glimmer-dsl-libui-linux-form-msg-box.png)
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-form.png](images/glimmer-dsl-libui-mac-form.png) ![glimmer-dsl-libui-mac-form-msg-box.png](images/glimmer-dsl-libui-mac-form-msg-box.png) | ![glimmer-dsl-libui-windows-form.png](images/glimmer-dsl-libui-windows-form.png) ![glimmer-dsl-libui-windows-form-msg-box.png](images/glimmer-dsl-libui-windows-form-msg-box.png) | ![glimmer-dsl-libui-linux-form.png](images/glimmer-dsl-libui-linux-form.png) ![glimmer-dsl-libui-linux-form-msg-box.png](images/glimmer-dsl-libui-linux-form-msg-box.png)
 
 New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
 
@@ -2982,17 +2814,9 @@ Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/
 ruby -r glimmer-dsl-libui -e "require 'examples/basic_table'"
 ```
 
-Mac
-
-![glimmer-dsl-libui-mac-basic-table.png](images/glimmer-dsl-libui-mac-basic-table.png)
-
-Windows
-
-![glimmer-dsl-libui-windows-basic-table.png](images/glimmer-dsl-libui-windows-basic-table.png)
-
-Linux
-
-![glimmer-dsl-libui-linux-basic-table.png](images/glimmer-dsl-libui-linux-basic-table.png)
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-basic-table.png](images/glimmer-dsl-libui-mac-basic-table.png) | ![glimmer-dsl-libui-windows-basic-table.png](images/glimmer-dsl-libui-windows-basic-table.png) | ![glimmer-dsl-libui-linux-basic-table.png](images/glimmer-dsl-libui-linux-basic-table.png)
 
 [LibUI](https://github.com/kojix2/LibUI) Original Version:
 
@@ -3106,23 +2930,9 @@ Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/
 ruby -r glimmer-dsl-libui -e "require 'examples/editable_table'"
 ```
 
-Mac
-
-![glimmer-dsl-libui-mac-editable-table.png](images/glimmer-dsl-libui-mac-editable-table.png)
-![glimmer-dsl-libui-mac-editable-table-editing.png](images/glimmer-dsl-libui-mac-editable-table-editing.png)
-![glimmer-dsl-libui-mac-editable-table-edited.png](images/glimmer-dsl-libui-mac-editable-table-edited.png)
-
-Windows
-
-![glimmer-dsl-libui-windows-editable-table.png](images/glimmer-dsl-libui-windows-editable-table.png)
-![glimmer-dsl-libui-windows-editable-table-editing.png](images/glimmer-dsl-libui-windows-editable-table-editing.png)
-![glimmer-dsl-libui-windows-editable-table-edited.png](images/glimmer-dsl-libui-windows-editable-table-edited.png)
-
-Linux
-
-![glimmer-dsl-libui-linux-editable-table.png](images/glimmer-dsl-libui-linux-editable-table.png)
-![glimmer-dsl-libui-linux-editable-table-editing.png](images/glimmer-dsl-libui-linux-editable-table-editing.png)
-![glimmer-dsl-libui-linux-editable-table-edited.png](images/glimmer-dsl-libui-linux-editable-table-edited.png)
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-editable-table.png](images/glimmer-dsl-libui-mac-editable-table.png) ![glimmer-dsl-libui-mac-editable-table-editing.png](images/glimmer-dsl-libui-mac-editable-table-editing.png) ![glimmer-dsl-libui-mac-editable-table-edited.png](images/glimmer-dsl-libui-mac-editable-table-edited.png) | ![glimmer-dsl-libui-windows-editable-table.png](images/glimmer-dsl-libui-windows-editable-table.png) ![glimmer-dsl-libui-windows-editable-table-editing.png](images/glimmer-dsl-libui-windows-editable-table-editing.png) ![glimmer-dsl-libui-windows-editable-table-edited.png](images/glimmer-dsl-libui-windows-editable-table-edited.png) | ![glimmer-dsl-libui-linux-editable-table.png](images/glimmer-dsl-libui-linux-editable-table.png) ![glimmer-dsl-libui-linux-editable-table-editing.png](images/glimmer-dsl-libui-linux-editable-table-editing.png) ![glimmer-dsl-libui-linux-editable-table-edited.png](images/glimmer-dsl-libui-linux-editable-table-edited.png)
 
 New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
 
@@ -3180,20 +2990,9 @@ Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/
 ruby -r glimmer-dsl-libui -e "require 'examples/editable_column_table'"
 ```
 
-Mac
-
-![glimmer-dsl-libui-mac-editable-column-table-editing.png](images/glimmer-dsl-libui-mac-editable-column-table-editing.png)
-![glimmer-dsl-libui-mac-editable-column-table-edited.png](images/glimmer-dsl-libui-mac-editable-column-table-edited.png)
-
-Windows
-
-![glimmer-dsl-libui-windows-editable-column-table-editing.png](images/glimmer-dsl-libui-windows-editable-column-table-editing.png)
-![glimmer-dsl-libui-windows-editable-column-table-edited.png](images/glimmer-dsl-libui-windows-editable-column-table-edited.png)
-
-Linux
-
-![glimmer-dsl-libui-linux-editable-column-table-editing.png](images/glimmer-dsl-libui-linux-editable-column-table-editing.png)
-![glimmer-dsl-libui-linux-editable-column-table-edited.png](images/glimmer-dsl-libui-linux-editable-column-table-edited.png)
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-editable-column-table-editing.png](images/glimmer-dsl-libui-mac-editable-column-table-editing.png) ![glimmer-dsl-libui-mac-editable-column-table-edited.png](images/glimmer-dsl-libui-mac-editable-column-table-edited.png) | ![glimmer-dsl-libui-windows-editable-column-table-editing.png](images/glimmer-dsl-libui-windows-editable-column-table-editing.png) ![glimmer-dsl-libui-windows-editable-column-table-edited.png](images/glimmer-dsl-libui-windows-editable-column-table-edited.png) | ![glimmer-dsl-libui-linux-editable-column-table-editing.png](images/glimmer-dsl-libui-linux-editable-column-table-editing.png) ![glimmer-dsl-libui-linux-editable-column-table-edited.png](images/glimmer-dsl-libui-linux-editable-column-table-edited.png)
 
 New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
 
@@ -3247,17 +3046,9 @@ Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/
 ruby -r glimmer-dsl-libui -e "require 'examples/basic_table_image'"
 ```
 
-Mac
-
-![glimmer-dsl-libui-mac-basic-table-image.png](images/glimmer-dsl-libui-mac-basic-table-image.png)
-
-Windows
-
-![glimmer-dsl-libui-windows-basic-table-image.png](images/glimmer-dsl-libui-windows-basic-table-image.png)
-
-Linux
-
-![glimmer-dsl-libui-linux-basic-table-image.png](images/glimmer-dsl-libui-linux-basic-table-image.png)
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-basic-table-image.png](images/glimmer-dsl-libui-mac-basic-table-image.png) | ![glimmer-dsl-libui-windows-basic-table-image.png](images/glimmer-dsl-libui-windows-basic-table-image.png) | ![glimmer-dsl-libui-linux-basic-table-image.png](images/glimmer-dsl-libui-linux-basic-table-image.png)
 
 [LibUI](https://github.com/kojix2/LibUI) Original Version:
 
@@ -3438,17 +3229,9 @@ Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/
 ruby -r glimmer-dsl-libui -e "require 'examples/basic_table_image_text'"
 ```
 
-Mac
-
-![glimmer-dsl-libui-mac-basic-table-image-text.png](images/glimmer-dsl-libui-mac-basic-table-image-text.png)
-
-Windows
-
-![glimmer-dsl-libui-windows-basic-table-image-text.png](images/glimmer-dsl-libui-windows-basic-table-image-text.png)
-
-Linux
-
-![glimmer-dsl-libui-linux-basic-table-image-text.png](images/glimmer-dsl-libui-linux-basic-table-image-text.png)
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-basic-table-image-text.png](images/glimmer-dsl-libui-mac-basic-table-image-text.png) | ![glimmer-dsl-libui-windows-basic-table-image-text.png](images/glimmer-dsl-libui-windows-basic-table-image-text.png) | ![glimmer-dsl-libui-linux-basic-table-image-text.png](images/glimmer-dsl-libui-linux-basic-table-image-text.png)
 
 New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
 
@@ -3548,20 +3331,9 @@ Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/
 ruby -r glimmer-dsl-libui -e "require 'examples/basic_table_button'"
 ```
 
-Mac
-
-![glimmer-dsl-libui-mac-basic-table-button.png](images/glimmer-dsl-libui-mac-basic-table-button.png)
-![glimmer-dsl-libui-mac-basic-table-button-deleted.png](images/glimmer-dsl-libui-mac-basic-table-button-deleted.png)
-
-Windows
-
-![glimmer-dsl-libui-windows-basic-table-button.png](images/glimmer-dsl-libui-windows-basic-table-button.png)
-![glimmer-dsl-libui-windows-basic-table-button-deleted.png](images/glimmer-dsl-libui-windows-basic-table-button-deleted.png)
-
-Linux
-
-![glimmer-dsl-libui-linux-basic-table-button.png](images/glimmer-dsl-libui-linux-basic-table-button.png)
-![glimmer-dsl-libui-linux-basic-table-button-deleted.png](images/glimmer-dsl-libui-linux-basic-table-button-deleted.png)
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-basic-table-button.png](images/glimmer-dsl-libui-mac-basic-table-button.png) ![glimmer-dsl-libui-mac-basic-table-button-deleted.png](images/glimmer-dsl-libui-mac-basic-table-button-deleted.png) | ![glimmer-dsl-libui-windows-basic-table-button.png](images/glimmer-dsl-libui-windows-basic-table-button.png) ![glimmer-dsl-libui-windows-basic-table-button-deleted.png](images/glimmer-dsl-libui-windows-basic-table-button-deleted.png) | ![glimmer-dsl-libui-linux-basic-table-button.png](images/glimmer-dsl-libui-linux-basic-table-button.png) ![glimmer-dsl-libui-linux-basic-table-button-deleted.png](images/glimmer-dsl-libui-linux-basic-table-button-deleted.png)
 
 New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
 
@@ -3615,17 +3387,9 @@ Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/
 ruby -r glimmer-dsl-libui -e "require 'examples/basic_table_checkbox'"
 ```
 
-Mac
-
-![glimmer-dsl-libui-mac-basic-table-checkbox.png](images/glimmer-dsl-libui-mac-basic-table-checkbox.png)
-
-Windows
-
-![glimmer-dsl-libui-windows-basic-table-checkbox.png](images/glimmer-dsl-libui-windows-basic-table-checkbox.png)
-
-Linux
-
-![glimmer-dsl-libui-linux-basic-table-checkbox.png](images/glimmer-dsl-libui-linux-basic-table-checkbox.png)
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-basic-table-checkbox.png](images/glimmer-dsl-libui-mac-basic-table-checkbox.png) | ![glimmer-dsl-libui-windows-basic-table-checkbox.png](images/glimmer-dsl-libui-windows-basic-table-checkbox.png) | ![glimmer-dsl-libui-linux-basic-table-checkbox.png](images/glimmer-dsl-libui-linux-basic-table-checkbox.png)
 
 New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
 
@@ -3671,17 +3435,9 @@ Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/
 ruby -r glimmer-dsl-libui -e "require 'examples/basic_table_checkbox_text'"
 ```
 
-Mac
-
-![glimmer-dsl-libui-mac-basic-table-checkbox-text.png](images/glimmer-dsl-libui-mac-basic-table-checkbox-text.png)
-
-Windows
-
-![glimmer-dsl-libui-windows-basic-table-checkbox-text.png](images/glimmer-dsl-libui-windows-basic-table-checkbox-text.png)
-
-Linux
-
-![glimmer-dsl-libui-linux-basic-table-checkbox-text.png](images/glimmer-dsl-libui-linux-basic-table-checkbox-text.png)
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-basic-table-checkbox-text.png](images/glimmer-dsl-libui-mac-basic-table-checkbox-text.png) | ![glimmer-dsl-libui-windows-basic-table-checkbox-text.png](images/glimmer-dsl-libui-windows-basic-table-checkbox-text.png) | ![glimmer-dsl-libui-linux-basic-table-checkbox-text.png](images/glimmer-dsl-libui-linux-basic-table-checkbox-text.png)
 
 New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
 
@@ -3727,17 +3483,9 @@ Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/
 ruby -r glimmer-dsl-libui -e "require 'examples/basic_table_progress_bar'"
 ```
 
-Mac
-
-![glimmer-dsl-libui-mac-basic-table-progress-bar.png](images/glimmer-dsl-libui-mac-basic-table-progress-bar.png)
-
-Windows
-
-![glimmer-dsl-libui-windows-basic-table-progress-bar.png](images/glimmer-dsl-libui-windows-basic-table-progress-bar.png)
-
-Linux
-
-![glimmer-dsl-libui-linux-basic-table-progress-bar.png](images/glimmer-dsl-libui-linux-basic-table-progress-bar.png)
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-basic-table-progress-bar.png](images/glimmer-dsl-libui-mac-basic-table-progress-bar.png) | ![glimmer-dsl-libui-windows-basic-table-progress-bar.png](images/glimmer-dsl-libui-windows-basic-table-progress-bar.png) | ![glimmer-dsl-libui-linux-basic-table-progress-bar.png](images/glimmer-dsl-libui-linux-basic-table-progress-bar.png)
 
 New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
 
@@ -3792,17 +3540,9 @@ Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/
 ruby -r glimmer-dsl-libui -e "require 'examples/basic_table_color'"
 ```
 
-Mac
-
-![glimmer-dsl-libui-mac-basic-table-color.png](images/glimmer-dsl-libui-mac-basic-table-color.png)
-
-Windows
-
-![glimmer-dsl-libui-windows-basic-table-color.png](images/glimmer-dsl-libui-windows-basic-table-color.png)
-
-Linux
-
-![glimmer-dsl-libui-linux-basic-table-color.png](images/glimmer-dsl-libui-linux-basic-table-color.png)
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-basic-table-color.png](images/glimmer-dsl-libui-mac-basic-table-color.png) | ![glimmer-dsl-libui-windows-basic-table-color.png](images/glimmer-dsl-libui-windows-basic-table-color.png) | ![glimmer-dsl-libui-linux-basic-table-color.png](images/glimmer-dsl-libui-linux-basic-table-color.png)
 
 New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
 
@@ -3896,23 +3636,9 @@ Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/
 ruby -r glimmer-dsl-libui -e "require 'examples/form_table'"
 ```
 
-Mac
-
-![glimmer-dsl-libui-mac-form-table.png](images/glimmer-dsl-libui-mac-form-table.png)
-![glimmer-dsl-libui-mac-form-table-contact-entered.png](images/glimmer-dsl-libui-mac-form-table-contact-entered.png)
-![glimmer-dsl-libui-mac-form-table-filtered.png](images/glimmer-dsl-libui-mac-form-table-filtered.png)
-
-Windows
-
-![glimmer-dsl-libui-windows-form-table.png](images/glimmer-dsl-libui-windows-form-table.png)
-![glimmer-dsl-libui-windows-form-table-contact-entered.png](images/glimmer-dsl-libui-windows-form-table-contact-entered.png)
-![glimmer-dsl-libui-windows-form-table-filtered.png](images/glimmer-dsl-libui-windows-form-table-filtered.png)
-
-Linux
-
-![glimmer-dsl-libui-linux-form-table.png](images/glimmer-dsl-libui-linux-form-table.png)
-![glimmer-dsl-libui-linux-form-table-contact-entered.png](images/glimmer-dsl-libui-linux-form-table-contact-entered.png)
-![glimmer-dsl-libui-linux-form-table-filtered.png](images/glimmer-dsl-libui-linux-form-table-filtered.png)
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-form-table.png](images/glimmer-dsl-libui-mac-form-table.png) ![glimmer-dsl-libui-mac-form-table-contact-entered.png](images/glimmer-dsl-libui-mac-form-table-contact-entered.png) ![glimmer-dsl-libui-mac-form-table-filtered.png](images/glimmer-dsl-libui-mac-form-table-filtered.png) | ![glimmer-dsl-libui-windows-form-table.png](images/glimmer-dsl-libui-windows-form-table.png) ![glimmer-dsl-libui-windows-form-table-contact-entered.png](images/glimmer-dsl-libui-windows-form-table-contact-entered.png) ![glimmer-dsl-libui-windows-form-table-filtered.png](images/glimmer-dsl-libui-windows-form-table-filtered.png) | ![glimmer-dsl-libui-linux-form-table.png](images/glimmer-dsl-libui-linux-form-table.png) ![glimmer-dsl-libui-linux-form-table-contact-entered.png](images/glimmer-dsl-libui-linux-form-table-contact-entered.png) ![glimmer-dsl-libui-linux-form-table-filtered.png](images/glimmer-dsl-libui-linux-form-table-filtered.png)
 
 New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
 
@@ -4024,17 +3750,9 @@ Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/
 ruby -r glimmer-dsl-libui -e "require 'examples/basic_area'"
 ```
 
-Mac
-
-![glimmer-dsl-libui-mac-basic-area.png](images/glimmer-dsl-libui-mac-basic-area.png)
-
-Windows
-
-![glimmer-dsl-libui-windows-basic-area.png](images/glimmer-dsl-libui-windows-basic-area.png)
-
-Linux
-
-![glimmer-dsl-libui-linux-basic-area.png](images/glimmer-dsl-libui-linux-basic-area.png)
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-basic-area.png](images/glimmer-dsl-libui-mac-basic-area.png) | ![glimmer-dsl-libui-windows-basic-area.png](images/glimmer-dsl-libui-windows-basic-area.png) | ![glimmer-dsl-libui-linux-basic-area.png](images/glimmer-dsl-libui-linux-basic-area.png)
 
 [LibUI](https://github.com/kojix2/LibUI) Original Version:
 
@@ -4150,20 +3868,9 @@ Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/
 ruby -r glimmer-dsl-libui -e "require 'examples/dynamic_area'"
 ```
 
-Mac
-
-![glimmer-dsl-libui-mac-dynamic-area.png](images/glimmer-dsl-libui-mac-dynamic-area.png)
-![glimmer-dsl-libui-mac-dynamic-area-updated.png](images/glimmer-dsl-libui-mac-dynamic-area-updated.png)
-
-Windows
-
-![glimmer-dsl-libui-windows-dynamic-area.png](images/glimmer-dsl-libui-windows-dynamic-area.png)
-![glimmer-dsl-libui-windows-dynamic-area-updated.png](images/glimmer-dsl-libui-windows-dynamic-area-updated.png)
-
-Linux
-
-![glimmer-dsl-libui-linux-dynamic-area.png](images/glimmer-dsl-libui-linux-dynamic-area.png)
-![glimmer-dsl-libui-linux-dynamic-area-updated.png](images/glimmer-dsl-libui-linux-dynamic-area-updated.png)
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-dynamic-area.png](images/glimmer-dsl-libui-mac-dynamic-area.png) ![glimmer-dsl-libui-mac-dynamic-area-updated.png](images/glimmer-dsl-libui-mac-dynamic-area-updated.png) | ![glimmer-dsl-libui-windows-dynamic-area.png](images/glimmer-dsl-libui-windows-dynamic-area.png) ![glimmer-dsl-libui-windows-dynamic-area-updated.png](images/glimmer-dsl-libui-windows-dynamic-area-updated.png) | ![glimmer-dsl-libui-linux-dynamic-area.png](images/glimmer-dsl-libui-linux-dynamic-area.png) ![glimmer-dsl-libui-linux-dynamic-area-updated.png](images/glimmer-dsl-libui-linux-dynamic-area-updated.png)
 
 New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
 
@@ -4387,17 +4094,9 @@ Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/
 ruby -r glimmer-dsl-libui -e "require 'examples/area_gallery'"
 ```
 
-Mac
-
-![glimmer-dsl-libui-mac-area-gallery.png](images/glimmer-dsl-libui-mac-area-gallery.png)
-
-Windows
-
-![glimmer-dsl-libui-windows-area-gallery.png](images/glimmer-dsl-libui-windows-area-gallery.png)
-
-Linux
-
-![glimmer-dsl-libui-linux-area-gallery.png](images/glimmer-dsl-libui-linux-area-gallery.png)
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-area-gallery.png](images/glimmer-dsl-libui-mac-area-gallery.png) | ![glimmer-dsl-libui-windows-area-gallery.png](images/glimmer-dsl-libui-windows-area-gallery.png) | ![glimmer-dsl-libui-linux-area-gallery.png](images/glimmer-dsl-libui-linux-area-gallery.png)
 
 New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
 
@@ -5063,13 +4762,9 @@ Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/
 ruby -r glimmer-dsl-libui -e "require 'examples/basic_image'"
 ```
 
-Mac
-
-![glimmer-dsl-libui-mac-basic-image.png](images/glimmer-dsl-libui-mac-basic-image.png)
-
-Windows
-
-![glimmer-dsl-libui-windows-basic-image.png](images/glimmer-dsl-libui-windows-basic-image.png)
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-basic-image.png](images/glimmer-dsl-libui-mac-basic-image.png) | ![glimmer-dsl-libui-windows-basic-image.png](images/glimmer-dsl-libui-windows-basic-image.png) | ![glimmer-dsl-libui-linux-basic-image.png](images/glimmer-dsl-libui-linux-basic-image.png)
 
 New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
 
@@ -5257,17 +4952,9 @@ Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/
 ruby -r glimmer-dsl-libui -e "require 'examples/histogram'"
 ```
 
-Mac
-
-![glimmer-dsl-libui-mac-histogram.png](images/glimmer-dsl-libui-mac-histogram.png)
-
-Windows
-
-![glimmer-dsl-libui-windows-histogram.png](images/glimmer-dsl-libui-windows-histogram.png)
-
-Linux
-
-![glimmer-dsl-libui-linux-histogram.png](images/glimmer-dsl-libui-linux-histogram.png)
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-histogram.png](images/glimmer-dsl-libui-mac-histogram.png) | ![glimmer-dsl-libui-windows-histogram.png](images/glimmer-dsl-libui-windows-histogram.png) | ![glimmer-dsl-libui-linux-histogram.png](images/glimmer-dsl-libui-linux-histogram.png)
 
 [LibUI](https://github.com/kojix2/LibUI) Original Version:
 
@@ -5595,17 +5282,9 @@ Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/
 ruby -r glimmer-dsl-libui -e "require 'examples/basic_transform'"
 ```
 
-Mac
-
-![glimmer-dsl-libui-mac-basic-transform.png](images/glimmer-dsl-libui-mac-basic-transform.png)
-
-Windows
-
-![glimmer-dsl-libui-windows-basic-transform.png](images/glimmer-dsl-libui-windows-basic-transform.png)
-
-Linux
-
-![glimmer-dsl-libui-linux-basic-transform.png](images/glimmer-dsl-libui-linux-basic-transform.png)
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-basic-transform.png](images/glimmer-dsl-libui-mac-basic-transform.png) | ![glimmer-dsl-libui-windows-basic-transform.png](images/glimmer-dsl-libui-windows-basic-transform.png) | ![glimmer-dsl-libui-linux-basic-transform.png](images/glimmer-dsl-libui-linux-basic-transform.png)
 
 New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
 
@@ -5655,20 +5334,9 @@ Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/
 ruby -r glimmer-dsl-libui -e "require 'examples/login'"
 ```
 
-Mac
-
-![glimmer-dsl-libui-mac-login.png](images/glimmer-dsl-libui-mac-login.png)
-![glimmer-dsl-libui-mac-login-logged-in.png](images/glimmer-dsl-libui-mac-login-logged-in.png)
-
-Windows
-
-![glimmer-dsl-libui-windows-login.png](images/glimmer-dsl-libui-windows-login.png)
-![glimmer-dsl-libui-windows-login-logged-in.png](images/glimmer-dsl-libui-windows-login-logged-in.png)
-
-Linux
-
-![glimmer-dsl-libui-linux-login.png](images/glimmer-dsl-libui-linux-login.png)
-![glimmer-dsl-libui-linux-login-logged-in.png](images/glimmer-dsl-libui-linux-login-logged-in.png)
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-login.png](images/glimmer-dsl-libui-mac-login.png) ![glimmer-dsl-libui-mac-login-logged-in.png](images/glimmer-dsl-libui-mac-login-logged-in.png) | ![glimmer-dsl-libui-windows-login.png](images/glimmer-dsl-libui-windows-login.png) ![glimmer-dsl-libui-windows-login-logged-in.png](images/glimmer-dsl-libui-windows-login-logged-in.png) | ![glimmer-dsl-libui-linux-login.png](images/glimmer-dsl-libui-linux-login.png) ![glimmer-dsl-libui-linux-login-logged-in.png](images/glimmer-dsl-libui-linux-login-logged-in.png)
 
 New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
 
@@ -5736,20 +5404,9 @@ Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/
 ruby -r glimmer-dsl-libui -e "require 'examples/timer'"
 ```
 
-Mac
-
-![glimmer-dsl-libui-mac-timer.png](images/glimmer-dsl-libui-mac-timer.png)
-![glimmer-dsl-libui-mac-timer-in-progress.png](images/glimmer-dsl-libui-mac-timer-in-progress.png)
-
-Windows
-
-![glimmer-dsl-libui-windows-timer.png](images/glimmer-dsl-libui-windows-timer.png)
-![glimmer-dsl-libui-windows-timer-in-progress.png](images/glimmer-dsl-libui-windows-timer-in-progress.png)
-
-Linux
-
-![glimmer-dsl-libui-linux-timer.png](images/glimmer-dsl-libui-linux-timer.png)
-![glimmer-dsl-libui-linux-timer-in-progress.png](images/glimmer-dsl-libui-linux-timer-in-progress.png)
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-timer.png](images/glimmer-dsl-libui-mac-timer.png) ![glimmer-dsl-libui-mac-timer-in-progress.png](images/glimmer-dsl-libui-mac-timer-in-progress.png) | ![glimmer-dsl-libui-windows-timer.png](images/glimmer-dsl-libui-windows-timer.png) ![glimmer-dsl-libui-windows-timer-in-progress.png](images/glimmer-dsl-libui-windows-timer-in-progress.png) | ![glimmer-dsl-libui-linux-timer.png](images/glimmer-dsl-libui-linux-timer.png) ![glimmer-dsl-libui-linux-timer-in-progress.png](images/glimmer-dsl-libui-linux-timer-in-progress.png)
 
 New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
 
@@ -5905,23 +5562,9 @@ Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/
 ruby -r glimmer-dsl-libui -e "require 'examples/color_the_circles'"
 ```
 
-Mac
-
-![glimmer-dsl-libui-mac-color-the-circles.png](images/glimmer-dsl-libui-mac-color-the-circles.png)
-![glimmer-dsl-libui-mac-color-the-circles-lost.png](images/glimmer-dsl-libui-mac-color-the-circles-lost.png)
-![glimmer-dsl-libui-mac-color-the-circles-won.png](images/glimmer-dsl-libui-mac-color-the-circles-won.png)
-
-Windows
-
-![glimmer-dsl-libui-windows-color-the-circles.png](images/glimmer-dsl-libui-windows-color-the-circles.png)
-![glimmer-dsl-libui-windows-color-the-circles-lost.png](images/glimmer-dsl-libui-windows-color-the-circles-lost.png)
-![glimmer-dsl-libui-windows-color-the-circles-won.png](images/glimmer-dsl-libui-windows-color-the-circles-won.png)
-
-Linux
-
-![glimmer-dsl-libui-linux-color-the-circles.png](images/glimmer-dsl-libui-linux-color-the-circles.png)
-![glimmer-dsl-libui-linux-color-the-circles-lost.png](images/glimmer-dsl-libui-linux-color-the-circles-lost.png)
-![glimmer-dsl-libui-linux-color-the-circles-won.png](images/glimmer-dsl-libui-linux-color-the-circles-won.png)
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-color-the-circles.png](images/glimmer-dsl-libui-mac-color-the-circles.png) ![glimmer-dsl-libui-mac-color-the-circles-lost.png](images/glimmer-dsl-libui-mac-color-the-circles-lost.png) ![glimmer-dsl-libui-mac-color-the-circles-won.png](images/glimmer-dsl-libui-mac-color-the-circles-won.png) | ![glimmer-dsl-libui-windows-color-the-circles.png](images/glimmer-dsl-libui-windows-color-the-circles.png) ![glimmer-dsl-libui-windows-color-the-circles-lost.png](images/glimmer-dsl-libui-windows-color-the-circles-lost.png) ![glimmer-dsl-libui-windows-color-the-circles-won.png](images/glimmer-dsl-libui-windows-color-the-circles-won.png) | ![glimmer-dsl-libui-linux-color-the-circles.png](images/glimmer-dsl-libui-linux-color-the-circles.png) ![glimmer-dsl-libui-linux-color-the-circles-lost.png](images/glimmer-dsl-libui-linux-color-the-circles-lost.png) ![glimmer-dsl-libui-linux-color-the-circles-won.png](images/glimmer-dsl-libui-linux-color-the-circles-won.png)
 
 New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
 
@@ -6164,17 +5807,9 @@ Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/
 ruby -r glimmer-dsl-libui -e "require 'examples/basic_draw_text'"
 ```
 
-Mac
-
-![glimmer-dsl-libui-mac-basic-draw-text.png](images/glimmer-dsl-libui-mac-basic-draw-text.png)
-
-Windows
-
-![glimmer-dsl-libui-windows-basic-draw-text.png](images/glimmer-dsl-libui-windows-basic-draw-text.png)
-
-Linux
-
-![glimmer-dsl-libui-linux-basic-draw-text.png](images/glimmer-dsl-libui-linux-basic-draw-text.png)
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-basic-draw-text.png](images/glimmer-dsl-libui-mac-basic-draw-text.png) | ![glimmer-dsl-libui-windows-basic-draw-text.png](images/glimmer-dsl-libui-windows-basic-draw-text.png) | ![glimmer-dsl-libui-linux-basic-draw-text.png](images/glimmer-dsl-libui-linux-basic-draw-text.png)
 
 [LibUI](https://github.com/kojix2/LibUI) Original Version:
 
@@ -6450,20 +6085,9 @@ Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/
 ruby -r glimmer-dsl-libui -e "require 'examples/custom_draw_text'"
 ```
 
-Mac
-
-![glimmer-dsl-libui-mac-custom-draw-text.png](images/glimmer-dsl-libui-mac-custom-draw-text.png)
-![glimmer-dsl-libui-mac-custom-draw-text-changed.png](images/glimmer-dsl-libui-mac-custom-draw-text-changed.png)
-
-Windows
-
-![glimmer-dsl-libui-windows-custom-draw-text.png](images/glimmer-dsl-libui-windows-custom-draw-text.png)
-![glimmer-dsl-libui-windows-custom-draw-text-changed.png](images/glimmer-dsl-libui-windows-custom-draw-text-changed.png)
-
-Linux
-
-![glimmer-dsl-libui-linux-custom-draw-text.png](images/glimmer-dsl-libui-linux-custom-draw-text.png)
-![glimmer-dsl-libui-linux-custom-draw-text-changed.png](images/glimmer-dsl-libui-linux-custom-draw-text-changed.png)
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-custom-draw-text.png](images/glimmer-dsl-libui-mac-custom-draw-text.png) ![glimmer-dsl-libui-mac-custom-draw-text-changed.png](images/glimmer-dsl-libui-mac-custom-draw-text-changed.png) | ![glimmer-dsl-libui-windows-custom-draw-text.png](images/glimmer-dsl-libui-windows-custom-draw-text.png) ![glimmer-dsl-libui-windows-custom-draw-text-changed.png](images/glimmer-dsl-libui-windows-custom-draw-text-changed.png) | ![glimmer-dsl-libui-linux-custom-draw-text.png](images/glimmer-dsl-libui-linux-custom-draw-text.png) ![glimmer-dsl-libui-linux-custom-draw-text-changed.png](images/glimmer-dsl-libui-linux-custom-draw-text-changed.png)
 
 New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
 
@@ -6670,17 +6294,9 @@ Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/
 ruby -r glimmer-dsl-libui -e "require 'examples/method_based_custom_keyword'"
 ```
 
-Mac
-
-![glimmer-dsl-libui-mac-method-based-custom-keyword.png](images/glimmer-dsl-libui-mac-method-based-custom-keyword.png)
-
-Windows
-
-![glimmer-dsl-libui-windows-method-based-custom-keyword.png](images/glimmer-dsl-libui-windows-method-based-custom-keyword.png)
-
-Linux
-
-![glimmer-dsl-libui-linux-method-based-custom-keyword.png](images/glimmer-dsl-libui-linux-method-based-custom-keyword.png)
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-method-based-custom-keyword.png](images/glimmer-dsl-libui-mac-method-based-custom-keyword.png) | ![glimmer-dsl-libui-windows-method-based-custom-keyword.png](images/glimmer-dsl-libui-windows-method-based-custom-keyword.png) | ![glimmer-dsl-libui-linux-method-based-custom-keyword.png](images/glimmer-dsl-libui-linux-method-based-custom-keyword.png)
 
 New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
 
@@ -6802,29 +6418,9 @@ Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/
 ruby -r glimmer-dsl-libui -e "require 'examples/tetris'"
 ```
 
-Mac
-
-![glimmer-dsl-libui-mac-tetris.png](images/glimmer-dsl-libui-mac-tetris.png)
-
-![glimmer-dsl-libui-mac-tetris-game-over.png](images/glimmer-dsl-libui-mac-tetris-game-over.png)
-
-![glimmer-dsl-libui-mac-tetris-high-scores.png](images/glimmer-dsl-libui-mac-tetris-high-scores.png)
-
-Windows
-
-![glimmer-dsl-libui-windows-tetris.png](images/glimmer-dsl-libui-windows-tetris.png)
-
-![glimmer-dsl-libui-windows-tetris-game-over.png](images/glimmer-dsl-libui-windows-tetris-game-over.png)
-
-![glimmer-dsl-libui-windows-tetris-high-scores.png](images/glimmer-dsl-libui-windows-tetris-high-scores.png)
-
-Linux
-
-![glimmer-dsl-libui-linux-tetris.png](images/glimmer-dsl-libui-linux-tetris.png)
-
-![glimmer-dsl-libui-linux-tetris-game-over.png](images/glimmer-dsl-libui-linux-tetris-game-over.png)
-
-![glimmer-dsl-libui-linux-tetris-high-scores.png](images/glimmer-dsl-libui-linux-tetris-high-scores.png)
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-tetris.png](images/glimmer-dsl-libui-mac-tetris.png) ![glimmer-dsl-libui-mac-tetris-game-over.png](images/glimmer-dsl-libui-mac-tetris-game-over.png) ![glimmer-dsl-libui-mac-tetris-high-scores.png](images/glimmer-dsl-libui-mac-tetris-high-scores.png) | ![glimmer-dsl-libui-windows-tetris.png](images/glimmer-dsl-libui-windows-tetris.png) ![glimmer-dsl-libui-windows-tetris-game-over.png](images/glimmer-dsl-libui-windows-tetris-game-over.png) ![glimmer-dsl-libui-windows-tetris-high-scores.png](images/glimmer-dsl-libui-windows-tetris-high-scores.png) | ![glimmer-dsl-libui-linux-tetris.png](images/glimmer-dsl-libui-linux-tetris.png) ![glimmer-dsl-libui-linux-tetris-game-over.png](images/glimmer-dsl-libui-linux-tetris-game-over.png) ![glimmer-dsl-libui-linux-tetris-high-scores.png](images/glimmer-dsl-libui-linux-tetris-high-scores.png)
 
 New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
 
@@ -7219,35 +6815,9 @@ Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/
 ruby -r glimmer-dsl-libui -e "require 'examples/tic_tac_toe'"
 ```
 
-Mac
-
-![glimmer-dsl-libui-mac-tic-tac-toe.png](images/glimmer-dsl-libui-mac-tic-tac-toe.png)
-
-![glimmer-dsl-libui-mac-tic-tac-toe-player-o-wins.png](images/glimmer-dsl-libui-mac-tic-tac-toe-player-o-wins.png)
-
-![glimmer-dsl-libui-mac-tic-tac-toe-player-x-wins.png](images/glimmer-dsl-libui-mac-tic-tac-toe-player-x-wins.png)
-
-![glimmer-dsl-libui-mac-tic-tac-toe-draw.png](images/glimmer-dsl-libui-mac-tic-tac-toe-draw.png)
-
-Windows
-
-![glimmer-dsl-libui-windows-tic-tac-toe.png](images/glimmer-dsl-libui-windows-tic-tac-toe.png)
-
-![glimmer-dsl-libui-windows-tic-tac-toe-player-o-wins.png](images/glimmer-dsl-libui-windows-tic-tac-toe-player-o-wins.png)
-
-![glimmer-dsl-libui-windows-tic-tac-toe-player-x-wins.png](images/glimmer-dsl-libui-windows-tic-tac-toe-player-x-wins.png)
-
-![glimmer-dsl-libui-windows-tic-tac-toe-draw.png](images/glimmer-dsl-libui-windows-tic-tac-toe-draw.png)
-
-Linux
-
-![glimmer-dsl-libui-linux-tic-tac-toe.png](images/glimmer-dsl-libui-linux-tic-tac-toe.png)
-
-![glimmer-dsl-libui-linux-tic-tac-toe-player-o-wins.png](images/glimmer-dsl-libui-linux-tic-tac-toe-player-o-wins.png)
-
-![glimmer-dsl-libui-linux-tic-tac-toe-player-x-wins.png](images/glimmer-dsl-libui-linux-tic-tac-toe-player-x-wins.png)
-
-![glimmer-dsl-libui-linux-tic-tac-toe-draw.png](images/glimmer-dsl-libui-linux-tic-tac-toe-draw.png)
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-tic-tac-toe.png](images/glimmer-dsl-libui-mac-tic-tac-toe.png) ![glimmer-dsl-libui-mac-tic-tac-toe-player-o-wins.png](images/glimmer-dsl-libui-mac-tic-tac-toe-player-o-wins.png) ![glimmer-dsl-libui-mac-tic-tac-toe-player-x-wins.png](images/glimmer-dsl-libui-mac-tic-tac-toe-player-x-wins.png) ![glimmer-dsl-libui-mac-tic-tac-toe-draw.png](images/glimmer-dsl-libui-mac-tic-tac-toe-draw.png) | ![glimmer-dsl-libui-windows-tic-tac-toe.png](images/glimmer-dsl-libui-windows-tic-tac-toe.png) ![glimmer-dsl-libui-windows-tic-tac-toe-player-o-wins.png](images/glimmer-dsl-libui-windows-tic-tac-toe-player-o-wins.png) ![glimmer-dsl-libui-windows-tic-tac-toe-player-x-wins.png](images/glimmer-dsl-libui-windows-tic-tac-toe-player-x-wins.png) ![glimmer-dsl-libui-windows-tic-tac-toe-draw.png](images/glimmer-dsl-libui-windows-tic-tac-toe-draw.png) | ![glimmer-dsl-libui-linux-tic-tac-toe.png](images/glimmer-dsl-libui-linux-tic-tac-toe.png) ![glimmer-dsl-libui-linux-tic-tac-toe-player-o-wins.png](images/glimmer-dsl-libui-linux-tic-tac-toe-player-o-wins.png) ![glimmer-dsl-libui-linux-tic-tac-toe-player-x-wins.png](images/glimmer-dsl-libui-linux-tic-tac-toe-player-x-wins.png) ![glimmer-dsl-libui-linux-tic-tac-toe-draw.png](images/glimmer-dsl-libui-linux-tic-tac-toe-draw.png)
 
 New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
 
@@ -7357,23 +6927,9 @@ Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/
 ruby -r glimmer-dsl-libui -e "require 'examples/snake'"
 ```
 
-Mac
-
-![glimmer-dsl-libui-mac-snake.png](images/glimmer-dsl-libui-mac-snake.png)
-
-![glimmer-dsl-libui-mac-snake-game-over.png](images/glimmer-dsl-libui-mac-snake-game-over.png)
-
-Windows
-
-![glimmer-dsl-libui-windows-snake.png](images/glimmer-dsl-libui-windows-snake.png)
-
-![glimmer-dsl-libui-windows-snake-game-over.png](images/glimmer-dsl-libui-windows-snake-game-over.png)
-
-Linux
-
-![glimmer-dsl-libui-linux-snake.png](images/glimmer-dsl-libui-linux-snake.png)
-
-![glimmer-dsl-libui-linux-snake-game-over.png](images/glimmer-dsl-libui-linux-snake-game-over.png)
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-snake.png](images/glimmer-dsl-libui-mac-snake.png) ![glimmer-dsl-libui-mac-snake-game-over.png](images/glimmer-dsl-libui-mac-snake-game-over.png) | ![glimmer-dsl-libui-windows-snake.png](images/glimmer-dsl-libui-windows-snake.png) ![glimmer-dsl-libui-windows-snake-game-over.png](images/glimmer-dsl-libui-windows-snake-game-over.png) | ![glimmer-dsl-libui-linux-snake.png](images/glimmer-dsl-libui-linux-snake.png) ![glimmer-dsl-libui-linux-snake-game-over.png](images/glimmer-dsl-libui-linux-snake-game-over.png)
 
 New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
 

@@ -2,8 +2,10 @@
 
 ## Next
 
-- Fix issue with editing `table` text of an `image_text_column`
-- examples/basic_scrolling_area.rb (note that area dimensions must be greater than its window dimensions)
+- examples/area_drag_and_move.rb (drag around drawn objects like a house, animals, and people)
+- examples/area_drag_and_drop.rb (customize a face with face parts like mustache, nose, lips, eyes, and hair)
+- examples/scrolling_area_gallery.rb (note that area dimensions must be greater than its window dimensions)
+- Add a second column of radio buttons to layout of meta_example to fit more examples
 
 ## Soon
 
