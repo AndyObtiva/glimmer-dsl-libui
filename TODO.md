@@ -2,15 +2,21 @@
 
 ## Next
 
-- examples/area_drag_and_move.rb (drag around drawn objects like a house, animals, and people)
-- examples/area_drag_and_drop.rb (customize a face with face parts like mustache, nose, lips, eyes, and hair)
-- examples/scrolling_area_gallery.rb (note that area dimensions must be greater than its window dimensions)
+- Update area_gallery 3 and 4 to newer simpler syntax
+- Update Style Guide to have an example for each bullet point and augment from Glimmer DSL for Tk's Style Guide (also make distinction between distancing keywords having content or not)
 - Add a second column of radio buttons to layout of meta_example to fit more examples
 
 ## Soon
 
-- Support nesting shapes directly under `area` to represent paths having one shape, and nesting fill/stroke within the shapes (not `path`)
-- Consider making all event hashes and param hashes accept retrieval of their key values through method calls not just `[key]` calls (utilize `hash-proxy` gem to solve this problem)
+- Support `include?` method in `arc`, `polygon`, `polyline`, and `polybezier`
+- Support `contain?` method in `arc`, `polygon`, `polyline`, and `polybezier`
+- Support `bounds` method in `polygon`, `polyline`, `polybezier`, and all other shapes
+- Support Custom Shapes, describing composite shapes/text/image concepts inside an `area`
+- examples/area_drag_and_move.rb (drag around drawn objects like a house, animals, and people)
+- examples/area_drag_and_drop.rb (customize a face with face parts like mustache, nose, lips, eyes, and hair)
+- examples/scrolling_area_gallery.rb (note that area dimensions must be greater than its window dimensions)
+- Consider making all event hashes and param hashes accept retrieval of their key values through method calls not just `[key]` calls (utilize `Struct` to solve this problem)
+- Extract geometrical algorithms into their own gem `perfect_shape` (Complete Ruby Geometry Library Covering Math Operations for All Geometrical Shapes like Rectangle, Square, Arc, Circle, Polygon, Polyline, Polybezier, and Polyquad)
 
 ## Future
 
@@ -61,6 +67,7 @@ None
 - Support row/column alternative syntax to left/top in `grid`(and maybe x/y too)
 - Support `timer` keyword as shortcut for `Glimmer::LibUI.timer`
 - Support `main` keyword as shortcut for `Glimmer::LibUI.queue_main`
+- examples/basic_toolbar.rb
 
 # Refactoring
 

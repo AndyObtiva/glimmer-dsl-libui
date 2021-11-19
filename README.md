@@ -86,50 +86,50 @@ include Glimmer
 
 window('Area Gallery', 400, 400) {
   area {
-    path { # declarative stable path
+    path { # declarative stable path (explicit path syntax for multiple shapes sharing attributes)
       square(0, 0, 100)
       square(100, 100, 400)
-
+      
       fill r: 102, g: 102, b: 204
     }
-    path { # declarative stable path
+    
+    path { # declarative stable path (explicit path syntax for multiple shapes sharing attributes)
       rectangle(0, 100, 100, 400)
       rectangle(100, 0, 400, 100)
-
+      
       # linear gradient (has x0, y0, x1, y1, and stops)
       fill x0: 10, y0: 10, x1: 350, y1: 350, stops: [{pos: 0.25, r: 204, g: 102, b: 204}, {pos: 0.75, r: 102, g: 102, b: 204}]
     }
-    path { # declarative stable path
-      polygon(100, 100, 100, 400, 400, 100, 400, 400)
-      
+    
+    polygon(100, 100, 100, 400, 400, 100, 400, 400) { # declarative stable path (implicit path syntax for a single shape nested directly under area)
       fill r: 202, g: 102, b: 104, a: 0.5
       stroke r: 0, g: 0, b: 0
     }
-    path { # declarative stable path
-      polybezier(0, 0, 200, 100, 100, 200, 400, 100, 300, 100, 100, 300, 100, 400, 100, 300, 300, 100, 400, 400)
-
+    
+    polybezier(0, 0,
+               200, 100, 100, 200, 400, 100,
+               300, 100, 100, 300, 100, 400,
+               100, 300, 300, 100, 400, 400) { # declarative stable path (implicit path syntax for a single shape nested directly under area)
       fill r: 202, g: 102, b: 204, a: 0.5
       stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
     }
-    path { # declarative stable path
-      polyline(100, 100, 400, 100, 100, 400, 400, 400, 0, 0)
     
+    polyline(100, 100, 400, 100, 100, 400, 400, 400, 0, 0) { # declarative stable path (implicit path syntax for a single shape nested directly under area)
       stroke r: 0, g: 0, b: 0, thickness: 2
     }
-    path { # declarative stable path
-      arc(404, 216, 190, 90, 90, false)
-
+    
+    arc(404, 216, 190, 90, 90, false) { # declarative stable path (implicit path syntax for a single shape nested directly under area)
       # radial gradient (has an outer_radius in addition to x0, y0, x1, y1, and stops)
       fill outer_radius: 90, x0: 0, y0: 0, x1: 500, y1: 500, stops: [{pos: 0.25, r: 102, g: 102, b: 204, a: 0.5}, {pos: 0.75, r: 204, g: 102, b: 204}]
       stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
     }
-    path { # declarative stable path
-      circle(200, 200, 90)
-
+    
+    circle(200, 200, 90) { # declarative stable path (implicit path syntax for a single shape nested directly under area)
       fill r: 202, g: 102, b: 204, a: 0.5
       stroke r: 0, g: 0, b: 0, thickness: 2
     }
-    text(161, 40, 100) { # x, y, width
+    
+    text(161, 40, 100) { # declarative stable text
       string('Area Gallery') {
         font family: 'Arial', size: (OS.mac? ? 14 : 11)
         color :black
@@ -768,11 +768,12 @@ Available nested `path` shapes:
 - `rectangle(x as Numeric, y as Numeric, width as Numeric, height as Numeric)`
 - `square(x as Numeric, y as Numeric, length as Numeric)`
 - `arc(x_center as Numeric, y_center as Numeric, radius as Numeric, start_angle as Numeric, sweep as Numeric, is_negative as Boolean)`
-- `line(x as Numeric, y as Numeric)`
-- `bezier(c1_x as Numeric, c1_y as Numeric, c2_x as Numeric, c2_y as Numeric, end_x as Numeric, end_y as Numeric)`
-- `polygon(point_array as Array of Arrays of Numeric or Array of Numeric)`: closed figure of lines; can receive points as [[x1, y1], [x2, y2], ...] or [x1, y1, x2, y2, ...]
-- `polyline(point_array as Array of Arrays of Numeric or Array of Numeric)`: open figure of lines; can receive points as [[x1, y1], [x2, y2], ...] or [x1, y1, x2, y2, ...]
-- `polybezier(point_array as Array of Arrays of Numeric or Array of Numeric)`: open figure of beziers; can receive points as [[start_x1, start_y1], [c1_x2, c1_y2, c2_x2, c2_y2, end_x2, end_y2], [c1_x3, c1_y3, c2_x3, c2_y3, end_x3, end_y3], ...] or [start_x1, start_y1, c1_x2, c1_y2, c2_x2, c2_y2, end_x2, end_y2, c1_x3, c1_y3, c2_x3, c2_y3, end_x3, end_y3, ...]
+- `circle(x_center as Numeric, y_center as Numeric, radius as Numeric)`
+- `line(x as Numeric, y as Numeric)`: must be placed in a figure (check `polyline`/`polygon` alternatives that do not require a `figure`)
+- `bezier(c1_x as Numeric, c1_y as Numeric, c2_x as Numeric, c2_y as Numeric, end_x as Numeric, end_y as Numeric)`: must be placed in a figure (check `polybezier` alternative that does not require a `figure`)
+- `polygon(point_array as Array of Arrays of Numeric or Array of Numeric)`: shortcut for a closed figure of lines; can receive points as [[x1, y1], [x2, y2], ...] or [x1, y1, x2, y2, ...]
+- `polyline(point_array as Array of Arrays of Numeric or Array of Numeric)`: shortcut for an open figure of lines; can receive points as [[x1, y1], [x2, y2], ...] or [x1, y1, x2, y2, ...]
+- `polybezier(point_array as Array of Arrays of Numeric or Array of Numeric)`: shortcut for an open figure of beziers; can receive points as [[start_x1, start_y1], [c1_x2, c1_y2, c2_x2, c2_y2, end_x2, end_y2], [c1_x3, c1_y3, c2_x3, c2_y3, end_x3, end_y3], ...] or [start_x1, start_y1, c1_x2, c1_y2, c2_x2, c2_y2, end_x2, end_y2, c1_x3, c1_y3, c2_x3, c2_y3, end_x3, end_y3, ...]
 - `figure(x=nil as Numeric, y=nil as Numeric)` (composite that can contain other shapes) (can set `closed true` to connect last point to first point automatically)
 
 Check [examples/area_gallery.rb](#area-gallery) for an overiew of all `path` shapes.
@@ -4107,50 +4108,50 @@ include Glimmer
 
 window('Area Gallery', 400, 400) {
   area {
-    path { # declarative stable path
+    path { # declarative stable path (explicit path syntax for multiple shapes sharing attributes)
       square(0, 0, 100)
       square(100, 100, 400)
-
+      
       fill r: 102, g: 102, b: 204
     }
-    path { # declarative stable path
+    
+    path { # declarative stable path (explicit path syntax for multiple shapes sharing attributes)
       rectangle(0, 100, 100, 400)
       rectangle(100, 0, 400, 100)
-
+      
       # linear gradient (has x0, y0, x1, y1, and stops)
       fill x0: 10, y0: 10, x1: 350, y1: 350, stops: [{pos: 0.25, r: 204, g: 102, b: 204}, {pos: 0.75, r: 102, g: 102, b: 204}]
     }
-    path { # declarative stable path
-      polygon(100, 100, 100, 400, 400, 100, 400, 400)
-      
+    
+    polygon(100, 100, 100, 400, 400, 100, 400, 400) { # declarative stable path (implicit path syntax for a single shape nested directly under area)
       fill r: 202, g: 102, b: 104, a: 0.5
       stroke r: 0, g: 0, b: 0
     }
-    path { # declarative stable path
-      polybezier(0, 0, 200, 100, 100, 200, 400, 100, 300, 100, 100, 300, 100, 400, 100, 300, 300, 100, 400, 400)
-
+    
+    polybezier(0, 0,
+               200, 100, 100, 200, 400, 100,
+               300, 100, 100, 300, 100, 400,
+               100, 300, 300, 100, 400, 400) { # declarative stable path (implicit path syntax for a single shape nested directly under area)
       fill r: 202, g: 102, b: 204, a: 0.5
       stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
     }
-    path { # declarative stable path
-      polyline(100, 100, 400, 100, 100, 400, 400, 400, 0, 0)
     
+    polyline(100, 100, 400, 100, 100, 400, 400, 400, 0, 0) { # declarative stable path (implicit path syntax for a single shape nested directly under area)
       stroke r: 0, g: 0, b: 0, thickness: 2
     }
-    path { # declarative stable path
-      arc(404, 216, 190, 90, 90, false)
-
+    
+    arc(404, 216, 190, 90, 90, false) { # declarative stable path (implicit path syntax for a single shape nested directly under area)
       # radial gradient (has an outer_radius in addition to x0, y0, x1, y1, and stops)
       fill outer_radius: 90, x0: 0, y0: 0, x1: 500, y1: 500, stops: [{pos: 0.25, r: 102, g: 102, b: 204, a: 0.5}, {pos: 0.75, r: 204, g: 102, b: 204}]
       stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
     }
-    path { # declarative stable path
-      circle(200, 200, 90)
-
+    
+    circle(200, 200, 90) { # declarative stable path (implicit path syntax for a single shape nested directly under area)
       fill r: 202, g: 102, b: 204, a: 0.5
       stroke r: 0, g: 0, b: 0, thickness: 2
     }
-    text(161, 40, 100) { # x, y, width
+    
+    text(161, 40, 100) { # declarative stable text
       string('Area Gallery') {
         font family: 'Arial', size: (OS.mac? ? 14 : 11)
         color :black
@@ -4217,12 +4218,13 @@ include Glimmer
 
 window('Area Gallery', 400, 400) {
   area {
-    path { # declarative stable path
+    path { # declarative stable path with explicit attributes (explicit path syntax for multiple shapes sharing attributes)
       square {
         x 0
         y 0
         length 100
       }
+      
       square {
         x 100
         y 100
@@ -4231,13 +4233,15 @@ window('Area Gallery', 400, 400) {
       
       fill r: 102, g: 102, b: 204
     }
-    path { # declarative stable path
+    
+    path { # declarative stable path with explicit attributes (explicit path syntax for multiple shapes sharing attributes)
       rectangle {
         x 0
         y 100
         width 100
         height 400
       }
+      
       rectangle {
         x 100
         y 0
@@ -4248,115 +4252,114 @@ window('Area Gallery', 400, 400) {
       # linear gradient (has x0, y0, x1, y1, and stops)
       fill x0: 10, y0: 10, x1: 350, y1: 350, stops: [{pos: 0.25, r: 204, g: 102, b: 204}, {pos: 0.75, r: 102, g: 102, b: 204}]
     }
-    path { # declarative stable path
-      figure {
+    
+    figure { # declarative stable path with explicit attributes (implicit path syntax for a single shape nested directly under area)
+      x 100
+      y 100
+      
+      line {
         x 100
+        y 400
+      }
+      
+      line {
+        x 400
         y 100
-        
-        line {
-          x 100
-          y 400
-        }
-        line {
-          x 400
-          y 100
-        }
-        line {
-          x 400
-          y 400
-        }
-
-        closed true
+      }
+      
+      line {
+        x 400
+        y 400
       }
 
+      closed true # polygon figure is closed (last point forms a line with first point)
       fill r: 202, g: 102, b: 104, a: 0.5
       stroke r: 0, g: 0, b: 0
     }
-    path { # declarative stable path
-      figure {
-        x 0
-        y 0
-        
-        bezier {
-          c1_x 200
-          c1_y 100
-          c2_x 100
-          c2_y 200
-          end_x 400
-          end_y 100
-        }
-        bezier {
-          c1_x 300
-          c1_y 100
-          c2_x 100
-          c2_y 300
-          end_x 100
-          end_y 400
-        }
-        bezier {
-          c1_x 100
-          c1_y 300
-          c2_x 300
-          c2_y 100
-          end_x 400
-          end_y 400
-        }
+    
+    figure { # declarative stable path with explicit attributes (implicit path syntax for a single shape nested directly under area)
+      x 0
+      y 0
+      
+      bezier {
+        c1_x 200
+        c1_y 100
+        c2_x 100
+        c2_y 200
+        end_x 400
+        end_y 100
       }
-
+      
+      bezier {
+        c1_x 300
+        c1_y 100
+        c2_x 100
+        c2_y 300
+        end_x 100
+        end_y 400
+      }
+      
+      bezier {
+        c1_x 100
+        c1_y 300
+        c2_x 300
+        c2_y 100
+        end_x 400
+        end_y 400
+      }
+      
       fill r: 202, g: 102, b: 204, a: 0.5
       stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
     }
-    path { # declarative stable path
-      polyline(100, 100, 400, 100, 100, 400, 400, 400, 0, 0)
-      figure {
-        x 100
-        y 100
-        
-        line {
-          x 400
-          y 100
-        }
-        line {
-          x 100
-          y 400
-        }
-        line {
-          x 400
-          y 400
-        }
-        line {
-          x 0
-          y 0
-        }
-      }
     
+    figure { # declarative stable path with explicit attributes (implicit path syntax for a single shape nested directly under area)
+      x 100
+      y 100
+      
+      line {
+        x 400
+        y 100
+      }
+      
+      line {
+        x 100
+        y 400
+      }
+      
+      line {
+        x 400
+        y 400
+      }
+      
+      line {
+        x 0
+        y 0
+      }
+      
       stroke r: 0, g: 0, b: 0, thickness: 2
     }
-    path { # declarative stable path
-      arc {
-        x_center 404
-        y_center 216
-        radius 190
-        start_angle 90
-        sweep 90
-        is_negative false
-      }
-
+    
+    arc { # declarative stable path with explicit attributes (implicit path syntax for a single shape nested directly under area)
+      x_center 404
+      y_center 216
+      radius 190
+      start_angle 90
+      sweep 90
+      is_negative false
       # radial gradient (has an outer_radius in addition to x0, y0, x1, y1, and stops)
       fill outer_radius: 90, x0: 0, y0: 0, x1: 500, y1: 500, stops: [{pos: 0.25, r: 102, g: 102, b: 204, a: 0.5}, {pos: 0.75, r: 204, g: 102, b: 204}]
       stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
     }
-    path { # declarative stable path
-      circle {
-        x_center 200
-        y_center 200
-        radius 90
-      }
-
+    
+    circle { # declarative stable path with explicit attributes (implicit path syntax for a single shape nested directly under area)
+      x_center 200
+      y_center 200
+      radius 90
       fill r: 202, g: 102, b: 204, a: 0.5
       stroke r: 0, g: 0, b: 0, thickness: 2
     }
-    text {
+    
+    text { # declarative stable text with explicit attributes
       x 161
       y 40
       width 100
@@ -4430,50 +4433,50 @@ include Glimmer
 window('Area Gallery', 400, 400) {
   area {
     on_draw do |area_draw_params|
-      path { # a dynamic path is added semi-declaratively inside on_draw block
+      path { # dynamic path, added semi-declaratively inside on_draw block
         square(0, 0, 100)
         square(100, 100, 400)
-  
+        
         fill r: 102, g: 102, b: 204
       }
-      path { # a dynamic path is added semi-declaratively inside on_draw block
+      
+      path { # dynamic path, added semi-declaratively inside on_draw block
         rectangle(0, 100, 100, 400)
         rectangle(100, 0, 400, 100)
-  
+        
         # linear gradient (has x0, y0, x1, y1, and stops)
         fill x0: 10, y0: 10, x1: 350, y1: 350, stops: [{pos: 0.25, r: 204, g: 102, b: 204}, {pos: 0.75, r: 102, g: 102, b: 204}]
       }
-      path { # a dynamic path is added semi-declaratively inside on_draw block
-        polygon(100, 100, 100, 400, 400, 100, 400, 400)
-        
+      
+      polygon(100, 100, 100, 400, 400, 100, 400, 400) { # dynamic path, added semi-declaratively inside on_draw block
         fill r: 202, g: 102, b: 104, a: 0.5
         stroke r: 0, g: 0, b: 0
       }
-      path { # a dynamic path is added semi-declaratively inside on_draw block
-        polybezier(0, 0, 200, 100, 100, 200, 400, 100, 300, 100, 100, 300, 100, 400, 100, 300, 300, 100, 400, 400)
-  
+      
+      polybezier(0, 0,
+                 200, 100, 100, 200, 400, 100,
+                 300, 100, 100, 300, 100, 400,
+                 100, 300, 300, 100, 400, 400) { # dynamic path, added semi-declaratively inside on_draw block
         fill r: 202, g: 102, b: 204, a: 0.5
         stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
       }
-      path { # a dynamic path is added semi-declaratively inside on_draw block
-        polyline(100, 100, 400, 100, 100, 400, 400, 400, 0, 0)
       
+      polyline(100, 100, 400, 100, 100, 400, 400, 400, 0, 0) { # dynamic path, added semi-declaratively inside on_draw block
         stroke r: 0, g: 0, b: 0, thickness: 2
       }
-      path { # a dynamic path is added semi-declaratively inside on_draw block
-        arc(404, 216, 190, 90, 90, false)
-  
+      
+      arc(404, 216, 190, 90, 90, false) { # dynamic path, added semi-declaratively inside on_draw block
         # radial gradient (has an outer_radius in addition to x0, y0, x1, y1, and stops)
         fill outer_radius: 90, x0: 0, y0: 0, x1: 500, y1: 500, stops: [{pos: 0.25, r: 102, g: 102, b: 204, a: 0.5}, {pos: 0.75, r: 204, g: 102, b: 204}]
         stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
       }
-      path { # a dynamic path is added semi-declaratively inside on_draw block
-        circle(200, 200, 90)
-  
+      
+      circle(200, 200, 90) { # dynamic path, added semi-declaratively inside on_draw block
         fill r: 202, g: 102, b: 204, a: 0.5
         stroke r: 0, g: 0, b: 0, thickness: 2
       }
-      text(161, 40, 100) { # x, y, width
+      
+      text(161, 40, 100) { # dynamic text added semi-declaratively inside on_draw block
         string('Area Gallery') {
           font family: 'Arial', size: (OS.mac? ? 14 : 11)
           color :black
@@ -4542,12 +4545,13 @@ include Glimmer
 window('Area Gallery', 400, 400) {
   area {
     on_draw do |area_draw_params|
-      path { # a dynamic path is added semi-declaratively inside on_draw block
+      path { # dynamic path, added semi-declaratively inside on_draw block
         square {
           x 0
           y 0
           length 100
         }
+        
         square {
           x 100
           y 100
@@ -4556,13 +4560,15 @@ window('Area Gallery', 400, 400) {
         
         fill r: 102, g: 102, b: 204
       }
-      path { # a dynamic path is added semi-declaratively inside on_draw block
+      
+      path { # dynamic path, added semi-declaratively inside on_draw block
         rectangle {
           x 0
           y 100
           width 100
           height 400
         }
+        
         rectangle {
           x 100
           y 0
@@ -4573,115 +4579,114 @@ window('Area Gallery', 400, 400) {
         # linear gradient (has x0, y0, x1, y1, and stops)
         fill x0: 10, y0: 10, x1: 350, y1: 350, stops: [{pos: 0.25, r: 204, g: 102, b: 204}, {pos: 0.75, r: 102, g: 102, b: 204}]
       }
-      path { # a dynamic path is added semi-declaratively inside on_draw block
-        figure {
+      
+      figure { # dynamic path, added semi-declaratively inside on_draw block
+        x 100
+        y 100
+        
+        line {
           x 100
+          y 400
+        }
+        
+        line {
+          x 400
           y 100
-          
-          line {
-            x 100
-            y 400
-          }
-          line {
-            x 400
-            y 100
-          }
-          line {
-            x 400
-            y 400
-          }
-  
-          closed true
+        }
+        
+        line {
+          x 400
+          y 400
         }
   
+        closed true # polygon figure is closed (last point forms a line with first point)
         fill r: 202, g: 102, b: 104, a: 0.5
         stroke r: 0, g: 0, b: 0
       }
-      path { # a dynamic path is added semi-declaratively inside on_draw block
-        figure {
-          x 0
-          y 0
-          
-          bezier {
-            c1_x 200
-            c1_y 100
-            c2_x 100
-            c2_y 200
-            end_x 400
-            end_y 100
-          }
-          bezier {
-            c1_x 300
-            c1_y 100
-            c2_x 100
-            c2_y 300
-            end_x 100
-            end_y 400
-          }
-          bezier {
-            c1_x 100
-            c1_y 300
-            c2_x 300
-            c2_y 100
-            end_x 400
-            end_y 400
-          }
+      
+      figure { # dynamic path, added semi-declaratively inside on_draw block
+        x 0
+        y 0
+        
+        bezier {
+          c1_x 200
+          c1_y 100
+          c2_x 100
+          c2_y 200
+          end_x 400
+          end_y 100
         }
-  
+        
+        bezier {
+          c1_x 300
+          c1_y 100
+          c2_x 100
+          c2_y 300
+          end_x 100
+          end_y 400
+        }
+        
+        bezier {
+          c1_x 100
+          c1_y 300
+          c2_x 300
+          c2_y 100
+          end_x 400
+          end_y 400
+        }
+        
         fill r: 202, g: 102, b: 204, a: 0.5
         stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
       }
-      path { # a dynamic path is added semi-declaratively inside on_draw block
-        polyline(100, 100, 400, 100, 100, 400, 400, 400, 0, 0)
-        figure {
-          x 100
-          y 100
-          
-          line {
-            x 400
-            y 100
-          }
-          line {
-            x 100
-            y 400
-          }
-          line {
-            x 400
-            y 400
-          }
-          line {
-            x 0
-            y 0
-          }
-        }
       
+      figure { # dynamic path, added semi-declaratively inside on_draw block
+        x 100
+        y 100
+        
+        line {
+          x 400
+          y 100
+        }
+        
+        line {
+          x 100
+          y 400
+        }
+        
+        line {
+          x 400
+          y 400
+        }
+        
+        line {
+          x 0
+          y 0
+        }
+        
         stroke r: 0, g: 0, b: 0, thickness: 2
       }
-      path { # a dynamic path is added semi-declaratively inside on_draw block
-        arc {
-          x_center 404
-          y_center 216
-          radius 190
-          start_angle 90
-          sweep 90
-          is_negative false
-        }
-  
+      
+      arc { # dynamic path, added semi-declaratively inside on_draw block
+        x_center 404
+        y_center 216
+        radius 190
+        start_angle 90
+        sweep 90
+        is_negative false
         # radial gradient (has an outer_radius in addition to x0, y0, x1, y1, and stops)
         fill outer_radius: 90, x0: 0, y0: 0, x1: 500, y1: 500, stops: [{pos: 0.25, r: 102, g: 102, b: 204, a: 0.5}, {pos: 0.75, r: 204, g: 102, b: 204}]
         stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
       }
-      path { # a dynamic path is added semi-declaratively inside on_draw block
-        circle {
-          x_center 200
-          y_center 200
-          radius 90
-        }
-  
+      
+      circle { # dynamic path, added semi-declaratively inside on_draw block
+        x_center 200
+        y_center 200
+        radius 90
         fill r: 202, g: 102, b: 204, a: 0.5
         stroke r: 0, g: 0, b: 0, thickness: 2
       }
-      text {
+      
+      text { # dynamic path, added semi-declaratively inside on_draw block
         x 161
         y 40
         width 100

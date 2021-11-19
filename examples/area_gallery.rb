@@ -4,50 +4,50 @@ include Glimmer
 
 window('Area Gallery', 400, 400) {
   area {
-    path { # declarative stable path
+    path { # declarative stable path (explicit path syntax for multiple shapes sharing attributes)
       square(0, 0, 100)
       square(100, 100, 400)
-
+      
       fill r: 102, g: 102, b: 204
     }
-    path { # declarative stable path
+    
+    path { # declarative stable path (explicit path syntax for multiple shapes sharing attributes)
       rectangle(0, 100, 100, 400)
       rectangle(100, 0, 400, 100)
-
+      
       # linear gradient (has x0, y0, x1, y1, and stops)
       fill x0: 10, y0: 10, x1: 350, y1: 350, stops: [{pos: 0.25, r: 204, g: 102, b: 204}, {pos: 0.75, r: 102, g: 102, b: 204}]
     }
-    path { # declarative stable path
-      polygon(100, 100, 100, 400, 400, 100, 400, 400)
-      
+    
+    polygon(100, 100, 100, 400, 400, 100, 400, 400) { # declarative stable path (implicit path syntax for a single shape nested directly under area)
       fill r: 202, g: 102, b: 104, a: 0.5
       stroke r: 0, g: 0, b: 0
     }
-    path { # declarative stable path
-      polybezier(0, 0, 200, 100, 100, 200, 400, 100, 300, 100, 100, 300, 100, 400, 100, 300, 300, 100, 400, 400)
-
+    
+    polybezier(0, 0,
+               200, 100, 100, 200, 400, 100,
+               300, 100, 100, 300, 100, 400,
+               100, 300, 300, 100, 400, 400) { # declarative stable path (implicit path syntax for a single shape nested directly under area)
       fill r: 202, g: 102, b: 204, a: 0.5
       stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
     }
-    path { # declarative stable path
-      polyline(100, 100, 400, 100, 100, 400, 400, 400, 0, 0)
     
+    polyline(100, 100, 400, 100, 100, 400, 400, 400, 0, 0) { # declarative stable path (implicit path syntax for a single shape nested directly under area)
       stroke r: 0, g: 0, b: 0, thickness: 2
     }
-    path { # declarative stable path
-      arc(404, 216, 190, 90, 90, false)
-
+    
+    arc(404, 216, 190, 90, 90, false) { # declarative stable path (implicit path syntax for a single shape nested directly under area)
       # radial gradient (has an outer_radius in addition to x0, y0, x1, y1, and stops)
       fill outer_radius: 90, x0: 0, y0: 0, x1: 500, y1: 500, stops: [{pos: 0.25, r: 102, g: 102, b: 204, a: 0.5}, {pos: 0.75, r: 204, g: 102, b: 204}]
       stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
     }
-    path { # declarative stable path
-      circle(200, 200, 90)
-
+    
+    circle(200, 200, 90) { # declarative stable path (implicit path syntax for a single shape nested directly under area)
       fill r: 202, g: 102, b: 204, a: 0.5
       stroke r: 0, g: 0, b: 0, thickness: 2
     }
-    text(161, 40, 100) { # x, y, width
+    
+    text(161, 40, 100) { # declarative stable text
       string('Area Gallery') {
         font family: 'Arial', size: (OS.mac? ? 14 : 11)
         color :black

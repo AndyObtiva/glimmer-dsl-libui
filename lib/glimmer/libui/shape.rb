@@ -73,12 +73,14 @@ module Glimmer
         @args = args
         @block = block
         set_parameter_defaults
+        build_control if implicit_path?
         post_add_content if @block.nil?
       end
       
       # Subclasses may override to perform post add_content work (normally must call super)
       def post_add_content
         @parent&.post_initialize_child(self)
+        @parent.post_add_content if implicit_path? && dynamic?
       end
       
       # Subclasses must override to perform draw work and call super afterwards to ensure calling destroy when semi-declarative in an on_draw method
@@ -105,6 +107,18 @@ module Glimmer
       def path_proxy
         find_parent_in_ancestors { |parent| parent.nil? || parent.is_a?(ControlProxy::PathProxy) }
       end
+    
+      def fill(*args)
+        path_proxy.fill(*args)
+      end
+      alias fill= fill
+      alias set_fill fill
+      
+      def stroke(*args)
+        path_proxy.stroke(*args)
+      end
+      alias stroke= stroke
+      alias set_stroke stroke
       
       def respond_to?(method_name, *args, &block)
         self.class.parameters.include?(method_name.to_s.sub(/=$/, '').sub(/^set_/, '').to_sym) or
@@ -124,12 +138,26 @@ module Glimmer
           else
             @args[parameter_index]
           end
-        else
+        else # TODO consider if there is a need to redirect anything to path proxy or delete this TODO
           super
         end
       end
       
       private
+      
+      def build_control
+        block = Proc.new {} if dynamic?
+        @parent = Glimmer::LibUI::ControlProxy::PathProxy.new('path', @parent, [], &block)
+      end
+      
+      # indicates if nested directly under area or on_draw event (having an implicit path not an explicit path parent)
+      def implicit_path?
+        @implicit_path ||= !!(@parent.is_a?(Glimmer::LibUI::ControlProxy::AreaProxy) || (@parent.nil? && Glimmer::LibUI::ControlProxy::AreaProxy.current_area_draw_params))
+      end
+      
+      def dynamic?
+        ((@parent.nil? || (@parent.is_a?(ControlProxy::PathProxy) && @parent.parent_proxy.nil?)) && Glimmer::LibUI::ControlProxy::AreaProxy.current_area_draw_params)
+      end
       
       def set_parameter_defaults
         self.class.parameter_defaults.each_with_index do |default, i|

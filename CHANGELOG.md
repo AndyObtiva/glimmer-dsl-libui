@@ -2,6 +2,7 @@
 
 ## 0.3.3
 
+- Support nesting shapes directly under `area` to represent paths having one shape, and nesting `fill`/`stroke` within the shapes (not `path`)
 - Upgrade glimmer to 2.5.0
 
 ## 0.3.2
