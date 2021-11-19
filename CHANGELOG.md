@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.3.3
+
+- Upgrade glimmer to 2.5.0
+
 ## 0.3.2
 
 - Fix issue with attempting to free `image` as an object from memory by mistake when used as a control (not an object for `table`)
