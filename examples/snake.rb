@@ -61,9 +61,7 @@ class Snake
             
             @game.width.times do |column|
               area {
-                @cell_grid.last << path {
-                  square(0, 0, CELL_SIZE)
-                  
+                @cell_grid.last << square(0, 0, CELL_SIZE) {
                   fill Presenter::Cell::COLOR_CLEAR
                 }
                 
