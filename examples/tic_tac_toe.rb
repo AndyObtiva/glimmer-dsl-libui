@@ -45,9 +45,7 @@ class TicTacToe
             
             3.times.map do |column|
               area {
-                path {
-                  square(0, 0, 60)
-                  
+                square(0, 0, 60) {
                   stroke :black, thickness: 2
                 }
                 text(23, 19) {

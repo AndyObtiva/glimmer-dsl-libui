@@ -38,8 +38,10 @@ class TicTacToe
   
     #row and column numbers are 1-based
     def mark(row, column)
-      self[row, column].mark(current_sign)
-      game_over? #updates winning sign
+      if self[row, column].empty
+        self[row, column].mark(current_sign)
+        game_over? #updates winning sign
+      end
     end
   
     def current_sign
