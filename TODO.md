@@ -2,7 +2,6 @@
 
 ## Next
 
-- Update Dynamic Area example with simpler syntax (maybe provide a 2nd version as original)
 - Update Histogram example with simpler syntax
 - Update Tetris example with simpler syntax
 - Update Tic Tac Toe example with simpler syntax

@@ -3880,7 +3880,7 @@ require 'glimmer-dsl-libui'
 
 include Glimmer
 
-window('Dynamic Area', 240, 500) {
+window('Dynamic Area', 240, 600) {
   margined true
   
   vertical_box {
@@ -3966,9 +3966,7 @@ window('Dynamic Area', 240, 500) {
     
     @area = area {
       on_draw do |area_draw_params|
-        path { # a dynamic path is added semi-declaratively inside on_draw block
-          rectangle(@x_spinbox.value, @y_spinbox.value, @width_spinbox.value, @height_spinbox.value)
-          
+        rectangle(@x_spinbox.value, @y_spinbox.value, @width_spinbox.value, @height_spinbox.value) { # a dynamic path is added semi-declaratively inside on_draw block
           fill r: @red_spinbox.value, g: @green_spinbox.value, b: @blue_spinbox.value, a: @alpha_spinbox.value / 100.0
         }
       end
@@ -4036,7 +4034,7 @@ window('Dynamic Area', 240, 600) {
         value 102
         
         on_changed do
-          @path.fill[:r] = @red_spinbox.value # updating hash properties automatically triggers area.queue_redraw_all
+          @rectangle.fill[:r] = @red_spinbox.value # updating hash properties automatically triggers area.queue_redraw_all
         end
       }
       
@@ -4045,7 +4043,7 @@ window('Dynamic Area', 240, 600) {
         value 102
         
         on_changed do
-          @path.fill[:g] = @green_spinbox.value # updating hash properties automatically triggers area.queue_redraw_all
+          @rectangle.fill[:g] = @green_spinbox.value # updating hash properties automatically triggers area.queue_redraw_all
         end
       }
       
@@ -4054,7 +4052,7 @@ window('Dynamic Area', 240, 600) {
         value 204
         
         on_changed do
-          @path.fill[:b] = @blue_spinbox.value # updating hash properties automatically triggers area.queue_redraw_all
+          @rectangle.fill[:b] = @blue_spinbox.value # updating hash properties automatically triggers area.queue_redraw_all
         end
       }
       
@@ -4063,15 +4061,13 @@ window('Dynamic Area', 240, 600) {
         value 100
         
         on_changed do
-          @path.fill[:a] = @alpha_spinbox.value / 100.0 # updating hash properties automatically triggers area.queue_redraw_all
+          @rectangle.fill[:a] = @alpha_spinbox.value / 100.0 # updating hash properties automatically triggers area.queue_redraw_all
         end
       }
     }
     
     area {
-      @path = path { # stable path
-        @rectangle = rectangle(@x_spinbox.value, @y_spinbox.value, @width_spinbox.value, @height_spinbox.value)
-        
+      @rectangle = rectangle(@x_spinbox.value, @y_spinbox.value, @width_spinbox.value, @height_spinbox.value) { # stable path
         fill r: @red_spinbox.value, g: @green_spinbox.value, b: @blue_spinbox.value, a: @alpha_spinbox.value / 100.0
       }
     }
