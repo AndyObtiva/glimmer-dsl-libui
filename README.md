@@ -193,6 +193,10 @@ Mac | Windows | Linux
 
 [Check Out Many More Examples Over Here!](#examples)
 
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-tetris.png](images/glimmer-dsl-libui-mac-tetris.png) | ![glimmer-dsl-libui-windows-tetris.png](images/glimmer-dsl-libui-windows-tetris.png) | ![glimmer-dsl-libui-linux-tetris.png](images/glimmer-dsl-libui-linux-tetris.png)
+
 NOTE: [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) is feature-complete and in beta mode (though the C [libui](https://github.com/andlabs/libui) is still mid-alpha). Please help make better by contributing, adopting for small or low risk projects, and providing feedback. The more feedback and issues you report the better.
 
 Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interested in:
@@ -6623,6 +6627,8 @@ class Tetris
         end
       }
       radio_menu_item('Rotate Left on Up Arrow') {
+        checked true
+
         on_clicked do
           @game.rotate_left_on_up = true
         end
@@ -6671,34 +6677,31 @@ class Tetris
     bevel_pixel_size = 0.16 * block_size.to_f
     color = Glimmer::LibUI.interpret_color(Model::Block::COLOR_CLEAR)
     area {
-      block[:background_square] = path {
-        square(0, 0, block_size)
-        
+      block[:background_square] = square(0, 0, block_size) {
         fill color
       }
-      block[:top_bevel_edge] = path {
-        polygon(0, 0, block_size, 0, block_size - bevel_pixel_size, bevel_pixel_size, bevel_pixel_size, bevel_pixel_size)
-  
+      
+      block[:top_bevel_edge] = polygon {
+        point_array 0, 0, block_size, 0, block_size - bevel_pixel_size, bevel_pixel_size, bevel_pixel_size, bevel_pixel_size
         fill r: color[:r] + 4*BEVEL_CONSTANT, g: color[:g] + 4*BEVEL_CONSTANT, b: color[:b] + 4*BEVEL_CONSTANT
       }
-      block[:right_bevel_edge] = path {
-        polygon(block_size, 0, block_size - bevel_pixel_size, bevel_pixel_size, block_size - bevel_pixel_size, block_size - bevel_pixel_size, block_size, block_size)
-  
+      
+      block[:right_bevel_edge] = polygon {
+        point_array block_size, 0, block_size - bevel_pixel_size, bevel_pixel_size, block_size - bevel_pixel_size, block_size - bevel_pixel_size, block_size, block_size
         fill r: color[:r] - BEVEL_CONSTANT, g: color[:g] - BEVEL_CONSTANT, b: color[:b] - BEVEL_CONSTANT
       }
-      block[:bottom_bevel_edge] = path {
-        polygon(block_size, block_size, 0, block_size, bevel_pixel_size, block_size - bevel_pixel_size, block_size - bevel_pixel_size, block_size - bevel_pixel_size)
-  
+      
+      block[:bottom_bevel_edge] = polygon {
+        point_array block_size, block_size, 0, block_size, bevel_pixel_size, block_size - bevel_pixel_size, block_size - bevel_pixel_size, block_size - bevel_pixel_size
         fill r: color[:r] - BEVEL_CONSTANT, g: color[:g] - BEVEL_CONSTANT, b: color[:b] - BEVEL_CONSTANT
       }
-      block[:left_bevel_edge] = path {
-        polygon(0, 0, 0, block_size, bevel_pixel_size, block_size - bevel_pixel_size, bevel_pixel_size, bevel_pixel_size)
-  
+      
+      block[:left_bevel_edge] = polygon {
+        point_array 0, 0, 0, block_size, bevel_pixel_size, block_size - bevel_pixel_size, bevel_pixel_size, bevel_pixel_size
         fill r: color[:r] - BEVEL_CONSTANT, g: color[:g] - BEVEL_CONSTANT, b: color[:b] - BEVEL_CONSTANT
       }
-      block[:border_square] = path {
-        square(0, 0, block_size)
-  
+      
+      block[:border_square] = square(0, 0, block_size) {
         stroke COLOR_GRAY
       }
       

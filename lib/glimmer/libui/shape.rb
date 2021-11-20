@@ -145,6 +145,7 @@ module Glimmer
           method_name = method_name.to_s
           parameter_index = self.class.parameters.index(method_name_parameter)
           if method_name.start_with?('set_') || method_name.end_with?('=') || !args.empty?
+            args = [args] if args.size > 1
             if args.first != @args[parameter_index]
               @args[parameter_index] = args.first
               request_auto_redraw
