@@ -3,6 +3,8 @@
 ## 0.3.3
 
 - Support nesting shapes directly under `area` to represent paths having one shape, and nesting `fill`/`stroke` within the shapes (not `path`)
+- Simplify examples/area_gallery.rb (all versions) by nesting shapes directly under `area`
+- Simplify examples/basic_transform.rb by nesting shapes directly under `area` (and provide original version as 2nd version)
 - Upgrade glimmer to 2.5.0
 
 ## 0.3.2

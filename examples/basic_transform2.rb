@@ -4,11 +4,15 @@ include Glimmer
 
 window('Basic Transform', 350, 350) {
   area {
-    square(0, 0, 350) {
+    path {
+      square(0, 0, 350)
+      
       fill r: 255, g: 255, b: 0
     }
     40.times do |n|
-      square(0, 0, 100) {
+      path {
+        square(0, 0, 100)
+        
         fill r: [255 - n*5, 0].max, g: [n*5, 255].min, b: 0, a: 0.5
         stroke :black, thickness: 2
         

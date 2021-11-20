@@ -2,7 +2,12 @@
 
 ## Next
 
-- Update area_gallery 3 and 4 to newer simpler syntax
+- Update Color The Circles example with simpler syntax
+- Update Dynamic Area example with simpler syntax (maybe provide a 2nd version as original)
+- Update Histogram example with simpler syntax
+- Update Tetris example with simpler syntax
+- Update Tic Tac Toe example with simpler syntax
+- Update Snake example with simpler syntax
 - Update Style Guide to have an example for each bullet point and augment from Glimmer DSL for Tk's Style Guide (also make distinction between distancing keywords having content or not)
 - Add a second column of radio buttons to layout of meta_example to fit more examples
 

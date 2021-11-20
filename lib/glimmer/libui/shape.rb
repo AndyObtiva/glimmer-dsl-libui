@@ -83,6 +83,14 @@ module Glimmer
         @parent.post_add_content if implicit_path? && dynamic?
       end
       
+      def post_initialize_child(child, add_child: true)
+        if child.is_a?(ControlProxy::MatrixProxy)
+          path_proxy.post_initialize_child(child, add_child: add_child)
+        else
+          super(child, add_child: add_child)
+        end
+      end
+      
       # Subclasses must override to perform draw work and call super afterwards to ensure calling destroy when semi-declarative in an on_draw method
       def draw(area_draw_params)
         destroy if area_proxy.nil?
@@ -119,6 +127,12 @@ module Glimmer
       end
       alias stroke= stroke
       alias set_stroke stroke
+      
+      def transform(matrix = nil)
+        path_proxy.transform(matrix)
+      end
+      alias transform= transform
+      alias set_transform transform
       
       def respond_to?(method_name, *args, &block)
         self.class.parameters.include?(method_name.to_s.sub(/=$/, '').sub(/^set_/, '').to_sym) or
