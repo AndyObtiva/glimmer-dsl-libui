@@ -201,9 +201,7 @@ class ColorTheCircles
             }
 
             @circles_data.each do |circle_data|
-              path {
-                circle_data[:circle] = circle(*circle_data[:args])
-
+              circle_data[:circle] = circle(*circle_data[:args]) {
                 fill circle_data[:fill]
                 stroke circle_data[:stroke]
               }

@@ -5645,15 +5645,17 @@ class ColorTheCircles
   
   def register_observers
     observer = Glimmer::DataBinding::Observer.proc do |new_score|
-      @score_label.text = new_score.to_s
-      if new_score == -20
-        @game_over = true
-        msg_box('You Lost!', 'Sorry! Your score reached -20')
-        restart_game
-      elsif new_score == 0
-        @game_over = true
-        msg_box('You Won!', 'Congratulations! Your score reached 0')
-        restart_game
+      Glimmer::LibUI.queue_main do
+        @score_label.text = new_score.to_s
+        if new_score == -20
+          @game_over = true
+          msg_box('You Lost!', 'Sorry! Your score reached -20')
+          restart_game
+        elsif new_score == 0
+          @game_over = true
+          msg_box('You Won!', 'Congratulations! Your score reached 0')
+          restart_game
+        end
       end
     end
     observer.observe(self, :score) # automatically enhances self to become Glimmer::DataBinding::ObservableModel and notify observer on score attribute changes
@@ -5817,9 +5819,7 @@ class ColorTheCircles
             }
 
             @circles_data.each do |circle_data|
-              path {
-                circle_data[:circle] = circle(*circle_data[:args])
-
+              circle_data[:circle] = circle(*circle_data[:args]) {
                 fill circle_data[:fill]
                 stroke circle_data[:stroke]
               }
