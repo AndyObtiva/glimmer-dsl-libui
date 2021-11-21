@@ -2,12 +2,11 @@
 
 ## Next
 
-- Update Style Guide to have an example for each bullet point and augment from Glimmer DSL for Tk's Style Guide (also make distinction between distancing keywords having content or not)
+- Support `include?` method in `arc`, `polygon`, `polyline`, and `polybezier`
+- Support `contain?` method in `arc`, `polygon`, `polyline`, and `polybezier`
 
 ## Soon
 
-- Support `include?` method in `arc`, `polygon`, `polyline`, and `polybezier`
-- Support `contain?` method in `arc`, `polygon`, `polyline`, and `polybezier`
 - Support `bounds` method in `polygon`, `polyline`, `polybezier`, and all other shapes
 - Support Custom Shapes, describing composite shapes/text/image concepts inside an `area`
 - examples/area_drag_and_move.rb (drag around drawn objects like a house, animals, and people)

@@ -22,15 +22,19 @@ window('Contacts', 600, 600) { |w|
       @name_entry = entry {
         label 'Name'
       }
+      
       @email_entry = entry {
         label 'Email'
       }
+      
       @phone_entry = entry {
         label 'Phone'
       }
+      
       @city_entry = entry {
         label 'City'
       }
+      
       @state_entry = entry {
         label 'State'
       }

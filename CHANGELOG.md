@@ -14,6 +14,7 @@
 - Add a second tab to examples/meta_example.rb to fit more examples
 - Upgrade glimmer to 2.5.0
 - Fix issue in examples/tic_tac_toe.rb permitting change of symbol in marked area
+- Update Style Guide and add an example for each bullet point
 
 ## 0.3.2
 

@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.3.2
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.3.3
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -366,7 +366,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.3.2'
+gem 'glimmer-dsl-libui', '~> 0.3.3'
 ```
 
 Add `require 'glimmer-dsl-libui'` at the top, and then `include Glimmer` into the top-level main object for testing or into an actual class for serious usage.
@@ -1331,12 +1331,124 @@ For Linux, simply package your app as a [Ruby Gem](https://guides.rubygems.org/w
 
 ## Glimmer Style Guide
 
-- Control arguments are always wrapped by parentheses
-- Control blocks are always declared with curly braces to clearly visualize hierarchical view code and separate from logic code
-- Control property declarations always have arguments and never take a block
-- Control property arguments are never wrapped inside parentheses
-- Control listeners are always declared starting with on_ prefix and affixing listener event method name afterwards in underscored lowercase form. Their multi-line blocks have a `do; end` style.
-- Pure logic multi-line blocks that do not constitute GUI DSL view elements have `do; end` style to clearly separate logic code from view code.
+**1 - Control arguments are always wrapped by parentheses.**
+
+Example:
+
+```ruby
+label('Name')
+```
+
+**2 - Control blocks are always declared with curly braces to clearly visualize hierarchical view code and separate from logic code.**
+
+Example:
+
+```ruby
+  group('Basic Controls') {
+    vertical_box {
+      button('Button') {
+      }
+    }
+  }
+```
+
+**3 - Control property declarations always have arguments that are never wrapped inside parentheses and never take a block.**
+
+Example:
+
+```ruby
+  spinbox(0, 100) {
+    stretchy false
+    value 42
+  }
+```
+
+**4 - Control listeners are always declared starting with on_ prefix and affixing listener event method name afterwards in underscored lowercase form. Their multi-line blocks have a `do; end` style.**
+
+Example:
+
+```ruby
+  button('Click') {
+    on_clicked do
+      msg_box('Information', 'You clicked the button')
+    end
+  }
+```
+
+**5 - Iterator multi-line blocks always have `do; end` style to clearly separate logic code from view code.**
+
+Example:
+
+```ruby
+  @field_hash.keys.each do |field|
+    label(field) {
+      stretchy false
+    }
+    
+    entry {
+      on_changed do |control|
+        @field_hash[field] = control.text
+      end
+    }
+  end
+```
+
+**6 - In a widget's content block, attributes are declared first, with layout management attributes on top (e.g. `stretchy false`); an empty line separates attributes from nested widgets and listeners following afterwards.**
+
+Example:
+
+```ruby
+  group('Numbers') {
+    stretchy false
+
+    vertical_box {
+      spinbox(0, 100) {
+        stretchy false
+        value 42
+
+        on_changed do |s|
+          puts "New Spinbox value: #{s.value}"
+          $stdout.flush # for Windows
+        end
+      }
+    }
+  }
+```
+
+**7 - Unlike attributes, nested widgets with a content block and listeners are always separated from each other by an empty line to make readability easier except where it helps to group two widgets together (e.g. label and described entry).**
+
+Example:
+
+```ruby
+  area {
+    path { # needs an empty line afterwards
+      square(0, 0, 100) # does not have a content block, so no empty line is needed
+      square(100, 100, 400) # does not have a content block, so no empty line is needed
+      
+      fill r: 102, g: 102, b: 204
+    }
+    
+    path { # needs an empty line afterwards
+      rectangle(0, 100, 100, 400) # does not have a content block, so no empty line is needed
+      rectangle(100, 0, 400, 100) # does not have a content block, so no empty line is needed
+      
+      fill x0: 10, y0: 10, x1: 350, y1: 350, stops: [{pos: 0.25, r: 204, g: 102, b: 204}, {pos: 0.75, r: 102, g: 102, b: 204}]
+    }
+    
+    polygon(100, 100, 100, 400, 400, 100, 400, 400) { # needs an empty line afterwards
+      fill r: 202, g: 102, b: 104, a: 0.5 # attributes do not need an empty line separator
+      stroke r: 0, g: 0, b: 0 # attributes do not need an empty line separator
+    }
+    
+    on_mouse_up do |area_mouse_event| # needs an empty line afterwards
+      puts 'mouse up'
+    end
+
+    on_key_up do |area_key_event| # needs an empty line afterwards
+      puts 'key up'
+    end
+  }
+```
 
 ## Examples
 
@@ -2643,16 +2755,16 @@ window('Grid') {
   tab {
     tab_item('Span') {
       grid {
-        4.times { |top_value|
-          4.times { |left_value|
+        4.times do |top_value|
+          4.times do |left_value|
             label("(#{left_value}, #{top_value}) xspan1\nyspan1") {
               left left_value
               top top_value
               hexpand true
               vexpand true
             }
-          }
-        }
+          end
+        end
         label("(0, 4) xspan2\nyspan1 more text fits horizontally") {
           left 0
           top 4
@@ -3670,15 +3782,19 @@ window('Contacts', 600, 600) { |w|
       @name_entry = entry {
         label 'Name'
       }
+      
       @email_entry = entry {
         label 'Email'
       }
+      
       @phone_entry = entry {
         label 'Phone'
       }
+      
       @city_entry = entry {
         label 'City'
       }
+      
       @state_entry = entry {
         label 'State'
       }

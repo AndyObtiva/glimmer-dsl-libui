@@ -8,16 +8,16 @@ window('Grid') {
   tab {
     tab_item('Span') {
       grid {
-        4.times { |top_value|
-          4.times { |left_value|
+        4.times do |top_value|
+          4.times do |left_value|
             label("(#{left_value}, #{top_value}) xspan1\nyspan1") {
               left left_value
               top top_value
               hexpand true
               vexpand true
             }
-          }
-        }
+          end
+        end
         label("(0, 4) xspan2\nyspan1 more text fits horizontally") {
           left 0
           top 4
