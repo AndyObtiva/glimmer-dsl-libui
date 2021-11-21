@@ -19,6 +19,7 @@ class BasicScrollingArea
         line(@x, @y)
       }
       # if there is a need to enlarge scrolling area, call `@scrolling_area.set_size(new_width, new_height)`
+      # Note that `#scroll_to` does not seem to work on Linux, but normal scrolling does.
       @scrolling_area.scroll_to(@x - (SCROLLING_AREA_WIDTH/2), @y) # 3rd and 4th arguments for width and height are assumed as those of main window by default if not supplied
       # return false to stop timer once @x exceeds scrolling area width - padding
       false if @x >= (SCROLLING_AREA_WIDTH - SCROLLING_AREA_PADDING_X*2)

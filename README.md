@@ -1326,6 +1326,7 @@ window('Method-Based Custom Keyword') {
 - `table` `progress_bar` column on Windows cannot be updated with a positive value if it started initially with `-1` (it ignores update to avoid crashing due to an issue in [libui](https://github.com/andlabs/libui) on Windows.
 - It seems that [libui](https://github.com/andlabs/libui) does not support nesting multiple `area` controls under a `grid` as only the first one shows up in that scenario. To workaround that limitation, use a `vertical_box` with nested `horizontal_box`s instead to include multiple `area`s in a GUI.
 - As per the code of [examples/basic_transform.rb](#basic-transform), Windows requires different ordering of transforms than Mac and Linux.
+- `scrolling_area#scroll_to` does not seem to work on Linux, but normal scrolling does with `scrolling_area`.
 
 ### Original API
 
@@ -4262,6 +4263,7 @@ class BasicScrollingArea
         line(@x, @y)
       }
       # if there is a need to enlarge scrolling area, call `@scrolling_area.set_size(new_width, new_height)`
+      # Note that `#scroll_to` does not seem to work on Linux, but normal scrolling does.
       @scrolling_area.scroll_to(@x - (SCROLLING_AREA_WIDTH/2), @y) # 3rd and 4th arguments for width and height are assumed as those of main window by default if not supplied
       # return false to stop timer once @x exceeds scrolling area width - padding
       false if @x >= (SCROLLING_AREA_WIDTH - SCROLLING_AREA_PADDING_X*2)
