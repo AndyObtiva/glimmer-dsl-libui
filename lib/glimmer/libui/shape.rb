@@ -91,6 +91,11 @@ module Glimmer
         end
       end
       
+      def content(&block)
+        Glimmer::DSL::Engine.add_content(self, Glimmer::DSL::Libui::ShapeExpression.new, @keyword, &block)
+        request_auto_redraw
+      end
+      
       # Subclasses must override to perform draw work and call super afterwards to ensure calling destroy when semi-declarative in an on_draw method
       def draw(area_draw_params)
         destroy if area_proxy.nil?

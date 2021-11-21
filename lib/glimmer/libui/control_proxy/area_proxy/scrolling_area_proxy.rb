@@ -33,6 +33,39 @@ module Glimmer
             @area_handler = ::LibUI::FFI::AreaHandler.malloc
             @libui    = ::LibUI.new_scrolling_area(@area_handler, *@args)
           end
+          
+          def width(value = nil)
+            if value.nil?
+              @args[0]
+            else
+              @args[0] = value
+              set_size(width, height)
+            end
+          end
+          alias width= width
+          alias set_width width
+          
+          def height(value = nil)
+            if value.nil?
+              @args[1]
+            else
+              @args[1] = value
+              set_size(width, height)
+            end
+          end
+          alias height= height
+          alias set_height height
+          
+          def set_size(width, height)
+            @args[0] = width
+            @args[1] = height
+            set_size(width, height)
+          end
+          
+          def scroll_to(scroll_x, scroll_y, scroll_width = nil, scroll_height = nil)
+            scroll_width, scroll_height = Glimmer::LibUI::ControlProxy.main_window_proxy.content_size
+            super(scroll_x, scroll_y, scroll_width, scroll_height)
+          end
         end
       end
     end

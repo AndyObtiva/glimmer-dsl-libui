@@ -3,6 +3,7 @@
 ## 0.3.4
 
 - Simplify examples/basic_area.rb (all versions) by nesting shapes directly under `area`
+- Support `#content {}` method in `figure` to be able to reopen a `figure`'s content to add more shapes in.
 
 ## 0.3.3
 

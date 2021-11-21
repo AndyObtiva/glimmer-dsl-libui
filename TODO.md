@@ -66,6 +66,7 @@
 - Support `timer` keyword as shortcut for `Glimmer::LibUI.timer`
 - Support `main` keyword as shortcut for `Glimmer::LibUI.queue_main`
 - examples/basic_toolbar.rb
+- Support `max_content_size` and `min_content_size` properties for `window`
 
 # Refactoring
 
