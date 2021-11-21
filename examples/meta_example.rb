@@ -5,8 +5,10 @@ require 'fileutils'
 class MetaExample
   include Glimmer
   
+  ADDITIONAL_BASIC_EXAMPLES = ['Color Button', 'Font Button', 'Form', 'Date Time Picker', 'Simple Notepad']
+  
   def initialize
-    @selected_example_index = 0
+    @selected_example_index = examples_with_versions.index(basic_examples_with_versions.first)
   end
   
   def examples
@@ -23,6 +25,14 @@ class MetaExample
     examples.map do |example|
       version_count_for(example) > 1 ? "#{example} (#{version_count_for(example)} versions)" : example
     end
+  end
+  
+  def basic_examples_with_versions
+    examples_with_versions.select {|example| example.start_with?('Basic') || ADDITIONAL_BASIC_EXAMPLES.include?(example) }
+  end
+  
+  def advanced_examples_with_versions
+    examples_with_versions - basic_examples_with_versions
   end
   
   def file_path_for(example)
@@ -66,17 +76,47 @@ class MetaExample
         vertical_box {
           stretchy false
           
-          @example_radio_buttons = radio_buttons {
+          tab {
             stretchy false
-            items examples_with_versions
-            selected @selected_example_index
             
-            on_selected do
-              @selected_example_index = @example_radio_buttons.selected
-              example = selected_example
-              @code_entry.text = File.read(file_path_for(example))
-              @version_spinbox.value = 1
-            end
+            tab_item('Basic') {
+              vertical_box {
+                @basic_example_radio_buttons = radio_buttons {
+                  stretchy false
+                  items basic_examples_with_versions
+                  selected basic_examples_with_versions.index(examples_with_versions[@selected_example_index])
+                  
+                  on_selected do
+                    @selected_example_index = examples_with_versions.index(basic_examples_with_versions[@basic_example_radio_buttons.selected])
+                    example = selected_example
+                    @code_entry.text = File.read(file_path_for(example))
+                    @version_spinbox.value = 1
+                  end
+                }
+                
+                label # filler
+                label # filler
+              }
+            }
+            
+            tab_item('Advanced') {
+              vertical_box {
+                @advanced_example_radio_buttons = radio_buttons {
+                  stretchy false
+                  items advanced_examples_with_versions
+                  
+                  on_selected do
+                    @selected_example_index = examples_with_versions.index(advanced_examples_with_versions[@advanced_example_radio_buttons.selected])
+                    example = selected_example
+                    @code_entry.text = File.read(file_path_for(example))
+                    @version_spinbox.value = 1
+                  end
+                }
+                
+                label # filler
+                label # filler
+              }
+            }
           }
           
           horizontal_box {

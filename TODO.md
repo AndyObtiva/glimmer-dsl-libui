@@ -3,7 +3,6 @@
 ## Next
 
 - Update Style Guide to have an example for each bullet point and augment from Glimmer DSL for Tk's Style Guide (also make distinction between distancing keywords having content or not)
-- Add a second column of radio buttons to layout of meta_example to fit more examples
 
 ## Soon
 

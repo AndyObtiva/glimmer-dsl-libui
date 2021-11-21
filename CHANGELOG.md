@@ -10,6 +10,7 @@
 - Simplify examples/tetris.rb by nesting shapes directly under `area`
 - Simplify examples/tic_tac_toe.rb by nesting shapes directly under `area`
 - Simplify examples/snake.rb by nesting shapes directly under `area`
+- Add a second tab to examples/meta_example.rb to fit more examples
 - Upgrade glimmer to 2.5.0
 - Fix issue in examples/tic_tac_toe.rb permitting change of symbol in marked area
 
