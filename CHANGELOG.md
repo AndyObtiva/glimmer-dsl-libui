@@ -3,6 +3,7 @@
 ## 0.3.4
 
 - New examples/basic_scrolling_area.rb
+- Smart defaults for `scrolling_area` control + convenience `width` and `height` attributes
 - Simplify examples/basic_area.rb (all versions) by nesting shapes directly under `area`
 - Support `#content {}` method in `figure` to be able to reopen a `figure`'s content to add more shapes in.
 

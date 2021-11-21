@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.3.3
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.3.4
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -368,7 +368,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.3.3'
+gem 'glimmer-dsl-libui', '~> 0.3.4'
 ```
 
 Add `require 'glimmer-dsl-libui'` at the top, and then `include Glimmer` into the top-level main object for testing or into an actual class for serious usage.
@@ -1041,7 +1041,7 @@ Check [Histogram](#histogram) example for use of hex colors.
 
 #### Area Draw Params
 
-The `area_draw_params` argument for `on_draw` block is a hash consisting of the following keys:
+The `area_draw_params` `Hash` argument for `on_draw` block is a hash consisting of the following keys:
 - `:context`: the drawing context object
 - `:area_width`: area width
 - `:area_height`: area height
@@ -1197,6 +1197,8 @@ Note that `area`, `path`, and nested shapes are all truly declarative, meaning t
 - `image` instances are automatically freed from memory after `window` is destroyed.
 - `image` `width` and `height` can be left off if it has one `image_part` only as they default to the same `width` and `height` of the `image_part`
 - Automatically provide shifted `:key` characters in `area_key_event` provided in `area` key listeners `on_key_event`, `on_key_down`, and `on_key_up`
+- `scrolling_area` `width` and `height` default to main window width and height if not specified.
+- `scrolling_area` `#scroll_to` 3rd and 4th arguments (`width` and `height`) default to main window width and height if not specified.
 - `area` paths are specified declaratively with figures underneath (e.g. `rectangle`) and `area` draw listener is automatically generated
 - Observe figure properties (e.g. `rectangle` `width`) for changes and automatically redraw containing area accordingly
 - Observe `path` `fill` and `stroke` hashes for changes and automatically redraw containing area accordingly
@@ -1326,7 +1328,6 @@ window('Method-Based Custom Keyword') {
 - `table` `progress_bar` column on Windows cannot be updated with a positive value if it started initially with `-1` (it ignores update to avoid crashing due to an issue in [libui](https://github.com/andlabs/libui) on Windows.
 - It seems that [libui](https://github.com/andlabs/libui) does not support nesting multiple `area` controls under a `grid` as only the first one shows up in that scenario. To workaround that limitation, use a `vertical_box` with nested `horizontal_box`s instead to include multiple `area`s in a GUI.
 - As per the code of [examples/basic_transform.rb](#basic-transform), Windows requires different ordering of transforms than Mac and Linux.
-- `scrolling_area#scroll_to` does not seem to work on Linux, but normal scrolling does with `scrolling_area`.
 
 ### Original API
 
@@ -4263,7 +4264,6 @@ class BasicScrollingArea
         line(@x, @y)
       }
       # if there is a need to enlarge scrolling area, call `@scrolling_area.set_size(new_width, new_height)`
-      # Note that `#scroll_to` does not seem to work on Linux, but normal scrolling does.
       @scrolling_area.scroll_to(@x - (SCROLLING_AREA_WIDTH/2), @y) # 3rd and 4th arguments for width and height are assumed as those of main window by default if not supplied
       # return false to stop timer once @x exceeds scrolling area width - padding
       false if @x >= (SCROLLING_AREA_WIDTH - SCROLLING_AREA_PADDING_X*2)

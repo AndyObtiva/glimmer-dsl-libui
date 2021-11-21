@@ -2,7 +2,15 @@
 
 ## Next
 
-- Consider making all event hashes and param hashes accept retrieval of their key values through method calls not just `[key]` calls (utilize `Struct` to solve this problem)
+- Consider making all event hashes and param hashes accept retrieval of their key values through method calls not just `[key]` calls (utilize `Struct` to solve this problem):
+  - date_time_picker#time
+  - date_picker#time
+  - time_picker#time
+  - font_button#font
+  - color_button#color
+  - area_mouse_event
+  - area_key_event
+  - area_draw_params
 
 ## Soon
 
