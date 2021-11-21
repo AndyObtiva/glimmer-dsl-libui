@@ -31,6 +31,8 @@ module Glimmer
         class ScrollingAreaProxy < AreaProxy
           def build_control
             @area_handler = ::LibUI::FFI::AreaHandler.malloc
+            @args[0] ||= Glimmer::LibUI::ControlProxy.main_window_proxy.width
+            @args[1] ||= Glimmer::LibUI::ControlProxy.main_window_proxy.height
             @libui    = ::LibUI.new_scrolling_area(@area_handler, *@args)
           end
           
@@ -59,7 +61,7 @@ module Glimmer
           def set_size(width, height)
             @args[0] = width
             @args[1] = height
-            set_size(width, height)
+            super(width, height)
           end
           
           def scroll_to(scroll_x, scroll_y, scroll_width = nil, scroll_height = nil)

@@ -113,6 +113,26 @@ module Glimmer
         alias content_size= content_size
         alias set_content_size content_size
         
+        def width(value = nil)
+          if value.nil?
+            content_size.first
+          else
+            set_content_size(value, height)
+          end
+        end
+        alias width= width
+        alias set_width width
+        
+        def height(value = nil)
+          if value.nil?
+            content_size.last
+          else
+            set_content_size(width, value)
+          end
+        end
+        alias height= height
+        alias set_height height
+        
         def resizable(value = nil)
           if value.nil?
             @resizable = true if @resizable.nil?

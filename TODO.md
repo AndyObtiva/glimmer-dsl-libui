@@ -2,7 +2,6 @@
 
 ## Next
 
-- examples/basic_scrolling_area.rb (note that area dimensions must be greater than its window dimensions)
 - Consider making all event hashes and param hashes accept retrieval of their key values through method calls not just `[key]` calls (utilize `Struct` to solve this problem)
 
 ## Soon
@@ -15,6 +14,7 @@
 - examples/area_drag_and_move.rb (drag around drawn objects like a house, animals, and people)
 - examples/area_drag_and_drop.rb (customize a face with face parts like mustache, nose, lips, eyes, and hair)
 - Extract geometrical algorithms into their own gem `perfect_shape` (Complete Ruby Geometry Library Covering Math Operations for All Geometrical Shapes like Rectangle, Square, Arc, Circle, Polygon, Polyline, Polybezier, and Polyquad)
+- Add Windows screenshot for examples/basic_scrolling_area.rb
 
 ## Future
 

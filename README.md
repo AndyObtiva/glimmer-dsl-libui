@@ -222,6 +222,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
     - [Extra Operations](#extra-operations)
     - [Table API](#table-api)
     - [Area API](#area-api)
+      - [Scrolling Area](#scrolling_area)
       - [Area Path Shapes](#area-path-shapes)
       - [Area Text](#area-text)
       - [Area Image](#area-image)
@@ -494,6 +495,7 @@ Keyword(Args) | Properties | Listeners
 `quit_menu_item` | None | `on_clicked`
 `radio_buttons` | `selected` (`Integer`) | `on_selected`
 `rectangle(x as Numeric, y as Numeric, width as Numeric, height as Numeric)` |  `x` (`Numeric`), `y` (`Numeric`), `width` (`Numeric`), `height` (`Numeric`) | None
+`scrolling_area(width = main_window.width, height = main_window.height)` | `auto_draw_enabled` (Boolean), `size` (`Array` of `width` (`Numeric`) and `height` (`Numeric`)), `width` (`Numeric`), `height` (`Numeric`) | `on_draw(area_draw_params)`, `on_mouse_event(area_mouse_event)`, `on_mouse_down(area_mouse_event)`, `on_mouse_up(area_mouse_event)`, `on_mouse_drag_started(area_mouse_event)`, `on_mouse_dragged(area_mouse_event)`, `on_mouse_dropped(area_mouse_event)`, `on_mouse_entered`, `on_mouse_exited`, `on_key_event(area_key_event)`, `on_key_down(area_key_event)`, `on_key_up(area_key_event)`
 `search_entry` | `read_only` (Boolean), `text` (`String`) | `on_changed`
 `separator_menu_item` | None | None
 `slider(min as Numeric, max as Numeric)` | `value` (`Numeric`) | `on_changed`
@@ -509,7 +511,7 @@ Keyword(Args) | Properties | Listeners
 `time_picker` | `time` (`Hash` of keys: `sec` as `Integer`, `min` as `Integer`, `hour` as `Integer`) | `on_changed`
 `vertical_box` | `padded` (Boolean) | None
 `vertical_separator` | None | None
-`window(title as String, width as Integer, height as Integer, has_menubar as Boolean)` | `borderless` (Boolean), `content_size` (width `Numeric`, height `Numeric`), `fullscreen` (Boolean), `margined` (Boolean), `title` (`String`), `resizable` (Boolean) | `on_closing`, `on_content_size_changed`, `on_destroy`
+`window(title as String, width as Integer, height as Integer, has_menubar as Boolean)` | `borderless` (Boolean), `content_size` (width `Numeric`, height `Numeric`), `width` (`Numeric`), `height` (`Numeric`), `fullscreen` (Boolean), `margined` (Boolean), `title` (`String`), `resizable` (Boolean) | `on_closing`, `on_content_size_changed`, `on_destroy`
 
 ### Common Control Properties
 - `enabled` (Boolean)
@@ -764,6 +766,18 @@ window('Basic Area', 400, 400) {
 ```
 
 Check [examples/dynamic_area.rb](#dynamic-area) for a more detailed semi-declarative example.
+
+#### Scrolling Area
+
+`scrolling_area(width as Numeric = main_window.width, height as Numeric = main_window.height)` is similar to `area`, but has the following additional methods:
+- `scroll_to(x as Numeric, y as Numeric, width as Numeric = main_window.width, height as Numeric = main_window.height)`: scrolls to `x`/`y` location with `width` and `height` viewport size.
+- `set_size(width as Numeric, height as Numeric)`: set size of scrolling area, which must must exceed that of visible viewport in order for scrolling to be enabled.
+
+Mac |
+----|
+![glimmer-dsl-libui-mac-dynamic-area.png](images/glimmer-dsl-libui-mac-basic-scrolling-area.png) ![glimmer-dsl-libui-mac-dynamic-area-updated.png](images/glimmer-dsl-libui-mac-basic-scrolling-area-scrolled.png)
+
+Check [examples/basic_scrolling_area.rb](#basic-scrolling-area) for a more detailed example.
 
 #### Area Path Shapes
 
@@ -4247,7 +4261,8 @@ class BasicScrollingArea
       @graph.content { # re-open @graph's content and add a line
         line(@x, @y)
       }
-      @scrolling_area.scroll_to(@x - (SCROLLING_AREA_WIDTH/2), @y)
+      # if there is a need to enlarge scrolling area, call `@scrolling_area.set_size(new_width, new_height)`
+      @scrolling_area.scroll_to(@x - (SCROLLING_AREA_WIDTH/2), @y) # 3rd and 4th arguments for width and height are assumed as those of main window by default if not supplied
       # return false to stop timer once @x exceeds scrolling area width - padding
       false if @x >= (SCROLLING_AREA_WIDTH - SCROLLING_AREA_PADDING_X*2)
     end

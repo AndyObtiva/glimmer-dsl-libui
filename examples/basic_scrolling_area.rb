@@ -18,7 +18,8 @@ class BasicScrollingArea
       @graph.content { # re-open @graph's content and add a line
         line(@x, @y)
       }
-      @scrolling_area.scroll_to(@x - (SCROLLING_AREA_WIDTH/2), @y)
+      # if there is a need to enlarge scrolling area, call `@scrolling_area.set_size(new_width, new_height)`
+      @scrolling_area.scroll_to(@x - (SCROLLING_AREA_WIDTH/2), @y) # 3rd and 4th arguments for width and height are assumed as those of main window by default if not supplied
       # return false to stop timer once @x exceeds scrolling area width - padding
       false if @x >= (SCROLLING_AREA_WIDTH - SCROLLING_AREA_PADDING_X*2)
     end
@@ -62,7 +63,7 @@ class BasicScrollingArea
     @main_window = window('Basic Scrolling Area', SCROLLING_AREA_WIDTH / 2, SCROLLING_AREA_HEIGHT) {
       resizable false
       
-      @scrolling_area = scrolling_area(SCROLLING_AREA_WIDTH, SCROLLING_AREA_HEIGHT) {
+      @scrolling_area = scrolling_area(SCROLLING_AREA_WIDTH, SCROLLING_AREA_HEIGHT) { # double width of window enables horizontal scrolling
         x_axis
         y_axis
         
