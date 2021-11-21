@@ -2,22 +2,24 @@
 
 ## Next
 
-- Support `include?` method in `arc`, `polygon`, `polyline`, and `polybezier`
-- Support `contain?` method in `arc`, `polygon`, `polyline`, and `polybezier`
+- examples/basic_scrolling_area.rb (note that area dimensions must be greater than its window dimensions)
+- Consider making all event hashes and param hashes accept retrieval of their key values through method calls not just `[key]` calls (utilize `Struct` to solve this problem)
 
 ## Soon
 
+- Support `contain?` method in `arc`, `polygon`, `polyline`, `polybezier`, and `figure`
+- Support `include?` method in `arc`, `polygon`, `polyline`, `polybezier`, and `figure`
 - Support `bounds` method in `polygon`, `polyline`, `polybezier`, and all other shapes
 - Support Custom Shapes, describing composite shapes/text/image concepts inside an `area`
+- Simpler Drag and Drop via `drag_source true`, `drag_and_move true`, `drop_target true`, and `on_drop { }` event
 - examples/area_drag_and_move.rb (drag around drawn objects like a house, animals, and people)
 - examples/area_drag_and_drop.rb (customize a face with face parts like mustache, nose, lips, eyes, and hair)
-- examples/scrolling_area_gallery.rb (note that area dimensions must be greater than its window dimensions)
-- Consider making all event hashes and param hashes accept retrieval of their key values through method calls not just `[key]` calls (utilize `Struct` to solve this problem)
 - Extract geometrical algorithms into their own gem `perfect_shape` (Complete Ruby Geometry Library Covering Math Operations for All Geometrical Shapes like Rectangle, Square, Arc, Circle, Polygon, Polyline, Polybezier, and Polyquad)
 
 ## Future
 
-None
+- Glimmerize examples/spectrum.rb from Ruby LibUI project
+- Glimmerize examples/draw_text.rb from Ruby LibUI project
 
 ## Far Future
 
@@ -29,7 +31,6 @@ None
 - Automate OCRA support for Windows Native-Executable Packaging
 - Implement Mac Native-Executable Packaging (perhaps with https://github.com/create-dmg/create-dmg or https://github.com/sveinbjornt/Platypus)
 - Scaffold an application with support for gem and native-executable packaging
-- Easy Drag and Drop via `drag_source true`, `drag_and_move true`, and `on_drop { }` event
 - Create more advanced examples such as Calculator, Connect 4, Clock, Metronome, Weather, Stock Ticker, Battleship, Game of Life
 
 ## Maybe
