@@ -14,7 +14,7 @@ class BasicScrollingArea
     create_gui
     Glimmer::LibUI.timer(0.01) do
       @x += SCROLLING_AREA_PADDING_X
-      @y = [[@y + rand(SCROLLING_AREA_PADDING_Y*2)*(rand(2) == 0 ? -1 : 1), SCROLLING_AREA_PADDING_Y].max, SCROLLING_AREA_HEIGHT - SCROLLING_AREA_PADDING_Y].min
+      @y = [[@y + rand(SCROLLING_AREA_PADDING_Y*4)*(rand(2) == 0 ? -1 : 1), SCROLLING_AREA_PADDING_Y].max, SCROLLING_AREA_HEIGHT - SCROLLING_AREA_PADDING_Y].min
       @graph.content { # re-open @graph's content and add a line
         line(@x, @y)
       }
@@ -28,26 +28,43 @@ class BasicScrollingArea
     @main_window.show
   end
   
+  def x_axis
+    polyline(SCROLLING_AREA_PADDING_X, SCROLLING_AREA_HEIGHT - SCROLLING_AREA_PADDING_Y, SCROLLING_AREA_WIDTH - SCROLLING_AREA_PADDING_X*2, SCROLLING_AREA_HEIGHT - SCROLLING_AREA_PADDING_Y) {
+      stroke :black, thickness: 3
+    }
+    
+    ((SCROLLING_AREA_WIDTH - SCROLLING_AREA_PADDING_X*4) / SCROLLING_AREA_PADDING_X).times do |x_multiplier|
+      x = x_multiplier*SCROLLING_AREA_PADDING_X + SCROLLING_AREA_PADDING_X*2
+      y = SCROLLING_AREA_HEIGHT - SCROLLING_AREA_PADDING_Y
+      
+      polyline(x, y, x, y + SCROLLING_AREA_PADDING_Y/2) {
+        stroke :black, thickness: 2
+      }
+    end
+  end
+  
+  def y_axis
+    polyline(SCROLLING_AREA_PADDING_X, SCROLLING_AREA_PADDING_Y, SCROLLING_AREA_PADDING_X, SCROLLING_AREA_HEIGHT - SCROLLING_AREA_PADDING_Y) {
+      stroke :black, thickness: 3
+    }
+    
+    ((SCROLLING_AREA_HEIGHT - SCROLLING_AREA_PADDING_Y*3) / SCROLLING_AREA_PADDING_Y).times do |y_multiplier|
+      x = SCROLLING_AREA_PADDING_X
+      y = y_multiplier*SCROLLING_AREA_PADDING_Y + SCROLLING_AREA_PADDING_Y*2
+      
+      polyline(x, y, x - SCROLLING_AREA_PADDING_X/2, y) {
+        stroke :black, thickness: 2
+      }
+    end
+  end
+  
   def create_gui
     @main_window = window('Basic Scrolling Area', SCROLLING_AREA_WIDTH / 2, SCROLLING_AREA_HEIGHT) {
       resizable false
       
       @scrolling_area = scrolling_area(SCROLLING_AREA_WIDTH, SCROLLING_AREA_HEIGHT) {
-        polyline(SCROLLING_AREA_PADDING_X, SCROLLING_AREA_HEIGHT - SCROLLING_AREA_PADDING_Y, SCROLLING_AREA_WIDTH - SCROLLING_AREA_PADDING_X*2, SCROLLING_AREA_HEIGHT - SCROLLING_AREA_PADDING_Y) {
-          stroke :black, thickness: 3
-        }
-        
-        ((SCROLLING_AREA_WIDTH - SCROLLING_AREA_PADDING_X*4) / SCROLLING_AREA_PADDING_X).times do |x_multiplier|
-          x = x_multiplier*SCROLLING_AREA_PADDING_X + SCROLLING_AREA_PADDING_X*2
-          y = SCROLLING_AREA_HEIGHT - SCROLLING_AREA_PADDING_Y
-          polyline(x, y, x, y + SCROLLING_AREA_PADDING_Y/2) {
-            stroke :black, thickness: 2
-          }
-        end
-        
-        polyline(SCROLLING_AREA_PADDING_X, SCROLLING_AREA_PADDING_Y, SCROLLING_AREA_PADDING_X, SCROLLING_AREA_HEIGHT - SCROLLING_AREA_PADDING_Y) {
-          stroke :black, thickness: 3
-        }
+        x_axis
+        y_axis
         
         @graph = figure(SCROLLING_AREA_PADDING_X, SCROLLING_AREA_HEIGHT - SCROLLING_AREA_PADDING_Y) {
           stroke :blue, thickness: 2
