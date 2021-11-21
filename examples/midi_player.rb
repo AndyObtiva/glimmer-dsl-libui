@@ -18,12 +18,8 @@ class TinyMidiPlayer
 
   def stop_midi
     if @pid
-      if @th.alive?
-        Process.kill(:SIGKILL, @pid)
-        @pid = nil
-      else
-        @pid = nil
-      end
+      Process.kill(:SIGKILL, @pid) if @th.alive?
+      @pid = nil
     end
   end
 

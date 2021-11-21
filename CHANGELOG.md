@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.3.6
+
+- Upgrade to LibUI 0.0.13
+
 ## 0.3.5
 
 - Fixed Area Gallery example (all versions) after a recent refactoring broke it

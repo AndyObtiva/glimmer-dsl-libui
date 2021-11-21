@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.3.4
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.3.5
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -86,6 +86,21 @@ include Glimmer
 
 window('Area Gallery', 400, 400) {
   area {
+    path { # declarative stable path (explicit path syntax for multiple shapes sharing attributes)
+      square(0, 0, 100)
+      square(100, 100, 400)
+      
+      fill r: 102, g: 102, b: 204
+    }
+    
+    path { # declarative stable path (explicit path syntax for multiple shapes sharing attributes)
+      rectangle(0, 100, 100, 400)
+      rectangle(100, 0, 400, 100)
+      
+      # linear gradient (has x0, y0, x1, y1, and stops)
+      fill x0: 10, y0: 10, x1: 350, y1: 350, stops: [{pos: 0.25, r: 204, g: 102, b: 204}, {pos: 0.75, r: 102, g: 102, b: 204}]
+    }
+    
     polygon(100, 100, 100, 400, 400, 100, 400, 400) { # declarative stable path (implicit path syntax for a single shape nested directly under area)
       fill r: 202, g: 102, b: 104, a: 0.5
       stroke r: 0, g: 0, b: 0
@@ -112,21 +127,6 @@ window('Area Gallery', 400, 400) {
     circle(200, 200, 90) { # declarative stable path (implicit path syntax for a single shape nested directly under area)
       fill r: 202, g: 102, b: 204, a: 0.5
       stroke r: 0, g: 0, b: 0, thickness: 2
-    }
-    
-    path { # declarative stable path (explicit path syntax for multiple shapes sharing attributes)
-      square(0, 0, 100)
-      square(100, 100, 400)
-      
-      fill r: 102, g: 102, b: 204
-    }
-    
-    path { # declarative stable path (explicit path syntax for multiple shapes sharing attributes)
-      rectangle(0, 100, 100, 400)
-      rectangle(100, 0, 400, 100)
-      
-      # linear gradient (has x0, y0, x1, y1, and stops)
-      fill x0: 10, y0: 10, x1: 350, y1: 350, stops: [{pos: 0.25, r: 204, g: 102, b: 204}, {pos: 0.75, r: 102, g: 102, b: 204}]
     }
     
     text(161, 40, 100) { # declarative stable text
@@ -206,6 +206,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
 - [glimmer-dsl-gtk](https://github.com/AndyObtiva/glimmer-dsl-gtk): Glimmer DSL for GTK (Ruby-GNOME Desktop Development GUI Library)
 - [glimmer-dsl-xml](https://github.com/AndyObtiva/glimmer-dsl-xml): Glimmer DSL for XML (& HTML)
 - [glimmer-dsl-css](https://github.com/AndyObtiva/glimmer-dsl-css): Glimmer DSL for CSS
+- [glimmer-dsl-specification](https://github.com/AndyObtiva/glimmer-dsl-specification): Glimmer DSL for Specification (Pure Ruby Declarative Use Case Specification and Automated Verification)
 
 ## Table of Contents
 
@@ -222,7 +223,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
     - [Extra Operations](#extra-operations)
     - [Table API](#table-api)
     - [Area API](#area-api)
-      - [Scrolling Area](#scrolling_area)
+      - [Scrolling Area](#scrolling-area)
       - [Area Path Shapes](#area-path-shapes)
       - [Area Text](#area-text)
       - [Area Image](#area-image)
@@ -238,44 +239,46 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
   - [Packaging](#packaging)
   - [Glimmer Style Guide](#glimmer-style-guide)
   - [Examples](#examples)
-    - [Basic Window](#basic-window)
-    - [Basic Button](#basic-button)
-    - [Basic Entry](#basic-entry)
-    - [Simple Notepad](#simple-notepad)
-    - [Midi Player](#midi-player)
-    - [Control Gallery](#control-gallery)
-    - [Font Button](#font-button)
-    - [Color Button](#color-button)
-    - [Date Time Picker](#date-time-picker)
-    - [Grid](#grid)
-    - [Form](#form)
-    - [Basic Table](#basic-table)
-    - [Editable Table](#editable-table)
-    - [Editable Column Table](#editable-column-table)
-    - [Basic Table Image](#basic-table-image)
-    - [Basic Table Image Text](#basic-table-image-text)
-    - [Basic Table Button](#basic-table-button)
-    - [Basic Table Checkbox](#basic-table-checkbox)
-    - [Basic Table Checkbox Text](#basic-table-checkbox-text)
-    - [Basic Table Progress Bar](#basic-table-progress-bar)
-    - [Basic Table Color](#basic-table-color)
-    - [Form Table](#form-table)
-    - [Basic Area](#basic-area)
-    - [Dynamic Area](#dynamic-area)
-    - [Basic Scrolling Area](#basic-scrolling-area)
-    - [Area Gallery](#area-gallery)
-    - [Basic Image](#basic-image)
-    - [Histogram](#histogram)
-    - [Basic Transform](#basic-transform)
-    - [Login](#login)
-    - [Timer](#timer)
-    - [Color The Circles](#color-the-circles)
-    - [Basic Draw Text](#basic-draw-text)
-    - [Custom Draw Text](#custom-draw-text)
-    - [Method-Based Custom Keyword](#method-based-custom-keyword)
-    - [Tetris](#tetris)
-    - [Tic Tac Toe](#tic-tac-toe)
-    - [Snake](#snake)
+    - [Basic Examples](#basic-examples)
+      - [Basic Window](#basic-window)
+      - [Basic Button](#basic-button)
+      - [Basic Entry](#basic-entry)
+      - [Simple Notepad](#simple-notepad)
+      - [Font Button](#font-button)
+      - [Color Button](#color-button)
+      - [Date Time Picker](#date-time-picker)
+      - [Form](#form)
+      - [Basic Table](#basic-table)
+      - [Basic Table Image](#basic-table-image)
+      - [Basic Table Image Text](#basic-table-image-text)
+      - [Basic Table Button](#basic-table-button)
+      - [Basic Table Checkbox](#basic-table-checkbox)
+      - [Basic Table Checkbox Text](#basic-table-checkbox-text)
+      - [Basic Table Progress Bar](#basic-table-progress-bar)
+      - [Basic Table Color](#basic-table-color)
+      - [Basic Area](#basic-area)
+      - [Basic Scrolling Area](#basic-scrolling-area)
+      - [Basic Image](#basic-image)
+      - [Basic Transform](#basic-transform)
+      - [Basic Draw Text](#basic-draw-text)
+    - [Advanced Examples](#advanced-examples)
+      - [Area Gallery](#area-gallery)
+      - [Color The Circles](#color-the-circles)
+      - [Control Gallery](#control-gallery)
+      - [Custom Draw Text](#custom-draw-text)
+      - [Dynamic Area](#dynamic-area)
+      - [Editable Column Table](#editable-column-table)
+      - [Editable Table](#editable-table)
+      - [Form Table](#form-table)
+      - [Grid](#grid)
+      - [Histogram](#histogram)
+      - [Login](#login)
+      - [Method-Based Custom Keyword](#method-based-custom-keyword)
+      - [Midi Player](#midi-player)
+      - [Snake](#snake)
+      - [Tetris](#tetris)
+      - [Tic Tac Toe](#tic-tac-toe)
+      - [Timer](#timer)
   - [Applications](#applications)
     - [Manga2PDF](#manga2pdf)
     - [Befunge98 GUI](#befunge98-gui)
@@ -368,7 +371,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.3.4'
+gem 'glimmer-dsl-libui', '~> 0.3.5'
 ```
 
 Add `require 'glimmer-dsl-libui'` at the top, and then `include Glimmer` into the top-level main object for testing or into an actual class for serious usage.
@@ -1628,8 +1631,9 @@ end
 MetaExample.new.launch
 ```
 
+### Basic Examples
 
-### Basic Window
+#### Basic Window
 
 [examples/basic_window.rb](examples/basic_window.rb)
 
@@ -1704,7 +1708,7 @@ window { # first 3 args can be set via properties with 4th arg has_menubar=true 
 }.show
 ```
 
-### Basic Button
+#### Basic Button
 
 [examples/basic_button.rb](examples/basic_button.rb)
 
@@ -1775,7 +1779,7 @@ window('hello world', 300, 200) {
 }.show
 ```
 
-### Basic Entry
+#### Basic Entry
 
 [examples/basic_entry.rb](examples/basic_entry.rb)
 
@@ -1870,7 +1874,7 @@ window('Basic Entry', 300, 50) {
 }.show
 ```
 
-### Simple Notepad
+#### Simple Notepad
 
 [examples/simple_notepad.rb](examples/simple_notepad.rb)
 
@@ -1936,137 +1940,62 @@ window('Notepad', 500, 300) {
 }.show
 ```
 
-### Midi Player
+#### Font Button
 
-To run this example, install [TiMidity](http://timidity.sourceforge.net) and ensure `timidity` command is in `PATH` (can be installed via [Homebrew](https://brew.sh) on Mac or [apt-get](https://help.ubuntu.com/community/AptGet/Howto) on Linux).
-
-[examples/midi_player.rb](examples/midi_player.rb)
+[examples/font_button.rb](examples/font_button.rb)
 
 Run with this command from the root of the project if you cloned the project:
 
 ```
-ruby -r './lib/glimmer-dsl-libui' examples/midi_player.rb
+ruby -r './lib/glimmer-dsl-libui' examples/font_button.rb
 ```
 
 Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
 
 ```
-ruby -r glimmer-dsl-libui -e "require 'examples/midi_player'"
+ruby -r glimmer-dsl-libui -e "require 'examples/font_button'"
 ```
 
 Mac | Windows | Linux
 ----|---------|------
-![glimmer-dsl-libui-mac-midi-player.png](images/glimmer-dsl-libui-mac-midi-player.png) ![glimmer-dsl-libui-mac-midi-player-msg-box.png](images/glimmer-dsl-libui-mac-midi-player-msg-box.png) | ![glimmer-dsl-libui-windows-midi-player.png](images/glimmer-dsl-libui-windows-midi-player.png) ![glimmer-dsl-libui-windows-midi-player-msg-box.png](images/glimmer-dsl-libui-windows-midi-player-msg-box.png) | ![glimmer-dsl-libui-linux-midi-player.png](images/glimmer-dsl-libui-linux-midi-player.png) ![glimmer-dsl-libui-linux-midi-player-msg-box.png](images/glimmer-dsl-libui-linux-midi-player-msg-box.png)
+![glimmer-dsl-libui-mac-font-button.png](images/glimmer-dsl-libui-mac-font-button.png) ![glimmer-dsl-libui-mac-font-button-selection.png](images/glimmer-dsl-libui-mac-font-button-selection.png) | ![glimmer-dsl-libui-windows-font-button.png](images/glimmer-dsl-libui-windows-font-button.png) ![glimmer-dsl-libui-windows-font-button-selection.png](images/glimmer-dsl-libui-windows-font-button-selection.png) | ![glimmer-dsl-libui-linux-font-button.png](images/glimmer-dsl-libui-linux-font-button.png) ![glimmer-dsl-libui-linux-font-button-selection.png](images/glimmer-dsl-libui-linux-font-button-selection.png)
 
 [LibUI](https://github.com/kojix2/LibUI) Original Version:
 
 ```ruby
 require 'libui'
+
 UI = LibUI
 
-class TinyMidiPlayer
-  VERSION = '0.0.1'
+UI.init
 
-  def initialize
-    UI.init
-    @pid = nil
-    @music_directory = File.expand_path(ARGV[0] || '~/Music/')
-    @midi_files      = Dir.glob(File.join(@music_directory, '**/*.mid'))
-                          .sort_by { |path| File.basename(path) }
-    at_exit { stop_midi }
-    create_gui
-  end
+main_window = UI.new_window('hello world', 300, 200, 1)
 
-  def stop_midi
-    if @pid
-      Process.kill(:SIGKILL, @pid) if @th.alive?
-      @pid = nil
-    end
-  end
-
-  def play_midi
-    stop_midi
-    if @pid.nil? && @selected_file
-      begin
-        @pid = spawn "timidity #{@selected_file}"
-        @th = Process.detach @pid
-      rescue Errno::ENOENT
-        warn 'Timidty++ not found. Please install Timidity++.'
-        warn 'https://sourceforge.net/projects/timidity/'
-      end
-    end
-  end
-
-  def show_version(main_window)
-    UI.msg_box(main_window,
-               'Tiny Midi Player',
-               "Written in Ruby\n" \
-               "https://github.com/kojix2/libui\n" \
-               "Version #{VERSION}")
-  end
-
-  def create_gui
-    # loop_menu = UI.new_menu('Repeat')
-    # items = %w[Off One].map do |item_name|
-    #   item = UI.menu_append_check_item(loop_menu, item_name)
-    # end
-    # items.each_with_index do |item, idx|
-    #   UI.menu_item_on_clicked(item) do
-    #     @repeat = idx
-    #     (items - [item]).each do |i|
-    #       UI.menu_item_set_checked(i, 0)
-    #     end
-    #     0
-    #   end
-    # end
-
-    help_menu = UI.new_menu('Help')
-    version_item = UI.menu_append_item(help_menu, 'Version')
-
-    UI.new_window('Tiny Midi Player', 200, 50, 1).tap do |main_window|
-      UI.menu_item_on_clicked(version_item) { show_version(main_window) }
-
-      UI.window_on_closing(main_window) do
-        UI.control_destroy(main_window)
-        UI.quit
-        0
-      end
-
-      UI.new_horizontal_box.tap do |hbox|
-        UI.new_vertical_box.tap do |vbox|
-          UI.new_button('▶').tap do |button1|
-            UI.button_on_clicked(button1) { play_midi }
-            UI.box_append(vbox, button1, 1)
-          end
-          UI.new_button('■').tap do |button2|
-            UI.button_on_clicked(button2) { stop_midi }
-            UI.box_append(vbox, button2, 1)
-          end
-          UI.box_append(hbox, vbox, 0)
-        end
-        UI.window_set_child(main_window, hbox)
-
-        UI.new_combobox.tap do |cbox|
-          @midi_files.each do |path|
-            name = File.basename(path)
-            UI.combobox_append(cbox, name)
-          end
-          UI.combobox_on_selected(cbox) do |ptr|
-            @selected_file = @midi_files[UI.combobox_selected(ptr)]
-            play_midi if @th&.alive?
-            0
-          end
-          UI.box_append(hbox, cbox, 1)
-        end
-      end
-      UI.control_show(main_window)
-    end
-    UI.main
-    UI.quit
-  end
+font_button = UI.new_font_button
+font_descriptor = UI::FFI::FontDescriptor.malloc
+font_descriptor.to_ptr.free = Fiddle::RUBY_FREE
+UI.font_button_on_changed(font_button) do
+  UI.font_button_font(font_button, font_descriptor)
+  p family: font_descriptor.Family.to_s,
+    size: font_descriptor.Size,
+    weight: font_descriptor.Weight,
+    italic: font_descriptor.Italic,
+    stretch: font_descriptor.Stretch
 end
 
-TinyMidiPlayer.new
+UI.window_on_closing(main_window) do
+  puts 'Bye Bye'
+  UI.control_destroy(main_window)
+  UI.quit
+  0
+end
+
+UI.window_set_child(main_window, font_button)
+UI.control_show(main_window)
+
+UI.main
+UI.quit
+
 ```
 
 [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
@@ -2074,82 +2003,2607 @@ TinyMidiPlayer.new
 ```ruby
 require 'glimmer-dsl-libui'
 
-class TinyMidiPlayer
+include Glimmer
+
+window('hello world', 300, 200) {
+  font_button { |fb|
+    on_changed do
+      font_descriptor = fb.font
+      p font_descriptor
+    end
+  }
+  
+  on_closing do
+    puts 'Bye Bye'
+  end
+}.show
+```
+
+#### Color Button
+
+[examples/color_button.rb](examples/color_button.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/color_button.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/color_button'"
+```
+
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-color-button.png](images/glimmer-dsl-libui-mac-color-button.png) ![glimmer-dsl-libui-mac-color-button-selection.png](images/glimmer-dsl-libui-mac-color-button-selection.png) | ![glimmer-dsl-libui-windows-color-button.png](images/glimmer-dsl-libui-windows-color-button.png) ![glimmer-dsl-libui-windows-color-button-selection.png](images/glimmer-dsl-libui-windows-color-button-selection.png) | ![glimmer-dsl-libui-linux-color-button.png](images/glimmer-dsl-libui-linux-color-button.png) ![glimmer-dsl-libui-linux-color-button-selection.png](images/glimmer-dsl-libui-linux-color-button-selection.png)
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+window('color button', 240) {
+  color_button { |cb|
+    color :blue
+    
+    on_changed do
+      rgba = cb.color
+      p rgba
+    end
+  }
+}.show
+```
+
+#### Date Time Picker
+
+[examples/date_time_picker.rb](examples/date_time_picker.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/date_time_picker.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/date_time_picker'"
+```
+
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-date-time-picker.png](images/glimmer-dsl-libui-mac-date-time-picker.png) | ![glimmer-dsl-libui-windows-date-time-picker.png](images/glimmer-dsl-libui-windows-date-time-picker.png) | ![glimmer-dsl-libui-linux-date-time-picker.png](images/glimmer-dsl-libui-linux-date-time-picker.png)
+
+[LibUI](https://github.com/kojix2/LibUI) Original Version:
+
+```ruby
+require 'libui'
+
+UI = LibUI
+
+UI.init
+
+vbox = UI.new_vertical_box
+
+date_time_picker = UI.new_date_time_picker
+
+time = UI::FFI::TM.malloc
+
+UI.date_time_picker_on_changed(date_time_picker) do
+  UI.date_time_picker_time(date_time_picker, time)
+  p sec: time.tm_sec,
+    min: time.tm_min,
+    hour: time.tm_hour,
+    mday: time.tm_mday,
+    mon: time.tm_mon,
+    year: time.tm_year,
+    wday: time.tm_wday,
+    yday: time.tm_yday,
+    isdst: time.tm_isdst
+end
+UI.box_append(vbox, date_time_picker, 1)
+
+main_window = UI.new_window('Date Time Pickers', 300, 200, 1)
+UI.window_on_closing(main_window) do
+  puts 'Bye Bye'
+  UI.control_destroy(main_window)
+  UI.quit
+  0
+end
+UI.window_set_child(main_window, vbox)
+UI.control_show(main_window)
+
+UI.main
+UI.quit
+```
+
+[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+window('Date Time Pickers', 300, 200) {
+  vertical_box {
+    date_time_picker { |dtp|
+      on_changed do
+        time = dtp.time
+        p time
+      end
+    }
+  }
+  
+  on_closing do
+    puts 'Bye Bye'
+  end
+}.show
+```
+
+#### Form
+
+[examples/form.rb](examples/form.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/form.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/form'"
+```
+
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-form.png](images/glimmer-dsl-libui-mac-form.png) ![glimmer-dsl-libui-mac-form-msg-box.png](images/glimmer-dsl-libui-mac-form-msg-box.png) | ![glimmer-dsl-libui-windows-form.png](images/glimmer-dsl-libui-windows-form.png) ![glimmer-dsl-libui-windows-form-msg-box.png](images/glimmer-dsl-libui-windows-form-msg-box.png) | ![glimmer-dsl-libui-linux-form.png](images/glimmer-dsl-libui-linux-form.png) ![glimmer-dsl-libui-linux-form-msg-box.png](images/glimmer-dsl-libui-linux-form-msg-box.png)
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+window('Form') {
+  margined true
+  
+  vertical_box {
+    form {
+      @first_name_entry = entry {
+        label 'First Name' # label property is available when control is nested under form
+      }
+      
+      @last_name_entry = entry {
+        label 'Last Name' # label property is available when control is nested under form
+      }
+      
+      @phone_entry = entry {
+        label 'Phone' # label property is available when control is nested under form
+      }
+      
+      @email_entry = entry {
+        label 'Email' # label property is available when control is nested under form
+      }
+    }
+    
+    button('Display Info') {
+      stretchy false
+      
+      on_clicked do
+        msg_box('Info', "#{@first_name_entry.text} #{@last_name_entry.text} has phone #{@phone_entry.text} and email #{@email_entry.text}")
+      end
+    }
+  }
+}.show
+```
+
+#### Basic Table
+
+[examples/basic_table.rb](examples/basic_table.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/basic_table.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/basic_table'"
+```
+
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-basic-table.png](images/glimmer-dsl-libui-mac-basic-table.png) | ![glimmer-dsl-libui-windows-basic-table.png](images/glimmer-dsl-libui-windows-basic-table.png) | ![glimmer-dsl-libui-linux-basic-table.png](images/glimmer-dsl-libui-linux-basic-table.png)
+
+[LibUI](https://github.com/kojix2/LibUI) Original Version:
+
+```ruby
+require 'libui'
+
+UI = LibUI
+
+UI.init
+
+main_window = UI.new_window('Animal sounds', 300, 200, 1)
+
+hbox = UI.new_horizontal_box
+UI.window_set_child(main_window, hbox)
+
+data = [
+  %w[cat meow],
+  %w[dog woof],
+  %w[checken cock-a-doodle-doo],
+  %w[horse neigh],
+  %w[cow moo]
+]
+
+# Protects BlockCaller objects from garbage collection.
+@blockcaller = []
+def rbcallback(*args, &block)
+  args << [0] if args.size == 1 # Argument types are ommited
+  blockcaller = Fiddle::Closure::BlockCaller.new(*args, &block)
+  @blockcaller << blockcaller
+  blockcaller
+end
+
+model_handler = UI::FFI::TableModelHandler.malloc
+model_handler.NumColumns   = rbcallback(4) { 2 }
+model_handler.ColumnType   = rbcallback(4) { 0 }
+model_handler.NumRows      = rbcallback(4) { 5 }
+model_handler.CellValue    = rbcallback(1, [1, 1, 4, 4]) do |_, _, row, column|
+  UI.new_table_value_string(data[row][column])
+end
+model_handler.SetCellValue = rbcallback(0, [0]) {}
+
+model = UI.new_table_model(model_handler)
+
+table_params = UI::FFI::TableParams.malloc
+table_params.Model = model
+table_params.RowBackgroundColorModelColumn = -1
+
+table = UI.new_table(table_params)
+UI.table_append_text_column(table, 'Animal', 0, -1)
+UI.table_append_text_column(table, 'Description', 1, -1)
+
+UI.box_append(hbox, table, 1)
+UI.control_show(main_window)
+
+UI.window_on_closing(main_window) do
+  puts 'Bye Bye'
+  UI.control_destroy(main_window)
+  UI.free_table_model(model)
+  UI.quit
+  0
+end
+
+UI.main
+UI.quit
+```
+
+[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+data = [
+  %w[cat meow],
+  %w[dog woof],
+  %w[chicken cock-a-doodle-doo],
+  %w[horse neigh],
+  %w[cow moo]
+]
+
+window('Animal sounds', 300, 200) {
+  horizontal_box {
+    table {
+      text_column('Animal')
+      text_column('Description')
+
+      cell_rows data
+    }
+  }
+  
+  on_closing do
+    puts 'Bye Bye'
+  end
+}.show
+```
+
+#### Basic Table Image
+
+Note that behavior varies per platform (i.e. how `table` chooses to size images by default).
+
+[examples/basic_table_image.rb](examples/basic_table_image.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/basic_table_image.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/basic_table_image'"
+```
+
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-basic-table-image.png](images/glimmer-dsl-libui-mac-basic-table-image.png) | ![glimmer-dsl-libui-windows-basic-table-image.png](images/glimmer-dsl-libui-windows-basic-table-image.png) | ![glimmer-dsl-libui-linux-basic-table-image.png](images/glimmer-dsl-libui-linux-basic-table-image.png)
+
+[LibUI](https://github.com/kojix2/LibUI) Original Version:
+
+```ruby
+# NOTE:
+# This example displays images that can be freely downloaded from the Studio Ghibli website.
+
+require 'libui'
+require 'chunky_png'
+require 'open-uri'
+
+UI = LibUI
+
+UI.init
+
+main_window = UI.new_window('The Red Turtle', 310, 350, 0)
+
+hbox = UI.new_horizontal_box
+UI.window_set_child(main_window, hbox)
+
+IMAGES = []
+
+50.times do |i|
+  url = format('https://www.ghibli.jp/gallery/thumb-redturtle%03d.png', (i + 1))
+  puts "Processing Image: #{url}"
+  f = URI.open(url)
+  canvas = ChunkyPNG::Canvas.from_io(f)
+  f.close
+  data = canvas.to_rgba_stream
+  width = canvas.width
+  height = canvas.height
+  image = UI.new_image(width, height)
+  UI.image_append(image, data, width, height, width * 4)
+  IMAGES << image
+rescue StandardError => e
+  warn url, e.message
+end
+
+# Protects BlockCaller objects from garbage collection.
+@blockcaller = []
+def rbcallback(*args, &block)
+  args << [0] if args.size == 1 # Argument types are ommited
+  blockcaller = Fiddle::Closure::BlockCaller.new(*args, &block)
+  @blockcaller << blockcaller
+  blockcaller
+end
+
+model_handler = UI::FFI::TableModelHandler.malloc
+model_handler.NumColumns   = rbcallback(4) { 1 }
+model_handler.ColumnType   = rbcallback(4) { 1 } # Image
+model_handler.NumRows      = rbcallback(4) { IMAGES.size }
+model_handler.CellValue    = rbcallback(1, [1, 1, 4, 4]) do |_, _, row, _column|
+  UI.new_table_value_image(IMAGES[row])
+end
+model_handler.SetCellValue = rbcallback(0, [0]) {}
+
+model = UI.new_table_model(model_handler)
+
+table_params = UI::FFI::TableParams.malloc
+table_params.Model = model
+table_params.RowBackgroundColorModelColumn = -1
+
+table = UI.new_table(table_params)
+UI.table_append_image_column(table, 'www.ghibli.jp/works/red-turtle', 0)
+
+UI.box_append(hbox, table, 1)
+UI.control_show(main_window)
+
+UI.window_on_closing(main_window) do
+  puts 'Bye Bye'
+  UI.control_destroy(main_window)
+  UI.free_table_model(model)
+  IMAGES.each { |i| UI.free_image(i) }
+  UI.quit
+  0
+end
+
+UI.main
+UI.quit
+```
+
+[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+# NOTE:
+# This example displays images that can be freely downloaded from the Studio Ghibli website.
+
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+IMAGE_ROWS = []
+
+50.times do |i|
+  url = format('https://www.ghibli.jp/gallery/thumb-redturtle%03d.png', (i + 1))
+  puts "Processing Image: #{url}"; $stdout.flush # for Windows
+  IMAGE_ROWS << [image(url)] # array of one column cell
+rescue StandardError => e
+  warn url, e.message
+end
+
+window('The Red Turtle', 310, 350, false) {
+  horizontal_box {
+    table {
+      image_column('www.ghibli.jp/works/red-turtle')
+      
+      cell_rows IMAGE_ROWS
+    }
+  }
+  
+  on_closing do
+    puts 'Bye Bye'
+  end
+}.show
+```
+
+[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 2 (manual construction of `image` from `image_part`):
+
+```ruby
+# NOTE:
+# This example displays images that can be freely downloaded from the Studio Ghibli website.
+
+require 'glimmer-dsl-libui'
+require 'chunky_png'
+require 'open-uri'
+
+include Glimmer
+
+IMAGE_ROWS = []
+
+50.times do |i|
+  url = format('https://www.ghibli.jp/gallery/thumb-redturtle%03d.png', (i + 1))
+  puts "Processing Image: #{url}"
+  f = URI.open(url)
+  canvas = ChunkyPNG::Canvas.from_io(f)
+  f.close
+  data = canvas.to_rgba_stream
+  width = canvas.width
+  height = canvas.height
+  img = image {
+    image_part(data, width, height, width * 4)
+  }
+  IMAGE_ROWS << [img] # array of one column cell
+rescue StandardError => e
+  warn url, e.message
+end
+
+window('The Red Turtle', 310, 350, false) {
+  horizontal_box {
+    table {
+      image_column('www.ghibli.jp/works/red-turtle', 0)
+      
+      cell_rows IMAGE_ROWS
+    }
+  }
+    
+  on_closing do
+    puts 'Bye Bye'
+  end
+}.show
+```
+
+#### Basic Table Image Text
+
+Note that behavior varies per platform (i.e. how `table` chooses to size images by default).
+
+[examples/basic_table_image_text.rb](examples/basic_table_image_text.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/basic_table_image_text.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/basic_table_image_text'"
+```
+
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-basic-table-image-text.png](images/glimmer-dsl-libui-mac-basic-table-image-text.png) | ![glimmer-dsl-libui-windows-basic-table-image-text.png](images/glimmer-dsl-libui-windows-basic-table-image-text.png) | ![glimmer-dsl-libui-linux-basic-table-image-text.png](images/glimmer-dsl-libui-linux-basic-table-image-text.png)
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+# NOTE:
+# This example displays images that can be freely downloaded from the Studio Ghibli website.
+
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+IMAGE_ROWS = []
+
+5.times do |i|
+  url = format('https://www.ghibli.jp/gallery/thumb-redturtle%03d.png', (i + 1))
+  puts "Processing Image: #{url}"; $stdout.flush # for Windows
+  text = url.sub('https://www.ghibli.jp/gallery/thumb-redturtle', '').sub('.png', '')
+  img = image(url)
+  IMAGE_ROWS << [[img, text], [img, text]] # cell values are dual-element arrays
+rescue StandardError => e
+  warn url, e.message
+end
+
+window('The Red Turtle', 670, 350) {
+  horizontal_box {
+    table {
+      image_text_column('image/number')
+      image_text_column('image/number (editable)') {
+        editable true
+      }
+      
+      cell_rows IMAGE_ROWS
+    }
+  }
+}.show
+```
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 2 (manual construction of `image` from `image_part`):
+
+```ruby
+# NOTE:
+# This example displays images that can be freely downloaded from the Studio Ghibli website.
+
+require 'glimmer-dsl-libui'
+require 'chunky_png'
+require 'open-uri'
+
+include Glimmer
+
+IMAGE_ROWS = []
+
+5.times do |i|
+  url = format('https://www.ghibli.jp/gallery/thumb-redturtle%03d.png', (i + 1))
+  puts "Processing Image: #{url}"
+  f = URI.open(url)
+  canvas = ChunkyPNG::Canvas.from_io(f)
+  f.close
+  data = canvas.to_rgba_stream
+  width = canvas.width
+  height = canvas.height
+  img = image {
+    image_part(data, width, height, width * 4)
+  }
+  text = url.sub('https://www.ghibli.jp/gallery/thumb-redturtle', '').sub('.png', '')
+  IMAGE_ROWS << [[img, text], [img, text]] # cell values are dual-element arrays
+rescue StandardError => e
+  warn url, e.message
+end
+
+window('The Red Turtle', 670, 350) {
+  horizontal_box {
+    table {
+      image_text_column('image/number')
+      image_text_column('image/number (editable)') {
+        editable true
+      }
+      
+      cell_rows IMAGE_ROWS
+    }
+  }
+}.show
+```
+
+#### Basic Table Button
+
+[examples/basic_table_button.rb](examples/basic_table_button.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/basic_table_button.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/basic_table_button'"
+```
+
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-basic-table-button.png](images/glimmer-dsl-libui-mac-basic-table-button.png) ![glimmer-dsl-libui-mac-basic-table-button-deleted.png](images/glimmer-dsl-libui-mac-basic-table-button-deleted.png) | ![glimmer-dsl-libui-windows-basic-table-button.png](images/glimmer-dsl-libui-windows-basic-table-button.png) ![glimmer-dsl-libui-windows-basic-table-button-deleted.png](images/glimmer-dsl-libui-windows-basic-table-button-deleted.png) | ![glimmer-dsl-libui-linux-basic-table-button.png](images/glimmer-dsl-libui-linux-basic-table-button.png) ![glimmer-dsl-libui-linux-basic-table-button-deleted.png](images/glimmer-dsl-libui-linux-basic-table-button-deleted.png)
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+data = [
+  %w[cat meow delete],
+  %w[dog woof delete],
+  %w[chicken cock-a-doodle-doo delete],
+  %w[horse neigh delete],
+  %w[cow moo delete]
+]
+
+window('Animal sounds', 300, 200) {
+  horizontal_box {
+    table {
+      text_column('Animal')
+      text_column('Description')
+      button_column('Action') {
+        on_clicked do |row|
+          data.delete_at(row) # automatically deletes actual table row due to implicit data-binding
+        end
+      }
+
+      cell_rows data # implicit data-binding
+      
+      on_changed do |row, type, row_data|
+        puts "Row #{row} #{type}: #{row_data}"
+      end
+    }
+  }
+}.show
+```
+
+#### Basic Table Checkbox
+
+[examples/basic_table_checkbox.rb](examples/basic_table_checkbox.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/basic_table_checkbox.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/basic_table_checkbox'"
+```
+
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-basic-table-checkbox.png](images/glimmer-dsl-libui-mac-basic-table-checkbox.png) | ![glimmer-dsl-libui-windows-basic-table-checkbox.png](images/glimmer-dsl-libui-windows-basic-table-checkbox.png) | ![glimmer-dsl-libui-linux-basic-table-checkbox.png](images/glimmer-dsl-libui-linux-basic-table-checkbox.png)
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+data = [
+  ['cat', 'meow', true],
+  ['dog', 'woof', true],
+  ['chicken', 'cock-a-doodle-doo', false],
+  ['horse', 'neigh', true],
+  ['cow', 'moo', true]
+]
+
+window('Animal sounds', 300, 200) {
+  horizontal_box {
+    table {
+      text_column('Animal')
+      text_column('Description')
+      checkbox_column('Mammal')
+
+      cell_rows data
+    }
+  }
+}.show
+```
+
+#### Basic Table Checkbox Text
+
+[examples/basic_table_checkbox_text.rb](examples/basic_table_checkbox_text.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/basic_table_checkbox_text.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/basic_table_checkbox_text'"
+```
+
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-basic-table-checkbox-text.png](images/glimmer-dsl-libui-mac-basic-table-checkbox-text.png) | ![glimmer-dsl-libui-windows-basic-table-checkbox-text.png](images/glimmer-dsl-libui-windows-basic-table-checkbox-text.png) | ![glimmer-dsl-libui-linux-basic-table-checkbox-text.png](images/glimmer-dsl-libui-linux-basic-table-checkbox-text.png)
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+data = [
+  ['cat', 'meow', [true, 'mammal']],
+  ['dog', 'woof', [true, 'mammal']],
+  ['chicken', 'cock-a-doodle-doo', [false, 'mammal']],
+  ['horse', 'neigh', [true, 'mammal']],
+  ['cow', 'moo', [true, 'mammal']]
+]
+
+window('Animal sounds', 400, 200) {
+  horizontal_box {
+    table {
+      text_column('Animal')
+      text_column('Sound')
+      checkbox_text_column('Description')
+
+      cell_rows data
+    }
+  }
+}.show
+```
+
+#### Basic Table Progress Bar
+
+[examples/basic_table_progress_bar.rb](examples/basic_table_progress_bar.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/basic_table_progress_bar.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/basic_table_progress_bar'"
+```
+
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-basic-table-progress-bar.png](images/glimmer-dsl-libui-mac-basic-table-progress-bar.png) | ![glimmer-dsl-libui-windows-basic-table-progress-bar.png](images/glimmer-dsl-libui-windows-basic-table-progress-bar.png) | ![glimmer-dsl-libui-linux-basic-table-progress-bar.png](images/glimmer-dsl-libui-linux-basic-table-progress-bar.png)
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+data = [
+  ['task 1', 0],
+  ['task 2', 15],
+  ['task 3', 100],
+  ['task 4', 75],
+  ['task 5', -1],
+]
+
+window('Task Progress', 300, 200) {
+  vertical_box {
+    table {
+      text_column('Task')
+      progress_bar_column('Progress')
+
+      cell_rows data # implicit data-binding
+    }
+    
+    button('Mark All As Done') {
+      stretchy false
+      
+      on_clicked do
+        data.each_with_index do |row_data, row|
+          data[row][1] = 100 # automatically updates table due to implicit data-binding
+        end
+      end
+    }
+  }
+}.show
+```
+
+#### Basic Table Color
+
+[examples/basic_table_color.rb](examples/basic_table_color.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/basic_table_color.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/basic_table_color'"
+```
+
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-basic-table-color.png](images/glimmer-dsl-libui-mac-basic-table-color.png) | ![glimmer-dsl-libui-windows-basic-table-color.png](images/glimmer-dsl-libui-windows-basic-table-color.png) | ![glimmer-dsl-libui-linux-basic-table-color.png](images/glimmer-dsl-libui-linux-basic-table-color.png)
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+# frozen_string_literal: true
+
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+img = image(File.expand_path('../icons/glimmer.png', __dir__), 24, 24)
+
+data = [
+  [['cat', :red]      , ['meow', :blue]                  , [true, 'mammal', :green], [img, 'Glimmer', :dark_blue], {r: 255, g: 120, b: 0, a: 0.5}],
+  [['dog', :yellow]   , ['woof', {r: 240, g: 32, b: 32}] , [true, 'mammal', :green], [img, 'Glimmer', :dark_blue], :skyblue],
+  [['chicken', :beige], ['cock-a-doodle-doo', :blue]     , [false, 'mammal', :red] , [img, 'Glimmer', :beige], {r: 5, g: 120, b: 110}],
+  [['horse', :purple] , ['neigh', {r: 240, g: 32, b: 32}], [true, 'mammal', :green], [img, 'Glimmer', :dark_blue], '13a1fb'],
+  [['cow', :gray]     , ['moo', :blue]                   , [true, 'mammal', :green], [img, 'Glimmer', :brown], 0x12ff02]
+]
+
+window('Animals', 500, 200) {
+  horizontal_box {
+    table {
+      text_color_column('Animal')
+      text_color_column('Sound')
+      checkbox_text_color_column('Description')
+      image_text_color_column('GUI')
+      background_color_column('Mammal')
+
+      cell_rows data
+    }
+  }
+}.show
+```
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 2 (manual construction of [libui](https://github.com/andlabs/libui) `image` from `image_part`):
+
+```ruby
+require 'glimmer-dsl-libui'
+require 'chunky_png'
+
+include Glimmer
+
+f = File.open(File.expand_path('../icons/glimmer.png', __dir__))
+canvas = ChunkyPNG::Canvas.from_io(f)
+f.close
+canvas.resample_nearest_neighbor!(24, 24)
+data = canvas.to_rgba_stream
+width = canvas.width
+height = canvas.height
+img = image {
+  image_part(data, width, height, width * 4)
+}
+
+data = [
+  [['cat', :red]      , ['meow', :blue]                  , [true, 'mammal', :green], [img, 'Glimmer', :dark_blue], {r: 255, g: 120, b: 0, a: 0.5}],
+  [['dog', :yellow]   , ['woof', {r: 240, g: 32, b: 32}] , [true, 'mammal', :green], [img, 'Glimmer', :dark_blue], :skyblue],
+  [['chicken', :beige], ['cock-a-doodle-doo', :blue]     , [false, 'mammal', :red] , [img, 'Glimmer', :beige], {r: 5, g: 120, b: 110}],
+  [['horse', :purple] , ['neigh', {r: 240, g: 32, b: 32}], [true, 'mammal', :green], [img, 'Glimmer', :dark_blue], '13a1fb'],
+  [['cow', :gray]     , ['moo', :blue]                   , [true, 'mammal', :green], [img, 'Glimmer', :brown], 0x12ff02]
+]
+
+window('Animals', 500, 200) {
+  horizontal_box {
+    table {
+      text_color_column('Animal')
+      text_color_column('Sound')
+      checkbox_text_color_column('Description')
+      image_text_color_column('GUI')
+      background_color_column('Mammal')
+
+      cell_rows data
+    }
+  }
+}.show
+```
+
+#### Basic Area
+
+[examples/basic_area.rb](examples/basic_area.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/basic_area.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/basic_area'"
+```
+
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-basic-area.png](images/glimmer-dsl-libui-mac-basic-area.png) | ![glimmer-dsl-libui-windows-basic-area.png](images/glimmer-dsl-libui-windows-basic-area.png) | ![glimmer-dsl-libui-linux-basic-area.png](images/glimmer-dsl-libui-linux-basic-area.png)
+
+[LibUI](https://github.com/kojix2/LibUI) Original Version:
+
+```ruby
+require 'libui'
+
+UI = LibUI
+
+UI.init
+
+handler = UI::FFI::AreaHandler.malloc
+area    = UI.new_area(handler)
+brush   = UI::FFI::DrawBrush.malloc
+
+handler_draw_event = Fiddle::Closure::BlockCaller.new(0, [1, 1, 1]) do |_, _, area_draw_params|
+  path = UI.draw_new_path(0)
+  UI.draw_path_add_rectangle(path, 0, 0, 400, 400)
+  UI.draw_path_end(path)
+  brush.Type = 0
+  brush.R = 0.4
+  brush.G = 0.4
+  brush.B = 0.8
+  brush.A = 1.0
+  area_draw_params = UI::FFI::AreaDrawParams.new(area_draw_params)
+  UI.draw_fill(area_draw_params.Context, path, brush.to_ptr)
+  UI.draw_free_path(path)
+end
+
+handler.Draw         = handler_draw_event
+handler.MouseEvent   = Fiddle::Closure::BlockCaller.new(0, [0]) {}
+handler.MouseCrossed = Fiddle::Closure::BlockCaller.new(0, [0]) {}
+handler.DragBroken   = Fiddle::Closure::BlockCaller.new(0, [0]) {}
+handler.KeyEvent     = Fiddle::Closure::BlockCaller.new(0, [0]) {}
+
+box = UI.new_vertical_box
+UI.box_set_padded(box, 1)
+UI.box_append(box, area, 1)
+
+main_window = UI.new_window('Basic Area', 400, 400, 1)
+UI.window_set_margined(main_window, 1)
+UI.window_set_child(main_window, box)
+
+UI.window_on_closing(main_window) do
+  UI.control_destroy(main_window)
+  UI.quit
+  0
+end
+UI.control_show(main_window)
+
+UI.main
+UI.quit
+```
+
+[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+window('Basic Area', 400, 400) {
+  margined true
+  
+  vertical_box {
+    area {
+      path { # a stable path is added declaratively
+        rectangle(0, 0, 400, 400)
+        
+        fill r: 102, g: 102, b: 204, a: 1.0
+      }
+    }
+  }
+}.show
+```
+
+[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 2 (semi-declarative `on_draw` dynamic `path` approach):
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+window('Basic Area', 400, 400) {
+  margined true
+  
+  vertical_box {
+    area {
+      on_draw do |area_draw_params|
+        path { # a dynamic path is added semi-declaratively inside on_draw block
+          rectangle(0, 0, 400, 400)
+          
+          fill r: 102, g: 102, b: 204, a: 1.0
+        }
+      end
+    }
+  }
+}.show
+```
+
+#### Basic Scrolling Area
+
+[examples/basic_scrolling_area.rb](examples/basic_scrolling_area.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/basic_scrolling_area.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/basic_scrolling_area'"
+```
+
+Mac |
+----|
+![glimmer-dsl-libui-mac-dynamic-area.png](images/glimmer-dsl-libui-mac-basic-scrolling-area.png) ![glimmer-dsl-libui-mac-dynamic-area-updated.png](images/glimmer-dsl-libui-mac-basic-scrolling-area-scrolled.png)
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+require 'glimmer-dsl-libui'
+
+class BasicScrollingArea
   include Glimmer
   
-  VERSION = '0.0.1'
-
+  SCROLLING_AREA_WIDTH = 800
+  SCROLLING_AREA_HEIGHT = 400
+  SCROLLING_AREA_PADDING_X = 20
+  SCROLLING_AREA_PADDING_Y = 20
+  
   def initialize
-    @pid = nil
-    @music_directory = File.expand_path('../sounds', __dir__)
-    @midi_files      = Dir.glob(File.join(@music_directory, '**/*.mid'))
-                          .sort_by { |path| File.basename(path) }
-    at_exit { stop_midi }
+    @x = SCROLLING_AREA_PADDING_X
+    @y = SCROLLING_AREA_HEIGHT - SCROLLING_AREA_PADDING_Y
     create_gui
-  end
-
-  def stop_midi
-    if @pid
-      if @th.alive?
-        Process.kill(:SIGKILL, @pid)
-        @pid = nil
-      else
-        @pid = nil
-      end
+    Glimmer::LibUI.timer(0.01) do
+      @x += SCROLLING_AREA_PADDING_X
+      @y = [[@y + rand(SCROLLING_AREA_PADDING_Y*4)*(rand(2) == 0 ? -1 : 1), SCROLLING_AREA_PADDING_Y].max, SCROLLING_AREA_HEIGHT - SCROLLING_AREA_PADDING_Y].min
+      @graph.content { # re-open @graph's content and add a line
+        line(@x, @y)
+      }
+      # if there is a need to enlarge scrolling area, call `@scrolling_area.set_size(new_width, new_height)`
+      @scrolling_area.scroll_to(@x - (SCROLLING_AREA_WIDTH/2), @y) # 3rd and 4th arguments for width and height are assumed as those of main window by default if not supplied
+      # return false to stop timer once @x exceeds scrolling area width - padding
+      false if @x >= (SCROLLING_AREA_WIDTH - SCROLLING_AREA_PADDING_X*2)
     end
   end
-
-  def play_midi
-    stop_midi
-    if @pid.nil? && @selected_file
-      begin
-        @pid = spawn "timidity #{@selected_file}"
-        @th = Process.detach @pid
-      rescue Errno::ENOENT
-        warn 'Timidty++ not found. Please install Timidity++.'
-        warn 'https://sourceforge.net/projects/timidity/'
-      end
+  
+  def launch
+    @main_window.show
+  end
+  
+  def x_axis
+    polyline(SCROLLING_AREA_PADDING_X, SCROLLING_AREA_HEIGHT - SCROLLING_AREA_PADDING_Y, SCROLLING_AREA_WIDTH - SCROLLING_AREA_PADDING_X*2, SCROLLING_AREA_HEIGHT - SCROLLING_AREA_PADDING_Y) {
+      stroke :black, thickness: 3
+    }
+    
+    ((SCROLLING_AREA_WIDTH - SCROLLING_AREA_PADDING_X*4) / SCROLLING_AREA_PADDING_X).times do |x_multiplier|
+      x = x_multiplier*SCROLLING_AREA_PADDING_X + SCROLLING_AREA_PADDING_X*2
+      y = SCROLLING_AREA_HEIGHT - SCROLLING_AREA_PADDING_Y
+      
+      polyline(x, y, x, y + SCROLLING_AREA_PADDING_Y/2) {
+        stroke :black, thickness: 2
+      }
     end
   end
-
-  def show_version
-    msg_box('Tiny Midi Player',
-              "Written in Ruby\n" \
-                "https://github.com/kojix2/libui\n" \
-                "Version #{VERSION}")
+  
+  def y_axis
+    polyline(SCROLLING_AREA_PADDING_X, SCROLLING_AREA_PADDING_Y, SCROLLING_AREA_PADDING_X, SCROLLING_AREA_HEIGHT - SCROLLING_AREA_PADDING_Y) {
+      stroke :black, thickness: 3
+    }
+    
+    ((SCROLLING_AREA_HEIGHT - SCROLLING_AREA_PADDING_Y*3) / SCROLLING_AREA_PADDING_Y).times do |y_multiplier|
+      x = SCROLLING_AREA_PADDING_X
+      y = y_multiplier*SCROLLING_AREA_PADDING_Y + SCROLLING_AREA_PADDING_Y*2
+      
+      polyline(x, y, x - SCROLLING_AREA_PADDING_X/2, y) {
+        stroke :black, thickness: 2
+      }
+    end
   end
-
+  
   def create_gui
-    menu('Help') {
-      menu_item('Version') {
+    @main_window = window('Basic Scrolling Area', SCROLLING_AREA_WIDTH / 2, SCROLLING_AREA_HEIGHT) {
+      resizable false
+      
+      @scrolling_area = scrolling_area(SCROLLING_AREA_WIDTH, SCROLLING_AREA_HEIGHT) {
+        x_axis
+        y_axis
+        
+        @graph = figure(SCROLLING_AREA_PADDING_X, SCROLLING_AREA_HEIGHT - SCROLLING_AREA_PADDING_Y) {
+          stroke :blue, thickness: 2
+        }
+      }
+    }
+  end
+end
+
+BasicScrollingArea.new.launch
+```
+
+#### Basic Image
+
+[examples/basic_image.rb](examples/basic_image.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/basic_image.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/basic_image'"
+```
+
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-basic-image.png](images/glimmer-dsl-libui-mac-basic-image.png) | ![glimmer-dsl-libui-windows-basic-image.png](images/glimmer-dsl-libui-windows-basic-image.png) | ![glimmer-dsl-libui-linux-basic-image.png](images/glimmer-dsl-libui-linux-basic-image.png)
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+window('Basic Image', 96, 96) {
+  area {
+    # image is not a real LibUI control. It is built in Glimmer as a custom control that renders
+    # tiny pixels/lines as rectangle paths. As such, it does not have good performance, but can
+    # be used in exceptional circumstances where an image control is really needed.
+    #
+    # Furthermore, adding image directly under area is even slower due to taking up more memory for every
+    # image pixel rendered. Check basic_image2.rb for a faster alternative using on_draw manually.
+    #
+    # It is recommended to pass width/height args to shrink image and achieve faster performance.
+    image(File.expand_path('../icons/glimmer.png', __dir__), 96, 96)
+  }
+}.show
+```
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 2 (better performance via `on_draw`):
+
+```ruby
+# frozen_string_literal: true
+
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+window('Basic Image', 96, 96) {
+  area {
+    on_draw do |area_draw_params|
+      image(File.expand_path('../icons/glimmer.png', __dir__), 96, 96)
+    end
+  }
+}.show
+```
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 3 (explicit properties):
+
+```ruby
+# frozen_string_literal: true
+
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+window('Basic Image', 96, 96) {
+  area {
+    # image is not a real LibUI control. It is built in Glimmer as a custom control that renders
+    # tiny pixels/lines as rectangle paths. As such, it does not have good performance, but can
+    # be used in exceptional circumstances where an image control is really needed.
+    #
+    # Furthermore, adding image directly under area is even slower due to taking up more memory for every
+    # image pixel rendered. Check basic_image4.rb for a faster alternative using on_draw manually.
+    #
+    # It is recommended to pass width/height args to shrink image and achieve faster performance.
+    image {
+      file File.expand_path('../icons/glimmer.png', __dir__)
+      width 96
+      height 96
+    }
+  }
+}.show
+```
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 4 (better performance with `on_draw` when setting explicit properties):
+
+```ruby
+# frozen_string_literal: true
+
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+window('Basic Image', 96, 96) {
+  area {
+    on_draw do |area_draw_params|
+      image {
+        file File.expand_path('../icons/glimmer.png', __dir__)
+        width 96
+        height 96
+      }
+    end
+  }
+}.show
+```
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 5 (fully manual pixel-by-pixel rendering):
+
+```ruby
+# frozen_string_literal: true
+
+# This is the manual way of rendering an image unto an area control.
+# It could come in handy in special situations.
+# Otherwise, it is recommended to simply utilize the `image` control that
+# can be nested under area or area on_draw listener to automate all this work.
+
+require 'glimmer-dsl-libui'
+require 'chunky_png'
+
+include Glimmer
+
+puts 'Parsing image...'; $stdout.flush
+
+f = File.open(File.expand_path('../icons/glimmer.png', __dir__))
+canvas = ChunkyPNG::Canvas.from_io(f)
+f.close
+canvas.resample_nearest_neighbor!(96, 96)
+data = canvas.to_rgba_stream
+width = canvas.width
+height = canvas.height
+puts "Image width: #{width}"
+puts "Image height: #{height}"
+
+puts 'Parsing colors...'; $stdout.flush
+
+color_maps = height.times.map do |y|
+  width.times.map do |x|
+    r = data[(y*width + x)*4].ord
+    g = data[(y*width + x)*4 + 1].ord
+    b = data[(y*width + x)*4 + 2].ord
+    a = data[(y*width + x)*4 + 3].ord
+    {x: x, y: y, color: {r: r, g: g, b: b, a: a}}
+  end
+end.flatten
+puts "#{color_maps.size} pixels to render..."; $stdout.flush
+
+puts 'Parsing shapes...'; $stdout.flush
+
+shape_maps = []
+original_color_maps = color_maps.dup
+indexed_original_color_maps = Hash[original_color_maps.each_with_index.to_a]
+color_maps.each do |color_map|
+  index = indexed_original_color_maps[color_map]
+  @rectangle_start_x ||= color_map[:x]
+  @rectangle_width ||= 1
+  if color_map[:x] < width - 1 && color_map[:color] == original_color_maps[index + 1][:color]
+    @rectangle_width += 1
+  else
+    if color_map[:x] > 0 && color_map[:color] == original_color_maps[index - 1][:color]
+      shape_maps << {x: @rectangle_start_x, y: color_map[:y], width: @rectangle_width, height: 1, color: color_map[:color]}
+    else
+      shape_maps << {x: color_map[:x], y: color_map[:y], width: 1, height: 1, color: color_map[:color]}
+    end
+    @rectangle_width = 1
+    @rectangle_start_x = color_map[:x] == width - 1 ? 0 : color_map[:x] + 1
+  end
+end
+puts "#{shape_maps.size} shapes to render..."; $stdout.flush
+
+puts 'Rendering image...'; $stdout.flush
+
+window('Basic Image', 96, 96) {
+  area {
+    on_draw do |area_draw_params|
+      shape_maps.each do |shape_map|
+        path {
+          rectangle(shape_map[:x], shape_map[:y], shape_map[:width], shape_map[:height])
+
+          fill shape_map[:color]
+        }
+      end
+    end
+  }
+}.show
+```
+
+#### Basic Transform
+
+[examples/basic_transform.rb](examples/basic_transform.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/basic_transform.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/basic_transform'"
+```
+
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-basic-transform.png](images/glimmer-dsl-libui-mac-basic-transform.png) | ![glimmer-dsl-libui-windows-basic-transform.png](images/glimmer-dsl-libui-windows-basic-transform.png) | ![glimmer-dsl-libui-linux-basic-transform.png](images/glimmer-dsl-libui-linux-basic-transform.png)
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+window('Basic Transform', 350, 350) {
+  area {
+    square(0, 0, 350) {
+      fill r: 255, g: 255, b: 0
+    }
+    40.times do |n|
+      square(0, 0, 100) {
+        fill r: [255 - n*5, 0].max, g: [n*5, 255].min, b: 0, a: 0.5
+        stroke :black, thickness: 2
+        
+        transform {
+          unless OS.windows?
+            skew 0.15, 0.15
+            translate 50, 50
+          end
+          rotate 100, 100, -9 * n
+          scale 1.1, 1.1
+          if OS.windows?
+            skew 0.15, 0.15
+            translate 50, 50
+          end
+        }
+      }
+    end
+  }
+}.show
+```
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 2:
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+window('Basic Transform', 350, 350) {
+  area {
+    path {
+      square(0, 0, 350)
+      
+      fill r: 255, g: 255, b: 0
+    }
+    40.times do |n|
+      path {
+        square(0, 0, 100)
+        
+        fill r: [255 - n*5, 0].max, g: [n*5, 255].min, b: 0, a: 0.5
+        stroke :black, thickness: 2
+        
+        transform {
+          unless OS.windows?
+            skew 0.15, 0.15
+            translate 50, 50
+          end
+          rotate 100, 100, -9 * n
+          scale 1.1, 1.1
+          if OS.windows?
+            skew 0.15, 0.15
+            translate 50, 50
+          end
+        }
+      }
+    end
+  }
+}.show
+```
+
+#### Basic Draw Text
+
+[examples/basic_draw_text.rb](examples/basic_draw_text.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/basic_draw_text.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/basic_draw_text'"
+```
+
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-basic-draw-text.png](images/glimmer-dsl-libui-mac-basic-draw-text.png) | ![glimmer-dsl-libui-windows-basic-draw-text.png](images/glimmer-dsl-libui-windows-basic-draw-text.png) | ![glimmer-dsl-libui-linux-basic-draw-text.png](images/glimmer-dsl-libui-linux-basic-draw-text.png)
+
+[LibUI](https://github.com/kojix2/LibUI) Original Version:
+
+```ruby
+require 'libui'
+
+UI = LibUI
+
+UI.init
+
+handler = UI::FFI::AreaHandler.malloc
+area    = UI.new_area(handler)
+
+# Michael Ende (1929-1995)
+# The Neverending Story is a fantasy novel by German writer Michael Ende,
+# The English version, translated by Ralph Manheim, was published in 1983.
+
+TITLE = 'Michael Ende (1929-1995) The Neverending Story'
+
+str1 = \
+  '  At last Ygramul sensed that something was coming toward ' \
+  'her. With the speed of lightning, she turned about, confronting ' \
+  'Atreyu with an enormous steel-blue face. Her single eye had a ' \
+  'vertical pupil, which stared at Atreyu with inconceivable malignancy. '
+
+str2 = \
+  '  A cry of fear escaped Bastian. '
+
+str3 = \
+  '  A cry of terror passed through the ravine and echoed from ' \
+  'side to side. Ygramul turned her eye to left and right, to see if ' \
+  'someone else had arrived, for that sound could not have been ' \
+  'made by the boy who stood there as though paralyzed with ' \
+  'horror. '
+
+str4 = \
+  '  Could she have heard my cry? Bastion wondered in alarm. ' \
+  "But that's not possible. "
+
+str5 = \
+  '  And then Atreyu heard Ygramuls voice. It was very high ' \
+  'and slightly hoarse, not at all the right kind of voice for that ' \
+  'enormous face. Her lips did not move as she spoke. It was the ' \
+  'buzzing of a great swarm of hornets that shaped itself into ' \
+  'words. '
+
+str = ''
+attr_str = UI.new_attributed_string(str)
+
+def attr_str.append(what, color)
+  case color
+  when :red
+    color_attribute = UI.new_color_attribute(0.0, 0.5, 0.0, 0.7)
+  when :green
+    color_attribute = UI.new_color_attribute(0.5, 0.0, 0.25, 0.7)
+  end
+  start = UI.attributed_string_len(self)
+  UI.attributed_string_append_unattributed(self, what)
+  UI.attributed_string_set_attribute(self, color_attribute, start, start + what.size)
+  UI.attributed_string_append_unattributed(self, "\n\n")
+end
+
+attr_str.append(str1, :green)
+attr_str.append(str2, :red)
+attr_str.append(str3, :green)
+attr_str.append(str4, :red)
+attr_str.append(str5, :green)
+
+Georgia = 'Georgia'
+
+handler_draw_event = Fiddle::Closure::BlockCaller.new(0, [1, 1, 1]) do |_, _, adp|
+  area_draw_params = UI::FFI::AreaDrawParams.new(adp)
+  default_font = UI::FFI::FontDescriptor.malloc
+  default_font.Family = Georgia
+  default_font.Size = 13
+  default_font.Weight = 500
+  default_font.Italic = 0
+  default_font.Stretch = 4
+  params = UI::FFI::DrawTextLayoutParams.malloc
+
+  # UI.font_button_font(font_button, default_font)
+  params.String = attr_str
+  params.DefaultFont = default_font
+  params.Width = area_draw_params.AreaWidth
+  params.Align = 0
+  text_layout = UI.draw_new_text_layout(params)
+  UI.draw_text(area_draw_params.Context, text_layout, 0, 0)
+  UI.draw_free_text_layout(text_layout)
+end
+
+handler.Draw         = handler_draw_event
+# Assigning to local variables
+# This is intended to protect Fiddle::Closure from garbage collection.
+handler.MouseEvent   = (c1 = Fiddle::Closure::BlockCaller.new(0, [0]) {})
+handler.MouseCrossed = (c2 = Fiddle::Closure::BlockCaller.new(0, [0]) {})
+handler.DragBroken   = (c3 = Fiddle::Closure::BlockCaller.new(0, [0]) {})
+handler.KeyEvent     = (c4 = Fiddle::Closure::BlockCaller.new(0, [0]) {})
+
+box = UI.new_vertical_box
+UI.box_set_padded(box, 1)
+UI.box_append(box, area, 1)
+
+main_window = UI.new_window(TITLE, 600, 400, 1)
+UI.window_set_margined(main_window, 1)
+UI.window_set_child(main_window, box)
+
+UI.window_on_closing(main_window) do
+  UI.control_destroy(main_window)
+  UI.quit
+  0
+end
+UI.control_show(main_window)
+
+UI.main
+UI.quit
+```
+
+[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+require 'glimmer-dsl-libui'
+
+# Michael Ende (1929-1995)
+# The Neverending Story is a fantasy novel by German writer Michael Ende,
+# The English version, translated by Ralph Manheim, was published in 1983.
+class BasicDrawText
+  include Glimmer
+  
+  def alternating_color_string(initial: false, &block)
+    @index = 0 if initial
+    @index += 1
+    string {
+      if @index.odd?
+        color r: 0.5, g: 0, b: 0.25, a: 0.7
+      else
+        color r: 0, g: 0.5, b: 0, a: 0.7
+      end
+      
+      block.call + "\n\n"
+    }
+  end
+  
+  def launch
+    window('Michael Ende (1929-1995) The Neverending Story', 600, 400) {
+      margined true
+      
+      area {
+        text { # default arguments for x, y, and width are (0, 0, area_draw_params[:area_width])
+          # align :left # default alignment
+          default_font family: 'Georgia', size: 13, weight: :medium, italic: :normal, stretch: :normal
+            
+          alternating_color_string(initial: true) {
+            '  At last Ygramul sensed that something was coming toward ' \
+            'her. With the speed of lightning, she turned about, confronting ' \
+            'Atreyu with an enormous steel-blue face. Her single eye had a ' \
+            'vertical pupil, which stared at Atreyu with inconceivable malignancy. '
+          }
+          alternating_color_string {
+            '  A cry of fear escaped Bastian. '
+          }
+          alternating_color_string {
+            '  A cry of terror passed through the ravine and echoed from ' \
+            'side to side. Ygramul turned her eye to left and right, to see if ' \
+            'someone else had arrived, for that sound could not have been ' \
+            'made by the boy who stood there as though paralyzed with ' \
+            'horror. '
+          }
+          alternating_color_string {
+            '  Could she have heard my cry? Bastion wondered in alarm. ' \
+            "But that's not possible. "
+          }
+          alternating_color_string {
+            '  And then Atreyu heard Ygramuls voice. It was very high ' \
+            'and slightly hoarse, not at all the right kind of voice for that ' \
+            'enormous face. Her lips did not move as she spoke. It was the ' \
+            'buzzing of a great swarm of hornets that shaped itself into ' \
+            'words. '
+          }
+        }
+      }
+    }.show
+  end
+end
+
+BasicDrawText.new.launch
+```
+
+[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 2:
+
+```ruby
+require 'glimmer-dsl-libui'
+
+# Michael Ende (1929-1995)
+# The Neverending Story is a fantasy novel by German writer Michael Ende,
+# The English version, translated by Ralph Manheim, was published in 1983.
+class BasicDrawText
+  include Glimmer
+  
+  def alternating_color_string(initial: false, &block)
+    @index = 0 if initial
+    @index += 1
+    string {
+      if @index.odd?
+        color r: 0.5, g: 0, b: 0.25, a: 0.7
+      else
+        color r: 0, g: 0.5, b: 0, a: 0.7
+      end
+      
+      block.call + "\n\n"
+    }
+  end
+  
+  def launch
+    window('Michael Ende (1929-1995) The Neverending Story', 600, 400) {
+      margined true
+      
+      area {
+        on_draw do |area_draw_params|
+          text { # default arguments for x, y, and width are (0, 0, area_draw_params[:area_width])
+            # align :left # default alignment
+            default_font family: 'Georgia', size: 13, weight: :medium, italic: :normal, stretch: :normal
+              
+            alternating_color_string(initial: true) {
+              '  At last Ygramul sensed that something was coming toward ' \
+              'her. With the speed of lightning, she turned about, confronting ' \
+              'Atreyu with an enormous steel-blue face. Her single eye had a ' \
+              'vertical pupil, which stared at Atreyu with inconceivable malignancy. '
+            }
+            alternating_color_string {
+              '  A cry of fear escaped Bastian. '
+            }
+            alternating_color_string {
+              '  A cry of terror passed through the ravine and echoed from ' \
+              'side to side. Ygramul turned her eye to left and right, to see if ' \
+              'someone else had arrived, for that sound could not have been ' \
+              'made by the boy who stood there as though paralyzed with ' \
+              'horror. '
+            }
+            alternating_color_string {
+              '  Could she have heard my cry? Bastion wondered in alarm. ' \
+              "But that's not possible. "
+            }
+            alternating_color_string {
+              '  And then Atreyu heard Ygramuls voice. It was very high ' \
+              'and slightly hoarse, not at all the right kind of voice for that ' \
+              'enormous face. Her lips did not move as she spoke. It was the ' \
+              'buzzing of a great swarm of hornets that shaped itself into ' \
+              'words. '
+            }
+          }
+        end
+      }
+    }.show
+  end
+end
+
+BasicDrawText.new.launch
+```
+
+### Advanced Examples
+
+#### Area Gallery
+
+[examples/area_gallery.rb](examples/area_gallery.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/area_gallery.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/area_gallery'"
+```
+
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-area-gallery.png](images/glimmer-dsl-libui-mac-area-gallery.png) | ![glimmer-dsl-libui-windows-area-gallery.png](images/glimmer-dsl-libui-windows-area-gallery.png) | ![glimmer-dsl-libui-linux-area-gallery.png](images/glimmer-dsl-libui-linux-area-gallery.png)
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+window('Area Gallery', 400, 400) {
+  area {
+    path { # declarative stable path (explicit path syntax for multiple shapes sharing attributes)
+      square(0, 0, 100)
+      square(100, 100, 400)
+      
+      fill r: 102, g: 102, b: 204
+    }
+    
+    path { # declarative stable path (explicit path syntax for multiple shapes sharing attributes)
+      rectangle(0, 100, 100, 400)
+      rectangle(100, 0, 400, 100)
+      
+      # linear gradient (has x0, y0, x1, y1, and stops)
+      fill x0: 10, y0: 10, x1: 350, y1: 350, stops: [{pos: 0.25, r: 204, g: 102, b: 204}, {pos: 0.75, r: 102, g: 102, b: 204}]
+    }
+    
+    polygon(100, 100, 100, 400, 400, 100, 400, 400) { # declarative stable path (implicit path syntax for a single shape nested directly under area)
+      fill r: 202, g: 102, b: 104, a: 0.5
+      stroke r: 0, g: 0, b: 0
+    }
+    
+    polybezier(0, 0,
+               200, 100, 100, 200, 400, 100,
+               300, 100, 100, 300, 100, 400,
+               100, 300, 300, 100, 400, 400) { # declarative stable path (implicit path syntax for a single shape nested directly under area)
+      fill r: 202, g: 102, b: 204, a: 0.5
+      stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
+    }
+    
+    polyline(100, 100, 400, 100, 100, 400, 400, 400, 0, 0) { # declarative stable path (implicit path syntax for a single shape nested directly under area)
+      stroke r: 0, g: 0, b: 0, thickness: 2
+    }
+    
+    arc(404, 216, 190, 90, 90, false) { # declarative stable path (implicit path syntax for a single shape nested directly under area)
+      # radial gradient (has an outer_radius in addition to x0, y0, x1, y1, and stops)
+      fill outer_radius: 90, x0: 0, y0: 0, x1: 500, y1: 500, stops: [{pos: 0.25, r: 102, g: 102, b: 204, a: 0.5}, {pos: 0.75, r: 204, g: 102, b: 204}]
+      stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
+    }
+    
+    circle(200, 200, 90) { # declarative stable path (implicit path syntax for a single shape nested directly under area)
+      fill r: 202, g: 102, b: 204, a: 0.5
+      stroke r: 0, g: 0, b: 0, thickness: 2
+    }
+    
+    text(161, 40, 100) { # declarative stable text
+      string('Area Gallery') {
+        font family: 'Arial', size: (OS.mac? ? 14 : 11)
+        color :black
+      }
+    }
+    
+    on_mouse_event do |area_mouse_event|
+      p area_mouse_event
+    end
+    
+    on_mouse_moved do |area_mouse_event|
+      puts 'moved'
+    end
+    
+    on_mouse_down do |area_mouse_event|
+      puts 'mouse down'
+    end
+    
+    on_mouse_up do |area_mouse_event|
+      puts 'mouse up'
+    end
+    
+    on_mouse_drag_started do |area_mouse_event|
+      puts 'drag started'
+    end
+    
+    on_mouse_dragged do |area_mouse_event|
+      puts 'dragged'
+    end
+    
+    on_mouse_dropped do |area_mouse_event|
+      puts 'dropped'
+    end
+    
+    on_mouse_entered do
+      puts 'entered'
+    end
+    
+    on_mouse_exited do
+      puts 'exited'
+    end
+    
+    on_key_event do |area_key_event|
+      p area_key_event
+    end
+    
+    on_key_up do |area_key_event|
+      puts 'key up'
+    end
+    
+    on_key_down do |area_key_event|
+      puts 'key down'
+    end
+  }
+}.show
+```
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 2 (setting shape properties instead of arguments):
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+window('Area Gallery', 400, 400) {
+  area {
+    path { # declarative stable path with explicit attributes (explicit path syntax for multiple shapes sharing attributes)
+      square {
+        x 0
+        y 0
+        length 100
+      }
+      
+      square {
+        x 100
+        y 100
+        length 400
+      }
+      
+      fill r: 102, g: 102, b: 204
+    }
+    
+    path { # declarative stable path with explicit attributes (explicit path syntax for multiple shapes sharing attributes)
+      rectangle {
+        x 0
+        y 100
+        width 100
+        height 400
+      }
+      
+      rectangle {
+        x 100
+        y 0
+        width 400
+        height 100
+      }
+      
+      # linear gradient (has x0, y0, x1, y1, and stops)
+      fill x0: 10, y0: 10, x1: 350, y1: 350, stops: [{pos: 0.25, r: 204, g: 102, b: 204}, {pos: 0.75, r: 102, g: 102, b: 204}]
+    }
+    
+    figure { # declarative stable path with explicit attributes (implicit path syntax for a single shape nested directly under area)
+      x 100
+      y 100
+      
+      line {
+        x 100
+        y 400
+      }
+      
+      line {
+        x 400
+        y 100
+      }
+      
+      line {
+        x 400
+        y 400
+      }
+
+      closed true # polygon figure is closed (last point forms a line with first point)
+      fill r: 202, g: 102, b: 104, a: 0.5
+      stroke r: 0, g: 0, b: 0
+    }
+    
+    figure { # declarative stable path with explicit attributes (implicit path syntax for a single shape nested directly under area)
+      x 0
+      y 0
+      
+      bezier {
+        c1_x 200
+        c1_y 100
+        c2_x 100
+        c2_y 200
+        end_x 400
+        end_y 100
+      }
+      
+      bezier {
+        c1_x 300
+        c1_y 100
+        c2_x 100
+        c2_y 300
+        end_x 100
+        end_y 400
+      }
+      
+      bezier {
+        c1_x 100
+        c1_y 300
+        c2_x 300
+        c2_y 100
+        end_x 400
+        end_y 400
+      }
+      
+      fill r: 202, g: 102, b: 204, a: 0.5
+      stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
+    }
+    
+    figure { # declarative stable path with explicit attributes (implicit path syntax for a single shape nested directly under area)
+      x 100
+      y 100
+      
+      line {
+        x 400
+        y 100
+      }
+      
+      line {
+        x 100
+        y 400
+      }
+      
+      line {
+        x 400
+        y 400
+      }
+      
+      line {
+        x 0
+        y 0
+      }
+      
+      stroke r: 0, g: 0, b: 0, thickness: 2
+    }
+    
+    arc { # declarative stable path with explicit attributes (implicit path syntax for a single shape nested directly under area)
+      x_center 404
+      y_center 216
+      radius 190
+      start_angle 90
+      sweep 90
+      is_negative false
+      # radial gradient (has an outer_radius in addition to x0, y0, x1, y1, and stops)
+      fill outer_radius: 90, x0: 0, y0: 0, x1: 500, y1: 500, stops: [{pos: 0.25, r: 102, g: 102, b: 204, a: 0.5}, {pos: 0.75, r: 204, g: 102, b: 204}]
+      stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
+    }
+    
+    circle { # declarative stable path with explicit attributes (implicit path syntax for a single shape nested directly under area)
+      x_center 200
+      y_center 200
+      radius 90
+      fill r: 202, g: 102, b: 204, a: 0.5
+      stroke r: 0, g: 0, b: 0, thickness: 2
+    }
+    
+    text { # declarative stable text with explicit attributes
+      x 161
+      y 40
+      width 100
+      
+      string {
+        font family: 'Arial', size: (OS.mac? ? 14 : 11)
+        color :black
+        
+        'Area Gallery'
+      }
+    }
+    
+    on_mouse_event do |area_mouse_event|
+      p area_mouse_event
+    end
+    
+    on_mouse_moved do |area_mouse_event|
+      puts 'moved'
+    end
+    
+    on_mouse_down do |area_mouse_event|
+      puts 'mouse down'
+    end
+    
+    on_mouse_up do |area_mouse_event|
+      puts 'mouse up'
+    end
+    
+    on_mouse_drag_started do |area_mouse_event|
+      puts 'drag started'
+    end
+    
+    on_mouse_dragged do |area_mouse_event|
+      puts 'dragged'
+    end
+    
+    on_mouse_dropped do |area_mouse_event|
+      puts 'dropped'
+    end
+    
+    on_mouse_entered do
+      puts 'entered'
+    end
+    
+    on_mouse_exited do
+      puts 'exited'
+    end
+    
+    on_key_event do |area_key_event|
+      p area_key_event
+    end
+    
+    on_key_up do |area_key_event|
+      puts 'key up'
+    end
+    
+    on_key_down do |area_key_event|
+      puts 'key down'
+    end
+  }
+}.show
+```
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 3 (semi-declarative `on_draw` dynamic `path` approach):
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+window('Area Gallery', 400, 400) {
+  area {
+    on_draw do |area_draw_params|
+      path { # dynamic path, added semi-declaratively inside on_draw block
+        square(0, 0, 100)
+        square(100, 100, 400)
+        
+        fill r: 102, g: 102, b: 204
+      }
+      
+      path { # dynamic path, added semi-declaratively inside on_draw block
+        rectangle(0, 100, 100, 400)
+        rectangle(100, 0, 400, 100)
+        
+        # linear gradient (has x0, y0, x1, y1, and stops)
+        fill x0: 10, y0: 10, x1: 350, y1: 350, stops: [{pos: 0.25, r: 204, g: 102, b: 204}, {pos: 0.75, r: 102, g: 102, b: 204}]
+      }
+      
+      polygon(100, 100, 100, 400, 400, 100, 400, 400) { # dynamic path, added semi-declaratively inside on_draw block
+        fill r: 202, g: 102, b: 104, a: 0.5
+        stroke r: 0, g: 0, b: 0
+      }
+      
+      polybezier(0, 0,
+                 200, 100, 100, 200, 400, 100,
+                 300, 100, 100, 300, 100, 400,
+                 100, 300, 300, 100, 400, 400) { # dynamic path, added semi-declaratively inside on_draw block
+        fill r: 202, g: 102, b: 204, a: 0.5
+        stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
+      }
+      
+      polyline(100, 100, 400, 100, 100, 400, 400, 400, 0, 0) { # dynamic path, added semi-declaratively inside on_draw block
+        stroke r: 0, g: 0, b: 0, thickness: 2
+      }
+      
+      arc(404, 216, 190, 90, 90, false) { # dynamic path, added semi-declaratively inside on_draw block
+        # radial gradient (has an outer_radius in addition to x0, y0, x1, y1, and stops)
+        fill outer_radius: 90, x0: 0, y0: 0, x1: 500, y1: 500, stops: [{pos: 0.25, r: 102, g: 102, b: 204, a: 0.5}, {pos: 0.75, r: 204, g: 102, b: 204}]
+        stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
+      }
+      
+      circle(200, 200, 90) { # dynamic path, added semi-declaratively inside on_draw block
+        fill r: 202, g: 102, b: 204, a: 0.5
+        stroke r: 0, g: 0, b: 0, thickness: 2
+      }
+      
+      text(161, 40, 100) { # dynamic text added semi-declaratively inside on_draw block
+        string('Area Gallery') {
+          font family: 'Arial', size: (OS.mac? ? 14 : 11)
+          color :black
+        }
+      }
+    end
+    
+    on_mouse_event do |area_mouse_event|
+      p area_mouse_event
+    end
+    
+    on_mouse_moved do |area_mouse_event|
+      puts 'moved'
+    end
+    
+    on_mouse_down do |area_mouse_event|
+      puts 'mouse down'
+    end
+    
+    on_mouse_up do |area_mouse_event|
+      puts 'mouse up'
+    end
+    
+    on_mouse_drag_started do |area_mouse_event|
+      puts 'drag started'
+    end
+    
+    on_mouse_dragged do |area_mouse_event|
+      puts 'dragged'
+    end
+    
+    on_mouse_dropped do |area_mouse_event|
+      puts 'dropped'
+    end
+    
+    on_mouse_entered do
+      puts 'entered'
+    end
+    
+    on_mouse_exited do
+      puts 'exited'
+    end
+    
+    on_key_event do |area_key_event|
+      p area_key_event
+    end
+    
+    on_key_up do |area_key_event|
+      puts 'key up'
+    end
+    
+    on_key_down do |area_key_event|
+      puts 'key down'
+    end
+  }
+}.show
+```
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 4 (setting shape properties instead of arguments with semi-declarative `on_draw` dynamic `path` approach):
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+window('Area Gallery', 400, 400) {
+  area {
+    on_draw do |area_draw_params|
+      path { # dynamic path, added semi-declaratively inside on_draw block
+        square {
+          x 0
+          y 0
+          length 100
+        }
+        
+        square {
+          x 100
+          y 100
+          length 400
+        }
+        
+        fill r: 102, g: 102, b: 204
+      }
+      
+      path { # dynamic path, added semi-declaratively inside on_draw block
+        rectangle {
+          x 0
+          y 100
+          width 100
+          height 400
+        }
+        
+        rectangle {
+          x 100
+          y 0
+          width 400
+          height 100
+        }
+        
+        # linear gradient (has x0, y0, x1, y1, and stops)
+        fill x0: 10, y0: 10, x1: 350, y1: 350, stops: [{pos: 0.25, r: 204, g: 102, b: 204}, {pos: 0.75, r: 102, g: 102, b: 204}]
+      }
+      
+      figure { # dynamic path, added semi-declaratively inside on_draw block
+        x 100
+        y 100
+        
+        line {
+          x 100
+          y 400
+        }
+        
+        line {
+          x 400
+          y 100
+        }
+        
+        line {
+          x 400
+          y 400
+        }
+  
+        closed true # polygon figure is closed (last point forms a line with first point)
+        fill r: 202, g: 102, b: 104, a: 0.5
+        stroke r: 0, g: 0, b: 0
+      }
+      
+      figure { # dynamic path, added semi-declaratively inside on_draw block
+        x 0
+        y 0
+        
+        bezier {
+          c1_x 200
+          c1_y 100
+          c2_x 100
+          c2_y 200
+          end_x 400
+          end_y 100
+        }
+        
+        bezier {
+          c1_x 300
+          c1_y 100
+          c2_x 100
+          c2_y 300
+          end_x 100
+          end_y 400
+        }
+        
+        bezier {
+          c1_x 100
+          c1_y 300
+          c2_x 300
+          c2_y 100
+          end_x 400
+          end_y 400
+        }
+        
+        fill r: 202, g: 102, b: 204, a: 0.5
+        stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
+      }
+      
+      figure { # dynamic path, added semi-declaratively inside on_draw block
+        x 100
+        y 100
+        
+        line {
+          x 400
+          y 100
+        }
+        
+        line {
+          x 100
+          y 400
+        }
+        
+        line {
+          x 400
+          y 400
+        }
+        
+        line {
+          x 0
+          y 0
+        }
+        
+        stroke r: 0, g: 0, b: 0, thickness: 2
+      }
+      
+      arc { # dynamic path, added semi-declaratively inside on_draw block
+        x_center 404
+        y_center 216
+        radius 190
+        start_angle 90
+        sweep 90
+        is_negative false
+        # radial gradient (has an outer_radius in addition to x0, y0, x1, y1, and stops)
+        fill outer_radius: 90, x0: 0, y0: 0, x1: 500, y1: 500, stops: [{pos: 0.25, r: 102, g: 102, b: 204, a: 0.5}, {pos: 0.75, r: 204, g: 102, b: 204}]
+        stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
+      }
+      
+      circle { # dynamic path, added semi-declaratively inside on_draw block
+        x_center 200
+        y_center 200
+        radius 90
+        fill r: 202, g: 102, b: 204, a: 0.5
+        stroke r: 0, g: 0, b: 0, thickness: 2
+      }
+      
+      text { # dynamic path, added semi-declaratively inside on_draw block
+        x 161
+        y 40
+        width 100
+        
+        string {
+          font family: 'Arial', size: (OS.mac? ? 14 : 11)
+          color :black
+          
+          'Area Gallery'
+        }
+      }
+    end
+    
+    on_mouse_event do |area_mouse_event|
+      p area_mouse_event
+    end
+    
+    on_mouse_moved do |area_mouse_event|
+      puts 'moved'
+    end
+    
+    on_mouse_down do |area_mouse_event|
+      puts 'mouse down'
+    end
+    
+    on_mouse_up do |area_mouse_event|
+      puts 'mouse up'
+    end
+    
+    on_mouse_drag_started do |area_mouse_event|
+      puts 'drag started'
+    end
+    
+    on_mouse_dragged do |area_mouse_event|
+      puts 'dragged'
+    end
+    
+    on_mouse_dropped do |area_mouse_event|
+      puts 'dropped'
+    end
+    
+    on_mouse_entered do
+      puts 'entered'
+    end
+    
+    on_mouse_exited do
+      puts 'exited'
+    end
+    
+    on_key_event do |area_key_event|
+      p area_key_event
+    end
+    
+    on_key_up do |area_key_event|
+      puts 'key up'
+    end
+    
+    on_key_down do |area_key_event|
+      puts 'key down'
+    end
+  }
+}.show
+```
+
+#### Color The Circles
+
+[examples/color_the_circles.rb](examples/color_the_circles.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/color_the_circles.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/color_the_circles'"
+```
+
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-color-the-circles.png](images/glimmer-dsl-libui-mac-color-the-circles.png) ![glimmer-dsl-libui-mac-color-the-circles-lost.png](images/glimmer-dsl-libui-mac-color-the-circles-lost.png) ![glimmer-dsl-libui-mac-color-the-circles-won.png](images/glimmer-dsl-libui-mac-color-the-circles-won.png) | ![glimmer-dsl-libui-windows-color-the-circles.png](images/glimmer-dsl-libui-windows-color-the-circles.png) ![glimmer-dsl-libui-windows-color-the-circles-lost.png](images/glimmer-dsl-libui-windows-color-the-circles-lost.png) ![glimmer-dsl-libui-windows-color-the-circles-won.png](images/glimmer-dsl-libui-windows-color-the-circles-won.png) | ![glimmer-dsl-libui-linux-color-the-circles.png](images/glimmer-dsl-libui-linux-color-the-circles.png) ![glimmer-dsl-libui-linux-color-the-circles-lost.png](images/glimmer-dsl-libui-linux-color-the-circles-lost.png) ![glimmer-dsl-libui-linux-color-the-circles-won.png](images/glimmer-dsl-libui-linux-color-the-circles-won.png)
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+require 'glimmer-dsl-libui'
+
+class ColorTheCircles
+  include Glimmer
+  
+  WINDOW_WIDTH = 800
+  WINDOW_HEIGHT = 600
+  SHAPE_MIN_SIZE = 15
+  SHAPE_MAX_SIZE = 75
+  MARGIN_WIDTH = 55
+  MARGIN_HEIGHT = 155
+  TIME_MAX_EASY = 4
+  TIME_MAX_MEDIUM = 3
+  TIME_MAX_HARD = 2
+  TIME_MAX_INSANE = 1
+  
+  attr_accessor :score
+  
+  def initialize
+    @circles_data = []
+    @score = 0
+    @time_max = TIME_MAX_HARD
+    @game_over = false
+    register_observers
+    setup_circle_factory
+  end
+  
+  def register_observers
+    observer = Glimmer::DataBinding::Observer.proc do |new_score|
+      Glimmer::LibUI.queue_main do
+        @score_label.text = new_score.to_s
+        if new_score == -20
+          @game_over = true
+          msg_box('You Lost!', 'Sorry! Your score reached -20')
+          restart_game
+        elsif new_score == 0
+          @game_over = true
+          msg_box('You Won!', 'Congratulations! Your score reached 0')
+          restart_game
+        end
+      end
+    end
+    observer.observe(self, :score) # automatically enhances self to become Glimmer::DataBinding::ObservableModel and notify observer on score attribute changes
+  end
+  
+  def setup_circle_factory
+    consumer = Proc.new do
+      unless @game_over
+        if @circles_data.empty?
+          # start with 3 circles to make more challenging
+          add_circle until @circles_data.size > 3
+        else
+          add_circle
+        end
+      end
+      delay = rand * @time_max
+      Glimmer::LibUI.timer(delay, repeat: false, &consumer)
+    end
+    Glimmer::LibUI.queue_main(&consumer)
+  end
+  
+  def add_circle
+    circle_x = rand * (WINDOW_WIDTH - MARGIN_WIDTH - SHAPE_MAX_SIZE) + SHAPE_MAX_SIZE
+    circle_y = rand * (WINDOW_HEIGHT - MARGIN_HEIGHT - SHAPE_MAX_SIZE) + SHAPE_MAX_SIZE
+    circle_size = rand * (SHAPE_MAX_SIZE - SHAPE_MIN_SIZE) + SHAPE_MIN_SIZE
+    stroke_color = Glimmer::LibUI.x11_colors.sample
+    @circles_data << {
+      args: [circle_x, circle_y, circle_size],
+      fill: nil,
+      stroke: stroke_color
+    }
+    @area.queue_redraw_all
+    self.score -= 1 # notifies score observers automatically of change
+  end
+  
+  def restart_game
+    @score = 0 # update variable directly to avoid notifying observers
+    @circles_data.clear
+    @game_over = false
+  end
+  
+  def color_circle(x, y)
+    clicked_circle_data = @circles_data.find do |circle_data|
+      circle_data[:fill].nil? && circle_data[:circle]&.include?(x, y)
+    end
+    if clicked_circle_data
+      clicked_circle_data[:fill] = clicked_circle_data[:stroke]
+      push_colored_circle_behind_uncolored_circles(clicked_circle_data)
+      @area.queue_redraw_all
+      self.score += 1 # notifies score observers automatically of change
+    end
+  end
+  
+  def push_colored_circle_behind_uncolored_circles(colored_circle_data)
+    removed_colored_circle_data = @circles_data.delete(colored_circle_data)
+    last_colored_circle_data = @circles_data.select {|cd| cd[:fill]}.last
+    last_colored_circle_data_index = @circles_data.index(last_colored_circle_data) || -1
+    @circles_data.insert(last_colored_circle_data_index + 1, removed_colored_circle_data)
+  end
+
+  def launch
+    menu('Actions') {
+      menu_item('Restart') {
         on_clicked do
-          show_version
+          restart_game
+        end
+      }
+      
+      quit_menu_item
+    }
+    
+    menu('Difficulty') {
+      radio_menu_item('Easy') {
+        on_clicked do
+          @time_max = TIME_MAX_EASY
+        end
+      }
+      
+      radio_menu_item('Medium') {
+        on_clicked do
+          @time_max = TIME_MAX_MEDIUM
+        end
+      }
+      
+      radio_menu_item('Hard') {
+        checked true
+        
+        on_clicked do
+          @time_max = TIME_MAX_HARD
+        end
+      }
+      
+      radio_menu_item('Insane') {
+        on_clicked do
+          @time_max = TIME_MAX_INSANE
         end
       }
     }
-    window('Tiny Midi Player', 200, 50) {
-      horizontal_box {
-        vertical_box {
-          stretchy false
+    
+    menu('Help') {
+      menu_item('Instructions') {
+        on_clicked do
+          msg_box('Instructions', "Score goes down as circles are added.\nIf it reaches -20, you lose!\n\nClick circles to color and score!\nOnce score reaches 0, you win!\n\nBeware of concealed light-colored circles!\nThey are revealed once darker circles intersect them.\n\nThere are four levels of difficulty.\nChange via difficulty menu if the game gets too tough.")
+        end
+      }
+    }
+    
+    window('Color The Circles', WINDOW_WIDTH, WINDOW_HEIGHT) {
+      margined true
+      
+      grid {
+        button('Restart') {
+          left 0
+          top 0
+          halign :center
           
-          button('▶') {
-            on_clicked do
-              play_midi
-            end
+          on_clicked do
+            restart_game
+          end
+        }
+        
+        label('Score goes down as circles are added. If it reaches -20, you lose!') {
+          left 0
+          top 1
+          halign :center
+        }
+        
+        label('Click circles to color and score! Once score reaches 0, you win!') {
+          left 0
+          top 2
+          halign :center
+        }
+        
+        horizontal_box {
+          left 0
+          top 3
+          halign :center
+          
+          label('Score:') {
+            stretchy false
           }
-          button('■') {
-            on_clicked do
-              stop_midi
-            end
+          
+          @score_label = label(@score.to_s) {
+            stretchy false
           }
         }
+        
+        @area = area {
+          left 0
+          top 4
+          hexpand true
+          vexpand true
+          halign :fill
+          valign :fill
 
-        combobox { |c|
-          items @midi_files.map { |path| File.basename(path) }
-          
-          on_selected do
-            @selected_file = @midi_files[c.selected]
-            play_midi if @th&.alive?
+          on_draw do |area_draw_params|
+            path {
+              rectangle(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
+
+              fill :white
+            }
+
+            @circles_data.each do |circle_data|
+              circle_data[:circle] = circle(*circle_data[:args]) {
+                fill circle_data[:fill]
+                stroke circle_data[:stroke]
+              }
+            end
+          end
+
+          on_mouse_down do |area_mouse_event|
+            color_circle(area_mouse_event[:x], area_mouse_event[:y])
           end
         }
       }
@@ -2157,10 +4611,10 @@ class TinyMidiPlayer
   end
 end
 
-TinyMidiPlayer.new
+ColorTheCircles.new.launch
 ```
 
-### Control Gallery
+#### Control Gallery
 
 [examples/control_gallery.rb](examples/control_gallery.rb)
 
@@ -2546,1459 +5000,216 @@ MAIN_WINDOW = window('Control Gallery', 600, 500) {
 MAIN_WINDOW.show
 ```
 
-### Font Button
+#### Custom Draw Text
 
-[examples/font_button.rb](examples/font_button.rb)
+[examples/custom_draw_text.rb](examples/custom_draw_text.rb)
 
 Run with this command from the root of the project if you cloned the project:
 
 ```
-ruby -r './lib/glimmer-dsl-libui' examples/font_button.rb
+ruby -r './lib/glimmer-dsl-libui' examples/custom_draw_text.rb
 ```
 
 Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
 
 ```
-ruby -r glimmer-dsl-libui -e "require 'examples/font_button'"
+ruby -r glimmer-dsl-libui -e "require 'examples/custom_draw_text'"
 ```
 
 Mac | Windows | Linux
 ----|---------|------
-![glimmer-dsl-libui-mac-font-button.png](images/glimmer-dsl-libui-mac-font-button.png) ![glimmer-dsl-libui-mac-font-button-selection.png](images/glimmer-dsl-libui-mac-font-button-selection.png) | ![glimmer-dsl-libui-windows-font-button.png](images/glimmer-dsl-libui-windows-font-button.png) ![glimmer-dsl-libui-windows-font-button-selection.png](images/glimmer-dsl-libui-windows-font-button-selection.png) | ![glimmer-dsl-libui-linux-font-button.png](images/glimmer-dsl-libui-linux-font-button.png) ![glimmer-dsl-libui-linux-font-button-selection.png](images/glimmer-dsl-libui-linux-font-button-selection.png)
-
-[LibUI](https://github.com/kojix2/LibUI) Original Version:
-
-```ruby
-require 'libui'
-
-UI = LibUI
-
-UI.init
-
-main_window = UI.new_window('hello world', 300, 200, 1)
-
-font_button = UI.new_font_button
-font_descriptor = UI::FFI::FontDescriptor.malloc
-UI.font_button_on_changed(font_button) do
-  UI.font_button_font(font_button, font_descriptor)
-  p family: font_descriptor.Family.to_s,
-    size: font_descriptor.Size,
-    weight: font_descriptor.Weight,
-    italic: font_descriptor.Italic,
-    stretch: font_descriptor.Stretch
-end
-
-UI.window_on_closing(main_window) do
-  puts 'Bye Bye'
-  UI.control_destroy(main_window)
-  UI.quit
-  0
-end
-
-UI.window_set_child(main_window, font_button)
-UI.control_show(main_window)
-
-UI.main
-UI.quit
-
-```
-
-[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
-
-```ruby
-require 'glimmer-dsl-libui'
-
-include Glimmer
-
-window('hello world', 300, 200) {
-  font_button { |fb|
-    on_changed do
-      font_descriptor = fb.font
-      p font_descriptor
-    end
-  }
-  
-  on_closing do
-    puts 'Bye Bye'
-  end
-}.show
-```
-
-### Color Button
-
-[examples/color_button.rb](examples/color_button.rb)
-
-Run with this command from the root of the project if you cloned the project:
-
-```
-ruby -r './lib/glimmer-dsl-libui' examples/color_button.rb
-```
-
-Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
-
-```
-ruby -r glimmer-dsl-libui -e "require 'examples/color_button'"
-```
-
-Mac | Windows | Linux
-----|---------|------
-![glimmer-dsl-libui-mac-color-button.png](images/glimmer-dsl-libui-mac-color-button.png) ![glimmer-dsl-libui-mac-color-button-selection.png](images/glimmer-dsl-libui-mac-color-button-selection.png) | ![glimmer-dsl-libui-windows-color-button.png](images/glimmer-dsl-libui-windows-color-button.png) ![glimmer-dsl-libui-windows-color-button-selection.png](images/glimmer-dsl-libui-windows-color-button-selection.png) | ![glimmer-dsl-libui-linux-color-button.png](images/glimmer-dsl-libui-linux-color-button.png) ![glimmer-dsl-libui-linux-color-button-selection.png](images/glimmer-dsl-libui-linux-color-button-selection.png)
+![glimmer-dsl-libui-mac-custom-draw-text.png](images/glimmer-dsl-libui-mac-custom-draw-text.png) ![glimmer-dsl-libui-mac-custom-draw-text-changed.png](images/glimmer-dsl-libui-mac-custom-draw-text-changed.png) | ![glimmer-dsl-libui-windows-custom-draw-text.png](images/glimmer-dsl-libui-windows-custom-draw-text.png) ![glimmer-dsl-libui-windows-custom-draw-text-changed.png](images/glimmer-dsl-libui-windows-custom-draw-text-changed.png) | ![glimmer-dsl-libui-linux-custom-draw-text.png](images/glimmer-dsl-libui-linux-custom-draw-text.png) ![glimmer-dsl-libui-linux-custom-draw-text-changed.png](images/glimmer-dsl-libui-linux-custom-draw-text-changed.png)
 
 New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
 
 ```ruby
 require 'glimmer-dsl-libui'
 
-include Glimmer
-
-window('color button', 240) {
-  color_button { |cb|
-    color :blue
-    
-    on_changed do
-      rgba = cb.color
-      p rgba
-    end
-  }
-}.show
-```
-
-### Date Time Picker
-
-[examples/date_time_picker.rb](examples/date_time_picker.rb)
-
-Run with this command from the root of the project if you cloned the project:
-
-```
-ruby -r './lib/glimmer-dsl-libui' examples/date_time_picker.rb
-```
-
-Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
-
-```
-ruby -r glimmer-dsl-libui -e "require 'examples/date_time_picker'"
-```
-
-Mac | Windows | Linux
-----|---------|------
-![glimmer-dsl-libui-mac-date-time-picker.png](images/glimmer-dsl-libui-mac-date-time-picker.png) | ![glimmer-dsl-libui-windows-date-time-picker.png](images/glimmer-dsl-libui-windows-date-time-picker.png) | ![glimmer-dsl-libui-linux-date-time-picker.png](images/glimmer-dsl-libui-linux-date-time-picker.png)
-
-[LibUI](https://github.com/kojix2/LibUI) Original Version:
-
-```ruby
-require 'libui'
-
-UI = LibUI
-
-UI.init
-
-vbox = UI.new_vertical_box
-
-date_time_picker = UI.new_date_time_picker
-
-time = UI::FFI::TM.malloc
-
-UI.date_time_picker_on_changed(date_time_picker) do
-  UI.date_time_picker_time(date_time_picker, time)
-  p sec: time.tm_sec,
-    min: time.tm_min,
-    hour: time.tm_hour,
-    mday: time.tm_mday,
-    mon: time.tm_mon,
-    year: time.tm_year,
-    wday: time.tm_wday,
-    yday: time.tm_yday,
-    isdst: time.tm_isdst
-end
-UI.box_append(vbox, date_time_picker, 1)
-
-main_window = UI.new_window('Date Time Pickers', 300, 200, 1)
-UI.window_on_closing(main_window) do
-  puts 'Bye Bye'
-  UI.control_destroy(main_window)
-  UI.quit
-  0
-end
-UI.window_set_child(main_window, vbox)
-UI.control_show(main_window)
-
-UI.main
-UI.quit
-```
-
-[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
-
-```ruby
-require 'glimmer-dsl-libui'
-
-include Glimmer
-
-window('Date Time Pickers', 300, 200) {
-  vertical_box {
-    date_time_picker { |dtp|
-      on_changed do
-        time = dtp.time
-        p time
-      end
-    }
-  }
+# Michael Ende (1929-1995)
+# The Neverending Story is a fantasy novel by German writer Michael Ende,
+# The English version, translated by Ralph Manheim, was published in 1983.
+class CustomDrawText
+  include Glimmer
   
-  on_closing do
-    puts 'Bye Bye'
+  def launch
+    window('Michael Ende (1929-1995) The Neverending Story', 600, 500) {
+      margined true
+      
+      vertical_box {
+        form {
+          stretchy false
+          
+          font_button { |fb|
+            label 'Font'
+            
+            on_changed do
+              @string.font = fb.font
+            end
+          }
+          color_button { |cb|
+            label 'Color'
+            
+            on_changed do
+              @string.color = cb.color
+            end
+          }
+          color_button { |cb|
+            label 'Background'
+            
+            on_changed do
+              @string.background = cb.color
+            end
+          }
+          combobox { |c|
+            label 'Underline'
+            items Glimmer::LibUI.enum_symbols(:underline).map(&:to_s).map {|word| word.split('_').map(&:capitalize).join(' ')}
+            selected 'None'
+            
+            on_selected do
+              @string.underline = c.selected_item.underscore
+            end
+          }
+        }
+        
+        area {
+          text { # default arguments for x, y, and width are (0, 0, area_draw_params[:area_width])
+            # align :left # default alignment
+              
+            @string = string {
+              '  At last Ygramul sensed that something was coming toward ' \
+              'her. With the speed of lightning, she turned about, confronting ' \
+              'Atreyu with an enormous steel-blue face. Her single eye had a ' \
+              'vertical pupil, which stared at Atreyu with inconceivable malignancy. ' \
+              "\n\n" \
+              '  A cry of fear escaped Bastian. ' \
+              "\n\n" \
+              '  A cry of terror passed through the ravine and echoed from ' \
+              'side to side. Ygramul turned her eye to left and right, to see if ' \
+              'someone else had arrived, for that sound could not have been ' \
+              'made by the boy who stood there as though paralyzed with ' \
+              'horror. ' \
+              "\n\n" \
+              '  Could she have heard my cry? Bastion wondered in alarm. ' \
+              "But that's not possible. " \
+              "\n\n" \
+              '  And then Atreyu heard Ygramuls voice. It was very high ' \
+              'and slightly hoarse, not at all the right kind of voice for that ' \
+              'enormous face. Her lips did not move as she spoke. It was the ' \
+              'buzzing of a great swarm of hornets that shaped itself into ' \
+              'words. ' \
+              "\n\n"
+            }
+          }
+        }
+      }
+    }.show
   end
-}.show
+end
+
+CustomDrawText.new.launch
 ```
 
-### Grid
-
-[examples/grid.rb](examples/grid.rb)
-
-Run with this command from the root of the project if you cloned the project:
-
-```
-ruby -r './lib/glimmer-dsl-libui' examples/grid.rb
-```
-
-Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
-
-```
-ruby -r glimmer-dsl-libui -e "require 'examples/grid'"
-```
-
-Mac | Windows | Linux
-----|---------|------
-![glimmer-dsl-libui-mac-grid-span.png](images/glimmer-dsl-libui-mac-grid-span.png) ![glimmer-dsl-libui-mac-grid-expand.png](images/glimmer-dsl-libui-mac-grid-expand.png) ![glimmer-dsl-libui-mac-grid-align.png](images/glimmer-dsl-libui-mac-grid-align.png) | ![glimmer-dsl-libui-windows-grid-span.png](images/glimmer-dsl-libui-windows-grid-span.png) ![glimmer-dsl-libui-windows-grid-expand.png](images/glimmer-dsl-libui-windows-grid-expand.png) ![glimmer-dsl-libui-windows-grid-align.png](images/glimmer-dsl-libui-windows-grid-align.png) | ![glimmer-dsl-libui-linux-grid-span.png](images/glimmer-dsl-libui-linux-grid-span.png) ![glimmer-dsl-libui-linux-grid-expand.png](images/glimmer-dsl-libui-linux-grid-expand.png) ![glimmer-dsl-libui-linux-grid-align.png](images/glimmer-dsl-libui-linux-grid-align.png)
-
-New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 2:
 
 ```ruby
 require 'glimmer-dsl-libui'
 
-include Glimmer
-
-window('Grid') {
-  tab {
-    tab_item('Span') {
-      grid {
-        4.times do |top_value|
-          4.times do |left_value|
-            label("(#{left_value}, #{top_value}) xspan1\nyspan1") {
-              left left_value
-              top top_value
-              hexpand true
-              vexpand true
+# Michael Ende (1929-1995)
+# The Neverending Story is a fantasy novel by German writer Michael Ende,
+# The English version, translated by Ralph Manheim, was published in 1983.
+class CustomDrawText
+  include Glimmer
+  
+  def launch
+    window('Michael Ende (1929-1995) The Neverending Story', 600, 500) {
+      margined true
+      
+      vertical_box {
+        form {
+          stretchy false
+          
+          font_button { |fb|
+            label 'Font'
+            
+            on_changed do
+              @font = fb.font
+              @area.queue_redraw_all
+            end
+          }
+          color_button { |cb|
+            label 'Color'
+            
+            on_changed do
+              @color = cb.color
+              @area.queue_redraw_all
+            end
+          }
+          color_button { |cb|
+            label 'Background'
+            
+            on_changed do
+              @background = cb.color
+              @area.queue_redraw_all
+            end
+          }
+          combobox { |c|
+            label 'Underline'
+            items Glimmer::LibUI.enum_symbols(:underline).map(&:to_s).map {|word| word.split('_').map(&:capitalize).join(' ')}
+            selected 'None'
+            
+            on_selected do
+              @underline = c.selected_item.underscore
+              @area.queue_redraw_all
+            end
+          }
+        }
+        
+        @area = area {
+          on_draw do |area_draw_params|
+            text { # default arguments for x, y, and width are (0, 0, area_draw_params[:area_width])
+              # align :left # default alignment
+                
+              string {
+                font @font
+                color @color
+                background @background
+                underline @underline
+                
+                '  At last Ygramul sensed that something was coming toward ' \
+                'her. With the speed of lightning, she turned about, confronting ' \
+                'Atreyu with an enormous steel-blue face. Her single eye had a ' \
+                'vertical pupil, which stared at Atreyu with inconceivable malignancy. ' \
+                "\n\n" \
+                '  A cry of fear escaped Bastian. ' \
+                "\n\n" \
+                '  A cry of terror passed through the ravine and echoed from ' \
+                'side to side. Ygramul turned her eye to left and right, to see if ' \
+                'someone else had arrived, for that sound could not have been ' \
+                'made by the boy who stood there as though paralyzed with ' \
+                'horror. ' \
+                "\n\n" \
+                '  Could she have heard my cry? Bastion wondered in alarm. ' \
+                "But that's not possible. " \
+                "\n\n" \
+                '  And then Atreyu heard Ygramuls voice. It was very high ' \
+                'and slightly hoarse, not at all the right kind of voice for that ' \
+                'enormous face. Her lips did not move as she spoke. It was the ' \
+                'buzzing of a great swarm of hornets that shaped itself into ' \
+                'words. ' \
+                "\n\n"
+              }
             }
           end
-        end
-        label("(0, 4) xspan2\nyspan1 more text fits horizontally") {
-          left 0
-          top 4
-          xspan 2
-        }
-        label("(2, 4) xspan2\nyspan1 more text fits horizontally") {
-          left 2
-          top 4
-          xspan 2
-        }
-        label("(0, 5) xspan1\nyspan2\nmore text\nfits vertically") {
-          left 0
-          top 5
-          yspan 2
-        }
-        label("(0, 7) xspan1\nyspan2\nmore text\nfits vertically") {
-          left 0
-          top 7
-          yspan 2
-        }
-        label("(1, 5) xspan3\nyspan4 a lot more text fits horizontally than before\nand\neven\na lot\nmore text\nfits vertically\nthan\nbefore") {
-          left 1
-          top 5
-          xspan 3
-          yspan 4
         }
       }
-    }
-    tab_item('Expand') {
-      grid {
-        label("(0, 0) hexpand/vexpand\nall available horizontal space is taken\nand\nall\navailable\nvertical\nspace\nis\ntaken") {
-          left 0
-          top 0
-          hexpand true
-          vexpand true
-        }
-        label("(1, 0)") {
-          left 1
-          top 0
-        }
-        label("(0, 1)") {
-          left 0
-          top 1
-        }
-        label("(1, 1)") {
-          left 1
-          top 1
-        }
-      }
-    }
-    tab_item('Align') {
-      grid {
-        label("(0, 0) halign/valign fill\nall available horizontal space is taken\nand\nall\navailable\nvertical\nspace\nis\ntaken") {
-          left 0
-          top 0
-          hexpand true unless OS.mac? # on Mac, only the first label is given all space, so avoid expanding
-          vexpand true unless OS.mac? # on Mac, only the first label is given all space, so avoid expanding
-          halign :fill
-          valign :fill
-        }
-        label("(1, 0) halign/valign start") {
-          left 1
-          top 0
-          hexpand true unless OS.mac? # on Mac, only the first label is given all space, so avoid expanding
-          vexpand true unless OS.mac? # on Mac, only the first label is given all space, so avoid expanding
-          halign :start
-          valign :start
-        }
-        label("(0, 1) halign/valign center") {
-          left 0
-          top 1
-          hexpand true unless OS.mac? # on Mac, only the first label is given all space, so avoid expanding
-          vexpand true unless OS.mac? # on Mac, only the first label is given all space, so avoid expanding
-          halign :center
-          valign :center
-        }
-        label("(1, 1) halign/valign end") {
-          left 1
-          top 1
-          hexpand true unless OS.mac? # on Mac, only the first label is given all space, so avoid expanding
-          vexpand true unless OS.mac? # on Mac, only the first label is given all space, so avoid expanding
-          halign :end
-          valign :end
-        }
-      }
-    }
-  }
-}.show
-```
-
-### Form
-
-[examples/form.rb](examples/form.rb)
-
-Run with this command from the root of the project if you cloned the project:
-
-```
-ruby -r './lib/glimmer-dsl-libui' examples/form.rb
-```
-
-Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
-
-```
-ruby -r glimmer-dsl-libui -e "require 'examples/form'"
-```
-
-Mac | Windows | Linux
-----|---------|------
-![glimmer-dsl-libui-mac-form.png](images/glimmer-dsl-libui-mac-form.png) ![glimmer-dsl-libui-mac-form-msg-box.png](images/glimmer-dsl-libui-mac-form-msg-box.png) | ![glimmer-dsl-libui-windows-form.png](images/glimmer-dsl-libui-windows-form.png) ![glimmer-dsl-libui-windows-form-msg-box.png](images/glimmer-dsl-libui-windows-form-msg-box.png) | ![glimmer-dsl-libui-linux-form.png](images/glimmer-dsl-libui-linux-form.png) ![glimmer-dsl-libui-linux-form-msg-box.png](images/glimmer-dsl-libui-linux-form-msg-box.png)
-
-New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
-
-```ruby
-require 'glimmer-dsl-libui'
-
-include Glimmer
-
-window('Form') {
-  margined true
-  
-  vertical_box {
-    form {
-      @first_name_entry = entry {
-        label 'First Name' # label property is available when control is nested under form
-      }
-      
-      @last_name_entry = entry {
-        label 'Last Name' # label property is available when control is nested under form
-      }
-      
-      @phone_entry = entry {
-        label 'Phone' # label property is available when control is nested under form
-      }
-      
-      @email_entry = entry {
-        label 'Email' # label property is available when control is nested under form
-      }
-    }
-    
-    button('Display Info') {
-      stretchy false
-      
-      on_clicked do
-        msg_box('Info', "#{@first_name_entry.text} #{@last_name_entry.text} has phone #{@phone_entry.text} and email #{@email_entry.text}")
-      end
-    }
-  }
-}.show
-```
-
-### Basic Table
-
-[examples/basic_table.rb](examples/basic_table.rb)
-
-Run with this command from the root of the project if you cloned the project:
-
-```
-ruby -r './lib/glimmer-dsl-libui' examples/basic_table.rb
-```
-
-Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
-
-```
-ruby -r glimmer-dsl-libui -e "require 'examples/basic_table'"
-```
-
-Mac | Windows | Linux
-----|---------|------
-![glimmer-dsl-libui-mac-basic-table.png](images/glimmer-dsl-libui-mac-basic-table.png) | ![glimmer-dsl-libui-windows-basic-table.png](images/glimmer-dsl-libui-windows-basic-table.png) | ![glimmer-dsl-libui-linux-basic-table.png](images/glimmer-dsl-libui-linux-basic-table.png)
-
-[LibUI](https://github.com/kojix2/LibUI) Original Version:
-
-```ruby
-require 'libui'
-
-UI = LibUI
-
-UI.init
-
-main_window = UI.new_window('Animal sounds', 300, 200, 1)
-
-hbox = UI.new_horizontal_box
-UI.window_set_child(main_window, hbox)
-
-data = [
-  %w[cat meow],
-  %w[dog woof],
-  %w[checken cock-a-doodle-doo],
-  %w[horse neigh],
-  %w[cow moo]
-]
-
-# Protects BlockCaller objects from garbage collection.
-@blockcaller = []
-def rbcallback(*args, &block)
-  args << [0] if args.size == 1 # Argument types are ommited
-  blockcaller = Fiddle::Closure::BlockCaller.new(*args, &block)
-  @blockcaller << blockcaller
-  blockcaller
-end
-
-model_handler = UI::FFI::TableModelHandler.malloc
-model_handler.NumColumns   = rbcallback(4) { 2 }
-model_handler.ColumnType   = rbcallback(4) { 0 }
-model_handler.NumRows      = rbcallback(4) { 5 }
-model_handler.CellValue    = rbcallback(1, [1, 1, 4, 4]) do |_, _, row, column|
-  UI.new_table_value_string(data[row][column])
-end
-model_handler.SetCellValue = rbcallback(0, [0]) {}
-
-model = UI.new_table_model(model_handler)
-
-table_params = UI::FFI::TableParams.malloc
-table_params.Model = model
-table_params.RowBackgroundColorModelColumn = -1
-
-table = UI.new_table(table_params)
-UI.table_append_text_column(table, 'Animal', 0, -1)
-UI.table_append_text_column(table, 'Description', 1, -1)
-
-UI.box_append(hbox, table, 1)
-UI.control_show(main_window)
-
-UI.window_on_closing(main_window) do
-  puts 'Bye Bye'
-  UI.control_destroy(main_window)
-  UI.free_table_model(model)
-  UI.quit
-  0
-end
-
-UI.main
-UI.quit
-```
-
-[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
-
-```ruby
-require 'glimmer-dsl-libui'
-
-include Glimmer
-
-data = [
-  %w[cat meow],
-  %w[dog woof],
-  %w[chicken cock-a-doodle-doo],
-  %w[horse neigh],
-  %w[cow moo]
-]
-
-window('Animal sounds', 300, 200) {
-  horizontal_box {
-    table {
-      text_column('Animal')
-      text_column('Description')
-
-      cell_rows data
-    }
-  }
-  
-  on_closing do
-    puts 'Bye Bye'
+    }.show
   end
-}.show
-```
-
-### Editable Table
-
-[examples/editable_table.rb](examples/editable_table.rb)
-
-Run with this command from the root of the project if you cloned the project:
-
-```
-ruby -r './lib/glimmer-dsl-libui' examples/editable_table.rb
-```
-
-Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
-
-```
-ruby -r glimmer-dsl-libui -e "require 'examples/editable_table'"
-```
-
-Mac | Windows | Linux
-----|---------|------
-![glimmer-dsl-libui-mac-editable-table.png](images/glimmer-dsl-libui-mac-editable-table.png) ![glimmer-dsl-libui-mac-editable-table-editing.png](images/glimmer-dsl-libui-mac-editable-table-editing.png) ![glimmer-dsl-libui-mac-editable-table-edited.png](images/glimmer-dsl-libui-mac-editable-table-edited.png) | ![glimmer-dsl-libui-windows-editable-table.png](images/glimmer-dsl-libui-windows-editable-table.png) ![glimmer-dsl-libui-windows-editable-table-editing.png](images/glimmer-dsl-libui-windows-editable-table-editing.png) ![glimmer-dsl-libui-windows-editable-table-edited.png](images/glimmer-dsl-libui-windows-editable-table-edited.png) | ![glimmer-dsl-libui-linux-editable-table.png](images/glimmer-dsl-libui-linux-editable-table.png) ![glimmer-dsl-libui-linux-editable-table-editing.png](images/glimmer-dsl-libui-linux-editable-table-editing.png) ![glimmer-dsl-libui-linux-editable-table-edited.png](images/glimmer-dsl-libui-linux-editable-table-edited.png)
-
-New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
-
-```ruby
-require 'glimmer-dsl-libui'
-
-include Glimmer
-
-data = [
-  %w[cat meow],
-  %w[dog woof],
-  %w[chicken cock-a-doodle-doo],
-  %w[horse neigh],
-  %w[cow moo]
-]
-
-window('Editable animal sounds', 300, 200) {
-  horizontal_box {
-    table {
-      text_column('Animal')
-      text_column('Description')
-
-      cell_rows data
-      editable true
-      
-      on_changed do |row, type, row_data| # fires on all changes (even ones happening through data array)
-        puts "Row #{row} #{type}: #{row_data}"
-      end
-      
-      on_edited do |row, row_data| # only fires on direct table editing
-        puts "Row #{row} edited: #{row_data}"
-      end
-    }
-  }
-  
-  on_closing do
-    puts 'Bye Bye'
-  end
-}.show
-```
-
-### Editable Column Table
-
-[examples/editable_column_table.rb](examples/editable_column_table.rb)
-
-Run with this command from the root of the project if you cloned the project:
-
-```
-ruby -r './lib/glimmer-dsl-libui' examples/editable_column_table.rb
-```
-
-Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
-
-```
-ruby -r glimmer-dsl-libui -e "require 'examples/editable_column_table'"
-```
-
-Mac | Windows | Linux
-----|---------|------
-![glimmer-dsl-libui-mac-editable-column-table-editing.png](images/glimmer-dsl-libui-mac-editable-column-table-editing.png) ![glimmer-dsl-libui-mac-editable-column-table-edited.png](images/glimmer-dsl-libui-mac-editable-column-table-edited.png) | ![glimmer-dsl-libui-windows-editable-column-table-editing.png](images/glimmer-dsl-libui-windows-editable-column-table-editing.png) ![glimmer-dsl-libui-windows-editable-column-table-edited.png](images/glimmer-dsl-libui-windows-editable-column-table-edited.png) | ![glimmer-dsl-libui-linux-editable-column-table-editing.png](images/glimmer-dsl-libui-linux-editable-column-table-editing.png) ![glimmer-dsl-libui-linux-editable-column-table-edited.png](images/glimmer-dsl-libui-linux-editable-column-table-edited.png)
-
-New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
-
-```ruby
-require 'glimmer-dsl-libui'
-
-include Glimmer
-
-data = [
-  %w[cat calm meow],
-  %w[dog loyal woof],
-  %w[chicken bird cock-a-doodle-doo],
-  %w[horse fast neigh],
-  %w[cow slow moo]
-]
-
-window('Editable column animal sounds', 400, 200) {
-  horizontal_box {
-    table {
-      text_column('Animal')
-      text_column('Description')
-      text_column('Sound (Editable)') {
-        editable true
-      }
-
-      cell_rows data
-    }
-  }
-  
-  on_closing do
-    puts 'Bye Bye'
-  end
-}.show
-```
-
-### Basic Table Image
-
-Note that behavior varies per platform (i.e. how `table` chooses to size images by default).
-
-[examples/basic_table_image.rb](examples/basic_table_image.rb)
-
-Run with this command from the root of the project if you cloned the project:
-
-```
-ruby -r './lib/glimmer-dsl-libui' examples/basic_table_image.rb
-```
-
-Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
-
-```
-ruby -r glimmer-dsl-libui -e "require 'examples/basic_table_image'"
-```
-
-Mac | Windows | Linux
-----|---------|------
-![glimmer-dsl-libui-mac-basic-table-image.png](images/glimmer-dsl-libui-mac-basic-table-image.png) | ![glimmer-dsl-libui-windows-basic-table-image.png](images/glimmer-dsl-libui-windows-basic-table-image.png) | ![glimmer-dsl-libui-linux-basic-table-image.png](images/glimmer-dsl-libui-linux-basic-table-image.png)
-
-[LibUI](https://github.com/kojix2/LibUI) Original Version:
-
-```ruby
-# NOTE:
-# This example displays images that can be freely downloaded from the Studio Ghibli website.
-
-require 'libui'
-require 'chunky_png'
-require 'open-uri'
-
-UI = LibUI
-
-UI.init
-
-main_window = UI.new_window('The Red Turtle', 310, 350, 0)
-
-hbox = UI.new_horizontal_box
-UI.window_set_child(main_window, hbox)
-
-IMAGES = []
-
-50.times do |i|
-  url = format('https://www.ghibli.jp/gallery/thumb-redturtle%03d.png', (i + 1))
-  puts "Processing Image: #{url}"
-  f = URI.open(url)
-  canvas = ChunkyPNG::Canvas.from_io(f)
-  f.close
-  data = canvas.to_rgba_stream
-  width = canvas.width
-  height = canvas.height
-  image = UI.new_image(width, height)
-  UI.image_append(image, data, width, height, width * 4)
-  IMAGES << image
-rescue StandardError => e
-  warn url, e.message
 end
 
-# Protects BlockCaller objects from garbage collection.
-@blockcaller = []
-def rbcallback(*args, &block)
-  args << [0] if args.size == 1 # Argument types are ommited
-  blockcaller = Fiddle::Closure::BlockCaller.new(*args, &block)
-  @blockcaller << blockcaller
-  blockcaller
-end
-
-model_handler = UI::FFI::TableModelHandler.malloc
-model_handler.NumColumns   = rbcallback(4) { 1 }
-model_handler.ColumnType   = rbcallback(4) { 1 } # Image
-model_handler.NumRows      = rbcallback(4) { IMAGES.size }
-model_handler.CellValue    = rbcallback(1, [1, 1, 4, 4]) do |_, _, row, _column|
-  UI.new_table_value_image(IMAGES[row])
-end
-model_handler.SetCellValue = rbcallback(0, [0]) {}
-
-model = UI.new_table_model(model_handler)
-
-table_params = UI::FFI::TableParams.malloc
-table_params.Model = model
-table_params.RowBackgroundColorModelColumn = -1
-
-table = UI.new_table(table_params)
-UI.table_append_image_column(table, 'www.ghibli.jp/works/red-turtle', 0)
-
-UI.box_append(hbox, table, 1)
-UI.control_show(main_window)
-
-UI.window_on_closing(main_window) do
-  puts 'Bye Bye'
-  UI.control_destroy(main_window)
-  UI.free_table_model(model)
-  IMAGES.each { |i| UI.free_image(i) }
-  UI.quit
-  0
-end
-
-UI.main
-UI.quit
+CustomDrawText.new.launch
 ```
 
-[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
-
-```ruby
-# NOTE:
-# This example displays images that can be freely downloaded from the Studio Ghibli website.
-
-require 'glimmer-dsl-libui'
-
-include Glimmer
-
-IMAGE_ROWS = []
-
-50.times do |i|
-  url = format('https://www.ghibli.jp/gallery/thumb-redturtle%03d.png', (i + 1))
-  puts "Processing Image: #{url}"; $stdout.flush # for Windows
-  IMAGE_ROWS << [image(url)] # array of one column cell
-rescue StandardError => e
-  warn url, e.message
-end
-
-window('The Red Turtle', 310, 350, false) {
-  horizontal_box {
-    table {
-      image_column('www.ghibli.jp/works/red-turtle')
-      
-      cell_rows IMAGE_ROWS
-    }
-  }
-  
-  on_closing do
-    puts 'Bye Bye'
-  end
-}.show
-```
-
-[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 2 (manual construction of `image` from `image_part`):
-
-```ruby
-# NOTE:
-# This example displays images that can be freely downloaded from the Studio Ghibli website.
-
-require 'glimmer-dsl-libui'
-require 'chunky_png'
-require 'open-uri'
-
-include Glimmer
-
-IMAGE_ROWS = []
-
-50.times do |i|
-  url = format('https://www.ghibli.jp/gallery/thumb-redturtle%03d.png', (i + 1))
-  puts "Processing Image: #{url}"
-  f = URI.open(url)
-  canvas = ChunkyPNG::Canvas.from_io(f)
-  f.close
-  data = canvas.to_rgba_stream
-  width = canvas.width
-  height = canvas.height
-  img = image {
-    image_part(data, width, height, width * 4)
-  }
-  IMAGE_ROWS << [img] # array of one column cell
-rescue StandardError => e
-  warn url, e.message
-end
-
-window('The Red Turtle', 310, 350, false) {
-  horizontal_box {
-    table {
-      image_column('www.ghibli.jp/works/red-turtle', 0)
-      
-      cell_rows IMAGE_ROWS
-    }
-  }
-    
-  on_closing do
-    puts 'Bye Bye'
-  end
-}.show
-```
-
-### Basic Table Image Text
-
-Note that behavior varies per platform (i.e. how `table` chooses to size images by default).
-
-[examples/basic_table_image_text.rb](examples/basic_table_image_text.rb)
-
-Run with this command from the root of the project if you cloned the project:
-
-```
-ruby -r './lib/glimmer-dsl-libui' examples/basic_table_image_text.rb
-```
-
-Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
-
-```
-ruby -r glimmer-dsl-libui -e "require 'examples/basic_table_image_text'"
-```
-
-Mac | Windows | Linux
-----|---------|------
-![glimmer-dsl-libui-mac-basic-table-image-text.png](images/glimmer-dsl-libui-mac-basic-table-image-text.png) | ![glimmer-dsl-libui-windows-basic-table-image-text.png](images/glimmer-dsl-libui-windows-basic-table-image-text.png) | ![glimmer-dsl-libui-linux-basic-table-image-text.png](images/glimmer-dsl-libui-linux-basic-table-image-text.png)
-
-New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
-
-```ruby
-# NOTE:
-# This example displays images that can be freely downloaded from the Studio Ghibli website.
-
-require 'glimmer-dsl-libui'
-
-include Glimmer
-
-IMAGE_ROWS = []
-
-5.times do |i|
-  url = format('https://www.ghibli.jp/gallery/thumb-redturtle%03d.png', (i + 1))
-  puts "Processing Image: #{url}"; $stdout.flush # for Windows
-  text = url.sub('https://www.ghibli.jp/gallery/thumb-redturtle', '').sub('.png', '')
-  img = image(url)
-  IMAGE_ROWS << [[img, text], [img, text]] # cell values are dual-element arrays
-rescue StandardError => e
-  warn url, e.message
-end
-
-window('The Red Turtle', 670, 350) {
-  horizontal_box {
-    table {
-      image_text_column('image/number')
-      image_text_column('image/number (editable)') {
-        editable true
-      }
-      
-      cell_rows IMAGE_ROWS
-    }
-  }
-}.show
-```
-
-New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 2 (manual construction of `image` from `image_part`):
-
-```ruby
-# NOTE:
-# This example displays images that can be freely downloaded from the Studio Ghibli website.
-
-require 'glimmer-dsl-libui'
-require 'chunky_png'
-require 'open-uri'
-
-include Glimmer
-
-IMAGE_ROWS = []
-
-5.times do |i|
-  url = format('https://www.ghibli.jp/gallery/thumb-redturtle%03d.png', (i + 1))
-  puts "Processing Image: #{url}"
-  f = URI.open(url)
-  canvas = ChunkyPNG::Canvas.from_io(f)
-  f.close
-  data = canvas.to_rgba_stream
-  width = canvas.width
-  height = canvas.height
-  img = image {
-    image_part(data, width, height, width * 4)
-  }
-  text = url.sub('https://www.ghibli.jp/gallery/thumb-redturtle', '').sub('.png', '')
-  IMAGE_ROWS << [[img, text], [img, text]] # cell values are dual-element arrays
-rescue StandardError => e
-  warn url, e.message
-end
-
-window('The Red Turtle', 670, 350) {
-  horizontal_box {
-    table {
-      image_text_column('image/number')
-      image_text_column('image/number (editable)') {
-        editable true
-      }
-      
-      cell_rows IMAGE_ROWS
-    }
-  }
-}.show
-```
-
-### Basic Table Button
-
-[examples/basic_table_button.rb](examples/basic_table_button.rb)
-
-Run with this command from the root of the project if you cloned the project:
-
-```
-ruby -r './lib/glimmer-dsl-libui' examples/basic_table_button.rb
-```
-
-Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
-
-```
-ruby -r glimmer-dsl-libui -e "require 'examples/basic_table_button'"
-```
-
-Mac | Windows | Linux
-----|---------|------
-![glimmer-dsl-libui-mac-basic-table-button.png](images/glimmer-dsl-libui-mac-basic-table-button.png) ![glimmer-dsl-libui-mac-basic-table-button-deleted.png](images/glimmer-dsl-libui-mac-basic-table-button-deleted.png) | ![glimmer-dsl-libui-windows-basic-table-button.png](images/glimmer-dsl-libui-windows-basic-table-button.png) ![glimmer-dsl-libui-windows-basic-table-button-deleted.png](images/glimmer-dsl-libui-windows-basic-table-button-deleted.png) | ![glimmer-dsl-libui-linux-basic-table-button.png](images/glimmer-dsl-libui-linux-basic-table-button.png) ![glimmer-dsl-libui-linux-basic-table-button-deleted.png](images/glimmer-dsl-libui-linux-basic-table-button-deleted.png)
-
-New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
-
-```ruby
-require 'glimmer-dsl-libui'
-
-include Glimmer
-
-data = [
-  %w[cat meow delete],
-  %w[dog woof delete],
-  %w[chicken cock-a-doodle-doo delete],
-  %w[horse neigh delete],
-  %w[cow moo delete]
-]
-
-window('Animal sounds', 300, 200) {
-  horizontal_box {
-    table {
-      text_column('Animal')
-      text_column('Description')
-      button_column('Action') {
-        on_clicked do |row|
-          data.delete_at(row) # automatically deletes actual table row due to implicit data-binding
-        end
-      }
-
-      cell_rows data # implicit data-binding
-      
-      on_changed do |row, type, row_data|
-        puts "Row #{row} #{type}: #{row_data}"
-      end
-    }
-  }
-}.show
-```
-
-### Basic Table Checkbox
-
-[examples/basic_table_checkbox.rb](examples/basic_table_checkbox.rb)
-
-Run with this command from the root of the project if you cloned the project:
-
-```
-ruby -r './lib/glimmer-dsl-libui' examples/basic_table_checkbox.rb
-```
-
-Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
-
-```
-ruby -r glimmer-dsl-libui -e "require 'examples/basic_table_checkbox'"
-```
-
-Mac | Windows | Linux
-----|---------|------
-![glimmer-dsl-libui-mac-basic-table-checkbox.png](images/glimmer-dsl-libui-mac-basic-table-checkbox.png) | ![glimmer-dsl-libui-windows-basic-table-checkbox.png](images/glimmer-dsl-libui-windows-basic-table-checkbox.png) | ![glimmer-dsl-libui-linux-basic-table-checkbox.png](images/glimmer-dsl-libui-linux-basic-table-checkbox.png)
-
-New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
-
-```ruby
-require 'glimmer-dsl-libui'
-
-include Glimmer
-
-data = [
-  ['cat', 'meow', true],
-  ['dog', 'woof', true],
-  ['chicken', 'cock-a-doodle-doo', false],
-  ['horse', 'neigh', true],
-  ['cow', 'moo', true]
-]
-
-window('Animal sounds', 300, 200) {
-  horizontal_box {
-    table {
-      text_column('Animal')
-      text_column('Description')
-      checkbox_column('Mammal')
-
-      cell_rows data
-    }
-  }
-}.show
-```
-
-### Basic Table Checkbox Text
-
-[examples/basic_table_checkbox_text.rb](examples/basic_table_checkbox_text.rb)
-
-Run with this command from the root of the project if you cloned the project:
-
-```
-ruby -r './lib/glimmer-dsl-libui' examples/basic_table_checkbox_text.rb
-```
-
-Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
-
-```
-ruby -r glimmer-dsl-libui -e "require 'examples/basic_table_checkbox_text'"
-```
-
-Mac | Windows | Linux
-----|---------|------
-![glimmer-dsl-libui-mac-basic-table-checkbox-text.png](images/glimmer-dsl-libui-mac-basic-table-checkbox-text.png) | ![glimmer-dsl-libui-windows-basic-table-checkbox-text.png](images/glimmer-dsl-libui-windows-basic-table-checkbox-text.png) | ![glimmer-dsl-libui-linux-basic-table-checkbox-text.png](images/glimmer-dsl-libui-linux-basic-table-checkbox-text.png)
-
-New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
-
-```ruby
-require 'glimmer-dsl-libui'
-
-include Glimmer
-
-data = [
-  ['cat', 'meow', [true, 'mammal']],
-  ['dog', 'woof', [true, 'mammal']],
-  ['chicken', 'cock-a-doodle-doo', [false, 'mammal']],
-  ['horse', 'neigh', [true, 'mammal']],
-  ['cow', 'moo', [true, 'mammal']]
-]
-
-window('Animal sounds', 400, 200) {
-  horizontal_box {
-    table {
-      text_column('Animal')
-      text_column('Sound')
-      checkbox_text_column('Description')
-
-      cell_rows data
-    }
-  }
-}.show
-```
-
-### Basic Table Progress Bar
-
-[examples/basic_table_progress_bar.rb](examples/basic_table_progress_bar.rb)
-
-Run with this command from the root of the project if you cloned the project:
-
-```
-ruby -r './lib/glimmer-dsl-libui' examples/basic_table_progress_bar.rb
-```
-
-Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
-
-```
-ruby -r glimmer-dsl-libui -e "require 'examples/basic_table_progress_bar'"
-```
-
-Mac | Windows | Linux
-----|---------|------
-![glimmer-dsl-libui-mac-basic-table-progress-bar.png](images/glimmer-dsl-libui-mac-basic-table-progress-bar.png) | ![glimmer-dsl-libui-windows-basic-table-progress-bar.png](images/glimmer-dsl-libui-windows-basic-table-progress-bar.png) | ![glimmer-dsl-libui-linux-basic-table-progress-bar.png](images/glimmer-dsl-libui-linux-basic-table-progress-bar.png)
-
-New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
-
-```ruby
-require 'glimmer-dsl-libui'
-
-include Glimmer
-
-data = [
-  ['task 1', 0],
-  ['task 2', 15],
-  ['task 3', 100],
-  ['task 4', 75],
-  ['task 5', -1],
-]
-
-window('Task Progress', 300, 200) {
-  vertical_box {
-    table {
-      text_column('Task')
-      progress_bar_column('Progress')
-
-      cell_rows data # implicit data-binding
-    }
-    
-    button('Mark All As Done') {
-      stretchy false
-      
-      on_clicked do
-        data.each_with_index do |row_data, row|
-          data[row][1] = 100 # automatically updates table due to implicit data-binding
-        end
-      end
-    }
-  }
-}.show
-```
-
-### Basic Table Color
-
-[examples/basic_table_color.rb](examples/basic_table_color.rb)
-
-Run with this command from the root of the project if you cloned the project:
-
-```
-ruby -r './lib/glimmer-dsl-libui' examples/basic_table_color.rb
-```
-
-Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
-
-```
-ruby -r glimmer-dsl-libui -e "require 'examples/basic_table_color'"
-```
-
-Mac | Windows | Linux
-----|---------|------
-![glimmer-dsl-libui-mac-basic-table-color.png](images/glimmer-dsl-libui-mac-basic-table-color.png) | ![glimmer-dsl-libui-windows-basic-table-color.png](images/glimmer-dsl-libui-windows-basic-table-color.png) | ![glimmer-dsl-libui-linux-basic-table-color.png](images/glimmer-dsl-libui-linux-basic-table-color.png)
-
-New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
-
-```ruby
-# frozen_string_literal: true
-
-require 'glimmer-dsl-libui'
-
-include Glimmer
-
-img = image(File.expand_path('../icons/glimmer.png', __dir__), 24, 24)
-
-data = [
-  [['cat', :red]      , ['meow', :blue]                  , [true, 'mammal', :green], [img, 'Glimmer', :dark_blue], {r: 255, g: 120, b: 0, a: 0.5}],
-  [['dog', :yellow]   , ['woof', {r: 240, g: 32, b: 32}] , [true, 'mammal', :green], [img, 'Glimmer', :dark_blue], :skyblue],
-  [['chicken', :beige], ['cock-a-doodle-doo', :blue]     , [false, 'mammal', :red] , [img, 'Glimmer', :beige], {r: 5, g: 120, b: 110}],
-  [['horse', :purple] , ['neigh', {r: 240, g: 32, b: 32}], [true, 'mammal', :green], [img, 'Glimmer', :dark_blue], '13a1fb'],
-  [['cow', :gray]     , ['moo', :blue]                   , [true, 'mammal', :green], [img, 'Glimmer', :brown], 0x12ff02]
-]
-
-window('Animals', 500, 200) {
-  horizontal_box {
-    table {
-      text_color_column('Animal')
-      text_color_column('Sound')
-      checkbox_text_color_column('Description')
-      image_text_color_column('GUI')
-      background_color_column('Mammal')
-
-      cell_rows data
-    }
-  }
-}.show
-```
-
-New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 2 (manual construction of [libui](https://github.com/andlabs/libui) `image` from `image_part`):
-
-```ruby
-require 'glimmer-dsl-libui'
-require 'chunky_png'
-
-include Glimmer
-
-f = File.open(File.expand_path('../icons/glimmer.png', __dir__))
-canvas = ChunkyPNG::Canvas.from_io(f)
-f.close
-canvas.resample_nearest_neighbor!(24, 24)
-data = canvas.to_rgba_stream
-width = canvas.width
-height = canvas.height
-img = image {
-  image_part(data, width, height, width * 4)
-}
-
-data = [
-  [['cat', :red]      , ['meow', :blue]                  , [true, 'mammal', :green], [img, 'Glimmer', :dark_blue], {r: 255, g: 120, b: 0, a: 0.5}],
-  [['dog', :yellow]   , ['woof', {r: 240, g: 32, b: 32}] , [true, 'mammal', :green], [img, 'Glimmer', :dark_blue], :skyblue],
-  [['chicken', :beige], ['cock-a-doodle-doo', :blue]     , [false, 'mammal', :red] , [img, 'Glimmer', :beige], {r: 5, g: 120, b: 110}],
-  [['horse', :purple] , ['neigh', {r: 240, g: 32, b: 32}], [true, 'mammal', :green], [img, 'Glimmer', :dark_blue], '13a1fb'],
-  [['cow', :gray]     , ['moo', :blue]                   , [true, 'mammal', :green], [img, 'Glimmer', :brown], 0x12ff02]
-]
-
-window('Animals', 500, 200) {
-  horizontal_box {
-    table {
-      text_color_column('Animal')
-      text_color_column('Sound')
-      checkbox_text_color_column('Description')
-      image_text_color_column('GUI')
-      background_color_column('Mammal')
-
-      cell_rows data
-    }
-  }
-}.show
-```
-
-### Form Table
-
-[examples/form_table.rb](examples/form_table.rb)
-
-Run with this command from the root of the project if you cloned the project:
-
-```
-ruby -r './lib/glimmer-dsl-libui' examples/form_table.rb
-```
-
-Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
-
-```
-ruby -r glimmer-dsl-libui -e "require 'examples/form_table'"
-```
-
-Mac | Windows | Linux
-----|---------|------
-![glimmer-dsl-libui-mac-form-table.png](images/glimmer-dsl-libui-mac-form-table.png) ![glimmer-dsl-libui-mac-form-table-contact-entered.png](images/glimmer-dsl-libui-mac-form-table-contact-entered.png) ![glimmer-dsl-libui-mac-form-table-filtered.png](images/glimmer-dsl-libui-mac-form-table-filtered.png) | ![glimmer-dsl-libui-windows-form-table.png](images/glimmer-dsl-libui-windows-form-table.png) ![glimmer-dsl-libui-windows-form-table-contact-entered.png](images/glimmer-dsl-libui-windows-form-table-contact-entered.png) ![glimmer-dsl-libui-windows-form-table-filtered.png](images/glimmer-dsl-libui-windows-form-table-filtered.png) | ![glimmer-dsl-libui-linux-form-table.png](images/glimmer-dsl-libui-linux-form-table.png) ![glimmer-dsl-libui-linux-form-table-contact-entered.png](images/glimmer-dsl-libui-linux-form-table-contact-entered.png) ![glimmer-dsl-libui-linux-form-table-filtered.png](images/glimmer-dsl-libui-linux-form-table-filtered.png)
-
-New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
-
-```ruby
-require 'glimmer-dsl-libui'
-
-include Glimmer
-
-data = [
-  ['Lisa Sky', 'lisa@sky.com', '720-523-4329', 'Denver', 'CO', '80014'],
-  ['Jordan Biggins', 'jordan@biggins.com', '617-528-5399', 'Boston', 'MA', '02101'],
-  ['Mary Glass', 'mary@glass.com', '847-589-8788', 'Elk Grove Village', 'IL', '60007'],
-  ['Darren McGrath', 'darren@mcgrath.com', '206-539-9283', 'Seattle', 'WA', '98101'],
-  ['Melody Hanheimer', 'melody@hanheimer.com', '213-493-8274', 'Los Angeles', 'CA', '90001'],
-]
-
-window('Contacts', 600, 600) { |w|
-  margined true
-  
-  vertical_box {
-    form {
-      stretchy false
-      
-      @name_entry = entry {
-        label 'Name'
-      }
-      
-      @email_entry = entry {
-        label 'Email'
-      }
-      
-      @phone_entry = entry {
-        label 'Phone'
-      }
-      
-      @city_entry = entry {
-        label 'City'
-      }
-      
-      @state_entry = entry {
-        label 'State'
-      }
-    }
-    
-    button('Save Contact') {
-      stretchy false
-      
-      on_clicked do
-        new_row = [@name_entry.text, @email_entry.text, @phone_entry.text, @city_entry.text, @state_entry.text]
-        if new_row.include?('')
-          msg_box_error(w, 'Validation Error!', 'All fields are required! Please make sure to enter a value for all fields.')
-        else
-          data << new_row # automatically inserts a row into the table due to implicit data-binding
-          @unfiltered_data = data.dup
-          @name_entry.text = ''
-          @email_entry.text = ''
-          @phone_entry.text = ''
-          @city_entry.text = ''
-          @state_entry.text = ''
-        end
-      end
-    }
-    
-    search_entry { |se|
-      stretchy false
-      
-      on_changed do
-        filter_value = se.text
-        @unfiltered_data ||= data.dup
-        # Unfilter first to remove any previous filters
-        data.replace(@unfiltered_data) # affects table indirectly through implicit data-binding
-        # Now, apply filter if entered
-        unless filter_value.empty?
-          data.filter! do |row_data| # affects table indirectly through implicit data-binding
-            row_data.any? do |cell|
-              cell.to_s.downcase.include?(filter_value.downcase)
-            end
-          end
-        end
-      end
-    }
-    
-    table {
-      text_column('Name')
-      text_column('Email')
-      text_column('Phone')
-      text_column('City')
-      text_column('State')
-
-      cell_rows data # implicit data-binding
-      
-      on_changed do |row, type, row_data|
-        puts "Row #{row} #{type}: #{row_data}"
-      end
-    }
-  }
-}.show
-```
-
-### Basic Area
-
-[examples/basic_area.rb](examples/basic_area.rb)
-
-Run with this command from the root of the project if you cloned the project:
-
-```
-ruby -r './lib/glimmer-dsl-libui' examples/basic_area.rb
-```
-
-Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
-
-```
-ruby -r glimmer-dsl-libui -e "require 'examples/basic_area'"
-```
-
-Mac | Windows | Linux
-----|---------|------
-![glimmer-dsl-libui-mac-basic-area.png](images/glimmer-dsl-libui-mac-basic-area.png) | ![glimmer-dsl-libui-windows-basic-area.png](images/glimmer-dsl-libui-windows-basic-area.png) | ![glimmer-dsl-libui-linux-basic-area.png](images/glimmer-dsl-libui-linux-basic-area.png)
-
-[LibUI](https://github.com/kojix2/LibUI) Original Version:
-
-```ruby
-require 'libui'
-
-UI = LibUI
-
-UI.init
-
-handler = UI::FFI::AreaHandler.malloc
-area    = UI.new_area(handler)
-brush   = UI::FFI::DrawBrush.malloc
-
-handler_draw_event = Fiddle::Closure::BlockCaller.new(0, [1, 1, 1]) do |_, _, area_draw_params|
-  path = UI.draw_new_path(0)
-  UI.draw_path_add_rectangle(path, 0, 0, 400, 400)
-  UI.draw_path_end(path)
-  brush.Type = 0
-  brush.R = 0.4
-  brush.G = 0.4
-  brush.B = 0.8
-  brush.A = 1.0
-  area_draw_params = UI::FFI::AreaDrawParams.new(area_draw_params)
-  UI.draw_fill(area_draw_params.Context, path, brush.to_ptr)
-  UI.draw_free_path(path)
-end
-
-handler.Draw         = handler_draw_event
-handler.MouseEvent   = Fiddle::Closure::BlockCaller.new(0, [0]) {}
-handler.MouseCrossed = Fiddle::Closure::BlockCaller.new(0, [0]) {}
-handler.DragBroken   = Fiddle::Closure::BlockCaller.new(0, [0]) {}
-handler.KeyEvent     = Fiddle::Closure::BlockCaller.new(0, [0]) {}
-
-box = UI.new_vertical_box
-UI.box_set_padded(box, 1)
-UI.box_append(box, area, 1)
-
-main_window = UI.new_window('Basic Area', 400, 400, 1)
-UI.window_set_margined(main_window, 1)
-UI.window_set_child(main_window, box)
-
-UI.window_on_closing(main_window) do
-  UI.control_destroy(main_window)
-  UI.quit
-  0
-end
-UI.control_show(main_window)
-
-UI.main
-UI.quit
-```
-
-[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
-
-```ruby
-require 'glimmer-dsl-libui'
-
-include Glimmer
-
-window('Basic Area', 400, 400) {
-  margined true
-  
-  vertical_box {
-    area {
-      path { # a stable path is added declaratively
-        rectangle(0, 0, 400, 400)
-        
-        fill r: 102, g: 102, b: 204, a: 1.0
-      }
-    }
-  }
-}.show
-```
-
-[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 2 (semi-declarative `on_draw` dynamic `path` approach):
-
-```ruby
-require 'glimmer-dsl-libui'
-
-include Glimmer
-
-window('Basic Area', 400, 400) {
-  margined true
-  
-  vertical_box {
-    area {
-      on_draw do |area_draw_params|
-        path { # a dynamic path is added semi-declaratively inside on_draw block
-          rectangle(0, 0, 400, 400)
-          
-          fill r: 102, g: 102, b: 204, a: 1.0
-        }
-      end
-    }
-  }
-}.show
-```
-
-### Dynamic Area
+#### Dynamic Area
 
 [examples/dynamic_area.rb](examples/dynamic_area.rb)
 
@@ -4220,128 +5431,25 @@ window('Dynamic Area', 240, 600) {
 }.show
 ```
 
-### Basic Scrolling Area
+#### Editable Column Table
 
-[examples/basic_scrolling_area.rb](examples/basic_scrolling_area.rb)
+[examples/editable_column_table.rb](examples/editable_column_table.rb)
 
 Run with this command from the root of the project if you cloned the project:
 
 ```
-ruby -r './lib/glimmer-dsl-libui' examples/basic_scrolling_area.rb
+ruby -r './lib/glimmer-dsl-libui' examples/editable_column_table.rb
 ```
 
 Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
 
 ```
-ruby -r glimmer-dsl-libui -e "require 'examples/basic_scrolling_area'"
-```
-
-Mac |
-----|
-![glimmer-dsl-libui-mac-dynamic-area.png](images/glimmer-dsl-libui-mac-basic-scrolling-area.png) ![glimmer-dsl-libui-mac-dynamic-area-updated.png](images/glimmer-dsl-libui-mac-basic-scrolling-area-scrolled.png)
-
-New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
-
-```ruby
-require 'glimmer-dsl-libui'
-
-class BasicScrollingArea
-  include Glimmer
-  
-  SCROLLING_AREA_WIDTH = 800
-  SCROLLING_AREA_HEIGHT = 400
-  SCROLLING_AREA_PADDING_X = 20
-  SCROLLING_AREA_PADDING_Y = 20
-  
-  def initialize
-    @x = SCROLLING_AREA_PADDING_X
-    @y = SCROLLING_AREA_HEIGHT - SCROLLING_AREA_PADDING_Y
-    create_gui
-    Glimmer::LibUI.timer(0.01) do
-      @x += SCROLLING_AREA_PADDING_X
-      @y = [[@y + rand(SCROLLING_AREA_PADDING_Y*4)*(rand(2) == 0 ? -1 : 1), SCROLLING_AREA_PADDING_Y].max, SCROLLING_AREA_HEIGHT - SCROLLING_AREA_PADDING_Y].min
-      @graph.content { # re-open @graph's content and add a line
-        line(@x, @y)
-      }
-      # if there is a need to enlarge scrolling area, call `@scrolling_area.set_size(new_width, new_height)`
-      @scrolling_area.scroll_to(@x - (SCROLLING_AREA_WIDTH/2), @y) # 3rd and 4th arguments for width and height are assumed as those of main window by default if not supplied
-      # return false to stop timer once @x exceeds scrolling area width - padding
-      false if @x >= (SCROLLING_AREA_WIDTH - SCROLLING_AREA_PADDING_X*2)
-    end
-  end
-  
-  def launch
-    @main_window.show
-  end
-  
-  def x_axis
-    polyline(SCROLLING_AREA_PADDING_X, SCROLLING_AREA_HEIGHT - SCROLLING_AREA_PADDING_Y, SCROLLING_AREA_WIDTH - SCROLLING_AREA_PADDING_X*2, SCROLLING_AREA_HEIGHT - SCROLLING_AREA_PADDING_Y) {
-      stroke :black, thickness: 3
-    }
-    
-    ((SCROLLING_AREA_WIDTH - SCROLLING_AREA_PADDING_X*4) / SCROLLING_AREA_PADDING_X).times do |x_multiplier|
-      x = x_multiplier*SCROLLING_AREA_PADDING_X + SCROLLING_AREA_PADDING_X*2
-      y = SCROLLING_AREA_HEIGHT - SCROLLING_AREA_PADDING_Y
-      
-      polyline(x, y, x, y + SCROLLING_AREA_PADDING_Y/2) {
-        stroke :black, thickness: 2
-      }
-    end
-  end
-  
-  def y_axis
-    polyline(SCROLLING_AREA_PADDING_X, SCROLLING_AREA_PADDING_Y, SCROLLING_AREA_PADDING_X, SCROLLING_AREA_HEIGHT - SCROLLING_AREA_PADDING_Y) {
-      stroke :black, thickness: 3
-    }
-    
-    ((SCROLLING_AREA_HEIGHT - SCROLLING_AREA_PADDING_Y*3) / SCROLLING_AREA_PADDING_Y).times do |y_multiplier|
-      x = SCROLLING_AREA_PADDING_X
-      y = y_multiplier*SCROLLING_AREA_PADDING_Y + SCROLLING_AREA_PADDING_Y*2
-      
-      polyline(x, y, x - SCROLLING_AREA_PADDING_X/2, y) {
-        stroke :black, thickness: 2
-      }
-    end
-  end
-  
-  def create_gui
-    @main_window = window('Basic Scrolling Area', SCROLLING_AREA_WIDTH / 2, SCROLLING_AREA_HEIGHT) {
-      resizable false
-      
-      @scrolling_area = scrolling_area(SCROLLING_AREA_WIDTH, SCROLLING_AREA_HEIGHT) {
-        x_axis
-        y_axis
-        
-        @graph = figure(SCROLLING_AREA_PADDING_X, SCROLLING_AREA_HEIGHT - SCROLLING_AREA_PADDING_Y) {
-          stroke :blue, thickness: 2
-        }
-      }
-    }
-  end
-end
-
-BasicScrollingArea.new.launch
-```
-
-### Area Gallery
-
-[examples/area_gallery.rb](examples/area_gallery.rb)
-
-Run with this command from the root of the project if you cloned the project:
-
-```
-ruby -r './lib/glimmer-dsl-libui' examples/area_gallery.rb
-```
-
-Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
-
-```
-ruby -r glimmer-dsl-libui -e "require 'examples/area_gallery'"
+ruby -r glimmer-dsl-libui -e "require 'examples/editable_column_table'"
 ```
 
 Mac | Windows | Linux
 ----|---------|------
-![glimmer-dsl-libui-mac-area-gallery.png](images/glimmer-dsl-libui-mac-area-gallery.png) | ![glimmer-dsl-libui-windows-area-gallery.png](images/glimmer-dsl-libui-windows-area-gallery.png) | ![glimmer-dsl-libui-linux-area-gallery.png](images/glimmer-dsl-libui-linux-area-gallery.png)
+![glimmer-dsl-libui-mac-editable-column-table-editing.png](images/glimmer-dsl-libui-mac-editable-column-table-editing.png) ![glimmer-dsl-libui-mac-editable-column-table-edited.png](images/glimmer-dsl-libui-mac-editable-column-table-edited.png) | ![glimmer-dsl-libui-windows-editable-column-table-editing.png](images/glimmer-dsl-libui-windows-editable-column-table-editing.png) ![glimmer-dsl-libui-windows-editable-column-table-edited.png](images/glimmer-dsl-libui-windows-editable-column-table-edited.png) | ![glimmer-dsl-libui-linux-editable-column-table-editing.png](images/glimmer-dsl-libui-linux-editable-column-table-editing.png) ![glimmer-dsl-libui-linux-editable-column-table-edited.png](images/glimmer-dsl-libui-linux-editable-column-table-edited.png)
 
 New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
 
@@ -4350,671 +5458,52 @@ require 'glimmer-dsl-libui'
 
 include Glimmer
 
-window('Area Gallery', 400, 400) {
-  area {
-    polygon(100, 100, 100, 400, 400, 100, 400, 400) { # declarative stable path (implicit path syntax for a single shape nested directly under area)
-      fill r: 202, g: 102, b: 104, a: 0.5
-      stroke r: 0, g: 0, b: 0
-    }
-    
-    polybezier(0, 0,
-               200, 100, 100, 200, 400, 100,
-               300, 100, 100, 300, 100, 400,
-               100, 300, 300, 100, 400, 400) { # declarative stable path (implicit path syntax for a single shape nested directly under area)
-      fill r: 202, g: 102, b: 204, a: 0.5
-      stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
-    }
-    
-    polyline(100, 100, 400, 100, 100, 400, 400, 400, 0, 0) { # declarative stable path (implicit path syntax for a single shape nested directly under area)
-      stroke r: 0, g: 0, b: 0, thickness: 2
-    }
-    
-    arc(404, 216, 190, 90, 90, false) { # declarative stable path (implicit path syntax for a single shape nested directly under area)
-      # radial gradient (has an outer_radius in addition to x0, y0, x1, y1, and stops)
-      fill outer_radius: 90, x0: 0, y0: 0, x1: 500, y1: 500, stops: [{pos: 0.25, r: 102, g: 102, b: 204, a: 0.5}, {pos: 0.75, r: 204, g: 102, b: 204}]
-      stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
-    }
-    
-    circle(200, 200, 90) { # declarative stable path (implicit path syntax for a single shape nested directly under area)
-      fill r: 202, g: 102, b: 204, a: 0.5
-      stroke r: 0, g: 0, b: 0, thickness: 2
-    }
-    
-    path { # declarative stable path (explicit path syntax for multiple shapes sharing attributes)
-      square(0, 0, 100)
-      square(100, 100, 400)
-      
-      fill r: 102, g: 102, b: 204
-    }
-    
-    path { # declarative stable path (explicit path syntax for multiple shapes sharing attributes)
-      rectangle(0, 100, 100, 400)
-      rectangle(100, 0, 400, 100)
-      
-      # linear gradient (has x0, y0, x1, y1, and stops)
-      fill x0: 10, y0: 10, x1: 350, y1: 350, stops: [{pos: 0.25, r: 204, g: 102, b: 204}, {pos: 0.75, r: 102, g: 102, b: 204}]
-    }
-    
-    text(161, 40, 100) { # declarative stable text
-      string('Area Gallery') {
-        font family: 'Arial', size: (OS.mac? ? 14 : 11)
-        color :black
+data = [
+  %w[cat calm meow],
+  %w[dog loyal woof],
+  %w[chicken bird cock-a-doodle-doo],
+  %w[horse fast neigh],
+  %w[cow slow moo]
+]
+
+window('Editable column animal sounds', 400, 200) {
+  horizontal_box {
+    table {
+      text_column('Animal')
+      text_column('Description')
+      text_column('Sound (Editable)') {
+        editable true
       }
+
+      cell_rows data
     }
-    
-    on_mouse_event do |area_mouse_event|
-      p area_mouse_event
-    end
-    
-    on_mouse_moved do |area_mouse_event|
-      puts 'moved'
-    end
-    
-    on_mouse_down do |area_mouse_event|
-      puts 'mouse down'
-    end
-    
-    on_mouse_up do |area_mouse_event|
-      puts 'mouse up'
-    end
-    
-    on_mouse_drag_started do |area_mouse_event|
-      puts 'drag started'
-    end
-    
-    on_mouse_dragged do |area_mouse_event|
-      puts 'dragged'
-    end
-    
-    on_mouse_dropped do |area_mouse_event|
-      puts 'dropped'
-    end
-    
-    on_mouse_entered do
-      puts 'entered'
-    end
-    
-    on_mouse_exited do
-      puts 'exited'
-    end
-    
-    on_key_event do |area_key_event|
-      p area_key_event
-    end
-    
-    on_key_up do |area_key_event|
-      puts 'key up'
-    end
-    
-    on_key_down do |area_key_event|
-      puts 'key down'
-    end
   }
-}.show
-```
-
-New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 2 (setting shape properties instead of arguments):
-
-```ruby
-require 'glimmer-dsl-libui'
-
-include Glimmer
-
-window('Area Gallery', 400, 400) {
-  area {
-
-    figure { # declarative stable path with explicit attributes (implicit path syntax for a single shape nested directly under area)
-      x 100
-      y 100
-      
-      line {
-        x 100
-        y 400
-      }
-      
-      line {
-        x 400
-        y 100
-      }
-      
-      line {
-        x 400
-        y 400
-      }
-
-      closed true # polygon figure is closed (last point forms a line with first point)
-      fill r: 202, g: 102, b: 104, a: 0.5
-      stroke r: 0, g: 0, b: 0
-    }
-    
-    figure { # declarative stable path with explicit attributes (implicit path syntax for a single shape nested directly under area)
-      x 0
-      y 0
-      
-      bezier {
-        c1_x 200
-        c1_y 100
-        c2_x 100
-        c2_y 200
-        end_x 400
-        end_y 100
-      }
-      
-      bezier {
-        c1_x 300
-        c1_y 100
-        c2_x 100
-        c2_y 300
-        end_x 100
-        end_y 400
-      }
-      
-      bezier {
-        c1_x 100
-        c1_y 300
-        c2_x 300
-        c2_y 100
-        end_x 400
-        end_y 400
-      }
-      
-      fill r: 202, g: 102, b: 204, a: 0.5
-      stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
-    }
-    
-    figure { # declarative stable path with explicit attributes (implicit path syntax for a single shape nested directly under area)
-      x 100
-      y 100
-      
-      line {
-        x 400
-        y 100
-      }
-      
-      line {
-        x 100
-        y 400
-      }
-      
-      line {
-        x 400
-        y 400
-      }
-      
-      line {
-        x 0
-        y 0
-      }
-      
-      stroke r: 0, g: 0, b: 0, thickness: 2
-    }
-    
-    arc { # declarative stable path with explicit attributes (implicit path syntax for a single shape nested directly under area)
-      x_center 404
-      y_center 216
-      radius 190
-      start_angle 90
-      sweep 90
-      is_negative false
-      # radial gradient (has an outer_radius in addition to x0, y0, x1, y1, and stops)
-      fill outer_radius: 90, x0: 0, y0: 0, x1: 500, y1: 500, stops: [{pos: 0.25, r: 102, g: 102, b: 204, a: 0.5}, {pos: 0.75, r: 204, g: 102, b: 204}]
-      stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
-    }
-    
-    circle { # declarative stable path with explicit attributes (implicit path syntax for a single shape nested directly under area)
-      x_center 200
-      y_center 200
-      radius 90
-      fill r: 202, g: 102, b: 204, a: 0.5
-      stroke r: 0, g: 0, b: 0, thickness: 2
-    }
-    
-    path { # declarative stable path with explicit attributes (explicit path syntax for multiple shapes sharing attributes)
-      square {
-        x 0
-        y 0
-        length 100
-      }
-      
-      square {
-        x 100
-        y 100
-        length 400
-      }
-      
-      fill r: 102, g: 102, b: 204
-    }
-    
-    path { # declarative stable path with explicit attributes (explicit path syntax for multiple shapes sharing attributes)
-      rectangle {
-        x 0
-        y 100
-        width 100
-        height 400
-      }
-      
-      rectangle {
-        x 100
-        y 0
-        width 400
-        height 100
-      }
-      
-      # linear gradient (has x0, y0, x1, y1, and stops)
-      fill x0: 10, y0: 10, x1: 350, y1: 350, stops: [{pos: 0.25, r: 204, g: 102, b: 204}, {pos: 0.75, r: 102, g: 102, b: 204}]
-    }
-    
-    text { # declarative stable text with explicit attributes
-      x 161
-      y 40
-      width 100
-      
-      string {
-        font family: 'Arial', size: (OS.mac? ? 14 : 11)
-        color :black
-        
-        'Area Gallery'
-      }
-    }
-    
-    on_mouse_event do |area_mouse_event|
-      p area_mouse_event
-    end
-    
-    on_mouse_moved do |area_mouse_event|
-      puts 'moved'
-    end
-    
-    on_mouse_down do |area_mouse_event|
-      puts 'mouse down'
-    end
-    
-    on_mouse_up do |area_mouse_event|
-      puts 'mouse up'
-    end
-    
-    on_mouse_drag_started do |area_mouse_event|
-      puts 'drag started'
-    end
-    
-    on_mouse_dragged do |area_mouse_event|
-      puts 'dragged'
-    end
-    
-    on_mouse_dropped do |area_mouse_event|
-      puts 'dropped'
-    end
-    
-    on_mouse_entered do
-      puts 'entered'
-    end
-    
-    on_mouse_exited do
-      puts 'exited'
-    end
-    
-    on_key_event do |area_key_event|
-      p area_key_event
-    end
-    
-    on_key_up do |area_key_event|
-      puts 'key up'
-    end
-    
-    on_key_down do |area_key_event|
-      puts 'key down'
-    end
-  }
-}.show
-```
-
-New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 3 (semi-declarative `on_draw` dynamic `path` approach):
-
-```ruby
-require 'glimmer-dsl-libui'
-
-include Glimmer
-
-window('Area Gallery', 400, 400) {
-  area {
-    on_draw do |area_draw_params|
-      polygon(100, 100, 100, 400, 400, 100, 400, 400) { # dynamic path, added semi-declaratively inside on_draw block
-        fill r: 202, g: 102, b: 104, a: 0.5
-        stroke r: 0, g: 0, b: 0
-      }
-      
-      polybezier(0, 0,
-                 200, 100, 100, 200, 400, 100,
-                 300, 100, 100, 300, 100, 400,
-                 100, 300, 300, 100, 400, 400) { # dynamic path, added semi-declaratively inside on_draw block
-        fill r: 202, g: 102, b: 204, a: 0.5
-        stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
-      }
-      
-      polyline(100, 100, 400, 100, 100, 400, 400, 400, 0, 0) { # dynamic path, added semi-declaratively inside on_draw block
-        stroke r: 0, g: 0, b: 0, thickness: 2
-      }
-      
-      arc(404, 216, 190, 90, 90, false) { # dynamic path, added semi-declaratively inside on_draw block
-        # radial gradient (has an outer_radius in addition to x0, y0, x1, y1, and stops)
-        fill outer_radius: 90, x0: 0, y0: 0, x1: 500, y1: 500, stops: [{pos: 0.25, r: 102, g: 102, b: 204, a: 0.5}, {pos: 0.75, r: 204, g: 102, b: 204}]
-        stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
-      }
-      
-      circle(200, 200, 90) { # dynamic path, added semi-declaratively inside on_draw block
-        fill r: 202, g: 102, b: 204, a: 0.5
-        stroke r: 0, g: 0, b: 0, thickness: 2
-      }
-      
-      path { # dynamic path, added semi-declaratively inside on_draw block
-        square(0, 0, 100)
-        square(100, 100, 400)
-        
-        fill r: 102, g: 102, b: 204
-      }
-      
-      path { # dynamic path, added semi-declaratively inside on_draw block
-        rectangle(0, 100, 100, 400)
-        rectangle(100, 0, 400, 100)
-        
-        # linear gradient (has x0, y0, x1, y1, and stops)
-        fill x0: 10, y0: 10, x1: 350, y1: 350, stops: [{pos: 0.25, r: 204, g: 102, b: 204}, {pos: 0.75, r: 102, g: 102, b: 204}]
-      }
-      
-      text(161, 40, 100) { # dynamic text added semi-declaratively inside on_draw block
-        string('Area Gallery') {
-          font family: 'Arial', size: (OS.mac? ? 14 : 11)
-          color :black
-        }
-      }
-    end
-    
-    on_mouse_event do |area_mouse_event|
-      p area_mouse_event
-    end
-    
-    on_mouse_moved do |area_mouse_event|
-      puts 'moved'
-    end
-    
-    on_mouse_down do |area_mouse_event|
-      puts 'mouse down'
-    end
-    
-    on_mouse_up do |area_mouse_event|
-      puts 'mouse up'
-    end
-    
-    on_mouse_drag_started do |area_mouse_event|
-      puts 'drag started'
-    end
-    
-    on_mouse_dragged do |area_mouse_event|
-      puts 'dragged'
-    end
-    
-    on_mouse_dropped do |area_mouse_event|
-      puts 'dropped'
-    end
-    
-    on_mouse_entered do
-      puts 'entered'
-    end
-    
-    on_mouse_exited do
-      puts 'exited'
-    end
-    
-    on_key_event do |area_key_event|
-      p area_key_event
-    end
-    
-    on_key_up do |area_key_event|
-      puts 'key up'
-    end
-    
-    on_key_down do |area_key_event|
-      puts 'key down'
-    end
-  }
-}.show
-```
-
-New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 4 (setting shape properties instead of arguments with semi-declarative `on_draw` dynamic `path` approach):
-
-```ruby
-require 'glimmer-dsl-libui'
-
-include Glimmer
-
-window('Area Gallery', 400, 400) {
-  area {
-    on_draw do |area_draw_params|
-      figure { # dynamic path, added semi-declaratively inside on_draw block
-        x 100
-        y 100
-        
-        line {
-          x 100
-          y 400
-        }
-        
-        line {
-          x 400
-          y 100
-        }
-        
-        line {
-          x 400
-          y 400
-        }
   
-        closed true # polygon figure is closed (last point forms a line with first point)
-        fill r: 202, g: 102, b: 104, a: 0.5
-        stroke r: 0, g: 0, b: 0
-      }
-      
-      figure { # dynamic path, added semi-declaratively inside on_draw block
-        x 0
-        y 0
-        
-        bezier {
-          c1_x 200
-          c1_y 100
-          c2_x 100
-          c2_y 200
-          end_x 400
-          end_y 100
-        }
-        
-        bezier {
-          c1_x 300
-          c1_y 100
-          c2_x 100
-          c2_y 300
-          end_x 100
-          end_y 400
-        }
-        
-        bezier {
-          c1_x 100
-          c1_y 300
-          c2_x 300
-          c2_y 100
-          end_x 400
-          end_y 400
-        }
-        
-        fill r: 202, g: 102, b: 204, a: 0.5
-        stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
-      }
-      
-      figure { # dynamic path, added semi-declaratively inside on_draw block
-        x 100
-        y 100
-        
-        line {
-          x 400
-          y 100
-        }
-        
-        line {
-          x 100
-          y 400
-        }
-        
-        line {
-          x 400
-          y 400
-        }
-        
-        line {
-          x 0
-          y 0
-        }
-        
-        stroke r: 0, g: 0, b: 0, thickness: 2
-      }
-      
-      arc { # dynamic path, added semi-declaratively inside on_draw block
-        x_center 404
-        y_center 216
-        radius 190
-        start_angle 90
-        sweep 90
-        is_negative false
-        # radial gradient (has an outer_radius in addition to x0, y0, x1, y1, and stops)
-        fill outer_radius: 90, x0: 0, y0: 0, x1: 500, y1: 500, stops: [{pos: 0.25, r: 102, g: 102, b: 204, a: 0.5}, {pos: 0.75, r: 204, g: 102, b: 204}]
-        stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
-      }
-      
-      circle { # dynamic path, added semi-declaratively inside on_draw block
-        x_center 200
-        y_center 200
-        radius 90
-        fill r: 202, g: 102, b: 204, a: 0.5
-        stroke r: 0, g: 0, b: 0, thickness: 2
-      }
-      
-      path { # dynamic path, added semi-declaratively inside on_draw block
-        square {
-          x 0
-          y 0
-          length 100
-        }
-        
-        square {
-          x 100
-          y 100
-          length 400
-        }
-        
-        fill r: 102, g: 102, b: 204
-      }
-      
-      path { # dynamic path, added semi-declaratively inside on_draw block
-        rectangle {
-          x 0
-          y 100
-          width 100
-          height 400
-        }
-        
-        rectangle {
-          x 100
-          y 0
-          width 400
-          height 100
-        }
-        
-        # linear gradient (has x0, y0, x1, y1, and stops)
-        fill x0: 10, y0: 10, x1: 350, y1: 350, stops: [{pos: 0.25, r: 204, g: 102, b: 204}, {pos: 0.75, r: 102, g: 102, b: 204}]
-      }
-      
-      text { # dynamic path, added semi-declaratively inside on_draw block
-        x 161
-        y 40
-        width 100
-        
-        string {
-          font family: 'Arial', size: (OS.mac? ? 14 : 11)
-          color :black
-          
-          'Area Gallery'
-        }
-      }
-    end
-    
-    on_mouse_event do |area_mouse_event|
-      p area_mouse_event
-    end
-    
-    on_mouse_moved do |area_mouse_event|
-      puts 'moved'
-    end
-    
-    on_mouse_down do |area_mouse_event|
-      puts 'mouse down'
-    end
-    
-    on_mouse_up do |area_mouse_event|
-      puts 'mouse up'
-    end
-    
-    on_mouse_drag_started do |area_mouse_event|
-      puts 'drag started'
-    end
-    
-    on_mouse_dragged do |area_mouse_event|
-      puts 'dragged'
-    end
-    
-    on_mouse_dropped do |area_mouse_event|
-      puts 'dropped'
-    end
-    
-    on_mouse_entered do
-      puts 'entered'
-    end
-    
-    on_mouse_exited do
-      puts 'exited'
-    end
-    
-    on_key_event do |area_key_event|
-      p area_key_event
-    end
-    
-    on_key_up do |area_key_event|
-      puts 'key up'
-    end
-    
-    on_key_down do |area_key_event|
-      puts 'key down'
-    end
-  }
+  on_closing do
+    puts 'Bye Bye'
+  end
 }.show
 ```
 
-### Basic Image
+#### Editable Table
 
-[examples/basic_image.rb](examples/basic_image.rb)
+[examples/editable_table.rb](examples/editable_table.rb)
 
 Run with this command from the root of the project if you cloned the project:
 
 ```
-ruby -r './lib/glimmer-dsl-libui' examples/basic_image.rb
+ruby -r './lib/glimmer-dsl-libui' examples/editable_table.rb
 ```
 
 Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
 
 ```
-ruby -r glimmer-dsl-libui -e "require 'examples/basic_image'"
+ruby -r glimmer-dsl-libui -e "require 'examples/editable_table'"
 ```
 
 Mac | Windows | Linux
 ----|---------|------
-![glimmer-dsl-libui-mac-basic-image.png](images/glimmer-dsl-libui-mac-basic-image.png) | ![glimmer-dsl-libui-windows-basic-image.png](images/glimmer-dsl-libui-windows-basic-image.png) | ![glimmer-dsl-libui-linux-basic-image.png](images/glimmer-dsl-libui-linux-basic-image.png)
+![glimmer-dsl-libui-mac-editable-table.png](images/glimmer-dsl-libui-mac-editable-table.png) ![glimmer-dsl-libui-mac-editable-table-editing.png](images/glimmer-dsl-libui-mac-editable-table-editing.png) ![glimmer-dsl-libui-mac-editable-table-edited.png](images/glimmer-dsl-libui-mac-editable-table-edited.png) | ![glimmer-dsl-libui-windows-editable-table.png](images/glimmer-dsl-libui-windows-editable-table.png) ![glimmer-dsl-libui-windows-editable-table-editing.png](images/glimmer-dsl-libui-windows-editable-table-editing.png) ![glimmer-dsl-libui-windows-editable-table-edited.png](images/glimmer-dsl-libui-windows-editable-table-edited.png) | ![glimmer-dsl-libui-linux-editable-table.png](images/glimmer-dsl-libui-linux-editable-table.png) ![glimmer-dsl-libui-linux-editable-table-editing.png](images/glimmer-dsl-libui-linux-editable-table-editing.png) ![glimmer-dsl-libui-linux-editable-table-edited.png](images/glimmer-dsl-libui-linux-editable-table-edited.png)
 
 New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
 
@@ -5023,170 +5512,289 @@ require 'glimmer-dsl-libui'
 
 include Glimmer
 
-window('Basic Image', 96, 96) {
-  area {
-    # image is not a real LibUI control. It is built in Glimmer as a custom control that renders
-    # tiny pixels/lines as rectangle paths. As such, it does not have good performance, but can
-    # be used in exceptional circumstances where an image control is really needed.
-    #
-    # Furthermore, adding image directly under area is even slower due to taking up more memory for every
-    # image pixel rendered. Check basic_image2.rb for a faster alternative using on_draw manually.
-    #
-    # It is recommended to pass width/height args to shrink image and achieve faster performance.
-    image(File.expand_path('../icons/glimmer.png', __dir__), 96, 96)
-  }
-}.show
-```
+data = [
+  %w[cat meow],
+  %w[dog woof],
+  %w[chicken cock-a-doodle-doo],
+  %w[horse neigh],
+  %w[cow moo]
+]
 
-New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 2 (better performance via `on_draw`):
+window('Editable animal sounds', 300, 200) {
+  horizontal_box {
+    table {
+      text_column('Animal')
+      text_column('Description')
 
-```ruby
-# frozen_string_literal: true
-
-require 'glimmer-dsl-libui'
-
-include Glimmer
-
-window('Basic Image', 96, 96) {
-  area {
-    on_draw do |area_draw_params|
-      image(File.expand_path('../icons/glimmer.png', __dir__), 96, 96)
-    end
-  }
-}.show
-```
-
-New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 3 (explicit properties):
-
-```ruby
-# frozen_string_literal: true
-
-require 'glimmer-dsl-libui'
-
-include Glimmer
-
-window('Basic Image', 96, 96) {
-  area {
-    # image is not a real LibUI control. It is built in Glimmer as a custom control that renders
-    # tiny pixels/lines as rectangle paths. As such, it does not have good performance, but can
-    # be used in exceptional circumstances where an image control is really needed.
-    #
-    # Furthermore, adding image directly under area is even slower due to taking up more memory for every
-    # image pixel rendered. Check basic_image4.rb for a faster alternative using on_draw manually.
-    #
-    # It is recommended to pass width/height args to shrink image and achieve faster performance.
-    image {
-      file File.expand_path('../icons/glimmer.png', __dir__)
-      width 96
-      height 96
-    }
-  }
-}.show
-```
-
-New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 4 (better performance with `on_draw` when setting explicit properties):
-
-```ruby
-# frozen_string_literal: true
-
-require 'glimmer-dsl-libui'
-
-include Glimmer
-
-window('Basic Image', 96, 96) {
-  area {
-    on_draw do |area_draw_params|
-      image {
-        file File.expand_path('../icons/glimmer.png', __dir__)
-        width 96
-        height 96
-      }
-    end
-  }
-}.show
-```
-
-New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 5 (fully manual pixel-by-pixel rendering):
-
-```ruby
-# frozen_string_literal: true
-
-# This is the manual way of rendering an image unto an area control.
-# It could come in handy in special situations.
-# Otherwise, it is recommended to simply utilize the `image` control that
-# can be nested under area or area on_draw listener to automate all this work.
-
-require 'glimmer-dsl-libui'
-require 'chunky_png'
-
-include Glimmer
-
-puts 'Parsing image...'; $stdout.flush
-
-f = File.open(File.expand_path('../icons/glimmer.png', __dir__))
-canvas = ChunkyPNG::Canvas.from_io(f)
-f.close
-canvas.resample_nearest_neighbor!(96, 96)
-data = canvas.to_rgba_stream
-width = canvas.width
-height = canvas.height
-puts "Image width: #{width}"
-puts "Image height: #{height}"
-
-puts 'Parsing colors...'; $stdout.flush
-
-color_maps = height.times.map do |y|
-  width.times.map do |x|
-    r = data[(y*width + x)*4].ord
-    g = data[(y*width + x)*4 + 1].ord
-    b = data[(y*width + x)*4 + 2].ord
-    a = data[(y*width + x)*4 + 3].ord
-    {x: x, y: y, color: {r: r, g: g, b: b, a: a}}
-  end
-end.flatten
-puts "#{color_maps.size} pixels to render..."; $stdout.flush
-
-puts 'Parsing shapes...'; $stdout.flush
-
-shape_maps = []
-original_color_maps = color_maps.dup
-indexed_original_color_maps = Hash[original_color_maps.each_with_index.to_a]
-color_maps.each do |color_map|
-  index = indexed_original_color_maps[color_map]
-  @rectangle_start_x ||= color_map[:x]
-  @rectangle_width ||= 1
-  if color_map[:x] < width - 1 && color_map[:color] == original_color_maps[index + 1][:color]
-    @rectangle_width += 1
-  else
-    if color_map[:x] > 0 && color_map[:color] == original_color_maps[index - 1][:color]
-      shape_maps << {x: @rectangle_start_x, y: color_map[:y], width: @rectangle_width, height: 1, color: color_map[:color]}
-    else
-      shape_maps << {x: color_map[:x], y: color_map[:y], width: 1, height: 1, color: color_map[:color]}
-    end
-    @rectangle_width = 1
-    @rectangle_start_x = color_map[:x] == width - 1 ? 0 : color_map[:x] + 1
-  end
-end
-puts "#{shape_maps.size} shapes to render..."; $stdout.flush
-
-puts 'Rendering image...'; $stdout.flush
-
-window('Basic Image', 96, 96) {
-  area {
-    on_draw do |area_draw_params|
-      shape_maps.each do |shape_map|
-        path {
-          rectangle(shape_map[:x], shape_map[:y], shape_map[:width], shape_map[:height])
-
-          fill shape_map[:color]
-        }
+      cell_rows data
+      editable true
+      
+      on_changed do |row, type, row_data| # fires on all changes (even ones happening through data array)
+        puts "Row #{row} #{type}: #{row_data}"
       end
-    end
+      
+      on_edited do |row, row_data| # only fires on direct table editing
+        puts "Row #{row} edited: #{row_data}"
+      end
+    }
+  }
+  
+  on_closing do
+    puts 'Bye Bye'
+  end
+}.show
+```
+
+#### Form Table
+
+[examples/form_table.rb](examples/form_table.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/form_table.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/form_table'"
+```
+
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-form-table.png](images/glimmer-dsl-libui-mac-form-table.png) ![glimmer-dsl-libui-mac-form-table-contact-entered.png](images/glimmer-dsl-libui-mac-form-table-contact-entered.png) ![glimmer-dsl-libui-mac-form-table-filtered.png](images/glimmer-dsl-libui-mac-form-table-filtered.png) | ![glimmer-dsl-libui-windows-form-table.png](images/glimmer-dsl-libui-windows-form-table.png) ![glimmer-dsl-libui-windows-form-table-contact-entered.png](images/glimmer-dsl-libui-windows-form-table-contact-entered.png) ![glimmer-dsl-libui-windows-form-table-filtered.png](images/glimmer-dsl-libui-windows-form-table-filtered.png) | ![glimmer-dsl-libui-linux-form-table.png](images/glimmer-dsl-libui-linux-form-table.png) ![glimmer-dsl-libui-linux-form-table-contact-entered.png](images/glimmer-dsl-libui-linux-form-table-contact-entered.png) ![glimmer-dsl-libui-linux-form-table-filtered.png](images/glimmer-dsl-libui-linux-form-table-filtered.png)
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+data = [
+  ['Lisa Sky', 'lisa@sky.com', '720-523-4329', 'Denver', 'CO', '80014'],
+  ['Jordan Biggins', 'jordan@biggins.com', '617-528-5399', 'Boston', 'MA', '02101'],
+  ['Mary Glass', 'mary@glass.com', '847-589-8788', 'Elk Grove Village', 'IL', '60007'],
+  ['Darren McGrath', 'darren@mcgrath.com', '206-539-9283', 'Seattle', 'WA', '98101'],
+  ['Melody Hanheimer', 'melody@hanheimer.com', '213-493-8274', 'Los Angeles', 'CA', '90001'],
+]
+
+window('Contacts', 600, 600) { |w|
+  margined true
+  
+  vertical_box {
+    form {
+      stretchy false
+      
+      @name_entry = entry {
+        label 'Name'
+      }
+      
+      @email_entry = entry {
+        label 'Email'
+      }
+      
+      @phone_entry = entry {
+        label 'Phone'
+      }
+      
+      @city_entry = entry {
+        label 'City'
+      }
+      
+      @state_entry = entry {
+        label 'State'
+      }
+    }
+    
+    button('Save Contact') {
+      stretchy false
+      
+      on_clicked do
+        new_row = [@name_entry.text, @email_entry.text, @phone_entry.text, @city_entry.text, @state_entry.text]
+        if new_row.include?('')
+          msg_box_error(w, 'Validation Error!', 'All fields are required! Please make sure to enter a value for all fields.')
+        else
+          data << new_row # automatically inserts a row into the table due to implicit data-binding
+          @unfiltered_data = data.dup
+          @name_entry.text = ''
+          @email_entry.text = ''
+          @phone_entry.text = ''
+          @city_entry.text = ''
+          @state_entry.text = ''
+        end
+      end
+    }
+    
+    search_entry { |se|
+      stretchy false
+      
+      on_changed do
+        filter_value = se.text
+        @unfiltered_data ||= data.dup
+        # Unfilter first to remove any previous filters
+        data.replace(@unfiltered_data) # affects table indirectly through implicit data-binding
+        # Now, apply filter if entered
+        unless filter_value.empty?
+          data.filter! do |row_data| # affects table indirectly through implicit data-binding
+            row_data.any? do |cell|
+              cell.to_s.downcase.include?(filter_value.downcase)
+            end
+          end
+        end
+      end
+    }
+    
+    table {
+      text_column('Name')
+      text_column('Email')
+      text_column('Phone')
+      text_column('City')
+      text_column('State')
+
+      cell_rows data # implicit data-binding
+      
+      on_changed do |row, type, row_data|
+        puts "Row #{row} #{type}: #{row_data}"
+      end
+    }
   }
 }.show
 ```
 
-### Histogram
+#### Grid
+
+[examples/grid.rb](examples/grid.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/grid.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/grid'"
+```
+
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-grid-span.png](images/glimmer-dsl-libui-mac-grid-span.png) ![glimmer-dsl-libui-mac-grid-expand.png](images/glimmer-dsl-libui-mac-grid-expand.png) ![glimmer-dsl-libui-mac-grid-align.png](images/glimmer-dsl-libui-mac-grid-align.png) | ![glimmer-dsl-libui-windows-grid-span.png](images/glimmer-dsl-libui-windows-grid-span.png) ![glimmer-dsl-libui-windows-grid-expand.png](images/glimmer-dsl-libui-windows-grid-expand.png) ![glimmer-dsl-libui-windows-grid-align.png](images/glimmer-dsl-libui-windows-grid-align.png) | ![glimmer-dsl-libui-linux-grid-span.png](images/glimmer-dsl-libui-linux-grid-span.png) ![glimmer-dsl-libui-linux-grid-expand.png](images/glimmer-dsl-libui-linux-grid-expand.png) ![glimmer-dsl-libui-linux-grid-align.png](images/glimmer-dsl-libui-linux-grid-align.png)
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+window('Grid') {
+  tab {
+    tab_item('Span') {
+      grid {
+        4.times do |top_value|
+          4.times do |left_value|
+            label("(#{left_value}, #{top_value}) xspan1\nyspan1") {
+              left left_value
+              top top_value
+              hexpand true
+              vexpand true
+            }
+          end
+        end
+        label("(0, 4) xspan2\nyspan1 more text fits horizontally") {
+          left 0
+          top 4
+          xspan 2
+        }
+        label("(2, 4) xspan2\nyspan1 more text fits horizontally") {
+          left 2
+          top 4
+          xspan 2
+        }
+        label("(0, 5) xspan1\nyspan2\nmore text\nfits vertically") {
+          left 0
+          top 5
+          yspan 2
+        }
+        label("(0, 7) xspan1\nyspan2\nmore text\nfits vertically") {
+          left 0
+          top 7
+          yspan 2
+        }
+        label("(1, 5) xspan3\nyspan4 a lot more text fits horizontally than before\nand\neven\na lot\nmore text\nfits vertically\nthan\nbefore") {
+          left 1
+          top 5
+          xspan 3
+          yspan 4
+        }
+      }
+    }
+    tab_item('Expand') {
+      grid {
+        label("(0, 0) hexpand/vexpand\nall available horizontal space is taken\nand\nall\navailable\nvertical\nspace\nis\ntaken") {
+          left 0
+          top 0
+          hexpand true
+          vexpand true
+        }
+        label("(1, 0)") {
+          left 1
+          top 0
+        }
+        label("(0, 1)") {
+          left 0
+          top 1
+        }
+        label("(1, 1)") {
+          left 1
+          top 1
+        }
+      }
+    }
+    tab_item('Align') {
+      grid {
+        label("(0, 0) halign/valign fill\nall available horizontal space is taken\nand\nall\navailable\nvertical\nspace\nis\ntaken") {
+          left 0
+          top 0
+          hexpand true unless OS.mac? # on Mac, only the first label is given all space, so avoid expanding
+          vexpand true unless OS.mac? # on Mac, only the first label is given all space, so avoid expanding
+          halign :fill
+          valign :fill
+        }
+        label("(1, 0) halign/valign start") {
+          left 1
+          top 0
+          hexpand true unless OS.mac? # on Mac, only the first label is given all space, so avoid expanding
+          vexpand true unless OS.mac? # on Mac, only the first label is given all space, so avoid expanding
+          halign :start
+          valign :start
+        }
+        label("(0, 1) halign/valign center") {
+          left 0
+          top 1
+          hexpand true unless OS.mac? # on Mac, only the first label is given all space, so avoid expanding
+          vexpand true unless OS.mac? # on Mac, only the first label is given all space, so avoid expanding
+          halign :center
+          valign :center
+        }
+        label("(1, 1) halign/valign end") {
+          left 1
+          top 1
+          hexpand true unless OS.mac? # on Mac, only the first label is given all space, so avoid expanding
+          vexpand true unless OS.mac? # on Mac, only the first label is given all space, so avoid expanding
+          halign :end
+          valign :end
+        }
+      }
+    }
+  }
+}.show
+```
+
+#### Histogram
 
 [examples/histogram.rb](examples/histogram.rb)
 
@@ -5516,101 +6124,7 @@ window('histogram example', 640, 480) {
 }.show
 ```
 
-### Basic Transform
-
-[examples/basic_transform.rb](examples/basic_transform.rb)
-
-Run with this command from the root of the project if you cloned the project:
-
-```
-ruby -r './lib/glimmer-dsl-libui' examples/basic_transform.rb
-```
-
-Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
-
-```
-ruby -r glimmer-dsl-libui -e "require 'examples/basic_transform'"
-```
-
-Mac | Windows | Linux
-----|---------|------
-![glimmer-dsl-libui-mac-basic-transform.png](images/glimmer-dsl-libui-mac-basic-transform.png) | ![glimmer-dsl-libui-windows-basic-transform.png](images/glimmer-dsl-libui-windows-basic-transform.png) | ![glimmer-dsl-libui-linux-basic-transform.png](images/glimmer-dsl-libui-linux-basic-transform.png)
-
-New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
-
-```ruby
-require 'glimmer-dsl-libui'
-
-include Glimmer
-
-window('Basic Transform', 350, 350) {
-  area {
-    square(0, 0, 350) {
-      fill r: 255, g: 255, b: 0
-    }
-    40.times do |n|
-      square(0, 0, 100) {
-        fill r: [255 - n*5, 0].max, g: [n*5, 255].min, b: 0, a: 0.5
-        stroke :black, thickness: 2
-        
-        transform {
-          unless OS.windows?
-            skew 0.15, 0.15
-            translate 50, 50
-          end
-          rotate 100, 100, -9 * n
-          scale 1.1, 1.1
-          if OS.windows?
-            skew 0.15, 0.15
-            translate 50, 50
-          end
-        }
-      }
-    end
-  }
-}.show
-```
-
-New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 2:
-
-```ruby
-require 'glimmer-dsl-libui'
-
-include Glimmer
-
-window('Basic Transform', 350, 350) {
-  area {
-    path {
-      square(0, 0, 350)
-      
-      fill r: 255, g: 255, b: 0
-    }
-    40.times do |n|
-      path {
-        square(0, 0, 100)
-        
-        fill r: [255 - n*5, 0].max, g: [n*5, 255].min, b: 0, a: 0.5
-        stroke :black, thickness: 2
-        
-        transform {
-          unless OS.windows?
-            skew 0.15, 0.15
-            translate 50, 50
-          end
-          rotate 100, 100, -9 * n
-          scale 1.1, 1.1
-          if OS.windows?
-            skew 0.15, 0.15
-            translate 50, 50
-          end
-        }
-      }
-    end
-  }
-}.show
-```
-
-### Login
+#### Login
 
 [examples/login.rb](examples/login.rb)
 
@@ -5678,899 +6192,7 @@ window('Login') {
 }.show
 ```
 
-### Timer
-
-To run this example, install [TiMidity](http://timidity.sourceforge.net) and ensure `timidity` command is in `PATH` (can be installed via [Homebrew](https://brew.sh) on Mac or [apt-get](https://help.ubuntu.com/community/AptGet/Howto) on Linux).
-
-[examples/timer.rb](examples/timer.rb)
-
-Run with this command from the root of the project if you cloned the project:
-
-```
-ruby -r './lib/glimmer-dsl-libui' examples/timer.rb
-```
-
-Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
-
-```
-ruby -r glimmer-dsl-libui -e "require 'examples/timer'"
-```
-
-Mac | Windows | Linux
-----|---------|------
-![glimmer-dsl-libui-mac-timer.png](images/glimmer-dsl-libui-mac-timer.png) ![glimmer-dsl-libui-mac-timer-in-progress.png](images/glimmer-dsl-libui-mac-timer-in-progress.png) | ![glimmer-dsl-libui-windows-timer.png](images/glimmer-dsl-libui-windows-timer.png) ![glimmer-dsl-libui-windows-timer-in-progress.png](images/glimmer-dsl-libui-windows-timer-in-progress.png) | ![glimmer-dsl-libui-linux-timer.png](images/glimmer-dsl-libui-linux-timer.png) ![glimmer-dsl-libui-linux-timer-in-progress.png](images/glimmer-dsl-libui-linux-timer-in-progress.png)
-
-New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
-
-```ruby
-require 'glimmer-dsl-libui'
-
-class Timer
-  include Glimmer
-  
-  SECOND_MAX = 59
-  MINUTE_MAX = 59
-  HOUR_MAX = 23
-  
-  def initialize
-    @pid = nil
-    @alarm_file = File.expand_path('../sounds/AlanWalker-Faded.mid', __dir__)
-    at_exit { stop_alarm }
-    setup_timer
-    create_gui
-  end
-
-  def stop_alarm
-    if @pid
-      if @th.alive?
-        Process.kill(:SIGKILL, @pid)
-        @pid = nil
-      else
-        @pid = nil
-      end
-    end
-  end
-
-  def play_alarm
-    stop_alarm
-    if @pid.nil?
-      begin
-        @pid = spawn "timidity -G 0.0-10.0 #{@alarm_file}"
-        @th = Process.detach @pid
-      rescue Errno::ENOENT
-        warn 'Timidty++ not found. Please install Timidity++.'
-        warn 'https://sourceforge.net/projects/timidity/'
-      end
-    end
-  end
-
-  def setup_timer
-    unless @setup_timer
-      Glimmer::LibUI.timer(1) do
-        if @started
-          seconds = @sec_spinbox.value
-          minutes = @min_spinbox.value
-          hours = @hour_spinbox.value
-          if seconds > 0
-            @sec_spinbox.value = seconds -= 1
-          end
-          if seconds == 0
-            if minutes > 0
-              @min_spinbox.value = minutes -= 1
-              @sec_spinbox.value = seconds = SECOND_MAX
-            end
-            if minutes == 0
-              if hours > 0
-                @hour_spinbox.value = hours -= 1
-                @min_spinbox.value = minutes = MINUTE_MAX
-                @sec_spinbox.value = seconds = SECOND_MAX
-              end
-              if hours == 0 && minutes == 0 && seconds == 0
-                @start_button.enabled = true
-                @stop_button.enabled = false
-                @started = false
-                unless @played
-                  play_alarm
-                  msg_box('Alarm', 'Countdown Is Finished!')
-                  @played = true
-                end
-              end
-            end
-          end
-        end
-      end
-      @setup_timer = true
-    end
-  end
-
-  def create_gui
-    window('Timer') {
-      margined true
-      
-      group('Countdown') {
-        vertical_box {
-          horizontal_box {
-            @hour_spinbox = spinbox(0, HOUR_MAX) {
-              stretchy false
-              value 0
-            }
-            label(':') {
-              stretchy false
-            }
-            @min_spinbox = spinbox(0, MINUTE_MAX) {
-              stretchy false
-              value 0
-            }
-            label(':') {
-              stretchy false
-            }
-            @sec_spinbox = spinbox(0, SECOND_MAX) {
-              stretchy false
-              value 0
-            }
-          }
-          horizontal_box {
-            @start_button = button('Start') {
-              on_clicked do
-                @start_button.enabled = false
-                @stop_button.enabled = true
-                @started = true
-                @played = false
-              end
-            }
-            
-            @stop_button = button('Stop') {
-              enabled false
-              
-              on_clicked do
-                @start_button.enabled = true
-                @stop_button.enabled = false
-                @started = false
-              end
-            }
-          }
-        }
-      }
-    }.show
-  end
-end
-
-Timer.new
-```
-
-### Color The Circles
-
-[examples/color_the_circles.rb](examples/color_the_circles.rb)
-
-Run with this command from the root of the project if you cloned the project:
-
-```
-ruby -r './lib/glimmer-dsl-libui' examples/color_the_circles.rb
-```
-
-Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
-
-```
-ruby -r glimmer-dsl-libui -e "require 'examples/color_the_circles'"
-```
-
-Mac | Windows | Linux
-----|---------|------
-![glimmer-dsl-libui-mac-color-the-circles.png](images/glimmer-dsl-libui-mac-color-the-circles.png) ![glimmer-dsl-libui-mac-color-the-circles-lost.png](images/glimmer-dsl-libui-mac-color-the-circles-lost.png) ![glimmer-dsl-libui-mac-color-the-circles-won.png](images/glimmer-dsl-libui-mac-color-the-circles-won.png) | ![glimmer-dsl-libui-windows-color-the-circles.png](images/glimmer-dsl-libui-windows-color-the-circles.png) ![glimmer-dsl-libui-windows-color-the-circles-lost.png](images/glimmer-dsl-libui-windows-color-the-circles-lost.png) ![glimmer-dsl-libui-windows-color-the-circles-won.png](images/glimmer-dsl-libui-windows-color-the-circles-won.png) | ![glimmer-dsl-libui-linux-color-the-circles.png](images/glimmer-dsl-libui-linux-color-the-circles.png) ![glimmer-dsl-libui-linux-color-the-circles-lost.png](images/glimmer-dsl-libui-linux-color-the-circles-lost.png) ![glimmer-dsl-libui-linux-color-the-circles-won.png](images/glimmer-dsl-libui-linux-color-the-circles-won.png)
-
-New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
-
-```ruby
-require 'glimmer-dsl-libui'
-
-class ColorTheCircles
-  include Glimmer
-  
-  WINDOW_WIDTH = 800
-  WINDOW_HEIGHT = 600
-  SHAPE_MIN_SIZE = 15
-  SHAPE_MAX_SIZE = 75
-  MARGIN_WIDTH = 55
-  MARGIN_HEIGHT = 155
-  TIME_MAX_EASY = 4
-  TIME_MAX_MEDIUM = 3
-  TIME_MAX_HARD = 2
-  TIME_MAX_INSANE = 1
-  
-  attr_accessor :score
-  
-  def initialize
-    @circles_data = []
-    @score = 0
-    @time_max = TIME_MAX_HARD
-    @game_over = false
-    register_observers
-    setup_circle_factory
-  end
-  
-  def register_observers
-    observer = Glimmer::DataBinding::Observer.proc do |new_score|
-      Glimmer::LibUI.queue_main do
-        @score_label.text = new_score.to_s
-        if new_score == -20
-          @game_over = true
-          msg_box('You Lost!', 'Sorry! Your score reached -20')
-          restart_game
-        elsif new_score == 0
-          @game_over = true
-          msg_box('You Won!', 'Congratulations! Your score reached 0')
-          restart_game
-        end
-      end
-    end
-    observer.observe(self, :score) # automatically enhances self to become Glimmer::DataBinding::ObservableModel and notify observer on score attribute changes
-  end
-  
-  def setup_circle_factory
-    consumer = Proc.new do
-      unless @game_over
-        if @circles_data.empty?
-          # start with 3 circles to make more challenging
-          add_circle until @circles_data.size > 3
-        else
-          add_circle
-        end
-      end
-      delay = rand * @time_max
-      Glimmer::LibUI.timer(delay, repeat: false, &consumer)
-    end
-    Glimmer::LibUI.queue_main(&consumer)
-  end
-  
-  def add_circle
-    circle_x = rand * (WINDOW_WIDTH - MARGIN_WIDTH - SHAPE_MAX_SIZE) + SHAPE_MAX_SIZE
-    circle_y = rand * (WINDOW_HEIGHT - MARGIN_HEIGHT - SHAPE_MAX_SIZE) + SHAPE_MAX_SIZE
-    circle_size = rand * (SHAPE_MAX_SIZE - SHAPE_MIN_SIZE) + SHAPE_MIN_SIZE
-    stroke_color = Glimmer::LibUI.x11_colors.sample
-    @circles_data << {
-      args: [circle_x, circle_y, circle_size],
-      fill: nil,
-      stroke: stroke_color
-    }
-    @area.queue_redraw_all
-    self.score -= 1 # notifies score observers automatically of change
-  end
-  
-  def restart_game
-    @score = 0 # update variable directly to avoid notifying observers
-    @circles_data.clear
-    @game_over = false
-  end
-  
-  def color_circle(x, y)
-    clicked_circle_data = @circles_data.find do |circle_data|
-      circle_data[:fill].nil? && circle_data[:circle]&.include?(x, y)
-    end
-    if clicked_circle_data
-      clicked_circle_data[:fill] = clicked_circle_data[:stroke]
-      push_colored_circle_behind_uncolored_circles(clicked_circle_data)
-      @area.queue_redraw_all
-      self.score += 1 # notifies score observers automatically of change
-    end
-  end
-  
-  def push_colored_circle_behind_uncolored_circles(colored_circle_data)
-    removed_colored_circle_data = @circles_data.delete(colored_circle_data)
-    last_colored_circle_data = @circles_data.select {|cd| cd[:fill]}.last
-    last_colored_circle_data_index = @circles_data.index(last_colored_circle_data) || -1
-    @circles_data.insert(last_colored_circle_data_index + 1, removed_colored_circle_data)
-  end
-
-  def launch
-    menu('Actions') {
-      menu_item('Restart') {
-        on_clicked do
-          restart_game
-        end
-      }
-      
-      quit_menu_item
-    }
-    
-    menu('Difficulty') {
-      radio_menu_item('Easy') {
-        on_clicked do
-          @time_max = TIME_MAX_EASY
-        end
-      }
-      
-      radio_menu_item('Medium') {
-        on_clicked do
-          @time_max = TIME_MAX_MEDIUM
-        end
-      }
-      
-      radio_menu_item('Hard') {
-        checked true
-        
-        on_clicked do
-          @time_max = TIME_MAX_HARD
-        end
-      }
-      
-      radio_menu_item('Insane') {
-        on_clicked do
-          @time_max = TIME_MAX_INSANE
-        end
-      }
-    }
-    
-    menu('Help') {
-      menu_item('Instructions') {
-        on_clicked do
-          msg_box('Instructions', "Score goes down as circles are added.\nIf it reaches -20, you lose!\n\nClick circles to color and score!\nOnce score reaches 0, you win!\n\nBeware of concealed light-colored circles!\nThey are revealed once darker circles intersect them.\n\nThere are four levels of difficulty.\nChange via difficulty menu if the game gets too tough.")
-        end
-      }
-    }
-    
-    window('Color The Circles', WINDOW_WIDTH, WINDOW_HEIGHT) {
-      margined true
-      
-      grid {
-        button('Restart') {
-          left 0
-          top 0
-          halign :center
-          
-          on_clicked do
-            restart_game
-          end
-        }
-        
-        label('Score goes down as circles are added. If it reaches -20, you lose!') {
-          left 0
-          top 1
-          halign :center
-        }
-        
-        label('Click circles to color and score! Once score reaches 0, you win!') {
-          left 0
-          top 2
-          halign :center
-        }
-        
-        horizontal_box {
-          left 0
-          top 3
-          halign :center
-          
-          label('Score:') {
-            stretchy false
-          }
-          
-          @score_label = label(@score.to_s) {
-            stretchy false
-          }
-        }
-        
-        @area = area {
-          left 0
-          top 4
-          hexpand true
-          vexpand true
-          halign :fill
-          valign :fill
-
-          on_draw do |area_draw_params|
-            path {
-              rectangle(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
-
-              fill :white
-            }
-
-            @circles_data.each do |circle_data|
-              circle_data[:circle] = circle(*circle_data[:args]) {
-                fill circle_data[:fill]
-                stroke circle_data[:stroke]
-              }
-            end
-          end
-
-          on_mouse_down do |area_mouse_event|
-            color_circle(area_mouse_event[:x], area_mouse_event[:y])
-          end
-        }
-      }
-    }.show
-  end
-end
-
-ColorTheCircles.new.launch
-```
-
-### Basic Draw Text
-
-[examples/basic_draw_text.rb](examples/basic_draw_text.rb)
-
-Run with this command from the root of the project if you cloned the project:
-
-```
-ruby -r './lib/glimmer-dsl-libui' examples/basic_draw_text.rb
-```
-
-Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
-
-```
-ruby -r glimmer-dsl-libui -e "require 'examples/basic_draw_text'"
-```
-
-Mac | Windows | Linux
-----|---------|------
-![glimmer-dsl-libui-mac-basic-draw-text.png](images/glimmer-dsl-libui-mac-basic-draw-text.png) | ![glimmer-dsl-libui-windows-basic-draw-text.png](images/glimmer-dsl-libui-windows-basic-draw-text.png) | ![glimmer-dsl-libui-linux-basic-draw-text.png](images/glimmer-dsl-libui-linux-basic-draw-text.png)
-
-[LibUI](https://github.com/kojix2/LibUI) Original Version:
-
-```ruby
-require 'libui'
-
-UI = LibUI
-
-UI.init
-
-handler = UI::FFI::AreaHandler.malloc
-area    = UI.new_area(handler)
-
-# Michael Ende (1929-1995)
-# The Neverending Story is a fantasy novel by German writer Michael Ende,
-# The English version, translated by Ralph Manheim, was published in 1983.
-
-TITLE = 'Michael Ende (1929-1995) The Neverending Story'
-
-str1 = \
-  '  At last Ygramul sensed that something was coming toward ' \
-  'her. With the speed of lightning, she turned about, confronting ' \
-  'Atreyu with an enormous steel-blue face. Her single eye had a ' \
-  'vertical pupil, which stared at Atreyu with inconceivable malignancy. '
-
-str2 = \
-  '  A cry of fear escaped Bastian. '
-
-str3 = \
-  '  A cry of terror passed through the ravine and echoed from ' \
-  'side to side. Ygramul turned her eye to left and right, to see if ' \
-  'someone else had arrived, for that sound could not have been ' \
-  'made by the boy who stood there as though paralyzed with ' \
-  'horror. '
-
-str4 = \
-  '  Could she have heard my cry? Bastion wondered in alarm. ' \
-  "But that's not possible. "
-
-str5 = \
-  '  And then Atreyu heard Ygramuls voice. It was very high ' \
-  'and slightly hoarse, not at all the right kind of voice for that ' \
-  'enormous face. Her lips did not move as she spoke. It was the ' \
-  'buzzing of a great swarm of hornets that shaped itself into ' \
-  'words. '
-
-str = ''
-attr_str = UI.new_attributed_string(str)
-
-def attr_str.append(what, color)
-  case color
-  when :red
-    color_attribute = UI.new_color_attribute(0.0, 0.5, 0.0, 0.7)
-  when :green
-    color_attribute = UI.new_color_attribute(0.5, 0.0, 0.25, 0.7)
-  end
-  start = UI.attributed_string_len(self)
-  UI.attributed_string_append_unattributed(self, what)
-  UI.attributed_string_set_attribute(self, color_attribute, start, start + what.size)
-  UI.attributed_string_append_unattributed(self, "\n\n")
-end
-
-attr_str.append(str1, :green)
-attr_str.append(str2, :red)
-attr_str.append(str3, :green)
-attr_str.append(str4, :red)
-attr_str.append(str5, :green)
-
-Georgia = 'Georgia'
-
-handler_draw_event = Fiddle::Closure::BlockCaller.new(0, [1, 1, 1]) do |_, _, adp|
-  area_draw_params = UI::FFI::AreaDrawParams.new(adp)
-  default_font = UI::FFI::FontDescriptor.malloc
-  default_font.Family = Georgia
-  default_font.Size = 13
-  default_font.Weight = 500
-  default_font.Italic = 0
-  default_font.Stretch = 4
-  params = UI::FFI::DrawTextLayoutParams.malloc
-
-  # UI.font_button_font(font_button, default_font)
-  params.String = attr_str
-  params.DefaultFont = default_font
-  params.Width = area_draw_params.AreaWidth
-  params.Align = 0
-  text_layout = UI.draw_new_text_layout(params)
-  UI.draw_text(area_draw_params.Context, text_layout, 0, 0)
-  UI.draw_free_text_layout(text_layout)
-end
-
-handler.Draw         = handler_draw_event
-# Assigning to local variables
-# This is intended to protect Fiddle::Closure from garbage collection.
-handler.MouseEvent   = (c1 = Fiddle::Closure::BlockCaller.new(0, [0]) {})
-handler.MouseCrossed = (c2 = Fiddle::Closure::BlockCaller.new(0, [0]) {})
-handler.DragBroken   = (c3 = Fiddle::Closure::BlockCaller.new(0, [0]) {})
-handler.KeyEvent     = (c4 = Fiddle::Closure::BlockCaller.new(0, [0]) {})
-
-box = UI.new_vertical_box
-UI.box_set_padded(box, 1)
-UI.box_append(box, area, 1)
-
-main_window = UI.new_window(TITLE, 600, 400, 1)
-UI.window_set_margined(main_window, 1)
-UI.window_set_child(main_window, box)
-
-UI.window_on_closing(main_window) do
-  UI.control_destroy(main_window)
-  UI.quit
-  0
-end
-UI.control_show(main_window)
-
-UI.main
-UI.quit
-```
-
-[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
-
-```ruby
-require 'glimmer-dsl-libui'
-
-# Michael Ende (1929-1995)
-# The Neverending Story is a fantasy novel by German writer Michael Ende,
-# The English version, translated by Ralph Manheim, was published in 1983.
-class BasicDrawText
-  include Glimmer
-  
-  def alternating_color_string(initial: false, &block)
-    @index = 0 if initial
-    @index += 1
-    string {
-      if @index.odd?
-        color r: 0.5, g: 0, b: 0.25, a: 0.7
-      else
-        color r: 0, g: 0.5, b: 0, a: 0.7
-      end
-      
-      block.call + "\n\n"
-    }
-  end
-  
-  def launch
-    window('Michael Ende (1929-1995) The Neverending Story', 600, 400) {
-      margined true
-      
-      area {
-        text { # default arguments for x, y, and width are (0, 0, area_draw_params[:area_width])
-          # align :left # default alignment
-          default_font family: 'Georgia', size: 13, weight: :medium, italic: :normal, stretch: :normal
-            
-          alternating_color_string(initial: true) {
-            '  At last Ygramul sensed that something was coming toward ' \
-            'her. With the speed of lightning, she turned about, confronting ' \
-            'Atreyu with an enormous steel-blue face. Her single eye had a ' \
-            'vertical pupil, which stared at Atreyu with inconceivable malignancy. '
-          }
-          alternating_color_string {
-            '  A cry of fear escaped Bastian. '
-          }
-          alternating_color_string {
-            '  A cry of terror passed through the ravine and echoed from ' \
-            'side to side. Ygramul turned her eye to left and right, to see if ' \
-            'someone else had arrived, for that sound could not have been ' \
-            'made by the boy who stood there as though paralyzed with ' \
-            'horror. '
-          }
-          alternating_color_string {
-            '  Could she have heard my cry? Bastion wondered in alarm. ' \
-            "But that's not possible. "
-          }
-          alternating_color_string {
-            '  And then Atreyu heard Ygramuls voice. It was very high ' \
-            'and slightly hoarse, not at all the right kind of voice for that ' \
-            'enormous face. Her lips did not move as she spoke. It was the ' \
-            'buzzing of a great swarm of hornets that shaped itself into ' \
-            'words. '
-          }
-        }
-      }
-    }.show
-  end
-end
-
-BasicDrawText.new.launch
-```
-
-[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 2:
-
-```ruby
-require 'glimmer-dsl-libui'
-
-# Michael Ende (1929-1995)
-# The Neverending Story is a fantasy novel by German writer Michael Ende,
-# The English version, translated by Ralph Manheim, was published in 1983.
-class BasicDrawText
-  include Glimmer
-  
-  def alternating_color_string(initial: false, &block)
-    @index = 0 if initial
-    @index += 1
-    string {
-      if @index.odd?
-        color r: 0.5, g: 0, b: 0.25, a: 0.7
-      else
-        color r: 0, g: 0.5, b: 0, a: 0.7
-      end
-      
-      block.call + "\n\n"
-    }
-  end
-  
-  def launch
-    window('Michael Ende (1929-1995) The Neverending Story', 600, 400) {
-      margined true
-      
-      area {
-        on_draw do |area_draw_params|
-          text { # default arguments for x, y, and width are (0, 0, area_draw_params[:area_width])
-            # align :left # default alignment
-            default_font family: 'Georgia', size: 13, weight: :medium, italic: :normal, stretch: :normal
-              
-            alternating_color_string(initial: true) {
-              '  At last Ygramul sensed that something was coming toward ' \
-              'her. With the speed of lightning, she turned about, confronting ' \
-              'Atreyu with an enormous steel-blue face. Her single eye had a ' \
-              'vertical pupil, which stared at Atreyu with inconceivable malignancy. '
-            }
-            alternating_color_string {
-              '  A cry of fear escaped Bastian. '
-            }
-            alternating_color_string {
-              '  A cry of terror passed through the ravine and echoed from ' \
-              'side to side. Ygramul turned her eye to left and right, to see if ' \
-              'someone else had arrived, for that sound could not have been ' \
-              'made by the boy who stood there as though paralyzed with ' \
-              'horror. '
-            }
-            alternating_color_string {
-              '  Could she have heard my cry? Bastion wondered in alarm. ' \
-              "But that's not possible. "
-            }
-            alternating_color_string {
-              '  And then Atreyu heard Ygramuls voice. It was very high ' \
-              'and slightly hoarse, not at all the right kind of voice for that ' \
-              'enormous face. Her lips did not move as she spoke. It was the ' \
-              'buzzing of a great swarm of hornets that shaped itself into ' \
-              'words. '
-            }
-          }
-        end
-      }
-    }.show
-  end
-end
-
-BasicDrawText.new.launch
-```
-
-### Custom Draw Text
-
-[examples/custom_draw_text.rb](examples/custom_draw_text.rb)
-
-Run with this command from the root of the project if you cloned the project:
-
-```
-ruby -r './lib/glimmer-dsl-libui' examples/custom_draw_text.rb
-```
-
-Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
-
-```
-ruby -r glimmer-dsl-libui -e "require 'examples/custom_draw_text'"
-```
-
-Mac | Windows | Linux
-----|---------|------
-![glimmer-dsl-libui-mac-custom-draw-text.png](images/glimmer-dsl-libui-mac-custom-draw-text.png) ![glimmer-dsl-libui-mac-custom-draw-text-changed.png](images/glimmer-dsl-libui-mac-custom-draw-text-changed.png) | ![glimmer-dsl-libui-windows-custom-draw-text.png](images/glimmer-dsl-libui-windows-custom-draw-text.png) ![glimmer-dsl-libui-windows-custom-draw-text-changed.png](images/glimmer-dsl-libui-windows-custom-draw-text-changed.png) | ![glimmer-dsl-libui-linux-custom-draw-text.png](images/glimmer-dsl-libui-linux-custom-draw-text.png) ![glimmer-dsl-libui-linux-custom-draw-text-changed.png](images/glimmer-dsl-libui-linux-custom-draw-text-changed.png)
-
-New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
-
-```ruby
-require 'glimmer-dsl-libui'
-
-# Michael Ende (1929-1995)
-# The Neverending Story is a fantasy novel by German writer Michael Ende,
-# The English version, translated by Ralph Manheim, was published in 1983.
-class CustomDrawText
-  include Glimmer
-  
-  def launch
-    window('Michael Ende (1929-1995) The Neverending Story', 600, 500) {
-      margined true
-      
-      vertical_box {
-        form {
-          stretchy false
-          
-          font_button { |fb|
-            label 'Font'
-            
-            on_changed do
-              @string.font = fb.font
-            end
-          }
-          color_button { |cb|
-            label 'Color'
-            
-            on_changed do
-              @string.color = cb.color
-            end
-          }
-          color_button { |cb|
-            label 'Background'
-            
-            on_changed do
-              @string.background = cb.color
-            end
-          }
-          combobox { |c|
-            label 'Underline'
-            items Glimmer::LibUI.enum_symbols(:underline).map(&:to_s).map {|word| word.split('_').map(&:capitalize).join(' ')}
-            selected 'None'
-            
-            on_selected do
-              @string.underline = c.selected_item.underscore
-            end
-          }
-        }
-        
-        area {
-          text { # default arguments for x, y, and width are (0, 0, area_draw_params[:area_width])
-            # align :left # default alignment
-              
-            @string = string {
-              '  At last Ygramul sensed that something was coming toward ' \
-              'her. With the speed of lightning, she turned about, confronting ' \
-              'Atreyu with an enormous steel-blue face. Her single eye had a ' \
-              'vertical pupil, which stared at Atreyu with inconceivable malignancy. ' \
-              "\n\n" \
-              '  A cry of fear escaped Bastian. ' \
-              "\n\n" \
-              '  A cry of terror passed through the ravine and echoed from ' \
-              'side to side. Ygramul turned her eye to left and right, to see if ' \
-              'someone else had arrived, for that sound could not have been ' \
-              'made by the boy who stood there as though paralyzed with ' \
-              'horror. ' \
-              "\n\n" \
-              '  Could she have heard my cry? Bastion wondered in alarm. ' \
-              "But that's not possible. " \
-              "\n\n" \
-              '  And then Atreyu heard Ygramuls voice. It was very high ' \
-              'and slightly hoarse, not at all the right kind of voice for that ' \
-              'enormous face. Her lips did not move as she spoke. It was the ' \
-              'buzzing of a great swarm of hornets that shaped itself into ' \
-              'words. ' \
-              "\n\n"
-            }
-          }
-        }
-      }
-    }.show
-  end
-end
-
-CustomDrawText.new.launch
-```
-
-New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 2:
-
-```ruby
-require 'glimmer-dsl-libui'
-
-# Michael Ende (1929-1995)
-# The Neverending Story is a fantasy novel by German writer Michael Ende,
-# The English version, translated by Ralph Manheim, was published in 1983.
-class CustomDrawText
-  include Glimmer
-  
-  def launch
-    window('Michael Ende (1929-1995) The Neverending Story', 600, 500) {
-      margined true
-      
-      vertical_box {
-        form {
-          stretchy false
-          
-          font_button { |fb|
-            label 'Font'
-            
-            on_changed do
-              @font = fb.font
-              @area.queue_redraw_all
-            end
-          }
-          color_button { |cb|
-            label 'Color'
-            
-            on_changed do
-              @color = cb.color
-              @area.queue_redraw_all
-            end
-          }
-          color_button { |cb|
-            label 'Background'
-            
-            on_changed do
-              @background = cb.color
-              @area.queue_redraw_all
-            end
-          }
-          combobox { |c|
-            label 'Underline'
-            items Glimmer::LibUI.enum_symbols(:underline).map(&:to_s).map {|word| word.split('_').map(&:capitalize).join(' ')}
-            selected 'None'
-            
-            on_selected do
-              @underline = c.selected_item.underscore
-              @area.queue_redraw_all
-            end
-          }
-        }
-        
-        @area = area {
-          on_draw do |area_draw_params|
-            text { # default arguments for x, y, and width are (0, 0, area_draw_params[:area_width])
-              # align :left # default alignment
-                
-              string {
-                font @font
-                color @color
-                background @background
-                underline @underline
-                
-                '  At last Ygramul sensed that something was coming toward ' \
-                'her. With the speed of lightning, she turned about, confronting ' \
-                'Atreyu with an enormous steel-blue face. Her single eye had a ' \
-                'vertical pupil, which stared at Atreyu with inconceivable malignancy. ' \
-                "\n\n" \
-                '  A cry of fear escaped Bastian. ' \
-                "\n\n" \
-                '  A cry of terror passed through the ravine and echoed from ' \
-                'side to side. Ygramul turned her eye to left and right, to see if ' \
-                'someone else had arrived, for that sound could not have been ' \
-                'made by the boy who stood there as though paralyzed with ' \
-                'horror. ' \
-                "\n\n" \
-                '  Could she have heard my cry? Bastion wondered in alarm. ' \
-                "But that's not possible. " \
-                "\n\n" \
-                '  And then Atreyu heard Ygramuls voice. It was very high ' \
-                'and slightly hoarse, not at all the right kind of voice for that ' \
-                'enormous face. Her lips did not move as she spoke. It was the ' \
-                'buzzing of a great swarm of hornets that shaped itself into ' \
-                'words. ' \
-                "\n\n"
-              }
-            }
-          end
-        }
-      }
-    }.show
-  end
-end
-
-CustomDrawText.new.launch
-```
-
-### Method-Based Custom Keyword
+#### Method-Based Custom Keyword
 
 [examples/method_based_custom_keyword.rb](examples/method_based_custom_keyword.rb)
 
@@ -6692,7 +6314,342 @@ window('Method-Based Custom Keyword') {
 }.show
 ```
 
-### Tetris
+#### Midi Player
+
+To run this example, install [TiMidity](http://timidity.sourceforge.net) and ensure `timidity` command is in `PATH` (can be installed via [Homebrew](https://brew.sh) on Mac or [apt-get](https://help.ubuntu.com/community/AptGet/Howto) on Linux).
+
+[examples/midi_player.rb](examples/midi_player.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/midi_player.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/midi_player'"
+```
+
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-midi-player.png](images/glimmer-dsl-libui-mac-midi-player.png) ![glimmer-dsl-libui-mac-midi-player-msg-box.png](images/glimmer-dsl-libui-mac-midi-player-msg-box.png) | ![glimmer-dsl-libui-windows-midi-player.png](images/glimmer-dsl-libui-windows-midi-player.png) ![glimmer-dsl-libui-windows-midi-player-msg-box.png](images/glimmer-dsl-libui-windows-midi-player-msg-box.png) | ![glimmer-dsl-libui-linux-midi-player.png](images/glimmer-dsl-libui-linux-midi-player.png) ![glimmer-dsl-libui-linux-midi-player-msg-box.png](images/glimmer-dsl-libui-linux-midi-player-msg-box.png)
+
+[LibUI](https://github.com/kojix2/LibUI) Original Version:
+
+```ruby
+require 'libui'
+UI = LibUI
+
+class TinyMidiPlayer
+  VERSION = '0.0.1'
+
+  def initialize
+    UI.init
+    @pid = nil
+    @music_directory = File.expand_path(ARGV[0] || '~/Music/')
+    @midi_files      = Dir.glob(File.join(@music_directory, '**/*.mid'))
+                          .sort_by { |path| File.basename(path) }
+    at_exit { stop_midi }
+    create_gui
+  end
+
+  def stop_midi
+    if @pid
+      Process.kill(:SIGKILL, @pid) if @th.alive?
+      @pid = nil
+    end
+  end
+
+  def play_midi
+    stop_midi
+    if @pid.nil? && @selected_file
+      begin
+        @pid = spawn "timidity #{@selected_file}"
+        @th = Process.detach @pid
+      rescue Errno::ENOENT
+        warn 'Timidty++ not found. Please install Timidity++.'
+        warn 'https://sourceforge.net/projects/timidity/'
+      end
+    end
+  end
+
+  def show_version(main_window)
+    UI.msg_box(main_window,
+               'Tiny Midi Player',
+               "Written in Ruby\n" \
+               "https://github.com/kojix2/libui\n" \
+               "Version #{VERSION}")
+  end
+
+  def create_gui
+    # loop_menu = UI.new_menu('Repeat')
+    # items = %w[Off One].map do |item_name|
+    #   item = UI.menu_append_check_item(loop_menu, item_name)
+    # end
+    # items.each_with_index do |item, idx|
+    #   UI.menu_item_on_clicked(item) do
+    #     @repeat = idx
+    #     (items - [item]).each do |i|
+    #       UI.menu_item_set_checked(i, 0)
+    #     end
+    #     0
+    #   end
+    # end
+
+    help_menu = UI.new_menu('Help')
+    version_item = UI.menu_append_item(help_menu, 'Version')
+
+    UI.new_window('Tiny Midi Player', 200, 50, 1).tap do |main_window|
+      UI.menu_item_on_clicked(version_item) { show_version(main_window) }
+
+      UI.window_on_closing(main_window) do
+        UI.control_destroy(main_window)
+        UI.quit
+        0
+      end
+
+      UI.new_horizontal_box.tap do |hbox|
+        UI.new_vertical_box.tap do |vbox|
+          UI.new_button('▶').tap do |button1|
+            UI.button_on_clicked(button1) { play_midi }
+            UI.box_append(vbox, button1, 1)
+          end
+          UI.new_button('■').tap do |button2|
+            UI.button_on_clicked(button2) { stop_midi }
+            UI.box_append(vbox, button2, 1)
+          end
+          UI.box_append(hbox, vbox, 0)
+        end
+        UI.window_set_child(main_window, hbox)
+
+        UI.new_combobox.tap do |cbox|
+          @midi_files.each do |path|
+            name = File.basename(path)
+            UI.combobox_append(cbox, name)
+          end
+          UI.combobox_on_selected(cbox) do |ptr|
+            @selected_file = @midi_files[UI.combobox_selected(ptr)]
+            play_midi if @th&.alive?
+            0
+          end
+          UI.box_append(hbox, cbox, 1)
+        end
+      end
+      UI.control_show(main_window)
+    end
+    UI.main
+    UI.quit
+  end
+end
+
+TinyMidiPlayer.new
+```
+
+[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+require 'glimmer-dsl-libui'
+
+class TinyMidiPlayer
+  include Glimmer
+  
+  VERSION = '0.0.1'
+
+  def initialize
+    @pid = nil
+    @music_directory = File.expand_path('../sounds', __dir__)
+    @midi_files      = Dir.glob(File.join(@music_directory, '**/*.mid'))
+                          .sort_by { |path| File.basename(path) }
+    at_exit { stop_midi }
+    create_gui
+  end
+
+  def stop_midi
+    if @pid
+      Process.kill(:SIGKILL, @pid) if @th.alive?
+      @pid = nil
+    end
+  end
+
+  def play_midi
+    stop_midi
+    if @pid.nil? && @selected_file
+      begin
+        @pid = spawn "timidity #{@selected_file}"
+        @th = Process.detach @pid
+      rescue Errno::ENOENT
+        warn 'Timidty++ not found. Please install Timidity++.'
+        warn 'https://sourceforge.net/projects/timidity/'
+      end
+    end
+  end
+
+  def show_version
+    msg_box('Tiny Midi Player',
+              "Written in Ruby\n" \
+                "https://github.com/kojix2/libui\n" \
+                "Version #{VERSION}")
+  end
+
+  def create_gui
+    menu('Help') {
+      menu_item('Version') {
+        on_clicked do
+          show_version
+        end
+      }
+    }
+    window('Tiny Midi Player', 200, 50) {
+      horizontal_box {
+        vertical_box {
+          stretchy false
+          
+          button('▶') {
+            on_clicked do
+              play_midi
+            end
+          }
+          button('■') {
+            on_clicked do
+              stop_midi
+            end
+          }
+        }
+
+        combobox { |c|
+          items @midi_files.map { |path| File.basename(path) }
+          
+          on_selected do
+            @selected_file = @midi_files[c.selected]
+            play_midi if @th&.alive?
+          end
+        }
+      }
+    }.show
+  end
+end
+
+TinyMidiPlayer.new
+```
+
+#### Snake
+
+Snake provides an example of building a desktop application [test-first](/spec/examples/snake/model/game_spec.rb) following the MVP ([Model](/examples/snake/model/game.rb) / [View](/examples/snake.rb) / [Presenter](/examples/snake/presenter/grid.rb)) architectural pattern.
+
+[examples/snake.rb](examples/snake.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/snake.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/snake'"
+```
+
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-snake.png](images/glimmer-dsl-libui-mac-snake.png) ![glimmer-dsl-libui-mac-snake-game-over.png](images/glimmer-dsl-libui-mac-snake-game-over.png) | ![glimmer-dsl-libui-windows-snake.png](images/glimmer-dsl-libui-windows-snake.png) ![glimmer-dsl-libui-windows-snake-game-over.png](images/glimmer-dsl-libui-windows-snake-game-over.png) | ![glimmer-dsl-libui-linux-snake.png](images/glimmer-dsl-libui-linux-snake.png) ![glimmer-dsl-libui-linux-snake-game-over.png](images/glimmer-dsl-libui-linux-snake-game-over.png)
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+require 'glimmer-dsl-libui'
+require 'glimmer/data_binding/observer'
+
+require_relative 'snake/presenter/grid'
+
+class Snake
+  CELL_SIZE = 15
+  SNAKE_MOVE_DELAY = 0.1
+  include Glimmer
+  
+  def initialize
+    @game = Model::Game.new
+    @grid = Presenter::Grid.new(@game)
+    @game.start
+    create_gui
+    register_observers
+  end
+  
+  def launch
+    @main_window.show
+  end
+  
+  def register_observers
+    @game.height.times do |row|
+      @game.width.times do |column|
+        Glimmer::DataBinding::Observer.proc do |new_color|
+          @cell_grid[row][column].fill = new_color
+        end.observe(@grid.cells[row][column], :color)
+      end
+    end
+    
+    Glimmer::DataBinding::Observer.proc do |game_over|
+      Glimmer::LibUI.queue_main do
+        if game_over
+          msg_box('Game Over!', "Score: #{@game.score} | High Score: #{@game.high_score}")
+          @game.start
+        end
+      end
+    end.observe(@game, :over)
+    
+    Glimmer::LibUI.timer(SNAKE_MOVE_DELAY) do
+      unless @game.over?
+        @game.snake.move
+        @main_window.title = "Glimmer Snake (Score: #{@game.score} | High Score: #{@game.high_score})"
+      end
+    end
+  end
+  
+  def create_gui
+    @cell_grid = []
+    @main_window = window('Glimmer Snake', @game.width * CELL_SIZE, @game.height * CELL_SIZE) {
+      resizable false
+      
+      vertical_box {
+        padded false
+        
+        @game.height.times do |row|
+          @cell_grid << []
+          horizontal_box {
+            padded false
+            
+            @game.width.times do |column|
+              area {
+                @cell_grid.last << square(0, 0, CELL_SIZE) {
+                  fill Presenter::Cell::COLOR_CLEAR
+                }
+                
+                on_key_up do |area_key_event|
+                  orientation_and_key = [@game.snake.head.orientation, area_key_event[:ext_key]]
+                  case orientation_and_key
+                  in [:north, :right] | [:east, :down] | [:south, :left] | [:west, :up]
+                    @game.snake.turn_right
+                  in [:north, :left] | [:west, :down] | [:south, :right] | [:east, :up]
+                    @game.snake.turn_left
+                  else
+                    # No Op
+                  end
+                end
+              }
+            end
+          }
+        end
+      }
+    }
+  end
+end
+
+Snake.new.launch
+```
+
+#### Tetris
 
 Glimmer Tetris utilizes many small areas to represent Tetromino blocks because this ensures smaller redraws per tetromino block color change, thus achieving higher performance than redrawing one large area on every little change.
 
@@ -7090,7 +7047,7 @@ end
 Tetris.new.launch
 ```
 
-### Tic Tac Toe
+#### Tic Tac Toe
 
 [examples/tic_tac_toe.rb](examples/tic_tac_toe.rb)
 
@@ -7198,119 +7155,160 @@ end
 TicTacToe.new.launch
 ```
 
-### Snake
+#### Timer
 
-Snake provides an example of building a desktop application [test-first](/spec/examples/snake/model/game_spec.rb) following the MVP ([Model](/examples/snake/model/game.rb) / [View](/examples/snake.rb) / [Presenter](/examples/snake/presenter/grid.rb)) architectural pattern.
+To run this example, install [TiMidity](http://timidity.sourceforge.net) and ensure `timidity` command is in `PATH` (can be installed via [Homebrew](https://brew.sh) on Mac or [apt-get](https://help.ubuntu.com/community/AptGet/Howto) on Linux).
 
-[examples/snake.rb](examples/snake.rb)
+[examples/timer.rb](examples/timer.rb)
 
 Run with this command from the root of the project if you cloned the project:
 
 ```
-ruby -r './lib/glimmer-dsl-libui' examples/snake.rb
+ruby -r './lib/glimmer-dsl-libui' examples/timer.rb
 ```
 
 Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
 
 ```
-ruby -r glimmer-dsl-libui -e "require 'examples/snake'"
+ruby -r glimmer-dsl-libui -e "require 'examples/timer'"
 ```
 
 Mac | Windows | Linux
 ----|---------|------
-![glimmer-dsl-libui-mac-snake.png](images/glimmer-dsl-libui-mac-snake.png) ![glimmer-dsl-libui-mac-snake-game-over.png](images/glimmer-dsl-libui-mac-snake-game-over.png) | ![glimmer-dsl-libui-windows-snake.png](images/glimmer-dsl-libui-windows-snake.png) ![glimmer-dsl-libui-windows-snake-game-over.png](images/glimmer-dsl-libui-windows-snake-game-over.png) | ![glimmer-dsl-libui-linux-snake.png](images/glimmer-dsl-libui-linux-snake.png) ![glimmer-dsl-libui-linux-snake-game-over.png](images/glimmer-dsl-libui-linux-snake-game-over.png)
+![glimmer-dsl-libui-mac-timer.png](images/glimmer-dsl-libui-mac-timer.png) ![glimmer-dsl-libui-mac-timer-in-progress.png](images/glimmer-dsl-libui-mac-timer-in-progress.png) | ![glimmer-dsl-libui-windows-timer.png](images/glimmer-dsl-libui-windows-timer.png) ![glimmer-dsl-libui-windows-timer-in-progress.png](images/glimmer-dsl-libui-windows-timer-in-progress.png) | ![glimmer-dsl-libui-linux-timer.png](images/glimmer-dsl-libui-linux-timer.png) ![glimmer-dsl-libui-linux-timer-in-progress.png](images/glimmer-dsl-libui-linux-timer-in-progress.png)
 
 New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
 
 ```ruby
 require 'glimmer-dsl-libui'
-require 'glimmer/data_binding/observer'
 
-require_relative 'snake/presenter/grid'
-
-class Snake
-  CELL_SIZE = 15
-  SNAKE_MOVE_DELAY = 0.1
+class Timer
   include Glimmer
   
+  SECOND_MAX = 59
+  MINUTE_MAX = 59
+  HOUR_MAX = 23
+  
   def initialize
-    @game = Model::Game.new
-    @grid = Presenter::Grid.new(@game)
-    @game.start
+    @pid = nil
+    @alarm_file = File.expand_path('../sounds/AlanWalker-Faded.mid', __dir__)
+    at_exit { stop_alarm }
+    setup_timer
     create_gui
-    register_observers
   end
-  
-  def launch
-    @main_window.show
-  end
-  
-  def register_observers
-    @game.height.times do |row|
-      @game.width.times do |column|
-        Glimmer::DataBinding::Observer.proc do |new_color|
-          @cell_grid[row][column].fill = new_color
-        end.observe(@grid.cells[row][column], :color)
-      end
+
+  def stop_alarm
+    if @pid
+      Process.kill(:SIGKILL, @pid) if @th.alive?
+      @pid = nil
     end
-    
-    Glimmer::DataBinding::Observer.proc do |game_over|
-      Glimmer::LibUI.queue_main do
-        if game_over
-          msg_box('Game Over!', "Score: #{@game.score} | High Score: #{@game.high_score}")
-          @game.start
-        end
-      end
-    end.observe(@game, :over)
-    
-    Glimmer::LibUI.timer(SNAKE_MOVE_DELAY) do
-      unless @game.over?
-        @game.snake.move
-        @main_window.title = "Glimmer Snake (Score: #{@game.score} | High Score: #{@game.high_score})"
+  end
+
+  def play_alarm
+    stop_alarm
+    if @pid.nil?
+      begin
+        @pid = spawn "timidity -G 0.0-10.0 #{@alarm_file}"
+        @th = Process.detach @pid
+      rescue Errno::ENOENT
+        warn 'Timidty++ not found. Please install Timidity++.'
+        warn 'https://sourceforge.net/projects/timidity/'
       end
     end
   end
-  
-  def create_gui
-    @cell_grid = []
-    @main_window = window('Glimmer Snake', @game.width * CELL_SIZE, @game.height * CELL_SIZE) {
-      resizable false
-      
-      vertical_box {
-        padded false
-        
-        @game.height.times do |row|
-          @cell_grid << []
-          horizontal_box {
-            padded false
-            
-            @game.width.times do |column|
-              area {
-                @cell_grid.last << square(0, 0, CELL_SIZE) {
-                  fill Presenter::Cell::COLOR_CLEAR
-                }
-                
-                on_key_up do |area_key_event|
-                  orientation_and_key = [@game.snake.head.orientation, area_key_event[:ext_key]]
-                  case orientation_and_key
-                  in [:north, :right] | [:east, :down] | [:south, :left] | [:west, :up]
-                    @game.snake.turn_right
-                  in [:north, :left] | [:west, :down] | [:south, :right] | [:east, :up]
-                    @game.snake.turn_left
-                  else
-                    # No Op
-                  end
-                end
-              }
+
+  def setup_timer
+    unless @setup_timer
+      Glimmer::LibUI.timer(1) do
+        if @started
+          seconds = @sec_spinbox.value
+          minutes = @min_spinbox.value
+          hours = @hour_spinbox.value
+          if seconds > 0
+            @sec_spinbox.value = seconds -= 1
+          end
+          if seconds == 0
+            if minutes > 0
+              @min_spinbox.value = minutes -= 1
+              @sec_spinbox.value = seconds = SECOND_MAX
             end
-          }
+            if minutes == 0
+              if hours > 0
+                @hour_spinbox.value = hours -= 1
+                @min_spinbox.value = minutes = MINUTE_MAX
+                @sec_spinbox.value = seconds = SECOND_MAX
+              end
+              if hours == 0 && minutes == 0 && seconds == 0
+                @start_button.enabled = true
+                @stop_button.enabled = false
+                @started = false
+                unless @played
+                  play_alarm
+                  msg_box('Alarm', 'Countdown Is Finished!')
+                  @played = true
+                end
+              end
+            end
+          end
         end
+      end
+      @setup_timer = true
+    end
+  end
+
+  def create_gui
+    window('Timer') {
+      margined true
+      
+      group('Countdown') {
+        vertical_box {
+          horizontal_box {
+            @hour_spinbox = spinbox(0, HOUR_MAX) {
+              stretchy false
+              value 0
+            }
+            label(':') {
+              stretchy false
+            }
+            @min_spinbox = spinbox(0, MINUTE_MAX) {
+              stretchy false
+              value 0
+            }
+            label(':') {
+              stretchy false
+            }
+            @sec_spinbox = spinbox(0, SECOND_MAX) {
+              stretchy false
+              value 0
+            }
+          }
+          horizontal_box {
+            @start_button = button('Start') {
+              on_clicked do
+                @start_button.enabled = false
+                @stop_button.enabled = true
+                @started = true
+                @played = false
+              end
+            }
+            
+            @stop_button = button('Stop') {
+              enabled false
+              
+              on_clicked do
+                @start_button.enabled = true
+                @stop_button.enabled = false
+                @started = false
+              end
+            }
+          }
+        }
       }
-    }
+    }.show
   end
 end
 
-Snake.new.launch
+Timer.new
 ```
 
 ## Applications

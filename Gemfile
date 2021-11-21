@@ -13,7 +13,7 @@ gem 'os', '>= 1.0.0', '< 2.0.0'
 gem 'color', '~> 1.8'
 # gem 'rake', '>= 10.1.0', '< 14.0.0'
 # gem 'text-table', '>= 1.2.4', '< 2.0.0'
-gem 'libui', '~> 0.0.12'
+gem 'libui', '~> 0.0.13'
 gem 'chunky_png', '~> 1.4.0'
 
 # Add dependencies to develop your gem here.

@@ -2,30 +2,42 @@
 
 ## Next
 
-- Support `contain?` method in `arc`, `polygon`, `polyline`, `polybezier`, and `figure`
-- Support `include?` method in `arc`, `polygon`, `polyline`, `polybezier`, and `figure`
-- Support `bounds` method in `polygon`, `polyline`, `polybezier`, and all other shapes
+- Support general control property unidirectional data-binding (with `<=` sign or `<=>`)
+- Support `date_time_picker`/`date_picker`/`time_picker` `time` bidirectional data-binding (with `<=>` sign)
+- Support `checkbox` `checked` bidirectional data-binding (with `<=>` sign)
+- Support `spinbox` `value` bidirectional data-binding (with `<=>` sign)
+- Support `slider` `value` bidirectional data-binding (with `<=>` sign)
+- Support `radio_menu_item` `checked` bidirectional data-binding (with `<=>` sign)
+- Support `check_menu_item` `checked` bidirectional data-binding (with `<=>` sign)
+- Support `color_button` `color` bidirectional data-binding (with `<=>` sign)
+- Support `font_button` `font` write-only unidirectional data-binding (with `>` sign or `<=>`)
+- Support `combobox` and `editable_combobox` `selected` property bidirectional data-binding (with `<=>` sign)
+- Support `radio_buttons` `selected` property bidirectional data-binding (with `<=>` sign)
+- Support `entry` `text` property bidirectional data-binding (with `<=>` sign)
+- Support `table` `cell_rows` bidirectional data-binding (with `<=>` sign)
 
 ## Soon
+
+- Add Windows screenshot for examples/basic_scrolling_area.rb
+
+## Future
+
+- Glimmerize examples/draw_text.rb from Ruby LibUI project
+- Glimmerize examples/spectrum.rb from Ruby LibUI project
+- Glimmerize examples/turing_pattern.rb from Ruby LibUI project
+
+- Support `contain?` method in `arc` (todo), `polygon` (handled in `georuby` or `winding-polygon` or `point-in-polygon` or `is` or `polygon-validator` or `pip` gem), `polyline` (handled), `polybezier` (not handled), and `figure` (semi-handled unless beziers are in)
+- Support `include?` method in `arc` (todo), `polygon` (handled in georuby), `polyline` (handled), `polybezier` (not handled), and `figure` (semi-handled unless beziers are in)
+- Support `bounds` method in `polygon`, `polyline`, `polybezier`, and all other shapes
 
 - Support Custom Shapes, describing composite shapes/text/image concepts inside an `area`
 - Simpler Drag and Drop via `drag_source true`, `drag_and_move true`, `drop_target true`, and `on_drop { }` event
 - examples/area_drag_and_move.rb (drag around drawn objects like a house, animals, and people)
 - examples/area_drag_and_drop.rb (customize a face with face parts like mustache, nose, lips, eyes, and hair)
 - Extract geometrical algorithms into their own gem `perfect_shape` (Complete Ruby Geometry Library Covering Math Operations for All Geometrical Shapes like Rectangle, Square, Arc, Circle, Polygon, Polyline, Polybezier, and Polyquad)
-- Add Windows screenshot for examples/basic_scrolling_area.rb
-
-## Future
-
-- Glimmerize examples/spectrum.rb from Ruby LibUI project
-- Glimmerize examples/draw_text.rb from Ruby LibUI project
 
 ## Far Future
 
-- Support general property data-binding
-- Support table data-binding
-- Support combobox and editable_combobox property data-binding
-- Support radio_buttons property data-binding
 - Support custom keywords representing controls, shapes, matrices, message boxes or windows
 - Automate OCRA support for Windows Native-Executable Packaging
 - Implement Mac Native-Executable Packaging (perhaps with https://github.com/create-dmg/create-dmg or https://github.com/sveinbjornt/Platypus)
