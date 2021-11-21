@@ -79,19 +79,15 @@ window('histogram example', 640, 480) {
     
     @area = area {
       on_draw do |area_draw_params|
-        path {
-          rectangle(0, 0, area_draw_params[:area_width], area_draw_params[:area_height])
-          
+        rectangle(0, 0, area_draw_params[:area_width], area_draw_params[:area_height]) {
           fill 0xFFFFFF
         }
         
         graph_width, graph_height = *graph_size(area_draw_params[:area_width], area_draw_params[:area_height])
       
-        path {
-          figure(X_OFF_LEFT, Y_OFF_TOP) {
-            line(X_OFF_LEFT, Y_OFF_TOP + graph_height)
-            line(X_OFF_LEFT + graph_width, Y_OFF_TOP + graph_height)
-          }
+        figure(X_OFF_LEFT, Y_OFF_TOP) {
+          line(X_OFF_LEFT, Y_OFF_TOP + graph_height)
+          line(X_OFF_LEFT + graph_width, Y_OFF_TOP + graph_height)
           
           stroke 0x000000, thickness: 2, miter_limit: 10
         }

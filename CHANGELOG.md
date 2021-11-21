@@ -7,6 +7,7 @@
 - Simplify examples/basic_transform.rb by nesting shapes directly under `area` (and provide original version as 2nd version)
 - Simplify examples/color_the_circles.rb by nesting shapes directly under `area`
 - Simplify examples/dynamic_area.rb (all versions) by nesting shapes directly under `area`
+- Simplify examples/histogram.rb (all versions) by nesting shapes directly under `area`
 - Simplify examples/tetris.rb by nesting shapes directly under `area`
 - Simplify examples/tic_tac_toe.rb by nesting shapes directly under `area`
 - Simplify examples/snake.rb by nesting shapes directly under `area`
