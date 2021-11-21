@@ -1352,15 +1352,13 @@ Example:
   }
 ```
 
-**3 - Control property declarations always have arguments that are never wrapped inside parentheses and never take a block.**
+**3 - Control property declarations always have arguments that are not wrapped inside parentheses and typically do not take a block.**
 
 Example:
 
 ```ruby
-  spinbox(0, 100) {
-    stretchy false
-    value 42
-  }
+  stretchy false
+  value 42
 ```
 
 **4 - Control listeners are always declared starting with on_ prefix and affixing listener event method name afterwards in underscored lowercase form. Their multi-line blocks have a `do; end` style.**

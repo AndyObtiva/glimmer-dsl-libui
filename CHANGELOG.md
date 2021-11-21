@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.3.4
+
+- Simplify examples/basic_area.rb (all versions) by nesting shapes directly under `area`
+
 ## 0.3.3
 
 - Support nesting shapes directly under `area` to represent paths having one shape, and nesting `fill`/`stroke` within the shapes (not `path`)
