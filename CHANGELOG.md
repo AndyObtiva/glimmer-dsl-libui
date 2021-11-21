@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.3.5
+
+- Fixed Area Gallery example (all versions) after a recent refactoring broke it
+
 ## 0.3.4
 
 - New examples/basic_scrolling_area.rb

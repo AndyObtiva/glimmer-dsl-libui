@@ -4,7 +4,41 @@ include Glimmer
 
 window('Area Gallery', 400, 400) {
   area {
-
+    path { # declarative stable path with explicit attributes (explicit path syntax for multiple shapes sharing attributes)
+      square {
+        x 0
+        y 0
+        length 100
+      }
+      
+      square {
+        x 100
+        y 100
+        length 400
+      }
+      
+      fill r: 102, g: 102, b: 204
+    }
+    
+    path { # declarative stable path with explicit attributes (explicit path syntax for multiple shapes sharing attributes)
+      rectangle {
+        x 0
+        y 100
+        width 100
+        height 400
+      }
+      
+      rectangle {
+        x 100
+        y 0
+        width 400
+        height 100
+      }
+      
+      # linear gradient (has x0, y0, x1, y1, and stops)
+      fill x0: 10, y0: 10, x1: 350, y1: 350, stops: [{pos: 0.25, r: 204, g: 102, b: 204}, {pos: 0.75, r: 102, g: 102, b: 204}]
+    }
+    
     figure { # declarative stable path with explicit attributes (implicit path syntax for a single shape nested directly under area)
       x 100
       y 100
@@ -109,41 +143,6 @@ window('Area Gallery', 400, 400) {
       radius 90
       fill r: 202, g: 102, b: 204, a: 0.5
       stroke r: 0, g: 0, b: 0, thickness: 2
-    }
-    
-    path { # declarative stable path with explicit attributes (explicit path syntax for multiple shapes sharing attributes)
-      square {
-        x 0
-        y 0
-        length 100
-      }
-      
-      square {
-        x 100
-        y 100
-        length 400
-      }
-      
-      fill r: 102, g: 102, b: 204
-    }
-    
-    path { # declarative stable path with explicit attributes (explicit path syntax for multiple shapes sharing attributes)
-      rectangle {
-        x 0
-        y 100
-        width 100
-        height 400
-      }
-      
-      rectangle {
-        x 100
-        y 0
-        width 400
-        height 100
-      }
-      
-      # linear gradient (has x0, y0, x1, y1, and stops)
-      fill x0: 10, y0: 10, x1: 350, y1: 350, stops: [{pos: 0.25, r: 204, g: 102, b: 204}, {pos: 0.75, r: 102, g: 102, b: 204}]
     }
     
     text { # declarative stable text with explicit attributes

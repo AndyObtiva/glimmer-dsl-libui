@@ -5,6 +5,21 @@ include Glimmer
 window('Area Gallery', 400, 400) {
   area {
     on_draw do |area_draw_params|
+      path { # dynamic path, added semi-declaratively inside on_draw block
+        square(0, 0, 100)
+        square(100, 100, 400)
+        
+        fill r: 102, g: 102, b: 204
+      }
+      
+      path { # dynamic path, added semi-declaratively inside on_draw block
+        rectangle(0, 100, 100, 400)
+        rectangle(100, 0, 400, 100)
+        
+        # linear gradient (has x0, y0, x1, y1, and stops)
+        fill x0: 10, y0: 10, x1: 350, y1: 350, stops: [{pos: 0.25, r: 204, g: 102, b: 204}, {pos: 0.75, r: 102, g: 102, b: 204}]
+      }
+      
       polygon(100, 100, 100, 400, 400, 100, 400, 400) { # dynamic path, added semi-declaratively inside on_draw block
         fill r: 202, g: 102, b: 104, a: 0.5
         stroke r: 0, g: 0, b: 0
@@ -31,21 +46,6 @@ window('Area Gallery', 400, 400) {
       circle(200, 200, 90) { # dynamic path, added semi-declaratively inside on_draw block
         fill r: 202, g: 102, b: 204, a: 0.5
         stroke r: 0, g: 0, b: 0, thickness: 2
-      }
-      
-      path { # dynamic path, added semi-declaratively inside on_draw block
-        square(0, 0, 100)
-        square(100, 100, 400)
-        
-        fill r: 102, g: 102, b: 204
-      }
-      
-      path { # dynamic path, added semi-declaratively inside on_draw block
-        rectangle(0, 100, 100, 400)
-        rectangle(100, 0, 400, 100)
-        
-        # linear gradient (has x0, y0, x1, y1, and stops)
-        fill x0: 10, y0: 10, x1: 350, y1: 350, stops: [{pos: 0.25, r: 204, g: 102, b: 204}, {pos: 0.75, r: 102, g: 102, b: 204}]
       }
       
       text(161, 40, 100) { # dynamic text added semi-declaratively inside on_draw block

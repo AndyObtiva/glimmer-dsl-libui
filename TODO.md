@@ -2,21 +2,12 @@
 
 ## Next
 
-- Consider making all event hashes and param hashes accept retrieval of their key values through method calls not just `[key]` calls (utilize `Struct` to solve this problem):
-  - date_time_picker#time
-  - date_picker#time
-  - time_picker#time
-  - font_button#font
-  - color_button#color
-  - area_mouse_event
-  - area_key_event
-  - area_draw_params
-
-## Soon
-
 - Support `contain?` method in `arc`, `polygon`, `polyline`, `polybezier`, and `figure`
 - Support `include?` method in `arc`, `polygon`, `polyline`, `polybezier`, and `figure`
 - Support `bounds` method in `polygon`, `polyline`, `polybezier`, and all other shapes
+
+## Soon
+
 - Support Custom Shapes, describing composite shapes/text/image concepts inside an `area`
 - Simpler Drag and Drop via `drag_source true`, `drag_and_move true`, `drop_target true`, and `on_drop { }` event
 - examples/area_drag_and_move.rb (drag around drawn objects like a house, animals, and people)
@@ -75,6 +66,7 @@
 - Support `main` keyword as shortcut for `Glimmer::LibUI.queue_main`
 - examples/basic_toolbar.rb
 - Support `max_content_size` and `min_content_size` properties for `window`
+- Consider extracting a general graph custom control from `examples/histogram.rb`
 
 # Refactoring
 
