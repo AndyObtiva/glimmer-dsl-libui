@@ -1,8 +1,10 @@
 # Change Log
 
-## 0.3.6
+## 0.4.0
 
 - Upgrade to LibUI 0.0.13
+- Support general control property unidirectional data-binding (with `<=` sign or `<=>`)
+- Support `observe` DSL keyword for simple model observation outside of GUI (e.g. `observe(model, attribute) { do_something }` )
 
 ## 0.3.5
 

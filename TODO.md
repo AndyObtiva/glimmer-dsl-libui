@@ -2,7 +2,6 @@
 
 ## Next
 
-- Support general control property unidirectional data-binding (with `<=` sign or `<=>`)
 - Support `date_time_picker`/`date_picker`/`time_picker` `time` bidirectional data-binding (with `<=>` sign)
 - Support `checkbox` `checked` bidirectional data-binding (with `<=>` sign)
 - Support `spinbox` `value` bidirectional data-binding (with `<=>` sign)

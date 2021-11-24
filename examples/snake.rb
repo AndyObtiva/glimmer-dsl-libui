@@ -21,14 +21,14 @@ class Snake
   end
   
   def register_observers
-    Glimmer::DataBinding::Observer.proc do |game_over|
+    observe(@game, :over) do |game_over|
       Glimmer::LibUI.queue_main do
         if game_over
           msg_box('Game Over!', "Score: #{@game.score} | High Score: #{@game.high_score}")
           @game.start
         end
       end
-    end.observe(@game, :over)
+    end
     
     Glimmer::LibUI.timer(SNAKE_MOVE_DELAY) do
       unless @game.over?
