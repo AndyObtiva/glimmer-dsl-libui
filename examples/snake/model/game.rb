@@ -6,8 +6,8 @@ require_relative 'apple'
 class Snake
   module Model
     class Game
-      WIDTH_DEFAULT = 40
-      HEIGHT_DEFAULT = 40
+      WIDTH_DEFAULT = 20
+      HEIGHT_DEFAULT = 20
       FILE_HIGH_SCORE = File.expand_path(File.join(Dir.home, '.glimmer-snake'))
       
       attr_reader :width, :height

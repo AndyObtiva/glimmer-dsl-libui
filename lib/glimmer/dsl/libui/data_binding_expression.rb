@@ -19,31 +19,29 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'glimmer/dsl/engine'
-Dir[File.expand_path('*_expression.rb', __dir__)].each {|f| require f}
-
-# Glimmer DSL expression configuration module
-#
-# When DSL engine interprets an expression, it attempts to handle
-# with expressions listed here in the order specified.
-
-# Every expression has a corresponding Expression subclass
-# in glimmer/dsl
+require 'glimmer/dsl/expression'
+require 'glimmer/data_binding/model_binding'
 
 module Glimmer
   module DSL
     module Libui
-      Engine.add_dynamic_expressions(
-        Libui,
-        %w[
-          listener
-          data_binding
-          shine_data_binding
-          property
-          control
-          shape
-        ]
-      )
+      # Responsible for wiring data-binding
+      # Depends on BindExpression
+      class DataBindingExpression < Expression
+        def can_interpret?(parent, keyword, *args, &block)
+          args.size == 1 and
+            args[0].is_a?(DataBinding::ModelBinding)
+        end
+  
+        def interpret(parent, keyword, *args, &block)
+          model_binding = args[0]
+          model_attribute_observer = Glimmer::DataBinding::Observer.proc do
+            parent.send("#{keyword}=", model_binding.evaluate_property)
+          end
+          model_attribute_observer.observe(model_binding)
+          model_attribute_observer.call # initial update
+        end
+      end
     end
   end
 end

@@ -21,14 +21,6 @@ class Snake
   end
   
   def register_observers
-    @game.height.times do |row|
-      @game.width.times do |column|
-        Glimmer::DataBinding::Observer.proc do |new_color|
-          @cell_grid[row][column].fill = new_color
-        end.observe(@grid.cells[row][column], :color)
-      end
-    end
-    
     Glimmer::DataBinding::Observer.proc do |game_over|
       Glimmer::LibUI.queue_main do
         if game_over
@@ -41,13 +33,12 @@ class Snake
     Glimmer::LibUI.timer(SNAKE_MOVE_DELAY) do
       unless @game.over?
         @game.snake.move
-        @main_window.title = "Glimmer Snake (Score: #{@game.score} | High Score: #{@game.high_score})"
+        @main_window.title = "Glimmer Snake (Score: #{@game.score})"
       end
     end
   end
   
   def create_gui
-    @cell_grid = []
     @main_window = window('Glimmer Snake', @game.width * CELL_SIZE, @game.height * CELL_SIZE) {
       resizable false
       
@@ -55,14 +46,13 @@ class Snake
         padded false
         
         @game.height.times do |row|
-          @cell_grid << []
           horizontal_box {
             padded false
             
             @game.width.times do |column|
               area {
-                @cell_grid.last << square(0, 0, CELL_SIZE) {
-                  fill Presenter::Cell::COLOR_CLEAR
+                square(0, 0, CELL_SIZE) {
+                  fill <= [@grid.cells[row][column], :color]
                 }
                 
                 on_key_up do |area_key_event|
