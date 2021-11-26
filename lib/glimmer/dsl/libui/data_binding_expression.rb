@@ -29,17 +29,15 @@ module Glimmer
       # Depends on BindExpression
       class DataBindingExpression < Expression
         def can_interpret?(parent, keyword, *args, &block)
-          args.size == 1 and
-            args[0].is_a?(DataBinding::ModelBinding)
+          pd args.size == 1 and
+            pd args[0].is_a?(DataBinding::ModelBinding) and
+            pd parent.respond_to?(:data_bind)
         end
   
         def interpret(parent, keyword, *args, &block)
-          model_binding = args[0]
-          model_attribute_observer = Glimmer::DataBinding::Observer.proc do
-            parent.send("#{keyword}=", model_binding.evaluate_property)
-          end
-          model_attribute_observer.observe(model_binding)
-          model_attribute_observer.call # initial update
+          pd property = keyword
+          pd model_binding = args[0]
+          parent.data_bind(property, model_binding)
         end
       end
     end

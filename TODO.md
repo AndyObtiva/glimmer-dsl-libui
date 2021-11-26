@@ -2,24 +2,26 @@
 
 ## Next
 
-- Support `date_time_picker`/`date_picker`/`time_picker` `time` bidirectional data-binding (with `<=>` sign)
-- Support `checkbox` `checked` bidirectional data-binding (with `<=>` sign)
+- Support `entry` `text` property bidirectional data-binding (with `<=>` sign)
 - Support `spinbox` `value` bidirectional data-binding (with `<=>` sign)
 - Support `slider` `value` bidirectional data-binding (with `<=>` sign)
-- Support `radio_menu_item` `checked` bidirectional data-binding (with `<=>` sign)
-- Support `check_menu_item` `checked` bidirectional data-binding (with `<=>` sign)
-- Support `color_button` `color` bidirectional data-binding (with `<=>` sign)
-- Support `font_button` `font` write-only unidirectional data-binding (with `>` sign or `<=>`)
+- Support `date_time_picker`/`date_picker`/`time_picker` `time` bidirectional data-binding (with `<=>` sign)
+- Support `checkbox` `checked` bidirectional data-binding (with `<=>` sign)
 - Support `combobox` and `editable_combobox` `selected` property bidirectional data-binding (with `<=>` sign)
 - Support `radio_buttons` `selected` property bidirectional data-binding (with `<=>` sign)
-- Support `entry` `text` property bidirectional data-binding (with `<=>` sign)
+- Support `color_button` `color` bidirectional data-binding (with `<=>` sign)
+- Support `font_button` `font` write-only unidirectional data-binding (with `>` sign or `<=>`)
+- Support `radio_menu_item` `checked` bidirectional data-binding (with `<=>` sign)
+- Support `check_menu_item` `checked` bidirectional data-binding (with `<=>` sign)
 - Support `table` `cell_rows` bidirectional data-binding (with `<=>` sign)
 
 ## Soon
 
-- Add Windows screenshots for examples/basic_scrolling_area.rb
+- Add Windows screenshots for examples/basic_scrolling_area.rb (and #scrolling-area section)
 - Add Windows screenshot for examples/button_counter.rb
 - Update Windows screenshot of examples/meta_example.rb
+- Document area inclusion of explicit and implicit path shapes
+- Demo examples/button_counter.rb at the top of the README
 
 ## Future
 
