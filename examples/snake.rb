@@ -52,7 +52,7 @@ class Snake
             @game.width.times do |column|
               area {
                 square(0, 0, CELL_SIZE) {
-                  fill <= [@grid.cells[row][column], :color]
+                  fill <= [@grid.cells[row][column], :color] # data-bind square fill to grid cell color
                 }
                 
                 on_key_up do |area_key_event|

@@ -1330,22 +1330,22 @@ This is also known as the [Glimmer Shine](https://github.com/AndyObtiva/glimmer-
 Example:
 
 ```ruby
-window {
-  title <= [@game, :score, on_read: -> (score) {"Glimmer Snake (Score: #{@game.score})"}]
-}
-```
-
-That is data-binding the `window` `title` property to the `score` attribute of a `@game`, but converting on read from the Model to a `String`.
-
-Another Example:
-
-```ruby
 square(0, 0, CELL_SIZE) {
   fill <= [@grid.cells[row][column], :color]
 }
 ```
 
 That is data-binding a grid cell color to a `square` shape's `fill` property. That means if the `color` attribute of the grid cell is updated, the `fill` property of the `square` shape is automatically updated accordingly.
+
+Another Example:
+
+```ruby
+window {
+  title <= [@game, :score, on_read: -> (score) {"Glimmer Snake (Score: #{@game.score})"}]
+}
+```
+
+That is data-binding the `window` `title` property to the `score` attribute of a `@game`, but converting on read from the Model to a `String`.
 
 Data-binding enables writing very expressive, terse, and declarative code to synchronize View properties with Model attributes instead of pages of imperative code doing the same thing.
 
@@ -6644,7 +6644,7 @@ class Snake
             @game.width.times do |column|
               area {
                 square(0, 0, CELL_SIZE) {
-                  fill <= [@grid.cells[row][column], :color]
+                  fill <= [@grid.cells[row][column], :color] # data-bind square fill to grid cell color
                 }
                 
                 on_key_up do |area_key_event|
