@@ -31,15 +31,15 @@ class Snake
     end
     
     Glimmer::LibUI.timer(SNAKE_MOVE_DELAY) do
-      unless @game.over?
-        @game.snake.move
-        @main_window.title = "Glimmer Snake (Score: #{@game.score})"
-      end
+      @game.snake.move unless @game.over?
     end
   end
   
   def create_gui
-    @main_window = window('Glimmer Snake', @game.width * CELL_SIZE, @game.height * CELL_SIZE) {
+    @main_window = window {
+      # data-bind window title to game score, converting it to a title string on read from the model
+      title <= [@game, :score, on_read: -> (score) {"Glimmer Snake (Score: #{@game.score})"}]
+      content_size @game.width * CELL_SIZE, @game.height * CELL_SIZE
       resizable false
       
       vertical_box {

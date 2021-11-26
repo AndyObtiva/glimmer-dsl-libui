@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.3.5
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.4.0
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -18,7 +18,7 @@ The main trade-off in using [Glimmer DSL for LibUI](https://rubygems.org/gems/gl
 - Convention over configuration via smart defaults and automation of low-level details
 - Requiring the least amount of syntax possible to build GUI
 - Custom Keyword support
-- [Far Future Plan] Bidirectional Data-Binding to declaratively wire and automatically synchronize GUI with Business Models
+- Bidirectional Data-Binding to declaratively wire and automatically synchronize GUI with Business Models
 - [Far Future Plan] Scaffolding for new custom controls, apps, and gems
 - [Far Future Plan] Native-Executable packaging on Mac, Windows, and Linux.
 
@@ -233,6 +233,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
       - [Area Transform Matrix](#area-transform-matrix)
     - [Smart Defaults and Conventions](#smart-defaults-and-conventions)
     - [Custom Keywords](#custom-keywords)
+    - [Data-Binding](#data-binding)
     - [API Gotchas](#api-gotchas)
     - [Original API](#original-api)
   - [Packaging](#packaging)
@@ -370,7 +371,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.3.5'
+gem 'glimmer-dsl-libui', '~> 0.4.0'
 ```
 
 Add `require 'glimmer-dsl-libui'` at the top, and then `include Glimmer` into the top-level main object for testing or into an actual class for serious usage.
@@ -441,7 +442,7 @@ w.libui # => #<Fiddle::Pointer:0x00007fde53997980 ptr=0x00007fde51352a60 size=0 
 
 ### Supported Keywords
 
-These are all the supported keywords. Note that some keywords do not represent controls, but produce objects that are used as the property values of controls (e.g. `image` can be used as a control under `area` or alternatively build objects to use in `cell_rows` for a `table` with an `image_column`)
+These are all the supported keywords. Note that some keywords do not represent controls. For example, some keywords produce objects that are used as the property values of controls (e.g. `image` can be used as a control under `area` or alternatively build objects to use in `cell_rows` for a `table` with an `image_column`)
 
 Keyword(Args) | Properties | Listeners
 ------------- | ---------- | ---------
@@ -486,6 +487,7 @@ Keyword(Args) | Properties | Listeners
 `msg_box(window = main_window as Glimmer::LibUI::WindowProxy, title as String, description as String)` | None | None
 `msg_box_error(window = main_window as Glimmer::LibUI::WindowProxy, title as String, description as String)` | None | None
 `non_wrapping_multiline_entry` | `read_only` (Boolean), `text` (`String`) | `on_changed`
+`observe(model, property = nil)` | None | None
 `password_entry` | `read_only` (Boolean), `text` (`String`) | `on_changed`
 `path(draw_fill_mode = :winding)` | `fill` (`Hash` of `:r` as `0`-`255`, `:g` as `0`-`255`, `:b` as `0`-`255`, `:a` as `0.0`-`1.0`, hex, or [X11](https://en.wikipedia.org/wiki/X11_color_names) color), `stroke` (`Hash` of `:r` as `0`-`255`, `:g` as `0`-`255`, `:b` as `0`-`255`, `:a` as `0.0`-`1.0`, hex, or [X11](https://en.wikipedia.org/wiki/X11_color_names) color), `:cap` as (`:round`, `:square`, `:flat`), `:join` as (`:miter`, `:round`, `:bevel`), `:thickness` as `Numeric`, `:miter_limit` as `Numeric`, `:dashes` as `Array` of `Numeric` ) | None
 `polygon(point_array as Array of Arrays of Numeric or Array of Numeric)` | `point_array` (`Array of Arrays of Numeric or Array of Numeric`) | None
@@ -1318,6 +1320,36 @@ window('Method-Based Custom Keyword') {
 ```
 
 ![glimmer-dsl-libui-mac-method-based-custom-keyword.png](images/glimmer-dsl-libui-mac-method-based-custom-keyword.png)
+
+### Data-Binding
+
+[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) supports unidirectional (one-way) data-binding of any control/shape/attributed-string property via the `<=` symbol (indicating data is moving from the right side, which is the model, to the left side, which is the GUI view object).
+
+This is also known as the [Glimmer Shine](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/docs/reference/GLIMMER_GUI_DSL_SYNTAX.md#shine) syntax for data-binding, a [Glimmer](https://github.com/AndyObtiva/glimmer)-only unique innovation.
+
+Example:
+
+```ruby
+window {
+  title <= [@game, :score, on_read: -> (score) {"Glimmer Snake (Score: #{@game.score})"}]
+}
+```
+
+That is data-binding the `window` `title` property to the `score` attribute of a `@game`, but converting on read from the Model to a `String`.
+
+Another Example:
+
+```ruby
+square(0, 0, CELL_SIZE) {
+  fill <= [@grid.cells[row][column], :color]
+}
+```
+
+That is data-binding a grid cell color to a `square` shape's `fill` property. That means if the `color` attribute of the grid cell is updated, the `fill` property of the `square` shape is automatically updated accordingly.
+
+Data-binding enables writing very expressive, terse, and declarative code to synchronize View properties with Model attributes instead of pages of imperative code doing the same thing.
+
+Learn more from data-binding usage in [Snake](#snake) and [Tic Tac Toe](#tic_tac_toe) examples.
 
 ### API Gotchas
 
@@ -6581,48 +6613,38 @@ class Snake
   end
   
   def register_observers
-    @game.height.times do |row|
-      @game.width.times do |column|
-        Glimmer::DataBinding::Observer.proc do |new_color|
-          @cell_grid[row][column].fill = new_color
-        end.observe(@grid.cells[row][column], :color)
-      end
-    end
-    
-    Glimmer::DataBinding::Observer.proc do |game_over|
+    observe(@game, :over) do |game_over|
       Glimmer::LibUI.queue_main do
         if game_over
           msg_box('Game Over!', "Score: #{@game.score} | High Score: #{@game.high_score}")
           @game.start
         end
       end
-    end.observe(@game, :over)
+    end
     
     Glimmer::LibUI.timer(SNAKE_MOVE_DELAY) do
-      unless @game.over?
-        @game.snake.move
-        @main_window.title = "Glimmer Snake (Score: #{@game.score} | High Score: #{@game.high_score})"
-      end
+      @game.snake.move unless @game.over?
     end
   end
   
   def create_gui
-    @cell_grid = []
-    @main_window = window('Glimmer Snake', @game.width * CELL_SIZE, @game.height * CELL_SIZE) {
+    @main_window = window {
+      # data-bind window title to game score, converting it to a title string on read from the model
+      title <= [@game, :score, on_read: -> (score) {"Glimmer Snake (Score: #{@game.score})"}]
+      content_size @game.width * CELL_SIZE, @game.height * CELL_SIZE
       resizable false
       
       vertical_box {
         padded false
         
         @game.height.times do |row|
-          @cell_grid << []
           horizontal_box {
             padded false
             
             @game.width.times do |column|
               area {
-                @cell_grid.last << square(0, 0, CELL_SIZE) {
-                  fill Presenter::Cell::COLOR_CLEAR
+                square(0, 0, CELL_SIZE) {
+                  fill <= [@grid.cells[row][column], :color]
                 }
                 
                 on_key_up do |area_key_event|
@@ -7087,17 +7109,9 @@ class TicTacToe
   end
   
   def register_observers
-    Glimmer::DataBinding::Observer.proc do |game_status|
+    observe(@tic_tac_toe_board, :game_status) do |game_status|
       display_win_message if game_status == Board::WIN
       display_draw_message if game_status == Board::DRAW
-    end.observe(@tic_tac_toe_board, :game_status)
-    
-    3.times.map do |row|
-      3.times.map do |column|
-        Glimmer::DataBinding::Observer.proc do |sign|
-          @cells[row][column].string = sign
-        end.observe(@tic_tac_toe_board[row + 1, column + 1], :sign) # board model is 1-based
-      end
     end
   end
 
@@ -7105,12 +7119,10 @@ class TicTacToe
     @main_window = window('Tic-Tac-Toe', 180, 180) {
       resizable false
       
-      @cells = []
       vertical_box {
         padded false
         
         3.times.map do |row|
-          @cells << []
           horizontal_box {
             padded false
             
@@ -7120,8 +7132,9 @@ class TicTacToe
                   stroke :black, thickness: 2
                 }
                 text(23, 19) {
-                  @cells[row] << string('') {
+                  string {
                     font family: 'Arial', size: OS.mac? ? 20 : 16
+                    string <= [@tic_tac_toe_board[row + 1, column + 1], :sign] # board model is 1-based
                   }
                 }
                 on_mouse_up do
