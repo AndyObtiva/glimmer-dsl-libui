@@ -40,7 +40,7 @@ class MetaExample
   end
   
   def version_count_for(example)
-    Dir.glob(File.join(File.expand_path('.', __dir__), "#{example.underscore}*.rb")).select {|file| file.match(/\d\.rb$/)}.count + 1
+    Dir.glob(File.join(File.expand_path('.', __dir__), "#{example.underscore}*.rb")).select {|file| file.match(/#{example.underscore}\d\.rb$/)}.count + 1
   end
   
   def glimmer_dsl_libui_file
