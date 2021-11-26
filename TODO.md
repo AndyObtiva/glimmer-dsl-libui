@@ -2,7 +2,6 @@
 
 ## Next
 
-- Simplify examples by utilizing new `observe` keyword instead of `Glimmer::DataBinding::Observer.proc`
 - Document `observe` keyword
 - Document basic data-binding in more detail (like `:on_read`, `:after_read`, etc...)
 - Support `date_time_picker`/`date_picker`/`time_picker` `time` bidirectional data-binding (with `<=>` sign)

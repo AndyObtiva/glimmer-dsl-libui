@@ -233,6 +233,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
       - [Area Transform Matrix](#area-transform-matrix)
     - [Smart Defaults and Conventions](#smart-defaults-and-conventions)
     - [Custom Keywords](#custom-keywords)
+    - [Observer Pattern](#observer-pattern)
     - [Data-Binding](#data-binding)
     - [API Gotchas](#api-gotchas)
     - [Original API](#original-api)
@@ -1320,6 +1321,31 @@ window('Method-Based Custom Keyword') {
 ```
 
 ![glimmer-dsl-libui-mac-method-based-custom-keyword.png](images/glimmer-dsl-libui-mac-method-based-custom-keyword.png)
+
+### Observer Pattern
+
+The [Observer Design Pattern](https://en.wikipedia.org/wiki/Observer_pattern) (a.k.a. Observer Pattern) is fundamental to building GUIs (Graphical User Interfaces) following the [MVC (Model View Controller) Architectural Pattern](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) or any of its variations like [MVP (Model View Presenter)](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93presenter). In the original Smalltalk-MVC, the View observes the Model for changes and updates itself accordingly.
+
+![MVC - Model View Controller](https://www.researchgate.net/profile/Danny-Weyns/publication/269303611/figure/fig2/AS:858133056462866@1581606272800/Smalltalk80-MVC-pattern-View-and-Controller-work-as-a-pair-allowing-the-user-to-interact.ppm)
+
+[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) supports the [Observer Design Pattern](https://en.wikipedia.org/wiki/Observer_pattern) via the `observe(model, attribute=nil)` keyword, which can observe `Object` models with attributes, `Hash`es, and `Array`s. It automatically enhances objects as needed to support automatically notifying observers of changes via `observable#notify_observers(attribute)` method:
+- `Object` becomes `Glimmer::DataBinding::ObservableModel`, which supports observing specified `Object` model attributes.
+- `Hash` becomes `Glimmer::DataBinding::ObservableHash`, which supports observing all `Hash` keys or a specific `Hash` key
+- `Array` becomes `Glimmer::DataBinding::ObservableArray`, which supports observing `Array` changes like those done with `push`, `<<`, `delete`, and `map!` methods (all mutation methods).
+
+Example:
+
+```ruby
+  observe(person, :name) do |new_name|
+    @name_label.text = new_name
+  end
+```
+
+That observes a person's name attribute for changes and updates the name `label` `text` property accordingly.
+
+[Learn about Glimmer's Observer Pattern capabilities and options in more detail at the Glimmer project page.](https://github.com/AndyObtiva/glimmer#data-binding-library)
+
+See examples of the `observe` keyword at [Color The Circles](#color-the-circles), [Method-Based Custom Keyword](#method-based-custom-keyword), [Snake](#snake), and [Tetris](#tetris).
 
 ### Data-Binding
 
@@ -4451,7 +4477,8 @@ class ColorTheCircles
   end
   
   def register_observers
-    observer = Glimmer::DataBinding::Observer.proc do |new_score|
+    # observe automatically enhances self to become Glimmer::DataBinding::ObservableModel and notify observer block of score attribute changes
+    observe(self, :score) do |new_score|
       Glimmer::LibUI.queue_main do
         @score_label.text = new_score.to_s
         if new_score == -20
@@ -4465,7 +4492,6 @@ class ColorTheCircles
         end
       end
     end
-    observer.observe(self, :score) # automatically enhances self to become Glimmer::DataBinding::ObservableModel and notify observer on score attribute changes
   end
   
   def setup_circle_factory
@@ -6282,9 +6308,9 @@ def label_pair(model, attribute, value)
     name_label = label(attribute.to_s.underscore.split('_').map(&:capitalize).join(' '))
     value_label = label(value.to_s)
   }
-  Glimmer::DataBinding::Observer.proc do
+  observe(model, attribute) do
     value_label.text = model.send(attribute)
-  end.observe(model, attribute)
+  end
 end
 
 def address(address)
@@ -6739,7 +6765,7 @@ class Tetris
   end
   
   def register_observers
-    Glimmer::DataBinding::Observer.proc do |game_over|
+    observe(@game, :game_over) do |game_over|
       if game_over
         @pause_menu_item.enabled = false
         show_game_over_dialog
@@ -6747,11 +6773,11 @@ class Tetris
         @pause_menu_item.enabled = true
         start_moving_tetrominos_down
       end
-    end.observe(@game, :game_over)
+    end
     
     Model::Game::PLAYFIELD_HEIGHT.times do |row|
       Model::Game::PLAYFIELD_WIDTH.times do |column|
-        Glimmer::DataBinding::Observer.proc do |new_color|
+        observe(@game.playfield[row][column], :color) do |new_color|
           Glimmer::LibUI.queue_main do
             color = Glimmer::LibUI.interpret_color(new_color)
             block = @playfield_blocks[row][column]
@@ -6762,13 +6788,13 @@ class Tetris
             block[:left_bevel_edge].fill = {r: color[:r] - BEVEL_CONSTANT, g: color[:g] - BEVEL_CONSTANT, b: color[:b] - BEVEL_CONSTANT}
             block[:border_square].stroke = new_color == Model::Block::COLOR_CLEAR ? COLOR_GRAY : color
           end
-        end.observe(@game.playfield[row][column], :color)
+        end
       end
     end
     
     Model::Game::PREVIEW_PLAYFIELD_HEIGHT.times do |row|
       Model::Game::PREVIEW_PLAYFIELD_WIDTH.times do |column|
-        Glimmer::DataBinding::Observer.proc do |new_color|
+        observe(@game.preview_playfield[row][column], :color) do |new_color|
           Glimmer::LibUI.queue_main do
             color = Glimmer::LibUI.interpret_color(new_color)
             block = @preview_playfield_blocks[row][column]
@@ -6779,27 +6805,27 @@ class Tetris
             block[:left_bevel_edge].fill = {r: color[:r] - BEVEL_CONSTANT, g: color[:g] - BEVEL_CONSTANT, b: color[:b] - BEVEL_CONSTANT}
             block[:border_square].stroke = new_color == Model::Block::COLOR_CLEAR ? COLOR_GRAY : color
           end
-        end.observe(@game.preview_playfield[row][column], :color)
+        end
       end
     end
 
-    Glimmer::DataBinding::Observer.proc do |new_score|
+    observe(@game, :score) do |new_score|
       Glimmer::LibUI.queue_main do
         @score_label.text = new_score.to_s
       end
-    end.observe(@game, :score)
+    end
 
-    Glimmer::DataBinding::Observer.proc do |new_lines|
+    observe(@game, :lines) do |new_lines|
       Glimmer::LibUI.queue_main do
         @lines_label.text = new_lines.to_s
       end
-    end.observe(@game, :lines)
+    end
 
-    Glimmer::DataBinding::Observer.proc do |new_level|
+    observe(@game, :level) do |new_level|
       Glimmer::LibUI.queue_main do
         @level_label.text = new_level.to_s
       end
-    end.observe(@game, :level)
+    end
   end
   
   def menu_bar
