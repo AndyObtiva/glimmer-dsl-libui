@@ -26,7 +26,8 @@ class ColorTheCircles
   end
   
   def register_observers
-    observer = Glimmer::DataBinding::Observer.proc do |new_score|
+    # observe automatically enhances self to become Glimmer::DataBinding::ObservableModel and notify observer block of score attribute changes
+    observe(self, :score) do |new_score|
       Glimmer::LibUI.queue_main do
         @score_label.text = new_score.to_s
         if new_score == -20
@@ -40,7 +41,6 @@ class ColorTheCircles
         end
       end
     end
-    observer.observe(self, :score) # automatically enhances self to become Glimmer::DataBinding::ObservableModel and notify observer on score attribute changes
   end
   
   def setup_circle_factory
