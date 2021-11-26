@@ -779,9 +779,9 @@ Check [examples/dynamic_area.rb](#dynamic-area) for a more detailed semi-declara
 - `scroll_to(x as Numeric, y as Numeric, width as Numeric = main_window.width, height as Numeric = main_window.height)`: scrolls to `x`/`y` location with `width` and `height` viewport size.
 - `set_size(width as Numeric, height as Numeric)`: set size of scrolling area, which must must exceed that of visible viewport in order for scrolling to be enabled.
 
-Mac |
-----|
-![glimmer-dsl-libui-mac-dynamic-area.png](images/glimmer-dsl-libui-mac-basic-scrolling-area.png) ![glimmer-dsl-libui-mac-dynamic-area-updated.png](images/glimmer-dsl-libui-mac-basic-scrolling-area-scrolled.png)
+Mac |Linux
+----|-----
+![glimmer-dsl-libui-mac-dynamic-area.png](images/glimmer-dsl-libui-mac-basic-scrolling-area.png) ![glimmer-dsl-libui-mac-dynamic-area-updated.png](images/glimmer-dsl-libui-mac-basic-scrolling-area-scrolled.png) | ![glimmer-dsl-libui-linux-dynamic-area.png](images/glimmer-dsl-libui-linux-basic-scrolling-area.png) ![glimmer-dsl-libui-linux-dynamic-area-updated.png](images/glimmer-dsl-libui-linux-basic-scrolling-area-scrolled.png)
 
 Check [examples/basic_scrolling_area.rb](#basic-scrolling-area) for a more detailed example.
 
@@ -1329,7 +1329,7 @@ The [Observer Design Pattern](https://en.wikipedia.org/wiki/Observer_pattern) (a
 
 ![MVC - Model View Controller](https://www.researchgate.net/profile/Danny-Weyns/publication/269303611/figure/fig2/AS:858133056462866@1581606272800/Smalltalk80-MVC-pattern-View-and-Controller-work-as-a-pair-allowing-the-user-to-interact.ppm)
 
-[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) supports the [Observer Design Pattern](https://en.wikipedia.org/wiki/Observer_pattern) via the `observe(model, attribute=nil)` keyword, which can observe `Object` models with attributes, `Hash`es, and `Array`s. It automatically enhances objects as needed to support automatically notifying observers of changes via `observable#notify_observers(attribute)` method:
+[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) supports the [Observer Design Pattern](https://en.wikipedia.org/wiki/Observer_pattern) via the `observe(model, attribute_or_key=nil)` keyword, which can observe `Object` models with attributes, `Hash`es with keys, and `Array`s. It automatically enhances objects as needed to support automatically notifying observers of changes via `observable#notify_observers(attribute_or_key = nil)` method:
 - `Object` becomes `Glimmer::DataBinding::ObservableModel`, which supports observing specified `Object` model attributes.
 - `Hash` becomes `Glimmer::DataBinding::ObservableHash`, which supports observing all `Hash` keys or a specific `Hash` key
 - `Array` becomes `Glimmer::DataBinding::ObservableArray`, which supports observing `Array` changes like those done with `push`, `<<`, `delete`, and `map!` methods (all mutation methods).
@@ -1376,7 +1376,9 @@ window {
 
 That is data-binding the `window` `title` property to the `score` attribute of a `@game`, but converting on read from the Model to a `String`.
 
-Data-binding enables writing very expressive, terse, and declarative code to synchronize View properties with Model attributes instead of pages of imperative code doing the same thing.
+Data-binding enables writing very expressive, terse, and declarative code to synchronize View properties with Model attributes without writing many lines or pages of imperative code doing the same thing.
+
+Data-binding automatically takes advantage of the [Observer Pattern](#observer-pattern) behind the scenes, and is very well suited to declaring View single-property update sources. On the other hand, explicit use of the [Observer Pattern](#observer-pattern) is sometimes more suited when needing to make multiple View updates upon a single Model attribute change.
 
 Options include:
 - `before_read {|value| ...}`: performs an operation before reading data from Model to update the View.
