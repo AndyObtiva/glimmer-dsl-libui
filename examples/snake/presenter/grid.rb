@@ -14,7 +14,7 @@ class Snake
             Cell.new(grid: self, row: row, column: column)
           end
         end
-        Glimmer::DataBinding::Observer.proc do |new_vertebrae|
+        observe(@game.snake, :vertebrae) do |new_vertebrae|
           occupied_snake_positions = @game.snake.vertebrae.map {|v| [v.row, v.column]}
           @cells.each_with_index do |row_cells, row|
             row_cells.each_with_index do |cell, column|
@@ -27,7 +27,7 @@ class Snake
               end
             end
           end
-        end.observe(@game.snake, :vertebrae)
+        end
       end
       
       def clear
