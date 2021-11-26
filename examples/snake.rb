@@ -1,12 +1,12 @@
 require 'glimmer-dsl-libui'
-require 'glimmer/data_binding/observer'
 
 require_relative 'snake/presenter/grid'
 
 class Snake
+  include Glimmer
+  
   CELL_SIZE = 15
   SNAKE_MOVE_DELAY = 0.1
-  include Glimmer
   
   def initialize
     @game = Model::Game.new

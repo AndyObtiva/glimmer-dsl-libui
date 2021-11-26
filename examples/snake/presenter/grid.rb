@@ -1,10 +1,12 @@
-require 'glimmer/data_binding/observer'
+require 'glimmer'
 require_relative '../model/game'
 require_relative 'cell'
 
 class Snake
   module Presenter
     class Grid
+      include Glimmer
+      
       attr_reader :game, :cells
       
       def initialize(game = Model::Game.new)
