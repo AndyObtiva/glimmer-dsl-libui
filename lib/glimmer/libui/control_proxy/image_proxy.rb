@@ -56,9 +56,8 @@ module Glimmer
               draw(AreaProxy.current_area_draw_params)
               destroy
             end
-            @content_added = true
           else # image object not control
-            build_control
+            build_control unless @content_added
             super
           end
         end
@@ -68,7 +67,7 @@ module Glimmer
             @args[0]
           else
             @args[0] = value
-            if @content_added
+            if area_image? && @content_added
               post_add_content
               request_auto_redraw
             end
@@ -167,8 +166,8 @@ module Glimmer
           end
           canvas.resample_nearest_neighbor!(width, height) if width && height
           @data = canvas.to_rgba_stream
-          self.width = canvas.width
-          self.height = canvas.height
+          @args[1] = canvas.width
+          @args[2] = canvas.height
           [@data, width, height]
         end
         

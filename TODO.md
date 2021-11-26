@@ -78,6 +78,7 @@
 - examples/basic_toolbar.rb
 - Support `max_content_size` and `min_content_size` properties for `window`
 - Consider extracting a general graph custom control from `examples/histogram.rb`
+- Support reopening `table` `content {}` by destroying and rebuilding (right now, it does nothing)
 
 # Refactoring
 

@@ -86,14 +86,17 @@ module Glimmer
         
         def post_add_content
           unless parent_proxy.is_a?(Box)
-            original_parent_proxy = @parent_proxy
-            @vertical_box_parent_proxy = ControlProxy.create('vertical_box', parent_proxy, []) {} # block prevents calling post add content
-            append_properties.each do |property|
-              @vertical_box_parent_proxy.append_property(property, append_property(property))
+            unless @content_added
+              original_parent_proxy = @parent_proxy
+              @vertical_box_parent_proxy = ControlProxy.create('vertical_box', parent_proxy, []) {} # block prevents calling post add content
+              append_properties.each do |property|
+                @vertical_box_parent_proxy.append_property(property, append_property(property))
+              end
+              @vertical_box_parent_proxy.post_add_content
+              @parent_proxy = @vertical_box_parent_proxy
+              @vertical_box_parent_proxy.post_initialize_child(self)
+              @content_added = true
             end
-            @vertical_box_parent_proxy.post_add_content
-            @parent_proxy = @vertical_box_parent_proxy
-            @vertical_box_parent_proxy.post_initialize_child(self)
           else
             super
           end
@@ -142,48 +145,51 @@ module Glimmer
         end
         
         def install_listeners
-          @area_handler.Draw         = fiddle_closure_block_caller(0, [1, 1, 1]) do |_, _, area_draw_params|
-            area_draw_params = ::LibUI::FFI::AreaDrawParams.new(area_draw_params)
-            area_draw_params = area_draw_params_hash(area_draw_params)
-            AreaProxy.current_area_draw_params = area_draw_params
-            draw(area_draw_params)
-            AreaProxy.current_area_draw_params = nil
-          end
-          @area_handler.MouseEvent   = fiddle_closure_block_caller(0, [1, 1, 1]) do |_, _, area_mouse_event|
-            area_mouse_event = ::LibUI::FFI::AreaMouseEvent.new(area_mouse_event)
-            area_mouse_event = area_mouse_event_hash(area_mouse_event)
-            on_mouse_event.each { |listener| listener.call(area_mouse_event)}
-            on_mouse_move.each { |listener| listener.call(area_mouse_event)} if area_mouse_event[:x].between?(0, area_mouse_event[:area_width]) && area_mouse_event[:y].between?(0, area_mouse_event[:area_height])
-            unless @last_area_mouse_event.nil?
-              on_mouse_down.each { |listener| listener.call(area_mouse_event)} if area_mouse_event[:down] > 0 && @last_area_mouse_event[:down] == 0
-              on_mouse_up.each { |listener| listener.call(area_mouse_event)} if area_mouse_event[:up] > 0 && @last_area_mouse_event[:up] == 0
-              on_mouse_drag_start.each { |listener| listener.call(area_mouse_event)} if area_mouse_event[:held] > 0 && @last_area_mouse_event[:held] == 0
-              on_mouse_drag.each { |listener| listener.call(area_mouse_event)} if area_mouse_event[:held] > 0
-              on_mouse_drop.each { |listener| listener.call(area_mouse_event)} if area_mouse_event[:held] == 0 && @last_area_mouse_event[:held] > 0
+          unless @listeners_installed
+            @area_handler.Draw         = fiddle_closure_block_caller(0, [1, 1, 1]) do |_, _, area_draw_params|
+              area_draw_params = ::LibUI::FFI::AreaDrawParams.new(area_draw_params)
+              area_draw_params = area_draw_params_hash(area_draw_params)
+              AreaProxy.current_area_draw_params = area_draw_params
+              draw(area_draw_params)
+              AreaProxy.current_area_draw_params = nil
             end
-            @last_area_mouse_event = area_mouse_event
-          end
-          @area_handler.MouseCrossed = fiddle_closure_block_caller(0, [1, 1, 4]) do |_, _, left|
-            left = Glimmer::LibUI.integer_to_boolean(left)
-            on_mouse_crossed.each { |listener| listener.call(left) }
-            if left
-              on_mouse_exit.each { |listener| listener.call(left) }
-            else
-              on_mouse_enter.each { |listener| listener.call(left) }
+            @area_handler.MouseEvent   = fiddle_closure_block_caller(0, [1, 1, 1]) do |_, _, area_mouse_event|
+              area_mouse_event = ::LibUI::FFI::AreaMouseEvent.new(area_mouse_event)
+              area_mouse_event = area_mouse_event_hash(area_mouse_event)
+              on_mouse_event.each { |listener| listener.call(area_mouse_event)}
+              on_mouse_move.each { |listener| listener.call(area_mouse_event)} if area_mouse_event[:x].between?(0, area_mouse_event[:area_width]) && area_mouse_event[:y].between?(0, area_mouse_event[:area_height])
+              unless @last_area_mouse_event.nil?
+                on_mouse_down.each { |listener| listener.call(area_mouse_event)} if area_mouse_event[:down] > 0 && @last_area_mouse_event[:down] == 0
+                on_mouse_up.each { |listener| listener.call(area_mouse_event)} if area_mouse_event[:up] > 0 && @last_area_mouse_event[:up] == 0
+                on_mouse_drag_start.each { |listener| listener.call(area_mouse_event)} if area_mouse_event[:held] > 0 && @last_area_mouse_event[:held] == 0
+                on_mouse_drag.each { |listener| listener.call(area_mouse_event)} if area_mouse_event[:held] > 0
+                on_mouse_drop.each { |listener| listener.call(area_mouse_event)} if area_mouse_event[:held] == 0 && @last_area_mouse_event[:held] > 0
+              end
+              @last_area_mouse_event = area_mouse_event
             end
-          end
-          @area_handler.DragBroken   = fiddle_closure_block_caller(0, [1, 1]) do |_, _|
-            on_drag_broken.each { |listener| listener.call }
-          end
-          @area_handler.KeyEvent     = fiddle_closure_block_caller(0, [1, 1, 1]) do |_, _, area_key_event|
-            area_key_event = ::LibUI::FFI::AreaKeyEvent.new(area_key_event)
-            area_key_event = area_key_event_hash(area_key_event)
-            on_key_event.each { |listener| listener.call(area_key_event) }
-            if area_key_event[:up]
-              on_key_up.each { |listener| listener.call(area_key_event) }
-            else
-              on_key_down.each { |listener| listener.call(area_key_event) }
+            @area_handler.MouseCrossed = fiddle_closure_block_caller(0, [1, 1, 4]) do |_, _, left|
+              left = Glimmer::LibUI.integer_to_boolean(left)
+              on_mouse_crossed.each { |listener| listener.call(left) }
+              if left
+                on_mouse_exit.each { |listener| listener.call(left) }
+              else
+                on_mouse_enter.each { |listener| listener.call(left) }
+              end
             end
+            @area_handler.DragBroken   = fiddle_closure_block_caller(0, [1, 1]) do |_, _|
+              on_drag_broken.each { |listener| listener.call }
+            end
+            @area_handler.KeyEvent     = fiddle_closure_block_caller(0, [1, 1, 1]) do |_, _, area_key_event|
+              area_key_event = ::LibUI::FFI::AreaKeyEvent.new(area_key_event)
+              area_key_event = area_key_event_hash(area_key_event)
+              on_key_event.each { |listener| listener.call(area_key_event) }
+              if area_key_event[:up]
+                on_key_up.each { |listener| listener.call(area_key_event) }
+              else
+                on_key_down.each { |listener| listener.call(area_key_event) }
+              end
+            end
+            @listeners_installed = true
           end
         end
         

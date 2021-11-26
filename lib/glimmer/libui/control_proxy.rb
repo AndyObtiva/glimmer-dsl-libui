@@ -136,7 +136,10 @@ module Glimmer
       
       # Subclasses may override to perform post add_content work (normally must call super)
       def post_add_content
-        @parent_proxy&.post_initialize_child(self)
+        unless @content_added
+          @parent_proxy&.post_initialize_child(self)
+          @content_added = true
+        end
       end
       
       # Subclasses may override to perform post initialization work on an added child

@@ -1,5 +1,12 @@
 # Change Log
 
+## 0.4.2
+
+- Document `LibUI` API methods
+- Ensure that upon re-opening `#content {}` of `area`, `path`, shapes, `image`, `table`, `text`, and general controls, `post_add_content` initialization is prevented from running multiple times where inappropriate.
+- examples/button_counter.rb (takes advantage of unidirectional data-binding)
+- Fix issue with examples/meta_example.rb showing more versions in counts than available
+
 ## 0.4.1
 
 - Document `observe` keyword

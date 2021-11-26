@@ -55,7 +55,7 @@ module Glimmer
         end
         
         def post_add_content
-          build_control
+          build_control unless @content_added
           super
         end
         

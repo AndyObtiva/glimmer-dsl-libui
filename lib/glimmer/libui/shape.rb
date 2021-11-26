@@ -79,8 +79,11 @@ module Glimmer
       
       # Subclasses may override to perform post add_content work (normally must call super)
       def post_add_content
-        @parent&.post_initialize_child(self)
-        @parent.post_add_content if implicit_path? && dynamic?
+        unless @content_added
+          @parent&.post_initialize_child(self)
+          @parent.post_add_content if implicit_path? && dynamic?
+          @content_added = true
+        end
       end
       
       def post_initialize_child(child, add_child: true)
