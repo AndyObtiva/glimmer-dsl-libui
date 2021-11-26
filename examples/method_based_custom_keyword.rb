@@ -34,9 +34,9 @@ def label_pair(model, attribute, value)
     name_label = label(attribute.to_s.underscore.split('_').map(&:capitalize).join(' '))
     value_label = label(value.to_s)
   }
-  Glimmer::DataBinding::Observer.proc do
+  observe(model, attribute) do
     value_label.text = model.send(attribute)
-  end.observe(model, attribute)
+  end
 end
 
 def address(address)

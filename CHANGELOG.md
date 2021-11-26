@@ -3,6 +3,7 @@
 ## 0.4.1
 
 - Simplify examples/tetris.rb with `observe` keyword
+- Simplify examples/method_based_custom_keyword.rb with `observe` keyword
 
 ## 0.4.0
 
