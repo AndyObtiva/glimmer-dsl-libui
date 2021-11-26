@@ -1351,6 +1351,8 @@ See examples of the `observe` keyword at [Color The Circles](#color-the-circles)
 
 [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) supports unidirectional (one-way) data-binding of any control/shape/attributed-string property via the `<=` symbol (indicating data is moving from the right side, which is the model, to the left side, which is the GUI view object).
 
+The data-binding API is more precisely: `view_property <= [model, attribute, *options]`
+
 This is also known as the [Glimmer Shine](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/docs/reference/GLIMMER_GUI_DSL_SYNTAX.md#shine) syntax for data-binding, a [Glimmer](https://github.com/AndyObtiva/glimmer)-only unique innovation.
 
 Example:
@@ -1374,6 +1376,11 @@ window {
 That is data-binding the `window` `title` property to the `score` attribute of a `@game`, but converting on read from the Model to a `String`.
 
 Data-binding enables writing very expressive, terse, and declarative code to synchronize View properties with Model attributes instead of pages of imperative code doing the same thing.
+
+Options include:
+- `before_read {|value| ...}`: performs an operation before reading data from Model to update the View.
+- `on_read {|value| ...}`: converts value read from Model to update the View.
+- `after_read {|converted_value| ...}`: performs an operation after read from Model and updating the View.
 
 Learn more from data-binding usage in [Snake](#snake) and [Tic Tac Toe](#tic_tac_toe) examples.
 

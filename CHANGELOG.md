@@ -2,6 +2,8 @@
 
 ## 0.4.1
 
+- Document `observe` keyword
+- Document unidirectional data-binding in more detail (like `:before_read`, `:on_read`, and `:after_read` options)
 - Simplify examples/tetris.rb with `observe` keyword
 - Simplify examples/method_based_custom_keyword.rb with `observe` keyword
 - Simplify examples/color_the_circles.rb with `observe` keyword
