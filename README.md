@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.4.1
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.4.2
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -264,6 +264,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
       - [Basic Draw Text](#basic-draw-text)
     - [Advanced Examples](#advanced-examples)
       - [Area Gallery](#area-gallery)
+      - [Button Counter](#button-counter)
       - [Color The Circles](#color-the-circles)
       - [Control Gallery](#control-gallery)
       - [Custom Draw Text](#custom-draw-text)
@@ -372,7 +373,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.4.1'
+gem 'glimmer-dsl-libui', '~> 0.4.2'
 ```
 
 Add `require 'glimmer-dsl-libui'` at the top, and then `include Glimmer` into the top-level main object for testing or into an actual class for serious usage.
@@ -3374,9 +3375,9 @@ Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/
 ruby -r glimmer-dsl-libui -e "require 'examples/basic_scrolling_area'"
 ```
 
-Mac |
-----|
-![glimmer-dsl-libui-mac-dynamic-area.png](images/glimmer-dsl-libui-mac-basic-scrolling-area.png) ![glimmer-dsl-libui-mac-dynamic-area-updated.png](images/glimmer-dsl-libui-mac-basic-scrolling-area-scrolled.png)
+Mac | Linux
+----|------
+![glimmer-dsl-libui-mac-dynamic-area.png](images/glimmer-dsl-libui-mac-basic-scrolling-area.png) ![glimmer-dsl-libui-mac-dynamic-area-updated.png](images/glimmer-dsl-libui-mac-basic-scrolling-area-scrolled.png) | ![glimmer-dsl-libui-linux-dynamic-area.png](images/glimmer-dsl-libui-linux-basic-scrolling-area.png) ![glimmer-dsl-libui-linux-dynamic-area-updated.png](images/glimmer-dsl-libui-linux-basic-scrolling-area-scrolled.png)
 
 New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
 
@@ -4695,6 +4696,56 @@ window('Area Gallery', 400, 400) {
     end
   }
 }.show
+```
+
+#### Button Counter
+
+[examples/button_counter.rb](examples/button_counter.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/button_counter.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/button_counter'"
+```
+
+Mac | Linux
+----|------
+![glimmer-dsl-libui-mac-button-counter.png](images/glimmer-dsl-libui-mac-button-counter.png) | ![glimmer-dsl-libui-linux-button-counter.png](images/glimmer-dsl-libui-linux-button-counter.png)
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+require 'glimmer-dsl-libui'
+
+class ButtonCounter
+  include Glimmer
+
+  attr_accessor :count
+
+  def initialize
+    @count = 0
+  end
+
+  def launch
+    window('Hello, Button!') {
+      button {
+        text <= [self, :count, on_read: ->(count) {"Count: #{count}"}] # data-bind button text to self count, converting to string on read.
+        
+        on_clicked do
+          self.count += 1
+        end
+      }
+    }.show
+  end
+end
+
+ButtonCounter.new.launch
 ```
 
 #### Color The Circles

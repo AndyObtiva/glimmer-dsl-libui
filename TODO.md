@@ -17,7 +17,9 @@
 
 ## Soon
 
-- Add Windows screenshot for examples/basic_scrolling_area.rb
+- Add Windows screenshots for examples/basic_scrolling_area.rb
+- Add Windows screenshot for examples/button_counter.rb
+- Update Windows screenshot of examples/meta_example.rb
 
 ## Future
 

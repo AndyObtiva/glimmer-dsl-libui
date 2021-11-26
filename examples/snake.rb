@@ -38,7 +38,7 @@ class Snake
   def create_gui
     @main_window = window {
       # data-bind window title to game score, converting it to a title string on read from the model
-      title <= [@game, :score, on_read: -> (score) {"Glimmer Snake (Score: #{@game.score})"}]
+      title <= [@game, :score, on_read: -> (score) {"Snake (Score: #{@game.score})"}]
       content_size @game.width * CELL_SIZE, @game.height * CELL_SIZE
       resizable false
       

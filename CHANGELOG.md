@@ -2,9 +2,9 @@
 
 ## 0.4.2
 
-- Document `LibUI` API methods
-- Ensure that upon re-opening `#content {}` of `area`, `path`, shapes, `image`, `table`, `text`, and general controls, `post_add_content` initialization is prevented from running multiple times where inappropriate.
 - examples/button_counter.rb (takes advantage of unidirectional data-binding)
+- Ensure that upon re-opening `#content {}` of `area`, `path`, shapes, `image`, `table`, `text`, and general controls, `post_add_content` initialization is prevented from running multiple times where inappropriate.
+- Document `LibUI` API methods
 - Fix issue with examples/meta_example.rb showing more versions in counts than available
 
 ## 0.4.1
@@ -21,7 +21,7 @@
 - Upgrade to LibUI 0.0.13
 - Support general control/shape/attributed_string property unidirectional data-binding (with `<=` sign or `<=>`)
 - Support `observe` DSL keyword for simple model observation outside of GUI (e.g. `observe(model, attribute) { do_something }` )
-- Simplify examples/snake.rb with data-binding
+- Simplify examples/snake.rb with data-binding and make smaller (20x20) to be more challenging and fun
 - Simplify examples/tic_tac_toe.rb with data-binding
 - Fix issue with `Shape#redraw` method calling `AreaProxy#auto_redraw` instead of `AreaProxy#redraw`
 
