@@ -42,7 +42,7 @@ class Tetris
   end
   
   def register_observers
-    Glimmer::DataBinding::Observer.proc do |game_over|
+    observe(@game, :game_over) do |game_over|
       if game_over
         @pause_menu_item.enabled = false
         show_game_over_dialog
@@ -50,11 +50,11 @@ class Tetris
         @pause_menu_item.enabled = true
         start_moving_tetrominos_down
       end
-    end.observe(@game, :game_over)
+    end
     
     Model::Game::PLAYFIELD_HEIGHT.times do |row|
       Model::Game::PLAYFIELD_WIDTH.times do |column|
-        Glimmer::DataBinding::Observer.proc do |new_color|
+        observe(@game.playfield[row][column], :color) do |new_color|
           Glimmer::LibUI.queue_main do
             color = Glimmer::LibUI.interpret_color(new_color)
             block = @playfield_blocks[row][column]
@@ -65,13 +65,13 @@ class Tetris
             block[:left_bevel_edge].fill = {r: color[:r] - BEVEL_CONSTANT, g: color[:g] - BEVEL_CONSTANT, b: color[:b] - BEVEL_CONSTANT}
             block[:border_square].stroke = new_color == Model::Block::COLOR_CLEAR ? COLOR_GRAY : color
           end
-        end.observe(@game.playfield[row][column], :color)
+        end
       end
     end
     
     Model::Game::PREVIEW_PLAYFIELD_HEIGHT.times do |row|
       Model::Game::PREVIEW_PLAYFIELD_WIDTH.times do |column|
-        Glimmer::DataBinding::Observer.proc do |new_color|
+        observe(@game.preview_playfield[row][column], :color) do |new_color|
           Glimmer::LibUI.queue_main do
             color = Glimmer::LibUI.interpret_color(new_color)
             block = @preview_playfield_blocks[row][column]
@@ -82,27 +82,27 @@ class Tetris
             block[:left_bevel_edge].fill = {r: color[:r] - BEVEL_CONSTANT, g: color[:g] - BEVEL_CONSTANT, b: color[:b] - BEVEL_CONSTANT}
             block[:border_square].stroke = new_color == Model::Block::COLOR_CLEAR ? COLOR_GRAY : color
           end
-        end.observe(@game.preview_playfield[row][column], :color)
+        end
       end
     end
 
-    Glimmer::DataBinding::Observer.proc do |new_score|
+    observe(@game, :score) do |new_score|
       Glimmer::LibUI.queue_main do
         @score_label.text = new_score.to_s
       end
-    end.observe(@game, :score)
+    end
 
-    Glimmer::DataBinding::Observer.proc do |new_lines|
+    observe(@game, :lines) do |new_lines|
       Glimmer::LibUI.queue_main do
         @lines_label.text = new_lines.to_s
       end
-    end.observe(@game, :lines)
+    end
 
-    Glimmer::DataBinding::Observer.proc do |new_level|
+    observe(@game, :level) do |new_level|
       Glimmer::LibUI.queue_main do
         @level_label.text = new_level.to_s
       end
-    end.observe(@game, :level)
+    end
   end
   
   def menu_bar

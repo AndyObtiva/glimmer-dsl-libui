@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.4.1
+
+- Simplify examples/tetris.rb with `observe` keyword
+
 ## 0.4.0
 
 - Upgrade to LibUI 0.0.13
