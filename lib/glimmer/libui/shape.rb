@@ -102,7 +102,7 @@ module Glimmer
       end
       
       def redraw
-        area_proxy&.auto_redraw
+        area_proxy&.redraw
       end
       
       def request_auto_redraw

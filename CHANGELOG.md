@@ -3,8 +3,11 @@
 ## 0.4.0
 
 - Upgrade to LibUI 0.0.13
-- Support general control property unidirectional data-binding (with `<=` sign or `<=>`)
+- Support general control/shape/attributed_string property unidirectional data-binding (with `<=` sign or `<=>`)
 - Support `observe` DSL keyword for simple model observation outside of GUI (e.g. `observe(model, attribute) { do_something }` )
+- Simplify examples/snake.rb with data-binding
+- Simplify examples/tic_tac_toe.rb with data-binding
+- Fix issue with `Shape#redraw` method calling `AreaProxy#auto_redraw` instead of `AreaProxy#redraw`
 
 ## 0.3.5
 

@@ -16,17 +16,9 @@ class TicTacToe
   end
   
   def register_observers
-    Glimmer::DataBinding::Observer.proc do |game_status|
+    observe(@tic_tac_toe_board, :game_status) do |game_status|
       display_win_message if game_status == Board::WIN
       display_draw_message if game_status == Board::DRAW
-    end.observe(@tic_tac_toe_board, :game_status)
-    
-    3.times.map do |row|
-      3.times.map do |column|
-        Glimmer::DataBinding::Observer.proc do |sign|
-          @cells[row][column].string = sign
-        end.observe(@tic_tac_toe_board[row + 1, column + 1], :sign) # board model is 1-based
-      end
     end
   end
 
@@ -34,12 +26,10 @@ class TicTacToe
     @main_window = window('Tic-Tac-Toe', 180, 180) {
       resizable false
       
-      @cells = []
       vertical_box {
         padded false
         
         3.times.map do |row|
-          @cells << []
           horizontal_box {
             padded false
             
@@ -49,8 +39,9 @@ class TicTacToe
                   stroke :black, thickness: 2
                 }
                 text(23, 19) {
-                  @cells[row] << string('') {
+                  string {
                     font family: 'Arial', size: OS.mac? ? 20 : 16
+                    string <= [@tic_tac_toe_board[row + 1, column + 1], :sign] # board model is 1-based
                   }
                 }
                 on_mouse_up do

@@ -19,7 +19,6 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'glimmer/dsl/static_expression'
 require 'glimmer/dsl/parent_expression'
 require 'glimmer/libui/control_proxy/text_proxy'
 require 'glimmer/libui/attributed_string'
@@ -27,14 +26,14 @@ require 'glimmer/libui/attributed_string'
 module Glimmer
   module DSL
     module Libui
-      class StringExpression < StaticExpression
+      class StringExpression < Expression
         include ParentExpression
         
         def can_interpret?(parent, keyword, *args, &block)
-          super and
+          keyword == 'string' and
             (
               parent.is_a?(Glimmer::LibUI::ControlProxy::TextProxy) or
-              parent.is_a?(Glimmer::LibUI::AttributedString)
+              (parent.is_a?(Glimmer::LibUI::AttributedString) and !args.empty?)
             )
         end
   
@@ -47,7 +46,7 @@ module Glimmer
         end
         
         def add_content(parent, keyword, *args, &block)
-          parent.post_add_content
+          parent.post_add_content(block)
         end
       end
     end
