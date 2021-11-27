@@ -877,7 +877,7 @@ Given that it is very new and is not a [libui](https://github.com/andlabs/libui)
 - Including an `image` inside an `area` `on_draw` listener improves performance due to not retaining pixel/line data in memory.
 - Supplying `width` and `height` (2nd and 3rd arguments) greatly improves performance when shrinking image.
 
-Currently, it is recommended to use `image` with very small `width` and `height` values only.
+Currently, it is recommended to use `image` with very small `width` and `height` values only (e.g. 24x24).
 
 Setting a [`transform` `matrix`](#area-transform-matrix) is supported under `image` just like it is under `path` and `text` inside `area`.
 
@@ -1032,6 +1032,8 @@ window('Basic Image', 96, 96) {
 ```
 
 One final note is that in Linux, table images grow and shrink with the image size unlike on the Mac where table row heights are constant regardless of image sizes. As such, you may be able to repurpose a table with a single image column and a single row as an image control with more native libui rendering if you are only targeting Linux with your app.
+
+![linux table image](images/glimmer-dsl-libui-linux-basic-table-image.png)
 
 Check out [examples/basic_image.rb](#basic-image) (all versions) for examples of using `image` Glimmer custom control.
 
@@ -1352,6 +1354,14 @@ See examples of the `observe` keyword at [Color The Circles](#color-the-circles)
 
 [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) supports both bidirectional (two-way) data-binding and unidirectional (one-way) data-binding.
 
+Data-binding enables writing very expressive, terse, and declarative code to synchronize View properties with Model attributes without writing many lines or pages of imperative code doing the same thing, increasing productivity immensely.
+
+Data-binding automatically takes advantage of the [Observer Pattern](#observer-pattern) behind the scenes and is very well suited to declaring View property data sources piecemeal. On the other hand, explicit use of the [Observer Pattern](#observer-pattern) is sometimes more suitable when needing to make multiple View updates upon a single Model attribute change.
+
+Data-binding supports utilizing the [MVP (Model View Presenter)](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93presenter) flavor of [MVC](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) by observing both the View and a Presenter for changes and updating the opposite side upon encountering them. This enables writing more decoupled cleaner code that keeps View code and Model code disentangled and highly maintainable. For example, check out the Snake game presenters for [Grid](/examples/snake/presenter/grid.rb) and [Cell](/examples/snake/presenter/cell.rb), which act as proxies for the actual Snake game models [Snake](/examples/snake/model/snake.rb) and [Apple](/examples/snake/model/apple.rb), mediating synchronization of data between them and the [Snake View GUI](/examples/snake.rb).
+
+![MVP](https://www.researchgate.net/profile/Gilles-Perrouin/publication/320249584/figure/fig8/AS:668260987068418@1536337243385/Model-view-presenter-architecture.png)
+
 [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) supports bidirectional (two-way) data-binding of the following controls/properties via the `<=>` operator (indicating data is moving in both directions between View and Model):
 - `entry` `text` property
 - `multiline_entry` `text` property
@@ -1372,11 +1382,11 @@ Another example of bidirectional data-binding with an option:
 
 ```ruby
 entry {
-  text <=> [self, :entry_text, after_write: ->(text) {puts text}]
+  text <=> [self, :entered_text, after_write: ->(text) {puts text}]
 }
 ```
 
-That is data-binding `entry_text` attribute on `self` to `entry` `text` property and printing text after write to the model.
+That is data-binding `entered_text` attribute on `self` to `entry` `text` property and printing text after write to the model.
 
 [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) supports unidirectional (one-way) data-binding of any control/shape/attributed-string property via the `<=` operator (indicating data is moving from the right side, which is the Model, to the left side, which is the GUI View object).
 
@@ -1400,19 +1410,11 @@ window {
 
 That is data-binding the `window` `title` property to the `score` attribute of a `@game`, but converting on read from the Model to a `String`.
 
-The data-binding API:
-- Bidirectional (two-way) data-binding to a Model attribute accessor: `view_property <=> [model, attribute, *read_or_write_options]`
-- Unidirectional (one-way) data-binding to a Model attribute reader: `view_property <= [model, attribute, *read_only_options]`
+To summarize the data-binding API:
+- `view_property <=> [model, attribute, *read_or_write_options]`: Bidirectional (two-way) data-binding to Model attribute accessor
+- `view_property <= [model, attribute, *read_only_options]`: Unidirectional (one-way) data-binding to Model attribute reader
 
 This is also known as the [Glimmer Shine](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/docs/reference/GLIMMER_GUI_DSL_SYNTAX.md#shine) syntax for data-binding, a [Glimmer](https://github.com/AndyObtiva/glimmer)-only unique innovation that takes advantage of [Ruby](https://www.ruby-lang.org/en/)'s highly expressive syntax and malleable DSL support.
-
-Data-binding enables writing very expressive, terse, and declarative code to synchronize View properties with Model attributes without writing many lines or pages of imperative code doing the same thing.
-
-Data-binding automatically takes advantage of the [Observer Pattern](#observer-pattern) behind the scenes and is very well suited to declaring View property data sources piecemeal. On the other hand, explicit use of the [Observer Pattern](#observer-pattern) is sometimes more suitable when needing to make multiple View updates upon a single Model attribute change.
-
-Data-binding supports utilizing the [MVP (Model View Presenter)](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93presenter) flavor of [MVC](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) by observing both the View and a Presenter for changes and updating the opposite side upon encountering them. This enables writing more decoupled cleaner code that keeps View code and Model code disentangled and highly maintainable. For example, check out the Snake game presenters for [Grid](/examples/snake/presenter/grid.rb) and [Cell](/examples/snake/presenter/cell.rb), which act as proxies for the actual Snake game models [Snake](/examples/snake/model/snake.rb) and [Apple](/examples/snake/model/apple.rb), mediating synchronization of data between them and the [Snake View GUI](/examples/snake.rb).
-
-![MVP](https://www.researchgate.net/profile/Gilles-Perrouin/publication/320249584/figure/fig8/AS:668260987068418@1536337243385/Model-view-presenter-architecture.png)
 
 Data-binding options include:
 - `before_read {|value| ...}`: performs an operation before reading data from Model to update the View.
@@ -1421,6 +1423,7 @@ Data-binding options include:
 - `before_write {|value| ...}`: performs an operation before writing data to Model from View.
 - `on_write {|value| ...}`: converts value read from View to update the Model.
 - `after_write {|converted_value| ...}`: performs an operation after writing to Model from View.
+- `computed_by attribute` or `computed_by [attribute1, attribute2, ...]`: indicates model attribute is computed from specified attribute(s), thus updated when they are updated (see in [Login example version 2](/examples/login2.rb))
 
 Note that with both `on_read` and `on_write` converters, you could pass a `Symbol` representing the name of a method on the value object to invoke.
 
@@ -1434,7 +1437,7 @@ entry {
 
 Gotcha: never data-bind a control property to an attribute on the same view object with the same exact name (e.g. binding `entry` `text` property to `self` `text` attribute) as it would conflict with it. Instead, data-bind view property to an attribute with a different name on the view object or with the same name, but on a presenter or model object (e.g. data-bind `entry` `text` to `self` `legal_text` attribute or to `contract` model `text` attribute)
 
-Learn more from data-binding usage in [Basic Entry](#basic-entry), [Form](#form), [Form Table](#form-table), [Login](#login), [Method-Based Custom Keyword](#method-based-custom-keyword), [Snake](#snake) and [Tic Tac Toe](#tic_tac_toe) examples.
+Learn more from data-binding usage in [Login](#login) (4 data-binding versions), [Basic Entry](#basic-entry), [Form](#form), [Form Table](#form-table), [Method-Based Custom Keyword](#method-based-custom-keyword), [Snake](#snake) and [Tic Tac Toe](#tic_tac_toe) examples.
 
 ### API Gotchas
 
@@ -6892,7 +6895,7 @@ end
 Login.new.launch
 ```
 
-New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version (with [data-binding](#data-binding)):
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 3 (with [data-binding](#data-binding)):
 
 ```ruby
 require 'glimmer-dsl-libui'
@@ -6962,7 +6965,7 @@ end
 Login.new.launch
 ```
 
-New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version (with [data-binding](#data-binding)):
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 4 (with [data-binding](#data-binding)):
 
 ```ruby
 require 'glimmer-dsl-libui'
