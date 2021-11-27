@@ -2,8 +2,6 @@
 
 ## Next
 
-- Improve examples/form_table.rb with bidirectional data-binding for `entry` `text`
-- Improve examples/login.rb with bidirectional data-binding for `entry` `text`
 - Improve examples/meta_example.rb with bidirectional data-binding for `entry` `text`
 - Improve examples/method_based_custom_keyword.rb with bidirectional data-binding for `entry` `text`
 - Improve examples/simple_notepad.rb with bidirectional data-binding for `entry` `text`

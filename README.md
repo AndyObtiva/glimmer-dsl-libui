@@ -6145,7 +6145,7 @@ class FormTable
             else
               @data << new_row # automatically inserts a row into the table due to implicit data-binding
               @unfiltered_data = @data.dup
-              self.name = ''
+              self.name = '' # automatically clears name entry through explicit data-binding
               self.email = ''
               self.phone = ''
               self.city = ''
@@ -6194,7 +6194,7 @@ end
 FormTable.new.launch
 ```
 
-New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version (without [data-binding](#data-binding)):
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 2 (without [data-binding](#data-binding)):
 
 ```ruby
 require 'glimmer-dsl-libui'
@@ -6773,7 +6773,63 @@ Mac | Windows | Linux
 ----|---------|------
 ![glimmer-dsl-libui-mac-login.png](images/glimmer-dsl-libui-mac-login.png) ![glimmer-dsl-libui-mac-login-logged-in.png](images/glimmer-dsl-libui-mac-login-logged-in.png) | ![glimmer-dsl-libui-windows-login.png](images/glimmer-dsl-libui-windows-login.png) ![glimmer-dsl-libui-windows-login-logged-in.png](images/glimmer-dsl-libui-windows-login-logged-in.png) | ![glimmer-dsl-libui-linux-login.png](images/glimmer-dsl-libui-linux-login.png) ![glimmer-dsl-libui-linux-login-logged-in.png](images/glimmer-dsl-libui-linux-login-logged-in.png)
 
-New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version (with [data-binding](#data-binding)):
+
+```ruby
+require 'glimmer-dsl-libui'
+
+class Login
+  include Glimmer
+  
+  attr_accessor :username, :password, :logged_in
+  
+  def launch
+    window('Login') {
+      margined true
+      
+      vertical_box {
+        form {
+          entry {
+            label 'Username:'
+            text <=> [self, :username]
+            enabled <= [self, :logged_in, on_read: :!]
+          }
+          
+          password_entry {
+            label 'Password:'
+            text <=> [self, :password]
+            enabled <= [self, :logged_in, on_read: :!]
+          }
+        }
+        
+        horizontal_box {
+          button('Login') {
+            enabled <= [self, :logged_in, on_read: :!]
+            
+            on_clicked do
+              self.logged_in = true
+            end
+          }
+          
+          button('Logout') {
+            enabled <= [self, :logged_in]
+            
+            on_clicked do
+              self.logged_in = false
+              self.username = ''
+              self.password = ''
+            end
+          }
+        }
+      }
+    }.show
+  end
+end
+
+Login.new.launch
+```
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 2 (without [data-binding](#data-binding)):
 
 ```ruby
 require 'glimmer-dsl-libui'

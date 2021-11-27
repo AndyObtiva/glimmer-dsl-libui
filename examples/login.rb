@@ -2,44 +2,52 @@
 
 require 'glimmer-dsl-libui'
 
-include Glimmer
-
-window('Login') {
-  margined true
+class Login
+  include Glimmer
   
-  vertical_box {
-    form {
-      @username_entry = entry {
-        label 'Username:'
-      }
+  attr_accessor :username, :password, :logged_in
+  
+  def launch
+    window('Login') {
+      margined true
       
-      @password_entry = password_entry {
-        label 'Password:'
-      }
-    }
-    
-    horizontal_box {
-      @login_button = button('Login') {
-        on_clicked do
-          @username_entry.enabled = false
-          @password_entry.enabled = false
-          @login_button.enabled = false
-          @logout_button.enabled = true
-        end
-      }
-      
-      @logout_button = button('Logout') {
-        enabled false
+      vertical_box {
+        form {
+          entry {
+            label 'Username:'
+            text <=> [self, :username]
+            enabled <= [self, :logged_in, on_read: :!]
+          }
+          
+          password_entry {
+            label 'Password:'
+            text <=> [self, :password]
+            enabled <= [self, :logged_in, on_read: :!]
+          }
+        }
         
-        on_clicked do
-          @username_entry.text = ''
-          @password_entry.text = ''
-          @username_entry.enabled = true
-          @password_entry.enabled = true
-          @login_button.enabled = true
-          @logout_button.enabled = false
-        end
+        horizontal_box {
+          button('Login') {
+            enabled <= [self, :logged_in, on_read: :!]
+            
+            on_clicked do
+              self.logged_in = true
+            end
+          }
+          
+          button('Logout') {
+            enabled <= [self, :logged_in]
+            
+            on_clicked do
+              self.logged_in = false
+              self.username = ''
+              self.password = ''
+            end
+          }
+        }
       }
-    }
-  }
-}.show
+    }.show
+  end
+end
+
+Login.new.launch

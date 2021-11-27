@@ -6,6 +6,7 @@
 - Improve examples/basic_entry.rb with bidirectional data-binding for `entry` `text`
 - Improve examples/form.rb with bidirectional data-binding for `entry` `text`
 - Improve examples/form_table.rb with bidirectional data-binding for `entry` `text`
+- Improve examples/login.rb with bidirectional data-binding for `entry` `text`
 
 ## 0.4.2
 

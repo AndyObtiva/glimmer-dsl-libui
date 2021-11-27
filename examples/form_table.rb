@@ -61,7 +61,7 @@ class FormTable
             else
               @data << new_row # automatically inserts a row into the table due to implicit data-binding
               @unfiltered_data = @data.dup
-              self.name = ''
+              self.name = '' # automatically clears name entry through explicit data-binding
               self.email = ''
               self.phone = ''
               self.city = ''
