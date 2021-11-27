@@ -3,8 +3,8 @@
 ## 0.4.3
 
 - Support `entry` `text` bidirectional data-binding
-- Improve examples/basic_entry.rb with bidirectional data-binding
-- Improve examples/form.rb with bidirectional data-binding
+- Improve examples/basic_entry.rb with bidirectional data-binding for `entry` `text`
+- Improve examples/form.rb with bidirectional data-binding for `entry` `text`
 
 ## 0.4.2
 

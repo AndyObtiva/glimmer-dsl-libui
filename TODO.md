@@ -2,7 +2,16 @@
 
 ## Next
 
+- Improve examples/form_table.rb with bidirectional data-binding for `entry` `text`
+- Improve examples/login.rb with bidirectional data-binding for `entry` `text`
+- Improve examples/meta_example.rb with bidirectional data-binding for `entry` `text`
+- Improve examples/method_based_custom_keyword.rb with bidirectional data-binding for `entry` `text`
+- Improve examples/simple_notepad.rb with bidirectional data-binding for `entry` `text`
 - Support `entry` `text` property bidirectional data-binding (with `<=>` sign)
+- Support `search_entry` `text` property bidirectional data-binding (with `<=>` sign)
+- Support `multiline_entry` `text` property bidirectional data-binding (with `<=>` sign)
+- Support `non_wrapping_multiline_entry` `text` property bidirectional data-binding (with `<=>` sign)
+
 - Support `spinbox` `value` bidirectional data-binding (with `<=>` sign)
 - Support `slider` `value` bidirectional data-binding (with `<=>` sign)
 - Support `date_time_picker`/`date_picker`/`time_picker` `time` bidirectional data-binding (with `<=>` sign)
@@ -14,6 +23,7 @@
 - Support `radio_menu_item` `checked` bidirectional data-binding (with `<=>` sign)
 - Support `check_menu_item` `checked` bidirectional data-binding (with `<=>` sign)
 - Support `table` `cell_rows` bidirectional data-binding (with `<=>` sign)
+- Improve examples/form_table.rb with bidirectional data-binding for `table` `cell_rows`
 - Support returning a control binding object with a deregister method to debind
 
 ## Soon
