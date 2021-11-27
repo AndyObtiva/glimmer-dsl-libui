@@ -5,7 +5,7 @@ require 'glimmer-dsl-libui'
 class FormTable
   include Glimmer
   
-  attr_accessor :name, :email, :phone, :city, :state
+  attr_accessor :name, :email, :phone, :city, :state, :filter_value
   
   def initialize
     @data = [
@@ -70,23 +70,23 @@ class FormTable
           end
         }
         
-        search_entry { |se|
+        search_entry {
           stretchy false
-          
-          on_changed do
-            filter_value = se.text
-            @unfiltered_data ||= @data.dup
-            # Unfilter first to remove any previous filters
-            @data.replace(@unfiltered_data) # affects table indirectly through implicit data-binding
-            # Now, apply filter if entered
-            unless filter_value.empty?
-              @data.filter! do |row_data| # affects table indirectly through implicit data-binding
-                row_data.any? do |cell|
-                  cell.to_s.downcase.include?(filter_value.downcase)
+          text <=> [self, :filter_value, # bidirectional data-binding of text to self.filter_value with after_write option
+            after_write: ->(filter_value) { # execute after write to self.filter_value
+              @unfiltered_data ||= @data.dup
+              # Unfilter first to remove any previous filters
+              @data.replace(@unfiltered_data) # affects table indirectly through implicit data-binding
+              # Now, apply filter if entered
+              unless filter_value.empty?
+                @data.filter! do |row_data| # affects table indirectly through implicit data-binding
+                  row_data.any? do |cell|
+                    cell.to_s.downcase.include?(filter_value.downcase)
+                  end
                 end
               end
-            end
-          end
+            }
+          ]
         }
         
         table {

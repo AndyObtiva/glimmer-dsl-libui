@@ -33,6 +33,7 @@
 - Update Windows screenshot of examples/meta_example.rb
 - Document area inclusion of explicit and implicit path shapes
 - Demo examples/button_counter.rb at the top of the README
+- Support ability to attach multiple listeners (e.g. multiple `on_changed {}` on `entry`)
 
 ## Future
 
