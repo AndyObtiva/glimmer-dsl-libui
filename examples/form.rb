@@ -2,36 +2,48 @@
 
 require 'glimmer-dsl-libui'
 
-include Glimmer
-
-window('Form') {
-  margined true
+class Form
+  include Glimmer
   
-  vertical_box {
-    form {
-      @first_name_entry = entry {
-        label 'First Name' # label property is available when control is nested under form
-      }
+  attr_accessor :first_name, :last_name, :phone, :email
+  
+  def launch
+    window('Form') {
+      margined true
       
-      @last_name_entry = entry {
-        label 'Last Name' # label property is available when control is nested under form
+      vertical_box {
+        form {
+          entry {
+            label 'First Name' # label property is available when control is nested under form
+            text <=> [self, :first_name] # bidirectional data-binding of entry text property to self first_name attribute
+          }
+          
+          entry {
+            label 'Last Name' # label property is available when control is nested under form
+            text <=> [self, :last_name]
+          }
+          
+          entry {
+            label 'Phone' # label property is available when control is nested under form
+            text <=> [self, :phone]
+          }
+          
+          entry {
+            label 'Email' # label property is available when control is nested under form
+            text <=> [self, :email]
+          }
+        }
+        
+        button('Display Info') {
+          stretchy false
+          
+          on_clicked do
+            msg_box('Info', "#{first_name} #{last_name} has phone #{phone} and email #{email}")
+          end
+        }
       }
-      
-      @phone_entry = entry {
-        label 'Phone' # label property is available when control is nested under form
-      }
-      
-      @email_entry = entry {
-        label 'Email' # label property is available when control is nested under form
-      }
-    }
-    
-    button('Display Info') {
-      stretchy false
-      
-      on_clicked do
-        msg_box('Info', "#{@first_name_entry.text} #{@last_name_entry.text} has phone #{@phone_entry.text} and email #{@email_entry.text}")
-      end
-    }
-  }
-}.show
+    }.show
+  end
+end
+
+Form.new.launch

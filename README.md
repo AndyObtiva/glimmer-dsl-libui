@@ -1350,7 +1350,7 @@ See examples of the `observe` keyword at [Color The Circles](#color-the-circles)
 
 ### Data-Binding
 
-[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) supports bidirectional (two-way) data-binding of the following controls/properties via the `<=>` operator (indicating data is moving in both directions; from the right side, which is the model, to the left side, which is the GUI view object, and vice versa):
+[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) supports bidirectional (two-way) data-binding of the following controls/properties via the `<=>` operator (indicating data is moving in both directions between View and Model):
 - `entry` `text` property
 
 Example of bidirectional data-binding:
@@ -1373,7 +1373,7 @@ entry {
 
 That is data-binding `entry_text` attribute on `self` to `entry` `text` property and printing text after write to the model.
 
-[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) supports unidirectional (one-way) data-binding of any control/shape/attributed-string property via the `<=` operator (indicating data is moving from the right side, which is the model, to the left side, which is the GUI view object).
+[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) supports unidirectional (one-way) data-binding of any control/shape/attributed-string property via the `<=` operator (indicating data is moving from the right side, which is the Model, to the left side, which is the GUI View object).
 
 Example of unidirectional data-binding:
 
@@ -1396,8 +1396,8 @@ window {
 That is data-binding the `window` `title` property to the `score` attribute of a `@game`, but converting on read from the Model to a `String`.
 
 The data-binding API:
-- Bidirectional (two-way) data-binding: `view_property <=> [model, attribute, *read_or_write_options]`
-- Unidirectional (one-way) data-binding: `view_property <= [model, attribute, *read_only_options]`
+- Bidirectional (two-way) data-binding to a Model attribute accessor: `view_property <=> [model, attribute, *read_or_write_options]`
+- Unidirectional (one-way) data-binding to a Model attribute reader: `view_property <= [model, attribute, *read_only_options]`
 
 This is also known as the [Glimmer Shine](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/docs/reference/GLIMMER_GUI_DSL_SYNTAX.md#shine) syntax for data-binding, a [Glimmer](https://github.com/AndyObtiva/glimmer)-only unique innovation that takes advantage of [Ruby](https://www.ruby-lang.org/en/)'s highly expressive syntax and malleable DSL support.
 
@@ -2576,7 +2576,59 @@ Mac | Windows | Linux
 ----|---------|------
 ![glimmer-dsl-libui-mac-form.png](images/glimmer-dsl-libui-mac-form.png) ![glimmer-dsl-libui-mac-form-msg-box.png](images/glimmer-dsl-libui-mac-form-msg-box.png) | ![glimmer-dsl-libui-windows-form.png](images/glimmer-dsl-libui-windows-form.png) ![glimmer-dsl-libui-windows-form-msg-box.png](images/glimmer-dsl-libui-windows-form-msg-box.png) | ![glimmer-dsl-libui-linux-form.png](images/glimmer-dsl-libui-linux-form.png) ![glimmer-dsl-libui-linux-form-msg-box.png](images/glimmer-dsl-libui-linux-form-msg-box.png)
 
-New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version (with [data-binding](#data-binding)):
+
+```ruby
+require 'glimmer-dsl-libui'
+
+class Form
+  include Glimmer
+  
+  attr_accessor :first_name, :last_name, :phone, :email
+  
+  def launch
+    window('Form') {
+      margined true
+      
+      vertical_box {
+        form {
+          entry {
+            label 'First Name' # label property is available when control is nested under form
+            text <=> [self, :first_name] # bidirectional data-binding of entry text property to self first_name attribute
+          }
+          
+          entry {
+            label 'Last Name' # label property is available when control is nested under form
+            text <=> [self, :last_name]
+          }
+          
+          entry {
+            label 'Phone' # label property is available when control is nested under form
+            text <=> [self, :phone]
+          }
+          
+          entry {
+            label 'Email' # label property is available when control is nested under form
+            text <=> [self, :email]
+          }
+        }
+        
+        button('Display Info') {
+          stretchy false
+          
+          on_clicked do
+            msg_box('Info', "#{first_name} #{last_name} has phone #{phone} and email #{email}")
+          end
+        }
+      }
+    }.show
+  end
+end
+
+Form.new.launch
+```
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 2 (without [data-binding](#data-binding)):
 
 ```ruby
 require 'glimmer-dsl-libui'
