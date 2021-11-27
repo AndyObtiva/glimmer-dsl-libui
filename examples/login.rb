@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require 'glimmer-dsl-libui'
 
 class Login
@@ -16,7 +14,7 @@ class Login
           entry {
             label 'Username:'
             text <=> [self, :username]
-            enabled <= [self, :logged_in, on_read: :!]
+            enabled <= [self, :logged_in, on_read: :!] # `on_read: :!` negates read value
           }
           
           password_entry {

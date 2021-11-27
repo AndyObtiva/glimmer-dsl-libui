@@ -5,11 +5,15 @@ include Glimmer
 
 Address = Struct.new(:street, :p_o_box, :city, :state, :zip_code)
 
-def form_field(model, attribute)
-  attribute = attribute.to_s
+def form_field(model, property)
+  property = property.to_s
   entry { |e|
-    label attribute.underscore.split('_').map(&:capitalize).join(' ')
-    text <=> [model, attribute]
+    label property.underscore.split('_').map(&:capitalize).join(' ')
+    text model.send(property).to_s
+
+    on_changed do
+      model.send("#{property}=", e.text)
+    end
   }
 end
 
@@ -24,12 +28,15 @@ def address_form(address)
 end
 
 def label_pair(model, attribute, value)
+  name_label = nil
+  value_label = nil
   horizontal_box {
-    label(attribute.to_s.underscore.split('_').map(&:capitalize).join(' '))
-    label(value.to_s) {
-      text <= [model, attribute]
-    }
+    name_label = label(attribute.to_s.underscore.split('_').map(&:capitalize).join(' '))
+    value_label = label(value.to_s)
   }
+  observe(model, attribute) do
+    value_label.text = model.send(attribute)
+  end
 end
 
 def address(address)
