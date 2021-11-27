@@ -28,6 +28,11 @@ module Glimmer
       #
       # Follows the Proxy Design Pattern
       class MultilineEntryProxy < ControlProxy
+        def data_bind(property, model_binding)
+          super
+          handle_listener('on_changed') { model_binding.call(text) } if property == 'text'
+        end
+        
         def libui_api_keyword
           'multiline_entry'
         end

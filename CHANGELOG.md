@@ -3,11 +3,15 @@
 ## 0.4.3
 
 - Support `entry` `text` bidirectional data-binding
+- Support `search_entry` `text` property bidirectional data-binding (with `<=>` sign)
+- Support `multiline_entry` `text` property bidirectional data-binding (with `<=>` sign)
+- Support `non_wrapping_multiline_entry` `text` property bidirectional data-binding (with `<=>` sign)
 - Improve examples/basic_entry.rb with bidirectional data-binding for `entry` `text`
 - Improve examples/form.rb with bidirectional data-binding for `entry` `text`
 - Improve examples/form_table.rb with bidirectional data-binding for `entry` `text`
 - Improve examples/login.rb with bidirectional data-binding for `entry` `text`
 - Improve examples/method_based_custom_keyword.rb with bidirectional data-binding for `entry` `text`
+- Improve examples/meta_example.rb with bidirectional data-binding for `non_wrapping_multiline_entry` `text`
 
 ## 0.4.2
 

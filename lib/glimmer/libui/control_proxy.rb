@@ -336,11 +336,11 @@ module Glimmer
       # Subclasses can override to do inverse data-binding by observing view control for property changes and updating model binding accordingly
       def data_bind(property, model_binding)
         model_attribute_observer = Glimmer::DataBinding::Observer.proc do
-          send("#{property}=", model_binding.evaluate_property)
+          new_value = model_binding.evaluate_property
+          send("#{property}=", new_value) unless send(property) == new_value
         end
         model_attribute_observer.observe(model_binding)
         model_attribute_observer.call # initial update
-        # TODO return a widget binding object that has a deregister method
         model_attribute_observer
       end
       

@@ -7,8 +7,11 @@ class MetaExample
   
   ADDITIONAL_BASIC_EXAMPLES = ['Color Button', 'Font Button', 'Form', 'Date Time Picker', 'Simple Notepad']
   
+  attr_accessor :code_text
+  
   def initialize
     @selected_example_index = examples_with_versions.index(basic_examples_with_versions.first)
+    @code_text = File.read(file_path_for(selected_example))
   end
   
   def examples
@@ -89,7 +92,7 @@ class MetaExample
                   on_selected do
                     @selected_example_index = examples_with_versions.index(basic_examples_with_versions[@basic_example_radio_buttons.selected])
                     example = selected_example
-                    @code_entry.text = File.read(file_path_for(example))
+                    self.code_text = File.read(file_path_for(example))
                     @version_spinbox.value = 1
                   end
                 }
@@ -108,7 +111,7 @@ class MetaExample
                   on_selected do
                     @selected_example_index = examples_with_versions.index(advanced_examples_with_versions[@advanced_example_radio_buttons.selected])
                     example = selected_example
-                    @code_entry.text = File.read(file_path_for(example))
+                    self.code_text = File.read(file_path_for(example))
                     @version_spinbox.value = 1
                   end
                 }
@@ -134,7 +137,7 @@ class MetaExample
                 else
                   version_number = @version_spinbox.value == 1 ? '' : @version_spinbox.value
                   example = "#{selected_example}#{version_number}"
-                  @code_entry.text = File.read(file_path_for(example))
+                  self.code_text = File.read(file_path_for(example))
                 end
               end
             }
@@ -149,7 +152,7 @@ class MetaExample
                   parent_dir = File.join(Dir.home, '.glimmer-dsl-libui', 'examples')
                   FileUtils.mkdir_p(parent_dir)
                   example_file = File.join(parent_dir, "#{selected_example.underscore}.rb")
-                  File.write(example_file, @code_entry.text)
+                  File.write(example_file, code_text)
                   example_supporting_directory = File.expand_path(selected_example.underscore, __dir__)
                   FileUtils.cp_r(example_supporting_directory, parent_dir) if Dir.exist?(example_supporting_directory)
                   FileUtils.cp_r(File.expand_path('../icons', __dir__), File.dirname(parent_dir))
@@ -164,14 +167,14 @@ class MetaExample
             }
             button('Reset') {
               on_clicked do
-                @code_entry.text = File.read(file_path_for(selected_example))
+                self.code_text = File.read(file_path_for(selected_example))
               end
             }
           }
         }
         
         @code_entry = non_wrapping_multiline_entry {
-          text File.read(file_path_for(selected_example))
+          text <=> [self, :code_text]
         }
       }
     }.show

@@ -31,7 +31,6 @@ module Glimmer
         def data_bind(property, model_binding)
           super
           handle_listener('on_changed') { model_binding.call(text) } if property == 'text'
-          # TODO return a control binding object that has a deregister/debind method
         end
         
         def libui_api_keyword

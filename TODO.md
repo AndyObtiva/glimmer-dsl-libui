@@ -2,14 +2,6 @@
 
 ## Next
 
-- Improve examples/simple_notepad.rb with bidirectional data-binding for `entry` `text`
-- Improve examples/meta_example.rb with bidirectional data-binding for `entry` `text`
-- Support `entry` `text` property bidirectional data-binding (with `<=>` sign)
-- Support `search_entry` `text` property bidirectional data-binding (with `<=>` sign)
-- Support `multiline_entry` `text` property bidirectional data-binding (with `<=>` sign)
-- Support `non_wrapping_multiline_entry` `text` property bidirectional data-binding (with `<=>` sign)
-- Support returning a control binding object with a deregister method to debind
-
 - Support `spinbox` `value` bidirectional data-binding (with `<=>` sign)
 - Support `slider` `value` bidirectional data-binding (with `<=>` sign)
 - Support `date_time_picker`/`date_picker`/`time_picker` `time` bidirectional data-binding (with `<=>` sign)
@@ -92,6 +84,7 @@
 - Support `max_content_size` and `min_content_size` properties for `window`
 - Consider extracting a general graph custom control from `examples/histogram.rb`
 - Support reopening `table` `content {}` by destroying and rebuilding (right now, it does nothing)
+- Support returning a control view binding object with a deregister method to debind (currently not possible given libui does not support deregistering listeners)
 
 # Refactoring
 

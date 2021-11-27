@@ -1354,6 +1354,9 @@ See examples of the `observe` keyword at [Color The Circles](#color-the-circles)
 
 [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) supports bidirectional (two-way) data-binding of the following controls/properties via the `<=>` operator (indicating data is moving in both directions between View and Model):
 - `entry` `text` property
+- `multiline_entry` `text` property
+- `non_wrapping_multiline_entry` `text` property
+- `search_entry` `text` property
 
 Example of bidirectional data-binding:
 
