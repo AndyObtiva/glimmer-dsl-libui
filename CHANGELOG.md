@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.4.3
+
+- Support `entry` `text` bidirectional data-binding
+
 ## 0.4.2
 
 - examples/button_counter.rb (takes advantage of unidirectional data-binding)

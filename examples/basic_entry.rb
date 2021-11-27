@@ -2,30 +2,33 @@
 
 require 'glimmer-dsl-libui'
 
-include Glimmer
-
-window('Basic Entry', 300, 50) {
-  horizontal_box {
-    e = entry {
-      # stretchy true # Smart default option for appending to horizontal_box
-    
-      on_changed do
-        puts e.text
-        $stdout.flush # For Windows
-      end
-    }
-    
-    button('Button') {
-      stretchy false # stretchy property is available when control is nested under horizontal_box
-      
-      on_clicked do
-        text = e.text
-        msg_box('You entered', text)
-      end
-    }
-  }
+class BasicEntry
+  include Glimmer
   
-  on_closing do
-    puts 'Bye Bye'
+  attr_accessor :entry_text
+  
+  def launch
+    window('Basic Entry', 300, 50) {
+      horizontal_box {
+        entry {
+          # stretchy true # Smart default option for appending to horizontal_box
+          text <=> [self, :entry_text, after_write: ->(text) {puts text; $stdout.flush}] # bidirectional data-binding between text property and entry_text attribute, printing after write to model.
+        }
+        
+        button('Button') {
+          stretchy false # stretchy property is available when control is nested under horizontal_box
+          
+          on_clicked do
+            msg_box('You entered', entry_text)
+          end
+        }
+      }
+      
+      on_closing do
+        puts 'Bye Bye'
+      end
+    }.show
   end
-}.show
+end
+
+BasicEntry.new.launch

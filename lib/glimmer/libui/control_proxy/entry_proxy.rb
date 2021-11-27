@@ -29,11 +29,9 @@ module Glimmer
       # Follows the Proxy Design Pattern
       class EntryProxy < ControlProxy
         def data_bind(property, model_binding)
-          if property == 'text'
-            super
-            handle_listener('on_changed') { model_binding.call(text) }
-            # TODO return a widget binding object that has a deregister method
-          end
+          super
+          handle_listener('on_changed') { model_binding.call(text) } if property == 'text'
+          # TODO return a control binding object that has a deregister/debind method
         end
         
         def libui_api_keyword

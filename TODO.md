@@ -14,6 +14,7 @@
 - Support `radio_menu_item` `checked` bidirectional data-binding (with `<=>` sign)
 - Support `check_menu_item` `checked` bidirectional data-binding (with `<=>` sign)
 - Support `table` `cell_rows` bidirectional data-binding (with `<=>` sign)
+- Support returning a control binding object with a deregister method to debind
 
 ## Soon
 

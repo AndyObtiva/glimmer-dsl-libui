@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.4.2
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.4.3
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -14,11 +14,11 @@ Mac | Windows | Linux
 The main trade-off in using [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) as opposed to [Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt) or [Glimmer DSL for Tk](https://github.com/AndyObtiva/glimmer-dsl-tk) is the fact that [SWT](https://www.eclipse.org/swt/) and [Tk](https://www.tcl.tk/) are more mature than mid-alpha [libui](https://github.com/andlabs/libui) as GUI toolkits. Still, if there is only a need to build a small simple application, [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) could be a good convenient choice due to having zero prerequisites beyond the dependencies included in the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui). Also, just like [Glimmer DSL for Tk](https://github.com/AndyObtiva/glimmer-dsl-tk), its apps start instantly and have a small memory footprint. [LibUI](https://github.com/kojix2/LibUI) is a promising new GUI toolkit that might prove quite worthy in the future.
 
 [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) aims to provide a DSL similar to the [Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt) to enable more productive desktop development in Ruby with:
-- Declarative DSL syntax that visually maps to the GUI control hierarchy
-- Convention over configuration via smart defaults and automation of low-level details
-- Requiring the least amount of syntax possible to build GUI
-- Custom Keyword support
-- Bidirectional Data-Binding to declaratively wire and automatically synchronize GUI with Business Models
+- [Declarative DSL syntax](#glimmer-gui-dsl-concepts) that visually maps to the GUI control hierarchy
+- [Convention over configuration](#smart-defaults-and-conventions) via smart defaults and automation of low-level details
+- Requiring the [least amount of syntax](#glimmer-gui-dsl-concepts) possible to build GUI
+- [Custom Keyword](#custom-keywords) support
+- [Bidirectional/Unidirectional Data-Binding](#data-binding) to declaratively wire and automatically synchronize GUI Views with Models
 - [Far Future Plan] Scaffolding for new custom controls, apps, and gems
 - [Far Future Plan] Native-Executable packaging on Mac, Windows, and Linux.
 
@@ -373,7 +373,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.4.2'
+gem 'glimmer-dsl-libui', '~> 0.4.3'
 ```
 
 Add `require 'glimmer-dsl-libui'` at the top, and then `include Glimmer` into the top-level main object for testing or into an actual class for serious usage.
@@ -1350,13 +1350,32 @@ See examples of the `observe` keyword at [Color The Circles](#color-the-circles)
 
 ### Data-Binding
 
-[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) supports unidirectional (one-way) data-binding of any control/shape/attributed-string property via the `<=` symbol (indicating data is moving from the right side, which is the model, to the left side, which is the GUI view object).
+[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) supports bidirectional (two-way) data-binding of the following controls/properties via the `<=>` operator (indicating data is moving in both directions; from the right side, which is the model, to the left side, which is the GUI view object, and vice versa):
+- `entry` `text` property
 
-The data-binding API is more precisely: `view_property <= [model, attribute, *options]`
+Example of bidirectional data-binding:
 
-This is also known as the [Glimmer Shine](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/docs/reference/GLIMMER_GUI_DSL_SYNTAX.md#shine) syntax for data-binding, a [Glimmer](https://github.com/AndyObtiva/glimmer)-only unique innovation.
+```ruby
+entry {
+  text <=> [contract, :legal_text]
+}
+```
 
-Example:
+That is data-binding a contract's legal text to an `entry` `text` property.
+
+Another example of bidirectional data-binding with an option:
+
+```ruby
+entry {
+  text <=> [self, :entry_text, after_write: ->(text) {puts text}]
+}
+```
+
+That is data-binding `entry_text` attribute on `self` to `entry` `text` property and printing text after write to the model.
+
+[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) supports unidirectional (one-way) data-binding of any control/shape/attributed-string property via the `<=` operator (indicating data is moving from the right side, which is the model, to the left side, which is the GUI view object).
+
+Example of unidirectional data-binding:
 
 ```ruby
 square(0, 0, CELL_SIZE) {
@@ -1366,7 +1385,7 @@ square(0, 0, CELL_SIZE) {
 
 That is data-binding a grid cell color to a `square` shape's `fill` property. That means if the `color` attribute of the grid cell is updated, the `fill` property of the `square` shape is automatically updated accordingly.
 
-Another Example:
+Another Example of unidirectional data-binding with an option:
 
 ```ruby
 window {
@@ -1376,16 +1395,41 @@ window {
 
 That is data-binding the `window` `title` property to the `score` attribute of a `@game`, but converting on read from the Model to a `String`.
 
+The data-binding API:
+- Bidirectional (two-way) data-binding: `view_property <=> [model, attribute, *read_or_write_options]`
+- Unidirectional (one-way) data-binding: `view_property <= [model, attribute, *read_only_options]`
+
+This is also known as the [Glimmer Shine](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/docs/reference/GLIMMER_GUI_DSL_SYNTAX.md#shine) syntax for data-binding, a [Glimmer](https://github.com/AndyObtiva/glimmer)-only unique innovation that takes advantage of [Ruby](https://www.ruby-lang.org/en/)'s highly expressive syntax and malleable DSL support.
+
 Data-binding enables writing very expressive, terse, and declarative code to synchronize View properties with Model attributes without writing many lines or pages of imperative code doing the same thing.
 
-Data-binding automatically takes advantage of the [Observer Pattern](#observer-pattern) behind the scenes, and is very well suited to declaring View single-property update sources. On the other hand, explicit use of the [Observer Pattern](#observer-pattern) is sometimes more suited when needing to make multiple View updates upon a single Model attribute change.
+Data-binding automatically takes advantage of the [Observer Pattern](#observer-pattern) behind the scenes and is very well suited to declaring View single-property update sources. On the other hand, explicit use of the [Observer Pattern](#observer-pattern) is sometimes more suited when needing to make multiple View updates upon a single Model attribute change.
 
-Options include:
+Data-binding supports utilizing the [MVP (Model View Presenter)](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93presenter) flavor of [MVC](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) by observing both the View and a Presenter for changes and updating the opposite side upon encountering them. This enables writing more decoupled cleaner code that keeps View code and Model code disentangled and highly maintainable. For example, check out the Snake game presenters for [Grid](/examples/snake/presenter/grid.rb) and [Cell](/examples/snake/presenter/cell.rb), which act as proxies for the actual Snake game models [Snake](/examples/snake/model/snake.rb) and [Apple](/examples/snake/model/apple.rb), mediating synchronization of data between them and the [Snake View GUI](/examples/snake.rb).
+
+![MVP](https://www.researchgate.net/profile/Gilles-Perrouin/publication/320249584/figure/fig8/AS:668260987068418@1536337243385/Model-view-presenter-architecture.png)
+
+Data-binding options include:
 - `before_read {|value| ...}`: performs an operation before reading data from Model to update the View.
 - `on_read {|value| ...}`: converts value read from Model to update the View.
 - `after_read {|converted_value| ...}`: performs an operation after read from Model and updating the View.
+- `before_write {|value| ...}`: performs an operation before writing data to Model from View.
+- `on_write {|value| ...}`: converts value read from View to update the Model.
+- `after_write {|converted_value| ...}`: performs an operation after writing to Model from View.
 
-Learn more from data-binding usage in [Snake](#snake) and [Tic Tac Toe](#tic_tac_toe) examples.
+Note that with both `on_read` and `on_write` converters, you could pass a `Symbol` representing the name of a method on the value object to invoke.
+
+Example:
+
+```ruby
+entry {
+  text <=> [product, :price, on_read: :to_s, on_write: :to_i]
+}
+```
+
+Gotcha: never data-bind a control property to an attribute on the same view object with the same exact name (e.g. binding `entry` `text` property to `self` `text` attribute) as it would conflict with it. Instead, data-bind view property to an attribute with a different name on the view object or with the same name, but on a presenter or model object (e.g. data-bind `entry` `text` to `self` `legal_text` attribute or to `contract` model `text` attribute)
+
+Learn more from data-binding usage from [Snake](#snake) and [Tic Tac Toe](#tic_tac_toe) examples.
 
 ### API Gotchas
 
@@ -2171,7 +2215,44 @@ UI.main
 UI.quit
 ```
 
-[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version (with [data-binding](#data-binding)):
+
+```ruby
+require 'glimmer-dsl-libui'
+
+class BasicEntry
+  include Glimmer
+  
+  attr_accessor :entry_text
+  
+  def launch
+    window('Basic Entry', 300, 50) {
+      horizontal_box {
+        entry {
+          # stretchy true # Smart default option for appending to horizontal_box
+          text <=> [self, :entry_text, after_write: ->(text) {puts text; $stdout.flush}] # bidirectional data-binding between text property and entry_text attribute, printing after write to model.
+        }
+        
+        button('Button') {
+          stretchy false # stretchy property is available when control is nested under horizontal_box
+          
+          on_clicked do
+            msg_box('You entered', entry_text)
+          end
+        }
+      }
+      
+      on_closing do
+        puts 'Bye Bye'
+      end
+    }.show
+  end
+end
+
+BasicEntry.new.launch
+```
+
+[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 2 (without [data-binding](#data-binding)):
 
 ```ruby
 require 'glimmer-dsl-libui'
