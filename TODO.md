@@ -14,6 +14,8 @@
 - Support `check_menu_item` `checked` bidirectional data-binding (with `<=>` sign)
 - Support `table` `cell_rows` bidirectional data-binding (with `<=>` sign)
 - Improve examples/form_table.rb with bidirectional data-binding for `table` `cell_rows`
+- Support ability to attach multiple listeners (e.g. multiple `on_changed {}` on `entry`)
+- Document nested/indexed data-binding
 
 ## Soon
 
@@ -27,7 +29,6 @@
 - Update Windows screenshot of examples/meta_example.rb
 - Document area inclusion of explicit and implicit path shapes
 - Demo examples/button_counter.rb at the top of the README
-- Support ability to attach multiple listeners (e.g. multiple `on_changed {}` on `entry`)
 
 ## Future
 

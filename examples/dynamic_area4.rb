@@ -18,7 +18,7 @@ window('Dynamic Area', 240, 600) {
         value 25
         
         on_changed do
-          @area.queue_redraw_all
+          @rectangle.x = @x_spinbox.value # updating properties automatically triggers area.queue_redraw_all
         end
       }
       
@@ -27,7 +27,7 @@ window('Dynamic Area', 240, 600) {
         value 25
         
         on_changed do
-          @area.queue_redraw_all
+          @rectangle.y = @y_spinbox.value # updating properties automatically triggers area.queue_redraw_all
         end
       }
       
@@ -36,7 +36,7 @@ window('Dynamic Area', 240, 600) {
         value 150
         
         on_changed do
-          @area.queue_redraw_all
+          @rectangle.width = @width_spinbox.value # updating properties automatically triggers area.queue_redraw_all
         end
       }
       
@@ -45,7 +45,7 @@ window('Dynamic Area', 240, 600) {
         value 150
         
         on_changed do
-          @area.queue_redraw_all
+          @rectangle.height = @height_spinbox.value # updating properties automatically triggers area.queue_redraw_all
         end
       }
       
@@ -54,7 +54,7 @@ window('Dynamic Area', 240, 600) {
         value 102
         
         on_changed do
-          @area.queue_redraw_all
+          @rectangle.fill[:r] = @red_spinbox.value # updating hash properties automatically triggers area.queue_redraw_all
         end
       }
       
@@ -63,7 +63,7 @@ window('Dynamic Area', 240, 600) {
         value 102
         
         on_changed do
-          @area.queue_redraw_all
+          @rectangle.fill[:g] = @green_spinbox.value # updating hash properties automatically triggers area.queue_redraw_all
         end
       }
       
@@ -72,7 +72,7 @@ window('Dynamic Area', 240, 600) {
         value 204
         
         on_changed do
-          @area.queue_redraw_all
+          @rectangle.fill[:b] = @blue_spinbox.value # updating hash properties automatically triggers area.queue_redraw_all
         end
       }
       
@@ -81,17 +81,15 @@ window('Dynamic Area', 240, 600) {
         value 100
         
         on_changed do
-          @area.queue_redraw_all
+          @rectangle.fill[:a] = @alpha_spinbox.value / 100.0 # updating hash properties automatically triggers area.queue_redraw_all
         end
       }
     }
     
-    @area = area {
-      on_draw do |area_draw_params|
-        rectangle(@x_spinbox.value, @y_spinbox.value, @width_spinbox.value, @height_spinbox.value) { # a dynamic path is added semi-declaratively inside on_draw block
-          fill r: @red_spinbox.value, g: @green_spinbox.value, b: @blue_spinbox.value, a: @alpha_spinbox.value / 100.0
-        }
-      end
+    area {
+      @rectangle = rectangle(@x_spinbox.value, @y_spinbox.value, @width_spinbox.value, @height_spinbox.value) { # stable implicit path shape
+        fill r: @red_spinbox.value, g: @green_spinbox.value, b: @blue_spinbox.value, a: @alpha_spinbox.value / 100.0
+      }
     }
   }
 }.show

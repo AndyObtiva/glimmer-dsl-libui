@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.4.5
+
+- Support `spinbox` `value` bidirectional data-binding
+- Improve examples/dynamic_area.rb with bidirectional data-binding for `spinbox` `value`
+
 ## 0.4.4
 
 - Fix issue with data-binding shapes and attributed strings, which broke Snake and Tic Tac Toe examples
