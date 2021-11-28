@@ -2,13 +2,6 @@
 
 ## Next
 
-- Support passing `table` `image`/`image_text` `cell_rows` image data as file path directly (without using `image` keyword)
-- Simplify examples/basic_table_image.rb to pass image data as file path directly
-- Simplify examples/basic_table_image_text.rb to pass image data as file path directly
-- Simplify examples/basic_table_color.rb to pass image data as file path directly
-- Update meta-example code in README
-- Update Form Table code outside of examples
-
 - Support `spinbox` `value` bidirectional data-binding (with `<=>` sign)
 - Support `slider` `value` bidirectional data-binding (with `<=>` sign)
 - Support `date_time_picker`/`date_picker`/`time_picker` `time` bidirectional data-binding (with `<=>` sign)
@@ -23,6 +16,11 @@
 - Improve examples/form_table.rb with bidirectional data-binding for `table` `cell_rows`
 
 ## Soon
+
+- Support passing `table` `image`/`image_text` `cell_rows` image data as file path directly (without using `image` keyword)
+- Simplify examples/basic_table_image.rb to pass image data as file path directly
+- Simplify examples/basic_table_image_text.rb to pass image data as file path directly
+- Simplify examples/basic_table_color.rb to pass image data as file path directly
 
 - Add Windows screenshots for examples/basic_scrolling_area.rb (and #scrolling-area section)
 - Add Windows screenshot for examples/button_counter.rb

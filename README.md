@@ -620,93 +620,112 @@ Example (you may copy/paste in [`girb`](#girb-glimmer-irb)):
 ```ruby
 require 'glimmer-dsl-libui'
 
-include Glimmer
-
-data = [
-  ['Lisa Sky', 'lisa@sky.com', '720-523-4329', 'Denver', 'CO', '80014'],
-  ['Jordan Biggins', 'jordan@biggins.com', '617-528-5399', 'Boston', 'MA', '02101'],
-  ['Mary Glass', 'mary@glass.com', '847-589-8788', 'Elk Grove Village', 'IL', '60007'],
-  ['Darren McGrath', 'darren@mcgrath.com', '206-539-9283', 'Seattle', 'WA', '98101'],
-  ['Melody Hanheimer', 'melody@hanheimer.com', '213-493-8274', 'Los Angeles', 'CA', '90001'],
-]
-
-window('Contacts', 600, 600) { |w|
-  margined true
+class FormTable
+  include Glimmer
   
-  vertical_box {
-    form {
-      stretchy false
+  attr_accessor :name, :email, :phone, :city, :state, :filter_value
+  
+  def initialize
+    @data = [
+      ['Lisa Sky', 'lisa@sky.com', '720-523-4329', 'Denver', 'CO', '80014'],
+      ['Jordan Biggins', 'jordan@biggins.com', '617-528-5399', 'Boston', 'MA', '02101'],
+      ['Mary Glass', 'mary@glass.com', '847-589-8788', 'Elk Grove Village', 'IL', '60007'],
+      ['Darren McGrath', 'darren@mcgrath.com', '206-539-9283', 'Seattle', 'WA', '98101'],
+      ['Melody Hanheimer', 'melody@hanheimer.com', '213-493-8274', 'Los Angeles', 'CA', '90001'],
+    ]
+  end
+  
+  def launch
+    window('Contacts', 600, 600) { |w|
+      margined true
       
-      @name_entry = entry {
-        label 'Name'
-      }
-      @email_entry = entry {
-        label 'Email'
-      }
-      @phone_entry = entry {
-        label 'Phone'
-      }
-      @city_entry = entry {
-        label 'City'
-      }
-      @state_entry = entry {
-        label 'State'
-      }
-    }
-    
-    button('Save Contact') {
-      stretchy false
-      
-      on_clicked do
-        new_row = [@name_entry.text, @email_entry.text, @phone_entry.text, @city_entry.text, @state_entry.text]
-        if new_row.include?('')
-          msg_box_error(w, 'Validation Error!', 'All fields are required! Please make sure to enter a value for all fields.')
-        else
-          data << new_row # automatically inserts a row into the table due to implicit data-binding
-          @unfiltered_data = data.dup
-          @name_entry.text = ''
-          @email_entry.text = ''
-          @phone_entry.text = ''
-          @city_entry.text = ''
-          @state_entry.text = ''
-        end
-      end
-    }
-    
-    search_entry { |se|
-      stretchy false
-      
-      on_changed do
-        filter_value = se.text
-        @unfiltered_data ||= data.dup
-        # Unfilter first to remove any previous filters
-        data.replace(@unfiltered_data) # affects table indirectly through implicit data-binding
-        # Now, apply filter if entered
-        unless filter_value.empty?
-          data.filter! do |row_data| # affects table indirectly through implicit data-binding
-            row_data.any? do |cell|
-              cell.to_s.downcase.include?(filter_value.downcase)
+      vertical_box {
+        form {
+          stretchy false
+          
+          entry {
+            label 'Name'
+            text <=> [self, :name]
+          }
+          
+          entry {
+            label 'Email'
+            text <=> [self, :email]
+          }
+          
+          entry {
+            label 'Phone'
+            text <=> [self, :phone]
+          }
+          
+          entry {
+            label 'City'
+            text <=> [self, :city]
+          }
+          
+          entry {
+            label 'State'
+            text <=> [self, :state]
+          }
+        }
+        
+        button('Save Contact') {
+          stretchy false
+          
+          on_clicked do
+            new_row = [name, email, phone, city, state]
+            if new_row.include?('')
+              msg_box_error(w, 'Validation Error!', 'All fields are required! Please make sure to enter a value for all fields.')
+            else
+              @data << new_row # automatically inserts a row into the table due to implicit data-binding
+              @unfiltered_data = @data.dup
+              self.name = '' # automatically clears name entry through explicit data-binding
+              self.email = ''
+              self.phone = ''
+              self.city = ''
+              self.state = ''
             end
           end
-        end
-      end
-    }
+        }
+        
+        search_entry {
+          stretchy false
+          text <=> [self, :filter_value, # bidirectional data-binding of text to self.filter_value with after_write option
+            after_write: ->(filter_value) { # execute after write to self.filter_value
+              @unfiltered_data ||= @data.dup
+              # Unfilter first to remove any previous filters
+              @data.replace(@unfiltered_data) # affects table indirectly through implicit data-binding
+              # Now, apply filter if entered
+              unless filter_value.empty?
+                @data.filter! do |row_data| # affects table indirectly through implicit data-binding
+                  row_data.any? do |cell|
+                    cell.to_s.downcase.include?(filter_value.downcase)
+                  end
+                end
+              end
+            }
+          ]
+        }
+        
+        table {
+          text_column('Name')
+          text_column('Email')
+          text_column('Phone')
+          text_column('City')
+          text_column('State')
     
-    table {
-      text_column('Name')
-      text_column('Email')
-      text_column('Phone')
-      text_column('City')
-      text_column('State')
+          cell_rows @data # implicit data-binding
+          
+          on_changed do |row, type, row_data|
+            puts "Row #{row} #{type}: #{row_data}"
+          end
+        }
+      }
+    }.show
+  end
+end
 
-      cell_rows data # implicit data-binding
-      
-      on_changed do |row, type, row_data|
-        puts "Row #{row} #{type}: #{row_data}"
-      end
-    }
-  }
-}.show
+FormTable.new.launch
 ```
 
 ![glimmer-dsl-libui-linux-form-table.png](images/glimmer-dsl-libui-linux-form-table.png)
@@ -1880,17 +1899,23 @@ New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version
 ```ruby
 require 'glimmer-dsl-libui'
 require 'facets'
+require 'fileutils'
 
 class MetaExample
   include Glimmer
   
+  ADDITIONAL_BASIC_EXAMPLES = ['Color Button', 'Font Button', 'Form', 'Date Time Picker', 'Simple Notepad']
+  
+  attr_accessor :code_text
+  
   def initialize
-    @selected_example_index = 0
+    @selected_example_index = examples_with_versions.index(basic_examples_with_versions.first)
+    @code_text = File.read(file_path_for(selected_example))
   end
   
   def examples
     if @examples.nil?
-      example_files = Dir.glob(File.join(File.expand_path('.', __dir__), '**', '*.rb'))
+      example_files = Dir.glob(File.join(File.expand_path('.', __dir__), '*.rb'))
       example_file_names = example_files.map { |f| File.basename(f, '.rb') }
       example_file_names = example_file_names.reject { |f| f == 'meta_example' || f.match(/\d$/) }
       @examples = example_file_names.map { |f| f.underscore.titlecase }
@@ -1904,12 +1929,20 @@ class MetaExample
     end
   end
   
+  def basic_examples_with_versions
+    examples_with_versions.select {|example| example.start_with?('Basic') || ADDITIONAL_BASIC_EXAMPLES.include?(example) }
+  end
+  
+  def advanced_examples_with_versions
+    examples_with_versions - basic_examples_with_versions
+  end
+  
   def file_path_for(example)
     File.join(File.expand_path('.', __dir__), "#{example.underscore}.rb")
   end
   
   def version_count_for(example)
-    Dir.glob(File.join(File.expand_path('.', __dir__), "#{example.underscore}*.rb")).select {|file| file.match(/\d\.rb$/)}.count + 1
+    Dir.glob(File.join(File.expand_path('.', __dir__), "#{example.underscore}*.rb")).select {|file| file.match(/#{example.underscore}\d\.rb$/)}.count + 1
   end
   
   def glimmer_dsl_libui_file
@@ -1945,17 +1978,47 @@ class MetaExample
         vertical_box {
           stretchy false
           
-          @example_radio_buttons = radio_buttons {
+          tab {
             stretchy false
-            items examples_with_versions
-            selected @selected_example_index
             
-            on_selected do
-              @selected_example_index = @example_radio_buttons.selected
-              example = selected_example
-              @code_entry.text = File.read(file_path_for(example))
-              @version_spinbox.value = 1
-            end
+            tab_item('Basic') {
+              vertical_box {
+                @basic_example_radio_buttons = radio_buttons {
+                  stretchy false
+                  items basic_examples_with_versions
+                  selected basic_examples_with_versions.index(examples_with_versions[@selected_example_index])
+                  
+                  on_selected do
+                    @selected_example_index = examples_with_versions.index(basic_examples_with_versions[@basic_example_radio_buttons.selected])
+                    example = selected_example
+                    self.code_text = File.read(file_path_for(example))
+                    @version_spinbox.value = 1
+                  end
+                }
+                
+                label # filler
+                label # filler
+              }
+            }
+            
+            tab_item('Advanced') {
+              vertical_box {
+                @advanced_example_radio_buttons = radio_buttons {
+                  stretchy false
+                  items advanced_examples_with_versions
+                  
+                  on_selected do
+                    @selected_example_index = examples_with_versions.index(advanced_examples_with_versions[@advanced_example_radio_buttons.selected])
+                    example = selected_example
+                    self.code_text = File.read(file_path_for(example))
+                    @version_spinbox.value = 1
+                  end
+                }
+                
+                label # filler
+                label # filler
+              }
+            }
           }
           
           horizontal_box {
@@ -1973,7 +2036,7 @@ class MetaExample
                 else
                   version_number = @version_spinbox.value == 1 ? '' : @version_spinbox.value
                   example = "#{selected_example}#{version_number}"
-                  @code_entry.text = File.read(file_path_for(example))
+                  self.code_text = File.read(file_path_for(example))
                 end
               end
             }
@@ -1985,9 +2048,15 @@ class MetaExample
             button('Launch') {
               on_clicked do
                 begin
-                  meta_example_file = File.join(Dir.home, '.meta_example.rb')
-                  File.write(meta_example_file, @code_entry.text)
-                  run_example(meta_example_file)
+                  parent_dir = File.join(Dir.home, '.glimmer-dsl-libui', 'examples')
+                  FileUtils.mkdir_p(parent_dir)
+                  example_file = File.join(parent_dir, "#{selected_example.underscore}.rb")
+                  File.write(example_file, code_text)
+                  example_supporting_directory = File.expand_path(selected_example.underscore, __dir__)
+                  FileUtils.cp_r(example_supporting_directory, parent_dir) if Dir.exist?(example_supporting_directory)
+                  FileUtils.cp_r(File.expand_path('../icons', __dir__), File.dirname(parent_dir))
+                  FileUtils.cp_r(File.expand_path('../sounds', __dir__), File.dirname(parent_dir))
+                  run_example(example_file)
                 rescue => e
                   puts e.full_message
                   puts 'Unable to write code changes! Running original example...'
@@ -1997,14 +2066,14 @@ class MetaExample
             }
             button('Reset') {
               on_clicked do
-                @code_entry.text = File.read(file_path_for(selected_example))
+                self.code_text = File.read(file_path_for(selected_example))
               end
             }
           }
         }
         
         @code_entry = non_wrapping_multiline_entry {
-          text File.read(file_path_for(selected_example))
+          text <=> [self, :code_text]
         }
       }
     }.show
