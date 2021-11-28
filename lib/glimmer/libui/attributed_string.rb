@@ -23,10 +23,13 @@ require 'glimmer/libui/control_proxy'
 require 'glimmer/libui/control_proxy/area_proxy'
 require 'glimmer/libui/parent'
 require 'glimmer/libui/control_proxy/transformable'
+require 'glimmer/libui/data_bindable'
 
 module Glimmer
   module LibUI
     class AttributedString
+      include DataBindable
+      
       attr_reader :keyword, :parent_proxy, :args
       attr_accessor :block
     

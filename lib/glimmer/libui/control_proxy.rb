@@ -19,6 +19,8 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+require 'glimmer/libui/data_bindable'
+
 module Glimmer
   module LibUI
     # Proxy for LibUI control objects
@@ -100,6 +102,8 @@ module Glimmer
           keyword_constant_map
         end
       end
+      
+      include DataBindable
       
       KEYWORD_ALIASES = {
         'msg_box'       => 'message_box',
@@ -331,18 +335,6 @@ module Glimmer
       alias visible? visible
       alias set_visible visible
       alias visible= visible
-      
-      # Data-binds model to update view.
-      # Subclasses can override to do inverse data-binding by observing view control for property changes and updating model binding accordingly
-      def data_bind(property, model_binding)
-        model_attribute_observer = Glimmer::DataBinding::Observer.proc do
-          new_value = model_binding.evaluate_property
-          send("#{property}=", new_value) unless send(property) == new_value
-        end
-        model_attribute_observer.observe(model_binding)
-        model_attribute_observer.call # initial update
-        model_attribute_observer
-      end
       
       def content(&block)
         Glimmer::DSL::Engine.add_content(self, Glimmer::DSL::Libui::ControlExpression.new, @keyword, &block)

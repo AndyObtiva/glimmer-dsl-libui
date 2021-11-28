@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.4.4
+
+- Fix issue with data-binding shapes and attributed strings, which broke Snake and Tic Tac Toe examples
+
 ## 0.4.3
 
 - Support `entry` `text` bidirectional data-binding

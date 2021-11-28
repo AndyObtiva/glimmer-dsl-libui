@@ -22,6 +22,7 @@
 require 'glimmer/libui/parent'
 require 'glimmer/libui/control_proxy/area_proxy'
 require 'glimmer/libui/control_proxy/path_proxy'
+require 'glimmer/libui/data_bindable'
 
 module Glimmer
   module LibUI
@@ -64,6 +65,7 @@ module Glimmer
       end
       
       include Parent
+      include DataBindable
       
       attr_reader :parent, :args, :keyword, :block
       
