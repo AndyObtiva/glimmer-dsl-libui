@@ -72,8 +72,8 @@ class TinyMidiPlayer
 
         combobox { |c|
           items @midi_files.map { |path| File.basename(path) }
-          # bind selected item (String)
-          selected_item <=> [self, :selected_file, on_read: ->(f) {File.basename(f.to_s)}, on_write: ->(f) {File.join(@music_directory, f)}, after_write: -> { play_midi if @th&.alive? }]
+          # bind selected index (Integer)
+          selected <=> [self, :selected_file, on_read: ->(f) {@midi_files.index(f)}, on_write: ->(i) {@midi_files[i]}, after_write: -> { play_midi if @th&.alive? }]
         }
       }
     }.show

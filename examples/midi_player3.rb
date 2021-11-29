@@ -6,8 +6,6 @@ class TinyMidiPlayer
   include Glimmer
   
   VERSION = '0.0.1'
-  
-  attr_accessor :selected_file
 
   def initialize
     @pid = nil
@@ -72,8 +70,11 @@ class TinyMidiPlayer
 
         combobox { |c|
           items @midi_files.map { |path| File.basename(path) }
-          # bind selected item (String)
-          selected_item <=> [self, :selected_file, on_read: ->(f) {File.basename(f.to_s)}, on_write: ->(f) {File.join(@music_directory, f)}, after_write: -> { play_midi if @th&.alive? }]
+          
+          on_selected do
+            @selected_file = @midi_files[c.selected]
+            play_midi if @th&.alive?
+          end
         }
       }
     }.show

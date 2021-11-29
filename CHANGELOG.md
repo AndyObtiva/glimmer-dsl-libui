@@ -3,7 +3,9 @@
 ## 0.4.7
 
 - Support `date_time_picker`/`date_picker`/`time_picker` `time` bidirectional data-binding (with `<=>` sign)
+- Support `combobox` `selected`/`selected_item` bidirectional data-binding (with `<=>` sign)
 - Improve examples/date_time_picker.rb with bidirectional data-binding for `date_time_picker` `time`
+- Improve examples/midi_player.rb with bidirectional data-binding for `combobox` `selected`/`selected_item`
 
 ## 0.4.6
 

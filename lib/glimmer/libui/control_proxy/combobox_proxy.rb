@@ -54,8 +54,24 @@ module Glimmer
         alias set_items items
         alias items= items
         
-        def selected_item
-          items[selected]
+        def selected_item(value = nil)
+          if value.nil?
+            items[selected]
+          else
+            self.selected = items.index(value)
+          end
+        end
+        alias set_selected_item selected_item
+        alias selected_item= selected_item
+        
+        def data_bind(property, model_binding)
+          super
+          case property
+          when 'selected'
+            handle_listener('on_selected') { model_binding.call(selected) }
+          when 'selected_item'
+            handle_listener('on_selected') { model_binding.call(selected_item) }
+          end
         end
       end
     end
