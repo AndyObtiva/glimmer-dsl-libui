@@ -3,10 +3,10 @@ require 'spec_helper'
 require 'examples/snake/model/game'
 
 RSpec.describe Snake::Model::Game do
-  it 'has a grid of vertebrae of width of 40 and height of 40' do
+  it 'has a grid of vertebrae of width of 20 and height of 20' do
     expect(subject).to be_a(Snake::Model::Game)
-    expect(subject.width).to eq(40)
-    expect(subject.height).to eq(40)
+    expect(subject.width).to eq(20)
+    expect(subject.height).to eq(20)
   end
   
   it 'starts game by generating snake and apple in random locations' do
@@ -37,9 +37,9 @@ RSpec.describe Snake::Model::Game do
     expect(subject.snake.head.row).to eq(0)
     expect(subject.snake.head.column).to eq(0)
     expect(subject.snake.head.orientation).to eq(direction)
-    subject.apple.generate(initial_row: 20, initial_column: 20)
-    expect(subject.apple.row).to eq(20)
-    expect(subject.apple.column).to eq(20)
+    subject.apple.generate(initial_row: 10, initial_column: 10)
+    expect(subject.apple.row).to eq(10)
+    expect(subject.apple.column).to eq(10)
     
     subject.snake.move
     
@@ -52,13 +52,13 @@ RSpec.describe Snake::Model::Game do
     direction = :east
     subject.start
     
-    subject.snake.generate(initial_row: 0, initial_column: 39, initial_orientation: direction)
+    subject.snake.generate(initial_row: 0, initial_column: 19, initial_orientation: direction)
     expect(subject.snake.head.row).to eq(0)
-    expect(subject.snake.head.column).to eq(39)
+    expect(subject.snake.head.column).to eq(19)
     expect(subject.snake.head.orientation).to eq(direction)
-    subject.apple.generate(initial_row: 20, initial_column: 20)
-    expect(subject.apple.row).to eq(20)
-    expect(subject.apple.column).to eq(20)
+    subject.apple.generate(initial_row: 10, initial_column: 10)
+    expect(subject.apple.row).to eq(10)
+    expect(subject.apple.column).to eq(10)
     
     subject.snake.move
     
@@ -71,19 +71,19 @@ RSpec.describe Snake::Model::Game do
     direction = :west
     subject.start
     
-    subject.snake.generate(initial_row: 0, initial_column: 39, initial_orientation: direction)
+    subject.snake.generate(initial_row: 0, initial_column: 19, initial_orientation: direction)
     expect(subject.snake.head.row).to eq(0)
-    expect(subject.snake.head.column).to eq(39)
+    expect(subject.snake.head.column).to eq(19)
     expect(subject.snake.head.orientation).to eq(direction)
-    subject.apple.generate(initial_row: 20, initial_column: 20)
-    expect(subject.apple.row).to eq(20)
-    expect(subject.apple.column).to eq(20)
+    subject.apple.generate(initial_row: 10, initial_column: 10)
+    expect(subject.apple.row).to eq(10)
+    expect(subject.apple.column).to eq(10)
     
     subject.snake.move
     
     expect(subject.snake.length).to eq(1)
     expect(subject.snake.head.row).to eq(0)
-    expect(subject.snake.head.column).to eq(38)
+    expect(subject.snake.head.column).to eq(18)
   end
   
   it 'moves snake of length 1 west going through a wall' do
@@ -94,15 +94,15 @@ RSpec.describe Snake::Model::Game do
     expect(subject.snake.head.row).to eq(0)
     expect(subject.snake.head.column).to eq(0)
     expect(subject.snake.head.orientation).to eq(direction)
-    subject.apple.generate(initial_row: 20, initial_column: 20)
-    expect(subject.apple.row).to eq(20)
-    expect(subject.apple.column).to eq(20)
+    subject.apple.generate(initial_row: 10, initial_column: 10)
+    expect(subject.apple.row).to eq(10)
+    expect(subject.apple.column).to eq(10)
     
     subject.snake.move
     
     expect(subject.snake.length).to eq(1)
     expect(subject.snake.head.row).to eq(0)
-    expect(subject.snake.head.column).to eq(39)
+    expect(subject.snake.head.column).to eq(19)
   end
   
   it 'moves snake of length 1 south without going through a wall' do
@@ -113,9 +113,9 @@ RSpec.describe Snake::Model::Game do
     expect(subject.snake.head.row).to eq(0)
     expect(subject.snake.head.column).to eq(0)
     expect(subject.snake.head.orientation).to eq(direction)
-    subject.apple.generate(initial_row: 20, initial_column: 20)
-    expect(subject.apple.row).to eq(20)
-    expect(subject.apple.column).to eq(20)
+    subject.apple.generate(initial_row: 10, initial_column: 10)
+    expect(subject.apple.row).to eq(10)
+    expect(subject.apple.column).to eq(10)
     
     subject.snake.move
     
@@ -128,13 +128,13 @@ RSpec.describe Snake::Model::Game do
     direction = :south
     subject.start
     
-    subject.snake.generate(initial_row: 39, initial_column: 0, initial_orientation: direction)
-    expect(subject.snake.head.row).to eq(39)
+    subject.snake.generate(initial_row: 19, initial_column: 0, initial_orientation: direction)
+    expect(subject.snake.head.row).to eq(19)
     expect(subject.snake.head.column).to eq(0)
     expect(subject.snake.head.orientation).to eq(direction)
-    subject.apple.generate(initial_row: 20, initial_column: 20)
-    expect(subject.apple.row).to eq(20)
-    expect(subject.apple.column).to eq(20)
+    subject.apple.generate(initial_row: 10, initial_column: 10)
+    expect(subject.apple.row).to eq(10)
+    expect(subject.apple.column).to eq(10)
     
     subject.snake.move
     
@@ -147,18 +147,18 @@ RSpec.describe Snake::Model::Game do
     direction = :north
     subject.start
     
-    subject.snake.generate(initial_row: 39, initial_column: 0, initial_orientation: direction)
-    expect(subject.snake.head.row).to eq(39)
+    subject.snake.generate(initial_row: 19, initial_column: 0, initial_orientation: direction)
+    expect(subject.snake.head.row).to eq(19)
     expect(subject.snake.head.column).to eq(0)
     expect(subject.snake.head.orientation).to eq(direction)
-    subject.apple.generate(initial_row: 20, initial_column: 20)
-    expect(subject.apple.row).to eq(20)
-    expect(subject.apple.column).to eq(20)
+    subject.apple.generate(initial_row: 10, initial_column: 10)
+    expect(subject.apple.row).to eq(10)
+    expect(subject.apple.column).to eq(10)
     
     subject.snake.move
     
     expect(subject.snake.length).to eq(1)
-    expect(subject.snake.head.row).to eq(38)
+    expect(subject.snake.head.row).to eq(18)
     expect(subject.snake.head.column).to eq(0)
   end
   
@@ -170,14 +170,14 @@ RSpec.describe Snake::Model::Game do
     expect(subject.snake.head.row).to eq(0)
     expect(subject.snake.head.column).to eq(0)
     expect(subject.snake.head.orientation).to eq(direction)
-    subject.apple.generate(initial_row: 20, initial_column: 20)
-    expect(subject.apple.row).to eq(20)
-    expect(subject.apple.column).to eq(20)
+    subject.apple.generate(initial_row: 10, initial_column: 10)
+    expect(subject.apple.row).to eq(10)
+    expect(subject.apple.column).to eq(10)
     
     subject.snake.move
     
     expect(subject.snake.length).to eq(1)
-    expect(subject.snake.head.row).to eq(39)
+    expect(subject.snake.head.row).to eq(19)
     expect(subject.snake.head.column).to eq(0)
   end
   
@@ -186,7 +186,7 @@ RSpec.describe Snake::Model::Game do
     subject.start
     
     subject.snake.generate(initial_row: 0, initial_column: 0, initial_orientation: direction)
-    subject.apple.generate(initial_row: 20, initial_column: 20)
+    subject.apple.generate(initial_row: 10, initial_column: 10)
     
     new_direction = :south
     subject.snake.move
@@ -204,8 +204,8 @@ RSpec.describe Snake::Model::Game do
     direction = :west
     subject.start
     
-    subject.snake.generate(initial_row: 39, initial_column: 39, initial_orientation: direction)
-    subject.apple.generate(initial_row: 20, initial_column: 20)
+    subject.snake.generate(initial_row: 19, initial_column: 19, initial_orientation: direction)
+    subject.apple.generate(initial_row: 10, initial_column: 10)
     
     new_direction = :north
     subject.snake.move
@@ -214,8 +214,8 @@ RSpec.describe Snake::Model::Game do
     subject.snake.move
     
     expect(subject.snake.length).to eq(1)
-    expect(subject.snake.head.row).to eq(38)
-    expect(subject.snake.head.column).to eq(38)
+    expect(subject.snake.head.row).to eq(18)
+    expect(subject.snake.head.column).to eq(18)
     expect(subject.snake.head.orientation).to eq(new_direction)
   end
   
@@ -223,8 +223,8 @@ RSpec.describe Snake::Model::Game do
     direction = :south
     subject.start
     
-    subject.snake.generate(initial_row: 0, initial_column: 39, initial_orientation: direction)
-    subject.apple.generate(initial_row: 20, initial_column: 20)
+    subject.snake.generate(initial_row: 0, initial_column: 19, initial_orientation: direction)
+    subject.apple.generate(initial_row: 10, initial_column: 10)
     
     new_direction = :west
     subject.snake.move
@@ -234,7 +234,7 @@ RSpec.describe Snake::Model::Game do
     
     expect(subject.snake.length).to eq(1)
     expect(subject.snake.head.row).to eq(1)
-    expect(subject.snake.head.column).to eq(38)
+    expect(subject.snake.head.column).to eq(18)
     expect(subject.snake.head.orientation).to eq(new_direction)
   end
   
@@ -242,8 +242,8 @@ RSpec.describe Snake::Model::Game do
     direction = :north
     subject.start
     
-    subject.snake.generate(initial_row: 39, initial_column: 0, initial_orientation: direction)
-    subject.apple.generate(initial_row: 20, initial_column: 20)
+    subject.snake.generate(initial_row: 19, initial_column: 0, initial_orientation: direction)
+    subject.apple.generate(initial_row: 10, initial_column: 10)
     
     new_direction = :east
     subject.snake.move
@@ -252,7 +252,7 @@ RSpec.describe Snake::Model::Game do
     subject.snake.move
     
     expect(subject.snake.length).to eq(1)
-    expect(subject.snake.head.row).to eq(38)
+    expect(subject.snake.head.row).to eq(18)
     expect(subject.snake.head.column).to eq(1)
     expect(subject.snake.head.orientation).to eq(new_direction)
   end
@@ -261,8 +261,8 @@ RSpec.describe Snake::Model::Game do
     direction = :east
     subject.start
     
-    subject.snake.generate(initial_row: 39, initial_column: 0, initial_orientation: direction)
-    subject.apple.generate(initial_row: 20, initial_column: 20)
+    subject.snake.generate(initial_row: 19, initial_column: 0, initial_orientation: direction)
+    subject.apple.generate(initial_row: 10, initial_column: 10)
     
     new_direction = :north
     subject.snake.move
@@ -271,7 +271,7 @@ RSpec.describe Snake::Model::Game do
     subject.snake.move
     
     expect(subject.snake.length).to eq(1)
-    expect(subject.snake.head.row).to eq(38)
+    expect(subject.snake.head.row).to eq(18)
     expect(subject.snake.head.column).to eq(1)
     expect(subject.snake.head.orientation).to eq(new_direction)
   end
@@ -280,8 +280,8 @@ RSpec.describe Snake::Model::Game do
     direction = :west
     subject.start
     
-    subject.snake.generate(initial_row: 0, initial_column: 39, initial_orientation: direction)
-    subject.apple.generate(initial_row: 20, initial_column: 20)
+    subject.snake.generate(initial_row: 0, initial_column: 19, initial_orientation: direction)
+    subject.apple.generate(initial_row: 10, initial_column: 10)
     
     new_direction = :south
     subject.snake.move
@@ -291,7 +291,7 @@ RSpec.describe Snake::Model::Game do
     
     expect(subject.snake.length).to eq(1)
     expect(subject.snake.head.row).to eq(1)
-    expect(subject.snake.head.column).to eq(38)
+    expect(subject.snake.head.column).to eq(18)
     expect(subject.snake.head.orientation).to eq(new_direction)
   end
   
@@ -300,7 +300,7 @@ RSpec.describe Snake::Model::Game do
     subject.start
     
     subject.snake.generate(initial_row: 0, initial_column: 0, initial_orientation: direction)
-    subject.apple.generate(initial_row: 20, initial_column: 20)
+    subject.apple.generate(initial_row: 10, initial_column: 10)
     
     new_direction = :east
     subject.snake.move
@@ -318,8 +318,8 @@ RSpec.describe Snake::Model::Game do
     direction = :north
     subject.start
     
-    subject.snake.generate(initial_row: 39, initial_column: 39, initial_orientation: direction)
-    subject.apple.generate(initial_row: 20, initial_column: 20)
+    subject.snake.generate(initial_row: 19, initial_column: 19, initial_orientation: direction)
+    subject.apple.generate(initial_row: 10, initial_column: 10)
     
     new_direction = :west
     subject.snake.move
@@ -328,8 +328,8 @@ RSpec.describe Snake::Model::Game do
     subject.snake.move
     
     expect(subject.snake.length).to eq(1)
-    expect(subject.snake.head.row).to eq(38)
-    expect(subject.snake.head.column).to eq(38)
+    expect(subject.snake.head.row).to eq(18)
+    expect(subject.snake.head.column).to eq(18)
     expect(subject.snake.head.orientation).to eq(new_direction)
   end
   
@@ -393,7 +393,7 @@ RSpec.describe Snake::Model::Game do
     subject.apple.generate(initial_row: 1, initial_column: 2)
     subject.snake.turn_left
     subject.snake.move # eats apple
-    subject.apple.generate(initial_row: 20, initial_column: 20)
+    subject.apple.generate(initial_row: 10, initial_column: 10)
     subject.snake.turn_right
     subject.snake.move
     
