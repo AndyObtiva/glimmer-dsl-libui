@@ -2,17 +2,22 @@
 
 require 'glimmer-dsl-libui'
 
-include Glimmer
-
-window('hello world', 300, 200) {
-  font_button { |fb|
-    on_changed do
-      font_descriptor = fb.font
-      p font_descriptor
-    end
-  }
+class FontButton
+  include Glimmer
   
-  on_closing do
-    puts 'Bye Bye'
+  attr_accessor :font_descriptor
+  
+  def launch
+    window('hello world', 300, 200) {
+      font_button {
+        font <=> [self, :font_descriptor, after_write: -> { p font_descriptor }]
+      }
+      
+      on_closing do
+        puts 'Bye Bye'
+      end
+    }.show
   end
-}.show
+end
+
+FontButton.new.launch

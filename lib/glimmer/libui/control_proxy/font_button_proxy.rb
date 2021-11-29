@@ -64,6 +64,10 @@ module Glimmer
           ::LibUI.free_font_button_font(@font_descriptor) unless @font_descriptor.nil?
           super
         end
+        
+        def data_bind(property, model_binding)
+          handle_listener('on_changed') { model_binding.call(font) } if property == 'font'
+        end
       end
     end
   end

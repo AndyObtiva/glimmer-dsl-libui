@@ -4,8 +4,10 @@
 
 - Support `slider` `value` bidirectional data-binding (with `<=>` sign)
 - Support `color_button` `color` bidirectional data-binding (with `<=>` sign)
+- Support `font_button` `font` write-only unidirectional data-binding (with `<=>` sign)
 - Improve examples/color_button.rb with bidirectional data-binding for `color_button` `color`
 - Improve examples/histogram.rb with bidirectional data-binding for `color_button` `color`
+- Improve examples/font_button.rb with bidirectional data-binding for `font_button` `font`
 
 ## 0.4.5
 
