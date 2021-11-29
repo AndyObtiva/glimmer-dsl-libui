@@ -40,6 +40,11 @@ module Glimmer
         alias set_items items
         alias items= items
       end
+      
+      def data_bind(property, model_binding)
+        super
+        handle_listener('on_changed') { model_binding.call(text) } if property == 'text'
+      end
     end
   end
 end

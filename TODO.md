@@ -2,7 +2,6 @@
 
 ## Next
 
-- Support `combobox` and `editable_combobox` `selected` property bidirectional data-binding (with `<=>` sign)
 - Support `checkbox` `checked` bidirectional data-binding (with `<=>` sign)
 - Support `check_menu_item` `checked` bidirectional data-binding (with `<=>` sign)
 

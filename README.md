@@ -1386,6 +1386,7 @@ Data-binding supports utilizing the [MVP (Model View Presenter)](https://en.wiki
 - `combobox`: `selected`, `selected_item`
 - `date_picker`: `time`
 - `date_time_picker`: `time`
+- `editable_combobox`: `text`
 - `entry`: `text`
 - `font_button`: `font`
 - `multiline_entry`: `text`
