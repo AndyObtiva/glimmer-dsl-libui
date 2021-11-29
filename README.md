@@ -5043,7 +5043,8 @@ class ButtonCounter
   def launch
     window('Hello, Button!') {
       button {
-        text <= [self, :count, on_read: ->(count) {"Count: #{count}"}] # data-bind button text to self count, converting to string on read.
+        # data-bind button text to self count, converting to string on read.
+        text <= [self, :count, on_read: ->(count) {"Count: #{count}"}]
         
         on_clicked do
           self.count += 1

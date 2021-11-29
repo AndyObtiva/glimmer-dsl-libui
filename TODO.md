@@ -4,9 +4,9 @@
 
 - Support `checkbox` `checked` bidirectional data-binding (with `<=>` sign)
 - Support `check_menu_item` `checked` bidirectional data-binding (with `<=>` sign)
+- Support `radio_menu_item` `checked` bidirectional data-binding (with `<=>` sign)
 
 - Support `radio_buttons` `selected` property bidirectional data-binding (with `<=>` sign)
-- Support `radio_menu_item` `checked` bidirectional data-binding (with `<=>` sign)
 
 - Support `table` `cell_rows` bidirectional data-binding (with `<=>` sign)
 - Improve examples/form_table.rb with bidirectional data-binding for `table` `cell_rows`

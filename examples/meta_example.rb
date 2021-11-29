@@ -24,18 +24,28 @@ class MetaExample
     @examples
   end
   
+  def basic_examples
+    examples.select {|example| example.start_with?('Basic') || ADDITIONAL_BASIC_EXAMPLES.include?(example) }
+  end
+  
+  def advanced_examples
+    examples - basic_examples
+  end
+  
   def examples_with_versions
-    examples.map do |example|
-      version_count_for(example) > 1 ? "#{example} (#{version_count_for(example)} versions)" : example
-    end
+    append_versions(examples)
   end
   
   def basic_examples_with_versions
-    examples_with_versions.select {|example| example.start_with?('Basic') || ADDITIONAL_BASIC_EXAMPLES.include?(example) }
+    append_versions(basic_examples)
   end
   
   def advanced_examples_with_versions
-    examples_with_versions - basic_examples_with_versions
+    append_versions(advanced_examples)
+  end
+  
+  def append_versions(examples)
+    examples.map { |example| version_count_for(example) > 1 ? "#{example} (#{version_count_for(example)} versions)" : example }
   end
   
   def file_path_for(example)
@@ -72,7 +82,7 @@ class MetaExample
   end
   
   def launch
-    window('Meta-Example', 700, 500) {
+    window('Meta-Example', 1000, 500) {
       margined true
       
       horizontal_box {

@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.4.8
+
+- Update default dimensions of meta-example to `1000x500`
+- Fix minor issue with meta-example showing basic examples as advanced
+
 ## 0.4.7
 
 - Support `date_time_picker`/`date_picker`/`time_picker` `time` bidirectional data-binding (with `<=>` sign)
