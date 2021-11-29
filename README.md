@@ -1382,6 +1382,7 @@ Data-binding supports utilizing the [MVP (Model View Presenter)](https://en.wiki
 ![MVP](https://www.researchgate.net/profile/Gilles-Perrouin/publication/320249584/figure/fig8/AS:668260987068418@1536337243385/Model-view-presenter-architecture.png)
 
 [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) supports bidirectional (two-way) data-binding of the following controls/properties via the `<=>` operator (indicating data is moving in both directions between View and Model):
+- `checkbox`: `checked`
 - `color_button`: `color`
 - `combobox`: `selected`, `selected_item`
 - `date_picker`: `time`

@@ -245,8 +245,8 @@ module Glimmer
           args[0] = Glimmer::LibUI.boolean_to_integer(args.first) if BOOLEAN_PROPERTIES.include?(property) && (args.first.is_a?(TrueClass) || args.first.is_a?(FalseClass))
           args[0] = '' if STRING_PROPERTIES.include?(property) && args.first == nil
           if property.to_s == 'checked'
-            current_value = Glimmer::LibUI.integer_to_boolean(::LibUI.send("#{libui_api_keyword}_checked", @libui))
-            new_value = Glimmer::LibUI.integer_to_boolean(args[0])
+            current_value = Glimmer::LibUI.integer_to_boolean(::LibUI.send("#{libui_api_keyword}_checked", @libui), allow_nil: false)
+            new_value = Glimmer::LibUI.integer_to_boolean(args[0], allow_nil: false)
             ::LibUI.send("#{libui_api_keyword}_set_#{property}", @libui, *args) if new_value != current_value
           else
             ::LibUI.send("#{libui_api_keyword}_set_#{property}", @libui, *args)

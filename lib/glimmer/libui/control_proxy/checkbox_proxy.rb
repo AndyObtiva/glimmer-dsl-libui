@@ -29,6 +29,11 @@ module Glimmer
       # Follows the Proxy Design Pattern
       class CheckboxProxy < ControlProxy
         DEFAULT_TEXT = ''
+      
+        def data_bind(property, model_binding)
+          super
+          handle_listener('on_toggled') { model_binding.call(checked) } if property == 'checked'
+        end
         
         private
         

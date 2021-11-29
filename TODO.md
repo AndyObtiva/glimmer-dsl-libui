@@ -2,7 +2,6 @@
 
 ## Next
 
-- Support `checkbox` `checked` bidirectional data-binding (with `<=>` sign)
 - Support `check_menu_item` `checked` bidirectional data-binding (with `<=>` sign)
 - Support `radio_menu_item` `checked` bidirectional data-binding (with `<=>` sign)
 
