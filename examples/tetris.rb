@@ -144,24 +144,16 @@ class Tetris
     }
 
     menu('Options') {
-      radio_menu_item('Instant Down on Up Arrow') {
-        on_clicked do
-          @game.instant_down_on_up = true
-        end
+      radio_menu_item('Instant Down on Up Arrow') { |r|
+        checked <=> [@game, :instant_down_on_up]
       }
       
-      radio_menu_item('Rotate Right on Up Arrow') {
-        on_clicked do
-          @game.rotate_right_on_up = true
-        end
+      radio_menu_item('Rotate Right on Up Arrow') { |r|
+        checked <=> [@game, :rotate_right_on_up]
       }
       
-      radio_menu_item('Rotate Left on Up Arrow') {
-        checked true
-
-        on_clicked do
-          @game.rotate_left_on_up = true
-        end
+      radio_menu_item('Rotate Left on Up Arrow') { |r|
+        checked <=> [@game, :rotate_left_on_up]
       }
     }
 

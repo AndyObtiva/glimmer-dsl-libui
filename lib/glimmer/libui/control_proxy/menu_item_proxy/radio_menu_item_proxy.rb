@@ -29,15 +29,23 @@ module Glimmer
         #
         # Follows the Proxy Design Pattern
         class RadioMenuItemProxy < MenuItemProxy
+          def initialize(keyword, parent, args, &block)
+            @last_checked = nil
+            super
+          end
+        
           def checked(value = nil)
-            if !value.nil?
-              if Glimmer::LibUI.integer_to_boolean(value) != checked?
-                super
+            if value.nil?
+              super()
+            else
+              super
+              if Glimmer::LibUI.integer_to_boolean(value, allow_nil: false) != Glimmer::LibUI.integer_to_boolean(@last_checked, allow_nil: false)
                 if Glimmer::LibUI.integer_to_boolean(value)
                   (@parent_proxy.children - [self]).select {|c| c.is_a?(MenuItemProxy)}.each do |menu_item|
                     menu_item.checked = false
                   end
                 end
+                @last_checked = checked
               end
             end
           end
@@ -48,13 +56,18 @@ module Glimmer
           def handle_listener(listener_name, &listener)
             if listener_name.to_s == 'on_clicked'
               radio_listener = Proc.new do
-                self.checked = true if !checked?
+                self.checked = true
                 listener.call(self)
               end
               super(listener_name, &radio_listener)
             else
               super
             end
+          end
+        
+          def data_bind(property, model_binding)
+            super
+            handle_listener('on_clicked') { model_binding.call(checked) } if property == 'checked'
           end
         
           private

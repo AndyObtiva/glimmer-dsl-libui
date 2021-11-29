@@ -2,9 +2,6 @@
 
 ## Next
 
-- Support `check_menu_item` `checked` bidirectional data-binding (with `<=>` sign)
-- Support `radio_menu_item` `checked` bidirectional data-binding (with `<=>` sign)
-
 - Support `radio_buttons` `selected` property bidirectional data-binding (with `<=>` sign)
 
 - Support `table` `cell_rows` bidirectional data-binding (with `<=>` sign)

@@ -1393,6 +1393,7 @@ Data-binding supports utilizing the [MVP (Model View Presenter)](https://en.wiki
 - `font_button`: `font`
 - `multiline_entry`: `text`
 - `non_wrapping_multiline_entry`: `text`
+- `radio_menu_item`: `checked`
 - `search_entry`: `text`
 - `slider`: `value`
 - `spinbox`: `value`
@@ -8430,24 +8431,16 @@ class Tetris
     }
 
     menu('Options') {
-      radio_menu_item('Instant Down on Up Arrow') {
-        on_clicked do
-          @game.instant_down_on_up = true
-        end
+      radio_menu_item('Instant Down on Up Arrow') { |r|
+        checked <=> [@game, :instant_down_on_up]
       }
       
-      radio_menu_item('Rotate Right on Up Arrow') {
-        on_clicked do
-          @game.rotate_right_on_up = true
-        end
+      radio_menu_item('Rotate Right on Up Arrow') { |r|
+        checked <=> [@game, :rotate_right_on_up]
       }
       
-      radio_menu_item('Rotate Left on Up Arrow') {
-        checked true
-
-        on_clicked do
-          @game.rotate_left_on_up = true
-        end
+      radio_menu_item('Rotate Left on Up Arrow') { |r|
+        checked <=> [@game, :rotate_left_on_up]
       }
     }
 
