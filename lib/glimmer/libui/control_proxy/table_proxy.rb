@@ -75,6 +75,7 @@ module Glimmer
         
         def destroy
           super
+          @cell_rows_observer&.unobserve(self, :cell_rows, recursive: true)
           @destroyed = true
         end
         
@@ -82,10 +83,10 @@ module Glimmer
           if rows.nil?
             @cell_rows
           else
-            @cell_rows = rows
-            @cell_rows.tap do
-              @last_cell_rows = array_deep_clone(@cell_rows)
-              Glimmer::DataBinding::Observer.proc do |new_cell_rows|
+            if rows != @cell_rows
+              @cell_rows = rows
+              @last_cell_rows ||= array_deep_clone(@cell_rows)
+              @cell_rows_observer ||= Glimmer::DataBinding::Observer.proc do |new_cell_rows|
                 if @cell_rows.size < @last_cell_rows.size && @last_cell_rows.include_all?(*@cell_rows)
                   @last_cell_rows.array_diff_indexes(@cell_rows).reverse.each do |row|
                     ::LibUI.table_model_row_deleted(model, row)
@@ -106,8 +107,11 @@ module Glimmer
                 end
                 @last_last_cell_rows = array_deep_clone(@last_cell_rows)
                 @last_cell_rows = array_deep_clone(@cell_rows)
-              end.observe(self, :cell_rows, recursive: true)
+              end.tap do |cell_rows_observer|
+                cell_rows_observer.observe(self, :cell_rows, recursive: true)
+              end
             end
+            @cell_rows
           end
         end
         alias cell_rows= cell_rows
@@ -133,6 +137,21 @@ module Glimmer
         alias editable= editable
         alias set_editable editable
         alias editable? editable
+        
+        def data_bind(property, model_binding)
+          super
+          handle_listener('on_edited') { model_binding.call(cell_rows) } if property == 'cell_rows'
+        end
+        
+        def array_deep_clone(array_or_object)
+          if array_or_object.is_a?(Array)
+            array_or_object.map do |element|
+              array_deep_clone(element)
+            end
+          else
+            array_or_object.clone
+          end
+        end
         
         private
         
@@ -237,16 +256,6 @@ module Glimmer
         def next_column_index
           @next_column_index ||= -1
           @next_column_index += 1
-        end
-        
-        def array_deep_clone(array_or_object)
-          if array_or_object.is_a?(Array)
-            array_or_object.map do |element|
-              array_deep_clone(element)
-            end
-          else
-            array_or_object.clone
-          end
         end
       end
     end
