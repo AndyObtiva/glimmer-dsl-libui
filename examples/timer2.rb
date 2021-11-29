@@ -9,12 +9,9 @@ class Timer
   MINUTE_MAX = 59
   HOUR_MAX = 23
   
-  attr_accessor :hour, :min, :sec
-  
   def initialize
     @pid = nil
     @alarm_file = File.expand_path('../sounds/AlanWalker-Faded.mid', __dir__)
-    @hour = @min = @sec = 0
     at_exit { stop_alarm }
     setup_timer
     create_gui
@@ -44,22 +41,22 @@ class Timer
     unless @setup_timer
       Glimmer::LibUI.timer(1) do
         if @started
-          seconds = @sec
-          minutes = @min
-          hours = @hour
+          seconds = @sec_spinbox.value
+          minutes = @min_spinbox.value
+          hours = @hour_spinbox.value
           if seconds > 0
-            self.sec = seconds -= 1
+            @sec_spinbox.value = seconds -= 1
           end
           if seconds == 0
             if minutes > 0
-              self.min = minutes -= 1
-              self.sec = seconds = SECOND_MAX
+              @min_spinbox.value = minutes -= 1
+              @sec_spinbox.value = seconds = SECOND_MAX
             end
             if minutes == 0
               if hours > 0
-                self.hour = hours -= 1
-                self.min = minutes = MINUTE_MAX
-                self.sec = seconds = SECOND_MAX
+                @hour_spinbox.value = hours -= 1
+                @min_spinbox.value = minutes = MINUTE_MAX
+                @sec_spinbox.value = seconds = SECOND_MAX
               end
               if hours == 0 && minutes == 0 && seconds == 0
                 @start_button.enabled = true
@@ -86,23 +83,23 @@ class Timer
       group('Countdown') {
         vertical_box {
           horizontal_box {
-            spinbox(0, HOUR_MAX) {
+            @hour_spinbox = spinbox(0, HOUR_MAX) {
               stretchy false
-              value <=> [self, :hour]
+              value 0
             }
             label(':') {
               stretchy false
             }
-            spinbox(0, MINUTE_MAX) {
+            @min_spinbox = spinbox(0, MINUTE_MAX) {
               stretchy false
-              value <=> [self, :min]
+              value 0
             }
             label(':') {
               stretchy false
             }
-            spinbox(0, SECOND_MAX) {
+            @sec_spinbox = spinbox(0, SECOND_MAX) {
               stretchy false
-              value <=> [self, :sec]
+              value 0
             }
           }
           horizontal_box {

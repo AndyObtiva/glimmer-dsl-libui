@@ -5,6 +5,7 @@
 - Support `spinbox` `value` bidirectional data-binding (with `<=>` sign)
 - Improve examples/dynamic_area.rb with bidirectional data-binding for `spinbox` `value`
 - Improve examples/histogram.rb with bidirectional data-binding for `spinbox` `value`
+- Improve examples/timer.rb with bidirectional data-binding for `spinbox` `value`
 
 ## 0.4.4
 
