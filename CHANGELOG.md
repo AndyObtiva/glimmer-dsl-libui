@@ -3,6 +3,8 @@
 ## 0.4.8
 
 - Support `checkbox` `checked` bidirectional data-binding (with `<=>` sign)
+- Support `check_menu_item` `checked` bidirectional data-binding (with `<=>` sign)
+- Improve examples/tetris.rb with bidirectional data-binding for `check_menu_item` `checked`
 - Update default dimensions of meta-example to `1000x500`
 - Fix minor issue with meta-example showing basic examples as advanced
 

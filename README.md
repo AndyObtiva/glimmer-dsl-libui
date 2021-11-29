@@ -1383,6 +1383,7 @@ Data-binding supports utilizing the [MVP (Model View Presenter)](https://en.wiki
 
 [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) supports bidirectional (two-way) data-binding of the following controls/properties via the `<=>` operator (indicating data is moving in both directions between View and Model):
 - `checkbox`: `checked`
+- `check_menu_item`: `checked`
 - `color_button`: `color`
 - `combobox`: `selected`, `selected_item`
 - `date_picker`: `time`
@@ -8394,22 +8395,23 @@ class Tetris
     menu('Game') {
       @pause_menu_item = check_menu_item('Pause') {
         enabled false
-        
-        on_clicked do
-          @game.paused = @pause_menu_item.checked?
-        end
+        checked <=> [@game, :paused]
       }
+      
       menu_item('Restart') {
         on_clicked do
           @game.restart!
         end
       }
+      
       separator_menu_item
+      
       menu_item('Exit') {
         on_clicked do
           exit(0)
         end
       }
+      
       quit_menu_item if OS.mac?
     }
     
@@ -8419,6 +8421,7 @@ class Tetris
           show_high_scores
         end
       }
+      
       menu_item('Clear High Scores') {
         on_clicked {
           @game.clear_high_scores!
@@ -8432,11 +8435,13 @@ class Tetris
           @game.instant_down_on_up = true
         end
       }
+      
       radio_menu_item('Rotate Right on Up Arrow') {
         on_clicked do
           @game.rotate_right_on_up = true
         end
       }
+      
       radio_menu_item('Rotate Left on Up Arrow') {
         checked true
 
@@ -8454,6 +8459,7 @@ class Tetris
           end
         }
       end
+      
       menu_item('About') {
         on_clicked do
           show_about_dialog

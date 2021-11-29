@@ -29,6 +29,11 @@ module Glimmer
         #
         # Follows the Proxy Design Pattern
         class CheckMenuItemProxy < MenuItemProxy
+          def data_bind(property, model_binding)
+            super
+            handle_listener('on_clicked') { model_binding.call(checked) } if property == 'checked'
+          end
+        
           private
           
           def build_control
