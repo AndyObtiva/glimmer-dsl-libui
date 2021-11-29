@@ -2,8 +2,9 @@
 
 ## 0.4.5
 
-- Support `spinbox` `value` bidirectional data-binding
+- Support `spinbox` `value` bidirectional data-binding (with `<=>` sign)
 - Improve examples/dynamic_area.rb with bidirectional data-binding for `spinbox` `value`
+- Improve examples/histogram.rb with bidirectional data-binding for `spinbox` `value`
 
 ## 0.4.4
 
@@ -11,7 +12,7 @@
 
 ## 0.4.3
 
-- Support `entry` `text` bidirectional data-binding
+- Support `entry` `text` bidirectional data-binding (with `<=>` sign)
 - Support `search_entry` `text` property bidirectional data-binding (with `<=>` sign)
 - Support `multiline_entry` `text` property bidirectional data-binding (with `<=>` sign)
 - Support `non_wrapping_multiline_entry` `text` property bidirectional data-binding (with `<=>` sign)
