@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require 'glimmer-dsl-libui'
 
 class Timer
@@ -9,7 +7,7 @@ class Timer
   MINUTE_MAX = 59
   HOUR_MAX = 23
   
-  attr_accessor :hour, :min, :sec
+  attr_accessor :hour, :min, :sec, :started, :played
   
   def initialize
     @pid = nil
@@ -62,13 +60,11 @@ class Timer
                 self.sec = seconds = SECOND_MAX
               end
               if hours == 0 && minutes == 0 && seconds == 0
-                @start_button.enabled = true
-                @stop_button.enabled = false
-                @started = false
+                self.started = false
                 unless @played
                   play_alarm
                   msg_box('Alarm', 'Countdown Is Finished!')
-                  @played = true
+                  self.played = true
                 end
               end
             end
@@ -106,22 +102,20 @@ class Timer
             }
           }
           horizontal_box {
-            @start_button = button('Start') {
+            button('Start') {
+              enabled <= [self, :started, on_read: :!]
+              
               on_clicked do
-                @start_button.enabled = false
-                @stop_button.enabled = true
-                @started = true
-                @played = false
+                self.started = true
+                self.played = false
               end
             }
             
-            @stop_button = button('Stop') {
-              enabled false
+            button('Stop') {
+              enabled <= [self, :started]
               
               on_clicked do
-                @start_button.enabled = true
-                @stop_button.enabled = false
-                @started = false
+                self.started = false
               end
             }
           }

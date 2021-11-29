@@ -18,7 +18,7 @@
 
 ## Soon
 
-- Support passing x and y coordinates to `image` keyword
+- Support passing x and y coordinates to `image` keyword (only when over 3 args are passed)
 
 - Support passing `table` `image`/`image_text` `cell_rows` image data as file path directly (without using `image` keyword)
 - Simplify examples/basic_table_image.rb to pass image data as file path directly

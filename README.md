@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.4.4
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.4.5
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -373,7 +373,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.4.4'
+gem 'glimmer-dsl-libui', '~> 0.4.5'
 ```
 
 Add `require 'glimmer-dsl-libui'` at the top, and then `include Glimmer` into the top-level main object for testing or into an actual class for serious usage.
@@ -1455,7 +1455,7 @@ entry {
 }
 ```
 
-Data-binding Gotchas:
+Data-binding gotchas:
 - Never data-bind a control property to an attribute on the same view object with the same exact name (e.g. binding `entry` `text` property to `self` `text` attribute) as it would conflict with it. Instead, data-bind view property to an attribute with a different name on the view object or with the same name, but on a presenter or model object (e.g. data-bind `entry` `text` to `self` `legal_text` attribute or to `contract` model `text` attribute)
 - Data-binding a property utilizes the control's listener associated with the property (e.g. `on_changed` for `entry` `text`), so you cannot hook into the listener directly anymore as that would negate data-binding. Instead, you can add an `after_write: ->(val) {}` option to perform something on trigger of the control listener instead.
 
@@ -8513,7 +8513,140 @@ Mac | Windows | Linux
 ----|---------|------
 ![glimmer-dsl-libui-mac-timer.png](images/glimmer-dsl-libui-mac-timer.png) ![glimmer-dsl-libui-mac-timer-in-progress.png](images/glimmer-dsl-libui-mac-timer-in-progress.png) | ![glimmer-dsl-libui-windows-timer.png](images/glimmer-dsl-libui-windows-timer.png) ![glimmer-dsl-libui-windows-timer-in-progress.png](images/glimmer-dsl-libui-windows-timer-in-progress.png) | ![glimmer-dsl-libui-linux-timer.png](images/glimmer-dsl-libui-linux-timer.png) ![glimmer-dsl-libui-linux-timer-in-progress.png](images/glimmer-dsl-libui-linux-timer-in-progress.png)
 
-New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version (with [data-binding](#data-binding)):
+
+```ruby
+require 'glimmer-dsl-libui'
+
+class Timer
+  include Glimmer
+  
+  SECOND_MAX = 59
+  MINUTE_MAX = 59
+  HOUR_MAX = 23
+  
+  attr_accessor :hour, :min, :sec, :started, :played
+  
+  def initialize
+    @pid = nil
+    @alarm_file = File.expand_path('../sounds/AlanWalker-Faded.mid', __dir__)
+    @hour = @min = @sec = 0
+    at_exit { stop_alarm }
+    setup_timer
+    create_gui
+  end
+
+  def stop_alarm
+    if @pid
+      Process.kill(:SIGKILL, @pid) if @th.alive?
+      @pid = nil
+    end
+  end
+
+  def play_alarm
+    stop_alarm
+    if @pid.nil?
+      begin
+        @pid = spawn "timidity -G 0.0-10.0 #{@alarm_file}"
+        @th = Process.detach @pid
+      rescue Errno::ENOENT
+        warn 'Timidty++ not found. Please install Timidity++.'
+        warn 'https://sourceforge.net/projects/timidity/'
+      end
+    end
+  end
+
+  def setup_timer
+    unless @setup_timer
+      Glimmer::LibUI.timer(1) do
+        if @started
+          seconds = @sec
+          minutes = @min
+          hours = @hour
+          if seconds > 0
+            self.sec = seconds -= 1
+          end
+          if seconds == 0
+            if minutes > 0
+              self.min = minutes -= 1
+              self.sec = seconds = SECOND_MAX
+            end
+            if minutes == 0
+              if hours > 0
+                self.hour = hours -= 1
+                self.min = minutes = MINUTE_MAX
+                self.sec = seconds = SECOND_MAX
+              end
+              if hours == 0 && minutes == 0 && seconds == 0
+                self.started = false
+                unless @played
+                  play_alarm
+                  msg_box('Alarm', 'Countdown Is Finished!')
+                  self.played = true
+                end
+              end
+            end
+          end
+        end
+      end
+      @setup_timer = true
+    end
+  end
+
+  def create_gui
+    window('Timer') {
+      margined true
+      
+      group('Countdown') {
+        vertical_box {
+          horizontal_box {
+            spinbox(0, HOUR_MAX) {
+              stretchy false
+              value <=> [self, :hour]
+            }
+            label(':') {
+              stretchy false
+            }
+            spinbox(0, MINUTE_MAX) {
+              stretchy false
+              value <=> [self, :min]
+            }
+            label(':') {
+              stretchy false
+            }
+            spinbox(0, SECOND_MAX) {
+              stretchy false
+              value <=> [self, :sec]
+            }
+          }
+          horizontal_box {
+            button('Start') {
+              enabled <= [self, :started, on_read: :!]
+              
+              on_clicked do
+                self.started = true
+                self.played = false
+              end
+            }
+            
+            button('Stop') {
+              enabled <= [self, :started]
+              
+              on_clicked do
+                self.started = false
+              end
+            }
+          }
+        }
+      }
+    }.show
+  end
+end
+
+Timer.new
+```
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 2 (without [data-binding](#data-binding)):
 
 ```ruby
 require 'glimmer-dsl-libui'
