@@ -7002,12 +7002,7 @@ class Histogram
           
           color_button { |cb|
             stretchy false
-            color COLOR_BLUE
-            
-            on_changed do
-              @histogram_color = cb.color
-              @area.queue_redraw_all
-            end
+            color <=> [self, :histogram_color, after_write: -> { @area.queue_redraw_all }]
           }
         }
         
