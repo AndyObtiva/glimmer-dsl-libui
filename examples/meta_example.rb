@@ -117,6 +117,7 @@ class MetaExample
                 @advanced_example_radio_buttons = radio_buttons {
                   stretchy false
                   items advanced_examples_with_versions
+                  selected -1
                   
                   on_selected do
                     @selected_example_index = examples_with_versions.index(advanced_examples_with_versions[@advanced_example_radio_buttons.selected])

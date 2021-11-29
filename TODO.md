@@ -2,14 +2,11 @@
 
 ## Next
 
-- Support `radio_buttons` `selected` property bidirectional data-binding (with `<=>` sign)
-
 - Support `table` `cell_rows` bidirectional data-binding (with `<=>` sign)
 - Improve examples/form_table.rb with bidirectional data-binding for `table` `cell_rows`
+- Document difference between implicit data-binding and explicit data-binding
 
 - Support ability to attach multiple listeners (e.g. multiple `on_changed {}` on `entry`)
-
-- Document nested/indexed data-binding
 
 - Support passing x and y coordinates to `image` keyword (only when over 3 args are passed)
 

@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.4.7
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.4.8
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -373,7 +373,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.4.7'
+gem 'glimmer-dsl-libui', '~> 0.4.8'
 ```
 
 Add `require 'glimmer-dsl-libui'` at the top, and then `include Glimmer` into the top-level main object for testing or into an actual class for serious usage.
@@ -1393,6 +1393,7 @@ Data-binding supports utilizing the [MVP (Model View Presenter)](https://en.wiki
 - `font_button`: `font`
 - `multiline_entry`: `text`
 - `non_wrapping_multiline_entry`: `text`
+- `radio_buttons`: `selected`
 - `radio_menu_item`: `checked`
 - `search_entry`: `text`
 - `slider`: `value`
@@ -7969,7 +7970,7 @@ class TinyMidiPlayer
           }
         }
 
-        combobox { |c|
+        combobox {
           items @midi_files.map { |path| File.basename(path) }
           # data-bind selected item (String) to self.selected_file with on-read/on-write converters and after_write operation
           selected_item <=> [self, :selected_file, on_read: ->(f) {File.basename(f.to_s)}, on_write: ->(f) {File.join(@music_directory, f)}, after_write: -> { play_midi if @th&.alive? }]
@@ -8055,7 +8056,7 @@ class TinyMidiPlayer
           }
         }
 
-        combobox { |c|
+        combobox {
           items @midi_files.map { |path| File.basename(path) }
           # data-bind selected index (Integer) to self.selected_file with on-read/on-write converters and after_write operation
           selected <=> [self, :selected_file, on_read: ->(f) {@midi_files.index(f)}, on_write: ->(i) {@midi_files[i]}, after_write: -> { play_midi if @th&.alive? }]

@@ -5,9 +5,11 @@
 - Support `checkbox` `checked` bidirectional data-binding (with `<=>` sign)
 - Support `check_menu_item` `checked` bidirectional data-binding (with `<=>` sign)
 - Support `radio_menu_item` `checked` bidirectional data-binding (with `<=>` sign)
+- Support `radio_buttons` `selected` property bidirectional data-binding (with `<=>` sign)
 - Improve examples/tetris.rb with bidirectional data-binding for `check_menu_item`/`radio_menu_item` `checked`
-- Update default dimensions of meta-example to `1000x500`
-- Fix minor issue with meta-example showing basic examples as advanced
+- Update default dimensions of Meta-Example to `1000x500`
+- Fix minor issue with Meta-Example selecting first radio button in Advanced examples despite it not being the truly selected example on launch of the app (now, it starts explicitly deselected)
+- Fix minor issue with Meta-Example showing basic examples as advanced
 
 ## 0.4.7
 
