@@ -113,6 +113,11 @@ module Glimmer
           Fiddle.free @alpha unless @alpha.nil?
           super
         end
+        
+        def data_bind(property, model_binding)
+          super
+          handle_listener('on_changed') { model_binding.call(color) } if property == 'color'
+        end
       end
     end
   end

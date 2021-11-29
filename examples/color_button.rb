@@ -1,16 +1,21 @@
-# frozen_string_literal: true
-
 require 'glimmer-dsl-libui'
 
-include Glimmer
+class ColorButton
+  include Glimmer
+  
+  attr_accessor :selected_color
+  
+  def initialize
+    @selected_color = :blue
+  end
+  
+  def launch
+    window('color button', 240) {
+      color_button {
+        color <=> [self, :selected_color, after_write: ->(color) {p color}]
+      }
+    }.show
+  end
+end
 
-window('color button', 240) {
-  color_button { |cb|
-    color :blue
-    
-    on_changed do
-      rgba = cb.color
-      p rgba
-    end
-  }
-}.show
+ColorButton.new.launch

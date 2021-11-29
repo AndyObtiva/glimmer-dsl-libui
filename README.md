@@ -1382,11 +1382,12 @@ Data-binding supports utilizing the [MVP (Model View Presenter)](https://en.wiki
 ![MVP](https://www.researchgate.net/profile/Gilles-Perrouin/publication/320249584/figure/fig8/AS:668260987068418@1536337243385/Model-view-presenter-architecture.png)
 
 [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) supports bidirectional (two-way) data-binding of the following controls/properties via the `<=>` operator (indicating data is moving in both directions between View and Model):
-- `entry` `text` property
-- `multiline_entry` `text` property
-- `non_wrapping_multiline_entry` `text` property
-- `search_entry` `text` property
-- `spinbox` `value` property
+- `color_button`: `color`
+- `entry`: `text`
+- `multiline_entry`: `text`
+- `non_wrapping_multiline_entry`: `text`
+- `search_entry`: `text`
+- `spinbox`: `value`
 
 Example of bidirectional data-binding:
 
@@ -2531,7 +2532,33 @@ Mac | Windows | Linux
 ----|---------|------
 ![glimmer-dsl-libui-mac-color-button.png](images/glimmer-dsl-libui-mac-color-button.png) ![glimmer-dsl-libui-mac-color-button-selection.png](images/glimmer-dsl-libui-mac-color-button-selection.png) | ![glimmer-dsl-libui-windows-color-button.png](images/glimmer-dsl-libui-windows-color-button.png) ![glimmer-dsl-libui-windows-color-button-selection.png](images/glimmer-dsl-libui-windows-color-button-selection.png) | ![glimmer-dsl-libui-linux-color-button.png](images/glimmer-dsl-libui-linux-color-button.png) ![glimmer-dsl-libui-linux-color-button-selection.png](images/glimmer-dsl-libui-linux-color-button-selection.png)
 
-New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version (with [data-binding](#data-binding)):
+
+```ruby
+require 'glimmer-dsl-libui'
+
+class ColorButton
+  include Glimmer
+  
+  attr_accessor :selected_color
+  
+  def initialize
+    @selected_color = :blue
+  end
+  
+  def launch
+    window('color button', 240) {
+      color_button {
+        color <=> [self, :selected_color, after_write: ->(color) {p color}]
+      }
+    }.show
+  end
+end
+
+ColorButton.new.launch
+```
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 2 (without [data-binding](#data-binding)):
 
 ```ruby
 require 'glimmer-dsl-libui'

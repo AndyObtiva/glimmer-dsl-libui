@@ -2,7 +2,6 @@
 
 ## Next
 
-- Support `color_button` `color` bidirectional data-binding (with `<=>` sign)
 - Support `font_button` `font` write-only unidirectional data-binding (with `>` sign or `<=>`)
 - Support `date_time_picker`/`date_picker`/`time_picker` `time` bidirectional data-binding (with `<=>` sign)
 - Support `checkbox` `checked` bidirectional data-binding (with `<=>` sign)
