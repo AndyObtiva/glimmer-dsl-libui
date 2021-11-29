@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.4.6
+
+- Support `slider` `value` bidirectional data-binding (with `<=>` sign)
+
 ## 0.4.5
 
 - Support `spinbox` `value` bidirectional data-binding (with `<=>` sign)
