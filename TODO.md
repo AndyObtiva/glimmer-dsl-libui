@@ -2,18 +2,19 @@
 
 ## Next
 
-- Support `date_time_picker`/`date_picker`/`time_picker` `time` bidirectional data-binding (with `<=>` sign)
 - Support `checkbox` `checked` bidirectional data-binding (with `<=>` sign)
 - Support `combobox` and `editable_combobox` `selected` property bidirectional data-binding (with `<=>` sign)
+
 - Support `radio_buttons` `selected` property bidirectional data-binding (with `<=>` sign)
 - Support `radio_menu_item` `checked` bidirectional data-binding (with `<=>` sign)
 - Support `check_menu_item` `checked` bidirectional data-binding (with `<=>` sign)
+
 - Support `table` `cell_rows` bidirectional data-binding (with `<=>` sign)
 - Improve examples/form_table.rb with bidirectional data-binding for `table` `cell_rows`
-- Support ability to attach multiple listeners (e.g. multiple `on_changed {}` on `entry`)
-- Document nested/indexed data-binding
 
-## Soon
+- Support ability to attach multiple listeners (e.g. multiple `on_changed {}` on `entry`)
+
+- Document nested/indexed data-binding
 
 - Support passing x and y coordinates to `image` keyword (only when over 3 args are passed)
 
@@ -28,11 +29,13 @@
 - Document area inclusion of explicit and implicit path shapes
 - Demo examples/button_counter.rb at the top of the README
 
-## Future
+## Soon
 
 - Glimmerize examples/draw_text.rb from Ruby LibUI project
 - Glimmerize examples/spectrum.rb from Ruby LibUI project
 - Glimmerize examples/turing_pattern.rb from Ruby LibUI project
+
+## Future
 
 - Support `contain?` method in `arc` (todo), `polygon` (handled in `georuby` or `winding-polygon` or `point-in-polygon` or `is` or `polygon-validator` or `pip` gem), `polyline` (handled), `polybezier` (not handled), and `figure` (semi-handled unless beziers are in)
 - Support `include?` method in `arc` (todo), `polygon` (handled in georuby), `polyline` (handled), `polybezier` (not handled), and `figure` (semi-handled unless beziers are in)

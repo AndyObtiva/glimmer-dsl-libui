@@ -3,7 +3,7 @@
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-[Glimmer](https://github.com/AndyObtiva/glimmer) DSL for [LibUI](https://github.com/kojix2/LibUI) is a prerequisite-free Ruby desktop development GUI library. No need to pre-install any prerequisites. Just install the gem and have platform-independent native GUI that just works!
+[Glimmer](https://github.com/AndyObtiva/glimmer) DSL for [LibUI](https://github.com/kojix2/LibUI) is a prerequisite-free Ruby desktop development GUI (Graphical User Interface) library. No need to pre-install any prerequisites. Just install the [gem](https://rubygems.org/gems/glimmer-dsl-libui) and have platform-independent native GUI that just works!
 
 Mac | Windows | Linux
 ----|---------|------
@@ -1439,6 +1439,11 @@ To summarize the data-binding API:
 
 This is also known as the [Glimmer Shine](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/docs/reference/GLIMMER_GUI_DSL_SYNTAX.md#shine) syntax for data-binding, a [Glimmer](https://github.com/AndyObtiva/glimmer)-only unique innovation that takes advantage of [Ruby](https://www.ruby-lang.org/en/)'s highly expressive syntax and malleable DSL support.
 
+Data-bound model attribute can be:
+- **Direct:** `Symbol` representing attribute reader/writer (e.g. `[person, :name`])
+- **Nested:** `String` representing nested attribute path (e.g. `[company, 'address.street']`). That results in "nested data-binding"
+- **Indexed:** `String` containing array attribute index (e.g. `[customer, 'addresses[0].street']`). That results in "indexed data-binding"
+
 Data-binding options include:
 - `before_read {|value| ...}`: performs an operation before reading data from Model to update the View.
 - `on_read {|value| ...}`: converts value read from Model to update the View.
@@ -1446,7 +1451,7 @@ Data-binding options include:
 - `before_write {|value| ...}`: performs an operation before writing data to Model from View.
 - `on_write {|value| ...}`: converts value read from View to update the Model.
 - `after_write {|converted_value| ...}`: performs an operation after writing to Model from View.
-- `computed_by attribute` or `computed_by [attribute1, attribute2, ...]`: indicates model attribute is computed from specified attribute(s), thus updated when they are updated (see in [Login example version 2](/examples/login2.rb))
+- `computed_by attribute` or `computed_by [attribute1, attribute2, ...]`: indicates model attribute is computed from specified attribute(s), thus updated when they are updated (see in [Login example version 2](/examples/login2.rb)). That is known as "computed data-binding".
 
 Note that with both `on_read` and `on_write` converters, you could pass a `Symbol` representing the name of a method on the value object to invoke.
 
@@ -1878,7 +1883,7 @@ Example:
 
 ## Examples
 
-The following examples include reimplementions of the examples in the [LibUI](https://github.com/kojix2/LibUI) project utilizing the [Glimmer GUI DSL](#glimmer-gui-dsl-concepts) (with and without data-binding) as well as brand new examples.
+The following examples include reimplementions of the examples in the [LibUI](https://github.com/kojix2/LibUI) project utilizing the [Glimmer GUI DSL](#glimmer-gui-dsl-concepts) (with and without [data-binding](#data-binding)) as well as brand new examples.
 
 To browse all examples, simply launch the [Meta-Example](examples/meta_example.rb), which lists all examples and displays each example's code when selected. It also enables code editing to facilitate experimentation and learning.
 
@@ -2668,7 +2673,35 @@ UI.main
 UI.quit
 ```
 
-[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version (with [data-binding](#data-binding)):
+
+```ruby
+require 'glimmer-dsl-libui'
+
+class DateTimePicker
+  include Glimmer
+  
+  attr_accessor :picked_time
+  
+  def launch
+    window('Date Time Pickers', 300, 200) {
+      vertical_box {
+        date_time_picker {
+          time <=> [self, :picked_time, after_write: ->(time) { p time }]
+        }
+      }
+      
+      on_closing do
+        puts 'Bye Bye'
+      end
+    }.show
+  end
+end
+
+DateTimePicker.new.launch
+```
+
+[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 2 (without [data-binding](#data-binding)):
 
 ```ruby
 require 'glimmer-dsl-libui'
@@ -8869,7 +8902,7 @@ https://github.com/iraamaro/i3off-gtk-ruby
 
 ### Issues
 
-If you encounter [issues](https://github.com/AndyObtiva/glimmer-dsl-libui/issues) that are not reported, discover missing features that are not mentioned in [TODO.md](TODO.md), or think up better ways to use [libui](https://github.com/andlabs/libui) than what is possible with [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui), you may submit an [issue](https://github.com/AndyObtiva/glimmer-dsl-libui/issues/new) or [pull request](https://github.com/AndyObtiva/glimmer-dsl-libui/compare) on [GitHub](https://github.com).
+If you encounter [issues](https://github.com/AndyObtiva/glimmer-dsl-libui/issues) that are not reported, discover missing features that are not mentioned in [TODO.md](TODO.md), or think up better ways to use [libui](https://github.com/andlabs/libui) than what is possible with [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui), you may submit an [issue](https://github.com/AndyObtiva/glimmer-dsl-libui/issues/new) or [pull request](https://github.com/AndyObtiva/glimmer-dsl-libui/compare) on [GitHub](https://github.com). In the meantime, you may try older gem versions of [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) till you find one that works until issues are resolved.
 
 ### Chat
 
@@ -8900,6 +8933,8 @@ These features have been planned or suggested. You might see them in a future ve
     you want to have your own version, or is otherwise necessary, that
     is fine, but please isolate to its own commit so I can cherry-pick
     around it.
+
+Note that the latest development sometimes takes place in [development](https://github.com/AndyObtiva/glimmer-dsl-libui/tree/development) branch (which is deleted once merged back to [master](https://github.com/AndyObtiva/glimmer-dsl-libui)).
 
 ## Contributors
 

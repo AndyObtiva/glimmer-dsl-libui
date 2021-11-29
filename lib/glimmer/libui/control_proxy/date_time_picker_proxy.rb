@@ -64,6 +64,11 @@ module Glimmer
           Fiddle.free @time unless @time.nil?
           super
         end
+        
+        def data_bind(property, model_binding)
+          super
+          handle_listener('on_changed') { model_binding.call(time) } if property == 'time'
+        end
       end
     end
   end

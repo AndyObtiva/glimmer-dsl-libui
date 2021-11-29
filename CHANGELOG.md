@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.4.7
+
+- Support `date_time_picker`/`date_picker`/`time_picker` `time` bidirectional data-binding (with `<=>` sign)
+- Improve examples/date_time_picker.rb with bidirectional data-binding for `date_time_picker` `time`
+
 ## 0.4.6
 
 - Support `slider` `value` bidirectional data-binding (with `<=>` sign)

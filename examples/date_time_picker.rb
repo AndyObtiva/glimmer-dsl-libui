@@ -2,19 +2,24 @@
 
 require 'glimmer-dsl-libui'
 
-include Glimmer
-
-window('Date Time Pickers', 300, 200) {
-  vertical_box {
-    date_time_picker { |dtp|
-      on_changed do
-        time = dtp.time
-        p time
-      end
-    }
-  }
+class DateTimePicker
+  include Glimmer
   
-  on_closing do
-    puts 'Bye Bye'
+  attr_accessor :picked_time
+  
+  def launch
+    window('Date Time Pickers', 300, 200) {
+      vertical_box {
+        date_time_picker {
+          time <=> [self, :picked_time, after_write: ->(time) { p time }]
+        }
+      }
+      
+      on_closing do
+        puts 'Bye Bye'
+      end
+    }.show
   end
-}.show
+end
+
+DateTimePicker.new.launch
