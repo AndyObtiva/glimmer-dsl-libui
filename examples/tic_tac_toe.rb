@@ -41,6 +41,7 @@ class TicTacToe
                 text(23, 19) {
                   string {
                     font family: 'Arial', size: OS.mac? ? 20 : 16
+                    # data-bind string property of area text attributed string to tic tac toe board cell sign
                     string <= [@tic_tac_toe_board[row + 1, column + 1], :sign] # board model is 1-based
                   }
                 }

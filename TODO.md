@@ -2,6 +2,10 @@
 
 ## Next
 
+- Document data-binding usage in Tic Tac Toe and restore non-data-binding version just for educational purposes
+- Restore non-data-binding version of Snake just for educational purposes
+- Try to utilize more data-binding in first histogram version and utilize stable path mode instead of on_draw
+
 - Support table explicit data-binding with column mapping to model attributes per row
 
 - Support ability to attach multiple listeners (e.g. multiple `on_changed {}` on `entry`)
