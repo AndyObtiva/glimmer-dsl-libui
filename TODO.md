@@ -4,6 +4,20 @@
 
 - Support table explicit data-binding with column mapping to model attributes per row
 
+Example:
+```ruby
+        table {
+          text_column('Name')
+          text_column('Email')
+          text_column('Phone')
+          text_column('City')
+          text_column('State')
+    
+          cell_rows <=> [self, :data] # explicit data-binding (accepts array of arrays or array of models having attributes matching dehumanized column names)
+          cell_rows <=> [self, :data, column_attributes: [:name, :email, :phone, :city, :state]] # explicit data-binding
+          cell_rows <=> [self, :data, column_attributes: {'State' => :postal_code}] # explicit data-binding
+```
+
 - Support ability to attach multiple listeners (e.g. multiple `on_changed {}` on `entry`)
 
 - Support passing x and y coordinates to `image` keyword (only when over 3 args are passed)

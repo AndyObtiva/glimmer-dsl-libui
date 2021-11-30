@@ -4,6 +4,7 @@
 
 - Support `table` `cell_rows` explicit bidirectional data-binding (with `<=>` sign)
 - Improve examples/basic_table_button.rb with bidirectional data-binding for `table` `cell_rows`
+- Improve examples/form_table.rb with bidirectional data-binding for `table` `cell_rows`
 
 ## 0.4.10
 

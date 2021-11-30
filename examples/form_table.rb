@@ -3,7 +3,7 @@ require 'glimmer-dsl-libui'
 class FormTable
   include Glimmer
   
-  attr_accessor :name, :email, :phone, :city, :state, :filter_value
+  attr_accessor :data, :name, :email, :phone, :city, :state, :filter_value
   
   def initialize
     @data = [
@@ -74,10 +74,10 @@ class FormTable
             after_write: ->(filter_value) { # execute after write to self.filter_value
               @unfiltered_data ||= @data.dup
               # Unfilter first to remove any previous filters
-              @data.replace(@unfiltered_data) # affects table indirectly through implicit data-binding
+              self.data = @unfiltered_data # affects table indirectly through explicit data-binding
               # Now, apply filter if entered
               unless filter_value.empty?
-                @data.filter! do |row_data| # affects table indirectly through implicit data-binding
+                self.data = @data.filter do |row_data| # affects table indirectly through explicit data-binding
                   row_data.any? do |cell|
                     cell.to_s.downcase.include?(filter_value.downcase)
                   end
@@ -94,7 +94,7 @@ class FormTable
           text_column('City')
           text_column('State')
     
-          cell_rows @data # implicit data-binding
+          cell_rows <=> [self, :data] # explicit data-binding
           
           on_changed do |row, type, row_data|
             puts "Row #{row} #{type}: #{row_data}"
