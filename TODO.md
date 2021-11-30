@@ -13,9 +13,6 @@
 - Simplify examples/basic_table_image_text.rb to pass image data as file path directly
 - Simplify examples/basic_table_color.rb to pass image data as file path directly
 
-- Add Windows screenshots for examples/basic_scrolling_area.rb (and #scrolling-area section)
-- Add Windows screenshot for examples/button_counter.rb
-- Update Windows screenshot of examples/meta_example.rb
 - Document area inclusion of explicit and implicit path shapes
 - Demo examples/button_counter.rb at the top of the README
 
