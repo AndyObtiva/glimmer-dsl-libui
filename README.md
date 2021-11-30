@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.4.8
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.4.9
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -373,7 +373,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.4.8'
+gem 'glimmer-dsl-libui', '~> 0.4.9'
 ```
 
 Add `require 'glimmer-dsl-libui'` at the top, and then `include Glimmer` into the top-level main object for testing or into an actual class for serious usage.
@@ -8251,6 +8251,7 @@ class Snake
     @game = Model::Game.new
     @grid = Presenter::Grid.new(@game)
     @game.start
+    @keypress_queue = []
     create_gui
     register_observers
   end
@@ -8270,14 +8271,26 @@ class Snake
     end
     
     Glimmer::LibUI.timer(SNAKE_MOVE_DELAY) do
-      @game.snake.move unless @game.over?
+      unless @game.over?
+        # key press queue ensures one turn per snake move to avoid a double-turn resulting in instant death (due to snake illogically going back against itself)
+        case [@game.snake.head.orientation, @keypress_queue.shift]
+        in [:north, :right] | [:east, :down] | [:south, :left] | [:west, :up]
+          @game.snake.turn_right
+        in [:north, :left] | [:west, :down] | [:south, :right] | [:east, :up]
+          @game.snake.turn_left
+        else
+          # No Op
+        end
+        @game.snake.move
+      end
+      nil
     end
   end
   
   def create_gui
     @main_window = window {
       # data-bind window title to game score, converting it to a title string on read from the model
-      title <= [@game, :score, on_read: -> (score) {"Glimmer Snake (Score: #{@game.score})"}]
+      title <= [@game, :score, on_read: -> (score) {"Snake (Score: #{@game.score})"}]
       content_size @game.width * CELL_SIZE, @game.height * CELL_SIZE
       resizable false
       
@@ -8295,15 +8308,7 @@ class Snake
                 }
                 
                 on_key_up do |area_key_event|
-                  orientation_and_key = [@game.snake.head.orientation, area_key_event[:ext_key]]
-                  case orientation_and_key
-                  in [:north, :right] | [:east, :down] | [:south, :left] | [:west, :up]
-                    @game.snake.turn_right
-                  in [:north, :left] | [:west, :down] | [:south, :right] | [:east, :up]
-                    @game.snake.turn_left
-                  else
-                    # No Op
-                  end
+                  @keypress_queue << area_key_event[:ext_key]
                 end
               }
             end

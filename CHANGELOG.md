@@ -3,6 +3,7 @@
 ## 0.4.9
 
 - Support unidirectional data-binding on all control properties that support bidirectional data-binding
+- Fix issue in examples/snake.rb with double-turn causing instant death due to snake illogically going back against itself
 
 ## 0.4.8
 

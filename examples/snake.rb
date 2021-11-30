@@ -12,6 +12,7 @@ class Snake
     @game = Model::Game.new
     @grid = Presenter::Grid.new(@game)
     @game.start
+    @keypress_queue = []
     create_gui
     register_observers
   end
@@ -31,7 +32,19 @@ class Snake
     end
     
     Glimmer::LibUI.timer(SNAKE_MOVE_DELAY) do
-      @game.snake.move unless @game.over?
+      unless @game.over?
+        # key press queue ensures one turn per snake move to avoid a double-turn resulting in instant death (due to snake illogically going back against itself)
+        case [@game.snake.head.orientation, @keypress_queue.shift]
+        in [:north, :right] | [:east, :down] | [:south, :left] | [:west, :up]
+          @game.snake.turn_right
+        in [:north, :left] | [:west, :down] | [:south, :right] | [:east, :up]
+          @game.snake.turn_left
+        else
+          # No Op
+        end
+        @game.snake.move
+      end
+      nil
     end
   end
   
@@ -56,15 +69,7 @@ class Snake
                 }
                 
                 on_key_up do |area_key_event|
-                  orientation_and_key = [@game.snake.head.orientation, area_key_event[:ext_key]]
-                  case orientation_and_key
-                  in [:north, :right] | [:east, :down] | [:south, :left] | [:west, :up]
-                    @game.snake.turn_right
-                  in [:north, :left] | [:west, :down] | [:south, :right] | [:east, :up]
-                    @game.snake.turn_left
-                  else
-                    # No Op
-                  end
+                  @keypress_queue << area_key_event[:ext_key]
                 end
               }
             end
