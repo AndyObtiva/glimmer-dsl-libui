@@ -2,9 +2,6 @@
 
 ## Next
 
-- Restore non-data-binding version of Snake just for educational purposes
-- Try to utilize more data-binding in first histogram version and utilize stable path mode instead of on_draw
-
 - Support table explicit data-binding with column mapping to model attributes per row
 
 - Support ability to attach multiple listeners (e.g. multiple `on_changed {}` on `entry`)
