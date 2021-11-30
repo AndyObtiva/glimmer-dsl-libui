@@ -14,7 +14,6 @@
 - Simplify examples/basic_table_color.rb to pass image data as file path directly
 
 - Document area inclusion of explicit and implicit path shapes
-- Demo examples/button_counter.rb at the top of the README
 
 ## Soon
 

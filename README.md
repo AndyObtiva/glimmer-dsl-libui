@@ -36,6 +36,43 @@ Mac | Windows | Linux
 ----|---------|------
 ![glimmer-dsl-libui-mac-basic-window.png](images/glimmer-dsl-libui-mac-basic-window.png) | ![glimmer-dsl-libui-windows-basic-window.png](images/glimmer-dsl-libui-windows-basic-window.png) | ![glimmer-dsl-libui-linux-basic-window.png](images/glimmer-dsl-libui-linux-basic-window.png)
 
+Button Counter
+
+```ruby
+require 'glimmer-dsl-libui'
+
+class ButtonCounter
+  include Glimmer
+
+  attr_accessor :count
+
+  def initialize
+    @count = 0
+  end
+
+  def launch
+    window('Hello, Button!', 190, 20) {
+      vertical_box {
+        button {
+          # data-bind button text to self count, converting to string on read.
+          text <= [self, :count, on_read: ->(count) {"Count: #{count}"}]
+          
+          on_clicked do
+            self.count += 1
+          end
+        }
+      }
+    }.show
+  end
+end
+
+ButtonCounter.new.launch
+```
+
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-button-counter.png](images/glimmer-dsl-libui-mac-button-counter.png) | ![glimmer-dsl-libui-windows-button-counter.png](images/glimmer-dsl-libui-windows-button-counter.png) | ![glimmer-dsl-libui-linux-button-counter.png](images/glimmer-dsl-libui-linux-button-counter.png)
+
 Basic Table Progress Bar
 
 ```ruby
