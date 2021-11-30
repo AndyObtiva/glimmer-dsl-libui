@@ -8272,18 +8272,22 @@ class Snake
     
     Glimmer::LibUI.timer(SNAKE_MOVE_DELAY) do
       unless @game.over?
-        # key press queue ensures one turn per snake move to avoid a double-turn resulting in instant death (due to snake illogically going back against itself)
-        case [@game.snake.head.orientation, @keypress_queue.shift]
-        in [:north, :right] | [:east, :down] | [:south, :left] | [:west, :up]
-          @game.snake.turn_right
-        in [:north, :left] | [:west, :down] | [:south, :right] | [:east, :up]
-          @game.snake.turn_left
-        else
-          # No Op
-        end
+        process_queued_keypress
         @game.snake.move
       end
-      nil
+    end
+  end
+  
+  def process_queued_keypress
+    # key press queue ensures one turn per snake move to avoid a double-turn resulting in instant death (due to snake illogically going back against itself)
+    key = @keypress_queue.shift
+    case [@game.snake.head.orientation, key]
+    in [:north, :right] | [:east, :down] | [:south, :left] | [:west, :up]
+      @game.snake.turn_right
+    in [:north, :left] | [:west, :down] | [:south, :right] | [:east, :up]
+      @game.snake.turn_left
+    else
+      # No Op
     end
   end
   
