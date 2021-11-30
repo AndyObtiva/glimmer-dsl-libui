@@ -1398,7 +1398,6 @@ Data-binding supports utilizing the [MVP (Model View Presenter)](https://en.wiki
 - `search_entry`: `text`
 - `slider`: `value`
 - `spinbox`: `value`
-- `table`: `cell_rows` (explicit data-binding using `<=>` and [implicit data-binding](#table-api) by assigning value directly)
 - `time_picker`: `time`
 
 Example of bidirectional data-binding:
