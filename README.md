@@ -1398,6 +1398,7 @@ Data-binding supports utilizing the [MVP (Model View Presenter)](https://en.wiki
 - `search_entry`: `text`
 - `slider`: `value`
 - `spinbox`: `value`
+- `table`: `cell_rows` (explicit data-binding using `<=>` and [implicit data-binding](#table-api) by assigning value directly)
 - `time_picker`: `time`
 
 Example of bidirectional data-binding:
@@ -3268,7 +3269,62 @@ Mac | Windows | Linux
 ----|---------|------
 ![glimmer-dsl-libui-mac-basic-table-button.png](images/glimmer-dsl-libui-mac-basic-table-button.png) ![glimmer-dsl-libui-mac-basic-table-button-deleted.png](images/glimmer-dsl-libui-mac-basic-table-button-deleted.png) | ![glimmer-dsl-libui-windows-basic-table-button.png](images/glimmer-dsl-libui-windows-basic-table-button.png) ![glimmer-dsl-libui-windows-basic-table-button-deleted.png](images/glimmer-dsl-libui-windows-basic-table-button-deleted.png) | ![glimmer-dsl-libui-linux-basic-table-button.png](images/glimmer-dsl-libui-linux-basic-table-button.png) ![glimmer-dsl-libui-linux-basic-table-button-deleted.png](images/glimmer-dsl-libui-linux-basic-table-button-deleted.png)
 
-New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version (with explicit [data-binding](#data-binding)):
+
+```ruby
+# frozen_string_literal: true
+
+require 'glimmer-dsl-libui'
+
+class BasicTableButton
+  include Glimmer
+  
+  attr_accessor :data
+  
+  def initialize
+    @data = [
+      %w[cat meow delete],
+      %w[dog woof delete],
+      %w[chicken cock-a-doodle-doo delete],
+      %w[horse neigh delete],
+      %w[cow moo delete]
+    ]
+  end
+  
+  def launch
+    window('Animal sounds', 400, 200) {
+      horizontal_box {
+        table {
+          text_column('Animal')
+          text_column('Description')
+          button_column('Action') {
+            on_clicked do |row|
+              # Option 1: direct data deletion is the simpler solution
+#               @data.delete_at(row) # automatically deletes actual table row due to explicit data-binding
+              
+              # Option 2: cloning only to demonstrate table row deletion upon explicit setting of data attribute (cloning is not recommended beyond demonstrating this point)
+              new_data = @data.clone
+              new_data.delete_at(row)
+              self.data = new_data # automatically loses deleted table row due to explicit data-binding
+            end
+          }
+    
+          cell_rows <=> [self, :data] # explicit data-binding of table cell_rows to self.data
+          
+          on_changed do |row, type, row_data|
+            puts "Row #{row} #{type}: #{row_data}"
+            $stdout.flush
+          end
+        }
+      }
+    }.show
+  end
+end
+
+BasicTableButton.new.launch
+```
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 2 (with implicit [data-binding](#data-binding)):
 
 ```ruby
 require 'glimmer-dsl-libui'
@@ -6449,7 +6505,7 @@ require 'glimmer-dsl-libui'
 class FormTable
   include Glimmer
   
-  attr_accessor :name, :email, :phone, :city, :state, :filter_value
+  attr_accessor :data, :name, :email, :phone, :city, :state, :filter_value
   
   def initialize
     @data = [
@@ -6520,10 +6576,10 @@ class FormTable
             after_write: ->(filter_value) { # execute after write to self.filter_value
               @unfiltered_data ||= @data.dup
               # Unfilter first to remove any previous filters
-              @data.replace(@unfiltered_data) # affects table indirectly through implicit data-binding
+              self.data = @unfiltered_data # affects table indirectly through explicit data-binding
               # Now, apply filter if entered
               unless filter_value.empty?
-                @data.filter! do |row_data| # affects table indirectly through implicit data-binding
+                self.data = @data.filter do |row_data| # affects table indirectly through explicit data-binding
                   row_data.any? do |cell|
                     cell.to_s.downcase.include?(filter_value.downcase)
                   end
@@ -6540,7 +6596,7 @@ class FormTable
           text_column('City')
           text_column('State')
     
-          cell_rows @data # implicit data-binding
+          cell_rows <=> [self, :data] # explicit data-binding
           
           on_changed do |row, type, row_data|
             puts "Row #{row} #{type}: #{row_data}"
@@ -9115,7 +9171,7 @@ These features have been planned or suggested. You might see them in a future ve
     is fine, but please isolate to its own commit so I can cherry-pick
     around it.
 
-Note that the latest development sometimes takes place in [development](https://github.com/AndyObtiva/glimmer-dsl-libui/tree/development) branch (which is deleted once merged back to [master](https://github.com/AndyObtiva/glimmer-dsl-libui)).
+Note that the latest development sometimes takes place in the [development](https://github.com/AndyObtiva/glimmer-dsl-libui/tree/development) branch (usually deleted once merged back to [master](https://github.com/AndyObtiva/glimmer-dsl-libui)).
 
 ## Contributors
 

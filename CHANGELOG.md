@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.4.9
+
+- Support unidirectional data-binding on all control properties that support bidirectional data-binding
+
 ## 0.4.8
 
 - Support `checkbox` `checked` bidirectional data-binding (with `<=>` sign)

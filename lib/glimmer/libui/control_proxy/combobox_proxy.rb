@@ -64,8 +64,7 @@ module Glimmer
         alias set_selected_item selected_item
         alias selected_item= selected_item
         
-        def data_bind(property, model_binding)
-          super # model to view data-binding
+        def data_bind_write(property, model_binding)
           case property
           when 'selected'
             handle_listener('on_selected') { model_binding.call(selected) }

@@ -28,8 +28,7 @@ module Glimmer
       #
       # Follows the Proxy Design Pattern
       class SliderProxy < ControlProxy
-        def data_bind(property, model_binding)
-          super
+        def data_bind_write(property, model_binding)
           handle_listener('on_changed') { model_binding.call(value) } if property == 'value'
         end
       end

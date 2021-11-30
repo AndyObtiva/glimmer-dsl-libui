@@ -65,7 +65,11 @@ module Glimmer
           super
         end
         
-        def data_bind(property, model_binding)
+        def data_bind_read(property, model_binding)
+          # No Op
+        end
+        
+        def data_bind_write(property, model_binding)
           handle_listener('on_changed') { model_binding.call(font) } if property == 'font'
         end
       end

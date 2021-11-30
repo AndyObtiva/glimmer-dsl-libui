@@ -2,9 +2,7 @@
 
 ## Next
 
-- Support `table` `cell_rows` bidirectional data-binding (with `<=>` sign)
-- Improve examples/form_table.rb with bidirectional data-binding for `table` `cell_rows`
-- Document difference between implicit data-binding and explicit data-binding
+- Support table explicit data-binding with column mapping to model attributes per row
 
 - Support ability to attach multiple listeners (e.g. multiple `on_changed {}` on `entry`)
 
