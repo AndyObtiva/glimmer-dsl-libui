@@ -85,6 +85,7 @@ module Glimmer
           else
             if rows != @cell_rows
               @cell_rows = rows
+              @cell_rows = @cell_rows.to_a if @cell_rows.is_a?(Enumerator)
               @last_cell_rows ||= array_deep_clone(@cell_rows)
               @cell_rows_observer ||= Glimmer::DataBinding::Observer.proc do |new_cell_rows|
                 if @cell_rows.size < @last_cell_rows.size && @last_cell_rows.include_all?(*@cell_rows)
@@ -149,13 +150,14 @@ module Glimmer
           model_attribute_observer = model_attribute_observer_registration = nil
           model_attribute_observer = Glimmer::DataBinding::Observer.proc do
             new_value = model_binding.evaluate_property
-            if model_binding.binding_options[:column_attributes]
+            new_value = new_value.to_a if new_value.is_a?(Enumerator)
+            if model_binding.binding_options[:column_attributes] || (!new_value.empty? && !new_value.first.is_a?(Array))
               @model_attribute_array_observer_registration&.deregister
               @model_attribute_array_observer_registration = model_attribute_observer.observe(new_value, @column_attributes)
               model_attribute_observer.add_dependent(model_attribute_observer_registration => @model_attribute_array_observer_registration)
             end
             # TODO look if multiple notifications are happening as a result of observing array and observing model binding
-            send("#{property}=", new_value) unless send(property) == new_value
+            send("#{property}=", new_value) unless @last_cell_rows == new_value
           end
           model_attribute_observer_registration = model_attribute_observer.observe(model_binding)
           model_attribute_observer.call # initial update
