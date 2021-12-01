@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.4.9
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.4.10
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -35,43 +35,6 @@ window('hello world').show
 Mac | Windows | Linux
 ----|---------|------
 ![glimmer-dsl-libui-mac-basic-window.png](images/glimmer-dsl-libui-mac-basic-window.png) | ![glimmer-dsl-libui-windows-basic-window.png](images/glimmer-dsl-libui-windows-basic-window.png) | ![glimmer-dsl-libui-linux-basic-window.png](images/glimmer-dsl-libui-linux-basic-window.png)
-
-Button Counter
-
-```ruby
-require 'glimmer-dsl-libui'
-
-class ButtonCounter
-  include Glimmer
-
-  attr_accessor :count
-
-  def initialize
-    @count = 0
-  end
-
-  def launch
-    window('Hello, Button!', 190, 20) {
-      vertical_box {
-        button {
-          # data-bind button text to self count, converting to string on read.
-          text <= [self, :count, on_read: ->(count) {"Count: #{count}"}]
-          
-          on_clicked do
-            self.count += 1
-          end
-        }
-      }
-    }.show
-  end
-end
-
-ButtonCounter.new.launch
-```
-
-Mac | Windows | Linux
-----|---------|------
-![glimmer-dsl-libui-mac-button-counter.png](images/glimmer-dsl-libui-mac-button-counter.png) | ![glimmer-dsl-libui-windows-button-counter.png](images/glimmer-dsl-libui-windows-button-counter.png) | ![glimmer-dsl-libui-linux-button-counter.png](images/glimmer-dsl-libui-linux-button-counter.png)
 
 Basic Table Progress Bar
 
@@ -304,6 +267,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
       - [Button Counter](#button-counter)
       - [Color The Circles](#color-the-circles)
       - [Control Gallery](#control-gallery)
+      - [CPU Percentage](#cpu-percentage)
       - [Custom Draw Text](#custom-draw-text)
       - [Dynamic Area](#dynamic-area)
       - [Editable Column Table](#editable-column-table)
@@ -410,7 +374,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.4.9'
+gem 'glimmer-dsl-libui', '~> 0.4.10'
 ```
 
 Add `require 'glimmer-dsl-libui'` at the top, and then `include Glimmer` into the top-level main object for testing or into an actual class for serious usage.
@@ -664,11 +628,11 @@ class FormTable
   
   def initialize
     @data = [
-      ['Lisa Sky', 'lisa@sky.com', '720-523-4329', 'Denver', 'CO', '80014'],
-      ['Jordan Biggins', 'jordan@biggins.com', '617-528-5399', 'Boston', 'MA', '02101'],
-      ['Mary Glass', 'mary@glass.com', '847-589-8788', 'Elk Grove Village', 'IL', '60007'],
-      ['Darren McGrath', 'darren@mcgrath.com', '206-539-9283', 'Seattle', 'WA', '98101'],
-      ['Melody Hanheimer', 'melody@hanheimer.com', '213-493-8274', 'Los Angeles', 'CA', '90001'],
+      ['Lisa Sky', 'lisa@sky.com', '720-523-4329', 'Denver', 'CO'],
+      ['Jordan Biggins', 'jordan@biggins.com', '617-528-5399', 'Boston', 'MA'],
+      ['Mary Glass', 'mary@glass.com', '847-589-8788', 'Elk Grove Village', 'IL'],
+      ['Darren McGrath', 'darren@mcgrath.com', '206-539-9283', 'Seattle', 'WA'],
+      ['Melody Hanheimer', 'melody@hanheimer.com', '213-493-8274', 'Los Angeles', 'CA'],
     ]
   end
   
@@ -835,9 +799,9 @@ Check [examples/dynamic_area.rb](#dynamic-area) for a more detailed semi-declara
 - `scroll_to(x as Numeric, y as Numeric, width as Numeric = main_window.width, height as Numeric = main_window.height)`: scrolls to `x`/`y` location with `width` and `height` viewport size.
 - `set_size(width as Numeric, height as Numeric)`: set size of scrolling area, which must must exceed that of visible viewport in order for scrolling to be enabled.
 
-Mac | Windows | Linux
-----|---------|------
-![glimmer-dsl-libui-mac-dynamic-area.png](images/glimmer-dsl-libui-mac-basic-scrolling-area.png) ![glimmer-dsl-libui-mac-dynamic-area-updated.png](images/glimmer-dsl-libui-mac-basic-scrolling-area-scrolled.png) | ![glimmer-dsl-libui-windows-dynamic-area.png](images/glimmer-dsl-libui-windows-basic-scrolling-area.png) ![glimmer-dsl-libui-windows-dynamic-area-updated.png](images/glimmer-dsl-libui-windows-basic-scrolling-area-scrolled.png) | ![glimmer-dsl-libui-linux-dynamic-area.png](images/glimmer-dsl-libui-linux-basic-scrolling-area.png) ![glimmer-dsl-libui-linux-dynamic-area-updated.png](images/glimmer-dsl-libui-linux-basic-scrolling-area-scrolled.png)
+Mac |Linux
+----|-----
+![glimmer-dsl-libui-mac-dynamic-area.png](images/glimmer-dsl-libui-mac-basic-scrolling-area.png) ![glimmer-dsl-libui-mac-dynamic-area-updated.png](images/glimmer-dsl-libui-mac-basic-scrolling-area-scrolled.png) | ![glimmer-dsl-libui-linux-dynamic-area.png](images/glimmer-dsl-libui-linux-basic-scrolling-area.png) ![glimmer-dsl-libui-linux-dynamic-area-updated.png](images/glimmer-dsl-libui-linux-basic-scrolling-area-scrolled.png)
 
 Check [examples/basic_scrolling_area.rb](#basic-scrolling-area) for a more detailed example.
 
@@ -1435,6 +1399,7 @@ Data-binding supports utilizing the [MVP (Model View Presenter)](https://en.wiki
 - `search_entry`: `text`
 - `slider`: `value`
 - `spinbox`: `value`
+- `table`: `cell_rows` (explicit data-binding by using `<=>` and [implicit data-binding](#table-api) by assigning value directly)
 - `time_picker`: `time`
 
 Example of bidirectional data-binding:
@@ -3518,9 +3483,9 @@ Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/
 ruby -r glimmer-dsl-libui -e "require 'examples/basic_scrolling_area'"
 ```
 
-Mac | Windows | Linux
-----|---------|------
-![glimmer-dsl-libui-mac-dynamic-area.png](images/glimmer-dsl-libui-mac-basic-scrolling-area.png) ![glimmer-dsl-libui-mac-dynamic-area-updated.png](images/glimmer-dsl-libui-mac-basic-scrolling-area-scrolled.png) | ![glimmer-dsl-libui-windows-dynamic-area.png](images/glimmer-dsl-libui-windows-basic-scrolling-area.png) ![glimmer-dsl-libui-windows-dynamic-area-updated.png](images/glimmer-dsl-libui-windows-basic-scrolling-area-scrolled.png) | ![glimmer-dsl-libui-linux-dynamic-area.png](images/glimmer-dsl-libui-linux-basic-scrolling-area.png) ![glimmer-dsl-libui-linux-dynamic-area-updated.png](images/glimmer-dsl-libui-linux-basic-scrolling-area-scrolled.png)
+Mac | Linux
+----|------
+![glimmer-dsl-libui-mac-dynamic-area.png](images/glimmer-dsl-libui-mac-basic-scrolling-area.png) ![glimmer-dsl-libui-mac-dynamic-area-updated.png](images/glimmer-dsl-libui-mac-basic-scrolling-area-scrolled.png) | ![glimmer-dsl-libui-linux-dynamic-area.png](images/glimmer-dsl-libui-linux-basic-scrolling-area.png) ![glimmer-dsl-libui-linux-dynamic-area-updated.png](images/glimmer-dsl-libui-linux-basic-scrolling-area-scrolled.png)
 
 New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
 
@@ -4857,9 +4822,9 @@ Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/
 ruby -r glimmer-dsl-libui -e "require 'examples/button_counter'"
 ```
 
-Mac | Windows | Linux
-----|---------|------
-![glimmer-dsl-libui-mac-button-counter.png](images/glimmer-dsl-libui-mac-button-counter.png) | ![glimmer-dsl-libui-windows-button-counter.png](images/glimmer-dsl-libui-windows-button-counter.png) | ![glimmer-dsl-libui-linux-button-counter.png](images/glimmer-dsl-libui-linux-button-counter.png)
+Mac | Linux
+----|------
+![glimmer-dsl-libui-mac-button-counter.png](images/glimmer-dsl-libui-mac-button-counter.png) | ![glimmer-dsl-libui-linux-button-counter.png](images/glimmer-dsl-libui-linux-button-counter.png)
 
 New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
 
@@ -5521,6 +5486,71 @@ MAIN_WINDOW = window('Control Gallery', 600, 500) {
 }
 
 MAIN_WINDOW.show
+```
+
+#### CPU Percentage
+
+This example shows CPU usage percentage second by second.
+
+Note that it is highly dependent on low-level OS terminal commands, so if anything changes in their output formatting, the code could break. Please report any issues you might encounter.
+
+[examples/cpu_percentage.rb](examples/cpu_percentage.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/cpu_percentage.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/cpu_percentage'"
+```
+
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-cpu-percentage.png](images/glimmer-dsl-libui-mac-cpu-percentage.png) | ![glimmer-dsl-libui-windows-cpu-percentage.png](images/glimmer-dsl-libui-windows-cpu-percentage.png) | ![glimmer-dsl-libui-linux-cpu-percentage.png](images/glimmer-dsl-libui-linux-cpu-percentage.png)
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+require 'glimmer-dsl-libui'
+require 'bigdecimal'
+
+include Glimmer
+
+data = [
+  ['CPU', '0%', 0],
+]
+
+Glimmer::LibUI.timer(1) do
+  cpu_percentage_value = nil
+  if OS.windows?
+    cpu_percentage_raw_value = `wmic cpu get loadpercentage`
+    cpu_percentage_value = cpu_percentage_raw_value.split("\n")[2].to_i
+  elsif OS.mac?
+    cpu_percentage_value = `ps -A -o %cpu | awk '{s+=$1} END {print s}'`.to_i
+  elsif OS.linux?
+    stats = `top -n 1`
+    idle_percentage = stats.split("\n")[2].match(/ni,.* (.*) .*id/)[1]
+    cpu_percentage_value = (BigDecimal(100) - BigDecimal(idle_percentage)).to_i
+  end
+  data[0][1] = "#{cpu_percentage_value}%"
+  data[0][2] = cpu_percentage_value
+end
+
+window('CPU Percentage', 400, 200) {
+  vertical_box {
+    table {
+      text_column('Name')
+      text_column('Value')
+      progress_bar_column('Percentage')
+
+      cell_rows data # implicit data-binding
+    }
+  }
+}.show
 ```
 
 #### Custom Draw Text
@@ -6284,11 +6314,11 @@ class FormTable
   
   def initialize
     @data = [
-      ['Lisa Sky', 'lisa@sky.com', '720-523-4329', 'Denver', 'CO', '80014'],
-      ['Jordan Biggins', 'jordan@biggins.com', '617-528-5399', 'Boston', 'MA', '02101'],
-      ['Mary Glass', 'mary@glass.com', '847-589-8788', 'Elk Grove Village', 'IL', '60007'],
-      ['Darren McGrath', 'darren@mcgrath.com', '206-539-9283', 'Seattle', 'WA', '98101'],
-      ['Melody Hanheimer', 'melody@hanheimer.com', '213-493-8274', 'Los Angeles', 'CA', '90001'],
+      ['Lisa Sky', 'lisa@sky.com', '720-523-4329', 'Denver', 'CO'],
+      ['Jordan Biggins', 'jordan@biggins.com', '617-528-5399', 'Boston', 'MA'],
+      ['Mary Glass', 'mary@glass.com', '847-589-8788', 'Elk Grove Village', 'IL'],
+      ['Darren McGrath', 'darren@mcgrath.com', '206-539-9283', 'Seattle', 'WA'],
+      ['Melody Hanheimer', 'melody@hanheimer.com', '213-493-8274', 'Los Angeles', 'CA'],
     ]
   end
   
@@ -6393,11 +6423,11 @@ require 'glimmer-dsl-libui'
 include Glimmer
 
 data = [
-  ['Lisa Sky', 'lisa@sky.com', '720-523-4329', 'Denver', 'CO', '80014'],
-  ['Jordan Biggins', 'jordan@biggins.com', '617-528-5399', 'Boston', 'MA', '02101'],
-  ['Mary Glass', 'mary@glass.com', '847-589-8788', 'Elk Grove Village', 'IL', '60007'],
-  ['Darren McGrath', 'darren@mcgrath.com', '206-539-9283', 'Seattle', 'WA', '98101'],
-  ['Melody Hanheimer', 'melody@hanheimer.com', '213-493-8274', 'Los Angeles', 'CA', '90001'],
+  ['Lisa Sky', 'lisa@sky.com', '720-523-4329', 'Denver', 'CO'],
+  ['Jordan Biggins', 'jordan@biggins.com', '617-528-5399', 'Boston', 'MA'],
+  ['Mary Glass', 'mary@glass.com', '847-589-8788', 'Elk Grove Village', 'IL'],
+  ['Darren McGrath', 'darren@mcgrath.com', '206-539-9283', 'Seattle', 'WA'],
+  ['Melody Hanheimer', 'melody@hanheimer.com', '213-493-8274', 'Los Angeles', 'CA'],
 ]
 
 window('Contacts', 600, 600) { |w|

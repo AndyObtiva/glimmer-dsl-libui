@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.4.10
+
+- examples/cpu_percentage.rb
+- Bring back non-data-binding versions of examples/snake.rb and examples/tic_tac_toe.rb for educational purposes
+
 ## 0.4.9
 
 - Support unidirectional data-binding on all control properties that support bidirectional data-binding
