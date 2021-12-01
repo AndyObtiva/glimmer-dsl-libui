@@ -76,7 +76,7 @@ class FormTable
             after_write: ->(filter_value) { # execute after write to self.filter_value
               @unfiltered_contacts ||= @contacts.dup
               # Unfilter first to remove any previous filters
-              self.contacts = @unfiltered_contacts # affects table indirectly through explicit data-binding
+              self.contacts = @unfiltered_contacts.dup # affects table indirectly through explicit data-binding
               # Now, apply filter if entered
               unless filter_value.empty?
                 self.contacts = @contacts.filter do |contact| # affects table indirectly through explicit data-binding
@@ -96,7 +96,7 @@ class FormTable
           text_column('City')
           text_column('State')
     
-          cell_rows <=> [self, :contacts, on_read: ->(cs) {cs.map {|c| c.each_entry.to_a }}, on_write: ->(d) {ds.map { |d| Contact.new(*d) }}] # explicit data-binding
+          cell_rows <=> [self, :contacts] # explicit data-binding
           
           on_changed do |row, type, row_data|
             puts "Row #{row} #{type}: #{row_data}"

@@ -3,6 +3,7 @@
 ## 0.4.11
 
 - Support `table` `cell_rows` explicit bidirectional data-binding (with `<=>` sign)
+- Support `table` `cell_rows` explicit bidirectional data-binding with model-based rows (not `Array`s of column cells) by expecting model attributes to match underscored column names
 - Improve examples/basic_table_button.rb with bidirectional data-binding for `table` `cell_rows`
 - Improve examples/form_table.rb with bidirectional data-binding for `table` `cell_rows`
 - Ensure examples/meta_example.rb has examples sorted

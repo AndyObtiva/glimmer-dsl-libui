@@ -123,6 +123,7 @@ module Glimmer
         
         def expand(cell_rows)
           cell_rows.to_a.map do |row|
+            row = @column_attributes.map {|attribute| row.send(attribute) } if @column_attributes&.any? && !row.is_a?(Array)
             row.flatten(1)
           end
         end
@@ -140,12 +141,19 @@ module Glimmer
         
         def data_bind_read(property, model_binding)
           # TODO apply converters of models to arrays in cell_rows with column_attribute
+          @column_attributes = columns.map(&:name).map(&:underscore)
+          model_attribute_observer = model_attribute_observer_registration = nil
           model_attribute_observer = Glimmer::DataBinding::Observer.proc do
             new_value = model_binding.evaluate_property
+            @model_attribute_array_observer_registration&.deregister
+            @model_attribute_array_observer_registration = model_attribute_observer.observe(new_value, @column_attributes)
+            model_attribute_observer.add_dependent(model_attribute_observer_registration => @model_attribute_array_observer_registration)
+            # TODO look if multiple notifications are happening as a result of observing array and observing model binding
             send("#{property}=", new_value) unless send(property) == new_value
           end
-          model_attribute_observer.observe(model_binding)
+          model_attribute_observer_registration = model_attribute_observer.observe(model_binding)
           model_attribute_observer.call # initial update
+          data_binding_model_attribute_observer_registrations << model_attribute_observer_registration
           model_attribute_observer
         end
         

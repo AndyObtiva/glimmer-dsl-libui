@@ -30,6 +30,7 @@ require 'color'
 require 'os'
 require 'array_include_methods'
 require 'facets/hash/stringify_keys'
+require 'facets/string/underscore'
 require 'libui'
 
 # Internal requires

@@ -46,9 +46,8 @@ module Glimmer
           new_value = model_binding.evaluate_property
           send("#{property}=", new_value) unless send(property) == new_value
         end
-        model_attribute_observer.observe(model_binding)
+        observer_registration = model_attribute_observer.observe(model_binding)
         model_attribute_observer.call # initial update
-        observer_registration = model_attribute_observer.registration_for(model_binding)
         data_binding_model_attribute_observer_registrations << observer_registration
         observer_registration
       end
