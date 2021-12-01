@@ -414,7 +414,17 @@ Or install via Bundler `Gemfile`:
 gem 'glimmer-dsl-libui', '~> 0.4.10'
 ```
 
-Add `require 'glimmer-dsl-libui'` at the top, and then `include Glimmer` into the top-level main object for testing or into an actual class for serious usage.
+Test that installation worked by running the [Meta-Example](#examples):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/meta_example'"
+```
+
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-meta-example.png](images/glimmer-dsl-libui-mac-meta-example.png) | ![glimmer-dsl-libui-windows-meta-example.png](images/glimmer-dsl-libui-windows-meta-example.png) | ![glimmer-dsl-libui-linux-meta-example.png](images/glimmer-dsl-libui-linux-meta-example.png)
+
+Now to use [glimmer-dsl-libui](https://rubygems.org/gems/glimmer-dsl-libui), add `require 'glimmer-dsl-libui'` at the top, and then `include Glimmer` into the top-level main object for testing or into an actual class for serious usage.
 
 Example (you may copy/paste in [`girb`](#girb-glimmer-irb)):
 
