@@ -36,6 +36,43 @@ Mac | Windows | Linux
 ----|---------|------
 ![glimmer-dsl-libui-mac-basic-window.png](images/glimmer-dsl-libui-mac-basic-window.png) | ![glimmer-dsl-libui-windows-basic-window.png](images/glimmer-dsl-libui-windows-basic-window.png) | ![glimmer-dsl-libui-linux-basic-window.png](images/glimmer-dsl-libui-linux-basic-window.png)
 
+Button Counter
+
+```ruby
+require 'glimmer-dsl-libui'
+
+class ButtonCounter
+  include Glimmer
+
+  attr_accessor :count
+
+  def initialize
+    @count = 0
+  end
+
+  def launch
+    window('Hello, Button!', 190, 20) {
+      vertical_box {
+        button {
+          # data-bind button text to self count, converting to string on read.
+          text <= [self, :count, on_read: ->(count) {"Count: #{count}"}]
+          
+          on_clicked do
+            self.count += 1
+          end
+        }
+      }
+    }.show
+  end
+end
+
+ButtonCounter.new.launch
+```
+
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-button-counter.png](images/glimmer-dsl-libui-mac-button-counter.png) | ![glimmer-dsl-libui-windows-button-counter.png](images/glimmer-dsl-libui-windows-button-counter.png) | ![glimmer-dsl-libui-linux-button-counter.png](images/glimmer-dsl-libui-linux-button-counter.png)
+
 Basic Table Progress Bar
 
 ```ruby
@@ -799,9 +836,9 @@ Check [examples/dynamic_area.rb](#dynamic-area) for a more detailed semi-declara
 - `scroll_to(x as Numeric, y as Numeric, width as Numeric = main_window.width, height as Numeric = main_window.height)`: scrolls to `x`/`y` location with `width` and `height` viewport size.
 - `set_size(width as Numeric, height as Numeric)`: set size of scrolling area, which must must exceed that of visible viewport in order for scrolling to be enabled.
 
-Mac |Linux
-----|-----
-![glimmer-dsl-libui-mac-dynamic-area.png](images/glimmer-dsl-libui-mac-basic-scrolling-area.png) ![glimmer-dsl-libui-mac-dynamic-area-updated.png](images/glimmer-dsl-libui-mac-basic-scrolling-area-scrolled.png) | ![glimmer-dsl-libui-linux-dynamic-area.png](images/glimmer-dsl-libui-linux-basic-scrolling-area.png) ![glimmer-dsl-libui-linux-dynamic-area-updated.png](images/glimmer-dsl-libui-linux-basic-scrolling-area-scrolled.png)
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-dynamic-area.png](images/glimmer-dsl-libui-mac-basic-scrolling-area.png) ![glimmer-dsl-libui-mac-dynamic-area-updated.png](images/glimmer-dsl-libui-mac-basic-scrolling-area-scrolled.png) | ![glimmer-dsl-libui-windows-dynamic-area.png](images/glimmer-dsl-libui-windows-basic-scrolling-area.png) ![glimmer-dsl-libui-windows-dynamic-area-updated.png](images/glimmer-dsl-libui-windows-basic-scrolling-area-scrolled.png) | ![glimmer-dsl-libui-linux-dynamic-area.png](images/glimmer-dsl-libui-linux-basic-scrolling-area.png) ![glimmer-dsl-libui-linux-dynamic-area-updated.png](images/glimmer-dsl-libui-linux-basic-scrolling-area-scrolled.png)
 
 Check [examples/basic_scrolling_area.rb](#basic-scrolling-area) for a more detailed example.
 
@@ -1399,7 +1436,6 @@ Data-binding supports utilizing the [MVP (Model View Presenter)](https://en.wiki
 - `search_entry`: `text`
 - `slider`: `value`
 - `spinbox`: `value`
-- `table`: `cell_rows` (explicit data-binding by using `<=>` and [implicit data-binding](#table-api) by assigning value directly)
 - `time_picker`: `time`
 
 Example of bidirectional data-binding:
@@ -3483,9 +3519,9 @@ Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/
 ruby -r glimmer-dsl-libui -e "require 'examples/basic_scrolling_area'"
 ```
 
-Mac | Linux
-----|------
-![glimmer-dsl-libui-mac-dynamic-area.png](images/glimmer-dsl-libui-mac-basic-scrolling-area.png) ![glimmer-dsl-libui-mac-dynamic-area-updated.png](images/glimmer-dsl-libui-mac-basic-scrolling-area-scrolled.png) | ![glimmer-dsl-libui-linux-dynamic-area.png](images/glimmer-dsl-libui-linux-basic-scrolling-area.png) ![glimmer-dsl-libui-linux-dynamic-area-updated.png](images/glimmer-dsl-libui-linux-basic-scrolling-area-scrolled.png)
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-dynamic-area.png](images/glimmer-dsl-libui-mac-basic-scrolling-area.png) ![glimmer-dsl-libui-mac-dynamic-area-updated.png](images/glimmer-dsl-libui-mac-basic-scrolling-area-scrolled.png) | ![glimmer-dsl-libui-windows-dynamic-area.png](images/glimmer-dsl-libui-windows-basic-scrolling-area.png) ![glimmer-dsl-libui-windows-dynamic-area-updated.png](images/glimmer-dsl-libui-windows-basic-scrolling-area-scrolled.png) | ![glimmer-dsl-libui-linux-dynamic-area.png](images/glimmer-dsl-libui-linux-basic-scrolling-area.png) ![glimmer-dsl-libui-linux-dynamic-area-updated.png](images/glimmer-dsl-libui-linux-basic-scrolling-area-scrolled.png)
 
 New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
 
@@ -4822,9 +4858,9 @@ Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/
 ruby -r glimmer-dsl-libui -e "require 'examples/button_counter'"
 ```
 
-Mac | Linux
-----|------
-![glimmer-dsl-libui-mac-button-counter.png](images/glimmer-dsl-libui-mac-button-counter.png) | ![glimmer-dsl-libui-linux-button-counter.png](images/glimmer-dsl-libui-linux-button-counter.png)
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-button-counter.png](images/glimmer-dsl-libui-mac-button-counter.png) | ![glimmer-dsl-libui-windows-button-counter.png](images/glimmer-dsl-libui-windows-button-counter.png) | ![glimmer-dsl-libui-linux-button-counter.png](images/glimmer-dsl-libui-linux-button-counter.png)
 
 New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
 
