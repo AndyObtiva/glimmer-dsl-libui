@@ -141,7 +141,11 @@ module Glimmer
         
         def data_bind_read(property, model_binding)
           # TODO apply converters of models to arrays in cell_rows with column_attribute
-          @column_attributes = columns.map(&:name).map(&:underscore)
+          if model_binding.binding_options[:column_attributes] && model_binding.binding_options[:column_attributes].is_a?(Array)
+            @column_attributes = model_binding.binding_options[:column_attributes]
+          else
+            @column_attributes = columns.map(&:name).map(&:underscore)
+          end
           model_attribute_observer = model_attribute_observer_registration = nil
           model_attribute_observer = Glimmer::DataBinding::Observer.proc do
             new_value = model_binding.evaluate_property
@@ -158,12 +162,8 @@ module Glimmer
         end
         
         def data_bind_write(property, model_binding)
-          if property == 'cell_rows'
-            handle_listener('on_edited') do
-              # TODO ensure updating model objects if cell_rows were not arrays
-              model_binding.call(cell_rows)
-            end
-          end
+          # TODO ensure writing is happening to models if rows are not arrays
+          handle_listener('on_edited') { model_binding.call(cell_rows) } if property == 'cell_rows'
         end
         
         def array_deep_clone(array_or_object)

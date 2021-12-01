@@ -2,21 +2,8 @@
 
 ## Next
 
-- Support table explicit data-binding with column mapping to model attributes per row
-
-Example:
-```ruby
-        table {
-          text_column('Name')
-          text_column('Email')
-          text_column('Phone')
-          text_column('City')
-          text_column('State')
-    
-          cell_rows <=> [self, :data] # explicit data-binding (accepts array of arrays or array of models having attributes matching dehumanized column names)
-          cell_rows <=> [self, :data, column_attributes: [:name, :email, :phone, :city, :state]] # explicit data-binding
-          cell_rows <=> [self, :data, column_attributes: {'State' => :postal_code}] # explicit data-binding
-```
+- Support specifying `column_attributes` as `Hash` map in `table` `cell_rows` explicit bidirectional data-binding with model-based rows (not `Array`s of column cells)
+- Ensure `table` data-binding writing is happening to models if rows are not arrays
 
 - Support ability to attach multiple listeners (e.g. multiple `on_changed {}` on `entry`)
 
