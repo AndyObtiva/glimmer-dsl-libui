@@ -1,19 +1,25 @@
-# frozen_string_literal: true
-
 require 'glimmer-dsl-libui'
 
 class BasicTableButton
+  BasicAnimal = Struct.new(:name, :sound)
+  
+  class Animal < BasicAnimal
+    def action
+      'delete'
+    end
+  end
+  
   include Glimmer
   
-  attr_accessor :data
+  attr_accessor :animals
   
   def initialize
-    @data = [
-      %w[cat meow delete],
-      %w[dog woof delete],
-      %w[chicken cock-a-doodle-doo delete],
-      %w[horse neigh delete],
-      %w[cow moo delete]
+    @animals = [
+      Animal.new('cat', 'meow'),
+      Animal.new('dog', 'woof'),
+      Animal.new('chicken', 'cock-a-doodle-doo'),
+      Animal.new('horse', 'neigh'),
+      Animal.new('cow', 'moo'),
     ]
   end
   
@@ -26,17 +32,19 @@ class BasicTableButton
           button_column('Action') {
             on_clicked do |row|
               # Option 1: direct data deletion is the simpler solution
-#               @data.delete_at(row) # automatically deletes actual table row due to explicit data-binding
+#               @animals.delete_at(row) # automatically deletes actual table row due to explicit data-binding
               
-              # Option 2: cloning only to demonstrate table row deletion upon explicit setting of data attribute (cloning is not recommended beyond demonstrating this point)
-              new_data = @data.clone
-              new_data.delete_at(row)
-              self.data = new_data # automatically loses deleted table row due to explicit data-binding
+              # Option 2: cloning only to demonstrate table row deletion upon explicit setting of animals attribute (cloning is not recommended beyond demonstrating this point)
+              new_animals = @animals.clone
+              new_animals.delete_at(row)
+              self.animals = new_animals # automatically loses deleted table row due to explicit data-binding
             end
           }
     
-          cell_rows <=> [self, :data] # explicit data-binding of table cell_rows to self.data
           
+          cell_rows <= [self, :animals, column_attributes: {'Animal' => :name, 'Description' => :sound}]
+          
+          # explicit unidirectional data-binding of table cell_rows to self.animals
           on_changed do |row, type, row_data|
             puts "Row #{row} #{type}: #{row_data}"
             $stdout.flush

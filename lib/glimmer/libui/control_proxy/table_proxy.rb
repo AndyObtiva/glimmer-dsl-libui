@@ -149,9 +149,11 @@ module Glimmer
           model_attribute_observer = model_attribute_observer_registration = nil
           model_attribute_observer = Glimmer::DataBinding::Observer.proc do
             new_value = model_binding.evaluate_property
-            @model_attribute_array_observer_registration&.deregister
-            @model_attribute_array_observer_registration = model_attribute_observer.observe(new_value, @column_attributes)
-            model_attribute_observer.add_dependent(model_attribute_observer_registration => @model_attribute_array_observer_registration)
+            if model_binding.binding_options[:column_attributes]
+              @model_attribute_array_observer_registration&.deregister
+              @model_attribute_array_observer_registration = model_attribute_observer.observe(new_value, @column_attributes)
+              model_attribute_observer.add_dependent(model_attribute_observer_registration => @model_attribute_array_observer_registration)
+            end
             # TODO look if multiple notifications are happening as a result of observing array and observing model binding
             send("#{property}=", new_value) unless send(property) == new_value
           end

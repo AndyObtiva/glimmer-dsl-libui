@@ -2,6 +2,7 @@
 
 ## Next
 
+- Support adding background_color_column anywhere in `table` (not just as last column)
 - Support ability to attach multiple listeners (e.g. multiple `on_changed {}` on `entry`)
 
 - Support passing x and y coordinates to `image` keyword (only when over 3 args are passed)

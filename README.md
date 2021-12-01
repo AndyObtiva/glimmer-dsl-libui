@@ -499,7 +499,7 @@ Keyword(Args) | Properties | Listeners
 `about_menu_item` | None | `on_clicked`
 `area` | `auto_draw_enabled` | `on_draw(area_draw_params)`, `on_mouse_event(area_mouse_event)`, `on_mouse_down(area_mouse_event)`, `on_mouse_up(area_mouse_event)`, `on_mouse_drag_started(area_mouse_event)`, `on_mouse_dragged(area_mouse_event)`, `on_mouse_dropped(area_mouse_event)`, `on_mouse_entered`, `on_mouse_exited`, `on_key_event(area_key_event)`, `on_key_down(area_key_event)`, `on_key_up(area_key_event)`
 `arc(x_center as Numeric, y_center as Numeric, radius as Numeric, start_angle as Numeric, sweep as Numeric, is_negative as Boolean)` | `x_center` (`Numeric`), `y_center` (`Numeric`), `radius` (`Numeric`), `start_angle` (`Numeric`), `sweep` (`Numeric`), `is_negative` (Boolean) | None
-`background_color_column(name as String)` | None | None
+`background_color_column` | None | None
 `bezier(c1_x as Numeric, c1_y as Numeric, c2_x as Numeric, c2_y as Numeric, end_x as Numeric, end_y as Numeric)` | `c1_x` (`Numeric`), `c1_y` (`Numeric`), `c2_x` (`Numeric`), `c2_y` (`Numeric`), `end_x` (`Numeric`), `end_y` (`Numeric`) | None
 `button(text as String)` | `text` (`String`) | `on_clicked`
 `button_column(name as String)` | `enabled` (Boolean) | None
@@ -3060,22 +3060,28 @@ Mac | Windows | Linux
 New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version (with explicit [data-binding](#data-binding)):
 
 ```ruby
-# frozen_string_literal: true
-
 require 'glimmer-dsl-libui'
 
 class BasicTableButton
+  BasicAnimal = Struct.new(:name, :sound)
+  
+  class Animal < BasicAnimal
+    def action
+      'delete'
+    end
+  end
+  
   include Glimmer
   
-  attr_accessor :data
+  attr_accessor :animals
   
   def initialize
-    @data = [
-      %w[cat meow delete],
-      %w[dog woof delete],
-      %w[chicken cock-a-doodle-doo delete],
-      %w[horse neigh delete],
-      %w[cow moo delete]
+    @animals = [
+      Animal.new('cat', 'meow'),
+      Animal.new('dog', 'woof'),
+      Animal.new('chicken', 'cock-a-doodle-doo'),
+      Animal.new('horse', 'neigh'),
+      Animal.new('cow', 'moo'),
     ]
   end
   
@@ -3088,17 +3094,19 @@ class BasicTableButton
           button_column('Action') {
             on_clicked do |row|
               # Option 1: direct data deletion is the simpler solution
-#               @data.delete_at(row) # automatically deletes actual table row due to explicit data-binding
+#               @animals.delete_at(row) # automatically deletes actual table row due to explicit data-binding
               
-              # Option 2: cloning only to demonstrate table row deletion upon explicit setting of data attribute (cloning is not recommended beyond demonstrating this point)
-              new_data = @data.clone
-              new_data.delete_at(row)
-              self.data = new_data # automatically loses deleted table row due to explicit data-binding
+              # Option 2: cloning only to demonstrate table row deletion upon explicit setting of animals attribute (cloning is not recommended beyond demonstrating this point)
+              new_animals = @animals.clone
+              new_animals.delete_at(row)
+              self.animals = new_animals # automatically loses deleted table row due to explicit data-binding
             end
           }
     
-          cell_rows <=> [self, :data] # explicit data-binding of table cell_rows to self.data
           
+          cell_rows <= [self, :animals, column_attributes: {'Animal' => :name, 'Description' => :sound}]
+          
+          # explicit unidirectional data-binding of table cell_rows to self.animals
           on_changed do |row, type, row_data|
             puts "Row #{row} #{type}: #{row_data}"
             $stdout.flush
@@ -3347,7 +3355,7 @@ window('Animals', 500, 200) {
       text_color_column('Sound')
       checkbox_text_color_column('Description')
       image_text_color_column('GUI')
-      background_color_column('Mammal')
+      background_color_column # must be the last column
 
       cell_rows data
     }
@@ -3389,7 +3397,7 @@ window('Animals', 500, 200) {
       text_color_column('Sound')
       checkbox_text_color_column('Description')
       image_text_color_column('GUI')
-      background_color_column('Mammal')
+      background_color_column
 
       cell_rows data
     }

@@ -21,7 +21,7 @@ window('Animals', 500, 200) {
       text_color_column('Sound')
       checkbox_text_color_column('Description')
       image_text_color_column('GUI')
-      background_color_column('Mammal')
+      background_color_column # must be the last column
 
       cell_rows data
     }
