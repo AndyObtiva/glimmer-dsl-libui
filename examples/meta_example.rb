@@ -25,11 +25,11 @@ class MetaExample
   end
   
   def basic_examples
-    examples.select {|example| example.start_with?('Basic') || ADDITIONAL_BASIC_EXAMPLES.include?(example) }
+    examples.select {|example| example.start_with?('Basic') || ADDITIONAL_BASIC_EXAMPLES.include?(example) }.sort
   end
   
   def advanced_examples
-    examples - basic_examples
+    (examples - basic_examples).sort
   end
   
   def examples_with_versions
@@ -104,6 +104,7 @@ class MetaExample
                     example = selected_example
                     self.code_text = File.read(file_path_for(example))
                     @version_spinbox.value = 1
+                    @advanced_example_radio_buttons.selected = -1
                   end
                 }
                 
@@ -124,6 +125,7 @@ class MetaExample
                     example = selected_example
                     self.code_text = File.read(file_path_for(example))
                     @version_spinbox.value = 1
+                    @basic_example_radio_buttons.selected = -1
                   end
                 }
                 

@@ -5,6 +5,8 @@
 - Support `table` `cell_rows` explicit bidirectional data-binding (with `<=>` sign)
 - Improve examples/basic_table_button.rb with bidirectional data-binding for `table` `cell_rows`
 - Improve examples/form_table.rb with bidirectional data-binding for `table` `cell_rows`
+- Ensure examples/meta_example.rb has examples sorted
+- Fix minor issue in examples/meta_example.rb by deselecting radio in basic examples when selecting an advanced example (and vice versa)
 
 ## 0.4.10
 
