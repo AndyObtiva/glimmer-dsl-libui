@@ -27,7 +27,7 @@ class FormTable
           
           entry {
             label 'Name'
-            text <=> [self, :name]
+            text <=> [self, :name] # bidirectional data-binding between entry text and self.name
           }
           
           entry {
@@ -59,7 +59,7 @@ class FormTable
             if new_row.include?('')
               msg_box_error(w, 'Validation Error!', 'All fields are required! Please make sure to enter a value for all fields.')
             else
-              @contacts << Contact.new(*new_row) # automatically inserts a row into the table due to implicit data-binding
+              @contacts << Contact.new(*new_row) # automatically inserts a row into the table due to explicit data-binding
               @unfiltered_contacts = @contacts.dup
               self.name = '' # automatically clears name entry through explicit data-binding
               self.email = ''
@@ -72,7 +72,8 @@ class FormTable
         
         search_entry {
           stretchy false
-          text <=> [self, :filter_value, # bidirectional data-binding of text to self.filter_value with after_write option
+          # bidirectional data-binding of text to self.filter_value with after_write option
+          text <=> [self, :filter_value,
             after_write: ->(filter_value) { # execute after write to self.filter_value
               @unfiltered_contacts ||= @contacts.dup
               # Unfilter first to remove any previous filters
@@ -96,6 +97,7 @@ class FormTable
           text_column('City')
           text_column('State')
     
+          editable true
           cell_rows <=> [self, :contacts] # explicit data-binding to Model Array
           
           on_changed do |row, type, row_data|

@@ -3,7 +3,7 @@ require 'glimmer-dsl-libui'
 class FormTable
   include Glimmer
   
-  attr_accessor :data
+  attr_accessor :data, :name, :email, :phone, :city, :state, :filter_value
   
   def initialize
     @data = [
@@ -23,24 +23,29 @@ class FormTable
         form {
           stretchy false
           
-          @name_entry = entry {
+          entry {
             label 'Name'
+            text <=> [self, :name] # bidirectional data-binding between entry text and self.name
           }
           
-          @email_entry = entry {
+          entry {
             label 'Email'
+            text <=> [self, :email]
           }
           
-          @phone_entry = entry {
+          entry {
             label 'Phone'
+            text <=> [self, :phone]
           }
           
-          @city_entry = entry {
+          entry {
             label 'City'
+            text <=> [self, :city]
           }
           
-          @state_entry = entry {
+          entry {
             label 'State'
+            text <=> [self, :state]
           }
         }
         
@@ -48,38 +53,39 @@ class FormTable
           stretchy false
           
           on_clicked do
-            new_row = [@name_entry.text, @email_entry.text, @phone_entry.text, @city_entry.text, @state_entry.text]
+            new_row = [name, email, phone, city, state]
             if new_row.include?('')
               msg_box_error(w, 'Validation Error!', 'All fields are required! Please make sure to enter a value for all fields.')
             else
               data << new_row # automatically inserts a row into the table due to implicit data-binding
               @unfiltered_data = data.dup
-              @name_entry.text = ''
-              @email_entry.text = ''
-              @phone_entry.text = ''
-              @city_entry.text = ''
-              @state_entry.text = ''
+              self.name = '' # automatically clears name entry through explicit data-binding
+              self.email = ''
+              self.phone = ''
+              self.city = ''
+              self.state = ''
             end
           end
         }
         
-        search_entry { |se|
+        search_entry {
           stretchy false
-          
-          on_changed do
-            filter_value = se.text
-            @unfiltered_data ||= data.dup
-            # Unfilter first to remove any previous filters
-            data.replace(@unfiltered_data) # affects table indirectly through implicit data-binding
-            # Now, apply filter if entered
-            unless filter_value.empty?
-              data.filter! do |row_data| # affects table indirectly through implicit data-binding
-                row_data.any? do |cell|
-                  cell.to_s.downcase.include?(filter_value.downcase)
+          # bidirectional data-binding of text to self.filter_value with after_write option
+          text <=> [self, :filter_value,
+            after_write: ->(filter_value) { # execute after write to self.filter_value
+              @unfiltered_data ||= data.dup
+              # Unfilter first to remove any previous filters
+              data.replace(@unfiltered_data) # affects table indirectly through implicit data-binding
+              # Now, apply filter if entered
+              unless filter_value.empty?
+                data.filter! do |row_data| # affects table indirectly through implicit data-binding
+                  row_data.any? do |cell|
+                    cell.to_s.downcase.include?(filter_value.downcase)
+                  end
                 end
               end
-            end
-          end
+            }
+          ]
         }
         
         table {
@@ -89,6 +95,7 @@ class FormTable
           text_column('City')
           text_column('State')
           
+          editable true
           cell_rows <=> [self, :data] # explicit data-binding to raw data Array of Arrays
           
           on_changed do |row, type, row_data|

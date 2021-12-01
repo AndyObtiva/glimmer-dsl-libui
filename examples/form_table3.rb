@@ -28,7 +28,7 @@ class FormTable
           
           entry {
             label 'Name'
-            text <=> [self, :name]
+            text <=> [self, :name] # bidirectional data-binding between entry text and self.name
           }
           
           entry {
@@ -73,7 +73,8 @@ class FormTable
         
         search_entry {
           stretchy false
-          text <=> [self, :filter_value, # bidirectional data-binding of text to self.filter_value with after_write option
+          # bidirectional data-binding of text to self.filter_value with after_write option
+          text <=> [self, :filter_value,
             after_write: ->(filter_value) { # execute after write to self.filter_value
               @unfiltered_contacts ||= @contacts.dup
               # Unfilter first to remove any previous filters
@@ -97,6 +98,7 @@ class FormTable
           text_column('City')
           text_column('State')
     
+          editable true
           cell_rows <=> [self, :contacts, column_attributes: [:full_name, :email_address, :phone_number, :city_or_town, :state_or_province]] # explicit data-binding to Model Array with column_attributes mapping for all columns
           
           on_changed do |row, type, row_data|

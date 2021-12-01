@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.4.10
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.4.11
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -35,43 +35,6 @@ window('hello world').show
 Mac | Windows | Linux
 ----|---------|------
 ![glimmer-dsl-libui-mac-basic-window.png](images/glimmer-dsl-libui-mac-basic-window.png) | ![glimmer-dsl-libui-windows-basic-window.png](images/glimmer-dsl-libui-windows-basic-window.png) | ![glimmer-dsl-libui-linux-basic-window.png](images/glimmer-dsl-libui-linux-basic-window.png)
-
-Button Counter
-
-```ruby
-require 'glimmer-dsl-libui'
-
-class ButtonCounter
-  include Glimmer
-
-  attr_accessor :count
-
-  def initialize
-    @count = 0
-  end
-
-  def launch
-    window('Hello, Button!', 190, 20) {
-      vertical_box {
-        button {
-          # data-bind button text to self count, converting to string on read.
-          text <= [self, :count, on_read: ->(count) {"Count: #{count}"}]
-          
-          on_clicked do
-            self.count += 1
-          end
-        }
-      }
-    }.show
-  end
-end
-
-ButtonCounter.new.launch
-```
-
-Mac | Windows | Linux
-----|---------|------
-![glimmer-dsl-libui-mac-button-counter.png](images/glimmer-dsl-libui-mac-button-counter.png) | ![glimmer-dsl-libui-windows-button-counter.png](images/glimmer-dsl-libui-windows-button-counter.png) | ![glimmer-dsl-libui-linux-button-counter.png](images/glimmer-dsl-libui-linux-button-counter.png)
 
 Basic Table Progress Bar
 
@@ -113,6 +76,127 @@ window('Task Progress', 300, 200) {
 Mac | Windows | Linux
 ----|---------|------
 ![glimmer-dsl-libui-mac-basic-table-progress-bar.png](images/glimmer-dsl-libui-mac-basic-table-progress-bar.png) | ![glimmer-dsl-libui-windows-basic-table-progress-bar.png](images/glimmer-dsl-libui-windows-basic-table-progress-bar.png) | ![glimmer-dsl-libui-linux-basic-table-progress-bar.png](images/glimmer-dsl-libui-linux-basic-table-progress-bar.png)
+
+Form Table
+
+```ruby
+require 'glimmer-dsl-libui'
+
+class FormTable
+  Contact = Struct.new(:name, :email, :phone, :city, :state)
+  
+  include Glimmer
+  
+  attr_accessor :contacts, :name, :email, :phone, :city, :state, :filter_value
+  
+  def initialize
+    @contacts = [
+      Contact.new('Lisa Sky', 'lisa@sky.com', '720-523-4329', 'Denver', 'CO'),
+      Contact.new('Jordan Biggins', 'jordan@biggins.com', '617-528-5399', 'Boston', 'MA'),
+      Contact.new('Mary Glass', 'mary@glass.com', '847-589-8788', 'Elk Grove Village', 'IL'),
+      Contact.new('Darren McGrath', 'darren@mcgrath.com', '206-539-9283', 'Seattle', 'WA'),
+      Contact.new('Melody Hanheimer', 'melody@hanheimer.com', '213-493-8274', 'Los Angeles', 'CA'),
+    ]
+  end
+  
+  def launch
+    window('Contacts', 600, 600) { |w|
+      margined true
+      
+      vertical_box {
+        form {
+          stretchy false
+          
+          entry {
+            label 'Name'
+            text <=> [self, :name] # bidirectional data-binding between entry text and self.name
+          }
+          
+          entry {
+            label 'Email'
+            text <=> [self, :email]
+          }
+          
+          entry {
+            label 'Phone'
+            text <=> [self, :phone]
+          }
+          
+          entry {
+            label 'City'
+            text <=> [self, :city]
+          }
+          
+          entry {
+            label 'State'
+            text <=> [self, :state]
+          }
+        }
+        
+        button('Save Contact') {
+          stretchy false
+          
+          on_clicked do
+            new_row = [name, email, phone, city, state]
+            if new_row.include?('')
+              msg_box_error(w, 'Validation Error!', 'All fields are required! Please make sure to enter a value for all fields.')
+            else
+              @contacts << Contact.new(*new_row) # automatically inserts a row into the table due to explicit data-binding
+              @unfiltered_contacts = @contacts.dup
+              self.name = '' # automatically clears name entry through explicit data-binding
+              self.email = ''
+              self.phone = ''
+              self.city = ''
+              self.state = ''
+            end
+          end
+        }
+        
+        search_entry {
+          stretchy false
+          # bidirectional data-binding of text to self.filter_value with after_write option
+          text <=> [self, :filter_value,
+            after_write: ->(filter_value) { # execute after write to self.filter_value
+              @unfiltered_contacts ||= @contacts.dup
+              # Unfilter first to remove any previous filters
+              self.contacts = @unfiltered_contacts.dup # affects table indirectly through explicit data-binding
+              # Now, apply filter if entered
+              unless filter_value.empty?
+                self.contacts = @contacts.filter do |contact| # affects table indirectly through explicit data-binding
+                  contact.members.any? do |attribute|
+                    contact[attribute].to_s.downcase.include?(filter_value.downcase)
+                  end
+                end
+              end
+            }
+          ]
+        }
+        
+        table {
+          text_column('Name')
+          text_column('Email')
+          text_column('Phone')
+          text_column('City')
+          text_column('State')
+    
+          editable true
+          cell_rows <=> [self, :contacts] # explicit data-binding to Model Array
+          
+          on_changed do |row, type, row_data|
+            puts "Row #{row} #{type}: #{row_data}"
+          end
+        }
+      }
+    }.show
+  end
+end
+
+FormTable.new.launch
+```
+
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-form-table.png](images/glimmer-dsl-libui-mac-form-table.png) | ![glimmer-dsl-libui-windows-form-table.png](images/glimmer-dsl-libui-windows-form-table.png) | ![glimmer-dsl-libui-linux-form-table.png](images/glimmer-dsl-libui-linux-form-table.png)
 
 Area Gallery
 
@@ -411,7 +495,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.4.10'
+gem 'glimmer-dsl-libui', '~> 0.4.11'
 ```
 
 Test that installation worked by running the [Meta-Example](#examples):
@@ -663,117 +747,105 @@ Note that the `cell_rows` property declaration results in "implicit data-binding
 - Inserting cell rows: Calling `Array#<<`, `Array#push`, `Array#prepend`, or any insertion/addition `Array` method automatically inserts rows in actual `table` control
 - Changing cell rows: Calling `Array#[]=`, `Array#map!`, or any update `Array` method automatically updates rows in actual `table` control
 
+([explicit data-binding](#data-binding) supports everything available with implicit data-binding too)
+
 Example (you may copy/paste in [`girb`](#girb-glimmer-irb)):
 
 ```ruby
 require 'glimmer-dsl-libui'
 
-class FormTable
-  include Glimmer
+include Glimmer
+
+data = [
+  ['Lisa Sky', 'lisa@sky.com', '720-523-4329', 'Denver', 'CO'],
+  ['Jordan Biggins', 'jordan@biggins.com', '617-528-5399', 'Boston', 'MA'],
+  ['Mary Glass', 'mary@glass.com', '847-589-8788', 'Elk Grove Village', 'IL'],
+  ['Darren McGrath', 'darren@mcgrath.com', '206-539-9283', 'Seattle', 'WA'],
+  ['Melody Hanheimer', 'melody@hanheimer.com', '213-493-8274', 'Los Angeles', 'CA'],
+]
+
+window('Contacts', 600, 600) { |w|
+  margined true
   
-  attr_accessor :name, :email, :phone, :city, :state, :filter_value
-  
-  def initialize
-    @data = [
-      ['Lisa Sky', 'lisa@sky.com', '720-523-4329', 'Denver', 'CO'],
-      ['Jordan Biggins', 'jordan@biggins.com', '617-528-5399', 'Boston', 'MA'],
-      ['Mary Glass', 'mary@glass.com', '847-589-8788', 'Elk Grove Village', 'IL'],
-      ['Darren McGrath', 'darren@mcgrath.com', '206-539-9283', 'Seattle', 'WA'],
-      ['Melody Hanheimer', 'melody@hanheimer.com', '213-493-8274', 'Los Angeles', 'CA'],
-    ]
-  end
-  
-  def launch
-    window('Contacts', 600, 600) { |w|
-      margined true
+  vertical_box {
+    form {
+      stretchy false
       
-      vertical_box {
-        form {
-          stretchy false
-          
-          entry {
-            label 'Name'
-            text <=> [self, :name]
-          }
-          
-          entry {
-            label 'Email'
-            text <=> [self, :email]
-          }
-          
-          entry {
-            label 'Phone'
-            text <=> [self, :phone]
-          }
-          
-          entry {
-            label 'City'
-            text <=> [self, :city]
-          }
-          
-          entry {
-            label 'State'
-            text <=> [self, :state]
-          }
-        }
-        
-        button('Save Contact') {
-          stretchy false
-          
-          on_clicked do
-            new_row = [name, email, phone, city, state]
-            if new_row.include?('')
-              msg_box_error(w, 'Validation Error!', 'All fields are required! Please make sure to enter a value for all fields.')
-            else
-              @data << new_row # automatically inserts a row into the table due to implicit data-binding
-              @unfiltered_data = @data.dup
-              self.name = '' # automatically clears name entry through explicit data-binding
-              self.email = ''
-              self.phone = ''
-              self.city = ''
-              self.state = ''
+      @name_entry = entry {
+        label 'Name'
+      }
+      
+      @email_entry = entry {
+        label 'Email'
+      }
+      
+      @phone_entry = entry {
+        label 'Phone'
+      }
+      
+      @city_entry = entry {
+        label 'City'
+      }
+      
+      @state_entry = entry {
+        label 'State'
+      }
+    }
+    
+    button('Save Contact') {
+      stretchy false
+      
+      on_clicked do
+        new_row = [@name_entry.text, @email_entry.text, @phone_entry.text, @city_entry.text, @state_entry.text]
+        if new_row.include?('')
+          msg_box_error(w, 'Validation Error!', 'All fields are required! Please make sure to enter a value for all fields.')
+        else
+          data << new_row # automatically inserts a row into the table due to implicit data-binding
+          @unfiltered_data = data.dup
+          @name_entry.text = ''
+          @email_entry.text = ''
+          @phone_entry.text = ''
+          @city_entry.text = ''
+          @state_entry.text = ''
+        end
+      end
+    }
+    
+    search_entry { |se|
+      stretchy false
+      
+      on_changed do
+        filter_value = se.text
+        @unfiltered_data ||= data.dup
+        # Unfilter first to remove any previous filters
+        data.replace(@unfiltered_data) # affects table indirectly through implicit data-binding
+        # Now, apply filter if entered
+        unless filter_value.empty?
+          data.filter! do |row_data| # affects table indirectly through implicit data-binding
+            row_data.any? do |cell|
+              cell.to_s.downcase.include?(filter_value.downcase)
             end
           end
-        }
-        
-        search_entry {
-          stretchy false
-          text <=> [self, :filter_value, # bidirectional data-binding of text to self.filter_value with after_write option
-            after_write: ->(filter_value) { # execute after write to self.filter_value
-              @unfiltered_data ||= @data.dup
-              # Unfilter first to remove any previous filters
-              @data.replace(@unfiltered_data) # affects table indirectly through implicit data-binding
-              # Now, apply filter if entered
-              unless filter_value.empty?
-                @data.filter! do |row_data| # affects table indirectly through implicit data-binding
-                  row_data.any? do |cell|
-                    cell.to_s.downcase.include?(filter_value.downcase)
-                  end
-                end
-              end
-            }
-          ]
-        }
-        
-        table {
-          text_column('Name')
-          text_column('Email')
-          text_column('Phone')
-          text_column('City')
-          text_column('State')
+        end
+      end
+    }
     
-          cell_rows @data # implicit data-binding
-          
-          on_changed do |row, type, row_data|
-            puts "Row #{row} #{type}: #{row_data}"
-          end
-        }
-      }
-    }.show
-  end
-end
+    table {
+      text_column('Name')
+      text_column('Email')
+      text_column('Phone')
+      text_column('City')
+      text_column('State')
 
-FormTable.new.launch
+      editable true
+      cell_rows data # implicit data-binding to raw data Array of Arrays
+      
+      on_changed do |row, type, row_data|
+        puts "Row #{row} #{type}: #{row_data}"
+      end
+    }
+  }
+}.show
 ```
 
 ![glimmer-dsl-libui-linux-form-table.png](images/glimmer-dsl-libui-linux-form-table.png)
@@ -1447,6 +1519,7 @@ Data-binding supports utilizing the [MVP (Model View Presenter)](https://en.wiki
 - `search_entry`: `text`
 - `slider`: `value`
 - `spinbox`: `value`
+- `table`: `cell_rows` (explicit data-binding by using `<=>` and [implicit data-binding](#table-api) by assigning value directly)
 - `time_picker`: `time`
 
 Example of bidirectional data-binding:
@@ -6360,23 +6433,25 @@ Mac | Windows | Linux
 ----|---------|------
 ![glimmer-dsl-libui-mac-form-table.png](images/glimmer-dsl-libui-mac-form-table.png) ![glimmer-dsl-libui-mac-form-table-contact-entered.png](images/glimmer-dsl-libui-mac-form-table-contact-entered.png) ![glimmer-dsl-libui-mac-form-table-filtered.png](images/glimmer-dsl-libui-mac-form-table-filtered.png) | ![glimmer-dsl-libui-windows-form-table.png](images/glimmer-dsl-libui-windows-form-table.png) ![glimmer-dsl-libui-windows-form-table-contact-entered.png](images/glimmer-dsl-libui-windows-form-table-contact-entered.png) ![glimmer-dsl-libui-windows-form-table-filtered.png](images/glimmer-dsl-libui-windows-form-table-filtered.png) | ![glimmer-dsl-libui-linux-form-table.png](images/glimmer-dsl-libui-linux-form-table.png) ![glimmer-dsl-libui-linux-form-table-contact-entered.png](images/glimmer-dsl-libui-linux-form-table-contact-entered.png) ![glimmer-dsl-libui-linux-form-table-filtered.png](images/glimmer-dsl-libui-linux-form-table-filtered.png)
 
-New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version (with [data-binding](#data-binding)):
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version (with explicit [data-binding](#data-binding)):
 
 ```ruby
 require 'glimmer-dsl-libui'
 
 class FormTable
+  Contact = Struct.new(:name, :email, :phone, :city, :state)
+  
   include Glimmer
   
-  attr_accessor :data, :name, :email, :phone, :city, :state, :filter_value
+  attr_accessor :contacts, :name, :email, :phone, :city, :state, :filter_value
   
   def initialize
-    @data = [
-      ['Lisa Sky', 'lisa@sky.com', '720-523-4329', 'Denver', 'CO'],
-      ['Jordan Biggins', 'jordan@biggins.com', '617-528-5399', 'Boston', 'MA'],
-      ['Mary Glass', 'mary@glass.com', '847-589-8788', 'Elk Grove Village', 'IL'],
-      ['Darren McGrath', 'darren@mcgrath.com', '206-539-9283', 'Seattle', 'WA'],
-      ['Melody Hanheimer', 'melody@hanheimer.com', '213-493-8274', 'Los Angeles', 'CA'],
+    @contacts = [
+      Contact.new('Lisa Sky', 'lisa@sky.com', '720-523-4329', 'Denver', 'CO'),
+      Contact.new('Jordan Biggins', 'jordan@biggins.com', '617-528-5399', 'Boston', 'MA'),
+      Contact.new('Mary Glass', 'mary@glass.com', '847-589-8788', 'Elk Grove Village', 'IL'),
+      Contact.new('Darren McGrath', 'darren@mcgrath.com', '206-539-9283', 'Seattle', 'WA'),
+      Contact.new('Melody Hanheimer', 'melody@hanheimer.com', '213-493-8274', 'Los Angeles', 'CA'),
     ]
   end
   
@@ -6390,7 +6465,7 @@ class FormTable
           
           entry {
             label 'Name'
-            text <=> [self, :name]
+            text <=> [self, :name] # bidirectional data-binding between entry text and self.name
           }
           
           entry {
@@ -6422,8 +6497,8 @@ class FormTable
             if new_row.include?('')
               msg_box_error(w, 'Validation Error!', 'All fields are required! Please make sure to enter a value for all fields.')
             else
-              @data << new_row # automatically inserts a row into the table due to implicit data-binding
-              @unfiltered_data = @data.dup
+              @contacts << Contact.new(*new_row) # automatically inserts a row into the table due to explicit data-binding
+              @unfiltered_contacts = @contacts.dup
               self.name = '' # automatically clears name entry through explicit data-binding
               self.email = ''
               self.phone = ''
@@ -6435,14 +6510,365 @@ class FormTable
         
         search_entry {
           stretchy false
-          text <=> [self, :filter_value, # bidirectional data-binding of text to self.filter_value with after_write option
+          # bidirectional data-binding of text to self.filter_value with after_write option
+          text <=> [self, :filter_value,
             after_write: ->(filter_value) { # execute after write to self.filter_value
-              @unfiltered_data ||= @data.dup
+              @unfiltered_contacts ||= @contacts.dup
               # Unfilter first to remove any previous filters
-              self.data = @unfiltered_data # affects table indirectly through explicit data-binding
+              self.contacts = @unfiltered_contacts.dup # affects table indirectly through explicit data-binding
               # Now, apply filter if entered
               unless filter_value.empty?
-                self.data = @data.filter do |row_data| # affects table indirectly through explicit data-binding
+                self.contacts = @contacts.filter do |contact| # affects table indirectly through explicit data-binding
+                  contact.members.any? do |attribute|
+                    contact[attribute].to_s.downcase.include?(filter_value.downcase)
+                  end
+                end
+              end
+            }
+          ]
+        }
+        
+        table {
+          text_column('Name')
+          text_column('Email')
+          text_column('Phone')
+          text_column('City')
+          text_column('State')
+    
+          editable true
+          cell_rows <=> [self, :contacts] # explicit data-binding to Model Array
+          
+          on_changed do |row, type, row_data|
+            puts "Row #{row} #{type}: #{row_data}"
+          end
+        }
+      }
+    }.show
+  end
+end
+
+FormTable.new.launch
+```
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version (with explicit [data-binding](#data-binding)):
+
+```ruby
+require 'glimmer-dsl-libui'
+
+class FormTable
+  Contact = Struct.new(:name, :email, :phone, :city, :state)
+  
+  include Glimmer
+  
+  attr_accessor :contacts, :name, :email, :phone, :city, :state, :filter_value
+  
+  def initialize
+    @contacts = [
+      Contact.new('Lisa Sky', 'lisa@sky.com', '720-523-4329', 'Denver', 'CO'),
+      Contact.new('Jordan Biggins', 'jordan@biggins.com', '617-528-5399', 'Boston', 'MA'),
+      Contact.new('Mary Glass', 'mary@glass.com', '847-589-8788', 'Elk Grove Village', 'IL'),
+      Contact.new('Darren McGrath', 'darren@mcgrath.com', '206-539-9283', 'Seattle', 'WA'),
+      Contact.new('Melody Hanheimer', 'melody@hanheimer.com', '213-493-8274', 'Los Angeles', 'CA'),
+    ]
+  end
+  
+  def launch
+    window('Contacts', 600, 600) { |w|
+      margined true
+      
+      vertical_box {
+        form {
+          stretchy false
+          
+          entry {
+            label 'Name'
+            text <=> [self, :name] # bidirectional data-binding between entry text and self.name
+          }
+          
+          entry {
+            label 'Email'
+            text <=> [self, :email]
+          }
+          
+          entry {
+            label 'Phone'
+            text <=> [self, :phone]
+          }
+          
+          entry {
+            label 'City'
+            text <=> [self, :city]
+          }
+          
+          entry {
+            label 'State'
+            text <=> [self, :state]
+          }
+        }
+        
+        button('Save Contact') {
+          stretchy false
+          
+          on_clicked do
+            new_row = [name, email, phone, city, state]
+            if new_row.include?('')
+              msg_box_error(w, 'Validation Error!', 'All fields are required! Please make sure to enter a value for all fields.')
+            else
+              @contacts << Contact.new(*new_row) # automatically inserts a row into the table due to implicit data-binding
+              @unfiltered_contacts = @contacts.dup
+              self.name = '' # automatically clears name entry through explicit data-binding
+              self.email = ''
+              self.phone = ''
+              self.city = ''
+              self.state = ''
+            end
+          end
+        }
+        
+        search_entry {
+          stretchy false
+          # bidirectional data-binding of text to self.filter_value with after_write option
+          text <=> [self, :filter_value,
+            after_write: ->(filter_value) { # execute after write to self.filter_value
+              @unfiltered_contacts ||= @contacts.dup
+              # Unfilter first to remove any previous filters
+              self.contacts = @unfiltered_contacts.dup # affects table indirectly through explicit data-binding
+              # Now, apply filter if entered
+              unless filter_value.empty?
+                self.contacts = @contacts.filter do |contact| # affects table indirectly through explicit data-binding
+                  contact.members.any? do |attribute|
+                    contact[attribute].to_s.downcase.include?(filter_value.downcase)
+                  end
+                end
+              end
+            }
+          ]
+        }
+        
+        table {
+          text_column('Name')
+          text_column('Email')
+          text_column('Phone')
+          text_column('City')
+          text_column('State/Province')
+    
+          editable true
+          cell_rows <=> [self, :contacts, column_attributes: {'State/Province' => :state}] # explicit data-binding to Model Array with column_attributes mapping for a specific column
+          
+          on_changed do |row, type, row_data|
+            puts "Row #{row} #{type}: #{row_data}"
+          end
+        }
+      }
+    }.show
+  end
+end
+
+FormTable.new.launch
+```
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version (with explicit [data-binding](#data-binding)):
+
+```ruby
+
+require 'glimmer-dsl-libui'
+
+class FormTable
+  Contact = Struct.new(:full_name, :email_address, :phone_number, :city_or_town, :state_or_province)
+  
+  include Glimmer
+  
+  attr_accessor :contacts, :name, :email, :phone, :city, :state, :filter_value
+  
+  def initialize
+    @contacts = [
+      Contact.new('Lisa Sky', 'lisa@sky.com', '720-523-4329', 'Denver', 'CO'),
+      Contact.new('Jordan Biggins', 'jordan@biggins.com', '617-528-5399', 'Boston', 'MA'),
+      Contact.new('Mary Glass', 'mary@glass.com', '847-589-8788', 'Elk Grove Village', 'IL'),
+      Contact.new('Darren McGrath', 'darren@mcgrath.com', '206-539-9283', 'Seattle', 'WA'),
+      Contact.new('Melody Hanheimer', 'melody@hanheimer.com', '213-493-8274', 'Los Angeles', 'CA'),
+    ]
+  end
+  
+  def launch
+    window('Contacts', 600, 600) { |w|
+      margined true
+      
+      vertical_box {
+        form {
+          stretchy false
+          
+          entry {
+            label 'Name'
+            text <=> [self, :name] # bidirectional data-binding between entry text and self.name
+          }
+          
+          entry {
+            label 'Email'
+            text <=> [self, :email]
+          }
+          
+          entry {
+            label 'Phone'
+            text <=> [self, :phone]
+          }
+          
+          entry {
+            label 'City'
+            text <=> [self, :city]
+          }
+          
+          entry {
+            label 'State'
+            text <=> [self, :state]
+          }
+        }
+        
+        button('Save Contact') {
+          stretchy false
+          
+          on_clicked do
+            new_row = [name, email, phone, city, state]
+            if new_row.include?('')
+              msg_box_error(w, 'Validation Error!', 'All fields are required! Please make sure to enter a value for all fields.')
+            else
+              @contacts << Contact.new(*new_row) # automatically inserts a row into the table due to implicit data-binding
+              @unfiltered_contacts = @contacts.dup
+              self.name = '' # automatically clears name entry through explicit data-binding
+              self.email = ''
+              self.phone = ''
+              self.city = ''
+              self.state = ''
+            end
+          end
+        }
+        
+        search_entry {
+          stretchy false
+          # bidirectional data-binding of text to self.filter_value with after_write option
+          text <=> [self, :filter_value,
+            after_write: ->(filter_value) { # execute after write to self.filter_value
+              @unfiltered_contacts ||= @contacts.dup
+              # Unfilter first to remove any previous filters
+              self.contacts = @unfiltered_contacts.dup # affects table indirectly through explicit data-binding
+              # Now, apply filter if entered
+              unless filter_value.empty?
+                self.contacts = @contacts.filter do |contact| # affects table indirectly through explicit data-binding
+                  contact.members.any? do |attribute|
+                    contact[attribute].to_s.downcase.include?(filter_value.downcase)
+                  end
+                end
+              end
+            }
+          ]
+        }
+        
+        table {
+          text_column('Name')
+          text_column('Email')
+          text_column('Phone')
+          text_column('City')
+          text_column('State')
+    
+          editable true
+          cell_rows <=> [self, :contacts, column_attributes: [:full_name, :email_address, :phone_number, :city_or_town, :state_or_province]] # explicit data-binding to Model Array with column_attributes mapping for all columns
+          
+          on_changed do |row, type, row_data|
+            puts "Row #{row} #{type}: #{row_data}"
+          end
+        }
+      }
+    }.show
+  end
+end
+
+FormTable.new.launch
+```
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 4 (with explicit [data-binding](#data-binding) to raw data):
+
+```ruby
+require 'glimmer-dsl-libui'
+
+class FormTable
+  include Glimmer
+  
+  attr_accessor :data, :name, :email, :phone, :city, :state, :filter_value
+  
+  def initialize
+    @data = [
+      ['Lisa Sky', 'lisa@sky.com', '720-523-4329', 'Denver', 'CO'],
+      ['Jordan Biggins', 'jordan@biggins.com', '617-528-5399', 'Boston', 'MA'],
+      ['Mary Glass', 'mary@glass.com', '847-589-8788', 'Elk Grove Village', 'IL'],
+      ['Darren McGrath', 'darren@mcgrath.com', '206-539-9283', 'Seattle', 'WA'],
+      ['Melody Hanheimer', 'melody@hanheimer.com', '213-493-8274', 'Los Angeles', 'CA'],
+    ]
+  end
+  
+  def launch
+    window('Contacts', 600, 600) { |w|
+      margined true
+      
+      vertical_box {
+        form {
+          stretchy false
+          
+          entry {
+            label 'Name'
+            text <=> [self, :name] # bidirectional data-binding between entry text and self.name
+          }
+          
+          entry {
+            label 'Email'
+            text <=> [self, :email]
+          }
+          
+          entry {
+            label 'Phone'
+            text <=> [self, :phone]
+          }
+          
+          entry {
+            label 'City'
+            text <=> [self, :city]
+          }
+          
+          entry {
+            label 'State'
+            text <=> [self, :state]
+          }
+        }
+        
+        button('Save Contact') {
+          stretchy false
+          
+          on_clicked do
+            new_row = [name, email, phone, city, state]
+            if new_row.include?('')
+              msg_box_error(w, 'Validation Error!', 'All fields are required! Please make sure to enter a value for all fields.')
+            else
+              data << new_row # automatically inserts a row into the table due to implicit data-binding
+              @unfiltered_data = data.dup
+              self.name = '' # automatically clears name entry through explicit data-binding
+              self.email = ''
+              self.phone = ''
+              self.city = ''
+              self.state = ''
+            end
+          end
+        }
+        
+        search_entry {
+          stretchy false
+          # bidirectional data-binding of text to self.filter_value with after_write option
+          text <=> [self, :filter_value,
+            after_write: ->(filter_value) { # execute after write to self.filter_value
+              @unfiltered_data ||= data.dup
+              # Unfilter first to remove any previous filters
+              data.replace(@unfiltered_data) # affects table indirectly through implicit data-binding
+              # Now, apply filter if entered
+              unless filter_value.empty?
+                data.filter! do |row_data| # affects table indirectly through implicit data-binding
                   row_data.any? do |cell|
                     cell.to_s.downcase.include?(filter_value.downcase)
                   end
@@ -6458,8 +6884,9 @@ class FormTable
           text_column('Phone')
           text_column('City')
           text_column('State')
-    
-          cell_rows <=> [self, :data] # explicit data-binding
+          
+          editable true
+          cell_rows <=> [self, :data] # explicit data-binding to raw data Array of Arrays
           
           on_changed do |row, type, row_data|
             puts "Row #{row} #{type}: #{row_data}"
@@ -6473,7 +6900,7 @@ end
 FormTable.new.launch
 ```
 
-New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 2 (without [data-binding](#data-binding)):
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 5 (with implicit [data-binding](#data-binding)):
 
 ```ruby
 require 'glimmer-dsl-libui'
@@ -6561,7 +6988,8 @@ window('Contacts', 600, 600) { |w|
       text_column('City')
       text_column('State')
 
-      cell_rows data # implicit data-binding
+      editable true
+      cell_rows data # implicit data-binding to raw data Array of Arrays
       
       on_changed do |row, type, row_data|
         puts "Row #{row} #{type}: #{row_data}"

@@ -83,6 +83,7 @@ window('Contacts', 600, 600) { |w|
       text_column('City')
       text_column('State')
 
+      editable true
       cell_rows data # implicit data-binding to raw data Array of Arrays
       
       on_changed do |row, type, row_data|
