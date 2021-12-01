@@ -3620,6 +3620,8 @@ BasicScrollingArea.new.launch
 
 #### Basic Image
 
+Please note the caveats of [Area Image](#area-image) **(Alpha Feature)** with regards to this example.
+
 [examples/basic_image.rb](examples/basic_image.rb)
 
 Run with this command from the root of the project if you cloned the project:
@@ -6311,8 +6313,8 @@ window('Editable animal sounds', 300, 200) {
       text_column('Animal')
       text_column('Description')
 
-      cell_rows data
       editable true
+      cell_rows data
       
       on_changed do |row, type, row_data| # fires on all changes (even ones happening through data array)
         puts "Row #{row} #{type}: #{row_data}"

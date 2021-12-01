@@ -46,7 +46,8 @@ module Glimmer
         end
         
         def add_content(parent, keyword, *args, &block)
-          parent.post_add_content(block)
+          options = args.last.is_a?(Hash) ? args.last : {post_add_content: true}
+          parent&.post_add_content(block) if options[:post_add_content]
         end
       end
     end

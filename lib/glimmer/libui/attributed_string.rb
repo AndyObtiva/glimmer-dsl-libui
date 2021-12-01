@@ -30,8 +30,9 @@ module Glimmer
     class AttributedString
       include DataBindable
       
-      attr_reader :keyword, :parent_proxy, :args
+      attr_reader :keyword, :parent_proxy, :args, :content_added
       attr_accessor :block
+      alias content_added? content_added
     
       def initialize(keyword, parent_proxy, args, &block)
         @keyword = keyword
@@ -205,7 +206,7 @@ module Glimmer
       end
       
       def content(&block)
-        Glimmer::DSL::Engine.add_content(self, Glimmer::DSL::Libui::StringExpression.new, @keyword, &block)
+        Glimmer::DSL::Engine.add_content(self, Glimmer::DSL::Libui::StringExpression.new, @keyword, {post_add_content: true}, &block)
       end
     end
   end

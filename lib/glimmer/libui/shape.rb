@@ -67,7 +67,8 @@ module Glimmer
       include Parent
       include DataBindable
       
-      attr_reader :parent, :args, :keyword, :block
+      attr_reader :parent, :args, :keyword, :block, :content_added
+      alias content_added? content_added
       
       def initialize(keyword, parent, args, &block)
         @keyword = keyword
@@ -97,7 +98,7 @@ module Glimmer
       end
       
       def content(&block)
-        Glimmer::DSL::Engine.add_content(self, Glimmer::DSL::Libui::ShapeExpression.new, @keyword, &block)
+        Glimmer::DSL::Engine.add_content(self, Glimmer::DSL::Libui::ShapeExpression.new, @keyword, {post_add_content: @content_added}, &block)
         request_auto_redraw
       end
       
