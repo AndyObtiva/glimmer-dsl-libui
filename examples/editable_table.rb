@@ -18,8 +18,8 @@ window('Editable animal sounds', 300, 200) {
       text_column('Animal')
       text_column('Description')
 
+      editable true # must come before cell_rows
       cell_rows data
-      editable true
       
       on_changed do |row, type, row_data| # fires on all changes (even ones happening through data array)
         puts "Row #{row} #{type}: #{row_data}"

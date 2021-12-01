@@ -88,7 +88,7 @@ class FormTable
           text_column('Phone')
           text_column('City')
           text_column('State')
-    
+          
           cell_rows <=> [self, :data] # explicit data-binding to raw data Array of Arrays
           
           on_changed do |row, type, row_data|

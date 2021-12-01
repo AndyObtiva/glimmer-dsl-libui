@@ -38,7 +38,7 @@ module Glimmer
         
         LISTENERS = ['on_changed', 'on_edited']
         
-        attr_reader :model_handler, :model, :table_params, :columns
+        attr_reader :model_handler, :model, :table_params, :columns, :column_attributes
       
         def initialize(keyword, parent, args, &block)
           @keyword = keyword
@@ -235,28 +235,56 @@ module Glimmer
             when Column::TextColumnProxy
               column = @columns[column].index
               @cell_rows[row] ||= []
-              @cell_rows[row][column] = ::LibUI.table_value_string(val).to_s
+              if @cell_rows[row].is_a?(Array)
+                @cell_rows[row][column] = ::LibUI.table_value_string(val).to_s
+              else
+                attribute = @column_attributes[column]
+                @cell_rows[row].send("#{attribute}=", ::LibUI.table_value_string(val).to_s)
+              end
             when Column::TextColorColumnProxy
               column = @columns[column].index
               @cell_rows[row] ||= []
-              @cell_rows[row][column] ||= []
-              @cell_rows[row][column][0] = ::LibUI.table_value_string(val).to_s
+              if @cell_rows[row].is_a?(Array)
+                @cell_rows[row][column] ||= []
+                @cell_rows[row][column][0] = ::LibUI.table_value_string(val).to_s
+              else
+                attribute = @column_attributes[column]
+                @cell_rows[row].send("#{attribute}=", []) unless @cell_rows[row].send(attribute)
+                @cell_rows[row].send(attribute)[0] = ::LibUI.table_value_string(val).to_s
+              end
             when :text
               column = @columns[column - 1].index
               @cell_rows[row] ||= []
-              @cell_rows[row][column] ||= []
-              @cell_rows[row][column][1] = ::LibUI.table_value_string(val).to_s
+              if @cell_rows[row].is_a?(Array)
+                @cell_rows[row][column] ||= []
+                @cell_rows[row][column][1] = ::LibUI.table_value_string(val).to_s
+              else
+                attribute = @column_attributes[column]
+                @cell_rows[row].send("#{attribute}=", []) unless @cell_rows[row].send(attribute)
+                @cell_rows[row].send(attribute)[1] = ::LibUI.table_value_string(val).to_s
+              end
             when Column::ButtonColumnProxy
               @columns[column].notify_listeners(:on_clicked, row)
             when Column::CheckboxColumnProxy
               column = @columns[column].index
               @cell_rows[row] ||= []
-              @cell_rows[row][column] = ::LibUI.table_value_int(val).to_i == 1
+              if @cell_rows[row].is_a?(Array)
+                @cell_rows[row][column] = ::LibUI.table_value_int(val).to_i == 1
+              else
+                attribute = @column_attributes[column]
+                @cell_rows[row].send("#{attribute}=", ::LibUI.table_value_int(val).to_i == 1)
+              end
             when Column::CheckboxTextColumnProxy
               column = @columns[column].index
               @cell_rows[row] ||= []
-              @cell_rows[row][column] ||= []
-              @cell_rows[row][column][0] = ::LibUI.table_value_int(val).to_i == 1
+              if @cell_rows[row].is_a?(Array)
+                @cell_rows[row][column] ||= []
+                @cell_rows[row][column][0] = ::LibUI.table_value_int(val).to_i == 1
+              else
+                attribute = @column_attributes[column]
+                @cell_rows[row].send("#{attribute}=", []) unless @cell_rows[row].send(attribute)
+                @cell_rows[row].send(attribute)[0] = ::LibUI.table_value_int(val).to_i == 1
+              end
             end
             on_edited.each {|listener| listener.call(row, @cell_rows[row])}
           end
