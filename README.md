@@ -1264,6 +1264,7 @@ Note that `area`, `path`, and nested shapes are all truly declarative, meaning t
 - When destroying a control nested under a `horizontal_box` or `vertical_box`, it is automatically deleted from the box's children
 - When destroying a control nested under a `form`, it is automatically deleted from the form's children
 - When destroying a control nested under a `window` or `group`, it is automatically unset as their child to allow successful destruction
+- When destroying a control that has a data-binding to a model attribute, the data-binding observer registration is automatically deregistered
 - For `date_time_picker`, `date_picker`, and `time_picker`, make sure `time` hash values for `mon`, `wday`, and `yday` are 1-based instead of [libui](https://github.com/andlabs/libui) original 0-based values, and return `dst` as Boolean instead of `isdst` as `1`/`0`
 - Smart defaults for `grid` child properties are `left` (`0`), `top` (`0`), `xspan` (`1`), `yspan` (`1`), `hexpand` (`false`), `halign` (`:fill`), `vexpand` (`false`), and `valign` (`:fill`)
 - The `table` control automatically constructs required `TableModelHandler`, `TableModel`, and `TableParams`, calculating all their arguments from `cell_rows` and `editable` properties (e.g. `NumRows`) as well as nested columns (e.g. `text_column`)

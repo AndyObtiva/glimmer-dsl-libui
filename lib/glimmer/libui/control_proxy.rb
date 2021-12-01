@@ -288,6 +288,7 @@ module Glimmer
       end
       
       def destroy
+        data_binding_model_attribute_observer_registrations.each(&:deregister)
         if parent_proxy.nil?
           default_destroy
         else

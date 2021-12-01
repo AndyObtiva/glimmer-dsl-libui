@@ -30,7 +30,7 @@ module Glimmer
       #
       # classes can override data_bind_read to disable read data-binding in rare scenarios that might need it
       #
-      # returns model attribute reading observer by default
+      # returns model attribute reading observer registration by default
       def data_bind(property, model_binding)
         data_bind_read(property, model_binding).tap do
           data_bind_write(property, model_binding) unless model_binding.binding_options[:read_only]
@@ -48,7 +48,9 @@ module Glimmer
         end
         model_attribute_observer.observe(model_binding)
         model_attribute_observer.call # initial update
-        model_attribute_observer
+        observer_registration = model_attribute_observer.registration_for(model_binding)
+        data_binding_model_attribute_observer_registrations << observer_registration
+        observer_registration
       end
       
       # Sets up write data-binding (writing to model from view)
@@ -58,6 +60,10 @@ module Glimmer
       # for changes and writing them to model accordingly via model binding
       def data_bind_write(property, model_binding)
         # No Op by default
+      end
+      
+      def data_binding_model_attribute_observer_registrations
+        @data_binding_model_attribute_observer_registrations ||= []
       end
     end
   end

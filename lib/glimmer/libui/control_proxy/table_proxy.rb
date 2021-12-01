@@ -138,8 +138,18 @@ module Glimmer
         alias set_editable editable
         alias editable? editable
         
-        def data_bind(property, model_binding)
-          super # TODO apply converters of models to arrays in cell_rows with column_attribute
+        def data_bind_read(property, model_binding)
+          # TODO apply converters of models to arrays in cell_rows with column_attribute
+          model_attribute_observer = Glimmer::DataBinding::Observer.proc do
+            new_value = model_binding.evaluate_property
+            send("#{property}=", new_value) unless send(property) == new_value
+          end
+          model_attribute_observer.observe(model_binding)
+          model_attribute_observer.call # initial update
+          model_attribute_observer
+        end
+        
+        def data_bind_write(property, model_binding)
           if property == 'cell_rows'
             handle_listener('on_edited') do
               # TODO ensure updating model objects if cell_rows were not arrays
