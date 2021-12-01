@@ -2,6 +2,8 @@
 
 ## Next
 
+- Have meta-example sort Advanced examples alphabetically
+- Document API gotcha of not being able to scroll a scrolling area by calling scrollto method in Windows & Linux
 - Support table explicit data-binding with column mapping to model attributes per row
 
 Example:

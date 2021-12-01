@@ -139,8 +139,13 @@ module Glimmer
         alias editable? editable
         
         def data_bind(property, model_binding)
-          super
-          handle_listener('on_edited') { model_binding.call(cell_rows) } if property == 'cell_rows'
+          super # TODO apply converters of models to arrays in cell_rows with column_attribute
+          if property == 'cell_rows'
+            handle_listener('on_edited') do
+              # TODO ensure updating model objects if cell_rows were not arrays
+              model_binding.call(cell_rows)
+            end
+          end
         end
         
         def array_deep_clone(array_or_object)
