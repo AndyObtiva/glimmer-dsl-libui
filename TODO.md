@@ -2,7 +2,6 @@
 
 ## Next
 
-- Support specifying `column_attributes` as `Hash` map in `table` `cell_rows` explicit bidirectional data-binding with model-based rows (not `Array`s of column cells)
 - Ensure `table` data-binding writing is happening to models if rows are not arrays
 
 - Support ability to attach multiple listeners (e.g. multiple `on_changed {}` on `entry`)

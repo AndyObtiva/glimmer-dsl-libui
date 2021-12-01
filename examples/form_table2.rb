@@ -1,7 +1,7 @@
 require 'glimmer-dsl-libui'
 
 class FormTable
-  Contact = Struct.new(:full_name, :email_address, :phone_number, :city_or_town, :state_or_province)
+  Contact = Struct.new(:name, :email, :phone, :city, :state)
   
   include Glimmer
   
@@ -94,9 +94,9 @@ class FormTable
           text_column('Email')
           text_column('Phone')
           text_column('City')
-          text_column('State')
+          text_column('State/Province')
     
-          cell_rows <=> [self, :contacts, column_attributes: [:full_name, :email_address, :phone_number, :city_or_town, :state_or_province]] # explicit data-binding with column_attributes mapping
+          cell_rows <=> [self, :contacts, column_attributes: {'State/Province' => :state}] # explicit data-binding to Model Array with column_attributes mapping for a specific column
           
           on_changed do |row, type, row_data|
             puts "Row #{row} #{type}: #{row_data}"

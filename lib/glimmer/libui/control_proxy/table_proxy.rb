@@ -140,11 +140,11 @@ module Glimmer
         alias editable? editable
         
         def data_bind_read(property, model_binding)
-          # TODO apply converters of models to arrays in cell_rows with column_attribute
-          if model_binding.binding_options[:column_attributes] && model_binding.binding_options[:column_attributes].is_a?(Array)
+          if model_binding.binding_options[:column_attributes].is_a?(Array)
             @column_attributes = model_binding.binding_options[:column_attributes]
           else
-            @column_attributes = columns.map(&:name).map(&:underscore)
+            column_attribute_mapping = model_binding.binding_options[:column_attributes].is_a?(Hash) ? model_binding.binding_options[:column_attributes] : {}
+            @column_attributes = columns.map(&:name).map {|column_name| column_attribute_mapping[column_name] || column_name.underscore}
           end
           model_attribute_observer = model_attribute_observer_registration = nil
           model_attribute_observer = Glimmer::DataBinding::Observer.proc do
