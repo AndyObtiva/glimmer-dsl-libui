@@ -9,8 +9,13 @@ data = [
 ]
 
 Glimmer::LibUI.timer(1) do
-  cpu_percentage_raw_value = `wmic cpu get loadpercentage`
-  cpu_percentage_value = cpu_percentage_raw_value.split("\n")[2].to_i
+  cpu_percentage_value = nil
+  if OS.windows?
+    cpu_percentage_raw_value = `wmic cpu get loadpercentage`
+    cpu_percentage_value = cpu_percentage_raw_value.split("\n")[2].to_f
+  elsif OS.mac?
+    cpu_percentage_value = `ps -A -o %cpu | awk '{s+=$1} END {print s}'`
+  end
   data[0][1] = "#{cpu_percentage_value}%"
   data[0][2] = cpu_percentage_value
 end
