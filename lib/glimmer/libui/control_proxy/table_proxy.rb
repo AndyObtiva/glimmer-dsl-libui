@@ -211,8 +211,8 @@ module Glimmer
               # TODO refactor to eliminate redundancy and share similar code
               row = row - 1 if OS.windows? && row == cell_rows.count
               img = expanded_cell_rows[row][column]
-              img = ControlProxy::ImageProxy.new('image', nil, img) if img.is_a?(Array)
-              img = ControlProxy::ImageProxy.new('image', nil, [img]) if img.is_a?(String)
+              img = ControlProxy::ImageProxy.create('image', nil, img) if img.is_a?(Array)
+              img = ControlProxy::ImageProxy.create('image', nil, [img]) if img.is_a?(String)
               img = img.respond_to?(:libui) ? img.libui : img
               ::LibUI.new_table_value_image(img)
             when Column::CheckboxColumnProxy, Column::CheckboxTextColumnProxy, Column::CheckboxTextColorColumnProxy

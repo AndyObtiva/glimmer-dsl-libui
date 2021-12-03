@@ -34,6 +34,22 @@ module Glimmer
       #
       # Follows the Proxy Design Pattern
       class ImageProxy < ControlProxy
+        class << self
+          # creates or returns existing instance for passed in arguments if parent is nil and block is nil
+          def create(keyword, parent, args, &block)
+            if parent.nil? && block.nil?
+              instances[args] ||= new(keyword, parent, args.dup, &block)
+            else
+              new(keyword, parent, args, &block)
+            end
+          end
+          
+          def instances
+            @@instances = {} unless defined? @@instances
+            @@instances
+          end
+        end
+        
         include Parent
         prepend Transformable
         

@@ -3,6 +3,7 @@
 ## 0.4.13
 
 - Shorten height of examples/cpu_percentage.rb
+- Optimize `table` `image` object by caching for multiple images sharing the same arguments
 
 ## 0.4.12
 
