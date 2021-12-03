@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.4.12
+
+- Support `table` data-binding to model rows when utilizing dual-columns or triple-columns (e.g. columns having color and/or a checkbox in addition to text)
+- Add examples/basic_table_color.rb that data-binds to model rows instead of raw data
+- Fix issue with hex color support for colors starting with `'#'`
+
 ## 0.4.11
 
 - Support `table` `cell_rows` explicit bidirectional data-binding (with `<=>` sign)

@@ -145,7 +145,7 @@ module Glimmer
             @column_attributes = model_binding.binding_options[:column_attributes]
           else
             column_attribute_mapping = model_binding.binding_options[:column_attributes].is_a?(Hash) ? model_binding.binding_options[:column_attributes] : {}
-            @column_attributes = columns.map(&:name).map {|column_name| column_attribute_mapping[column_name] || column_name.underscore}
+            @column_attributes = columns.select {|column| column.is_a?(Column)}.map(&:name).map {|column_name| column_attribute_mapping[column_name] || column_name.underscore}
           end
           model_attribute_observer = model_attribute_observer_registration = nil
           model_attribute_observer = Glimmer::DataBinding::Observer.proc do

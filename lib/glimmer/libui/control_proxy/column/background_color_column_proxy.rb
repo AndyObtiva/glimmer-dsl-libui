@@ -31,6 +31,10 @@ module Glimmer
         # Follows the Proxy Design Pattern
         class BackgroundColorColumnProxy < ControlProxy
           include Column
+          
+          def name
+            'Background Color'
+          end
         end
       end
     end

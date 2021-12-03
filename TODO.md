@@ -2,8 +2,10 @@
 
 ## Next
 
-- Support adding background_color_column anywhere in `table` (not just as last column)
 - Support ability to attach multiple listeners (e.g. multiple `on_changed {}` on `entry`)
+- Shorten height of CPU Percentage example (until filled with more data in the future)
+- Document how to data-bind a control's value to another control's value: it is not recommended to data-bind directly, yet to data-bind both to a single shared model attribute
+- On Windows, given that we add an extra row to `table` as a workaround, how about we immediately delete the last extra row we add?
 
 - Support passing x and y coordinates to `image` keyword (only when over 3 args are passed)
 

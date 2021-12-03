@@ -848,7 +848,9 @@ window('Contacts', 600, 600) { |w|
 }.show
 ```
 
-![glimmer-dsl-libui-linux-form-table.png](images/glimmer-dsl-libui-linux-form-table.png)
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-form-table.png](images/glimmer-dsl-libui-mac-form-table.png) | ![glimmer-dsl-libui-windows-form-table.png](images/glimmer-dsl-libui-windows-form-table.png) | ![glimmer-dsl-libui-linux-form-table.png](images/glimmer-dsl-libui-linux-form-table.png)
 
 Learn more by checking out [examples](#examples).
 
@@ -1542,6 +1544,8 @@ entry {
 
 That is data-binding `entered_text` attribute on `self` to `entry` `text` property and printing text after write to the model.
 
+One note about `table` `cell_rows` data-binding is that it works with either a raw data `Array` (rows) of `Array`s (column cells) or an `Array` (rows) of models with attributes (column cells) matching the underscored names of `table` columns by convention. This smart default can be overridden when needed by passing an `Array` enumerating all mapped model attributes in the order of `table` columns or alternatively, a `Hash` mapping only the column names that have model attribute names different from their underscored version.
+
 [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) supports unidirectional (one-way) data-binding of any control/shape/attributed-string property via the `<=` operator (indicating data is moving from the right side, which is the Model, to the left side, which is the GUI View object).
 
 Example of unidirectional data-binding:
@@ -1598,7 +1602,7 @@ Data-binding gotchas:
 - Never data-bind a control property to an attribute on the same view object with the same exact name (e.g. binding `entry` `text` property to `self` `text` attribute) as it would conflict with it. Instead, data-bind view property to an attribute with a different name on the view object or with the same name, but on a presenter or model object (e.g. data-bind `entry` `text` to `self` `legal_text` attribute or to `contract` model `text` attribute)
 - Data-binding a property utilizes the control's listener associated with the property (e.g. `on_changed` for `entry` `text`), so you cannot hook into the listener directly anymore as that would negate data-binding. Instead, you can add an `after_write: ->(val) {}` option to perform something on trigger of the control listener instead.
 
-Learn more from data-binding usage in [Login](#login) (4 data-binding versions), [Basic Entry](#basic-entry), [Form](#form), [Form Table](#form-table), [Method-Based Custom Keyword](#method-based-custom-keyword), [Snake](#snake) and [Tic Tac Toe](#tic_tac_toe) examples.
+Learn more from data-binding usage in [Login](#login) (4 data-binding versions), [Basic Entry](#basic-entry), [Form](#form), [Form Table](#form-table) (5 data-binding versions), [Method-Based Custom Keyword](#method-based-custom-keyword), [Snake](#snake) and [Tic Tac Toe](#tic_tac_toe) examples.
 
 ### API Gotchas
 
@@ -3402,11 +3406,124 @@ Mac | Windows | Linux
 ----|---------|------
 ![glimmer-dsl-libui-mac-basic-table-color.png](images/glimmer-dsl-libui-mac-basic-table-color.png) | ![glimmer-dsl-libui-windows-basic-table-color.png](images/glimmer-dsl-libui-windows-basic-table-color.png) | ![glimmer-dsl-libui-linux-basic-table-color.png](images/glimmer-dsl-libui-linux-basic-table-color.png)
 
-New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version (with explicit [data-binding](#data-binding) to model rows using a presenter):
 
 ```ruby
-# frozen_string_literal: true
+require 'glimmer-dsl-libui'
 
+class BasicTableColor
+  Animal = Struct.new(:name, :sound, :mammal)
+  
+  class AnimalPresenter < Animal
+    attr_reader :img
+  
+    def initialize(name, sound, mammal, img)
+      super(name, sound, mammal)
+      @img = img
+    end
+  
+    def name_color
+      color = case name
+      when 'cat'
+        :red
+      when 'dog'
+        :yellow
+      when 'chicken'
+        :beige
+      when 'horse'
+        :purple
+      when 'cow'
+        :gray
+      end
+      [name, color]
+    end
+    
+    def sound_color
+      color = case name
+      when 'cat', 'chicken', 'cow'
+        :blue
+      when 'dog', 'horse'
+        {r: 240, g: 32, b: 32}
+      end
+      [sound, color]
+    end
+    
+    def mammal_description_color
+      color = case name
+      when 'cat', 'dog', 'horse', 'cow'
+        :green
+      when 'chicken'
+        :red
+      end
+      [mammal, 'mammal', color]
+    end
+    
+    def image_description_color
+      color = case name
+      when 'cat', 'dog', 'horse'
+        :dark_blue
+      when 'chicken'
+        :beige
+      when 'cow'
+        :brown
+      end
+      [img, 'Glimmer', color]
+    end
+    
+    def background_color
+      case name
+      when 'cat'
+        {r: 255, g: 120, b: 0, a: 0.5}
+      when 'dog'
+        :skyblue
+      when 'chicken'
+        {r: 5, g: 120, b: 110}
+      when 'horse'
+        '#13a1fb'
+      when 'cow'
+        0x12ff02
+      end
+    end
+  end
+  
+  include Glimmer
+  
+  attr_accessor :animals
+  
+  def initialize
+    img = image(File.expand_path('../icons/glimmer.png', __dir__), 24, 24)
+    @animals = [
+      AnimalPresenter.new('cat', 'meow', true, img),
+      AnimalPresenter.new('dog', 'woof', true, img),
+      AnimalPresenter.new('chicken', 'cock-a-doodle-doo', false, img),
+      AnimalPresenter.new('horse', 'neigh', true, img),
+      AnimalPresenter.new('cow', 'moo', true, img),
+    ]
+  end
+  
+  def launch
+    window('Animals', 500, 200) {
+      horizontal_box {
+        table {
+          text_color_column('Animal')
+          text_color_column('Sound')
+          checkbox_text_color_column('Description')
+          image_text_color_column('GUI')
+          background_color_column # must always be the last column and always expects data-binding model attribute `background_color` when binding to Array of models
+    
+          cell_rows <= [self, :animals, column_attributes: {'Animal' => :name_color, 'Sound' => :sound_color, 'Description' => :mammal_description_color, 'GUI' => :image_description_color}]
+        }
+      }
+    }.show
+  end
+end
+
+BasicTableColor.new.launch
+```
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 2 (with implicit [data-binding](#data-binding) to raw data rows):
+
+```ruby
 require 'glimmer-dsl-libui'
 
 include Glimmer
@@ -3436,7 +3553,7 @@ window('Animals', 500, 200) {
 }.show
 ```
 
-New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 2 (manual construction of [libui](https://github.com/andlabs/libui) `image` from `image_part`):
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 3 (with implicit [data-binding](#data-binding) to raw data rows and manual construction of [libui](https://github.com/andlabs/libui) `image` from `image_part`):
 
 ```ruby
 require 'glimmer-dsl-libui'

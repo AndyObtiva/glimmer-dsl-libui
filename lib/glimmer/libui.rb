@@ -63,7 +63,7 @@ module Glimmer
           value[:b] = value.delete(:blue) if value[:blue]
           value[:a] = value.delete(:alpha) if value[:alpha]
           value
-        elsif value.is_a?(String) && !value.start_with?('0x') && !value.downcase.match(/^((([1-9a-f]){6})|(([1-9a-f]){3}))$/)
+        elsif value.is_a?(String) && !value.start_with?('0x') && !value.start_with?('#') && !value.downcase.match(/^((([1-9a-f]){6})|(([1-9a-f]){3}))$/)
           color = Color::RGB.extract_colors(value).first
           color.nil? ? {} : {
             r: color.red,
@@ -79,11 +79,11 @@ module Glimmer
     
       def hex_to_rgb(value)
         if value.is_a?(String)
+          value = "0x#{value[1..-1]}" if value.start_with?('#')
           if !value.start_with?('0x')
             value = value.chars.map {|char| [char, char]}.flatten.join if value.length == 3
             value = "0x#{value}"
           end
-          value = "0x#{value[1..-1]}" if value.start_with?('#')
           value = value.to_i(16)
         end
         if value.is_a?(Integer)
