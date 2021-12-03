@@ -16,6 +16,8 @@ window('Basic Image', 96, 96) {
     # It is recommended to pass width/height args to shrink image and achieve faster performance.
     image {
       file File.expand_path('../icons/glimmer.png', __dir__)
+#       x 0 # default
+#       y 0 # default
       width 96
       height 96
     }

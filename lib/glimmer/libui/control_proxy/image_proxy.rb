@@ -53,11 +53,12 @@ module Glimmer
         include Parent
         prepend Transformable
         
-        attr_reader :data, :pixels, :shapes
+        attr_reader :data, :pixels, :shapes, :options
         
         def initialize(keyword, parent, args, &block)
           @keyword = keyword
           @parent_proxy = parent
+          @options = args.last.is_a?(Hash) ? args.pop : {}
           @args = args
           @block = block
           @enabled = true
@@ -92,11 +93,53 @@ module Glimmer
         alias file= file
         alias set_file file
       
+        def x(value = nil)
+          if value.nil?
+            @args.size > 3 ? @args[1] : (@options[:x] || 0)
+          else
+            if @args.size > 3
+              @args[1] = value
+            else
+              @options[:x] = value
+            end
+            if area_image? && @content_added
+              post_add_content
+              request_auto_redraw
+            end
+          end
+        end
+        alias x= x
+        alias set_x x
+      
+        def y(value = nil)
+          if value.nil?
+            @args.size > 3 ? @args[2] : (@options[:y] || 0)
+          else
+            if @args.size > 3
+              @args[2] = value
+            else
+              @options[:y] = value
+            end
+            if area_image? && @content_added
+              post_add_content
+              request_auto_redraw
+            end
+          end
+        end
+        alias y= y
+        alias set_y y
+        
         def width(value = nil)
           if value.nil?
-            @args[1]
+            @args.size > 3 ? @args[3] : (@options[:width] || @args[1])
           else
-            @args[1] = value
+            if @args.size > 3
+              @args[3] = value
+            elsif @options[:width]
+              @options[:width] = value
+            else
+              @args[1] = value
+            end
             if area_image? && @content_added
               post_add_content
               request_auto_redraw
@@ -108,9 +151,15 @@ module Glimmer
       
         def height(value = nil)
           if value.nil?
-            @args[2]
+            @args.size > 3 ? @args[4] : (@options[:height] || @args[2])
           else
-            @args[2] = value
+            if @args.size > 3
+              @args[4] = value
+            elsif @options[:height]
+              @options[:height] = value
+            else
+              @args[2] = value
+            end
             if area_image? && @content_added
               post_add_content
               request_auto_redraw
@@ -182,8 +231,8 @@ module Glimmer
           end
           canvas.resample_nearest_neighbor!(width, height) if width && height
           @data = canvas.to_rgba_stream
-          @args[1] = canvas.width
-          @args[2] = canvas.height
+          @args[1] ||= canvas.width
+          @args[2] ||= canvas.height
           [@data, width, height]
         end
         
@@ -203,6 +252,8 @@ module Glimmer
           @shapes = []
           original_pixels = @pixels.dup
           indexed_original_pixels = Hash[original_pixels.each_with_index.to_a]
+          x_offset = x
+          y_offset = y
           @pixels.each do |pixel|
             index = indexed_original_pixels[pixel]
             @rectangle_start_x ||= pixel[:x]
@@ -211,9 +262,9 @@ module Glimmer
               @rectangle_width += 1
             else
               if pixel[:x] > 0 && pixel[:color] == original_pixels[index - 1][:color]
-                @shapes << {x: @rectangle_start_x, y: pixel[:y], width: @rectangle_width, height: 1, color: pixel[:color]}
+                @shapes << {x: x_offset + @rectangle_start_x, y: y_offset + pixel[:y], width: @rectangle_width, height: 1, color: pixel[:color]}
               else
-                @shapes << {x: pixel[:x], y: pixel[:y], width: 1, height: 1, color: pixel[:color]}
+                @shapes << {x: x_offset + pixel[:x], y: y_offset + pixel[:y], width: 1, height: 1, color: pixel[:color]}
               end
               @rectangle_width = 1
               @rectangle_start_x = pixel[:x] == width - 1 ? 0 : pixel[:x] + 1

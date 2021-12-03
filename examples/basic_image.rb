@@ -13,7 +13,10 @@ window('Basic Image', 96, 96) {
     # Furthermore, adding image directly under area is even slower due to taking up more memory for every
     # image pixel rendered. Check basic_image2.rb for a faster alternative using on_draw manually.
     #
-    # It is recommended to pass width/height args to shrink image and achieve faster performance.
-    image(File.expand_path('../icons/glimmer.png', __dir__), 96, 96)
+    # It is recommended to pass width/height 2nd/3rd args to shrink image and achieve faster performance.
+    image(File.expand_path('../icons/glimmer.png', __dir__), width: 96, height: 96)
+#     image(File.expand_path('../icons/glimmer.png', __dir__), 96, 96) # you can specify width, height as alternative
+#     image(File.expand_path('../icons/glimmer.png', __dir__), 0, 0, 96, 96) # you can specify x, y, width, height as alternative
+#     image(File.expand_path('../icons/glimmer.png', __dir__), x: 0, y: 0, width: 96, height: 96) # you can specify x, y, width, height options as alternative
   }
 }.show

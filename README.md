@@ -180,7 +180,7 @@ class FormTable
           text_column('State')
     
           editable true
-          cell_rows <=> [self, :contacts] # explicit data-binding to Model Array
+          cell_rows <=> [self, :contacts] # explicit data-binding to self.contacts Modal Array, auto-inferring model attribute names from underscored table column names by convention
           
           on_changed do |row, type, row_data|
             puts "Row #{row} #{type}: #{row_data}"
@@ -1028,6 +1028,7 @@ Given that it is very new and is not a [libui](https://github.com/andlabs/libui)
 - [libui](https://github.com/andlabs/libui) pixel-by-pixel rendering performance is slow.
 - Including an `image` inside an `area` `on_draw` listener improves performance due to not retaining pixel/line data in memory.
 - Supplying `width` and `height` (2nd and 3rd arguments) greatly improves performance when shrinking image.
+- [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) lets you specify `x` and `y` in addition to `file`, `width` and `height` (5 arguments total) to offset image location.
 
 Currently, it is recommended to use `image` with very small `width` and `height` values only (e.g. 24x24).
 
@@ -1047,6 +1048,9 @@ include Glimmer
 window('Basic Image', 96, 96) {
   area {
     image(File.expand_path('icons/glimmer.png', __dir__), 96, 96)
+#     image(File.expand_path('icons/glimmer.png', __dir__), width: 96, height: 96)
+#     image(File.expand_path('../icons/glimmer.png', __dir__), 0, 0, 96, 96) # you can specify x, y, width, height as alternative
+#     image(File.expand_path('../icons/glimmer.png', __dir__), x: 0, y: 0, width: 96, height: 96) # you can specify x, y, width, height options as alternative
   }
 }.show
 ```
@@ -1078,6 +1082,8 @@ window('Basic Image', 96, 96) {
   area {
     image {
       file File.expand_path('icons/glimmer.png', __dir__)
+#       x 0 # default
+#       y 0 # default
       width 96
       height 96
     }
@@ -1623,7 +1629,7 @@ class SomeTable
         text_column('City')
         text_column('State')
   
-        cell_rows <=> [self, :contacts] # explicit data-binding to Model Array auto-inferring model attribute names from underscored table column names by convention
+        cell_rows <=> [self, :contacts] # explicit data-binding to self.contacts Model Array, auto-inferring model attribute names from underscored table column names by convention
       }
     }.show
   end
@@ -4098,7 +4104,10 @@ window('Basic Image', 96, 96) {
     # image pixel rendered. Check basic_image2.rb for a faster alternative using on_draw manually.
     #
     # It is recommended to pass width/height args to shrink image and achieve faster performance.
-    image(File.expand_path('../icons/glimmer.png', __dir__), 96, 96)
+    image(File.expand_path('../icons/glimmer.png', __dir__), width: 96, height: 96)
+#     image(File.expand_path('../icons/glimmer.png', __dir__), 96, 96) # you can specify width, height as alternative
+#     image(File.expand_path('../icons/glimmer.png', __dir__), 0, 0, 96, 96) # you can specify x, y, width, height as alternative
+#     image(File.expand_path('../icons/glimmer.png', __dir__), x: 0, y: 0, width: 96, height: 96) # you can specify x, y, width, height options as alternative
   }
 }.show
 ```
@@ -4142,6 +4151,8 @@ window('Basic Image', 96, 96) {
     # It is recommended to pass width/height args to shrink image and achieve faster performance.
     image {
       file File.expand_path('../icons/glimmer.png', __dir__)
+#       x 0 # default
+#       y 0 # default
       width 96
       height 96
     }
@@ -6896,7 +6907,7 @@ class FormTable
           text_column('State')
     
           editable true
-          cell_rows <=> [self, :contacts] # explicit data-binding to Model Array auto-inferring model attribute names from underscored table column names by convention
+          cell_rows <=> [self, :contacts] # explicit data-binding to self.contacts Model Array, auto-inferring model attribute names from underscored table column names by convention
           
           on_changed do |row, type, row_data|
             puts "Row #{row} #{type}: #{row_data}"

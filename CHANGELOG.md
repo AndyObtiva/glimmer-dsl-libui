@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.4.14
+
+- Support passing x and y coordinates to `image` keyword as 2nd and 3rd arguments of 5 arguments (file, x, y, width, height)
+- Support passing x, y, width, height to `image` keyword as options kwargs
+
 ## 0.4.13
 
 - Shorten height of examples/cpu_percentage.rb

@@ -98,7 +98,7 @@ class FormTable
           text_column('State')
     
           editable true
-          cell_rows <=> [self, :contacts] # explicit data-binding to Model Array
+          cell_rows <=> [self, :contacts] # explicit data-binding to self.contacts Model Array, auto-inferring model attribute names from underscored table column names by convention
           
           on_changed do |row, type, row_data|
             puts "Row #{row} #{type}: #{row_data}"
