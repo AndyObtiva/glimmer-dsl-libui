@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.4.13
+
+- Shorten height of examples/cpu_percentage.rb
+
 ## 0.4.12
 
 - Support `table` data-binding to model rows when utilizing dual-columns or triple-columns (e.g. columns having color and/or a checkbox in addition to text)

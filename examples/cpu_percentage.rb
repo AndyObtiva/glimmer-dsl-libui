@@ -23,7 +23,7 @@ Glimmer::LibUI.timer(1) do
   data[0][2] = cpu_percentage_value
 end
 
-window('CPU Percentage', 400, 200) {
+window('CPU Percentage', 400, 50) {
   vertical_box {
     table {
       text_column('Name')
