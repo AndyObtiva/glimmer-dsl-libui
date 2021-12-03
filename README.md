@@ -1027,7 +1027,7 @@ Given that it is very new and is not a [libui](https://github.com/andlabs/libui)
 - It only supports the `.png` file format.
 - [libui](https://github.com/andlabs/libui) pixel-by-pixel rendering performance is slow.
 - Including an `image` inside an `area` `on_draw` listener improves performance due to not retaining pixel/line data in memory.
-- Supplying `width` and `height` (2nd and 3rd arguments) greatly improves performance when shrinking image.
+- Supplying `width` and `height` options greatly improves performance when shrinking image (e.g. `image('somefile.png', width: 24, height: 24)`). You can also supply one of the two dimensions, and the other one gets calculated automatically while preserving original aspect ratio (e.g. `image('somefile.png', height: 24)`)
 - [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) lets you specify `x` and `y` in addition to `file`, `width` and `height` (5 arguments total) to offset image location.
 
 Currently, it is recommended to use `image` with very small `width` and `height` values only (e.g. 24x24).
@@ -1047,9 +1047,10 @@ include Glimmer
 
 window('Basic Image', 96, 96) {
   area {
-    image(File.expand_path('icons/glimmer.png', __dir__), 96, 96)
-#     image(File.expand_path('icons/glimmer.png', __dir__), width: 96, height: 96)
-#     image(File.expand_path('../icons/glimmer.png', __dir__), 0, 0, 96, 96) # you can specify x, y, width, height as alternative
+    image(File.expand_path('icons/glimmer.png', __dir__), height: 96) # width is automatically calculated from height while preserving original aspect ratio
+#     image(File.expand_path('icons/glimmer.png', __dir__), width: 96, height: 96) # you can specify both width and height options
+#     image(File.expand_path('icons/glimmer.png', __dir__), 96, 96) # you can specify width, height as args
+#     image(File.expand_path('../icons/glimmer.png', __dir__), 0, 0, 96, 96) # you can specify x, y, width, height args as alternative
 #     image(File.expand_path('../icons/glimmer.png', __dir__), x: 0, y: 0, width: 96, height: 96) # you can specify x, y, width, height options as alternative
   }
 }.show
@@ -4104,9 +4105,10 @@ window('Basic Image', 96, 96) {
     # image pixel rendered. Check basic_image2.rb for a faster alternative using on_draw manually.
     #
     # It is recommended to pass width/height args to shrink image and achieve faster performance.
-    image(File.expand_path('../icons/glimmer.png', __dir__), width: 96, height: 96)
-#     image(File.expand_path('../icons/glimmer.png', __dir__), 96, 96) # you can specify width, height as alternative
-#     image(File.expand_path('../icons/glimmer.png', __dir__), 0, 0, 96, 96) # you can specify x, y, width, height as alternative
+    image(File.expand_path('../icons/glimmer.png', __dir__), height: 96) # width is automatically calculated from height while preserving original aspect ratio
+#     image(File.expand_path('../icons/glimmer.png', __dir__), width: 96, height: 96) # you can specify both width, height options as alternative
+#     image(File.expand_path('../icons/glimmer.png', __dir__), 96, 96) # you can specify width, height args as alternative
+#     image(File.expand_path('../icons/glimmer.png', __dir__), 0, 0, 96, 96) # you can specify x, y, width, height args as alternative
 #     image(File.expand_path('../icons/glimmer.png', __dir__), x: 0, y: 0, width: 96, height: 96) # you can specify x, y, width, height options as alternative
   }
 }.show
@@ -4115,8 +4117,6 @@ window('Basic Image', 96, 96) {
 New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 2 (better performance via `on_draw`):
 
 ```ruby
-# frozen_string_literal: true
-
 require 'glimmer-dsl-libui'
 
 include Glimmer
@@ -4124,7 +4124,7 @@ include Glimmer
 window('Basic Image', 96, 96) {
   area {
     on_draw do |area_draw_params|
-      image(File.expand_path('../icons/glimmer.png', __dir__), 96, 96)
+      image(File.expand_path('../icons/glimmer.png', __dir__), height: 96)
     end
   }
 }.show
@@ -4133,8 +4133,6 @@ window('Basic Image', 96, 96) {
 New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 3 (explicit properties):
 
 ```ruby
-# frozen_string_literal: true
-
 require 'glimmer-dsl-libui'
 
 include Glimmer
@@ -4153,7 +4151,7 @@ window('Basic Image', 96, 96) {
       file File.expand_path('../icons/glimmer.png', __dir__)
 #       x 0 # default
 #       y 0 # default
-      width 96
+#       width 96 # gets calculated from height while preserving original aspect ratio of 512x512
       height 96
     }
   }
@@ -4163,8 +4161,6 @@ window('Basic Image', 96, 96) {
 New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 4 (better performance with `on_draw` when setting explicit properties):
 
 ```ruby
-# frozen_string_literal: true
-
 require 'glimmer-dsl-libui'
 
 include Glimmer
@@ -4174,7 +4170,6 @@ window('Basic Image', 96, 96) {
     on_draw do |area_draw_params|
       image {
         file File.expand_path('../icons/glimmer.png', __dir__)
-        width 96
         height 96
       }
     end

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # This is the manual way of rendering an image unto an area control.
 # It could come in handy in special situations.
 # Otherwise, it is recommended to simply utilize the `image` control that

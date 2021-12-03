@@ -2,6 +2,7 @@
 
 ## 0.4.14
 
+- Support passing width or height alone to `image` keyword, calculating the other dimension automatically while preserving original aspect ratio
 - Support passing x and y coordinates to `image` keyword as 2nd and 3rd arguments of 5 arguments (file, x, y, width, height)
 - Support passing x, y, width, height to `image` keyword as options kwargs
 

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require 'glimmer-dsl-libui'
 
 include Glimmer
@@ -18,7 +16,7 @@ window('Basic Image', 96, 96) {
       file File.expand_path('../icons/glimmer.png', __dir__)
 #       x 0 # default
 #       y 0 # default
-      width 96
+#       width 96 # gets calculated from height while preserving original aspect ratio of 512x512
       height 96
     }
   }

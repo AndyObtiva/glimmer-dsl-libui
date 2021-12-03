@@ -133,13 +133,7 @@ module Glimmer
           if value.nil?
             @args.size > 3 ? @args[3] : (@options[:width] || @args[1])
           else
-            if @args.size > 3
-              @args[3] = value
-            elsif @options[:width]
-              @options[:width] = value
-            else
-              @args[1] = value
-            end
+            set_width_variable(value)
             if area_image? && @content_added
               post_add_content
               request_auto_redraw
@@ -153,13 +147,7 @@ module Glimmer
           if value.nil?
             @args.size > 3 ? @args[4] : (@options[:height] || @args[2])
           else
-            if @args.size > 3
-              @args[4] = value
-            elsif @options[:height]
-              @options[:height] = value
-            else
-              @args[2] = value
-            end
+            set_height_variable(value)
             if area_image? && @content_added
               post_add_content
               request_auto_redraw
@@ -197,6 +185,26 @@ module Glimmer
         
         private
         
+        def set_width_variable(value)
+          if @args.size > 3
+            @args[3] = value
+          elsif @options[:width]
+            @options[:width] = value
+          else
+            @args[1] = value
+          end
+        end
+        
+        def set_height_variable(value)
+          if @args.size > 3
+            @args[4] = value
+          elsif @options[:height]
+            @options[:height] = value
+          else
+            @args[2] = value
+          end
+        end
+        
         def build_control
           unless area_image? # image object
             if file
@@ -229,10 +237,17 @@ module Glimmer
             canvas = ChunkyPNG::Canvas.from_io(f)
             f.close
           end
-          canvas.resample_nearest_neighbor!(width, height) if width && height
+          original_width = canvas.width
+          original_height = canvas.height
+          new_width = width
+          new_height = height
+          require 'bigdecimal'
+          new_width = ((BigDecimal(new_height)/BigDecimal(original_height))*original_width).to_i if new_height && !new_width
+          new_height = ((BigDecimal(new_width)/BigDecimal(original_width))*original_height).to_i if new_width && !new_height
+          canvas.resample_nearest_neighbor!(new_width, new_height) if new_width && new_height
           @data = canvas.to_rgba_stream
-          @args[1] ||= canvas.width
-          @args[2] ||= canvas.height
+          set_width_variable(canvas.width) unless width
+          set_height_variable(canvas.width) unless height
           [@data, width, height]
         end
         
