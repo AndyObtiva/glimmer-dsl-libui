@@ -3,7 +3,11 @@
 ## 0.4.12
 
 - Support `table` data-binding to model rows when utilizing dual-columns or triple-columns (e.g. columns having color and/or a checkbox in addition to text)
-- Add examples/basic_table_color.rb that data-binds to model rows instead of raw data
+- Support passing `table` `image`/`image_text` `cell_rows` `image` data as file path/image args directly (without using `image` keyword)
+- Add examples/basic_table_color.rb version that data-binds to model rows instead of raw data
+- Simplify examples/basic_table_color.rb to pass image data as file-path/width/height arguments directly
+- Simplify examples/basic_table_image.rb to pass image data as file url directly
+- Simplify examples/basic_table_image_text.rb to pass image data as file url directly
 - Fix issue with hex color support for colors starting with `'#'`
 
 ## 0.4.11

@@ -208,11 +208,13 @@ module Glimmer
             when Column::TextColumnProxy, Column::ButtonColumnProxy, Column::TextColorColumnProxy, :text
               ::LibUI.new_table_value_string((expanded_cell_rows[row] && expanded_cell_rows[row][column]).to_s)
             when Column::ImageColumnProxy, Column::ImageTextColumnProxy, Column::ImageTextColorColumnProxy
-              if OS.windows? && row == cell_rows.count
-                ::LibUI.new_table_value_image((expanded_cell_rows[row - 1] && (expanded_cell_rows[row - 1][column].respond_to?(:libui) ? expanded_cell_rows[row - 1][column].libui : expanded_cell_rows[row - 1][column])))
-              else
-                ::LibUI.new_table_value_image((expanded_cell_rows[row] && (expanded_cell_rows[row][column].respond_to?(:libui) ? expanded_cell_rows[row][column].libui : expanded_cell_rows[row][column])))
-              end
+              # TODO refactor to eliminate redundancy and share similar code
+              row = row - 1 if OS.windows? && row == cell_rows.count
+              img = expanded_cell_rows[row][column]
+              img = ControlProxy::ImageProxy.new('image', nil, img) if img.is_a?(Array)
+              img = ControlProxy::ImageProxy.new('image', nil, [img]) if img.is_a?(String)
+              img = img.respond_to?(:libui) ? img.libui : img
+              ::LibUI.new_table_value_image(img)
             when Column::CheckboxColumnProxy, Column::CheckboxTextColumnProxy, Column::CheckboxTextColorColumnProxy
               ::LibUI.new_table_value_int(((expanded_cell_rows[row] && (expanded_cell_rows[row][column] == 1 || expanded_cell_rows[row][column].to_s.strip.downcase == 'true' ? 1 : 0))) || 0)
             when Column::ProgressBarColumnProxy

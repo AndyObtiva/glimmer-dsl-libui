@@ -4,13 +4,6 @@ class BasicTableColor
   Animal = Struct.new(:name, :sound, :mammal)
   
   class AnimalPresenter < Animal
-    attr_reader :img
-  
-    def initialize(name, sound, mammal, img)
-      super(name, sound, mammal)
-      @img = img
-    end
-  
     def name_color
       color = case name
       when 'cat'
@@ -59,6 +52,11 @@ class BasicTableColor
       [img, 'Glimmer', color]
     end
     
+    def img
+      # scale image to 24x24 (can be passed as file path String only instead of Array to avoid scaling)
+      [File.expand_path('../icons/glimmer.png', __dir__), 24, 24]
+    end
+    
     def background_color
       case name
       when 'cat'
@@ -80,13 +78,12 @@ class BasicTableColor
   attr_accessor :animals
   
   def initialize
-    img = image(File.expand_path('../icons/glimmer.png', __dir__), 24, 24)
     @animals = [
-      AnimalPresenter.new('cat', 'meow', true, img),
-      AnimalPresenter.new('dog', 'woof', true, img),
-      AnimalPresenter.new('chicken', 'cock-a-doodle-doo', false, img),
-      AnimalPresenter.new('horse', 'neigh', true, img),
-      AnimalPresenter.new('cow', 'moo', true, img),
+      AnimalPresenter.new('cat', 'meow', true),
+      AnimalPresenter.new('dog', 'woof', true),
+      AnimalPresenter.new('chicken', 'cock-a-doodle-doo', false),
+      AnimalPresenter.new('horse', 'neigh', true),
+      AnimalPresenter.new('cow', 'moo', true),
     ]
   end
   

@@ -2,7 +2,7 @@ require 'glimmer-dsl-libui'
 
 include Glimmer
 
-img = image(File.expand_path('../icons/glimmer.png', __dir__), 24, 24)
+img = [File.expand_path('../icons/glimmer.png', __dir__), 24, 24] # scales image to 24x24 (can be passed as file path String only instead of Array to avoid scaling)
 
 data = [
   [['cat', :red]      , ['meow', :blue]                  , [true, 'mammal', :green], [img, 'Glimmer', :dark_blue], {r: 255, g: 120, b: 0, a: 0.5}],

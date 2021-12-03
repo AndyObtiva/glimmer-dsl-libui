@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.4.11
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.4.12
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -356,6 +356,11 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
     - [Custom Keywords](#custom-keywords)
     - [Observer Pattern](#observer-pattern)
     - [Data-Binding](#data-binding)
+      - [Bidirectional (Two-Way) Data-Binding](#bidirectional-two-way-data-binding)
+        - [Table Data-Binding](#table-data-binding)
+      - [Unidirectional (One-Way) Data-Binding](#unidirectional-one-way-data-binding)
+      - [Data-Binding API](#data-binding-api)
+      - [Data-Binding Gotchas](#data-binding-gotchas)
     - [API Gotchas](#api-gotchas)
     - [Original API](#original-api)
   - [Packaging](#packaging)
@@ -495,7 +500,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.4.11'
+gem 'glimmer-dsl-libui', '~> 0.4.12'
 ```
 
 Test that installation worked by running the [Meta-Example](#examples):
@@ -1504,6 +1509,8 @@ Data-binding supports utilizing the [MVP (Model View Presenter)](https://en.wiki
 
 ![MVP](https://www.researchgate.net/profile/Gilles-Perrouin/publication/320249584/figure/fig8/AS:668260987068418@1536337243385/Model-view-presenter-architecture.png)
 
+#### Bidirectional (Two-Way) Data-Binding
+
 [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) supports bidirectional (two-way) data-binding of the following controls/properties via the `<=>` operator (indicating data is moving in both directions between View and Model):
 - `checkbox`: `checked`
 - `check_menu_item`: `checked`
@@ -1544,7 +1551,161 @@ entry {
 
 That is data-binding `entered_text` attribute on `self` to `entry` `text` property and printing text after write to the model.
 
-One note about `table` `cell_rows` data-binding is that it works with either a raw data `Array` (rows) of `Array`s (column cells) or an `Array` (rows) of models with attributes (column cells) matching the underscored names of `table` columns by convention. This smart default can be overridden when needed by passing an `Array` enumerating all mapped model attributes in the order of `table` columns or alternatively, a `Hash` mapping only the column names that have model attribute names different from their underscored version.
+##### Table Data-Binding
+
+One note about `table` `cell_rows` data-binding is that it works with either:
+- Raw data `Array` (rows) of `Array`s (column cells)
+- Model `Array` (rows) of objects having attributes (column cells) matching the underscored names of `table` columns by convention. Model attribute names can be overridden when needed by passing an `Array` enumerating all mapped model attributes in the order of `table` columns or alternatively a `Hash` mapping only the column names that have model attribute names different from their table column underscored version.
+
+Example of `table` implicit data-binding of `cell_rows` to raw data `Array` of `Array`s (you may copy/paste in [`girb`](#girb-glimmer-irb)):
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+data = [
+  ['Lisa Sky', 'lisa@sky.com', '720-523-4329', 'Denver', 'CO'],
+  ['Jordan Biggins', 'jordan@biggins.com', '617-528-5399', 'Boston', 'MA'],
+  ['Mary Glass', 'mary@glass.com', '847-589-8788', 'Elk Grove Village', 'IL'],
+  ['Darren McGrath', 'darren@mcgrath.com', '206-539-9283', 'Seattle', 'WA'],
+  ['Melody Hanheimer', 'melody@hanheimer.com', '213-493-8274', 'Los Angeles', 'CA'],
+]
+
+window('Contacts', 600, 600) {
+  table {
+    text_column('Name')
+    text_column('Email')
+    text_column('Phone')
+    text_column('City')
+    text_column('State')
+  
+    cell_rows data
+  }
+}.show
+```
+
+Example of `table` explicit data-binding of `cell_rows` to Model `Array` (you may copy/paste in [`girb`](#girb-glimmer-irb)):
+
+```ruby
+require 'glimmer-dsl-libui'
+
+class SomeTable
+  Contact = Struct.new(:name, :email, :phone, :city, :state)
+  
+  include Glimmer
+  
+  attr_accessor :contacts
+  
+  def initialize
+    @contacts = [
+      Contact.new('Lisa Sky', 'lisa@sky.com', '720-523-4329', 'Denver', 'CO'),
+      Contact.new('Jordan Biggins', 'jordan@biggins.com', '617-528-5399', 'Boston', 'MA'),
+      Contact.new('Mary Glass', 'mary@glass.com', '847-589-8788', 'Elk Grove Village', 'IL'),
+      Contact.new('Darren McGrath', 'darren@mcgrath.com', '206-539-9283', 'Seattle', 'WA'),
+      Contact.new('Melody Hanheimer', 'melody@hanheimer.com', '213-493-8274', 'Los Angeles', 'CA'),
+    ]
+  end
+  
+  def launch
+    window('Contacts', 600, 200) {
+      table {
+        text_column('Name')
+        text_column('Email')
+        text_column('Phone')
+        text_column('City')
+        text_column('State')
+  
+        cell_rows <=> [self, :contacts] # explicit data-binding to Model Array auto-inferring model attribute names from underscored table column names by convention
+      }
+    }.show
+  end
+end
+
+SomeTable.new.launch
+```
+
+Example of `table` explicit data-binding of `cell_rows` to Model `Array` with `column_attributes` `Hash` mapping for custom column names (you may copy/paste in [`girb`](#girb-glimmer-irb)):
+
+```ruby
+require 'glimmer-dsl-libui'
+
+class SomeTable
+  Contact = Struct.new(:name, :email, :phone, :city, :state)
+  
+  include Glimmer
+  
+  attr_accessor :contacts
+  
+  def initialize
+    @contacts = [
+      Contact.new('Lisa Sky', 'lisa@sky.com', '720-523-4329', 'Denver', 'CO'),
+      Contact.new('Jordan Biggins', 'jordan@biggins.com', '617-528-5399', 'Boston', 'MA'),
+      Contact.new('Mary Glass', 'mary@glass.com', '847-589-8788', 'Elk Grove Village', 'IL'),
+      Contact.new('Darren McGrath', 'darren@mcgrath.com', '206-539-9283', 'Seattle', 'WA'),
+      Contact.new('Melody Hanheimer', 'melody@hanheimer.com', '213-493-8274', 'Los Angeles', 'CA'),
+    ]
+  end
+  
+  def launch
+    window('Contacts', 600, 200) {
+      table {
+        text_column('Name')
+        text_column('Email')
+        text_column('Phone')
+        text_column('City/Town')
+        text_column('State/Province')
+  
+        cell_rows <=> [self, :contacts, column_attributes: {'City/Town' => :city, 'State/Province' => :state}]
+      }
+    }.show
+  end
+end
+
+SomeTable.new.launch
+```
+
+Example of `table` explicit data-binding of `cell_rows` to Model `Array` with complete `column_attributes` `Array` mapping (you may copy/paste in [`girb`](#girb-glimmer-irb)):
+
+```ruby
+require 'glimmer-dsl-libui'
+
+class SomeTable
+  Contact = Struct.new(:name, :email, :phone, :city, :state)
+  
+  include Glimmer
+  
+  attr_accessor :contacts
+  
+  def initialize
+    @contacts = [
+      Contact.new('Lisa Sky', 'lisa@sky.com', '720-523-4329', 'Denver', 'CO'),
+      Contact.new('Jordan Biggins', 'jordan@biggins.com', '617-528-5399', 'Boston', 'MA'),
+      Contact.new('Mary Glass', 'mary@glass.com', '847-589-8788', 'Elk Grove Village', 'IL'),
+      Contact.new('Darren McGrath', 'darren@mcgrath.com', '206-539-9283', 'Seattle', 'WA'),
+      Contact.new('Melody Hanheimer', 'melody@hanheimer.com', '213-493-8274', 'Los Angeles', 'CA'),
+    ]
+  end
+  
+  def launch
+    window('Contacts', 600, 200) {
+      table {
+        text_column('Full Name')
+        text_column('Email Address')
+        text_column('Phone Number')
+        text_column('City or Town')
+        text_column('State or Province')
+  
+        cell_rows <=> [self, :contacts, column_attributes: [:name, :email, :phone, :city, :state]]
+      }
+    }.show
+  end
+end
+
+SomeTable.new.launch
+```
+
+#### Unidirectional (One-Way) Data-Binding
 
 [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) supports unidirectional (one-way) data-binding of any control/shape/attributed-string property via the `<=` operator (indicating data is moving from the right side, which is the Model, to the left side, which is the GUI View object).
 
@@ -1567,6 +1728,8 @@ window {
 ```
 
 That is data-binding the `window` `title` property to the `score` attribute of a `@game`, but converting on read from the Model to a `String`.
+
+#### Data-Binding API
 
 To summarize the data-binding API:
 - `view_property <=> [model, attribute, *read_or_write_options]`: Bidirectional (two-way) data-binding to Model attribute accessor
@@ -1598,11 +1761,12 @@ entry {
 }
 ```
 
-Data-binding gotchas:
+Learn more from data-binding usage in [Login](#login) (4 data-binding versions), [Basic Entry](#basic-entry), [Form](#form), [Form Table](#form-table) (5 data-binding versions), [Method-Based Custom Keyword](#method-based-custom-keyword), [Snake](#snake) and [Tic Tac Toe](#tic_tac_toe) examples.
+
+#### Data-Binding Gotchas
+
 - Never data-bind a control property to an attribute on the same view object with the same exact name (e.g. binding `entry` `text` property to `self` `text` attribute) as it would conflict with it. Instead, data-bind view property to an attribute with a different name on the view object or with the same name, but on a presenter or model object (e.g. data-bind `entry` `text` to `self` `legal_text` attribute or to `contract` model `text` attribute)
 - Data-binding a property utilizes the control's listener associated with the property (e.g. `on_changed` for `entry` `text`), so you cannot hook into the listener directly anymore as that would negate data-binding. Instead, you can add an `after_write: ->(val) {}` option to perform something on trigger of the control listener instead.
-
-Learn more from data-binding usage in [Login](#login) (4 data-binding versions), [Basic Entry](#basic-entry), [Form](#form), [Form Table](#form-table) (5 data-binding versions), [Method-Based Custom Keyword](#method-based-custom-keyword), [Snake](#snake) and [Tic Tac Toe](#tic_tac_toe) examples.
 
 ### API Gotchas
 
@@ -2929,7 +3093,44 @@ UI.main
 UI.quit
 ```
 
-[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version (passing file url as image):
+
+```ruby
+# frozen_string_literal: true
+
+# NOTE:
+# This example displays images that can be freely downloaded from the Studio Ghibli website.
+
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+IMAGE_ROWS = []
+
+50.times do |i|
+  url = format('https://www.ghibli.jp/gallery/thumb-redturtle%03d.png', (i + 1))
+  puts "Processing Image: #{url}"; $stdout.flush # for Windows
+  IMAGE_ROWS << [url] # array of one column cell
+rescue StandardError => e
+  warn url, e.message
+end
+
+window('The Red Turtle', 310, 350, false) {
+  horizontal_box {
+    table {
+      image_column('www.ghibli.jp/works/red-turtle')
+      
+      cell_rows IMAGE_ROWS
+    }
+  }
+  
+  on_closing do
+    puts 'Bye Bye'
+  end
+}.show
+```
+
+[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 2 (automatic construction of `image`):
 
 ```ruby
 # NOTE:
@@ -2964,7 +3165,7 @@ window('The Red Turtle', 310, 350, false) {
 }.show
 ```
 
-[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 2 (manual construction of `image` from `image_part`):
+[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 3 (manual construction of `image` from `image_part`):
 
 ```ruby
 # NOTE:
@@ -3032,7 +3233,44 @@ Mac | Windows | Linux
 ----|---------|------
 ![glimmer-dsl-libui-mac-basic-table-image-text.png](images/glimmer-dsl-libui-mac-basic-table-image-text.png) | ![glimmer-dsl-libui-windows-basic-table-image-text.png](images/glimmer-dsl-libui-windows-basic-table-image-text.png) | ![glimmer-dsl-libui-linux-basic-table-image-text.png](images/glimmer-dsl-libui-linux-basic-table-image-text.png)
 
-New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version (passing file url as image):
+
+```ruby
+# frozen_string_literal: true
+
+# NOTE:
+# This example displays images that can be freely downloaded from the Studio Ghibli website.
+
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+IMAGE_ROWS = []
+
+5.times do |i|
+  url = format('https://www.ghibli.jp/gallery/thumb-redturtle%03d.png', (i + 1))
+  puts "Processing Image: #{url}"; $stdout.flush # for Windows
+  text = url.sub('https://www.ghibli.jp/gallery/thumb-redturtle', '').sub('.png', '')
+  IMAGE_ROWS << [[url, text], [url, text]] # cell values are dual-element arrays
+rescue StandardError => e
+  warn url, e.message
+end
+
+window('The Red Turtle', 670, 350) {
+  horizontal_box {
+    table {
+      image_text_column('image/number')
+      image_text_column('image/number (editable)') {
+        editable true
+      }
+      
+      cell_rows IMAGE_ROWS
+    }
+  }
+}.show
+```
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 2 (automatic construction of `image`):
 
 ```ruby
 # NOTE:
@@ -3415,13 +3653,6 @@ class BasicTableColor
   Animal = Struct.new(:name, :sound, :mammal)
   
   class AnimalPresenter < Animal
-    attr_reader :img
-  
-    def initialize(name, sound, mammal, img)
-      super(name, sound, mammal)
-      @img = img
-    end
-  
     def name_color
       color = case name
       when 'cat'
@@ -3470,6 +3701,11 @@ class BasicTableColor
       [img, 'Glimmer', color]
     end
     
+    def img
+      # scale image to 24x24 (can be passed as file path String only instead of Array to avoid scaling)
+      [File.expand_path('../icons/glimmer.png', __dir__), 24, 24]
+    end
+    
     def background_color
       case name
       when 'cat'
@@ -3491,13 +3727,12 @@ class BasicTableColor
   attr_accessor :animals
   
   def initialize
-    img = image(File.expand_path('../icons/glimmer.png', __dir__), 24, 24)
     @animals = [
-      AnimalPresenter.new('cat', 'meow', true, img),
-      AnimalPresenter.new('dog', 'woof', true, img),
-      AnimalPresenter.new('chicken', 'cock-a-doodle-doo', false, img),
-      AnimalPresenter.new('horse', 'neigh', true, img),
-      AnimalPresenter.new('cow', 'moo', true, img),
+      AnimalPresenter.new('cat', 'meow', true),
+      AnimalPresenter.new('dog', 'woof', true),
+      AnimalPresenter.new('chicken', 'cock-a-doodle-doo', false),
+      AnimalPresenter.new('horse', 'neigh', true),
+      AnimalPresenter.new('cow', 'moo', true),
     ]
   end
   
@@ -3528,7 +3763,7 @@ require 'glimmer-dsl-libui'
 
 include Glimmer
 
-img = image(File.expand_path('../icons/glimmer.png', __dir__), 24, 24)
+img = [File.expand_path('../icons/glimmer.png', __dir__), 24, 24] # scales image to 24x24 (can be passed as file path String only instead of Array to avoid scaling)
 
 data = [
   [['cat', :red]      , ['meow', :blue]                  , [true, 'mammal', :green], [img, 'Glimmer', :dark_blue], {r: 255, g: 120, b: 0, a: 0.5}],
@@ -6653,7 +6888,7 @@ class FormTable
           text_column('State')
     
           editable true
-          cell_rows <=> [self, :contacts] # explicit data-binding to Model Array
+          cell_rows <=> [self, :contacts] # explicit data-binding to Model Array auto-inferring model attribute names from underscored table column names by convention
           
           on_changed do |row, type, row_data|
             puts "Row #{row} #{type}: #{row_data}"
