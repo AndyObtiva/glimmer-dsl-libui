@@ -2,13 +2,10 @@
 
 ## Next
 
-
-- Support ability to attach multiple listeners (e.g. multiple `on_changed {}` on `entry`)
-- On Windows, given that we add an extra row to `table` as a workaround, how about we immediately delete the last extra row we add?
-
 - Support passing x and y coordinates to `image` keyword (only when over 3 args are passed)
 
-- Document area inclusion of explicit and implicit path shapes
+- Support ability to attach multiple listeners (e.g. multiple `on_changed {}` on `entry`)
+- On Windows, given that we add an extra row to `table` as a workaround, how about we add a second row and immediately delete?
 
 ## Soon
 

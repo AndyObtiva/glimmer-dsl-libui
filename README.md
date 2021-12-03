@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.4.12
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.4.13
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -500,7 +500,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.4.12'
+gem 'glimmer-dsl-libui', '~> 0.4.13'
 ```
 
 Test that installation worked by running the [Meta-Example](#examples):
@@ -933,9 +933,15 @@ Check [examples/basic_scrolling_area.rb](#basic-scrolling-area) for a more detai
 
 #### Area Path Shapes
 
+`area` can have geometric shapes drawn by adding `path` elements.
+
+To add `path` shapes under an `area`, you can do so:
+- Explicitly: by adding `path` under `area` and nesting shapes (e.g. `rectangle`) underneath that share the same `fill`/`stroke`/`transform` properties
+- Implicitly: by adding shapes directly under `area` when the shapes have unique `fill`/`stroke`/`transform` properties ([Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) automatically constructs `path`s as intermediary parents for shapes directly added under `area`)
+
 `path` can receive a `draw_fill_mode` argument that can accept values `:winding` or `:alternate` and defaults to `:winding`.
 
-Available nested `path` shapes:
+Available `path` shapes (that can be nested explicitly under `path` or implicitly under `area` directly):
 - `rectangle(x as Numeric, y as Numeric, width as Numeric, height as Numeric)`
 - `square(x as Numeric, y as Numeric, length as Numeric)`
 - `arc(x_center as Numeric, y_center as Numeric, radius as Numeric, start_angle as Numeric, sweep as Numeric, is_negative as Boolean)`
@@ -1354,7 +1360,8 @@ Note that `area`, `path`, and nested shapes are all truly declarative, meaning t
 - Automatically provide shifted `:key` characters in `area_key_event` provided in `area` key listeners `on_key_event`, `on_key_down`, and `on_key_up`
 - `scrolling_area` `width` and `height` default to main window width and height if not specified.
 - `scrolling_area` `#scroll_to` 3rd and 4th arguments (`width` and `height`) default to main window width and height if not specified.
-- `area` paths are specified declaratively with figures underneath (e.g. `rectangle`) and `area` draw listener is automatically generated
+- `area` paths are specified declaratively with shapes/figures underneath (e.g. `rectangle`), and `area` draw listener is automatically generated
+- `area` path shapes can be added directly under `area` without declaring `path` explicitly as a convenient shorthand
 - Observe figure properties (e.g. `rectangle` `width`) for changes and automatically redraw containing area accordingly
 - Observe `path` `fill` and `stroke` hashes for changes and automatically redraw containing area accordingly
 - Observe `text` and `string` properties for changes and automatically redraw containing area accordingly
