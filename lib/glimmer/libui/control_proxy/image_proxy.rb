@@ -239,15 +239,13 @@ module Glimmer
           end
           original_width = canvas.width
           original_height = canvas.height
-          new_width = width
-          new_height = height
           require 'bigdecimal'
-          new_width = ((BigDecimal(new_height)/BigDecimal(original_height))*original_width).to_i if new_height && !new_width
-          new_height = ((BigDecimal(new_width)/BigDecimal(original_width))*original_height).to_i if new_width && !new_height
-          canvas.resample_nearest_neighbor!(new_width, new_height) if new_width && new_height
+          calculated_width = ((BigDecimal(height)/BigDecimal(original_height))*original_width).to_i if height && !width
+          calculated_height = ((BigDecimal(width)/BigDecimal(original_width))*original_height).to_i if width && !height
+          canvas.resample_nearest_neighbor!(calculated_width || width, calculated_height || height) if width || height
           @data = canvas.to_rgba_stream
           set_width_variable(canvas.width) unless width
-          set_height_variable(canvas.width) unless height
+          set_height_variable(canvas.height) unless height
           [@data, width, height]
         end
         

@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.4.13
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.4.14
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -500,7 +500,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.4.13'
+gem 'glimmer-dsl-libui', '~> 0.4.14'
 ```
 
 Test that installation worked by running the [Meta-Example](#examples):
@@ -1028,7 +1028,7 @@ Given that it is very new and is not a [libui](https://github.com/andlabs/libui)
 - [libui](https://github.com/andlabs/libui) pixel-by-pixel rendering performance is slow.
 - Including an `image` inside an `area` `on_draw` listener improves performance due to not retaining pixel/line data in memory.
 - Supplying `width` and `height` options greatly improves performance when shrinking image (e.g. `image('somefile.png', width: 24, height: 24)`). You can also supply one of the two dimensions, and the other one gets calculated automatically while preserving original aspect ratio (e.g. `image('somefile.png', height: 24)`)
-- [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) lets you specify `x` and `y` in addition to `file`, `width` and `height` (5 arguments total) to offset image location.
+- [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) lets you optionally specify `x` and `y` in addition to `file`, `width` and `height` (5 arguments total) to offset image location.
 
 Currently, it is recommended to use `image` with very small `width` and `height` values only (e.g. 24x24).
 
