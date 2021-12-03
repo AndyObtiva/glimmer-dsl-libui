@@ -1767,6 +1767,7 @@ Learn more from data-binding usage in [Login](#login) (4 data-binding versions),
 
 - Never data-bind a control property to an attribute on the same view object with the same exact name (e.g. binding `entry` `text` property to `self` `text` attribute) as it would conflict with it. Instead, data-bind view property to an attribute with a different name on the view object or with the same name, but on a presenter or model object (e.g. data-bind `entry` `text` to `self` `legal_text` attribute or to `contract` model `text` attribute)
 - Data-binding a property utilizes the control's listener associated with the property (e.g. `on_changed` for `entry` `text`), so you cannot hook into the listener directly anymore as that would negate data-binding. Instead, you can add an `after_write: ->(val) {}` option to perform something on trigger of the control listener instead.
+- Data-binding a View control to another View control directly is not a good idea. Instead, data-bind both View controls to the same Presenter/Model attribute, and that keeps them in sync while keeping the code decoupled.
 
 ### API Gotchas
 
