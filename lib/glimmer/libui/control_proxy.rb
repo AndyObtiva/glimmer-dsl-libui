@@ -169,12 +169,30 @@ module Glimmer
       def handle_listener(listener_name, &listener)
         safe_listener = Proc.new { listener.call(self) }
         if ::LibUI.respond_to?("#{libui_api_keyword}_#{listener_name}")
-          ::LibUI.send("#{libui_api_keyword}_#{listener_name}", @libui, &safe_listener)
+          if listeners[listener_name].nil?
+            ::LibUI.send("#{libui_api_keyword}_#{listener_name}", @libui) do
+              listeners_for(listener_name).map { |listener| listener.call }.last
+            end
+          end
+          listeners_for(listener_name) << safe_listener
         elsif ::LibUI.respond_to?("control_#{listener_name}")
-          ::LibUI.send("control_#{listener_name}", @libui, &safe_listener)
+          if listeners[listener_name].nil?
+            ::LibUI.send("control_#{listener_name}", @libui) do
+              listeners_for(listener_name).map { |listener| listener.call }.last
+            end
+          end
+          listeners_for(listener_name) << safe_listener
         elsif has_custom_listener?(listener_name)
           handle_custom_listener(listener_name, &listener)
         end
+      end
+      
+      def listeners
+        @listeners ||= {}
+      end
+      
+      def listeners_for(listener_name)
+        listeners[listener_name] ||= []
       end
       
       def has_custom_listener?(listener_name)
@@ -193,7 +211,7 @@ module Glimmer
       def handle_custom_listener(listener_name, &listener)
         listener_name = listener_name.to_s
         listener_name = custom_listener_aliases.stringify_keys[listener_name] || listener_name
-        instance_variable_name = "@#{listener_name}_procs"
+        instance_variable_name = "@#{listener_name}_procs" # TODO ensure clearing custom listeners on destroy of a control
         instance_variable_set(instance_variable_name, []) if instance_variable_get(instance_variable_name).nil?
         if listener.nil?
           instance_variable_get(instance_variable_name)

@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.4.15
+
+- Support ability to attach multiple listeners (e.g. multiple `on_changed {}` on `entry`)
+
 ## 0.4.14
 
 - Support passing width or height alone to `image` keyword, calculating the other dimension automatically while preserving original aspect ratio

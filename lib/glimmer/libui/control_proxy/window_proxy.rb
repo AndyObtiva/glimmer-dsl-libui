@@ -77,21 +77,23 @@ module Glimmer
           case listener_name
           when 'on_destroy'
             on_destroy(&listener)
-          else
-            default_behavior_listener = nil
-            if listener_name == 'on_closing'
-              default_behavior_listener = Proc.new do
-                return_value = listener.call(self)
-                if return_value.is_a?(Numeric)
-                  return_value
-                else
-                  destroy
-                  ::LibUI.quit
-                  0
-                end
+          when 'on_closing'
+            @on_closing_listeners ||= []
+            @on_closing_listeners << listener
+            @default_behavior_listener ||= Proc.new do
+              return_value = @on_closing_listeners.map {|l| l.call(self)}.last
+              if return_value.is_a?(Numeric)
+                return_value
+              else
+                destroy
+                ::LibUI.quit
+                0
               end
+            end.tap do |default_behavior_listener|
+              super(listener_name, &default_behavior_listener)
             end
-            super(listener_name, &(default_behavior_listener || listener))
+          else
+            super
           end
         end
         
@@ -168,11 +170,7 @@ module Glimmer
           @height = construction_args[2]
           @libui = ControlProxy.new_control(@keyword, construction_args)
           @libui.tap do
-            handle_listener('on_closing') do
-              destroy
-              ::LibUI.quit
-              0
-            end
+            handle_listener('on_closing') {} # setup default on closing listener, which triggers LibUI.quit in handle_listener method
           end
         end
       end

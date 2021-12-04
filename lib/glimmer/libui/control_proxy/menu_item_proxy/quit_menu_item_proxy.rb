@@ -35,8 +35,10 @@ module Glimmer
         
           def handle_listener(listener_name, &listener)
             if listener_name == 'on_clicked'
-              @default_behavior_listener = Proc.new do
-                return_value = listener.call(self)
+              @on_clicked_listeners ||= []
+              @on_clicked_listeners << listener
+              @default_behavior_listener ||= Proc.new do
+                return_value = @on_clicked_listeners.map {|l| l.call(self)}.last
                 if return_value.is_a?(Numeric)
                   return_value
                 else
@@ -44,8 +46,9 @@ module Glimmer
                   ::LibUI.quit
                   0
                 end
+              end.tap do |default_behavior_listener|
+                ::LibUI.on_should_quit(&default_behavior_listener)
               end
-              ::LibUI.on_should_quit(&@default_behavior_listener)
             end
           end
         
