@@ -30,6 +30,9 @@ module Glimmer
       # Follows the Proxy Design Pattern
       class WindowProxy < ControlProxy
         LISTENERS = ['on_destroy']
+        LISTENER_ALIASES = {
+          on_destroyed: 'on_destroy',
+        }
         DEFAULT_TITLE = ''
         DEFAULT_WIDTH = 190
         DEFAULT_HEIGHT = 150

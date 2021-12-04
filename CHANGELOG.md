@@ -4,6 +4,7 @@
 
 - Support ability to attach multiple listeners on a control (e.g. multiple `on_changed {}` on `entry` or multiple `on_clicked` on `button`)
 - Ensure clearing custom listeners on `#destroy` of a control
+- Add `on_destroyed` as alias for `on_destroy` listener on `window`
 - Fix issue with calling `#destroy` on `open_type_features`
 
 ## 0.4.14
