@@ -2,6 +2,8 @@
 
 ## Next
 
+- Add `on_destroyed` as alias for `on_destroy` to all controls that have it
+- Refactor `LISTENERS` constant to be `CUSTOM_LISTENER_NAMES`
 - On Windows, given that we add an extra row to `table` as a workaround, how about we add a second row and immediately delete?
 
 ## Soon

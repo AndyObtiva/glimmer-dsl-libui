@@ -227,6 +227,15 @@ module Glimmer
         end
       end
       
+      def deregister_custom_listeners(listener_name)
+        handle_custom_listener(listener_name).clear
+      end
+      
+      # deregisters all custom listeners except on_destroy, which can only be deregistered after destruction of a control, using deregister_custom_listeners
+      def deregister_all_custom_listeners
+        (custom_listeners - ['on_destroy']).each { |listener_name| deregister_custom_listeners(listener_name) }
+      end
+      
       def respond_to?(method_name, *args, &block)
         respond_to_libui?(method_name, *args, &block) ||
           (
@@ -326,6 +335,7 @@ module Glimmer
       end
       
       def default_destroy
+        deregister_all_custom_listeners
         send_to_libui('destroy')
         ControlProxy.control_proxies.delete(self)
       end

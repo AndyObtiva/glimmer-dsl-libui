@@ -60,6 +60,7 @@ module Glimmer
         end
         
         def destroy
+          deregister_all_custom_listeners
           @parent_proxy&.children&.delete(self)
           ControlProxy.control_proxies.delete(self)
         end

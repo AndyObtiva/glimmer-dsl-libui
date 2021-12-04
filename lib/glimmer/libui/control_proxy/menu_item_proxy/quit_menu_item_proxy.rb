@@ -56,6 +56,11 @@ module Glimmer
               end
             end
           end
+          
+          def destroy
+            @on_clicked_listeners&.clear
+            super
+          end
         
           private
           

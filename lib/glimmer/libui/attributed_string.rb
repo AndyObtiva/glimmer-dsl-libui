@@ -22,7 +22,6 @@
 require 'glimmer/libui/control_proxy'
 require 'glimmer/libui/control_proxy/area_proxy'
 require 'glimmer/libui/parent'
-require 'glimmer/libui/control_proxy/transformable'
 require 'glimmer/libui/data_bindable'
 
 module Glimmer
@@ -48,7 +47,7 @@ module Glimmer
           @string
         else
           @string = value
-          redraw
+          request_auto_redraw
         end
       end
       alias string= string
@@ -59,7 +58,7 @@ module Glimmer
           @font
         else
           @font = value
-          redraw
+          request_auto_redraw
         end
       end
       alias font= font
@@ -70,7 +69,7 @@ module Glimmer
           @color
         else
           @color = Glimmer::LibUI.interpret_color(value)
-          redraw
+          request_auto_redraw
         end
       end
       alias color= color
@@ -81,7 +80,7 @@ module Glimmer
           @background
         else
           @background = Glimmer::LibUI.interpret_color(value)
-          redraw
+          request_auto_redraw
         end
       end
       alias background= background
@@ -92,7 +91,7 @@ module Glimmer
           @underline
         else
           @underline = value
-          redraw
+          request_auto_redraw
         end
       end
       alias underline= underline
@@ -103,7 +102,7 @@ module Glimmer
           @underline_color
         else
           @underline_color = value
-          redraw
+          request_auto_redraw
         end
       end
       alias underline_color= underline_color
@@ -114,11 +113,20 @@ module Glimmer
           @open_type_features
         else
           @open_type_features = value
-          redraw
+          request_auto_redraw
         end
       end
       alias open_type_features= open_type_features
       alias set_open_type_features open_type_features
+      
+      def remove_open_type_features
+        return if @removing_open_type_features
+        @removing_open_type_features = true
+        @open_type_features&.destroy
+        @open_type_features = nil
+        request_auto_redraw
+        @removing_open_type_features = false
+      end
       
       def post_add_content(block = nil)
         block ||= @block

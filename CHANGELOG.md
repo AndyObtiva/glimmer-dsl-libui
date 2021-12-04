@@ -2,7 +2,9 @@
 
 ## 0.4.15
 
-- Support ability to attach multiple listeners (e.g. multiple `on_changed {}` on `entry`)
+- Support ability to attach multiple listeners on a control (e.g. multiple `on_changed {}` on `entry` or multiple `on_clicked` on `button`)
+- Ensure clearing custom listeners on `#destroy` of a control
+- Fix issue with calling `#destroy` on `open_type_features`
 
 ## 0.4.14
 

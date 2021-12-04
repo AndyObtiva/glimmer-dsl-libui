@@ -45,9 +45,11 @@ module Glimmer
         end
         
         def destroy
+          @on_closing_listeners&.clear
           super
           ControlProxy.image_proxies.each { |image_proxy| ::LibUI.free_image(image_proxy.libui) unless image_proxy.area_image? }
           notify_custom_listeners('on_destroy', self)
+          deregister_custom_listeners('on_destroy')
         end
         
         def show

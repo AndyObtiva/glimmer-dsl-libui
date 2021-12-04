@@ -33,15 +33,23 @@ module Glimmer
         include Parent
       
         def destroy
+          return if @destroying
+          @destroying = true
+          deregister_all_custom_listeners
           ::LibUI.free_open_type_features(@libui)
-          @parent_proxy&.children&.delete(self)
+          @parent_proxy&.remove_open_type_features
           ControlProxy.control_proxies.delete(self)
+          @destroying = false
         end
         
         def redraw
-          @parent_proxy.redraw
+          @parent_proxy&.redraw
         end
         
+        def request_auto_redraw
+          @parent_proxy&.request_auto_redraw
+        end
+                        
         private
         
         def build_control
