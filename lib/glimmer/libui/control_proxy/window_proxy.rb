@@ -29,8 +29,8 @@ module Glimmer
       #
       # Follows the Proxy Design Pattern
       class WindowProxy < ControlProxy
-        LISTENERS = ['on_destroy']
-        LISTENER_ALIASES = {
+        CUSTOM_LISTENER_NAMES = ['on_destroy']
+        CUSTOM_LISTENER_NAME_ALIASES = {
           on_destroyed: 'on_destroy',
         }
         DEFAULT_TITLE = ''

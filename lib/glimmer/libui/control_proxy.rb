@@ -197,20 +197,20 @@ module Glimmer
       
       def has_custom_listener?(listener_name)
         listener_name = listener_name.to_s
-        custom_listeners.include?(listener_name) || custom_listener_aliases.stringify_keys.keys.include?(listener_name)
+        custom_listener_names.include?(listener_name) || custom_listener_name_aliases.stringify_keys.keys.include?(listener_name)
       end
       
-      def custom_listeners
-        self.class.constants.include?(:LISTENERS) ? self.class::LISTENERS : []
+      def custom_listener_names
+        self.class.constants.include?(:CUSTOM_LISTENER_NAMES) ? self.class::CUSTOM_LISTENER_NAMES : []
       end
       
-      def custom_listener_aliases
-        self.class.constants.include?(:LISTENER_ALIASES) ? self.class::LISTENER_ALIASES : {}
+      def custom_listener_name_aliases
+        self.class.constants.include?(:CUSTOM_LISTENER_NAME_ALIASES) ? self.class::CUSTOM_LISTENER_NAME_ALIASES : {}
       end
       
       def handle_custom_listener(listener_name, &listener)
         listener_name = listener_name.to_s
-        listener_name = custom_listener_aliases.stringify_keys[listener_name] || listener_name
+        listener_name = custom_listener_name_aliases.stringify_keys[listener_name] || listener_name
         instance_variable_name = "@#{listener_name}_procs" # TODO ensure clearing custom listeners on destroy of a control
         instance_variable_set(instance_variable_name, []) if instance_variable_get(instance_variable_name).nil?
         if listener.nil?
@@ -233,7 +233,7 @@ module Glimmer
       
       # deregisters all custom listeners except on_destroy, which can only be deregistered after destruction of a control, using deregister_custom_listeners
       def deregister_all_custom_listeners
-        (custom_listeners - ['on_destroy']).each { |listener_name| deregister_custom_listeners(listener_name) }
+        (custom_listener_names - ['on_destroy']).each { |listener_name| deregister_custom_listeners(listener_name) }
       end
       
       def respond_to?(method_name, *args, &block)

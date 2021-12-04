@@ -34,7 +34,7 @@ module Glimmer
           include Column
           include EnableableColumn
           
-          LISTENERS = ['on_clicked']
+          CUSTOM_LISTENER_NAMES = ['on_clicked']
           
           private
           

@@ -36,7 +36,7 @@ module Glimmer
       class TableProxy < ControlProxy
         include Glimmer::FiddleConsumer
         
-        LISTENERS = ['on_changed', 'on_edited']
+        CUSTOM_LISTENER_NAMES = ['on_changed', 'on_edited']
         
         attr_reader :model_handler, :model, :table_params, :columns, :column_attributes
       

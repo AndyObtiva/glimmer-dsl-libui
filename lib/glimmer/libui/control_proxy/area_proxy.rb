@@ -36,9 +36,9 @@ module Glimmer
           attr_accessor :current_area_draw_params
         end
         
-        LISTENERS = ['on_draw', 'on_mouse_event', 'on_mouse_move', 'on_mouse_down', 'on_mouse_up', 'on_mouse_drag_start', 'on_mouse_drag', 'on_mouse_drop', 'on_mouse_crossed', 'on_mouse_enter', 'on_mouse_exit', 'on_drag_broken', 'on_key_event', 'on_key_down', 'on_key_up']
+        CUSTOM_LISTENER_NAMES = ['on_draw', 'on_mouse_event', 'on_mouse_move', 'on_mouse_down', 'on_mouse_up', 'on_mouse_drag_start', 'on_mouse_drag', 'on_mouse_drop', 'on_mouse_crossed', 'on_mouse_enter', 'on_mouse_exit', 'on_drag_broken', 'on_key_event', 'on_key_down', 'on_key_up']
         
-        LISTENER_ALIASES = {
+        CUSTOM_LISTENER_NAME_ALIASES = {
           on_drawn: 'on_draw',
           on_mouse_moved: 'on_mouse_move',
           on_mouse_drag_started: 'on_mouse_drag_start',
