@@ -38,11 +38,16 @@ module Glimmer
               @on_clicked_listeners ||= []
               @on_clicked_listeners << listener
               @default_behavior_listener ||= Proc.new do
-                return_value = @on_clicked_listeners.map {|l| l.call(self)}.last
+                return_value = nil
+                @on_clicked_listeners.each do |l|
+                  return_value = l.call(self)
+                  break if return_value.is_a?(Numeric)
+                end
                 if return_value.is_a?(Numeric)
                   return_value
                 else
                   destroy
+                  ControlProxy.main_window_proxy&.destroy
                   ::LibUI.quit
                   0
                 end
@@ -56,11 +61,8 @@ module Glimmer
           
           def build_control
             @libui = @parent_proxy.append_quit_item(*@args)
-            handle_listener('on_clicked') do
-              ControlProxy.main_window_proxy&.destroy
-              ::LibUI.quit
-              0
-            end
+            # setup default on_clicked listener if no on_clicked listeners are setup
+            handle_listener('on_clicked') {} if @on_clicked_listeners.nil? || @on_clicked_listeners.empty?
           end
         end
       end

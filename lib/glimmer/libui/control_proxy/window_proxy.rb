@@ -81,7 +81,11 @@ module Glimmer
             @on_closing_listeners ||= []
             @on_closing_listeners << listener
             @default_behavior_listener ||= Proc.new do
-              return_value = @on_closing_listeners.map {|l| l.call(self)}.last
+              return_value = nil
+              @on_closing_listeners.each do |l|
+                return_value = l.call(self)
+                break if return_value.is_a?(Numeric)
+              end
               if return_value.is_a?(Numeric)
                 return_value
               else
@@ -170,7 +174,8 @@ module Glimmer
           @height = construction_args[2]
           @libui = ControlProxy.new_control(@keyword, construction_args)
           @libui.tap do
-            handle_listener('on_closing') {} # setup default on closing listener, which triggers LibUI.quit in handle_listener method
+            # setup default on_closing listener if no on_closing listeners are setup
+            handle_listener('on_closing') {} if @on_closing_listeners.nil? || @on_closing_listeners.empty?
           end
         end
       end
