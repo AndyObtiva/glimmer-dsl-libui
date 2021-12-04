@@ -29,6 +29,7 @@ module Glimmer
       #
       # Follows the Proxy Design Pattern
       class WindowProxy < ControlProxy
+        LISTENERS = ['on_destroy']
         DEFAULT_TITLE = ''
         DEFAULT_WIDTH = 190
         DEFAULT_HEIGHT = 150
@@ -46,20 +47,9 @@ module Glimmer
         def destroy
           super
           ControlProxy.image_proxies.each { |image_proxy| ::LibUI.free_image(image_proxy.libui) unless image_proxy.area_image? }
-          @on_destroy_procs&.each { |on_destroy_proc| on_destroy_proc.call(self)}
+          notify_custom_listeners('on_destroy', self)
         end
         
-        def on_destroy(&block)
-          # TODO look into a way to generalize this logic for multiple listeners
-          @on_destroy_procs ||= []
-          if block.nil?
-            @on_destroy_procs
-          else
-            @on_destroy_procs << block
-            block
-          end
-        end
-      
         def show
           super
           unless @shown_at_least_once
@@ -69,14 +59,8 @@ module Glimmer
           end
         end
         
-        def can_handle_listener?(listener_name)
-          listener_name == 'on_destroy' || super
-        end
-        
         def handle_listener(listener_name, &listener)
           case listener_name
-          when 'on_destroy'
-            on_destroy(&listener)
           when 'on_closing'
             @on_closing_listeners ||= []
             @on_closing_listeners << listener
