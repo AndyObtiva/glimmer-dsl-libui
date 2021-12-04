@@ -2,7 +2,7 @@
 
 ## Next
 
-- Refactor code for window_proxy to push its custom listeners into control_proxy
+- Refactor code of `WindowProxy` to push its custom listeners into `ControlProxy`
 - Support ability to attach multiple CUSTOM listeners
 - On Windows, given that we add an extra row to `table` as a workaround, how about we add a second row and immediately delete?
 - Ensure all widgets calling handle_listener are refactored propertly to support multiple listeners

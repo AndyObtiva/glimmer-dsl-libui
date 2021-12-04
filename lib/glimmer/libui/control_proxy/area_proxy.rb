@@ -105,7 +105,7 @@ module Glimmer
         
         def draw(area_draw_params)
           children.dup.each {|child| child.draw(area_draw_params)}
-          on_draw.each {|listener| listener.call(area_draw_params)}
+          notify_custom_listeners('on_draw', area_draw_params)
         end
         
         def redraw
@@ -156,37 +156,37 @@ module Glimmer
             @area_handler.MouseEvent   = fiddle_closure_block_caller(0, [1, 1, 1]) do |_, _, area_mouse_event|
               area_mouse_event = ::LibUI::FFI::AreaMouseEvent.new(area_mouse_event)
               area_mouse_event = area_mouse_event_hash(area_mouse_event)
-              on_mouse_event.each { |listener| listener.call(area_mouse_event)}
-              on_mouse_move.each { |listener| listener.call(area_mouse_event)} if area_mouse_event[:x].between?(0, area_mouse_event[:area_width]) && area_mouse_event[:y].between?(0, area_mouse_event[:area_height])
+              notify_custom_listeners('on_mouse_event', area_mouse_event)
+              notify_custom_listeners('on_mouse_move', area_mouse_event) if area_mouse_event[:x].between?(0, area_mouse_event[:area_width]) && area_mouse_event[:y].between?(0, area_mouse_event[:area_height])
               unless @last_area_mouse_event.nil?
-                on_mouse_down.each { |listener| listener.call(area_mouse_event)} if area_mouse_event[:down] > 0 && @last_area_mouse_event[:down] == 0
-                on_mouse_up.each { |listener| listener.call(area_mouse_event)} if area_mouse_event[:up] > 0 && @last_area_mouse_event[:up] == 0
-                on_mouse_drag_start.each { |listener| listener.call(area_mouse_event)} if area_mouse_event[:held] > 0 && @last_area_mouse_event[:held] == 0
-                on_mouse_drag.each { |listener| listener.call(area_mouse_event)} if area_mouse_event[:held] > 0
-                on_mouse_drop.each { |listener| listener.call(area_mouse_event)} if area_mouse_event[:held] == 0 && @last_area_mouse_event[:held] > 0
+                notify_custom_listeners('on_mouse_down', area_mouse_event) if area_mouse_event[:down] > 0 && @last_area_mouse_event[:down] == 0
+                notify_custom_listeners('on_mouse_up', area_mouse_event) if area_mouse_event[:up] > 0 && @last_area_mouse_event[:up] == 0
+                notify_custom_listeners('on_mouse_drag_start', area_mouse_event) if area_mouse_event[:held] > 0 && @last_area_mouse_event[:held] == 0
+                notify_custom_listeners('on_mouse_drag', area_mouse_event) if area_mouse_event[:held] > 0
+                notify_custom_listeners('on_mouse_drop', area_mouse_event) if area_mouse_event[:held] == 0 && @last_area_mouse_event[:held] > 0
               end
               @last_area_mouse_event = area_mouse_event
             end
             @area_handler.MouseCrossed = fiddle_closure_block_caller(0, [1, 1, 4]) do |_, _, left|
               left = Glimmer::LibUI.integer_to_boolean(left)
-              on_mouse_crossed.each { |listener| listener.call(left) }
+              notify_custom_listeners('on_mouse_crossed', left)
               if left
-                on_mouse_exit.each { |listener| listener.call(left) }
+                notify_custom_listeners('on_mouse_exit', left)
               else
-                on_mouse_enter.each { |listener| listener.call(left) }
+                notify_custom_listeners('on_mouse_enter', left)
               end
             end
             @area_handler.DragBroken   = fiddle_closure_block_caller(0, [1, 1]) do |_, _|
-              on_drag_broken.each { |listener| listener.call }
+              notify_custom_listeners('on_drag_broken')
             end
             @area_handler.KeyEvent     = fiddle_closure_block_caller(0, [1, 1, 1]) do |_, _, area_key_event|
               area_key_event = ::LibUI::FFI::AreaKeyEvent.new(area_key_event)
               area_key_event = area_key_event_hash(area_key_event)
-              on_key_event.each { |listener| listener.call(area_key_event) }
+              notify_custom_listeners('on_key_event', area_key_event)
               if area_key_event[:up]
-                on_key_up.each { |listener| listener.call(area_key_event) }
+                notify_custom_listeners('on_key_up', area_key_event)
               else
-                on_key_down.each { |listener| listener.call(area_key_event) }
+                notify_custom_listeners('on_key_down', area_key_event)
               end
             end
             @listeners_installed = true
