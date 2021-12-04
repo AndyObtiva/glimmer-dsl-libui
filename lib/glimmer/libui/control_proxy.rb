@@ -322,6 +322,8 @@ module Glimmer
       end
       
       def destroy
+        # TODO exclude menus from this initial return
+        return if !is_a?(ControlProxy::WindowProxy) && ControlProxy.main_window_proxy&.destroying?
         data_binding_model_attribute_observer_registrations.each(&:deregister)
         if parent_proxy.nil?
           default_destroy
