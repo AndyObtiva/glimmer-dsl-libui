@@ -1,7 +1,7 @@
 require 'glimmer-dsl-libui'
 
 class FormTable
-  Contact = Struct.new(:name, :email, :phone, :city, :state)
+  Contact = Struct.new(:name, :email, :phone, :city, :state_province)
   
   include Glimmer
   
@@ -18,7 +18,7 @@ class FormTable
   end
   
   def launch
-    window('Contacts', 600, 600) { |w|
+    window('Contacts', 600, 600) {
       margined true
       
       vertical_box {
@@ -56,8 +56,8 @@ class FormTable
           
           on_clicked do
             new_row = [name, email, phone, city, state]
-            if new_row.include?('')
-              msg_box_error(w, 'Validation Error!', 'All fields are required! Please make sure to enter a value for all fields.')
+            if new_row.map(&:to_s).include?('')
+              msg_box_error('Validation Error!', 'All fields are required! Please make sure to enter a value for all fields.')
             else
               @contacts << Contact.new(*new_row) # automatically inserts a row into the table due to implicit data-binding
               @unfiltered_contacts = @contacts.dup
@@ -95,10 +95,10 @@ class FormTable
           text_column('Email')
           text_column('Phone')
           text_column('City')
-          text_column('State/Province')
+          text_column('State')
     
           editable true
-          cell_rows <=> [self, :contacts, column_attributes: {'State/Province' => :state}] # explicit data-binding to Model Array with column_attributes mapping for a specific column
+          cell_rows <=> [self, :contacts, column_attributes: {'State' => :state_province}] # explicit data-binding to Model Array with column_attributes mapping for a specific column
           
           on_changed do |row, type, row_data|
             puts "Row #{row} #{type}: #{row_data}"

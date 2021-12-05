@@ -16,7 +16,7 @@ class FormTable
   end
   
   def launch
-    window('Contacts', 600, 600) { |w|
+    window('Contacts', 600, 600) {
       margined true
       
       vertical_box {
@@ -54,8 +54,8 @@ class FormTable
           
           on_clicked do
             new_row = [name, email, phone, city, state]
-            if new_row.include?('')
-              msg_box_error(w, 'Validation Error!', 'All fields are required! Please make sure to enter a value for all fields.')
+            if new_row.map(&:to_s).include?('')
+              msg_box_error('Validation Error!', 'All fields are required! Please make sure to enter a value for all fields.')
             else
               data << new_row # automatically inserts a row into the table due to implicit data-binding
               @unfiltered_data = data.dup

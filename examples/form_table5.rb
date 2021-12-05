@@ -10,7 +10,7 @@ data = [
   ['Melody Hanheimer', 'melody@hanheimer.com', '213-493-8274', 'Los Angeles', 'CA'],
 ]
 
-window('Contacts', 600, 600) { |w|
+window('Contacts', 600, 600) {
   margined true
   
   vertical_box {
@@ -43,8 +43,8 @@ window('Contacts', 600, 600) { |w|
       
       on_clicked do
         new_row = [@name_entry.text, @email_entry.text, @phone_entry.text, @city_entry.text, @state_entry.text]
-        if new_row.include?('')
-          msg_box_error(w, 'Validation Error!', 'All fields are required! Please make sure to enter a value for all fields.')
+        if new_row.map(&:to_s).include?('')
+          msg_box_error('Validation Error!', 'All fields are required! Please make sure to enter a value for all fields.')
         else
           data << new_row # automatically inserts a row into the table due to implicit data-binding
           @unfiltered_data = data.dup

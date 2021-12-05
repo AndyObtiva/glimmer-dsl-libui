@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.4.14
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.4.15
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -100,7 +100,7 @@ class FormTable
   end
   
   def launch
-    window('Contacts', 600, 600) { |w|
+    window('Contacts', 600, 600) {
       margined true
       
       vertical_box {
@@ -138,8 +138,8 @@ class FormTable
           
           on_clicked do
             new_row = [name, email, phone, city, state]
-            if new_row.include?('')
-              msg_box_error(w, 'Validation Error!', 'All fields are required! Please make sure to enter a value for all fields.')
+            if new_row.map(&:to_s).include?('')
+              msg_box_error('Validation Error!', 'All fields are required! Please make sure to enter a value for all fields.')
             else
               @contacts << Contact.new(*new_row) # automatically inserts a row into the table due to explicit data-binding
               @unfiltered_contacts = @contacts.dup
@@ -506,7 +506,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.4.14'
+gem 'glimmer-dsl-libui', '~> 0.4.15'
 ```
 
 Test that installation worked by running the [Meta-Example](#examples):
@@ -775,7 +775,7 @@ data = [
   ['Melody Hanheimer', 'melody@hanheimer.com', '213-493-8274', 'Los Angeles', 'CA'],
 ]
 
-window('Contacts', 600, 600) { |w|
+window('Contacts', 600, 600) {
   margined true
   
   vertical_box {
@@ -808,8 +808,8 @@ window('Contacts', 600, 600) { |w|
       
       on_clicked do
         new_row = [@name_entry.text, @email_entry.text, @phone_entry.text, @city_entry.text, @state_entry.text]
-        if new_row.include?('')
-          msg_box_error(w, 'Validation Error!', 'All fields are required! Please make sure to enter a value for all fields.')
+        if new_row.map(&:to_s).include?('')
+          msg_box_error('Validation Error!', 'All fields are required! Please make sure to enter a value for all fields.')
         else
           data << new_row # automatically inserts a row into the table due to implicit data-binding
           @unfiltered_data = data.dup
@@ -6725,6 +6725,11 @@ window('Editable column animal sounds', 400, 200) {
       }
 
       cell_rows data
+      
+      on_edited do |row, row_data| # only fires on direct table editing
+        puts "Row #{row} edited: #{row_data}"
+        $stdout.flush
+      end
     }
   }
   
@@ -6837,7 +6842,7 @@ class FormTable
   end
   
   def launch
-    window('Contacts', 600, 600) { |w|
+    window('Contacts', 600, 600) {
       margined true
       
       vertical_box {
@@ -6875,8 +6880,8 @@ class FormTable
           
           on_clicked do
             new_row = [name, email, phone, city, state]
-            if new_row.include?('')
-              msg_box_error(w, 'Validation Error!', 'All fields are required! Please make sure to enter a value for all fields.')
+            if new_row.map(&:to_s).include?('')
+              msg_box_error('Validation Error!', 'All fields are required! Please make sure to enter a value for all fields.')
             else
               @contacts << Contact.new(*new_row) # automatically inserts a row into the table due to explicit data-binding
               @unfiltered_contacts = @contacts.dup
@@ -6937,13 +6942,13 @@ end
 FormTable.new.launch
 ```
 
-New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version (with explicit [data-binding](#data-binding)):
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 2 (with explicit [data-binding](#data-binding)):
 
 ```ruby
 require 'glimmer-dsl-libui'
 
 class FormTable
-  Contact = Struct.new(:name, :email, :phone, :city, :state)
+  Contact = Struct.new(:name, :email, :phone, :city, :state_province)
   
   include Glimmer
   
@@ -6960,7 +6965,7 @@ class FormTable
   end
   
   def launch
-    window('Contacts', 600, 600) { |w|
+    window('Contacts', 600, 600) {
       margined true
       
       vertical_box {
@@ -6998,8 +7003,8 @@ class FormTable
           
           on_clicked do
             new_row = [name, email, phone, city, state]
-            if new_row.include?('')
-              msg_box_error(w, 'Validation Error!', 'All fields are required! Please make sure to enter a value for all fields.')
+            if new_row.map(&:to_s).include?('')
+              msg_box_error('Validation Error!', 'All fields are required! Please make sure to enter a value for all fields.')
             else
               @contacts << Contact.new(*new_row) # automatically inserts a row into the table due to implicit data-binding
               @unfiltered_contacts = @contacts.dup
@@ -7037,10 +7042,10 @@ class FormTable
           text_column('Email')
           text_column('Phone')
           text_column('City')
-          text_column('State/Province')
+          text_column('State')
     
           editable true
-          cell_rows <=> [self, :contacts, column_attributes: {'State/Province' => :state}] # explicit data-binding to Model Array with column_attributes mapping for a specific column
+          cell_rows <=> [self, :contacts, column_attributes: {'State' => :state_province}] # explicit data-binding to Model Array with column_attributes mapping for a specific column
           
           on_changed do |row, type, row_data|
             puts "Row #{row} #{type}: #{row_data}"
@@ -7060,7 +7065,7 @@ end
 FormTable.new.launch
 ```
 
-New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version (with explicit [data-binding](#data-binding)):
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 3 (with explicit [data-binding](#data-binding)):
 
 ```ruby
 
@@ -7084,7 +7089,7 @@ class FormTable
   end
   
   def launch
-    window('Contacts', 600, 600) { |w|
+    window('Contacts', 600, 600) {
       margined true
       
       vertical_box {
@@ -7122,8 +7127,8 @@ class FormTable
           
           on_clicked do
             new_row = [name, email, phone, city, state]
-            if new_row.include?('')
-              msg_box_error(w, 'Validation Error!', 'All fields are required! Please make sure to enter a value for all fields.')
+            if new_row.map(&:to_s).include?('')
+              msg_box_error('Validation Error!', 'All fields are required! Please make sure to enter a value for all fields.')
             else
               @contacts << Contact.new(*new_row) # automatically inserts a row into the table due to implicit data-binding
               @unfiltered_contacts = @contacts.dup
@@ -7205,7 +7210,7 @@ class FormTable
   end
   
   def launch
-    window('Contacts', 600, 600) { |w|
+    window('Contacts', 600, 600) {
       margined true
       
       vertical_box {
@@ -7243,8 +7248,8 @@ class FormTable
           
           on_clicked do
             new_row = [name, email, phone, city, state]
-            if new_row.include?('')
-              msg_box_error(w, 'Validation Error!', 'All fields are required! Please make sure to enter a value for all fields.')
+            if new_row.map(&:to_s).include?('')
+              msg_box_error('Validation Error!', 'All fields are required! Please make sure to enter a value for all fields.')
             else
               data << new_row # automatically inserts a row into the table due to implicit data-binding
               @unfiltered_data = data.dup
@@ -7320,7 +7325,7 @@ data = [
   ['Melody Hanheimer', 'melody@hanheimer.com', '213-493-8274', 'Los Angeles', 'CA'],
 ]
 
-window('Contacts', 600, 600) { |w|
+window('Contacts', 600, 600) {
   margined true
   
   vertical_box {
@@ -7353,8 +7358,8 @@ window('Contacts', 600, 600) { |w|
       
       on_clicked do
         new_row = [@name_entry.text, @email_entry.text, @phone_entry.text, @city_entry.text, @state_entry.text]
-        if new_row.include?('')
-          msg_box_error(w, 'Validation Error!', 'All fields are required! Please make sure to enter a value for all fields.')
+        if new_row.map(&:to_s).include?('')
+          msg_box_error('Validation Error!', 'All fields are required! Please make sure to enter a value for all fields.')
         else
           data << new_row # automatically inserts a row into the table due to implicit data-binding
           @unfiltered_data = data.dup

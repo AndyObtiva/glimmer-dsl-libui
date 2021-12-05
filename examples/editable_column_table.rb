@@ -22,6 +22,11 @@ window('Editable column animal sounds', 400, 200) {
       }
 
       cell_rows data
+      
+      on_edited do |row, row_data| # only fires on direct table editing
+        puts "Row #{row} edited: #{row_data}"
+        $stdout.flush
+      end
     }
   }
   

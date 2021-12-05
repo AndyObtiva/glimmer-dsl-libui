@@ -5,7 +5,9 @@
 - Support ability to attach multiple listeners on a control (e.g. multiple `on_changed {}` on `entry` or multiple `on_clicked` on `button`)
 - Ensure clearing custom listeners on `#destroy` of a control
 - Add `on_destroyed` as alias for `on_destroy` listener on `window`
-- Avoid wasting time on `destroy` of a control (e.g. freeing resources) when the main window is getting destroyed, thus closing entire application
+- Avoid wasting time on `destroy` of a control (e.g. freeing resources) when the main window is getting destroyed, thus closing entire application instantaneously
+- Have validation in examples/form_table.rb complain about nil values (no value entered)
+- Fix Reset button in examples/meta_example.rb when on a version other than version 1
 - Fix issue with calling `#destroy` on `open_type_features`
 
 ## 0.4.14

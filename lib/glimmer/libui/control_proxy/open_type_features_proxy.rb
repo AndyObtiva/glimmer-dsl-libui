@@ -33,6 +33,7 @@ module Glimmer
         include Parent
       
         def destroy
+          return if ControlProxy.main_window_proxy&.destroying?
           return if @destroying
           @destroying = true
           deregister_all_custom_listeners

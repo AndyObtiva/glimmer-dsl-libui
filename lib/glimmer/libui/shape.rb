@@ -116,6 +116,7 @@ module Glimmer
       end
       
       def destroy
+        return if ControlProxy.main_window_proxy&.destroying?
         @parent.children.delete(self)
       end
       

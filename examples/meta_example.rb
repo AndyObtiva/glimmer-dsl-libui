@@ -180,7 +180,9 @@ class MetaExample
             }
             button('Reset') {
               on_clicked do
-                self.code_text = File.read(file_path_for(selected_example))
+                version_number = @version_spinbox.value == 1 ? '' : @version_spinbox.value
+                example = "#{selected_example}#{version_number}"
+                self.code_text = File.read(file_path_for(example))
               end
             }
           }
