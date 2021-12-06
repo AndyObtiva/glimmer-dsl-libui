@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.4.16
+
+- Fix issue on Windows with empty `table` having an image column crashing
+- Fix issue with `table` having a nil image cell in image column crashing (defaults to Glimmer logo for image to avoid crash)
+
 ## 0.4.15
 
 - Support ability to attach multiple listeners on a control (e.g. multiple `on_changed {}` on `entry` or multiple `on_clicked` on `button`)

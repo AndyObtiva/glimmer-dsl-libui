@@ -48,6 +48,38 @@ module Glimmer
           @enabled = true
           @columns = []
           @cell_rows = []
+          @last_cell_rows ||= array_deep_clone(@cell_rows)
+          @cell_rows_observer ||= Glimmer::DataBinding::Observer.proc do |new_cell_rows|
+            pd model; $stdout.flush
+            
+            if model
+              if @cell_rows.size < @last_cell_rows.size && @last_cell_rows.include_all?(*@cell_rows)
+                @last_cell_rows.array_diff_indexes(@cell_rows).reverse.each do |row|
+                  ::LibUI.table_model_row_deleted(model, row)
+  pd 'deleted'; $stdout.flush
+                  notify_custom_listeners('on_changed', row, :deleted, @last_cell_rows[row])
+                end
+              elsif @cell_rows.size > @last_cell_rows.size && @cell_rows.include_all?(*@last_cell_rows)
+                @cell_rows.array_diff_indexes(@last_cell_rows).each do |row|
+  
+                  ::LibUI.table_model_row_inserted(model, row)
+  pd 'inserted'; $stdout.flush
+                  notify_custom_listeners('on_changed', row, :inserted, @cell_rows[row])
+                end
+              else
+                @cell_rows.each_with_index do |new_row_data, row|
+                  if new_row_data != @last_cell_rows[row]
+                    ::LibUI.table_model_row_changed(model, row)
+                    notify_custom_listeners('on_changed', row, :changed, @cell_rows[row])
+                  end
+                end
+              end
+              @last_last_cell_rows = array_deep_clone(@last_cell_rows)
+              @last_cell_rows = array_deep_clone(@cell_rows)
+            end
+          end.tap do |cell_rows_observer|
+            cell_rows_observer.observe(self, :cell_rows, recursive: true)
+          end
           window_proxy.on_destroy do
             # the following unless condition is an exceptional condition stumbled upon that fails freeing the table model
             ::LibUI.free_table_model(@model) unless @destroyed && parent_proxy.is_a?(Box)
@@ -87,30 +119,6 @@ module Glimmer
               @cell_rows = rows
               @cell_rows = @cell_rows.to_a if @cell_rows.is_a?(Enumerator)
               @last_cell_rows ||= array_deep_clone(@cell_rows)
-              @cell_rows_observer ||= Glimmer::DataBinding::Observer.proc do |new_cell_rows|
-                if @cell_rows.size < @last_cell_rows.size && @last_cell_rows.include_all?(*@cell_rows)
-                  @last_cell_rows.array_diff_indexes(@cell_rows).reverse.each do |row|
-                    ::LibUI.table_model_row_deleted(model, row)
-                    notify_custom_listeners('on_changed', row, :deleted, @last_cell_rows[row])
-                  end
-                elsif @cell_rows.size > @last_cell_rows.size && @cell_rows.include_all?(*@last_cell_rows)
-                  @cell_rows.array_diff_indexes(@last_cell_rows).each do |row|
-                    ::LibUI.table_model_row_inserted(model, row)
-                    notify_custom_listeners('on_changed', row, :inserted, @cell_rows[row])
-                  end
-                else
-                  @cell_rows.each_with_index do |new_row_data, row|
-                    if new_row_data != @last_cell_rows[row]
-                      ::LibUI.table_model_row_changed(model, row)
-                      notify_custom_listeners('on_changed', row, :changed, @cell_rows[row])
-                    end
-                  end
-                end
-                @last_last_cell_rows = array_deep_clone(@last_cell_rows)
-                @last_cell_rows = array_deep_clone(@cell_rows)
-              end.tap do |cell_rows_observer|
-                cell_rows_observer.observe(self, :cell_rows, recursive: true)
-              end
             end
             @cell_rows
           end
@@ -157,6 +165,8 @@ module Glimmer
               model_attribute_observer.add_dependent(model_attribute_observer_registration => @model_attribute_array_observer_registration)
             end
             # TODO look if multiple notifications are happening as a result of observing array and observing model binding
+            pd property; $stdout.flush
+            pd new_value; $stdout.flush
             send("#{property}=", new_value) unless @last_cell_rows == new_value
           end
           model_attribute_observer_registration = model_attribute_observer.observe(model_binding)
@@ -208,9 +218,11 @@ module Glimmer
             when Column::TextColumnProxy, Column::ButtonColumnProxy, Column::TextColorColumnProxy, :text
               ::LibUI.new_table_value_string((expanded_cell_rows[row] && expanded_cell_rows[row][column]).to_s)
             when Column::ImageColumnProxy, Column::ImageTextColumnProxy, Column::ImageTextColorColumnProxy
-              # TODO refactor to eliminate redundancy and share similar code
-              row = row - 1 if OS.windows? && row == cell_rows.count
-              img = expanded_cell_rows[row][column]
+              if (OS.windows? && row == cell_rows.count) || (expanded_cell_rows[row][column].nil?)
+                img = Glimmer::LibUI::ICON
+              else
+                img = expanded_cell_rows[row][column]
+              end
               img = ControlProxy::ImageProxy.create('image', nil, img) if img.is_a?(Array)
               img = ControlProxy::ImageProxy.create('image', nil, [img]) if img.is_a?(String)
               img = img.respond_to?(:libui) ? img.libui : img
@@ -307,6 +319,12 @@ module Glimmer
           @libui = ControlProxy.new_control(@keyword, [@table_params])
           @libui.tap do
             @columns.each {|column| column.respond_to?(:build_control, true) && column.send(:build_control) }
+          end
+          if OS.windows?
+            pd 'add row'; $stdout.flush
+            cell_rows << @columns.map {nil}
+            pd 'delete added row'; $stdout.flush
+            cell_rows.pop
           end
         end
         

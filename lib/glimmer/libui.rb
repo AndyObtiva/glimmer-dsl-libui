@@ -23,6 +23,7 @@ require 'glimmer/fiddle_consumer'
 
 module Glimmer
   module LibUI
+    ICON = File.expand_path('../../icons/glimmer.png', __dir__)
     class << self
       include Glimmer::FiddleConsumer
       

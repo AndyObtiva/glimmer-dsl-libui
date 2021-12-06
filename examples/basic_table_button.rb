@@ -24,7 +24,7 @@ class BasicTableButton
   end
   
   def launch
-    window('Animal sounds', 400, 200) {
+    w = window('Animal sounds', 400, 200) {
       horizontal_box {
         table {
           text_column('Animal')
@@ -51,7 +51,11 @@ class BasicTableButton
           end
         }
       }
-    }.show
+    }
+#     Glimmer::LibUI.timer(3, repeat: false) do
+#       @animals << Animal.new('cat', 'meaw')
+#     end
+    w.show
   end
 end
 
