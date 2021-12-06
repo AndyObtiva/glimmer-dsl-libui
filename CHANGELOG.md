@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.4.17
+
+- Improved parsing code of examples/cpu_percentage.rb for Windows to make it more resilient
+
 ## 0.4.16
 
 - Upgrade to glimmer 2.5.1

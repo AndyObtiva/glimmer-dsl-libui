@@ -17,7 +17,7 @@
 - Support `bounds` method in `polygon`, `polyline`, `polybezier`, and all other shapes
 
 - Support Custom Shapes, describing composite shapes/text/image concepts inside an `area`
-- Simpler Drag and Drop via `drag_source true`, `drag_and_move true`, `drop_target true`, and `on_drop { }` event
+- Simpler Drag and Drop via `drag_source true`, `drag_and_move true`, `drop_target true`, and `on_drop { }` event (working within same area or across different areas)
 - examples/area_drag_and_move.rb (drag around drawn objects like a house, animals, and people)
 - examples/area_drag_and_drop.rb (customize a face with face parts like mustache, nose, lips, eyes, and hair)
 - Extract geometrical algorithms into their own gem `perfect_shape` (Complete Ruby Geometry Library Covering Math Operations for All Geometrical Shapes like Rectangle, Square, Arc, Circle, Polygon, Polyline, Polybezier, and Polyquad)

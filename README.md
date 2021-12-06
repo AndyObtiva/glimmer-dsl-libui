@@ -1795,8 +1795,8 @@ Learn more from data-binding usage in [Login](#login) (4 data-binding versions),
 #### Data-Binding Gotchas
 
 - Never data-bind a control property to an attribute on the same view object with the same exact name (e.g. binding `entry` `text` property to `self` `text` attribute) as it would conflict with it. Instead, data-bind view property to an attribute with a different name on the view object or with the same name, but on a presenter or model object (e.g. data-bind `entry` `text` to `self` `legal_text` attribute or to `contract` model `text` attribute)
-- Data-binding a property utilizes the control's listener associated with the property (e.g. `on_changed` for `entry` `text`), so you cannot hook into the listener directly anymore as that would negate data-binding. Instead, you can add an `after_write: ->(val) {}` option to perform something on trigger of the control listener instead.
-- Data-binding a View control to another View control directly is not a good idea. Instead, data-bind both View controls to the same Presenter/Model attribute, and that keeps them in sync while keeping the code decoupled.
+- Data-binding a property utilizes the control's listener associated with the property (e.g. `on_changed` for `entry` `text`), so although you can add another listener if you want ([Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) will happily add your listener to the list of listeners that will get notified by a certain event), sometimes it is recommended that you add an `after_read: ->(val) {}` or `after_write: ->(val) {}` block instead to perform something after data-binding reads from or writes to the Model attribute.
+- Data-binding a View control to another View control directly is not a good practice as it causes tight-coupling. Instead, data-bind both View controls to the same Presenter/Model attribute, and that keeps them in sync while keeping the code decoupled.
 
 ### API Gotchas
 
