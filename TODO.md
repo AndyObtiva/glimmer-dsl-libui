@@ -2,9 +2,7 @@
 
 ## Next
 
-- On Windows, given that we add an extra row to `table` as a workaround, how about we add a second row and immediately delete?
-- Fix issue with `table` row having nil image cell for image column-
-- Fix issue on Windows with having extra row when doing implicit data-binding as opposed to explicit data-binding (though not always) like in basic table image text
+- On Windows, given that we add an extra row to `table` as a workaround, how about we add a second row and immediately delete? Make it work with both implicit and explicit table data-binding.
 
 ## Soon
 

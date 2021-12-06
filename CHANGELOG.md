@@ -2,7 +2,8 @@
 
 ## 0.4.16
 
-- Fix issue on Windows for empty `table` having an image column crashing
+- Upgrade to glimmer 2.5.1
+- Fix issue on Windows with `table` having image column crashing when empty
 
 ## 0.4.15
 
