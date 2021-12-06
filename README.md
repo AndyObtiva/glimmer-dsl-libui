@@ -3448,7 +3448,6 @@ class BasicTableButton
             end
           }
     
-          
           cell_rows <= [self, :animals, column_attributes: {'Animal' => :name, 'Description' => :sound}]
           
           # explicit unidirectional data-binding of table cell_rows to self.animals

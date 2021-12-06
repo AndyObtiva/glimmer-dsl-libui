@@ -2,8 +2,7 @@
 
 ## 0.4.16
 
-- Fix issue on Windows with empty `table` having an image column crashing
-- Fix issue with `table` having a nil image cell in image column crashing (defaults to Glimmer logo for image to avoid crash)
+- Fix issue on Windows for empty `table` having an image column crashing
 
 ## 0.4.15
 

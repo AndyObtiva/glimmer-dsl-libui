@@ -24,7 +24,7 @@ class BasicTableButton
   end
   
   def launch
-    w = window('Animal sounds', 400, 200) {
+    window('Animal sounds', 400, 200) {
       horizontal_box {
         table {
           text_column('Animal')
@@ -41,7 +41,6 @@ class BasicTableButton
             end
           }
     
-          
           cell_rows <= [self, :animals, column_attributes: {'Animal' => :name, 'Description' => :sound}]
           
           # explicit unidirectional data-binding of table cell_rows to self.animals
@@ -51,11 +50,7 @@ class BasicTableButton
           end
         }
       }
-    }
-#     Glimmer::LibUI.timer(3, repeat: false) do
-#       @animals << Animal.new('cat', 'meaw')
-#     end
-    w.show
+    }.show
   end
 end
 
