@@ -32,6 +32,12 @@ module Glimmer
         #
         # Follows the Proxy Design Pattern
         class TextColorColumnProxy < ControlProxy
+          class << self
+            def default_value
+              ['', :black]
+            end
+          end
+          
           include Column
           include DualColumn
           include EditableColumn

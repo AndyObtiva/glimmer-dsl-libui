@@ -90,18 +90,18 @@ module Glimmer
               @cell_rows_observer ||= Glimmer::DataBinding::Observer.proc do |new_cell_rows|
                 if @cell_rows.size < @last_cell_rows.size && @last_cell_rows.include_all?(*@cell_rows)
                   @last_cell_rows.array_diff_indexes(@cell_rows).reverse.each do |row|
-                    ::LibUI.table_model_row_deleted(model, row)
+                    ::LibUI.table_model_row_deleted(model, row) if model && row
                     notify_custom_listeners('on_changed', row, :deleted, @last_cell_rows[row])
                   end
                 elsif @cell_rows.size > @last_cell_rows.size && @cell_rows.include_all?(*@last_cell_rows)
                   @cell_rows.array_diff_indexes(@last_cell_rows).each do |row|
-                    ::LibUI.table_model_row_inserted(model, row)
+                    ::LibUI.table_model_row_inserted(model, row) if model && row
                     notify_custom_listeners('on_changed', row, :inserted, @cell_rows[row])
                   end
                 else
                   @cell_rows.each_with_index do |new_row_data, row|
                     if new_row_data != @last_cell_rows[row]
-                      ::LibUI.table_model_row_changed(model, row)
+                      ::LibUI.table_model_row_changed(model, row) if model && row
                       notify_custom_listeners('on_changed', row, :changed, @cell_rows[row])
                     end
                   end
@@ -309,6 +309,15 @@ module Glimmer
           @libui = ControlProxy.new_control(@keyword, [@table_params])
           @libui.tap do
             @columns.each {|column| column.respond_to?(:build_control, true) && column.send(:build_control) }
+          end
+
+          if !@applied_windows_fix && OS.windows?
+            @applied_windows_fix = true
+            new_row = @columns&.map {|column| column.class.default_value}
+            if new_row
+              @cell_rows << new_row
+              @cell_rows.pop
+            end
           end
         end
         

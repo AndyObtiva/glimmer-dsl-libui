@@ -30,6 +30,12 @@ module Glimmer
         #
         # Follows the Proxy Design Pattern
         class ImageColumnProxy < ControlProxy
+          class << self
+            def default_value
+              Glimmer::LibUI::ICON
+            end
+          end
+          
           include Column
         
           private

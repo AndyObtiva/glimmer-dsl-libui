@@ -32,6 +32,12 @@ module Glimmer
         #
         # Follows the Proxy Design Pattern
         class ImageTextColorColumnProxy < ControlProxy
+          class << self
+            def default_value
+              [Glimmer::LibUI::ICON, '', :black]
+            end
+          end
+          
           include Column
           include TripleColumn
           include EditableColumn

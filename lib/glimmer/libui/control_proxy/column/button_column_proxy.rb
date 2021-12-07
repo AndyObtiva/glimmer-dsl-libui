@@ -31,6 +31,12 @@ module Glimmer
         #
         # Follows the Proxy Design Pattern
         class ButtonColumnProxy < ControlProxy
+          class << self
+            def default_value
+              ''
+            end
+          end
+          
           include Column
           include EnableableColumn
           

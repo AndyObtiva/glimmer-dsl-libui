@@ -24,6 +24,13 @@ module Glimmer
     class ControlProxy
       # Common logic for all column proxy objects
       module Column
+        class << self
+          # subclasses may override to provide a valid default value like a blank image for image columns and false for checkbox
+          def default_value
+            nil
+          end
+        end
+
         def initialize(keyword, parent, args, &block)
           @keyword = keyword
           @parent_proxy = parent

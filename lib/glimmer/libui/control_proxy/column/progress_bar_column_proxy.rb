@@ -30,6 +30,12 @@ module Glimmer
         #
         # Follows the Proxy Design Pattern
         class ProgressBarColumnProxy < ControlProxy
+          class << self
+            def default_value
+              0
+            end
+          end
+          
           include Column
               
           private

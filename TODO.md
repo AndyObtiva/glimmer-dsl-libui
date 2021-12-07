@@ -67,6 +67,7 @@
 - Consider extracting a general graph custom control from `examples/histogram.rb`
 - Support reopening `table` `content {}` by destroying and rebuilding (right now, it does nothing)
 - Support returning a control view binding object with a deregister method to debind (currently not possible given libui does not support deregistering listeners)
+- Try to provide more helpful error messages on user error when it results in segementation fault (like setting nil as `entry` `text`) or prevent such cases altogether with smart defaults
 
 # Refactoring
 

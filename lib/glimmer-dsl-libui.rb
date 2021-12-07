@@ -46,3 +46,4 @@ Glimmer::Config.excluded_keyword_checkers << lambda do |method_symbol, *args|
 end
 
 ::LibUI.init
+# PutsDebuggerer.printer = lambda { |m| puts m; $stdout.flush}

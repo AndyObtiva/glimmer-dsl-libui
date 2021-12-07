@@ -31,6 +31,12 @@ module Glimmer
         #
         # Follows the Proxy Design Pattern
         class CheckboxColumnProxy < ControlProxy
+          class << self
+            def default_value
+              false
+            end
+          end
+          
           include Column
           include EditableColumn
           
