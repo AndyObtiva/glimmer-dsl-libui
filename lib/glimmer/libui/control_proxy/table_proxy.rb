@@ -109,7 +109,7 @@ module Glimmer
                 @last_last_cell_rows = array_deep_clone(@last_cell_rows)
                 @last_cell_rows = array_deep_clone(@cell_rows)
               end.tap do |cell_rows_observer|
-                cell_rows_observer.observe(self, :cell_rows, recursive: true)
+                cell_rows_observer.observe(self, :cell_rows, recursive: true, ignore_frozen: true)
               end
             end
             @cell_rows
@@ -153,7 +153,7 @@ module Glimmer
             new_value = new_value.to_a if new_value.is_a?(Enumerator)
             if model_binding.binding_options[:column_attributes] || (!new_value.empty? && !new_value.first.is_a?(Array))
               @model_attribute_array_observer_registration&.deregister
-              @model_attribute_array_observer_registration = model_attribute_observer.observe(new_value, @column_attributes)
+              @model_attribute_array_observer_registration = model_attribute_observer.observe(new_value, @column_attributes, ignore_frozen: true)
               model_attribute_observer.add_dependent(model_attribute_observer_registration => @model_attribute_array_observer_registration)
             end
             # TODO look if multiple notifications are happening as a result of observing array and observing model binding
