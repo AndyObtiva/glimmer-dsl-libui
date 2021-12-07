@@ -28,6 +28,7 @@ require 'glimmer'
 # require 'super_module'
 require 'color'
 require 'os'
+require 'equalizer'
 require 'array_include_methods'
 require 'facets/hash/stringify_keys'
 require 'facets/string/underscore'
@@ -46,4 +47,8 @@ Glimmer::Config.excluded_keyword_checkers << lambda do |method_symbol, *args|
 end
 
 ::LibUI.init
-# PutsDebuggerer.printer = lambda { |m| puts m; $stdout.flush}
+# begin
+#   PutsDebuggerer.printer = lambda { |m| puts m; $stdout.flush}
+# rescue
+  ## No Op if puts_debuggerer is not loaded
+# end

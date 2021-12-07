@@ -52,6 +52,7 @@ module Glimmer
         
         include Parent
         prepend Transformable
+        include Equalizer.new(:options, :data)
         
         attr_reader :data, :pixels, :shapes, :options
         

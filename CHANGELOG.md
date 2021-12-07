@@ -3,6 +3,8 @@
 ## 0.4.17
 
 - Improved parsing code of examples/cpu_percentage.rb for Windows to make it more resilient
+- Upgrade to glimmer 2.5.3 to silently ignore frozen observables with `observe(*args, ignore_frozen: true)`
+- Added equalizer gem dependency to properly provide equality methods for `Glimmer::LibUI::ControlProxy::ImageProxy`
 
 ## 0.4.16
 
