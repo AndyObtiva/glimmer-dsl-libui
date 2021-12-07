@@ -2,7 +2,14 @@
 
 ## Next
 
-- On Windows, given that we add an extra row to `table` as a workaround, how about we add a second row and immediately delete? Make it work with both implicit and explicit table data-binding.
+- Support `contain?` method in `arc` (todo), `polygon` (handled in `georuby` or `winding-polygon` or `point-in-polygon` or `is` or `polygon-validator` or `pip` gem), `polyline` (handled), `polybezier` (not handled), and `figure` (semi-handled unless beziers are in)
+- Support `include?` method in `arc` (todo), `polygon` (handled in georuby), `polyline` (handled), `polybezier` (not handled), and `figure` (semi-handled unless beziers are in)
+- Support `bounds` method in `polygon`, `polyline`, `polybezier`, and all other shapes
+
+- Support Custom Shapes, describing composite shapes/text/image concepts inside an `area`
+- Simpler Drag and Drop via `drag_source true`, `drag_and_move true`, `drop_target true`, and `on_drop { }` event (working within same area or across different areas)
+- examples/area_drag_and_move.rb (drag around drawn objects like a house, animals, and people)
+- examples/area_drag_and_drop.rb (customize a face with face parts like mustache, nose, lips, eyes, and hair)
 
 ## Soon
 
@@ -12,19 +19,10 @@
 
 ## Future
 
-- Support `contain?` method in `arc` (todo), `polygon` (handled in `georuby` or `winding-polygon` or `point-in-polygon` or `is` or `polygon-validator` or `pip` gem), `polyline` (handled), `polybezier` (not handled), and `figure` (semi-handled unless beziers are in)
-- Support `include?` method in `arc` (todo), `polygon` (handled in georuby), `polyline` (handled), `polybezier` (not handled), and `figure` (semi-handled unless beziers are in)
-- Support `bounds` method in `polygon`, `polyline`, `polybezier`, and all other shapes
-
-- Support Custom Shapes, describing composite shapes/text/image concepts inside an `area`
-- Simpler Drag and Drop via `drag_source true`, `drag_and_move true`, `drop_target true`, and `on_drop { }` event (working within same area or across different areas)
-- examples/area_drag_and_move.rb (drag around drawn objects like a house, animals, and people)
-- examples/area_drag_and_drop.rb (customize a face with face parts like mustache, nose, lips, eyes, and hair)
-- Extract geometrical algorithms into their own gem `perfect_shape` (Complete Ruby Geometry Library Covering Math Operations for All Geometrical Shapes like Rectangle, Square, Arc, Circle, Polygon, Polyline, Polybezier, and Polyquad)
+- Support custom keywords representing controls, shapes, matrices, message boxes or windows
 
 ## Far Future
 
-- Support custom keywords representing controls, shapes, matrices, message boxes or windows
 - Automate OCRA support for Windows Native-Executable Packaging
 - Implement Mac Native-Executable Packaging (perhaps with https://github.com/create-dmg/create-dmg or https://github.com/sveinbjornt/Platypus)
 - Scaffold an application with support for gem and native-executable packaging

@@ -2,6 +2,7 @@
 
 ## 0.4.17
 
+- Remove Windows workaround of always adding an extra row at the bottom of `table` as it is no longer necessary after adding a better workaround (on Windows, add & remove row just after constructing `table` to get rid of double-delete glitch)
 - Improved parsing code of examples/cpu_percentage.rb for Windows to make it more resilient
 - Upgrade to glimmer 2.5.3 to silently ignore frozen observables with `observe(*args, ignore_frozen: true)`
 - Added equalizer gem dependency to properly provide equality methods for `Glimmer::LibUI::ControlProxy::ImageProxy`
