@@ -2,13 +2,15 @@
 
 ## Next
 
+- Fix issue with `table` that has no `cell_rows` set during definition yet after it is fully defined (`table {}` curly braces closed already)
+
 - Support `contain?` method in `arc` (todo), `polygon` (handled in `georuby` or `winding-polygon` or `point-in-polygon` or `is` or `polygon-validator` or `pip` gem), `polyline` (handled), `polybezier` (not handled), and `figure` (semi-handled unless beziers are in)
 - Support `include?` method in `arc` (todo), `polygon` (handled in georuby), `polyline` (handled), `polybezier` (not handled), and `figure` (semi-handled unless beziers are in)
 - Support `bounds` method in `polygon`, `polyline`, `polybezier`, and all other shapes
 
 - Support Custom Shapes, describing composite shapes/text/image concepts inside an `area`
 - Simpler Drag and Drop via `drag_source true`, `drag_and_move true`, `drop_target true`, and `on_drop { }` event (working within same area or across different areas)
-- examples/area_drag_and_move.rb (drag around drawn objects like a house, animals, and people)
+- Update examples/area_gallery.rb to support dragging around drawn shapes via `drag_and_move true` for one implementation and via basic `on_drag` events in another implementation
 - examples/area_drag_and_drop.rb (customize a face with face parts like mustache, nose, lips, eyes, and hair)
 
 ## Soon
