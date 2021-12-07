@@ -313,7 +313,7 @@ module Glimmer
 
           if !@applied_windows_fix && OS.windows?
             @applied_windows_fix = true
-            new_row = @columns&.map {|column| column.class.default_value}
+            new_row = @columns&.select {|column| column.is_a?(Column)}&.map {|column| column.class.default_value}
             if new_row
               @cell_rows << new_row
               @cell_rows.pop
