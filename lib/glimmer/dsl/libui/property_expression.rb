@@ -35,11 +35,11 @@ module Glimmer
               parent.is_a?(Glimmer::LibUI::AttributedString)
           ) and
             block.nil? and
-            parent.respond_to?(keyword, *args)
+            parent.respond_to?("#{keyword}=", *args)
         end
   
         def interpret(parent, keyword, *args, &block)
-          parent.send(keyword, *args)
+          parent.send("#{keyword}=", *args)
         end
       end
     end

@@ -86,16 +86,14 @@ module Glimmer
             @cell_rows
           else
             if rows != @cell_rows
-              @cell_rows_observer_registration.deregister
               @cell_rows = rows
               @cell_rows = @cell_rows.to_a if @cell_rows.is_a?(Enumerator)
-              @cell_rows_observer_registration = @cell_rows_observer.observe(self, :cell_rows, recursive: true, ignore_frozen: true)
             end
             @cell_rows
           end
         end
         alias cell_rows= cell_rows
-        alias set_cell_rows cell_rows
+        alias set_cell_rows cell_rows=
         
         def expanded_cell_rows
           expand(cell_rows)

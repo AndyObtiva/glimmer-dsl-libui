@@ -5,6 +5,7 @@
 - Support `contain?` method in `arc` (todo), `polygon` (handled in `georuby` or `winding-polygon` or `point-in-polygon` or `is` or `polygon-validator` or `pip` gem), `polyline` (handled), `polybezier` (not handled), and `figure` (semi-handled unless beziers are in)
 - Support `include?` method in `arc` (todo), `polygon` (handled in georuby), `polyline` (handled), `polybezier` (not handled), and `figure` (semi-handled unless beziers are in)
 - Support `bounds` method in `polygon`, `polyline`, `polybezier`, and all other shapes
+- Change all alias set_attr attr to  alias set_attr attr=
 
 - Support Custom Shapes, describing composite shapes/text/image concepts inside an `area`
 - Simpler Drag and Drop via `drag_source true`, `drag_and_move true`, `drop_target true`, and `on_drop { }` event (working within same area or across different areas)
