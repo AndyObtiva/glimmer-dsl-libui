@@ -287,14 +287,10 @@ module Glimmer
           @libui.tap do
             @columns.each {|column| column.respond_to?(:build_control, true) && column.send(:build_control) }
           end
-          
+
           if !@applied_windows_fix && OS.windows?
             @applied_windows_fix = true
-            new_row = @columns&.select {|column| column.is_a?(Column)}&.map {|column| column.class.default_value}
-            if new_row
-              @cell_rows << new_row
-              @cell_rows.pop
-            end
+            apply_windows_fix
           end
         end
         
@@ -325,8 +321,22 @@ module Glimmer
             end
             @last_last_cell_rows = array_deep_clone(@last_cell_rows)
             @last_cell_rows = array_deep_clone(@cell_rows)
+            if !@applied_windows_fix_on_first_cell_rows_update && OS.windows?
+              @applied_windows_fix_on_first_cell_rows_update = true
+              apply_windows_fix
+            end
           end
           @cell_rows_observer_registration = @cell_rows_observer.observe(self, :cell_rows, recursive: true, ignore_frozen: true)
+        end
+
+        def apply_windows_fix
+          Glimmer::LibUI.queue_main do
+            new_row = @columns&.select {|column| column.is_a?(Column)}&.map {|column| column.class.default_value}
+            if new_row
+              @cell_rows << new_row
+              @cell_rows.pop
+            end
+          end
         end
       end
     end

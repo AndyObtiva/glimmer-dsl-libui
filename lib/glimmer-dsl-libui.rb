@@ -50,5 +50,5 @@ end
 # begin
 #   PutsDebuggerer.printer = lambda { |m| puts m; $stdout.flush}
 # rescue
-  ## No Op if puts_debuggerer is not loaded
+  ##### No Op if puts_debuggerer is not loaded
 # end
