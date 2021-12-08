@@ -2,8 +2,6 @@
 
 ## Next
 
-- Fix issue with `table` that has no `cell_rows` set during definition yet after it is fully defined (`table {}` curly braces closed already)
-
 - Support `contain?` method in `arc` (todo), `polygon` (handled in `georuby` or `winding-polygon` or `point-in-polygon` or `is` or `polygon-validator` or `pip` gem), `polyline` (handled), `polybezier` (not handled), and `figure` (semi-handled unless beziers are in)
 - Support `include?` method in `arc` (todo), `polygon` (handled in georuby), `polyline` (handled), `polybezier` (not handled), and `figure` (semi-handled unless beziers are in)
 - Support `bounds` method in `polygon`, `polyline`, `polybezier`, and all other shapes

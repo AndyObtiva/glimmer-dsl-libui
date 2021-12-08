@@ -48,6 +48,7 @@ module Glimmer
           @enabled = true
           @columns = []
           @cell_rows = []
+          initialize_cell_rows
           window_proxy.on_destroy do
             # the following unless condition is an exceptional condition stumbled upon that fails freeing the table model
             ::LibUI.free_table_model(@model) unless @destroyed && parent_proxy.is_a?(Box)
@@ -86,7 +87,6 @@ module Glimmer
             if rows != @cell_rows
               @cell_rows = rows
               @cell_rows = @cell_rows.to_a if @cell_rows.is_a?(Enumerator)
-              initialize_cell_rows
             end
             @cell_rows
           end
@@ -303,7 +303,7 @@ module Glimmer
         end
         
         def initialize_cell_rows
-          @last_cell_rows ||= @content_added ? [] : array_deep_clone(@cell_rows)
+          @last_cell_rows ||= array_deep_clone(@cell_rows)
           @cell_rows_observer ||= Glimmer::DataBinding::Observer.proc do |new_cell_rows|
             if @cell_rows.size < @last_cell_rows.size && @last_cell_rows.include_all?(*@cell_rows)
               @last_cell_rows.array_diff_indexes(@cell_rows).reverse.each do |row|
@@ -327,7 +327,6 @@ module Glimmer
             @last_cell_rows = array_deep_clone(@cell_rows)
           end.tap do |cell_rows_observer|
             cell_rows_observer.observe(self, :cell_rows, recursive: true, ignore_frozen: true)
-            cell_rows_observer.call if @content_added
           end
         end
       end

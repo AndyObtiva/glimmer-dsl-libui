@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.4.18
+
+- Fix issue with `table` being empty when setting `cell_rows` after its definition completed (`table {}` curly braces closed already)
+- Fix issue with `table` being empty when adding rows piecemeal to `cell_rows` after its definition completed (`table {}` curly braces closed already)
+
 ## 0.4.17
 
 - Remove Windows workaround of always adding an extra row at the bottom of `table` as it is no longer necessary after adding a better workaround (on Windows, add & remove row just after constructing `table` to get rid of double-delete glitch)
