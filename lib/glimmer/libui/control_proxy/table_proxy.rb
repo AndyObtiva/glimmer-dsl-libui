@@ -48,7 +48,8 @@ module Glimmer
           @enabled = true
           @columns = []
           @cell_rows = []
-          initialize_cell_rows
+          @last_cell_rows = []
+          register_cell_rows_observer
           window_proxy.on_destroy do
             # the following unless condition is an exceptional condition stumbled upon that fails freeing the table model
             ::LibUI.free_table_model(@model) unless @destroyed && parent_proxy.is_a?(Box)
@@ -85,8 +86,10 @@ module Glimmer
             @cell_rows
           else
             if rows != @cell_rows
+              @cell_rows_observer_registration.deregister
               @cell_rows = rows
               @cell_rows = @cell_rows.to_a if @cell_rows.is_a?(Enumerator)
+              @cell_rows_observer_registration = @cell_rows_observer.observe(self, :cell_rows, recursive: true, ignore_frozen: true)
             end
             @cell_rows
           end
@@ -286,7 +289,7 @@ module Glimmer
           @libui.tap do
             @columns.each {|column| column.respond_to?(:build_control, true) && column.send(:build_control) }
           end
-
+          
           if !@applied_windows_fix && OS.windows?
             @applied_windows_fix = true
             new_row = @columns&.select {|column| column.is_a?(Column)}&.map {|column| column.class.default_value}
@@ -302,9 +305,8 @@ module Glimmer
           @next_column_index += 1
         end
         
-        def initialize_cell_rows
-          @last_cell_rows ||= array_deep_clone(@cell_rows)
-          @cell_rows_observer ||= Glimmer::DataBinding::Observer.proc do |new_cell_rows|
+        def register_cell_rows_observer
+          @cell_rows_observer = Glimmer::DataBinding::Observer.proc do |new_cell_rows|
             if @cell_rows.size < @last_cell_rows.size && @last_cell_rows.include_all?(*@cell_rows)
               @last_cell_rows.array_diff_indexes(@cell_rows).reverse.each do |row|
                 ::LibUI.table_model_row_deleted(model, row) if model && row
@@ -325,9 +327,8 @@ module Glimmer
             end
             @last_last_cell_rows = array_deep_clone(@last_cell_rows)
             @last_cell_rows = array_deep_clone(@cell_rows)
-          end.tap do |cell_rows_observer|
-            cell_rows_observer.observe(self, :cell_rows, recursive: true, ignore_frozen: true)
           end
+          @cell_rows_observer_registration = @cell_rows_observer.observe(self, :cell_rows, recursive: true, ignore_frozen: true)
         end
       end
     end
