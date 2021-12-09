@@ -46,7 +46,6 @@ module Glimmer
                 if return_value.is_a?(Numeric)
                   return_value
                 else
-                  destroy
                   ControlProxy.main_window_proxy&.destroy
                   ::LibUI.quit
                   0
