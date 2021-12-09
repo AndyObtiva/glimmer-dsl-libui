@@ -21,6 +21,7 @@ class CustomDrawText
               @string.font = fb.font
             end
           }
+
           color_button { |cb|
             label 'Color'
             
@@ -28,13 +29,17 @@ class CustomDrawText
               @string.color = cb.color
             end
           }
-          color_button { |cb|
-            label 'Background'
-            
-            on_changed do
-              @string.background = cb.color
-            end
-          }
+
+          unless OS.windows?
+            color_button { |cb|
+              label 'Background'
+              
+              on_changed do
+                @string.background = cb.color
+              end
+            }
+          end
+
           combobox { |c|
             label 'Underline'
             items Glimmer::LibUI.enum_symbols(:underline).map(&:to_s).map {|word| word.split('_').map(&:capitalize).join(' ')}
@@ -44,6 +49,7 @@ class CustomDrawText
               @string.underline = c.selected_item.underscore
             end
           }
+
           combobox { |c|
             label 'Underline Built-In Color'
             items Glimmer::LibUI.enum_symbols(:underline_color).map(&:to_s).map(&:capitalize)
@@ -59,6 +65,7 @@ class CustomDrawText
               end
             end
           }
+
           @underline_custom_color_button = color_button {
             label 'Underline Custom Color'
             

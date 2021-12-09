@@ -22,6 +22,7 @@ class CustomDrawText
               @area.queue_redraw_all
             end
           }
+
           color_button { |cb|
             label 'Color'
             
@@ -30,14 +31,18 @@ class CustomDrawText
               @area.queue_redraw_all
             end
           }
-          color_button { |cb|
-            label 'Background'
-            
-            on_changed do
-              @background = cb.color
-              @area.queue_redraw_all
-            end
-          }
+          
+          unless OS.windows?
+            color_button { |cb|
+              label 'Background'
+              
+              on_changed do
+                @background = cb.color
+                @area.queue_redraw_all
+              end
+            }
+          end
+
           combobox { |c|
             label 'Underline'
             items Glimmer::LibUI.enum_symbols(:underline).map(&:to_s).map {|word| word.split('_').map(&:capitalize).join(' ')}
@@ -48,6 +53,7 @@ class CustomDrawText
               @area.queue_redraw_all
             end
           }
+
           combobox { |c|
             label 'Underline Built-In Color'
             items Glimmer::LibUI.enum_symbols(:underline_color).map(&:to_s).map(&:capitalize)
@@ -64,6 +70,7 @@ class CustomDrawText
               @area.queue_redraw_all
             end
           }
+
           @underline_custom_color_button = color_button {
             label 'Underline Custom Color'
             

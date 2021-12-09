@@ -2,9 +2,10 @@
 
 ## 0.4.18
 
-- Support notifying observers of control property changes when calling the `set_attribute` version of attribute writers, not just `attribute=`
 - Support setting `table` `cell_rows` after the `table` definition completed (e.g. `@table.cell_rows = data` after `table {}` curly braces closed already)
 - Support adding to `table` `cell_rows` piecemeal after the `table` definition completed (e.g. `data.each { |row| @table.cell_rows << row }` after `table {}` curly braces closed already)
+- Support notifying observers of control property changes when calling the `set_attribute` version of attribute writers, not just `attribute=`
+- Hide background field in examples/custom_draw_text.rb on Windows since it is not supported there
 - Fix issue with `quit_menu_item` click resulting in a stack overflow on Windows
 
 ## 0.4.17

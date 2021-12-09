@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.4.17
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.4.18
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -506,7 +506,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.4.17'
+gem 'glimmer-dsl-libui', '~> 0.4.18'
 ```
 
 Test that installation worked by running the [Meta-Example](#examples):
@@ -6110,6 +6110,7 @@ class CustomDrawText
               @string.font = fb.font
             end
           }
+
           color_button { |cb|
             label 'Color'
             
@@ -6117,13 +6118,17 @@ class CustomDrawText
               @string.color = cb.color
             end
           }
-          color_button { |cb|
-            label 'Background'
-            
-            on_changed do
-              @string.background = cb.color
-            end
-          }
+
+          unless OS.windows?
+            color_button { |cb|
+              label 'Background'
+              
+              on_changed do
+                @string.background = cb.color
+              end
+            }
+          end
+
           combobox { |c|
             label 'Underline'
             items Glimmer::LibUI.enum_symbols(:underline).map(&:to_s).map {|word| word.split('_').map(&:capitalize).join(' ')}
@@ -6133,12 +6138,36 @@ class CustomDrawText
               @string.underline = c.selected_item.underscore
             end
           }
+
+          combobox { |c|
+            label 'Underline Built-In Color'
+            items Glimmer::LibUI.enum_symbols(:underline_color).map(&:to_s).map(&:capitalize)
+            selected 'Custom'
+            
+            on_selected do
+              @underline_custom_color_button.enabled = c.selected_item == 'Custom'
+              if c.selected_item == 'Custom'
+                @string.underline_color = @underline_custom_color_button.color
+              else
+                @string.underline_color = c.selected_item.underscore
+                @underline_custom_color_button.color = :black
+              end
+            end
+          }
+
+          @underline_custom_color_button = color_button {
+            label 'Underline Custom Color'
+            
+            on_changed do
+              @string.underline_color = @underline_custom_color_button.color
+            end
+          }
         }
         
         area {
-          text { # default arguments for x, y, and width are (0, 0, area_draw_params[:area_width])
+          text { # default arguments for x, y, and width are (0, 0, area_draw_params[:area_width] - 2*x)
             # align :left # default alignment
-              
+            
             @string = string {
               '  At last Ygramul sensed that something was coming toward ' \
               'her. With the speed of lightning, she turned about, confronting ' \
@@ -6183,62 +6212,94 @@ require 'glimmer-dsl-libui'
 # The English version, translated by Ralph Manheim, was published in 1983.
 class CustomDrawText
   include Glimmer
-  
+
   def launch
     window('Michael Ende (1929-1995) The Neverending Story', 600, 500) {
       margined true
-      
+
       vertical_box {
         form {
           stretchy false
-          
+
           font_button { |fb|
             label 'Font'
-            
+
             on_changed do
               @font = fb.font
               @area.queue_redraw_all
             end
           }
+
           color_button { |cb|
             label 'Color'
-            
+
             on_changed do
               @color = cb.color
               @area.queue_redraw_all
             end
           }
-          color_button { |cb|
-            label 'Background'
-            
-            on_changed do
-              @background = cb.color
-              @area.queue_redraw_all
-            end
-          }
+
+          unless OS.windows?
+            color_button { |cb|
+              label 'Background'
+
+              on_changed do
+                @background = cb.color
+                @area.queue_redraw_all
+              end
+            }
+          end
+
           combobox { |c|
             label 'Underline'
             items Glimmer::LibUI.enum_symbols(:underline).map(&:to_s).map {|word| word.split('_').map(&:capitalize).join(' ')}
             selected 'None'
-            
+
             on_selected do
               @underline = c.selected_item.underscore
               @area.queue_redraw_all
             end
           }
+
+          combobox { |c|
+            label 'Underline Built-In Color'
+            items Glimmer::LibUI.enum_symbols(:underline_color).map(&:to_s).map(&:capitalize)
+            selected 'Custom'
+
+            on_selected do
+              @underline_custom_color_button.enabled = c.selected_item == 'Custom'
+              if c.selected_item == 'Custom'
+                @underline_color = @underline_custom_color_button.color
+              else
+                @underline_color = c.selected_item.underscore
+                @underline_custom_color_button.color = :black
+              end
+              @area.queue_redraw_all
+            end
+          }
+
+          @underline_custom_color_button = color_button {
+            label 'Underline Custom Color'
+
+            on_changed do
+              @underline_color = @underline_custom_color_button.color
+              @area.queue_redraw_all
+            end
+          }
         }
-        
+
         @area = area {
           on_draw do |area_draw_params|
-            text { # default arguments for x, y, and width are (0, 0, area_draw_params[:area_width])
+            text { # default arguments for x, y, and width are (0, 0, area_draw_params[:area_width] - 2*x)
               # align :left # default alignment
-                
+
               string {
                 font @font
                 color @color
                 background @background
                 underline @underline
-                
+                underline_color @underline_color
+
                 '  At last Ygramul sensed that something was coming toward ' \
                 'her. With the speed of lightning, she turned about, confronting ' \
                 'Atreyu with an enormous steel-blue face. Her single eye had a ' \
