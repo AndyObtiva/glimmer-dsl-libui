@@ -1,7 +1,6 @@
 # TODO
 
 ## Next
-- Support data-binding/observing control properties getting notified when set_property type of attribute writer is called not just the Ruby default property= type of attribute writer
 
 - Support `contain?` method in `arc` (todo), `polygon` (handled in `georuby` or `winding-polygon` or `point-in-polygon` or `is` or `polygon-validator` or `pip` gem), `polyline` (handled), `polybezier` (not handled), and `figure` (semi-handled unless beziers are in)
 - Support `include?` method in `arc` (todo), `polygon` (handled in georuby), `polyline` (handled), `polybezier` (not handled), and `figure` (semi-handled unless beziers are in)
