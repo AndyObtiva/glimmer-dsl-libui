@@ -77,7 +77,8 @@ module Glimmer
         
         def destroy
           super
-          @cell_rows_observer&.unobserve(self, :cell_rows, recursive: true)
+          # TODO consider replacing unobserve with observer_registration.deregister
+          @cell_rows_observer&.unobserve(self, :cell_rows, recursive: true, ignore_frozen: true, attribute_writer_type: [:attribute=, :set_attribute])
           @destroyed = true
         end
         
@@ -93,7 +94,7 @@ module Glimmer
           end
         end
         alias cell_rows= cell_rows
-        alias set_cell_rows cell_rows=
+        alias set_cell_rows cell_rows
         
         def expanded_cell_rows
           expand(cell_rows)
@@ -130,13 +131,13 @@ module Glimmer
             new_value = new_value.to_a if new_value.is_a?(Enumerator)
             if model_binding.binding_options[:column_attributes] || (!new_value.empty? && !new_value.first.is_a?(Array))
               @model_attribute_array_observer_registration&.deregister
-              @model_attribute_array_observer_registration = model_attribute_observer.observe(new_value, @column_attributes, ignore_frozen: true)
+              @model_attribute_array_observer_registration = model_attribute_observer.observe(new_value, @column_attributes, ignore_frozen: true, attribute_writer_type: [:attribute=, :set_attribute])
               model_attribute_observer.add_dependent(model_attribute_observer_registration => @model_attribute_array_observer_registration)
             end
             # TODO look if multiple notifications are happening as a result of observing array and observing model binding
             send("#{property}=", new_value) unless @last_cell_rows == new_value
           end
-          model_attribute_observer_registration = model_attribute_observer.observe(model_binding)
+          model_attribute_observer_registration = model_attribute_observer.observe(model_binding, attribute_writer_type: [:attribute=, :set_attribute])
           model_attribute_observer.call # initial update
           data_binding_model_attribute_observer_registrations << model_attribute_observer_registration
           model_attribute_observer
@@ -326,7 +327,7 @@ module Glimmer
               apply_windows_fix
             end
           end
-          @cell_rows_observer_registration = @cell_rows_observer.observe(self, :cell_rows, recursive: true, ignore_frozen: true)
+          @cell_rows_observer_registration = @cell_rows_observer.observe(self, :cell_rows, recursive: true, ignore_frozen: true, attribute_writer_type: [:attribute=, :set_attribute])
         end
 
         def apply_windows_fix

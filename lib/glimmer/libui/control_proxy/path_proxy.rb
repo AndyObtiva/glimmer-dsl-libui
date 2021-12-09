@@ -70,7 +70,8 @@ module Glimmer
           else
             new_color = Glimmer::LibUI.interpret_color(args)
             if new_color != @fill
-              @fill_observer&.unobserve(@fill) if @fill
+              # TODO consider replacing unobserve with observer_registration.deregister
+              @fill_observer&.unobserve(@fill, attribute_writer_type: [:attribute=, :set_attribute]) if @fill
               @fill = new_color
               request_auto_redraw
             end
@@ -79,7 +80,7 @@ module Glimmer
             @fill_observer ||= Glimmer::DataBinding::Observer.proc do
               request_auto_redraw
             end
-            @fill_observer.observe(@fill)
+            @fill_observer.observe(@fill, attribute_writer_type: [:attribute=, :set_attribute])
           end
         end
         alias fill= fill
@@ -98,7 +99,8 @@ module Glimmer
           else
             new_color = Glimmer::LibUI.interpret_color(args)
             if new_color != @stroke
-              @stroke_observer&.unobserve(@stroke) if @stroke
+              # TODO consider replacing unobserve with observer_registration.deregister
+              @stroke_observer&.unobserve(@stroke, attribute_writer_type: [:attribute=, :set_attribute]) if @stroke
               @stroke = Glimmer::LibUI.interpret_color(args)
               request_auto_redraw
             end
@@ -107,7 +109,7 @@ module Glimmer
             @stroke_observer ||= Glimmer::DataBinding::Observer.proc do
               request_auto_redraw
             end
-            @stroke_observer.observe(@stroke)
+            @stroke_observer.observe(@stroke, attribute_writer_type: [:attribute=, :set_attribute])
           end
         end
         alias stroke= stroke

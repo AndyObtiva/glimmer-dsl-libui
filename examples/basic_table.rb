@@ -17,7 +17,7 @@ window('Animal sounds', 300, 200) {
     table {
       text_column('Animal')
       text_column('Description')
-
+     
       cell_rows data
     }
   }
