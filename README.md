@@ -1395,7 +1395,13 @@ Note that `area`, `path`, and nested shapes are all truly declarative, meaning t
 
 ### Custom Keywords
 
-To define custom keywords, simply define a method representing the custom control you want. To make reusable, you can define in modules and simply include the modules in the view classes that need them.
+Custom keywords can be defined to represent custom controls (components) that provide new features or act as composites of [existing controls](#supported-keywords) that need to be reused multiple times in an application or across multiple applications. Custom keywords save a lot of development time, improving productivity and maintainbility.
+  
+For example, you can define a custom `address` control as an aggregate of multiple `label` controls to reuse multiple times as a standard address View, displaying street, city, state, and zip code.
+
+To define custom keywords, simply define a method representing the custom control you want (e.g. `address`) with any arguments needed (e.g. `address(address_model)`).
+
+To make custom keywords externally reusable, you can define in modules and simply include the modules in the view classes that need them.
 
 Example that defines `form_field`, `address_form`, `label_pair`, and `address` keywords (you may copy/paste in [`girb`](#girb-glimmer-irb)):
 
@@ -1407,44 +1413,37 @@ include Glimmer
 
 Address = Struct.new(:street, :p_o_box, :city, :state, :zip_code)
 
-def form_field(model, property)
-  property = property.to_s
+def form_field(model, attribute)
+  attribute = attribute.to_s
   entry { |e|
-    label property.underscore.split('_').map(&:capitalize).join(' ')
-    text model.send(property).to_s
-
-    on_changed do
-      model.send("#{property}=", e.text)
-    end
+    label attribute.underscore.split('_').map(&:capitalize).join(' ')
+    text <=> [model, attribute]
   }
 end
 
-def address_form(address)
+def address_form(address_model)
   form {
-    form_field(address, :street)
-    form_field(address, :p_o_box)
-    form_field(address, :city)
-    form_field(address, :state)
-    form_field(address, :zip_code)
+    form_field(address_model, :street)
+    form_field(address_model, :p_o_box)
+    form_field(address_model, :city)
+    form_field(address_model, :state)
+    form_field(address_model, :zip_code)
   }
 end
 
 def label_pair(model, attribute, value)
-  name_label = nil
-  value_label = nil
   horizontal_box {
-    name_label = label(attribute.to_s.underscore.split('_').map(&:capitalize).join(' '))
-    value_label = label(value.to_s)
+    label(attribute.to_s.underscore.split('_').map(&:capitalize).join(' '))
+    label(value.to_s) {
+      text <= [model, attribute]
+    }
   }
-  Glimmer::DataBinding::Observer.proc do
-    value_label.text = model.send(attribute)
-  end.observe(model, attribute)
 end
 
-def address(address)
+def address(address_model)
   vertical_box {
-    address.each_pair do |attribute, value|
-      label_pair(address, attribute, value)
+    address_model.each_pair do |attribute, value|
+      label_pair(address_model, attribute, value)
     end
   }
 end
@@ -1500,6 +1499,12 @@ window('Method-Based Custom Keyword') {
 ```
 
 ![glimmer-dsl-libui-mac-method-based-custom-keyword.png](images/glimmer-dsl-libui-mac-method-based-custom-keyword.png)
+
+The [`area`](#area-api) control can be utilized to build non-native custom controls from scratch by leveraging vector graphics, formattable text, keyboard events, and mouse events.
+
+Defining custom keywords enables unlimited extension of the [Glimmer GUI DSL](#glimmer-gui-dsl). The sky is the limit on what can be done with custom keywords as a result. You can compose new visual vocabulary to build applications in any domain from higher concepts rather than [mere standard controls](#supported-keywords). For example, in a traffic signaling app, you could define `street`, `light_signal`, `traffic_sign`, and `car` as custom keywords and build your application from these concepts directly, saving enormous time and achieving much higher productivity.
+
+Learn more from custom keyword usage in [Method-Based Custom Keyword](#method-based-custom-keyword), [Histogram](#histogram), and [Tetris](#tetris) examples.
 
 ### Observer Pattern
 
@@ -1805,7 +1810,6 @@ Learn more from data-binding usage in [Login](#login) (4 data-binding versions),
 - `table` `checkbox_text_column` checkbox editing only works on Linux (not Mac or Windows) due to a current limitation in [libui](https://github.com/andlabs/ui/issues/357).
 - `text` `align` property seems not to work on the Mac ([libui](https://github.com/andlabs/libui) has an [issue](https://github.com/andlabs/libui/pull/407) about it)
 - `text` `string` `background` does not work on Windows due to an [issue in libui](https://github.com/andlabs/libui/issues/347).
-- `table` controls on Windows intentionally get an extra empty row at the end because if any row were to be deleted for the first time, double-deletion happens due to an issue in [libui](https://github.com/andlabs/libui) on Windows.
 - `table` `progress_bar` column on Windows cannot be updated with a positive value if it started initially with `-1` (it ignores update to avoid crashing due to an issue in [libui](https://github.com/andlabs/libui) on Windows.
 - It seems that [libui](https://github.com/andlabs/libui) does not support nesting multiple `area` controls under a `grid` as only the first one shows up in that scenario. To workaround that limitation, use a `vertical_box` with nested `horizontal_box`s instead to include multiple `area`s in a GUI.
 - As per the code of [examples/basic_transform.rb](#basic-transform), Windows requires different ordering of transforms than Mac and Linux.
@@ -8370,6 +8374,12 @@ window('Login') {
 
 #### Method-Based Custom Keyword
 
+[Custom keywords](#custom-keywords) can be defined to represent custom controls (components) that provide new features or act as composites of existing controls that need to be reused multiple times in an application or across multiple applications. Custom keywords save a lot of development time, improving productivity and maintainbility.
+  
+This example defines `form_field`, `address_form`, `label_pair`, and `address` as custom control keywords.
+
+The custom keywords are defined via methods (thus are "method-based").
+
 [examples/method_based_custom_keyword.rb](examples/method_based_custom_keyword.rb)
 
 Run with this command from the root of the project if you cloned the project:
@@ -10107,7 +10117,7 @@ https://github.com/iraamaro/i3off-gtk-ruby
 
 ### Issues
 
-If you encounter [issues](https://github.com/AndyObtiva/glimmer-dsl-libui/issues) that are not reported, discover missing features that are not mentioned in [TODO.md](TODO.md), or think up better ways to use [libui](https://github.com/andlabs/libui) than what is possible with [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui), you may submit an [issue](https://github.com/AndyObtiva/glimmer-dsl-libui/issues/new) or [pull request](https://github.com/AndyObtiva/glimmer-dsl-libui/compare) on [GitHub](https://github.com). In the meantime, you may try older gem versions of [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) till you find one that works until issues are resolved.
+If you encounter [issues](https://github.com/AndyObtiva/glimmer-dsl-libui/issues) that are not reported, discover missing features that are not mentioned in [TODO.md](TODO.md), or think up better ways to use [libui](https://github.com/andlabs/libui) than what is possible with [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui), you may submit an [issue](https://github.com/AndyObtiva/glimmer-dsl-libui/issues/new) or [pull request](https://github.com/AndyObtiva/glimmer-dsl-libui/compare) on [GitHub](https://github.com). In the meantime, you may try older gem versions of [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) till you find one that works.
 
 ### Chat
 

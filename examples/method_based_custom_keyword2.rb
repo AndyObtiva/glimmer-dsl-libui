@@ -17,13 +17,13 @@ def form_field(model, property)
   }
 end
 
-def address_form(address)
+def address_form(address_model)
   form {
-    form_field(address, :street)
-    form_field(address, :p_o_box)
-    form_field(address, :city)
-    form_field(address, :state)
-    form_field(address, :zip_code)
+    form_field(address_model, :street)
+    form_field(address_model, :p_o_box)
+    form_field(address_model, :city)
+    form_field(address_model, :state)
+    form_field(address_model, :zip_code)
   }
 end
 
@@ -39,10 +39,10 @@ def label_pair(model, attribute, value)
   end
 end
 
-def address(address)
+def address(address_model)
   vertical_box {
-    address.each_pair do |attribute, value|
-      label_pair(address, attribute, value)
+    address_model.each_pair do |attribute, value|
+      label_pair(address_model, attribute, value)
     end
   }
 end
