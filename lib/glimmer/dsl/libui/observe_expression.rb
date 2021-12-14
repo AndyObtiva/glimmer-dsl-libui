@@ -25,7 +25,7 @@ require 'glimmer/dsl/observe_expression'
 
 module Glimmer
   module DSL
-    module SWT
+    module Libui
       class ObserveExpression < StaticExpression
         include TopLevelExpression
         include Glimmer::DSL::ObserveExpression

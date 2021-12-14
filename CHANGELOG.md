@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.4.19
+
+- Minor fix to `observe` keyword code (had the wrong DSL name)
+
 ## 0.4.18
 
 - Support setting `table` `cell_rows` after the `table` definition completed (e.g. `@table.cell_rows = data` after `table {}` curly braces closed already)
