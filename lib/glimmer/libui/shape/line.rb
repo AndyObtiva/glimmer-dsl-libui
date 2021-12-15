@@ -34,7 +34,7 @@ module Glimmer
           if parent.is_a?(Figure)
             ::LibUI.draw_path_line_to(path_proxy.libui, x, y)
           else
-            if end_x && end_y
+            if include_start_point?
               ::LibUI.draw_path_new_figure(path_proxy.libui, x, y)
               ::LibUI.draw_path_line_to(path_proxy.libui, end_x, end_y)
             else
@@ -43,6 +43,14 @@ module Glimmer
             end
           end
           super
+        end
+        
+        # Indicates if line is not part of a figure and yet it includes the start point in addition to end point
+        def include_start_point?
+          # if the last 2 args are available, it means that the first 2 args represent the start point
+          # if line is part of a figure, then the last 2 args are ignored and it is never assumed to include
+          # start point
+          !parent.is_a?(Figure) && end_x && end_y
         end
       end
     end

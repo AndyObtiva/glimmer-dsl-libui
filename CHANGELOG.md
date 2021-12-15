@@ -3,6 +3,7 @@
 ## 0.4.19
 
 - Have `line` optionally support 4 arguments instead of 2 to use outside of a `figure`
+- Have `bezier` optionally support 8 arguments instead of 6 to use outside of a `figure`
 - Minor fix to `observe` keyword code (had the wrong DSL name)
 
 ## 0.4.18

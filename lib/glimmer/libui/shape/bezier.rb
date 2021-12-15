@@ -25,12 +25,29 @@ module Glimmer
   module LibUI
     class Shape
       class Bezier < Shape
-        parameters :c1_x, :c1_y, :c2_x, :c2_y, :end_x, :end_y
-        parameter_defaults 0, 0, 0, 0, 0, 0
+        parameters :x, :y, :c1_x, :c1_y, :c2_x, :c2_y, :end_x, :end_y
+        parameter_defaults nil, nil, 0, 0, 0, 0, 0, 0
+                
+        def initialize(keyword, parent, args, &block)
+          args.prepend nil until args.size == 8
+          super(keyword, parent, args, &block)
+        end
                 
         def draw(area_draw_params)
-          ::LibUI.draw_path_bezier_to(path_proxy.libui, *@args)
+          if !parent.is_a?(Figure)
+            if include_start_point?
+              ::LibUI.draw_path_new_figure(path_proxy.libui, x, y)
+            else
+              ::LibUI.draw_path_new_figure(path_proxy.libui, 0, 0)
+            end
+          end
+          ::LibUI.draw_path_bezier_to(path_proxy.libui, c1_x, c1_y, c2_x, c2_y, end_x, end_y)
           super
+        end
+        
+        # Indicates if bezier is not part of a figure and yet it includes the start point in addition to other points
+        def include_start_point?
+          x && y
         end
       end
     end
