@@ -2,7 +2,6 @@
 
 ## Next
 
-- Have `line` behave like polyline for one line (supporting passing extra initial point) [maybe rely on ::create redirecting to polyline if there are 4 args)
 - Have `bezier` behave like polybezier for one bezier (supporting passing extra initial point) [maybe rely on ::create redirecting to polyline if there are 4 args)
 
 - Support `contain?` method in `arc` (todo), `polygon` (handled in `georuby` or `winding-polygon` or `point-in-polygon` or `is` or `polygon-validator` or `pip` gem), `polyline` (handled), `polybezier` (not handled), and `figure` (semi-handled unless beziers are in)

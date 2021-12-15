@@ -24,12 +24,24 @@ require 'glimmer/libui/shape'
 module Glimmer
   module LibUI
     class Shape
+      # Line to use as part of a figure (when having 2 args)
+      # or independently (when having 4 args representing start point x/y and end point x/y)
       class Line < Shape
-        parameters :x, :y
-        parameter_defaults 0, 0
+        parameters :x, :y, :end_x, :end_y
+        parameter_defaults 0, 0, nil, nil
   
         def draw(area_draw_params)
-          ::LibUI.draw_path_line_to(path_proxy.libui, *@args)
+          if parent.is_a?(Figure)
+            ::LibUI.draw_path_line_to(path_proxy.libui, x, y)
+          else
+            if end_x && end_y
+              ::LibUI.draw_path_new_figure(path_proxy.libui, x, y)
+              ::LibUI.draw_path_line_to(path_proxy.libui, end_x, end_y)
+            else
+              ::LibUI.draw_path_new_figure(path_proxy.libui, 0, 0)
+              ::LibUI.draw_path_line_to(path_proxy.libui, x, y)
+            end
+          end
           super
         end
       end
