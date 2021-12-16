@@ -324,7 +324,7 @@ Mac | Windows | Linux
 ----|---------|------
 ![glimmer-dsl-libui-mac-tetris.png](images/glimmer-dsl-libui-mac-tetris.png) | ![glimmer-dsl-libui-windows-tetris.png](images/glimmer-dsl-libui-windows-tetris.png) | ![glimmer-dsl-libui-linux-tetris.png](images/glimmer-dsl-libui-linux-tetris.png)
 
-NOTE: [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) is feature-complete and in beta mode (though the C [libui](https://github.com/andlabs/libui) is still mid-alpha). Please help make better by contributing, adopting for small or low risk projects, and providing feedback. The more feedback and issues you report the better.
+NOTE: [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) is 100% feature-complete and in beta mode (though the C [libui](https://github.com/andlabs/libui) is still mid-alpha). Please help make better by contributing, adopting for small or low risk projects, and providing feedback. The more feedback and issues you report the better.
 
 Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interested in:
 - [glimmer-dsl-swt](https://github.com/AndyObtiva/glimmer-dsl-swt): Glimmer DSL for SWT (JRuby Desktop Development GUI Framework)
@@ -1396,7 +1396,7 @@ Note that `area`, `path`, and nested shapes are all truly declarative, meaning t
 
 ### Custom Keywords
 
-Custom keywords can be defined to represent custom controls (components) that provide new features or act as composites of [existing controls](#supported-keywords) that need to be reused multiple times in an application or across multiple applications. Custom keywords save a lot of development time, improving productivity and maintainbility.
+Custom keywords can be defined to represent custom controls (components) that provide new features or act as composites of [existing controls](#supported-keywords) that need to be reused multiple times in an application or across multiple applications. Custom keywords save a lot of development time, improving productivity and maintainability immensely.
   
 For example, you can define a custom `address` control as an aggregate of multiple `label` controls to reuse multiple times as a standard address View, displaying street, city, state, and zip code.
 
@@ -1505,7 +1505,7 @@ The [`area`](#area-api) control can be utilized to build non-native custom contr
 
 Defining custom keywords enables unlimited extension of the [Glimmer GUI DSL](#glimmer-gui-dsl). The sky is the limit on what can be done with custom keywords as a result. You can compose new visual vocabulary to build applications in any domain from higher concepts rather than [mere standard controls](#supported-keywords). For example, in a traffic signaling app, you could define `street`, `light_signal`, `traffic_sign`, and `car` as custom keywords and build your application from these concepts directly, saving enormous time and achieving much higher productivity.
 
-Learn more from custom keyword usage in [Method-Based Custom Keyword](#method-based-custom-keyword), [Histogram](#histogram), and [Tetris](#tetris) examples.
+Learn more from custom keyword usage in [Method-Based Custom Keyword](#method-based-custom-keyword), [Basic Scrolling Area](#basic-scrolling-area), [Histogram](#histogram), and [Tetris](#tetris) examples.
 
 ### Observer Pattern
 
@@ -1778,9 +1778,9 @@ Data-bound model attribute can be:
 - **Indexed:** `String` containing array attribute index (e.g. `[customer, 'addresses[0].street']`). That results in "indexed data-binding"
 
 Data-binding options include:
-- `before_read {|value| ...}`: performs an operation before reading data from Model to update the View.
+- `before_read {|value| ...}`: performs an operation before reading data from Model to update View.
 - `on_read {|value| ...}`: converts value read from Model to update the View.
-- `after_read {|converted_value| ...}`: performs an operation after read from Model and updating the View.
+- `after_read {|converted_value| ...}`: performs an operation after read from Model to update View.
 - `before_write {|value| ...}`: performs an operation before writing data to Model from View.
 - `on_write {|value| ...}`: converts value read from View to update the Model.
 - `after_write {|converted_value| ...}`: performs an operation after writing to Model from View.
@@ -8375,7 +8375,7 @@ window('Login') {
 
 #### Method-Based Custom Keyword
 
-[Custom keywords](#custom-keywords) can be defined to represent custom controls (components) that provide new features or act as composites of existing controls that need to be reused multiple times in an application or across multiple applications. Custom keywords save a lot of development time, improving productivity and maintainbility.
+[Custom keywords](#custom-keywords) can be defined to represent custom controls (components) that provide new features or act as composites of existing controls that need to be reused multiple times in an application or across multiple applications. Custom keywords save a lot of development time, improving productivity and maintainability immensely.
   
 This example defines `form_field`, `address_form`, `label_pair`, and `address` as custom control keywords.
 

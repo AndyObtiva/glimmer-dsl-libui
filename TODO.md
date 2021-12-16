@@ -2,6 +2,7 @@
 
 ## Next
 
+- Update screenshots for CPU Percentage on Mac & Linux
 - Support `contain?` method in `arc` (todo), `polygon` (handled in `georuby` or `winding-polygon` or `point-in-polygon` or `is` or `polygon-validator` or `pip` gem), `polyline` (handled), `polybezier` (not handled), and `figure` (semi-handled unless beziers are in)
 - Support `include?` method in `arc` (todo), `polygon` (handled in georuby), `polyline` (handled), `polybezier` (not handled), and `figure` (semi-handled unless beziers are in)
 - Support `bounds` method in `polygon`, `polyline`, `polybezier`, and all other shapes
@@ -13,6 +14,7 @@
 
 ## Soon
 
+- Build Quarto game sample: https://en.gigamic.com/game/quarto-classic
 - A new example demonstrating building a custom control keyword from scratch using `area` (like the iPhone toggle button)
 - Glimmerize examples/draw_text.rb from Ruby LibUI project
 - Glimmerize examples/spectrum.rb from Ruby LibUI project
@@ -30,6 +32,7 @@
 - Implement Mac Native-Executable Packaging (perhaps with https://github.com/create-dmg/create-dmg or https://github.com/sveinbjornt/Platypus)
 - Scaffold an application with support for gem and native-executable packaging
 - Create more advanced examples such as Calculator, Connect 4, Clock, Metronome, Weather, Stock Ticker, Battleship, Game of Life
+- Optimize startup time, perhaps dropping 'os' gem for direct use of `Gem::Platform.local` instead.
 
 ## Maybe
 
@@ -70,6 +73,7 @@
 - Support returning a control view binding object with a deregister method to debind (currently not possible given libui does not support deregistering listeners)
 - Try to provide more helpful error messages on user error when it results in segementation fault (like setting nil as `entry` `text`) or prevent such cases altogether with smart defaults
 - Demonstrate use of table with database data (e.g. sqlite)
+- Support x, y, diameter alternative dimensions for circle
 
 # Refactoring
 
