@@ -2,6 +2,9 @@
 
 ## Next
 
+- A new example demonstrating building a custom control keyword from scratch using `area` (like the iPhone toggle button)
+- Add Font Family to examples/area_based_custom_controls.rb
+
 - Update screenshots for CPU Percentage on Mac & Linux
 - Support `contain?` method in `arc` (todo), `polygon` (handled in `georuby` or `winding-polygon` or `point-in-polygon` or `is` or `polygon-validator` or `pip` gem), `polyline` (handled), `polybezier` (not handled), and `figure` (semi-handled unless beziers are in)
 - Support `include?` method in `arc` (todo), `polygon` (handled in georuby), `polyline` (handled), `polybezier` (not handled), and `figure` (semi-handled unless beziers are in)
@@ -15,7 +18,6 @@
 ## Soon
 
 - Build Quarto game sample: https://en.gigamic.com/game/quarto-classic
-- A new example demonstrating building a custom control keyword from scratch using `area` (like the iPhone toggle button)
 - Glimmerize examples/draw_text.rb from Ruby LibUI project
 - Glimmerize examples/spectrum.rb from Ruby LibUI project
 - Glimmerize examples/turing_pattern.rb from Ruby LibUI project

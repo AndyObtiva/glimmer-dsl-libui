@@ -5,7 +5,7 @@ include Glimmer
 # text label (area-based custom control) built with vector graphics on top of area
 def text_label(label_text,
                 width: 80, height: 30, font_descriptor: {},
-                background_color: :white, text_color: :black, border_color: {r: 201, g: 201, b: 201},
+                background_color: {r: 236, g: 236, b: 236}, text_color: :black, border_color: {r: 236, g: 236, b: 236},
                 text_x: nil, text_y: nil,
                 &content)
   background_color = Glimmer::LibUI.interpret_color(background_color) # gets a color rgb hash
@@ -30,7 +30,7 @@ def text_label(label_text,
       }
     }
     
-    content.call(the_area)
+    content&.call(the_area)
   }
 end
 
@@ -65,7 +65,7 @@ def push_button(button_text,
       button_string.color = text_color
     end
     
-    content.call(the_area)
+    content&.call(the_area)
   }
 end
 
@@ -102,48 +102,70 @@ class AreaBasedCustomControls
   end
   
   def launch
-    window('Area-Based Custom Controls', 270, 270) {
+    window('Area-Based Custom Controls', 270, 350) { |w|
       margined true
       
       @window_vertical_box = vertical_box {
-        label('Push Button Construction Form:') {
-          stretchy false
-        }
-        form {
-          spinbox(1, 1000) {
-            label 'Width'
-            value <=> [self, :button_width, after_write: method(:rebuild_push_button)]
-          }
-          spinbox(1, 1000) {
-            label 'Height'
-            value <=> [self, :button_height, after_write: method(:rebuild_push_button)]
-          }
-          spinbox(1, 72) {
-            label 'Font Size'
-            value <=> [self, :button_font_size, after_write: method(:rebuild_push_button)]
-          }
-          color_button {
-            label 'Text Color'
-            color <=> [self, :button_text_color, after_write: method(:rebuild_push_button)]
-          }
-          color_button {
-            label 'Background Color'
-            color <=> [self, :button_background_color, after_write: method(:rebuild_push_button)]
-          }
-          color_button {
-            label 'Border Color'
-            color <=> [self, :button_border_color, after_write: method(:rebuild_push_button)]
-          }
-          spinbox(0, 1000) {
-            label 'Text X (0=centered)'
-            value <=> [self, :button_text_x, after_write: method(:rebuild_push_button)]
-          }
-          spinbox(0, 1000) {
-            label 'Text Y (0=centered)'
-            value <=> [self, :button_text_y, after_write: method(:rebuild_push_button)]
-          }
-        }
+        vertical_box {
+          text_label('Push Button Construction Form:', width: 250, height: 30, font_descriptor: {size: 16, weight: :bold}, text_x: 1, text_y: 1)
           
+          horizontal_box {
+            label('Width')
+            spinbox(1, 1000) {
+              value <=> [self, :button_width, after_write: method(:rebuild_push_button)]
+            }
+          }
+          
+          horizontal_box {
+            label('Height')
+            spinbox(1, 1000) {
+              value <=> [self, :button_height, after_write: method(:rebuild_push_button)]
+            }
+          }
+          
+          horizontal_box {
+            label('Font Size')
+            spinbox(1, 72) {
+              value <=> [self, :button_font_size, after_write: method(:rebuild_push_button)]
+            }
+          }
+          
+          horizontal_box {
+            label('Text Color')
+            color_button {
+              color <=> [self, :button_text_color, after_write: method(:rebuild_push_button)]
+            }
+          }
+          
+          horizontal_box {
+            label('Background Color')
+            color_button {
+              color <=> [self, :button_background_color, after_write: method(:rebuild_push_button)]
+            }
+          }
+          
+          horizontal_box {
+            label('Border Color')
+            color_button {
+              color <=> [self, :button_border_color, after_write: method(:rebuild_push_button)]
+            }
+          }
+          
+          horizontal_box {
+            label('Text X (0=centered)')
+            spinbox(0, 1000) {
+              value <=> [self, :button_text_x, after_write: method(:rebuild_push_button)]
+            }
+          }
+          
+          horizontal_box {
+            label('Text Y (0=centered)')
+            spinbox(0, 1000) {
+              value <=> [self, :button_text_y, after_write: method(:rebuild_push_button)]
+            }
+          }
+        }
+        
         @push_button = push_button('Push',
                                    width: button_width, height: button_height, font_descriptor: {size: button_font_size},
                                    background_color: button_background_color, text_color: button_text_color, border_color: button_border_color,
