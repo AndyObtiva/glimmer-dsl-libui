@@ -3,6 +3,7 @@
 ## Next
 
 - A new example demonstrating building a custom control keyword from scratch using `area` (like the iPhone toggle button)
+- Support border thickness around custom label and button (background fill and border stroke instead of background color and border color)
 - Add text label construction form
 - Add toggle button construction form
 
