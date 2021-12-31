@@ -74,6 +74,7 @@
 - Try to provide more helpful error messages on user error when it results in segementation fault (like setting nil as `entry` `text`) or prevent such cases altogether with smart defaults
 - Demonstrate use of table with database data (e.g. sqlite)
 - Support x, y, diameter alternative dimensions for circle
+- Support `rgb` and `rgba` keywords for easier entry of colors, similar to that of Glimmer DSL for SWT
 
 # Refactoring
 

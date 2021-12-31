@@ -334,6 +334,7 @@ module Glimmer
       
       def destroy_child(child)
         child.default_destroy
+        children.delete(child)
       end
       
       def default_destroy

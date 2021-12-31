@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.4.20
+
+- Fix issue with calling `destroy` multiple times on children of `vertical_box`/`horizontal_box`/`form` (worked only the first time before this fix)
+
 ## 0.4.19
 
 - Have `line` optionally support 4 arguments instead of 2 to use outside of a `figure`

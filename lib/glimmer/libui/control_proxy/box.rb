@@ -45,6 +45,7 @@ module Glimmer
           child.deregister_all_custom_listeners
           ::LibUI.send("box_delete", @libui, children.index(child))
           ControlProxy.control_proxies.delete(child)
+          children.delete(child)
         end
         
         private
