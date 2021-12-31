@@ -3,15 +3,15 @@ require 'glimmer-dsl-libui'
 class AreaBasedCustomControls
   include Glimmer
   
-  attr_accessor :button_width, :button_height, :button_font_descriptor,
-                :button_text_color, :button_background_fill, :button_border_stroke,
-                :button_text_x, :button_text_y,
-                :label_width, :label_height, :label_font_descriptor,
+  attr_accessor :label_width, :label_height, :label_font_descriptor,
                 :label_text_color, :label_background_fill, :label_border_stroke,
-                :label_text_x, :label_text_y
+                :label_text_x, :label_text_y,
+                :button_width, :button_height, :button_font_descriptor,
+                :button_text_color, :button_background_fill, :button_border_stroke,
+                :button_text_x, :button_text_y
   
   def initialize
-    self.label_width = 250
+    self.label_width = 335
     self.label_height = 50
     self.label_font_descriptor = {family: OS.linux? ? 'Bitstream Vera Sans Mono' : 'Courier New', size: 16, weight: :bold, italic: :italic}
     self.label_text_color = :red
@@ -51,7 +51,7 @@ class AreaBasedCustomControls
   end
   
   def launch
-    window('Area-Based Custom Controls', 270, 350) { |w|
+    window('Area-Based Custom Controls', 385, 385) { |w|
       margined true
       
       tab {

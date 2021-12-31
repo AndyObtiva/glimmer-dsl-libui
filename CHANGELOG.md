@@ -2,6 +2,7 @@
 
 ## 0.4.20
 
+- New examples/area_based_custom_controls.rb
 - Fix issue with calling `destroy` multiple times on children of `vertical_box`/`horizontal_box`/`form` (worked only the first time before this fix)
 
 ## 0.4.19

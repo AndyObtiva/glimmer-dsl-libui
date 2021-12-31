@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.4.19
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.4.20
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -409,6 +409,7 @@ Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interes
       - [Histogram](#histogram)
       - [Login](#login)
       - [Method-Based Custom Keyword](#method-based-custom-keyword)
+      - [Area-Based Custom Controls](#area-based-custom-controls)
       - [Midi Player](#midi-player)
       - [Snake](#snake)
       - [Tetris](#tetris)
@@ -506,7 +507,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.4.19'
+gem 'glimmer-dsl-libui', '~> 0.4.20'
 ```
 
 Test that installation worked by running the [Meta-Example](#examples):
@@ -1397,12 +1398,14 @@ Note that `area`, `path`, and nested shapes are all truly declarative, meaning t
 ### Custom Keywords
 
 Custom keywords can be defined to represent custom controls (components) that provide new features or act as composites of [existing controls](#supported-keywords) that need to be reused multiple times in an application or across multiple applications. Custom keywords save a lot of development time, improving productivity and maintainability immensely.
-  
+
 For example, you can define a custom `address` control as an aggregate of multiple `label` controls to reuse multiple times as a standard address View, displaying street, city, state, and zip code.
 
 To define custom keywords, simply define a method representing the custom control you want (e.g. `address`) with any arguments needed (e.g. `address(address_model)`).
 
 To make custom keywords externally reusable, you can define in modules and simply include the modules in the view classes that need them.
+
+It is OK to use terms "custom keyword" and "custom control" synonymously though "custom keyword" is a broader term that covers things other than controls too like custom shapes (e.g. `cylinder`), custom attributed strings (e.g. `alternating_color_string`), and custom transforms (`isometric_transform`).
 
 Example that defines `form_field`, `address_form`, `label_pair`, and `address` keywords (you may copy/paste in [`girb`](#girb-glimmer-irb)):
 
@@ -1501,11 +1504,11 @@ window('Method-Based Custom Keyword') {
 
 ![glimmer-dsl-libui-mac-method-based-custom-keyword.png](images/glimmer-dsl-libui-mac-method-based-custom-keyword.png)
 
-The [`area`](#area-api) control can be utilized to build non-native custom controls from scratch by leveraging vector graphics, formattable text, keyboard events, and mouse events.
+The [`area`](#area-api) control can be utilized to build non-native custom controls from scratch by leveraging vector graphics, formattable text, keyboard events, and mouse events. This is demonstrated in the [Area-Based Custom Controls](#area-based-custom-controls) example.
 
 Defining custom keywords enables unlimited extension of the [Glimmer GUI DSL](#glimmer-gui-dsl). The sky is the limit on what can be done with custom keywords as a result. You can compose new visual vocabulary to build applications in any domain from higher concepts rather than [mere standard controls](#supported-keywords). For example, in a traffic signaling app, you could define `street`, `light_signal`, `traffic_sign`, and `car` as custom keywords and build your application from these concepts directly, saving enormous time and achieving much higher productivity.
 
-Learn more from custom keyword usage in [Method-Based Custom Keyword](#method-based-custom-keyword), [Basic Scrolling Area](#basic-scrolling-area), [Histogram](#histogram), and [Tetris](#tetris) examples.
+Learn more from custom keyword usage in [Method-Based Custom Keyword](#method-based-custom-keyword), [Area-Based Custom Controls](area-based-custom-controls), [Basic Scrolling Area](#basic-scrolling-area), [Histogram](#histogram), and [Tetris](#tetris) examples.
 
 ### Observer Pattern
 
@@ -8594,6 +8597,313 @@ window('Method-Based Custom Keyword') {
     }
   }
 }.show
+```
+
+#### Area-Based Custom Controls
+
+[Custom keywords](#custom-keywords) can be defined for graphical custom controls (components) built completely from scratch as vector-graphics on top of the [`area`](#area-api) control while leveraging keyboard and mouse listeners.
+
+This example defines `text_label` and `push_button` as [`area`](#area-api)-based graphical custom controls that can have width, height, font, fill, stroke, border, and custom text location.
+      
+[examples/area_based_custom_controls.rb](examples/area_based_custom_controls.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/area_based_custom_controls.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/area_based_custom_controls'"
+```
+
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-area-based-custom-controls.png](images/glimmer-dsl-libui-mac-area-based-custom-controls-text-label.png) ![glimmer-dsl-libui-mac-area-based-custom-controls.png](images/glimmer-dsl-libui-mac-area-based-custom-controls-push-button.png) ![glimmer-dsl-libui-mac-area-based-custom-controls.png](images/glimmer-dsl-libui-mac-area-based-custom-controls-push-button-clicked.png) | ![glimmer-dsl-libui-windows-area-based-custom-controls.png](images/glimmer-dsl-libui-windows-area-based-custom-controls-text-label.png) ![glimmer-dsl-libui-windows-area-based-custom-controls.png](images/glimmer-dsl-libui-windows-area-based-custom-controls-push-button.png) ![glimmer-dsl-libui-windows-area-based-custom-controls.png](images/glimmer-dsl-libui-windows-area-based-custom-controls-push-button-clicked.png) | ![glimmer-dsl-libui-linux-area-based-custom-controls.png](images/glimmer-dsl-libui-linux-area-based-custom-controls-text-label.png) ![glimmer-dsl-libui-linux-area-based-custom-controls.png](images/glimmer-dsl-libui-linux-area-based-custom-controls-push-button.png) ![glimmer-dsl-libui-linux-area-based-custom-controls.png](images/glimmer-dsl-libui-linux-area-based-custom-controls-push-button-clicked.png)
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+require 'glimmer-dsl-libui'
+
+class AreaBasedCustomControls
+  include Glimmer
+  
+  attr_accessor :label_width, :label_height, :label_font_descriptor,
+                :label_text_color, :label_background_fill, :label_border_stroke,
+                :label_text_x, :label_text_y,
+                :button_width, :button_height, :button_font_descriptor,
+                :button_text_color, :button_background_fill, :button_border_stroke,
+                :button_text_x, :button_text_y
+  
+  def initialize
+    self.label_width = 335
+    self.label_height = 50
+    self.label_font_descriptor = {family: OS.linux? ? 'Bitstream Vera Sans Mono' : 'Courier New', size: 16, weight: :bold, italic: :italic}
+    self.label_text_color = :red
+    self.label_background_fill = :yellow
+    self.label_border_stroke = :limegreen
+    
+    self.button_width = 130
+    self.button_height = 50
+    self.button_font_descriptor = {family: OS.linux? ? 'Bitstream Vera Sans Mono' : 'Courier New', size: 36, weight: :bold, italic: :italic}
+    self.button_text_color = :green
+    self.button_background_fill = :yellow
+    self.button_border_stroke = :limegreen
+  end
+  
+  def rebuild_text_label
+    @text_label.destroy
+    @text_label_vertical_box.content { # re-open vertical box content and shove in a new button
+      @text_label = text_label('This is a text label.',
+                               width: label_width, height: label_height, font_descriptor: label_font_descriptor,
+                               background_fill: label_background_fill, text_color: label_text_color, border_stroke: label_border_stroke,
+                               text_x: label_text_x, text_y: label_text_y)
+    }
+  end
+  
+  def rebuild_push_button
+    @push_button.destroy
+    @push_button_vertical_box.content { # re-open vertical box content and shove in a new button
+      @push_button = push_button('Push',
+                                 width: button_width, height: button_height, font_descriptor: button_font_descriptor,
+                                 background_fill: button_background_fill, text_color: button_text_color, border_stroke: button_border_stroke,
+                                 text_x: button_text_x, text_y: button_text_y) {
+        on_mouse_up do
+          message_box('Button Pushed', 'Thank you for pushing the button!')
+        end
+      }
+    }
+  end
+  
+  def launch
+    window('Area-Based Custom Controls', 385, 385) { |w|
+      margined true
+      
+      tab {
+        tab_item('Text Label') {
+          @text_label_vertical_box = vertical_box {
+            vertical_box {
+              text_label('Text Label Construction Form:', width: 250, height: 30, font_descriptor: {size: 16, weight: :bold}, text_x: 0, text_y: 0)
+              
+              horizontal_box {
+                label('Width')
+                spinbox(1, 1000) {
+                  value <=> [self, :label_width, after_write: method(:rebuild_text_label)]
+                }
+              }
+              
+              horizontal_box {
+                label('Height')
+                spinbox(1, 1000) {
+                  value <=> [self, :label_height, after_write: method(:rebuild_text_label)]
+                }
+              }
+              
+              horizontal_box {
+                label('Font')
+                font_button {
+                  font <=> [self, :label_font_descriptor, after_write: method(:rebuild_text_label)]
+                }
+              }
+              
+              horizontal_box {
+                label('Text Color')
+                color_button {
+                  color <=> [self, :label_text_color, after_write: method(:rebuild_text_label)]
+                }
+              }
+              
+              horizontal_box {
+                label('Background Color')
+                color_button {
+                  color <=> [self, :label_background_fill, after_write: method(:rebuild_text_label)]
+                }
+              }
+              
+              horizontal_box {
+                label('Border Color')
+                color_button {
+                  color <=> [self, :label_border_stroke, after_write: method(:rebuild_text_label)]
+                }
+              }
+              
+              horizontal_box {
+                label('Text X (0=centered)')
+                spinbox(0, 1000) {
+                  value <=> [self, :label_text_x, on_read: ->(x) {x.nil? ? 0 : x}, on_write: ->(x) {x == 0 ? nil : x}, after_write: method(:rebuild_text_label)]
+                }
+              }
+              
+              horizontal_box {
+                label('Text Y (0=centered)')
+                spinbox(0, 1000) {
+                  value <=> [self, :label_text_y, on_read: ->(y) {y.nil? ? 0 : y}, on_write: ->(y) {y == 0 ? nil : y}, after_write: method(:rebuild_text_label)]
+                }
+              }
+            }
+            
+            @text_label = text_label('This is a text label.',
+                                     width: label_width, height: label_height, font_descriptor: label_font_descriptor,
+                                     background_fill: label_background_fill, text_color: label_text_color, border_stroke: label_border_stroke,
+                                     text_x: label_text_x, text_y: label_text_y)
+          }
+        }
+        
+        tab_item('Push Button') {
+          @push_button_vertical_box = vertical_box {
+            vertical_box {
+              text_label('Push Button Construction Form:', width: 250, height: 30, font_descriptor: {size: 16, weight: :bold}, text_x: 0, text_y: 0)
+              
+              horizontal_box {
+                label('Width')
+                spinbox(1, 1000) {
+                  value <=> [self, :button_width, after_write: method(:rebuild_push_button)]
+                }
+              }
+              
+              horizontal_box {
+                label('Height')
+                spinbox(1, 1000) {
+                  value <=> [self, :button_height, after_write: method(:rebuild_push_button)]
+                }
+              }
+              
+              horizontal_box {
+                label('Font')
+                font_button {
+                  font <=> [self, :button_font_descriptor, after_write: method(:rebuild_push_button)]
+                }
+              }
+              
+              horizontal_box {
+                label('Text Color')
+                color_button {
+                  color <=> [self, :button_text_color, after_write: method(:rebuild_push_button)]
+                }
+              }
+              
+              horizontal_box {
+                label('Background Color')
+                color_button {
+                  color <=> [self, :button_background_fill, after_write: method(:rebuild_push_button)]
+                }
+              }
+              
+              horizontal_box {
+                label('Border Color')
+                color_button {
+                  color <=> [self, :button_border_stroke, after_write: method(:rebuild_push_button)]
+                }
+              }
+              
+              horizontal_box {
+                label('Text X (0=centered)')
+                spinbox(0, 1000) {
+                  value <=> [self, :button_text_x, on_read: ->(x) {x.nil? ? 0 : x}, on_write: ->(x) {x == 0 ? nil : x}, after_write: method(:rebuild_push_button)]
+                }
+              }
+              
+              horizontal_box {
+                label('Text Y (0=centered)')
+                spinbox(0, 1000) {
+                  value <=> [self, :button_text_y, on_read: ->(y) {y.nil? ? 0 : y}, on_write: ->(y) {y == 0 ? nil : y}, after_write: method(:rebuild_push_button)]
+                }
+              }
+            }
+            
+            @push_button = push_button('Push',
+                                       width: button_width, height: button_height, font_descriptor: button_font_descriptor,
+                                       background_fill: button_background_fill, text_color: button_text_color, border_stroke: button_border_stroke,
+                                       text_x: button_text_x, text_y: button_text_y) {
+              on_mouse_up do
+                message_box('Button Pushed', 'Thank you for pushing the button!')
+              end
+            }
+          }
+        }
+      }
+    }.show
+  end
+    
+  # text label (area-based custom control) built with vector graphics on top of area.
+  #
+  # background_fill is transparent by default.
+  # background_fill can accept a single color or gradient stops just as per `fill` property in README.
+  # border_stroke is transparent by default.
+  # border_stroke can accept thickness and dashes in addition to color just as per `stroke` property in README.
+  def text_label(label_text,
+                  width: 80, height: 30, font_descriptor: {},
+                  background_fill: {a: 0}, text_color: :black, border_stroke: {a: 0},
+                  text_x: nil, text_y: nil,
+                  &content)
+    area { |the_area|
+      rectangle(1, 1, width, height) {
+        fill background_fill
+      }
+      rectangle(1, 1, width, height) {
+        stroke border_stroke
+      }
+      
+      text_height = (font_descriptor[:size] || 12) * 0.75
+      text_width = (text_height * label_text.size) * 0.75
+      text_x ||= (width - text_width) / 2.0
+      text_y ||= (height - 4 - text_height) / 2.0
+      text(text_x, text_y, width) {
+        string(label_text) {
+          color text_color
+          font font_descriptor
+        }
+      }
+      
+      content&.call(the_area)
+    }
+  end
+  
+  # push button (area-based custom control) built with vector graphics on top of area.
+  #
+  # background_fill is white by default.
+  # background_fill can accept a single color or gradient stops just as per `fill` property in README.
+  # border_stroke is black by default.
+  # border_stroke can accept thickness and dashes in addition to color just as per `stroke` property in README.
+  # text_x and text_y are the offset of the button text in releation to its top-left corner
+  # When text_x, text_y are left nil, the text is automatically centered in the button area.
+  # Sometimes, the centering calculation is not perfect due to using a custom font, so
+  # in that case, pass in text_x, and text_y manually
+  #
+  # reuses the text_label custom control
+  def push_button(button_text,
+                  width: 80, height: 30, font_descriptor: {},
+                  background_fill: :white, text_color: :black, border_stroke: {r: 201, g: 201, b: 201},
+                  text_x: nil, text_y: nil,
+                  &content)
+    text_label(button_text,
+                  width: width, height: height, font_descriptor: font_descriptor,
+                  background_fill: background_fill, text_color: text_color, border_stroke: border_stroke,
+                  text_x: text_x, text_y: text_y) { |the_area|
+      
+      # dig into the_area content and grab elements to modify in mouse listeners below
+      background_rectangle = the_area.children[0]
+      button_string = the_area.children[2].children[0]
+      
+      on_mouse_down do
+        background_rectangle.fill = {x0: 0, y0: 0, x1: 0, y1: height, stops: [{pos: 0, r: 72, g: 146, b: 247}, {pos: 1, r: 12, g: 85, b: 214}]}
+        button_string.color = :white
+      end
+      
+      on_mouse_up do
+        background_rectangle.fill = background_fill
+        button_string.color = text_color
+      end
+      
+      content&.call(the_area)
+    }
+  end
+end
+
+AreaBasedCustomControls.new.launch
 ```
 
 #### Midi Player

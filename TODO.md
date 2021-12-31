@@ -2,11 +2,6 @@
 
 ## Next
 
-- A new example demonstrating building a custom control keyword from scratch using `area` (like the iPhone toggle button)
-- Support border thickness around custom label and button (background fill and border stroke instead of background color and border color)
-- Add text label construction form
-- Add toggle button construction form
-
 - Update screenshots for CPU Percentage on Mac & Linux
 - Support `contain?` method in `arc` (todo), `polygon` (handled in `georuby` or `winding-polygon` or `point-in-polygon` or `is` or `polygon-validator` or `pip` gem), `polyline` (handled), `polybezier` (not handled), and `figure` (semi-handled unless beziers are in)
 - Support `include?` method in `arc` (todo), `polygon` (handled in georuby), `polyline` (handled), `polybezier` (not handled), and `figure` (semi-handled unless beziers are in)
@@ -28,7 +23,16 @@
 
 - Build app for sportdb gem
 - Build app for beerdb gem
-- Support custom keywords representing controls, shapes, matrices, message boxes or windows
+- Support class-based custom keywords representing controls, shapes, matrices, message boxes or windows
+- Area-based class-based custom control keyword: iPhone-like toggle button with these properties:
+```ruby
+    self.toggle_button_width = 72
+    self.toggle_button_height = 36
+    self.toggle_button_on_fill = {r: 54, g: 202, b: 110}
+    self.toggle_button_off_fill = {r: 214, g: 214, b: 214}
+    self.toggle_button_switch_fill = {r: 247, g: 247, b: 247}
+```
+
 
 ## Far Future
 
