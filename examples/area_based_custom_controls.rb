@@ -19,8 +19,6 @@ def text_label(label_text,
     
     text_height = (font_descriptor[:size] || 12) * 0.75
     text_width = (text_height * label_text.size) * 0.75
-    text_x = nil if text_x == 0
-    text_y = nil if text_y == 0
     text_x ||= (width - text_width) / 2.0
     text_y ||= (height - 4 - text_height) / 2.0
     text(text_x, text_y, width) {
@@ -83,8 +81,8 @@ class AreaBasedCustomControls
     self.button_background_color = :white
     self.button_text_color = :black
     self.button_border_color = {r: 201, g: 201, b: 201}
-    self.button_text_x = 0 # auto-calculated
-    self.button_text_y = 0 # auto-calculated
+    self.button_text_x = nil # centered (auto-calculated)
+    self.button_text_y = nil # centered (auto-calculated)
   end
   
   def rebuild_push_button
@@ -107,7 +105,7 @@ class AreaBasedCustomControls
       
       @window_vertical_box = vertical_box {
         vertical_box {
-          text_label('Push Button Construction Form:', width: 250, height: 30, font_descriptor: {size: 16, weight: :bold}, text_x: 1, text_y: 1)
+          text_label('Push Button Construction Form:', width: 250, height: 30, font_descriptor: {size: 16, weight: :bold}, text_x: 0, text_y: 0)
           
           horizontal_box {
             label('Width')
@@ -154,14 +152,14 @@ class AreaBasedCustomControls
           horizontal_box {
             label('Text X (0=centered)')
             spinbox(0, 1000) {
-              value <=> [self, :button_text_x, after_write: method(:rebuild_push_button)]
+              value <=> [self, :button_text_x, on_read: ->(x) {x.nil? ? 0 : x}, on_write: ->(x) {x == 0 ? nil : x}, after_write: method(:rebuild_push_button)]
             }
           }
           
           horizontal_box {
             label('Text Y (0=centered)')
             spinbox(0, 1000) {
-              value <=> [self, :button_text_y, after_write: method(:rebuild_push_button)]
+              value <=> [self, :button_text_y, on_read: ->(y) {y.nil? ? 0 : y}, on_write: ->(y) {y == 0 ? nil : y}, after_write: method(:rebuild_push_button)]
             }
           }
         }
