@@ -12,7 +12,7 @@ def push_button(button_text,
                 background_color: :white, text_color: :black, border_color: {r: 201, g: 201, b: 201},
                 text_x: nil, text_y: nil,
                 &content)
-  background_color = Glimmer::LibUI.interpret_color(background_color)
+  background_color = Glimmer::LibUI.interpret_color(background_color) # gets a color rgb hash
   button_parts = {}
   area { |a|
     button_parts[:background_rectangle] = rectangle(1, 1, width, height) {
@@ -25,6 +25,8 @@ def push_button(button_text,
     
     text_height = (font_descriptor[:size] || 12) * 0.75
     text_width = (text_height * button_text.size) * 0.75
+    text_x = nil if text_x == 0
+    text_y = nil if text_y == 0
     text_x ||= (width - text_width) / 2.0
     text_y ||= (height - 4 - text_height) / 2.0
     text(text_x, text_y, width) {
@@ -41,7 +43,7 @@ def push_button(button_text,
     
     on_mouse_up do
       button_parts[:background_rectangle].fill = background_color
-      button_parts[:button_string].color = :black
+      button_parts[:button_string].color = text_color
     end
     
     content.call(a)
@@ -51,7 +53,9 @@ end
 class AreaBasedCustomControls
   include Glimmer
   
-  attr_accessor :button_width, :button_height, :button_font_size, :button_text_color, :button_background_color, :button_border_color
+  attr_accessor :button_width, :button_height, :button_font_size,
+                :button_text_color, :button_background_color, :button_border_color,
+                :button_text_x, :button_text_y
   
   def initialize
     self.button_width = 80
@@ -60,6 +64,8 @@ class AreaBasedCustomControls
     self.button_background_color = :white
     self.button_text_color = :black
     self.button_border_color = {r: 201, g: 201, b: 201}
+    self.button_text_x = 0 # auto-calculated
+    self.button_text_y = 0 # auto-calculated
   end
   
   def rebuild_push_button
@@ -67,7 +73,8 @@ class AreaBasedCustomControls
     @window_vertical_box.content { # re-open vertical box content and shove in a new button
       @push_button = push_button('Push',
                                  width: button_width, height: button_height, font_descriptor: {size: button_font_size},
-                                 background_color: button_background_color, text_color: button_text_color, border_color: button_border_color) {
+                                 background_color: button_background_color, text_color: button_text_color, border_color: button_border_color,
+                                 text_x: button_text_x, text_y: button_text_y) {
         on_mouse_up do
           message_box('Button Pushed', 'Thank you for pushing the button')
         end
@@ -108,11 +115,20 @@ class AreaBasedCustomControls
             label 'Border Color'
             color <=> [self, :button_border_color, after_write: method(:rebuild_push_button)]
           }
+          spinbox(0, 1000) {
+            label 'Text X (0=centered)'
+            value <=> [self, :button_text_x, after_write: method(:rebuild_push_button)]
+          }
+          spinbox(0, 1000) {
+            label 'Text Y (0=centered)'
+            value <=> [self, :button_text_y, after_write: method(:rebuild_push_button)]
+          }
         }
           
         @push_button = push_button('Push',
                                    width: button_width, height: button_height, font_descriptor: {size: button_font_size},
-                                   background_color: button_background_color, text_color: button_text_color, border_color: button_border_color) {
+                                   background_color: button_background_color, text_color: button_text_color, border_color: button_border_color,
+                                   text_x: button_text_x, text_y: button_text_y) {
           on_mouse_up do
             message_box('Button Pushed', 'Thank you for pushing the button')
           end
