@@ -2,51 +2,70 @@ require 'glimmer-dsl-libui'
 
 include Glimmer
 
-# Graphical push button built with vector graphics on top of area
-# text_x and text_y are the offset of the button text in releation to its top-left corner
-# When text_x, text_y are left nil, the text is automatically centered in the button area.
-# Sometimes, the centering calculation is not perfect due to using a custom font, so
-# in that case, pass in text_x, and text_y manually
-def push_button(button_text,
+# text label (area-based custom control) built with vector graphics on top of area
+def text_label(label_text,
                 width: 80, height: 30, font_descriptor: {},
                 background_color: :white, text_color: :black, border_color: {r: 201, g: 201, b: 201},
                 text_x: nil, text_y: nil,
                 &content)
   background_color = Glimmer::LibUI.interpret_color(background_color) # gets a color rgb hash
-  button_parts = {}
-  area { |a|
-    button_parts[:background_rectangle] = rectangle(1, 1, width, height) {
+  area { |the_area|
+    rectangle(1, 1, width, height) {
       fill background_color
     }
-    
-    button_parts[:border_rectangle] = rectangle(1, 1, width, height) {
+    rectangle(1, 1, width, height) {
       stroke border_color
     }
     
     text_height = (font_descriptor[:size] || 12) * 0.75
-    text_width = (text_height * button_text.size) * 0.75
+    text_width = (text_height * label_text.size) * 0.75
     text_x = nil if text_x == 0
     text_y = nil if text_y == 0
     text_x ||= (width - text_width) / 2.0
     text_y ||= (height - 4 - text_height) / 2.0
     text(text_x, text_y, width) {
-      button_parts[:button_string] = string(button_text) {
+      string(label_text) {
         color text_color
         font font_descriptor
       }
     }
     
+    content.call(the_area)
+  }
+end
+
+# push button (area-based custom control) built with vector graphics on top of area
+# text_x and text_y are the offset of the button text in releation to its top-left corner
+# When text_x, text_y are left nil, the text is automatically centered in the button area.
+# Sometimes, the centering calculation is not perfect due to using a custom font, so
+# in that case, pass in text_x, and text_y manually
+#
+# reuses the text_label custom control
+def push_button(button_text,
+                width: 80, height: 30, font_descriptor: {},
+                background_color: :white, text_color: :black, border_color: {r: 201, g: 201, b: 201},
+                text_x: nil, text_y: nil,
+                &content)
+  text_label(button_text,
+                width: width, height: height, font_descriptor: font_descriptor,
+                background_color: background_color, text_color: text_color, border_color: border_color,
+                text_x: text_x, text_y: text_y) { |the_area|
+    
+    # dig into the_area content and grab elements to modify in mouse listeners below
+    background_rectangle = the_area.children[0]
+    button_string = the_area.children[2].children[0]
+    
     on_mouse_down do
-      button_parts[:background_rectangle].fill = {x0: 0, y0: 0, x1: 0, y1: height, stops: [{pos: 0, r: 72, g: 146, b: 247}, {pos: 1, r: 12, g: 85, b: 214}]}
-      button_parts[:button_string].color = :white
+      background_rectangle.fill = {x0: 0, y0: 0, x1: 0, y1: height, stops: [{pos: 0, r: 72, g: 146, b: 247}, {pos: 1, r: 12, g: 85, b: 214}]}
+      button_string.color = :white
     end
     
     on_mouse_up do
-      button_parts[:background_rectangle].fill = background_color
-      button_parts[:button_string].color = text_color
+      background_rectangle.fill = background_color
+      button_string.color = text_color
     end
     
-    content.call(a)
+    content.call(the_area)
   }
 end
 
