@@ -4,10 +4,10 @@ class AreaBasedCustomControls
   include Glimmer
   
   attr_accessor :button_width, :button_height, :button_font_descriptor,
-                :button_text_color, :button_background_color, :button_border_color,
+                :button_text_color, :button_background_fill, :button_border_stroke,
                 :button_text_x, :button_text_y,
                 :label_width, :label_height, :label_font_descriptor,
-                :label_text_color, :label_background_color, :label_border_color,
+                :label_text_color, :label_background_fill, :label_border_stroke,
                 :label_text_x, :label_text_y
   
   def initialize
@@ -15,15 +15,15 @@ class AreaBasedCustomControls
     self.label_height = 50
     self.label_font_descriptor = {family: OS.linux? ? 'Bitstream Vera Sans Mono' : 'Courier New', size: 16, weight: :bold, italic: :italic}
     self.label_text_color = :red
-    self.label_background_color = :yellow
-    self.label_border_color = :limegreen
+    self.label_background_fill = :yellow
+    self.label_border_stroke = :limegreen
     
     self.button_width = 130
     self.button_height = 50
     self.button_font_descriptor = {family: OS.linux? ? 'Bitstream Vera Sans Mono' : 'Courier New', size: 36, weight: :bold, italic: :italic}
     self.button_text_color = :green
-    self.button_background_color = :yellow
-    self.button_border_color = :limegreen
+    self.button_background_fill = :yellow
+    self.button_border_stroke = :limegreen
   end
   
   def rebuild_text_label
@@ -31,7 +31,7 @@ class AreaBasedCustomControls
     @text_label_vertical_box.content { # re-open vertical box content and shove in a new button
       @text_label = text_label('This is a text label.',
                                width: label_width, height: label_height, font_descriptor: label_font_descriptor,
-                               background_color: label_background_color, text_color: label_text_color, border_color: label_border_color,
+                               background_fill: label_background_fill, text_color: label_text_color, border_stroke: label_border_stroke,
                                text_x: label_text_x, text_y: label_text_y)
     }
   end
@@ -41,7 +41,7 @@ class AreaBasedCustomControls
     @push_button_vertical_box.content { # re-open vertical box content and shove in a new button
       @push_button = push_button('Push',
                                  width: button_width, height: button_height, font_descriptor: button_font_descriptor,
-                                 background_color: button_background_color, text_color: button_text_color, border_color: button_border_color,
+                                 background_fill: button_background_fill, text_color: button_text_color, border_stroke: button_border_stroke,
                                  text_x: button_text_x, text_y: button_text_y) {
         on_mouse_up do
           message_box('Button Pushed', 'Thank you for pushing the button!')
@@ -91,14 +91,14 @@ class AreaBasedCustomControls
               horizontal_box {
                 label('Background Color')
                 color_button {
-                  color <=> [self, :label_background_color, after_write: method(:rebuild_text_label)]
+                  color <=> [self, :label_background_fill, after_write: method(:rebuild_text_label)]
                 }
               }
               
               horizontal_box {
                 label('Border Color')
                 color_button {
-                  color <=> [self, :label_border_color, after_write: method(:rebuild_text_label)]
+                  color <=> [self, :label_border_stroke, after_write: method(:rebuild_text_label)]
                 }
               }
               
@@ -119,7 +119,7 @@ class AreaBasedCustomControls
             
             @text_label = text_label('This is a text label.',
                                      width: label_width, height: label_height, font_descriptor: label_font_descriptor,
-                                     background_color: label_background_color, text_color: label_text_color, border_color: label_border_color,
+                                     background_fill: label_background_fill, text_color: label_text_color, border_stroke: label_border_stroke,
                                      text_x: label_text_x, text_y: label_text_y)
           }
         }
@@ -160,14 +160,14 @@ class AreaBasedCustomControls
               horizontal_box {
                 label('Background Color')
                 color_button {
-                  color <=> [self, :button_background_color, after_write: method(:rebuild_push_button)]
+                  color <=> [self, :button_background_fill, after_write: method(:rebuild_push_button)]
                 }
               }
               
               horizontal_box {
                 label('Border Color')
                 color_button {
-                  color <=> [self, :button_border_color, after_write: method(:rebuild_push_button)]
+                  color <=> [self, :button_border_stroke, after_write: method(:rebuild_push_button)]
                 }
               }
               
@@ -188,7 +188,7 @@ class AreaBasedCustomControls
             
             @push_button = push_button('Push',
                                        width: button_width, height: button_height, font_descriptor: button_font_descriptor,
-                                       background_color: button_background_color, text_color: button_text_color, border_color: button_border_color,
+                                       background_fill: button_background_fill, text_color: button_text_color, border_stroke: button_border_stroke,
                                        text_x: button_text_x, text_y: button_text_y) {
               on_mouse_up do
                 message_box('Button Pushed', 'Thank you for pushing the button!')
@@ -203,16 +203,16 @@ class AreaBasedCustomControls
   # text label (area-based custom control) built with vector graphics on top of area
   def text_label(label_text,
                   width: 80, height: 30, font_descriptor: {},
-                  background_color: {a: 0}, text_color: :black, border_color: {a: 0},
+                  background_fill: {a: 0}, text_color: :black, border_stroke: {a: 0},
                   text_x: nil, text_y: nil,
                   &content)
-    background_color = Glimmer::LibUI.interpret_color(background_color) # gets a color rgb hash
+    background_fill = Glimmer::LibUI.interpret_color(background_fill) # gets a color rgb hash
     area { |the_area|
       rectangle(1, 1, width, height) {
-        fill background_color
+        fill background_fill
       }
       rectangle(1, 1, width, height) {
-        stroke border_color
+        stroke border_stroke
       }
       
       text_height = (font_descriptor[:size] || 12) * 0.75
@@ -239,12 +239,12 @@ class AreaBasedCustomControls
   # reuses the text_label custom control
   def push_button(button_text,
                   width: 80, height: 30, font_descriptor: {},
-                  background_color: :white, text_color: :black, border_color: {r: 201, g: 201, b: 201},
+                  background_fill: :white, text_color: :black, border_stroke: {r: 201, g: 201, b: 201},
                   text_x: nil, text_y: nil,
                   &content)
     text_label(button_text,
                   width: width, height: height, font_descriptor: font_descriptor,
-                  background_color: background_color, text_color: text_color, border_color: border_color,
+                  background_fill: background_fill, text_color: text_color, border_stroke: border_stroke,
                   text_x: text_x, text_y: text_y) { |the_area|
       
       # dig into the_area content and grab elements to modify in mouse listeners below
@@ -257,7 +257,7 @@ class AreaBasedCustomControls
       end
       
       on_mouse_up do
-        background_rectangle.fill = background_color
+        background_rectangle.fill = background_fill
         button_string.color = text_color
       end
       
