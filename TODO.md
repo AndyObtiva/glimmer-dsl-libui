@@ -3,7 +3,8 @@
 ## Next
 
 - A new example demonstrating building a custom control keyword from scratch using `area` (like the iPhone toggle button)
-- Add Font Family to examples/area_based_custom_controls.rb
+- Add text label construction form
+- Add toggle button construction form
 
 - Update screenshots for CPU Percentage on Mac & Linux
 - Support `contain?` method in `arc` (todo), `polygon` (handled in `georuby` or `winding-polygon` or `point-in-polygon` or `is` or `polygon-validator` or `pip` gem), `polyline` (handled), `polybezier` (not handled), and `figure` (semi-handled unless beziers are in)

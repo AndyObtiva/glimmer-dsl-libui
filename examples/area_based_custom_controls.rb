@@ -70,14 +70,14 @@ end
 class AreaBasedCustomControls
   include Glimmer
   
-  attr_accessor :button_width, :button_height, :button_font_size,
+  attr_accessor :button_width, :button_height, :button_font_descriptor,
                 :button_text_color, :button_background_color, :button_border_color,
                 :button_text_x, :button_text_y
   
   def initialize
     self.button_width = 80
     self.button_height = 30
-    self.button_font_size = 12
+    self.button_font_descriptor = {size: 12}
     self.button_background_color = :white
     self.button_text_color = :black
     self.button_border_color = {r: 201, g: 201, b: 201}
@@ -89,7 +89,7 @@ class AreaBasedCustomControls
     @push_button.destroy
     @window_vertical_box.content { # re-open vertical box content and shove in a new button
       @push_button = push_button('Push',
-                                 width: button_width, height: button_height, font_descriptor: {size: button_font_size},
+                                 width: button_width, height: button_height, font_descriptor: button_font_descriptor,
                                  background_color: button_background_color, text_color: button_text_color, border_color: button_border_color,
                                  text_x: button_text_x, text_y: button_text_y) {
         on_mouse_up do
@@ -122,9 +122,9 @@ class AreaBasedCustomControls
           }
           
           horizontal_box {
-            label('Font Size')
-            spinbox(1, 72) {
-              value <=> [self, :button_font_size, after_write: method(:rebuild_push_button)]
+            label('Font')
+            font_button {
+              font <=> [self, :button_font_descriptor, after_write: method(:rebuild_push_button)]
             }
           }
           
@@ -165,7 +165,7 @@ class AreaBasedCustomControls
         }
         
         @push_button = push_button('Push',
-                                   width: button_width, height: button_height, font_descriptor: {size: button_font_size},
+                                   width: button_width, height: button_height, font_descriptor: button_font_descriptor,
                                    background_color: button_background_color, text_color: button_text_color, border_color: button_border_color,
                                    text_x: button_text_x, text_y: button_text_y) {
           on_mouse_up do
