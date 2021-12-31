@@ -200,13 +200,17 @@ class AreaBasedCustomControls
     }.show
   end
     
-  # text label (area-based custom control) built with vector graphics on top of area
+  # text label (area-based custom control) built with vector graphics on top of area.
+  #
+  # background_fill is transparent by default.
+  # background_fill can accept a single color or gradient stops just as per `fill` property in README.
+  # border_stroke is transparent by default.
+  # border_stroke can accept thickness and dashes in addition to color just as per `stroke` property in README.
   def text_label(label_text,
                   width: 80, height: 30, font_descriptor: {},
                   background_fill: {a: 0}, text_color: :black, border_stroke: {a: 0},
                   text_x: nil, text_y: nil,
                   &content)
-    background_fill = Glimmer::LibUI.interpret_color(background_fill) # gets a color rgb hash
     area { |the_area|
       rectangle(1, 1, width, height) {
         fill background_fill
@@ -230,7 +234,12 @@ class AreaBasedCustomControls
     }
   end
   
-  # push button (area-based custom control) built with vector graphics on top of area
+  # push button (area-based custom control) built with vector graphics on top of area.
+  #
+  # background_fill is white by default.
+  # background_fill can accept a single color or gradient stops just as per `fill` property in README.
+  # border_stroke is black by default.
+  # border_stroke can accept thickness and dashes in addition to color just as per `stroke` property in README.
   # text_x and text_y are the offset of the button text in releation to its top-left corner
   # When text_x, text_y are left nil, the text is automatically centered in the button area.
   # Sometimes, the centering calculation is not perfect due to using a custom font, so
