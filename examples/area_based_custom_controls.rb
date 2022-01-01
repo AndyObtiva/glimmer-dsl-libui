@@ -58,8 +58,8 @@ class AreaBasedCustomControls
         tab_item('Text Label') {
           @text_label_vertical_box = vertical_box {
             vertical_box {
-              text_label('Text Label Form:', width: 250, height: 30, font_descriptor: {size: 16, weight: :bold}, text_x: 0, text_y: 5)
-              
+              text_label('Text Label Form:', width: 385, height: 30, background_fill: OS.windows? ? :white : {a: 0}, border_stroke: OS.windows? ? :white : {a: 0}, font_descriptor: {size: 16, weight: :bold}, text_x: 0, text_y: OS.windows? ? 0 : 5)
+
               horizontal_box {
                 label('Width')
                 spinbox(1, 1000) {
@@ -127,7 +127,7 @@ class AreaBasedCustomControls
         tab_item('Push Button') {
           @push_button_vertical_box = vertical_box {
             vertical_box {
-              text_label('Push Button Form:', width: 250, height: 30, font_descriptor: {size: 16, weight: :bold}, text_x: 0, text_y: 5)
+              text_label('Push Button Form:', width: 385, height: 30, background_fill: OS.windows? ? :white : {a: 0}, border_stroke: OS.windows? ? :white : {a: 0}, font_descriptor: {size: 16, weight: :bold}, text_x: 0, text_y: OS.windows? ? 0 : 5)
               
               horizontal_box {
                 label('Width')
@@ -219,8 +219,8 @@ class AreaBasedCustomControls
         stroke border_stroke
       }
       
-      text_height = (font_descriptor[:size] || 12) * (OS.linux? ? 1.35 : 0.75)
-      text_width = (text_height * label_text.size) * (OS.linux? ? 0.60 : 0.75)
+      text_height = (font_descriptor[:size] || 12) * (OS.mac? ? 0.75 : 1.35)
+      text_width = (text_height * label_text.size) * (OS.mac? ? 0.75 : 0.60)
       text_x ||= (width - text_width) / 2.0
       text_y ||= (height - 4 - text_height) / 2.0
       text(text_x, text_y, width) {
