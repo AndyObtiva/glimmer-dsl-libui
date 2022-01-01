@@ -1366,8 +1366,8 @@ Note that `area`, `path`, and nested shapes are all truly declarative, meaning t
 - All boolean property readers return `true` or `false` in Ruby instead of the [libui](https://github.com/andlabs/libui) original `0` or `1` in C.
 - All boolean property writers accept `true`/`false` in addition to `1`/`0` in Ruby
 - All string property readers return a `String` object in Ruby instead of the [libui](https://github.com/andlabs/libui) Fiddle pointer object.
-- Automatically allocate font descriptors upon instantiating `font_button` controls and free them when destorying `font_button` controls
-- Automatically allocate color value pointers upon instantiating `color_button` controls and free them when destorying `color_button` controls
+- Automatically allocate font descriptors upon instantiating `font_button` controls and free them when destroying `font_button` controls
+- Automatically allocate color value pointers upon instantiating `color_button` controls and free them when destroying `color_button` controls
 - On the Mac, if no `menu` items were added, an automatic `quit_menu_item` is added to enable quitting with CTRL+Q
 - When destroying a control nested under a `horizontal_box` or `vertical_box`, it is automatically deleted from the box's children
 - When destroying a control nested under a `form`, it is automatically deleted from the form's children
@@ -1508,7 +1508,7 @@ The [`area`](#area-api) control can be utilized to build non-native custom contr
 
 Defining custom keywords enables unlimited extension of the [Glimmer GUI DSL](#glimmer-gui-dsl). The sky is the limit on what can be done with custom keywords as a result. You can compose new visual vocabulary to build applications in any domain from higher concepts rather than [mere standard controls](#supported-keywords). For example, in a traffic signaling app, you could define `street`, `light_signal`, `traffic_sign`, and `car` as custom keywords and build your application from these concepts directly, saving enormous time and achieving much higher productivity.
 
-Learn more from custom keyword usage in [Method-Based Custom Keyword](#method-based-custom-keyword), [Area-Based Custom Controls](area-based-custom-controls), [Basic Scrolling Area](#basic-scrolling-area), [Histogram](#histogram), and [Tetris](#tetris) examples.
+Learn more from custom keyword usage in [Method-Based Custom Keyword](#method-based-custom-keyword), [Area-Based Custom Controls](#area-based-custom-controls), [Basic Scrolling Area](#basic-scrolling-area), [Histogram](#histogram), and [Tetris](#tetris) examples.
 
 ### Observer Pattern
 
