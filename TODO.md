@@ -2,6 +2,8 @@
 
 ## Next
 
+- Look into finding a workaround for radio_buttons gotcha on Linux
+
 - Update screenshots for CPU Percentage on Mac & Linux
 - Support `contain?` method in `arc` (todo), `polygon` (handled in `georuby` or `winding-polygon` or `point-in-polygon` or `is` or `polygon-validator` or `pip` gem), `polyline` (handled), `polybezier` (not handled), and `figure` (semi-handled unless beziers are in)
 - Support `include?` method in `arc` (todo), `polygon` (handled in georuby), `polyline` (handled), `polybezier` (not handled), and `figure` (semi-handled unless beziers are in)

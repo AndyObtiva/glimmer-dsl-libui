@@ -80,6 +80,8 @@ GEM
       racc (~> 1.4)
     nokogiri (1.12.5-x86_64-darwin)
       racc (~> 1.4)
+    nokogiri (1.12.5-x86_64-linux)
+      racc (~> 1.4)
     oauth2 (1.4.7)
       faraday (>= 0.8, < 2.0)
       jwt (>= 1.0, < 3.0)
@@ -149,6 +151,7 @@ PLATFORMS
   x64-mingw32
   x86_64-darwin-19
   x86_64-darwin-20
+  x86_64-linux
 
 DEPENDENCIES
   chunky_png (~> 1.4.0)

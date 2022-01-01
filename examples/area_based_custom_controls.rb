@@ -13,14 +13,14 @@ class AreaBasedCustomControls
   def initialize
     self.label_width = 335
     self.label_height = 50
-    self.label_font_descriptor = {family: OS.linux? ? 'Bitstream Vera Sans Mono' : 'Courier New', size: 16, weight: :bold, italic: :italic}
+    self.label_font_descriptor = {family: OS.linux? ? 'Monospace Bold Italic' : 'Courier New', size: 16, weight: :bold, italic: :italic}
     self.label_text_color = :red
     self.label_background_fill = :yellow
     self.label_border_stroke = :limegreen
     
-    self.button_width = 130
+    self.button_width = 150
     self.button_height = 50
-    self.button_font_descriptor = {family: OS.linux? ? 'Bitstream Vera Sans Mono' : 'Courier New', size: 36, weight: :bold, italic: :italic}
+    self.button_font_descriptor = {family: OS.linux? ? 'Monospace Bold Italic' : 'Courier New', size: 36, weight: OS.linux? ? :normal : :bold, italic: :italic}
     self.button_text_color = :green
     self.button_background_fill = :yellow
     self.button_border_stroke = :limegreen
@@ -58,7 +58,7 @@ class AreaBasedCustomControls
         tab_item('Text Label') {
           @text_label_vertical_box = vertical_box {
             vertical_box {
-              text_label('Text Label Construction Form:', width: 250, height: 30, font_descriptor: {size: 16, weight: :bold}, text_x: 0, text_y: 0)
+              text_label('Text Label Form:', width: 250, height: 30, font_descriptor: {size: 16, weight: :bold}, text_x: 0, text_y: 5)
               
               horizontal_box {
                 label('Width')
@@ -127,7 +127,7 @@ class AreaBasedCustomControls
         tab_item('Push Button') {
           @push_button_vertical_box = vertical_box {
             vertical_box {
-              text_label('Push Button Construction Form:', width: 250, height: 30, font_descriptor: {size: 16, weight: :bold}, text_x: 0, text_y: 0)
+              text_label('Push Button Form:', width: 250, height: 30, font_descriptor: {size: 16, weight: :bold}, text_x: 0, text_y: 5)
               
               horizontal_box {
                 label('Width')
@@ -219,8 +219,8 @@ class AreaBasedCustomControls
         stroke border_stroke
       }
       
-      text_height = (font_descriptor[:size] || 12) * 0.75
-      text_width = (text_height * label_text.size) * 0.75
+      text_height = (font_descriptor[:size] || 12) * (OS.linux? ? 1.35 : 0.75)
+      text_width = (text_height * label_text.size) * (OS.linux? ? 0.60 : 0.75)
       text_x ||= (width - text_width) / 2.0
       text_y ||= (height - 4 - text_height) / 2.0
       text(text_x, text_y, width) {
