@@ -8642,14 +8642,14 @@ class AreaBasedCustomControls
   def initialize
     self.label_width = 335
     self.label_height = 50
-    self.label_font_descriptor = {family: OS.linux? ? 'Bitstream Vera Sans Mono' : 'Courier New', size: 16, weight: :bold, italic: :italic}
+    self.label_font_descriptor = {family: OS.linux? ? 'Monospace Bold Italic' : 'Courier New', size: 16, weight: :bold, italic: :italic}
     self.label_text_color = :red
     self.label_background_fill = :yellow
     self.label_border_stroke = :limegreen
     
-    self.button_width = 130
+    self.button_width = 150
     self.button_height = 50
-    self.button_font_descriptor = {family: OS.linux? ? 'Bitstream Vera Sans Mono' : 'Courier New', size: 36, weight: :bold, italic: :italic}
+    self.button_font_descriptor = {family: OS.linux? ? 'Monospace Bold Italic' : 'Courier New', size: 36, weight: OS.linux? ? :normal : :bold, italic: :italic}
     self.button_text_color = :green
     self.button_background_fill = :yellow
     self.button_border_stroke = :limegreen
@@ -8657,7 +8657,7 @@ class AreaBasedCustomControls
   
   def rebuild_text_label
     @text_label.destroy
-    @text_label_vertical_box.content { # re-open vertical box content and shove in a new button
+    @text_label_vertical_box.content { # re-open vertical box content and shove in a new label
       @text_label = text_label('This is a text label.',
                                width: label_width, height: label_height, font_descriptor: label_font_descriptor,
                                background_fill: label_background_fill, text_color: label_text_color, border_stroke: label_border_stroke,
@@ -8687,8 +8687,8 @@ class AreaBasedCustomControls
         tab_item('Text Label') {
           @text_label_vertical_box = vertical_box {
             vertical_box {
-              text_label('Text Label Construction Form:', width: 250, height: 30, font_descriptor: {size: 16, weight: :bold}, text_x: 0, text_y: 0)
-              
+              text_label('Text Label Form:', width: 385, height: 30, background_fill: OS.windows? ? :white : {a: 0}, border_stroke: OS.windows? ? :white : {a: 0}, font_descriptor: {size: 16, weight: :bold}, text_x: 0, text_y: OS.windows? ? 0 : 5)
+
               horizontal_box {
                 label('Width')
                 spinbox(1, 1000) {
@@ -8756,7 +8756,7 @@ class AreaBasedCustomControls
         tab_item('Push Button') {
           @push_button_vertical_box = vertical_box {
             vertical_box {
-              text_label('Push Button Construction Form:', width: 250, height: 30, font_descriptor: {size: 16, weight: :bold}, text_x: 0, text_y: 0)
+              text_label('Push Button Form:', width: 385, height: 30, background_fill: OS.windows? ? :white : {a: 0}, border_stroke: OS.windows? ? :white : {a: 0}, font_descriptor: {size: 16, weight: :bold}, text_x: 0, text_y: OS.windows? ? 0 : 5)
               
               horizontal_box {
                 label('Width')
@@ -8835,6 +8835,10 @@ class AreaBasedCustomControls
   # background_fill can accept a single color or gradient stops just as per `fill` property in README.
   # border_stroke is transparent by default.
   # border_stroke can accept thickness and dashes in addition to color just as per `stroke` property in README.
+  # text_x and text_y are the offset of the label text in relation to its top-left corner.
+  # When text_x, text_y are left nil, the text is automatically centered in the label area.
+  # Sometimes, the centering calculation is not perfect due to using a custom font, so
+  # in that case, pass in text_x, and text_y manually.
   def text_label(label_text,
                   width: 80, height: 30, font_descriptor: {},
                   background_fill: {a: 0}, text_color: :black, border_stroke: {a: 0},
@@ -8848,8 +8852,8 @@ class AreaBasedCustomControls
         stroke border_stroke
       }
       
-      text_height = (font_descriptor[:size] || 12) * 0.75
-      text_width = (text_height * label_text.size) * 0.75
+      text_height = (font_descriptor[:size] || 12) * (OS.mac? ? 0.75 : 1.35)
+      text_width = (text_height * label_text.size) * (OS.mac? ? 0.75 : 0.60)
       text_x ||= (width - text_width) / 2.0
       text_y ||= (height - 4 - text_height) / 2.0
       text(text_x, text_y, width) {
@@ -8869,10 +8873,10 @@ class AreaBasedCustomControls
   # background_fill can accept a single color or gradient stops just as per `fill` property in README.
   # border_stroke is black by default.
   # border_stroke can accept thickness and dashes in addition to color just as per `stroke` property in README.
-  # text_x and text_y are the offset of the button text in releation to its top-left corner
+  # text_x and text_y are the offset of the button text in relation to its top-left corner.
   # When text_x, text_y are left nil, the text is automatically centered in the button area.
   # Sometimes, the centering calculation is not perfect due to using a custom font, so
-  # in that case, pass in text_x, and text_y manually
+  # in that case, pass in text_x, and text_y manually.
   #
   # reuses the text_label custom control
   def push_button(button_text,

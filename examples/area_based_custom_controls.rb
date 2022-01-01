@@ -28,7 +28,7 @@ class AreaBasedCustomControls
   
   def rebuild_text_label
     @text_label.destroy
-    @text_label_vertical_box.content { # re-open vertical box content and shove in a new button
+    @text_label_vertical_box.content { # re-open vertical box content and shove in a new label
       @text_label = text_label('This is a text label.',
                                width: label_width, height: label_height, font_descriptor: label_font_descriptor,
                                background_fill: label_background_fill, text_color: label_text_color, border_stroke: label_border_stroke,
@@ -206,6 +206,10 @@ class AreaBasedCustomControls
   # background_fill can accept a single color or gradient stops just as per `fill` property in README.
   # border_stroke is transparent by default.
   # border_stroke can accept thickness and dashes in addition to color just as per `stroke` property in README.
+  # text_x and text_y are the offset of the label text in relation to its top-left corner.
+  # When text_x, text_y are left nil, the text is automatically centered in the label area.
+  # Sometimes, the centering calculation is not perfect due to using a custom font, so
+  # in that case, pass in text_x, and text_y manually.
   def text_label(label_text,
                   width: 80, height: 30, font_descriptor: {},
                   background_fill: {a: 0}, text_color: :black, border_stroke: {a: 0},
@@ -240,10 +244,10 @@ class AreaBasedCustomControls
   # background_fill can accept a single color or gradient stops just as per `fill` property in README.
   # border_stroke is black by default.
   # border_stroke can accept thickness and dashes in addition to color just as per `stroke` property in README.
-  # text_x and text_y are the offset of the button text in releation to its top-left corner
+  # text_x and text_y are the offset of the button text in relation to its top-left corner.
   # When text_x, text_y are left nil, the text is automatically centered in the button area.
   # Sometimes, the centering calculation is not perfect due to using a custom font, so
-  # in that case, pass in text_x, and text_y manually
+  # in that case, pass in text_x, and text_y manually.
   #
   # reuses the text_label custom control
   def push_button(button_text,

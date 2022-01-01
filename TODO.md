@@ -3,6 +3,8 @@
 ## Next
 
 - Update screenshots for CPU Percentage on Mac & Linux
+- Add pause button (spacebar) to examples/snake.rb
+
 - Support `contain?` method in `arc` (todo), `polygon` (handled in `georuby` or `winding-polygon` or `point-in-polygon` or `is` or `polygon-validator` or `pip` gem), `polyline` (handled), `polybezier` (not handled), and `figure` (semi-handled unless beziers are in)
 - Support `include?` method in `arc` (todo), `polygon` (handled in georuby), `polyline` (handled), `polybezier` (not handled), and `figure` (semi-handled unless beziers are in)
 - Support `bounds` method in `polygon`, `polyline`, `polybezier`, and all other shapes
@@ -41,6 +43,7 @@
 - Scaffold an application with support for gem and native-executable packaging
 - Create more advanced examples such as Calculator, Connect 4, Clock, Metronome, Weather, Stock Ticker, Battleship, Game of Life
 - Optimize startup time, perhaps dropping 'os' gem for direct use of `Gem::Platform.local` instead.
+- Support configuration of global widget default properties to quickly affect the style of an entire app globally without the complexity of CSS expressions.
 
 ## Maybe
 
@@ -83,6 +86,7 @@
 - Demonstrate use of table with database data (e.g. sqlite)
 - Support x, y, diameter alternative dimensions for circle
 - Support `rgb` and `rgba` keywords for easier entry of colors, similar to that of Glimmer DSL for SWT
+- Invert or expand the use of Glimmer::LibUI::ControlProxy::KEYWORD_ALIASES with an array (it does not permit definining multiple aliases at the moment)
 
 # Refactoring
 
