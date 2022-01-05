@@ -17,6 +17,7 @@
 ## Soon
 
 - Build Quarto game sample: https://en.gigamic.com/game/quarto-classic
+- examples/file_tabs.rb (inspired by this addressed issue: https://github.com/AndyObtiva/glimmer-dsl-libui/issues/16)
 - Glimmerize examples/draw_text.rb from Ruby LibUI project
 - Glimmerize examples/spectrum.rb from Ruby LibUI project
 - Glimmerize examples/turing_pattern.rb from Ruby LibUI project

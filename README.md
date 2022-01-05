@@ -320,6 +320,10 @@ Mac | Windows | Linux
 
 [Check Out Many More Examples Over Here!](#examples)
 
+![glimmer-dsl-libui-mac-snake.gif](images/glimmer-dsl-libui-mac-snake.gif)
+
+![glimmer-dsl-libui-mac-color-the-circles.gif](images/glimmer-dsl-libui-mac-color-the-circles.gif)
+
 ![glimmer-dsl-libui-mac-tetris.gif](images/glimmer-dsl-libui-mac-tetris.gif)
 
 NOTE: [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) is 100% feature-complete and in beta mode (though the C [libui](https://github.com/andlabs/libui) is still mid-alpha). Please help make better by contributing, adopting for small or low risk projects, and providing feedback. The more feedback and issues you report the better.
