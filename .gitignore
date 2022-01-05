@@ -50,6 +50,8 @@ pkg
 
 tmp
 
+# Gladiator (Glimmer Editor)
 .gladiator
+.gladiator-scratchpad
 
 .DS_Store
