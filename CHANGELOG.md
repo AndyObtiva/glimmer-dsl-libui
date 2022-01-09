@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.4.21
+
+- Upgrade to glimmer 2.5.5
+
 ## 0.4.20
 
 - New examples/area_based_custom_controls.rb

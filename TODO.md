@@ -2,7 +2,9 @@
 
 ## Next
 
-- Update screenshots for CPU Percentage on Mac & Linux
+- Update copy to 2022
+- Consider removing default height for main window (default width is enough)
+- Update screenshots for CPU Percentage on Linux
 - Add pause button (spacebar) to examples/snake.rb
 
 - Support `contain?` method in `arc` (todo), `polygon` (handled in `georuby` or `winding-polygon` or `point-in-polygon` or `is` or `polygon-validator` or `pip` gem), `polyline` (handled), `polybezier` (not handled), and `figure` (semi-handled unless beziers are in)
@@ -21,6 +23,7 @@
 - Glimmerize examples/draw_text.rb from Ruby LibUI project
 - Glimmerize examples/spectrum.rb from Ruby LibUI project
 - Glimmerize examples/turing_pattern.rb from Ruby LibUI project
+- Game of Life
 
 ## Future
 

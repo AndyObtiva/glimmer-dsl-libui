@@ -22,6 +22,8 @@ The main trade-off in using [Glimmer DSL for LibUI](https://rubygems.org/gems/gl
 - [Far Future Plan] Scaffolding for new custom controls, apps, and gems
 - [Far Future Plan] Native-Executable packaging on Mac, Windows, and Linux.
 
+Note that currently, [LibUI](https://github.com/kojix2/LibUI) only includes x86_64 binaries out of the box, but there are plans to include ARM64/AARCH64 binaries too in the future. 
+
 Hello, World!
 
 ```ruby
