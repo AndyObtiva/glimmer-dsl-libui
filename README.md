@@ -22,7 +22,7 @@ The main trade-off in using [Glimmer DSL for LibUI](https://rubygems.org/gems/gl
 - [Far Future Plan] Scaffolding for new custom controls, apps, and gems
 - [Far Future Plan] Native-Executable packaging on Mac, Windows, and Linux.
 
-Note that currently, [LibUI](https://github.com/kojix2/LibUI) only includes x86_64 binaries out of the box, but there are plans to include ARM64/AARCH64 binaries too in the future. 
+Note that currently, [LibUI](https://github.com/kojix2/LibUI) only includes x86_64 binaries out of the box, but there are plans to include ARM64/AARCH64 binaries too in the future.
 
 Hello, World!
 
@@ -9912,7 +9912,7 @@ class Tetris
   
   def show_about_dialog
     Glimmer::LibUI.queue_main do
-      msg_box('About', 'Glimmer Tetris - Glimmer DSL for LibUI Example - Copyright (c) 2021 Andy Maleh')
+      msg_box('About', 'Glimmer Tetris - Glimmer DSL for LibUI Example - Copyright (c) 2021-2022 Andy Maleh')
     end
   end
 end
@@ -10481,7 +10481,7 @@ Note that the latest development sometimes takes place in the [development](http
 
 [MIT](LICENSE.txt)
 
-Copyright (c) 2021 Andy Maleh
+Copyright (c) 2021-2022 Andy Maleh
 
 --
 
