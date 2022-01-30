@@ -9368,7 +9368,7 @@ class Snake
     end
     
     Glimmer::LibUI.timer(SNAKE_MOVE_DELAY) do
-      unless @game.over?
+      unless @game.paused? || @game.over?
         process_queued_keypress
         @game.snake.move
       end
@@ -9409,7 +9409,11 @@ class Snake
                 }
                 
                 on_key_up do |area_key_event|
-                  @keypress_queue << area_key_event[:ext_key]
+                  if area_key_event[:key] == ' '
+                    @game.toggle_pause
+                  else
+                    @keypress_queue << area_key_event[:ext_key]
+                  end
                 end
               }
             end
@@ -9468,7 +9472,7 @@ class Snake
     end
     
     Glimmer::LibUI.timer(SNAKE_MOVE_DELAY) do
-      unless @game.over?
+      unless @game.paused? || @game.over?
         process_queued_keypress
         @game.snake.move
       end
@@ -9511,7 +9515,11 @@ class Snake
                 }
                 
                 on_key_up do |area_key_event|
-                  @keypress_queue << area_key_event[:ext_key]
+                  if area_key_event[:key] == ' '
+                    @game.toggle_pause
+                  else
+                    @keypress_queue << area_key_event[:ext_key]
+                  end
                 end
               }
             end

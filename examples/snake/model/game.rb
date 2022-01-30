@@ -11,8 +11,9 @@ class Snake
       FILE_HIGH_SCORE = File.expand_path(File.join(Dir.home, '.glimmer-snake'))
       
       attr_reader :width, :height
-      attr_accessor :snake, :apple, :over, :score, :high_score
+      attr_accessor :snake, :apple, :over, :score, :high_score, :paused
       alias over? over
+      alias paused? paused
       
       def initialize(width = WIDTH_DEFAULT, height = HEIGHT_DEFAULT)
         @width = width
@@ -40,6 +41,22 @@ class Snake
         self.score = 0
         self.snake.generate
         self.apple.generate
+      end
+      
+      def pause
+        self.paused = true
+      end
+      
+      def resume
+        self.paused = false
+      end
+      
+      def toggle_pause
+        unless paused?
+          pause
+        else
+          resume
+        end
       end
       
       # inspect is overridden to prevent printing very long stack traces

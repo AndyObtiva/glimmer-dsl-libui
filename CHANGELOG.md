@@ -2,6 +2,7 @@
 
 ## 0.4.21
 
+- Pause via spacebar in examples/snake.rb (all versions)
 - Upgrade to glimmer 2.5.5
 
 ## 0.4.20

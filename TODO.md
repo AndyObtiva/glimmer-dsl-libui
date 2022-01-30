@@ -2,11 +2,10 @@
 
 ## Next
 
-- Update copy to 2022
-- Consider removing default height for main window (default width is enough)
 - Update screenshots for CPU Percentage on Linux
-- Add pause button (spacebar) to examples/snake.rb
+- Consider removing default height for main window (default width is enough)
 
+- Upgrade to glimmer 2.6.0
 - Support `contain?` method in `arc` (todo), `polygon` (handled in `georuby` or `winding-polygon` or `point-in-polygon` or `is` or `polygon-validator` or `pip` gem), `polyline` (handled), `polybezier` (not handled), and `figure` (semi-handled unless beziers are in)
 - Support `include?` method in `arc` (todo), `polygon` (handled in georuby), `polyline` (handled), `polybezier` (not handled), and `figure` (semi-handled unless beziers are in)
 - Support `bounds` method in `polygon`, `polyline`, `polybezier`, and all other shapes
