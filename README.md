@@ -3,7 +3,7 @@
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-[Glimmer](https://github.com/AndyObtiva/glimmer) DSL for [LibUI](https://github.com/kojix2/LibUI) is a prerequisite-free Ruby desktop development GUI (Graphical User Interface) library. No need to pre-install any prerequisites. Just install the [gem](https://rubygems.org/gems/glimmer-dsl-libui) and have platform-independent native GUI that just works!
+[Glimmer](https://github.com/AndyObtiva/glimmer) DSL for [LibUI](https://github.com/kojix2/LibUI) is a prerequisite-free [MRI Ruby](https://www.ruby-lang.org) desktop development GUI (Graphical User Interface) library. No need to pre-install any prerequisites. Just install the [gem](https://rubygems.org/gems/glimmer-dsl-libui) and have platform-independent native GUI that just works!
 
 Mac | Windows | Linux
 ----|---------|------
@@ -9312,6 +9312,8 @@ TinyMidiPlayer.new
 #### Snake
 
 Snake provides an example of building a desktop application [test-first](/spec/examples/snake/model/game_spec.rb) following the MVP ([Model](/examples/snake/model/game.rb) / [View](/examples/snake.rb) / [Presenter](/examples/snake/presenter/grid.rb)) architectural pattern.
+
+Use arrows to move and spacebar to pause/resume.
 
 [examples/snake.rb](examples/snake.rb)
 
