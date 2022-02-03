@@ -71,18 +71,31 @@ class Tetris
     
     Model::Game::PREVIEW_PLAYFIELD_HEIGHT.times do |row|
       Model::Game::PREVIEW_PLAYFIELD_WIDTH.times do |column|
-        observe(@game.preview_playfield[row][column], :color) do |new_color|
+        preview_updater = proc do
           Glimmer::LibUI.queue_main do
+            new_color = @game.preview_playfield[row][column].color
             color = Glimmer::LibUI.interpret_color(new_color)
             block = @preview_playfield_blocks[row][column]
-            block[:background_square].fill = color
-            block[:top_bevel_edge].fill = {r: color[:r] + 4*BEVEL_CONSTANT, g: color[:g] + 4*BEVEL_CONSTANT, b: color[:b] + 4*BEVEL_CONSTANT}
-            block[:right_bevel_edge].fill = {r: color[:r] - BEVEL_CONSTANT, g: color[:g] - BEVEL_CONSTANT, b: color[:b] - BEVEL_CONSTANT}
-            block[:bottom_bevel_edge].fill = {r: color[:r] - BEVEL_CONSTANT, g: color[:g] - BEVEL_CONSTANT, b: color[:b] - BEVEL_CONSTANT}
-            block[:left_bevel_edge].fill = {r: color[:r] - BEVEL_CONSTANT, g: color[:g] - BEVEL_CONSTANT, b: color[:b] - BEVEL_CONSTANT}
-            block[:border_square].stroke = new_color == Model::Block::COLOR_CLEAR ? COLOR_GRAY : color
+            if @game.show_preview_tetromino?
+              block[:background_square].fill = color
+              block[:top_bevel_edge].fill = {r: color[:r] + 4*BEVEL_CONSTANT, g: color[:g] + 4*BEVEL_CONSTANT, b: color[:b] + 4*BEVEL_CONSTANT}
+              block[:right_bevel_edge].fill = {r: color[:r] - BEVEL_CONSTANT, g: color[:g] - BEVEL_CONSTANT, b: color[:b] - BEVEL_CONSTANT}
+              block[:bottom_bevel_edge].fill = {r: color[:r] - BEVEL_CONSTANT, g: color[:g] - BEVEL_CONSTANT, b: color[:b] - BEVEL_CONSTANT}
+              block[:left_bevel_edge].fill = {r: color[:r] - BEVEL_CONSTANT, g: color[:g] - BEVEL_CONSTANT, b: color[:b] - BEVEL_CONSTANT}
+              block[:border_square].stroke = new_color == Model::Block::COLOR_CLEAR ? COLOR_GRAY : color
+            else
+              transparent_color = {r: 255, g: 255, b: 255, a: 0}
+              block[:background_square].fill = transparent_color
+              block[:top_bevel_edge].fill = transparent_color
+              block[:right_bevel_edge].fill = transparent_color
+              block[:bottom_bevel_edge].fill = transparent_color
+              block[:left_bevel_edge].fill = transparent_color
+              block[:border_square].stroke = transparent_color
+            end
           end
         end
+        observe(@game.preview_playfield[row][column], :color, &preview_updater)
+        observe(@game, :show_preview_tetromino, &preview_updater)
       end
     end
 
@@ -130,6 +143,12 @@ class Tetris
     }
     
     menu('View') {
+      check_menu_item('Show Next Block Preview') {
+        checked <=> [@game, :show_preview_tetromino]
+      }
+      
+      separator_menu_item
+      
       menu_item('Show High Scores') {
         on_clicked do
           show_high_scores
@@ -141,18 +160,20 @@ class Tetris
           @game.clear_high_scores!
         }
       }
+      
+      separator_menu_item
     }
 
     menu('Options') {
-      radio_menu_item('Instant Down on Up Arrow') { |r|
+      radio_menu_item('Instant Down on Up Arrow') {
         checked <=> [@game, :instant_down_on_up]
       }
       
-      radio_menu_item('Rotate Right on Up Arrow') { |r|
+      radio_menu_item('Rotate Right on Up Arrow') {
         checked <=> [@game, :rotate_right_on_up]
       }
       
-      radio_menu_item('Rotate Left on Up Arrow') { |r|
+      radio_menu_item('Rotate Left on Up Arrow') {
         checked <=> [@game, :rotate_left_on_up]
       }
     }
@@ -199,7 +220,7 @@ class Tetris
     block = {}
     bevel_pixel_size = 0.16 * block_size.to_f
     color = Glimmer::LibUI.interpret_color(Model::Block::COLOR_CLEAR)
-    area {
+    block[:area] = area {
       block[:background_square] = square(0, 0, block_size) {
         fill color
       }
@@ -277,12 +298,6 @@ class Tetris
     vertical_box {
       horizontal_box {
         label # filler
-        @preview_playfield_blocks = playfield(playfield_width: Model::Game::PREVIEW_PLAYFIELD_WIDTH, playfield_height: Model::Game::PREVIEW_PLAYFIELD_HEIGHT, block_size: block_size)
-        label # filler
-      }
-
-      horizontal_box {
-        label # filler
         grid {
           stretchy false
           
@@ -319,6 +334,12 @@ class Tetris
             halign :center
           }
         }
+        label # filler
+      }
+      
+      horizontal_box {
+        label # filler
+        @preview_playfield_blocks = playfield(playfield_width: Model::Game::PREVIEW_PLAYFIELD_WIDTH, playfield_height: Model::Game::PREVIEW_PLAYFIELD_HEIGHT, block_size: block_size)
         label # filler
       }
     

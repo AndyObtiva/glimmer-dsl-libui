@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.4.22
+
+- examples/tetris.rb "Show Next Block Preview" menu item under "View" menu
+
 ## 0.4.21
 
 - Pause via spacebar in examples/snake.rb (all versions)

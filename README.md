@@ -1,9 +1,9 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.4.21
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.4.22
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-[**(Fukuoka Ruby Award Competition 2022 Special Award Winner!)**](http://www.digitalfukuoka.jp/topics/187?locale=ja)
+[**(Fukuoka Ruby Award Competition 2022 Special Award Winner)**](http://www.digitalfukuoka.jp/topics/187?locale=ja)
 
 [Glimmer](https://github.com/AndyObtiva/glimmer) DSL for [LibUI](https://github.com/kojix2/LibUI) is a prerequisite-free [MRI Ruby](https://www.ruby-lang.org) desktop development GUI (Graphical User Interface) library. No need to pre-install any prerequisites. Just install the [gem](https://rubygems.org/gems/glimmer-dsl-libui) and have platform-independent native GUI that just works!
 
@@ -332,13 +332,19 @@ Mac | Windows | Linux
 
 NOTE: [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) is 100% feature-complete and in beta mode (though the C [libui](https://github.com/andlabs/libui) is still mid-alpha). Please help make better by contributing, adopting for small or low risk projects, and providing feedback. The more feedback and issues you report the better.
 
-Other [Glimmer](https://rubygems.org/gems/glimmer) DSL gems you might be interested in:
-- [glimmer-dsl-swt](https://github.com/AndyObtiva/glimmer-dsl-swt): Glimmer DSL for SWT (JRuby Desktop Development GUI Framework)
-- [glimmer-dsl-opal](https://github.com/AndyObtiva/glimmer-dsl-opal): Glimmer DSL for Opal (Pure Ruby Web GUI and Auto-Webifier of Desktop Apps)
-- [glimmer-dsl-tk](https://github.com/AndyObtiva/glimmer-dsl-tk): Glimmer DSL for Tk (MRI Ruby Desktop Development GUI Library)
-- [glimmer-dsl-gtk](https://github.com/AndyObtiva/glimmer-dsl-gtk): Glimmer DSL for GTK (Ruby-GNOME Desktop Development GUI Library)
-- [glimmer-dsl-xml](https://github.com/AndyObtiva/glimmer-dsl-xml): Glimmer DSL for XML (& HTML)
-- [glimmer-dsl-css](https://github.com/AndyObtiva/glimmer-dsl-css): Glimmer DSL for CSS
+**[Glimmer](https://rubygems.org/gems/glimmer) DSL Comparison Table:**
+DSL | Platforms | Native? | Vector Graphics? | Pros | Cons | Prereqs
+----|-----------|---------|------------------|------|------|--------
+[Glimmer DSL for SWT (JRuby Desktop Development GUI Framework)](https://github.com/AndyObtiva/glimmer-dsl-swt) | Mac / Windows / Linux | Yes | Yes (Canvas Shape DSL) | Very Mature / Scaffolding / Native Executable Packaging / Custom Widgets | Slow JRuby Startup Time / Heavy Memory Footprint | Java / JRuby 
+[Glimmer DSL for Opal (Pure Ruby Web GUI and Auto-Webifier of Desktop Apps)](https://github.com/AndyObtiva/glimmer-dsl-opal) | All Web Browsers | No | Yes (Canvas Shape DSL) | Simpler than All JavaScript Technologies / Auto-Webify Desktop Apps | Setup Process / Only Rails 5 Support for Now | Rails
+[Glimmer DSL for LibUI (Prerequisite-Free Ruby Desktop Development GUI Library)](https://github.com/AndyObtiva/glimmer-dsl-libui) | Mac / Windows / Linux | Yes | Yes (Area API) | Fast Startup Time / Light Memory Footprint | LibUI is an Incomplete Mid-Alpha Only | None Other Than MRI Ruby
+[Glimmer DSL for Tk (MRI Ruby Desktop Development GUI Library)](https://github.com/AndyObtiva/glimmer-dsl-tk) | Mac / Windows / Linux | Some Native-Themed Widgets (Not Truly Native) | Yes (Canvas) | Fast Startup Time / Light Memory Footprint | Widgets Do Not Look Truly Native, Espcially on Linux | ActiveTcl / MRI Ruby
+[Glimmer DSL for GTK (Ruby-GNOME Desktop Development GUI Library)](https://github.com/AndyObtiva/glimmer-dsl-gtk) | Mac / Windows / Linux | Only on Linux | Yes (Cairo) | Complete Access to GNOME Features on Linux (Forte) | Not Native on Mac and Windows | None Other Than MRI Ruby on Linux / Brew Packages on Mac / MSYS & MING Toolchains on Windows / MRI Ruby
+[Glimmer DSL for FX (FOX Toolkit Ruby Desktop Development GUI Library)](https://github.com/AndyObtiva/glimmer-dsl-fx) | Mac (requires XQuartz) / Windows / Linux | No | Yes (Canvas) | No Prerequisites on Windows (Forte Since Binaries Are Included Out of The Box) | Widgets Do Not Look Native / Mac Usage Obtrusively Starts XQuartz | None Other Than MRI Ruby on Windows / XQuarts on Mac / MRI Ruby
+[Glimmer DSL for JFX (JRuby JavaFX Desktop Development GUI Library)](https://github.com/AndyObtiva/glimmer-dsl-jfx) | Mac / Windows / Linux | No | Yes (javafx.scene.shape and javafx.scene.canvas) | Rich in Custom Widgets | Slow JRuby Startup Time / Heavy Memory Footprint / Widgets Do Not Look Native | Java / JRuby / JavaFX SDK
+[Glimmer DSL for Swing (JRuby Swing Desktop Development GUI Library)](https://github.com/AndyObtiva/glimmer-dsl-swing) | Mac / Windows / Linux | No | Yes (Java2D) | Very Mature | Slow JRuby Startup Time / Heavy Memory Footprint / Widgets Do Not Look Native | Java / JRuby
+[Glimmer DSL for XML (& HTML)](https://github.com/AndyObtiva/glimmer-dsl-xml) | All Web Browsers | No | Yes (SVG) | Programmable / Lighter-weight Than Actual XML | XML Elements Are Sometimes Not Well-Named (Many Types of Input) | None
+[Glimmer DSL for CSS](https://github.com/AndyObtiva/glimmer-dsl-css) | All Web Browsers | No | Yes | Programmable | CSS Is Over-Engineered / Too Many Features To Learn | None
 
 ## Table of Contents
 
@@ -513,7 +519,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.4.21'
+gem 'glimmer-dsl-libui', '~> 0.4.22'
 ```
 
 Test that installation worked by running the [Meta-Example](#examples):
@@ -583,13 +589,14 @@ w.set_title 'aloha'
 puts w.title # => aloha
 ```
 
-Controls are wrapped as Ruby proxy objects, having a `#libui` method to obtain the wrapped [LibUI](https://github.com/kojix2/LibUI) Fiddle pointer object. Ruby proxy objects rely on composition (via [Proxy Design Pattern](https://en.wikipedia.org/wiki/Proxy_pattern)) instead of inheritance to shield consumers from having to deal with lower-level details unless absolutely needed.
+Controls are wrapped as Ruby proxy objects, having a `#libui` method to obtain the wrapped [LibUI](https://github.com/kojix2/LibUI) Fiddle pointer object. Ruby proxy objects rely on composition (via [Proxy Design Pattern](https://en.wikipedia.org/wiki/Proxy_pattern)) instead of inheritance to shield consumers from having to deal with lower-level details unless absolutely needed. That said, you can invoke any [LibUI operation](#libui-operations) on the Glimmer proxy object directly and it gets proxied automatically to the wrapped Fiddle pointer object (e.g. `window_proxy.title` gets proxied to `LibUI.window_title(window_proxy.libui).to_s` automatically), so you rarely have to refer to the wrapped `#libui` Fiddle pointer object directly.
 
 Example (you may copy/paste in [`girb`](#girb-glimmer-irb)):
 
 ```ruby
 w = window('hello world') # => #<Glimmer::LibUI::WindowProxy:0x00007fde4ea39fb0
 w.libui # => #<Fiddle::Pointer:0x00007fde53997980 ptr=0x00007fde51352a60 size=0 free=0x0000000000000000>
+w.title == LibUI.window_title(w.libui).to_s # => true
 ```
 
 ### Supported Keywords
@@ -9635,18 +9642,31 @@ class Tetris
     
     Model::Game::PREVIEW_PLAYFIELD_HEIGHT.times do |row|
       Model::Game::PREVIEW_PLAYFIELD_WIDTH.times do |column|
-        observe(@game.preview_playfield[row][column], :color) do |new_color|
+        preview_updater = proc do
           Glimmer::LibUI.queue_main do
+            new_color = @game.preview_playfield[row][column].color
             color = Glimmer::LibUI.interpret_color(new_color)
             block = @preview_playfield_blocks[row][column]
-            block[:background_square].fill = color
-            block[:top_bevel_edge].fill = {r: color[:r] + 4*BEVEL_CONSTANT, g: color[:g] + 4*BEVEL_CONSTANT, b: color[:b] + 4*BEVEL_CONSTANT}
-            block[:right_bevel_edge].fill = {r: color[:r] - BEVEL_CONSTANT, g: color[:g] - BEVEL_CONSTANT, b: color[:b] - BEVEL_CONSTANT}
-            block[:bottom_bevel_edge].fill = {r: color[:r] - BEVEL_CONSTANT, g: color[:g] - BEVEL_CONSTANT, b: color[:b] - BEVEL_CONSTANT}
-            block[:left_bevel_edge].fill = {r: color[:r] - BEVEL_CONSTANT, g: color[:g] - BEVEL_CONSTANT, b: color[:b] - BEVEL_CONSTANT}
-            block[:border_square].stroke = new_color == Model::Block::COLOR_CLEAR ? COLOR_GRAY : color
+            if @game.show_preview_tetromino?
+              block[:background_square].fill = color
+              block[:top_bevel_edge].fill = {r: color[:r] + 4*BEVEL_CONSTANT, g: color[:g] + 4*BEVEL_CONSTANT, b: color[:b] + 4*BEVEL_CONSTANT}
+              block[:right_bevel_edge].fill = {r: color[:r] - BEVEL_CONSTANT, g: color[:g] - BEVEL_CONSTANT, b: color[:b] - BEVEL_CONSTANT}
+              block[:bottom_bevel_edge].fill = {r: color[:r] - BEVEL_CONSTANT, g: color[:g] - BEVEL_CONSTANT, b: color[:b] - BEVEL_CONSTANT}
+              block[:left_bevel_edge].fill = {r: color[:r] - BEVEL_CONSTANT, g: color[:g] - BEVEL_CONSTANT, b: color[:b] - BEVEL_CONSTANT}
+              block[:border_square].stroke = new_color == Model::Block::COLOR_CLEAR ? COLOR_GRAY : color
+            else
+              transparent_color = {r: 255, g: 255, b: 255, a: 0}
+              block[:background_square].fill = transparent_color
+              block[:top_bevel_edge].fill = transparent_color
+              block[:right_bevel_edge].fill = transparent_color
+              block[:bottom_bevel_edge].fill = transparent_color
+              block[:left_bevel_edge].fill = transparent_color
+              block[:border_square].stroke = transparent_color
+            end
           end
         end
+        observe(@game.preview_playfield[row][column], :color, &preview_updater)
+        observe(@game, :show_preview_tetromino, &preview_updater)
       end
     end
 
@@ -9694,6 +9714,12 @@ class Tetris
     }
     
     menu('View') {
+      check_menu_item('Show Next Block Preview') {
+        checked <=> [@game, :show_preview_tetromino]
+      }
+      
+      separator_menu_item
+      
       menu_item('Show High Scores') {
         on_clicked do
           show_high_scores
@@ -9705,18 +9731,20 @@ class Tetris
           @game.clear_high_scores!
         }
       }
+      
+      separator_menu_item
     }
 
     menu('Options') {
-      radio_menu_item('Instant Down on Up Arrow') { |r|
+      radio_menu_item('Instant Down on Up Arrow') {
         checked <=> [@game, :instant_down_on_up]
       }
       
-      radio_menu_item('Rotate Right on Up Arrow') { |r|
+      radio_menu_item('Rotate Right on Up Arrow') {
         checked <=> [@game, :rotate_right_on_up]
       }
       
-      radio_menu_item('Rotate Left on Up Arrow') { |r|
+      radio_menu_item('Rotate Left on Up Arrow') {
         checked <=> [@game, :rotate_left_on_up]
       }
     }
@@ -9763,7 +9791,7 @@ class Tetris
     block = {}
     bevel_pixel_size = 0.16 * block_size.to_f
     color = Glimmer::LibUI.interpret_color(Model::Block::COLOR_CLEAR)
-    area {
+    block[:area] = area {
       block[:background_square] = square(0, 0, block_size) {
         fill color
       }
@@ -9841,12 +9869,6 @@ class Tetris
     vertical_box {
       horizontal_box {
         label # filler
-        @preview_playfield_blocks = playfield(playfield_width: Model::Game::PREVIEW_PLAYFIELD_WIDTH, playfield_height: Model::Game::PREVIEW_PLAYFIELD_HEIGHT, block_size: block_size)
-        label # filler
-      }
-
-      horizontal_box {
-        label # filler
         grid {
           stretchy false
           
@@ -9883,6 +9905,12 @@ class Tetris
             halign :center
           }
         }
+        label # filler
+      }
+      
+      horizontal_box {
+        label # filler
+        @preview_playfield_blocks = playfield(playfield_width: Model::Game::PREVIEW_PLAYFIELD_WIDTH, playfield_height: Model::Game::PREVIEW_PLAYFIELD_HEIGHT, block_size: block_size)
         label # filler
       }
     
@@ -10433,6 +10461,10 @@ https://github.com/AndyObtiva/befunge98/tree/gui
 ### i3off Gtk Ruby
 
 https://github.com/iraamaro/i3off-gtk-ruby
+
+### Chess
+
+https://github.com/mikeweber/chess
 
 ## Process
 
