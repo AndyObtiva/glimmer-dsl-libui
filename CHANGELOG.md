@@ -3,6 +3,7 @@
 ## 0.4.22
 
 - examples/tetris.rb "Show Next Block Preview" menu item under "View" menu
+- examples/tetris.rb "Speed" menu
 - Fix issue with examples/tetris.rb not accelerating upon level ups
 
 ## 0.4.21

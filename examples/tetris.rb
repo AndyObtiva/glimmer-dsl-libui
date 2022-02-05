@@ -164,6 +164,14 @@ class Tetris
       separator_menu_item
     }
 
+    menu('Speed') {
+      Model::Game::SPEEDS.each do |speed|
+        radio_menu_item(speed.to_s.capitalize) {
+          checked <=> [@game, "speed_#{speed}"]
+        }
+      end
+    }
+
     menu('Options') {
       radio_menu_item('Instant Down on Up Arrow') {
         checked <=> [@game, :instant_down_on_up]
