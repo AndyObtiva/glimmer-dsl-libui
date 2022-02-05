@@ -335,7 +335,7 @@ NOTE: [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) is 10
 **[Glimmer](https://rubygems.org/gems/glimmer) DSL Comparison Table:**
 DSL | Platforms | Native? | Vector Graphics? | Pros | Cons | Prereqs
 ----|-----------|---------|------------------|------|------|--------
-[Glimmer DSL for SWT (JRuby Desktop Development GUI Framework)](https://github.com/AndyObtiva/glimmer-dsl-swt) | Mac / Windows / Linux | Yes | Yes (Canvas Shape DSL) | Very Mature / Scaffolding / Native Executable Packaging / Custom Widgets | Slow JRuby Startup Time / Heavy Memory Footprint | Java / JRuby 
+[Glimmer DSL for SWT (JRuby Desktop Development GUI Framework)](https://github.com/AndyObtiva/glimmer-dsl-swt) | Mac / Windows / Linux | Yes | Yes (Canvas Shape DSL) | Very Mature / Scaffolding / Native Executable Packaging / Custom Widgets | Slow JRuby Startup Time / Heavy Memory Footprint | Java / JRuby
 [Glimmer DSL for Opal (Pure Ruby Web GUI and Auto-Webifier of Desktop Apps)](https://github.com/AndyObtiva/glimmer-dsl-opal) | All Web Browsers | No | Yes (Canvas Shape DSL) | Simpler than All JavaScript Technologies / Auto-Webify Desktop Apps | Setup Process / Only Rails 5 Support for Now | Rails
 [Glimmer DSL for LibUI (Prerequisite-Free Ruby Desktop Development GUI Library)](https://github.com/AndyObtiva/glimmer-dsl-libui) | Mac / Windows / Linux | Yes | Yes (Area API) | Fast Startup Time / Light Memory Footprint | LibUI is an Incomplete Mid-Alpha Only | None Other Than MRI Ruby
 [Glimmer DSL for Tk (MRI Ruby Desktop Development GUI Library)](https://github.com/AndyObtiva/glimmer-dsl-tk) | Mac / Windows / Linux | Some Native-Themed Widgets (Not Truly Native) | Yes (Canvas) | Fast Startup Time / Light Memory Footprint | Widgets Do Not Look Truly Native, Espcially on Linux | ActiveTcl / MRI Ruby
@@ -9564,7 +9564,7 @@ ruby -r glimmer-dsl-libui -e "require 'examples/tetris'"
 
 Mac | Windows | Linux
 ----|---------|------
-![glimmer-dsl-libui-mac-tetris.png](images/glimmer-dsl-libui-mac-tetris.png) ![glimmer-dsl-libui-mac-tetris-game-over.png](images/glimmer-dsl-libui-mac-tetris-game-over.png) ![glimmer-dsl-libui-mac-tetris-high-scores.png](images/glimmer-dsl-libui-mac-tetris-high-scores.png) | ![glimmer-dsl-libui-windows-tetris.png](images/glimmer-dsl-libui-windows-tetris.png) ![glimmer-dsl-libui-windows-tetris-game-over.png](images/glimmer-dsl-libui-windows-tetris-game-over.png) ![glimmer-dsl-libui-windows-tetris-high-scores.png](images/glimmer-dsl-libui-windows-tetris-high-scores.png) | ![glimmer-dsl-libui-linux-tetris.png](images/glimmer-dsl-libui-linux-tetris.png) ![glimmer-dsl-libui-linux-tetris-game-over.png](images/glimmer-dsl-libui-linux-tetris-game-over.png) ![glimmer-dsl-libui-linux-tetris-high-scores.png](images/glimmer-dsl-libui-linux-tetris-high-scores.png)
+![glimmer-dsl-libui-mac-tetris.png](images/glimmer-dsl-libui-mac-tetris.png) | ![glimmer-dsl-libui-windows-tetris.png](images/glimmer-dsl-libui-windows-tetris.png) | ![glimmer-dsl-libui-linux-tetris.png](images/glimmer-dsl-libui-linux-tetris.png)
 
 New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
 

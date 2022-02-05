@@ -5,7 +5,7 @@ require_relative 'tetris/model/game'
 class Tetris
   include Glimmer
   
-  BLOCK_SIZE = 25
+  BLOCK_SIZE = OS.linux? ? 28 : 25
   BEVEL_CONSTANT = 20
   COLOR_GRAY = {r: 192, g: 192, b: 192}
     
