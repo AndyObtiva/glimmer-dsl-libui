@@ -350,9 +350,11 @@ class Tetris
   def start_moving_tetrominos_down
     unless @tetrominos_start_moving_down
       @tetrominos_start_moving_down = true
-      Glimmer::LibUI.timer(@game.delay) do
+      tetromino_move = proc do
         @game.down! if !@game.game_over? && !@game.paused?
+        Glimmer::LibUI.timer(@game.delay, repeat: false, &tetromino_move)
       end
+      Glimmer::LibUI.timer(@game.delay, repeat: false, &tetromino_move)
     end
   end
   
