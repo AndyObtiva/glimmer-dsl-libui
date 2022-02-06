@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.4.22
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.5.0
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -330,7 +330,7 @@ Mac | Windows | Linux
 
 ![glimmer-dsl-libui-mac-tetris.gif](images/glimmer-dsl-libui-mac-tetris.gif)
 
-NOTE: [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) is 100% feature-complete and in beta mode (though the C [libui](https://github.com/andlabs/libui) is still mid-alpha). Please help make better by contributing, adopting for small or low risk projects, and providing feedback. The more feedback and issues you report the better.
+NOTE: [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) is 100% feature-complete with regards to covering the C [libui](https://github.com/andlabs/libui) library API and in beta mode (though the C [libui](https://github.com/andlabs/libui) is still mid-alpha, which is why [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) cannot be declared v1.0.0 yet). Please help make better by contributing, adopting for small or low risk projects, and providing feedback. The more feedback and issues you report the better.
 
 **[Glimmer](https://rubygems.org/gems/glimmer) DSL Comparison Table:**
 DSL | Platforms | Native? | Vector Graphics? | Pros | Cons | Prereqs
@@ -519,7 +519,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.4.22'
+gem 'glimmer-dsl-libui', '~> 0.5.0'
 ```
 
 Test that installation worked by running the [Meta-Example](#examples):
@@ -1852,6 +1852,8 @@ For Windows, the [LibUI](https://github.com/kojix2/LibUI) project recommends [OC
 For Mac, consider [Platypus](https://github.com/sveinbjornt/Platypus) (builds a native Mac app from a Ruby script)
 
 For Linux, simply package your app as a [Ruby Gem](https://guides.rubygems.org/what-is-a-gem/) and [build rpm package from Ruby Gem](https://www.redpill-linpro.com/sysadvent/2015/12/07/building-rpms-from-gems.html) or [build deb package from Ruby Gem](https://openpreservation.org/blogs/building-debian-package-ruby-program/).
+
+Also, there is a promising project called [ruby-packer](https://github.com/pmq20/ruby-packer) that supports all platforms.
 
 ## Glimmer Style Guide
 

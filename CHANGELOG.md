@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.5.0
+
+- Upgrade to glimmer 2.6.0
+
 ## 0.4.22
 
 - examples/tetris.rb "Show Next Block Preview" menu item under "View" menu

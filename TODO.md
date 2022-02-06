@@ -2,7 +2,7 @@
 
 ## Next
 
-- Upgrade to glimmer 2.6.0
+- Provide an example of highlighting the colors word by word in attributed string example inside API documentation
 - Consider removing default height for main window (default width is enough)
 - Support `contain?` method in `arc` (todo), `polygon` (handled in `georuby` or `winding-polygon` or `point-in-polygon` or `is` or `polygon-validator` or `pip` gem), `polyline` (handled), `polybezier` (not handled), and `figure` (semi-handled unless beziers are in)
 - Support `include?` method in `arc` (todo), `polygon` (handled in georuby), `polyline` (handled), `polybezier` (not handled), and `figure` (semi-handled unless beziers are in)
