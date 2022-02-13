@@ -3,6 +3,8 @@
 ## 0.5.0
 
 - Upgrade to glimmer 2.6.0
+- Support `rectangle` `bounding_box` (minx, miny, width, height), `contain?` method (checking if shape contains point inside) and `include?` method (checking on outline if stroked and inside if filled?)
+- Support `square` `bounding_box` (minx, miny, width, height), `contain?` method (checking if shape contains point inside) and `include?` method (checking on outline if stroked and inside if filled?)
 
 ## 0.4.22
 

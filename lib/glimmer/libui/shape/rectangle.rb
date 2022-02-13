@@ -33,8 +33,13 @@ module Glimmer
           super
         end
         
-        def include?(x, y)
-          x.between?(self.x, self.x + width) && y.between?(self.y, self.y + height)
+        def perfect_shape
+          perfect_shape_dependencies = [x, y, width, height]
+          if perfect_shape_dependencies != @perfect_shape_dependencies
+            @perfect_shape_dependencies = perfect_shape_dependencies
+            @perfect_shape = PerfectShape::Rectangle.new(x: @perfect_shape_dependencies[0], y: @perfect_shape_dependencies[1], width: @perfect_shape_dependencies[2], height: @perfect_shape_dependencies[3])
+          end
+          @perfect_shape
         end
       end
     end

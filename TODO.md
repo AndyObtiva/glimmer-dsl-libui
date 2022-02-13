@@ -2,17 +2,52 @@
 
 ## Next
 
-- Support `contain?` method in `arc` (todo), `polygon` (handled in `georuby` or `winding-polygon` or `point-in-polygon` or `is` or `polygon-validator` or `pip` gem), `polyline` (handled), `polybezier` (not handled), and `figure` (semi-handled unless beziers are in)
-- Support `include?` method in `arc` (todo), `polygon` (handled in georuby), `polyline` (handled), `polybezier` (not handled), and `figure` (semi-handled unless beziers are in)
-- Support `bounds` method in `polygon`, `polyline`, `polybezier`, and all other shapes
+### 0.5.1
+
+- Support `arc` `bounding_box` (minx, miny, width, height), `contain?` method (checking if shape contains point inside) and `include?` method (checking on outline if stroked and inside if filled?)
+- Support `circle` `bounding_box` (minx, miny, width, height), `contain?` method (checking if shape contains point inside) and `include?` method (checking on outline if stroked and inside if filled?)
+
+### 0.5.2
+
+- Support `line` `bounding_box` (minx, miny, width, height), `contain?` method (checking if shape contains point inside) and `include?` method (checking on outline if stroked and inside if filled?)
+- Support `bezier` `bounding_box` (minx, miny, width, height), `contain?` method (checking if shape contains point inside) and `include?` method (checking on outline if stroked and inside if filled?)
+
+### 0.5.3
+
+- Support `polygon` `bounding_box` (minx, miny, width, height), `contain?` method (checking if shape contains point inside) and `include?` method (checking on outline if stroked and inside if filled?)
+- Support `polyline` `bounding_box` (minx, miny, width, height), `contain?` method (checking if shape contains point inside) and `include?` method (checking on outline if stroked and inside if filled?)
+- Support `polybezier` `bounding_box` (minx, miny, width, height), `contain?` method (checking if shape contains point inside) and `include?` method (checking on outline if stroked and inside if filled?)
+
+### 0.5.4
+
+- Support `figure` `bounding_box` (minx, miny, width, height), `contain?` method (checking if shape contains point inside) and `include?` method (checking on outline if stroked and inside if filled?)
+
+### 0.5.5
+
+- Support `path` `bounding_box` (minx, miny, width, height), `contain?` method (checking if shape contains point inside) and `include?` method (checking on outline if stroked and inside if filled?)
+
+### 0.5.6
+
+- Support `drag_and_move true` (just enables dragging and moving shapes in area)
+
+### 0.5.7
 
 - Support Custom Shapes, describing composite shapes/text/image concepts inside an `area`
-- Simpler Drag and Drop via `drag_source true`, `drag_and_move true`, `drop_target true`, and `on_drop { }` event (working within same area or across different areas)
-- examples/area_drag_and_drop.rb (customize a face with face parts like mustache, nose, lips, eyes, eyebrows, and hair)
+
+### 0.5.8
+
+- examples/area_drag_and_move.rb (customize a face with face parts like mustache, nose, lips, eyes, eyebrows, and hair)
+
+### 0.5.9
+
+- Simpler Drag and Drop via `drag_source true`, `drop_target true`, and `on_drop { }` event (working within same area)
+
+### 0.5.10
+
+- Build Quarto game sample using area drag and drop: https://en.gigamic.com/game/quarto-classic
 
 ## Soon
 
-- Build Quarto game sample: https://en.gigamic.com/game/quarto-classic
 - examples/file_tabs.rb (inspired by this addressed issue: https://github.com/AndyObtiva/glimmer-dsl-libui/issues/16)
 - Glimmerize examples/draw_text.rb from Ruby LibUI project
 - Glimmerize examples/spectrum.rb from Ruby LibUI project
@@ -52,6 +87,7 @@
 - Support `table` `on_changing` listener to intercept change and cancel it if needed (`on_changing`)
 - Fold menus inside a `menu_bar` control
 - Support `matrix` `transform_point` method
+- Support `point` construct (as a `rectangle` with width/height of `1`)
 - Support `matrix` `transform_size` method
 - Support `matrix` operation noun names (e.g. `translation` for `translate`) to be more declarative
 - Interpret characters in key event while holding a modifer down (e.g. ! for 1 + shift)
@@ -69,7 +105,6 @@
 - Automatically call `Glimmer::LibUI.queue_main` when operating on GUI from a different thread
 - Override `#inspect` method for area, path, text, and/or other controls in case they contain many shapes, to prevent their printout from being too large
 - Implement functionality to delay queuing area redraws until post_add_content has been called (area definition is done). Maybe offer an option to enable redrawing before area is closed too.
-- Implement `bounds` property for all shapes
 - Support SVG `image` control by rendering on `area`
 - Support Bitmap `image` control file format
 - Support row/column alternative syntax to left/top in `grid`(and maybe x/y too)
@@ -85,6 +120,8 @@
 - Support x, y, diameter alternative dimensions for circle
 - Support `rgb` and `rgba` keywords for easier entry of colors, similar to that of Glimmer DSL for SWT
 - Invert or expand the use of Glimmer::LibUI::ControlProxy::KEYWORD_ALIASES with an array (it does not permit definining multiple aliases at the moment)
+- Drag and drop working across different areas
+- Offer fuzz comparison options for Shape#include?(*point) on outline when stroked or in general (available in PerfectShape)
 
 # Refactoring
 

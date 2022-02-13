@@ -33,8 +33,15 @@ module Glimmer
           super
         end
         
-        def include?(x, y)
-          x.between?(self.x, self.x + length) && y.between?(self.y, self.y + length)
+        # TODO look into refactoring/unifying code with Rectangle
+        
+        def perfect_shape
+          perfect_shape_dependencies = [x, y, length]
+          if perfect_shape_dependencies != @perfect_shape_dependencies
+            @perfect_shape_dependencies = perfect_shape_dependencies
+            @perfect_shape = PerfectShape::Square.new(x: @perfect_shape_dependencies[0], y: @perfect_shape_dependencies[1], length: @perfect_shape_dependencies[2])
+          end
+          @perfect_shape
         end
       end
     end

@@ -145,6 +145,42 @@ module Glimmer
       end
       alias transform= transform
       alias set_transform transform
+    
+      # Returns if shape contains point on the inside
+      def contain?(*point)
+        perfect_shape&.contain?(*point)
+      end
+      
+      # Returns if shape includes point on the inside when filled
+      # or if shape includes point on the outline when stroked
+      def include?(*point)
+        if fill.empty?
+          perfect_shape&.contain?(*point, outline: true, distance_tolerance: ((stroke[:thickness] || 1) - 1))
+        else
+          perfect_shape&.contain?(*point)
+        end
+      end
+      
+      # Returns bounding box Array consisting of
+      # [minx, miny, width, height]
+      def bounding_box
+        perfect_shape_bounding_box = perfect_shape&.bounding_box
+        return if perfect_shape_bounding_box.nil?
+        [
+          perfect_shape_bounding_box.x,
+          perfect_shape_bounding_box.y,
+          perfect_shape_bounding_box.width,
+          perfect_shape_bounding_box.height,
+        ]
+      end
+      
+      # Returns PerfectShape object matching this shape to enable
+      # executing computational geometry algorithms
+      #
+      # Subclasses must implement
+      def perfect_shape
+        # No Op
+      end
       
       def respond_to?(method_name, *args, &block)
         self.class.parameters.include?(method_name.to_s.sub(/=$/, '').sub(/^set_/, '').to_sym) or

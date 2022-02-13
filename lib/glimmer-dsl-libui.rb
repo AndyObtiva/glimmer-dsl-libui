@@ -23,6 +23,7 @@ $LOAD_PATH.unshift(File.expand_path('..', __FILE__))
 
 # External requires
 require 'glimmer'
+require 'perfect-shape'
 # require 'logging'
 # require 'puts_debuggerer' if ENV['pd'].to_s.downcase == 'true'
 # require 'super_module'
