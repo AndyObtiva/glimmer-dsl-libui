@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.5.0
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.4.22
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -519,7 +519,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.5.0'
+gem 'glimmer-dsl-libui', '~> 0.4.22'
 ```
 
 Test that installation worked by running the [Meta-Example](#examples):
@@ -1008,15 +1008,49 @@ To draw `text` in an `area`, you simply nest a `text(x, y, width)` control direc
 Example (you may copy/paste in [`girb`](#girb-glimmer-irb)):
 
 ```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
 window('area text drawing') {
   area {
     text {
       default_font family: 'Helvetica', size: 12, weight: :normal, italic: :normal, stretch: :normal
         
+      string('This ') {
+        font size: 20, weight: :bold, italic: :normal, stretch: :normal
+        color r: 128, g: 0, b: 0, a: 1
+      }
+        
+      string('is ') {
+        font size: 20, weight: :bold, italic: :normal, stretch: :normal
+        color r: 0, g: 128, b: 0, a: 1
+      }
+        
+      string('a ') {
+        font size: 20, weight: :bold, italic: :normal, stretch: :normal
+        color r: 0, g: 0, b: 128, a: 1
+      }
+        
+      string('short ') {
+        font size: 20, weight: :bold, italic: :italic, stretch: :normal
+        color r: 128, g: 128, b: 0, a: 1
+      }
+        
+      string('attributed ') {
+        font size: 20, weight: :bold, italic: :normal, stretch: :normal
+        color r: 0, g: 128, b: 128, a: 1
+      }
+        
+      string("string \n\n") {
+        font size: 20, weight: :bold, italic: :normal, stretch: :normal
+        color r: 128, g: 0, b: 128, a: 1
+      }
+        
       string {
         font family: 'Georgia', size: 13, weight: :medium, italic: :normal, stretch: :normal
-        color r: 230, g: 100, b: 50, a: 0.5
-        background r: 230, g: 200, b: 250, a: 0.8
+        color r: 0, g: 128, b: 255, a: 1
+        background r: 255, g: 255, b: 0, a: 0.5
         underline :single
         underline_color :spelling
         open_type_features {
@@ -1029,12 +1063,13 @@ window('area text drawing') {
         "attributed string\n" \
         "spanning multiple lines\n\n"
       }
-      
-      string('This is a short unattributed string')
     }
   }
 }.show
 ```
+
+![glimmer-dsl-libui-mac-area-text-drawing.png](/images/glimmer-dsl-libui-mac-area-text-drawing.png)
+
 
 You may checkout [examples/basic_draw_text.rb](#basic-draw-text) and [examples/custom_draw_text.rb](#custom-draw-text) for examples of using `text` inside `area`.
 
