@@ -146,18 +146,22 @@ module Glimmer
       alias transform= transform
       alias set_transform transform
     
-      # Returns if shape contains point on the inside
-      def contain?(*point)
-        perfect_shape&.contain?(*point)
+      # Returns if shape contains point on the inside when outline is false (default)
+      # or if point is on the outline when outline is true
+      # distance_tolerance is used when outline is true to enable a fuzz factor in
+      # determining if a point lies on the outline (e.g. makes it easier to select
+      # a shape by mouse)
+      def contain?(*point, outline: false, distance_tolerance: 0)
+        perfect_shape&.contain?(*point, outline: outline, distance_tolerance: distance_tolerance)
       end
       
       # Returns if shape includes point on the inside when filled
       # or if shape includes point on the outline when stroked
       def include?(*point)
         if fill.empty?
-          perfect_shape&.contain?(*point, outline: true, distance_tolerance: ((stroke[:thickness] || 1) - 1))
+          contain?(*point, outline: true, distance_tolerance: ((stroke[:thickness] || 1) - 1))
         else
-          perfect_shape&.contain?(*point)
+          contain?(*point)
         end
       end
       

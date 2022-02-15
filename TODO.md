@@ -77,6 +77,7 @@
 - Create more advanced examples such as Calculator, Connect 4, Clock, Metronome, Weather, Stock Ticker, Battleship, Game of Life
 - Optimize startup time, perhaps dropping 'os' gem for direct use of `Gem::Platform.local` instead.
 - Support configuration of global widget default properties to quickly affect the style of an entire app globally without the complexity of CSS expressions.
+- Cover all of Glimmer DSL for LibUI with automated tests and a continuous integration server on Mac, Windows, and Linux to release version 1.0.0
 
 ## Maybe
 

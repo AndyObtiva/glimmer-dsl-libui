@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.5.1
+
+- Alter `Shape#contain?` to support `outline: ` and `distance_tolerance: ` options as per perfect-shape gem
+
 ## 0.5.0
 
 - Upgrade to glimmer 2.6.0
