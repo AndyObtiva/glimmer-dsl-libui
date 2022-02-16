@@ -2,10 +2,6 @@
 
 ## Next
 
-### 0.5.1
-
-- Support `circle` `bounding_box` (minx, miny, width, height), `contain?` method (checking if shape contains point inside) and `include?` method (checking on outline if stroked and inside if filled?)
-
 ### 0.5.2
 
 - Support `line` `bounding_box` (minx, miny, width, height), `contain?` method (checking if shape contains point inside) and `include?` method (checking on outline if stroked and inside if filled?)

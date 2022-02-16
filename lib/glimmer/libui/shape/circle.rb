@@ -45,8 +45,13 @@ module Glimmer
           super
         end
         
-        def include?(x, y)
-          (x - x_center)**2 + (y - y_center)**2 < radius**2
+        def perfect_shape
+          perfect_shape_dependencies = [x_center, y_center, radius]
+          if perfect_shape_dependencies != @perfect_shape_dependencies
+            x_center, y_center, radius = @perfect_shape_dependencies = perfect_shape_dependencies
+            @perfect_shape = PerfectShape::Circle.new(center_x: x_center, center_y: y_center, radius: radius)
+          end
+          @perfect_shape
         end
       end
     end

@@ -81,7 +81,7 @@ class ColorTheCircles
   
   def color_circle(x, y)
     clicked_circle_data = @circles_data.find do |circle_data|
-      circle_data[:fill].nil? && circle_data[:circle]&.include?(x, y)
+      circle_data[:fill].nil? && circle_data[:circle]&.contain?(x, y)
     end
     if clicked_circle_data
       clicked_circle_data[:fill] = clicked_circle_data[:stroke]
