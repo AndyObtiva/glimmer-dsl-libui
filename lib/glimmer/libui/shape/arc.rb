@@ -44,6 +44,21 @@ module Glimmer
           end
           super
         end
+        
+        def perfect_shape
+          perfect_shape_dependencies = [x_center, y_center, radius, start_angle, sweep, is_negative]
+          if perfect_shape_dependencies != @perfect_shape_dependencies
+            x_center, y_center, radius, start_angle, sweep, is_negative = @perfect_shape_dependencies = perfect_shape_dependencies
+            sign = is_negative ? 1 : -1
+            @perfect_shape = PerfectShape::Arc.new(
+              type: :open,
+              center_x: x_center, center_y: y_center,
+              radius_x: radius, radius_y: radius,
+              start: start_angle*sign, extent: sweep*sign
+            )
+          end
+          @perfect_shape
+        end
       end
     end
   end

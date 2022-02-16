@@ -4,7 +4,6 @@
 
 ### 0.5.1
 
-- Support `arc` `bounding_box` (minx, miny, width, height), `contain?` method (checking if shape contains point inside) and `include?` method (checking on outline if stroked and inside if filled?)
 - Support `circle` `bounding_box` (minx, miny, width, height), `contain?` method (checking if shape contains point inside) and `include?` method (checking on outline if stroked and inside if filled?)
 
 ### 0.5.2

@@ -36,8 +36,8 @@ module Glimmer
         def perfect_shape
           perfect_shape_dependencies = [x, y, width, height]
           if perfect_shape_dependencies != @perfect_shape_dependencies
-            @perfect_shape_dependencies = perfect_shape_dependencies
-            @perfect_shape = PerfectShape::Rectangle.new(x: @perfect_shape_dependencies[0], y: @perfect_shape_dependencies[1], width: @perfect_shape_dependencies[2], height: @perfect_shape_dependencies[3])
+            x, y, width, height = @perfect_shape_dependencies = perfect_shape_dependencies
+            @perfect_shape = PerfectShape::Rectangle.new(x: x, y: y, width: width, height: height)
           end
           @perfect_shape
         end

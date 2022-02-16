@@ -3,6 +3,7 @@
 ## 0.5.1
 
 - Alter `Shape#contain?` to support `outline: ` and `distance_tolerance: ` options as per perfect-shape gem
+- Support `arc` `bounding_box` (minx, miny, width, height), `contain?` method (checking if shape contains point inside) and `include?` method (checking on outline if stroked and inside if filled?)
 
 ## 0.5.0
 
