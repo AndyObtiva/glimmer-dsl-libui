@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.5.0
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.5.1
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -519,7 +519,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.5.0'
+gem 'glimmer-dsl-libui', '~> 0.5.1'
 ```
 
 Test that installation worked by running the [Meta-Example](#examples):
@@ -5533,7 +5533,7 @@ class ColorTheCircles
   
   def color_circle(x, y)
     clicked_circle_data = @circles_data.find do |circle_data|
-      circle_data[:fill].nil? && circle_data[:circle]&.include?(x, y)
+      circle_data[:fill].nil? && circle_data[:circle]&.contain?(x, y)
     end
     if clicked_circle_data
       clicked_circle_data[:fill] = clicked_circle_data[:stroke]
