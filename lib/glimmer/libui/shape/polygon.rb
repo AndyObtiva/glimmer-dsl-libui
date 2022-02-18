@@ -40,6 +40,17 @@ module Glimmer
           end
           super
         end
+        
+        def perfect_shape
+          perfect_shape_dependencies = PerfectShape::MultiPoint.normalize_point_array(point_array)
+          if perfect_shape_dependencies != @perfect_shape_dependencies
+            point_array = @perfect_shape_dependencies = perfect_shape_dependencies
+            path_shapes = [point_array.first]
+            path_shapes += point_array.drop(1).map { |point| PerfectShape::Line.new(points: [point]) }
+            @perfect_shape = PerfectShape::Path.new(closed: true, shapes: path_shapes)
+          end
+          @perfect_shape
+        end
       end
     end
   end
