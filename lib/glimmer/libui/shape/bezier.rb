@@ -49,6 +49,15 @@ module Glimmer
         def include_start_point?
           x && y
         end
+        
+        def perfect_shape
+          perfect_shape_dependencies = [x, y, c1_x, c1_y, c2_x, c2_y, end_x, end_y]
+          if perfect_shape_dependencies != @perfect_shape_dependencies
+            x, y, c1_x, c1_y, c2_x, c2_y, end_x, end_y = @perfect_shape_dependencies = perfect_shape_dependencies
+            @perfect_shape = PerfectShape::CubicBezierCurve.new(points: [[x, y], [c1_x, c1_y], [c2_x, c2_y], [end_x, end_y]])
+          end
+          @perfect_shape
+        end
       end
     end
   end

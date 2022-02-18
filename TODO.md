@@ -2,11 +2,6 @@
 
 ## Next
 
-### 0.5.2
-
-- Support `line` `bounding_box` (minx, miny, width, height), `contain?` method (checking if shape contains point inside) and `include?` method (checking on outline if stroked and inside if filled?)
-- Support `bezier` `bounding_box` (minx, miny, width, height), `contain?` method (checking if shape contains point inside) and `include?` method (checking on outline if stroked and inside if filled?)
-
 ### 0.5.3
 
 - Support `polygon` `bounding_box` (minx, miny, width, height), `contain?` method (checking if shape contains point inside) and `include?` method (checking on outline if stroked and inside if filled?)
@@ -23,21 +18,27 @@
 
 ### 0.5.6
 
-- Support `drag_and_move true` (just enables dragging and moving shapes in area)
+- Support Custom Shapes, describing composite shapes/text/image concepts inside an `area`
+- Look into extracting `bevel` Custom Shape in Tetris
 
 ### 0.5.7
 
-- Support Custom Shapes, describing composite shapes/text/image concepts inside an `area`
+- Support Custom Shape `bounding_box` (minx, miny, width, height), `contain?` method (checking if shape contains point inside) and `include?` method (checking on outline if stroked and inside if filled?)
 
 ### 0.5.8
 
-- examples/area_drag_and_move.rb (customize a face with face parts like mustache, nose, lips, eyes, eyebrows, and hair)
+- Support nesting area mouse and keyboard listeners underneath shapes directly given the newly added support for the `include?(x, y)` method, which can be used to detect if a mouse or keyboard event fired for a specific shape
 
 ### 0.5.9
 
-- Simpler Drag and Drop via `drag_source true`, `drop_target true`, and `on_drop { }` event (working within same area)
+- Support `drag_and_move true` (just enables dragging and moving shapes in area)
+- examples/area_drag_and_move.rb (customize a face with face parts like mustache, nose, lips, eyes, eyebrows, and hair) [utilize SVGs from https://editor.dicebear.com/]
 
 ### 0.5.10
+
+- Simpler Drag and Drop via `drag_source true`, `drop_target true`, and `on_drop { }` event (working within same area)
+
+### 0.5.11
 
 - Build Quarto game sample using area drag and drop: https://en.gigamic.com/game/quarto-classic
 
@@ -63,15 +64,13 @@
     self.toggle_button_switch_fill = {r: 247, g: 247, b: 247}
 ```
 
-
 ## Far Future
 
-- Automate OCRA support for Windows Native-Executable Packaging
-- Implement Mac Native-Executable Packaging (perhaps with https://github.com/create-dmg/create-dmg or https://github.com/sveinbjornt/Platypus)
-- Scaffold an application with support for gem and native-executable packaging
-- Create more advanced examples such as Calculator, Connect 4, Clock, Metronome, Weather, Stock Ticker, Battleship, Game of Life
+- Scaffold an application
 - Optimize startup time, perhaps dropping 'os' gem for direct use of `Gem::Platform.local` instead.
 - Support configuration of global widget default properties to quickly affect the style of an entire app globally without the complexity of CSS expressions.
+- Automate OCRA support for Windows Native-Executable Packaging
+- Implement Mac Native-Executable Packaging (perhaps with https://github.com/create-dmg/create-dmg or https://github.com/sveinbjornt/Platypus)
 - Cover all of Glimmer DSL for LibUI with automated tests and a continuous integration server on Mac, Windows, and Linux to release version 1.0.0
 
 ## Maybe
@@ -118,9 +117,14 @@
 - Invert or expand the use of Glimmer::LibUI::ControlProxy::KEYWORD_ALIASES with an array (it does not permit definining multiple aliases at the moment)
 - Drag and drop working across different areas
 - Offer fuzz comparison options for Shape#include?(*point) on outline when stroked or in general (available in PerfectShape)
+- Scaffold a custom control gem
+- Scaffold a custom shape gem
+- Scaffold a custom control within existing application
+- Scaffold a custom shape within existing application
 
 # Refactoring
 
 - Refactor column proxies code to be more dynamic and enable autosupport of new columns in the future
 - Split attribute getter/setter methods that accept value as nil or empty with separate getter and setter methods and ensure calls to libui setters are routed to attr= methods
 - Use enum symbols everwhere enum values are used directly
+- Refactor all perfect_shape methods to do parameterized memoization automatically with some declarative method or some library
