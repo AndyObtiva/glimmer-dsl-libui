@@ -57,7 +57,7 @@ module Glimmer
           perfect_shape_dependencies = [x, y, end_x, end_y]
           if perfect_shape_dependencies != @perfect_shape_dependencies
             x, y, end_x, end_y = @perfect_shape_dependencies = perfect_shape_dependencies
-            @perfect_shape = PerfectShape::Line.new(points: [[x, y], [end_x, end_y]])
+            @perfect_shape = PerfectShape::Line.new(points: [x, y, end_x, end_y].compact)
           end
           @perfect_shape
         end

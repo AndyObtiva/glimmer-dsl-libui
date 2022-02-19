@@ -50,6 +50,18 @@ module Glimmer
         alias closed= closed
         alias set_closed closed
         alias closed? closed
+        
+        def perfect_shape
+          perfect_shape_dependencies = [x, y, closed, parent.draw_fill_mode, children]
+          if perfect_shape_dependencies != @perfect_shape_dependencies
+            x, y, closed, draw_fill_mode, children = @perfect_shape_dependencies = perfect_shape_dependencies
+            path_shapes = [[x, y]]
+            path_shapes += children.map(&:perfect_shape)
+            winding_rule = draw_fill_mode == 0 ? :wind_non_zero : :wind_even_odd
+            @perfect_shape = PerfectShape::Path.new(closed: closed, winding_rule: winding_rule, shapes: path_shapes)
+          end
+          @perfect_shape
+        end
       end
     end
   end
