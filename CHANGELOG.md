@@ -3,6 +3,7 @@
 ## 0.5.4
 
 - Support `figure` `bounding_box` (minx, miny, width, height), `contain?` method (checking if shape contains point inside) and `include?` method (checking on outline if stroked and inside if filled?)
+- Have `path` `draw_fill_mode` return `:winding` or `:alternate` while `draw_fill_mode_value` returns `0` or `1` respectively
 
 ## 0.5.3
 

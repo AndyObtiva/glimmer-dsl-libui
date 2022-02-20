@@ -60,6 +60,10 @@ module Glimmer
         end
         
         def draw_fill_mode
+          @args[0].is_a?(Integer) ? (@args[0] == 0 ? :winding : :alternate ) : ((@args[0].is_a?(String) || @args[0].is_a?(Symbol)) ? @args[0].to_sym : :winding)
+        end
+        
+        def draw_fill_mode_value
           @args[0].is_a?(Integer) ? @args[0] : @args[0].to_s == 'alternate' ? 1 : 0
         end
         
@@ -159,7 +163,7 @@ module Glimmer
         private
         
         def build_control
-          @libui = ::LibUI.draw_new_path(draw_fill_mode)
+          @libui = ::LibUI.draw_new_path(draw_fill_mode_value)
         end
         
         def init_draw_brush(draw_brush, draw_brush_args)
