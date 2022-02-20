@@ -2,6 +2,8 @@
 
 ## Next
 
+Upgrade to glimmer 2.7.0 and document: - **Keyed:** `String` containing hash attribute key (e.g. `[customer, 'addresses[:main].street']`). That results in "keyed data-binding"
+
 ### 0.5.5
 
 - Support `path` (supporting multiple figures or shapes) `bounding_box` (minx, miny, width, height), `contain?` method (checking if shape contains point inside) and `include?` method (checking on outline if stroked and inside if filled?)

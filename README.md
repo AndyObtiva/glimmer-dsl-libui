@@ -24,7 +24,7 @@ The main trade-off in using [Glimmer DSL for LibUI](https://rubygems.org/gems/gl
 - [Far Future Plan] Scaffolding for new custom controls, apps, and gems
 - [Far Future Plan] Native-Executable packaging on Mac, Windows, and Linux.
 
-Note that currently, [LibUI](https://github.com/kojix2/LibUI) only includes x86_64 binaries out of the box, but there are plans to include ARM64/AARCH64 binaries too in the future.
+Note that currently, [LibUI](https://github.com/kojix2/LibUI) only includes x86_64 binaries out of the box, but [there are plans to include ARM64/AARCH64 binaries](https://github.com/kojix2/LibUI/issues/47) too in the future.
 
 Hello, World!
 
@@ -338,7 +338,7 @@ DSL | Platforms | Native? | Vector Graphics? | Pros | Cons | Prereqs
 [Glimmer DSL for SWT (JRuby Desktop Development GUI Framework)](https://github.com/AndyObtiva/glimmer-dsl-swt) | Mac / Windows / Linux | Yes | Yes (Canvas Shape DSL) | Very Mature / Scaffolding / Native Executable Packaging / Custom Widgets | Slow JRuby Startup Time / Heavy Memory Footprint | Java / JRuby
 [Glimmer DSL for Opal (Pure Ruby Web GUI and Auto-Webifier of Desktop Apps)](https://github.com/AndyObtiva/glimmer-dsl-opal) | All Web Browsers | No | Yes (Canvas Shape DSL) | Simpler than All JavaScript Technologies / Auto-Webify Desktop Apps | Setup Process / Only Rails 5 Support for Now | Rails
 [Glimmer DSL for LibUI (Prerequisite-Free Ruby Desktop Development GUI Library)](https://github.com/AndyObtiva/glimmer-dsl-libui) | Mac / Windows / Linux | Yes | Yes (Area API) | Fast Startup Time / Light Memory Footprint | LibUI is an Incomplete Mid-Alpha Only | None Other Than MRI Ruby
-[Glimmer DSL for Tk (MRI Ruby Desktop Development GUI Library)](https://github.com/AndyObtiva/glimmer-dsl-tk) | Mac / Windows / Linux | Some Native-Themed Widgets (Not Truly Native) | Yes (Canvas) | Fast Startup Time / Light Memory Footprint | Widgets Do Not Look Truly Native, Espcially on Linux | ActiveTcl / MRI Ruby
+[Glimmer DSL for Tk (Ruby Tk Desktop Development GUI Library)](https://github.com/AndyObtiva/glimmer-dsl-tk) | Mac / Windows / Linux | Some Native-Themed Widgets (Not Truly Native) | Yes (Canvas) | Fast Startup Time / Light Memory Footprint | Complicated Setup / Widgets Do Not Look Truly Native, Espcially on Linux | ActiveTcl / MRI Ruby
 [Glimmer DSL for GTK (Ruby-GNOME Desktop Development GUI Library)](https://github.com/AndyObtiva/glimmer-dsl-gtk) | Mac / Windows / Linux | Only on Linux | Yes (Cairo) | Complete Access to GNOME Features on Linux (Forte) | Not Native on Mac and Windows | None Other Than MRI Ruby on Linux / Brew Packages on Mac / MSYS & MING Toolchains on Windows / MRI Ruby
 [Glimmer DSL for FX (FOX Toolkit Ruby Desktop Development GUI Library)](https://github.com/AndyObtiva/glimmer-dsl-fx) | Mac (requires XQuartz) / Windows / Linux | No | Yes (Canvas) | No Prerequisites on Windows (Forte Since Binaries Are Included Out of The Box) | Widgets Do Not Look Native / Mac Usage Obtrusively Starts XQuartz | None Other Than MRI Ruby on Windows / XQuarts on Mac / MRI Ruby
 [Glimmer DSL for JFX (JRuby JavaFX Desktop Development GUI Library)](https://github.com/AndyObtiva/glimmer-dsl-jfx) | Mac / Windows / Linux | No | Yes (javafx.scene.shape and javafx.scene.canvas) | Rich in Custom Widgets | Slow JRuby Startup Time / Heavy Memory Footprint / Widgets Do Not Look Native | Java / JRuby / JavaFX SDK
@@ -370,6 +370,7 @@ DSL | Platforms | Native? | Vector Graphics? | Pros | Cons | Prereqs
       - [Area Listeners](#area-listeners)
       - [Area Methods/Attributes](#area-methods-attributes)
       - [Area Transform Matrix](#area-transform-matrix)
+      - [Area Animation](#area-animation)
     - [Smart Defaults and Conventions](#smart-defaults-and-conventions)
     - [Custom Keywords](#custom-keywords)
     - [Observer Pattern](#observer-pattern)
@@ -452,10 +453,68 @@ The Glimmer GUI DSL provides object-oriented declarative hierarchical syntax for
 - Requires the minimum amount of syntax needed to describe an app's GUI
 
 The Glimmer GUI DSL follows these simple concepts in mapping from [LibUI](https://github.com/kojix2/LibUI) syntax:
-- **Keyword(args)**: [LibUI](https://github.com/kojix2/LibUI) controls may be declared by lower-case underscored name (aka keyword) (e.g. `window` or `button`). Behind the scenes, they are represented by keyword methods that map to corresponding `LibUI.new_keyword` methods receiving args (e.g. `window('hello world', 300, 200, true)`).
-- **Content Block** (Properties/Listeners/Controls): Any keyword may be optionally followed by a Ruby curly-brace multi-line content block containing properties (attributes), listeners, and/or nested controls (e.g. `window {title 'hello world'; on_closing {puts 'Bye'}; button('greet')}`). Content block optionally receives one arg representing the control (e.g. `button('greet') {|b| on_clicked { puts b.text}}`)
-- **Property**: Control properties may be declared inside keyword blocks with lower-case underscored name followed by property value args (e.g. `title "hello world"` inside `group`). Behind the scenes, properties correspond to `LibUI.control_set_property` methods.
-- **Listener**: Control listeners may be declared inside keyword blocks with listener lower-case underscored name beginning with `on_` and receiving required block handler (e.g. `on_clicked {puts 'clicked'}` inside `button`). Optionally, the listener block can receive an arg representing the control (e.g. `on_clicked {|btn| puts btn.text}`). Behind the scenes, listeners correspond to `LibUI.control_on_event` methods.
+
+**Keyword(args)**: [LibUI](https://github.com/kojix2/LibUI) controls may be declared by lower-case underscored name (aka keyword from list of [supported keywords](#supported-keywords)) (e.g. `window` or `button`). Behind the scenes, they are represented by keyword methods that map to corresponding `LibUI.new_keyword` methods receiving args (e.g. `window('hello world', 300, 200, true)`).
+
+**Content Block** (Properties/Listeners/Controls): Any keyword may be optionally followed by a Ruby curly-brace multi-line content block containing properties (attributes), listeners, and/or nested controls. 
+
+Example:
+
+```ruby
+window {
+  title 'hello world' # property
+  
+  on_closing do # listener (always has a do; end block to signify logic)
+    puts 'Bye'
+  end 
+  
+  button('greet') { # nested control
+    on_clicked do
+      puts 'hello world'
+    end
+  }
+}
+```
+
+Content block optionally receives one arg representing the controll 
+
+Example:
+
+```ruby
+button('greet') { |b| 
+  on_clicked do 
+    puts b.text
+  end
+}
+```
+
+**Property**: Control properties may be declared inside keyword blocks with lower-case underscored name followed by property value args (e.g. `title "hello world"` inside `group`). Behind the scenes, properties correspond to `LibUI.control_set_property` methods.
+
+**Listener**: Control listeners may be declared inside keyword blocks with listener lower-case underscored name beginning with `on_` and receiving required block handler (always followed by a `do; end` style block to signify logic). 
+
+Example:
+
+```ruby
+button('click') {
+  on_clicked do
+    puts 'clicked'
+  end
+}
+```
+
+Optionally, the listener block can receive an arg representing the control. 
+
+```ruby
+button('click') {
+  on_clicked do |btn| 
+    puts btn.text
+  end
+}
+```
+
+Behind the scenes, listeners correspond to `LibUI.control_on_event` methods.
+
+**Method**: Controls have methods that invoke certain operations on them. For example, `window` has a `#show` method that shows the window GUI. More methods are mentioned under [API](#api)
 
 Example of an app written in [LibUI](https://github.com/kojix2/LibUI)'s procedural imperative syntax:
 
@@ -1404,6 +1463,92 @@ You can set a `matrix`/`transform` on `area` directly to conveniently apply to a
 
 Note that `area`, `path`, and nested shapes are all truly declarative, meaning they do not care about the ordering of calls to `fill`, `stroke`, and `transform`. Furthermore, any transform that is applied is reversed at the end of the block, so you never have to worry about the ordering of `transform` calls among different paths. You simply set a transform on the `path`s that need it and it is guaranteed to be called before all its content is drawn, and then undone afterwards to avoid affecting later paths. Matrix `transform` can be set on an entire `area` too, applying to all nested `path`s.
 
+#### Area Animation
+
+If you need to animate `area` vector graphics, you just have to use the [`Glimmer::LibUI::timer`](#libui-operations) method along with making changes to shape attributes.
+
+Spinner example that has a fully customizable method-based custom control called `spinner`, which is destroyed if you click on it (you may copy/paste in [`girb`](#girb-glimmer-irb)):
+
+```ruby
+require 'glimmer-dsl-libui'
+
+class SpinnerExample
+  include Glimmer
+  
+  SIZE = 120
+  
+  def initialize
+    create_gui
+  end
+  
+  def launch
+    @main_window.show
+  end
+  
+  def create_gui
+    @main_window = window {
+      title 'Spinner'
+      content_size SIZE*2, SIZE*2
+      
+      horizontal_box {
+        padded false
+        
+        vertical_box {
+          padded false
+          
+          spinner(size: SIZE)
+          spinner(size: SIZE, fill_color: [42, 153, 214])
+        }
+        
+        vertical_box {
+          padded false
+          
+          spinner(size: SIZE/2.0, fill_color: :orange)
+          spinner(size: SIZE/2.0, fill_color: {x0: 0, y0: 0, x1: SIZE/2.0, y1: SIZE/2.0, stops: [{pos: 0.25, r: 204, g: 102, b: 204}, {pos: 1, r: 2, g: 2, b: 254}]})
+          spinner(size: SIZE/2.0, fill_color: :green, unfilled_color: :yellow)
+          spinner(size: SIZE/2.0, fill_color: :white, unfilled_color: :gray, background_color: :black)
+        }
+      }
+    }
+  end
+  
+  def spinner(size: 40.0, fill_color: :gray, background_color: :white, unfilled_color: {r: 243, g: 243, b: 243}, donut_percentage: 0.25)
+    arc1 = arc2 = nil
+    area { |the_area|
+      rectangle(0, 0, size, size) {
+        fill background_color
+      }
+      circle(size/2.0, size/2.0, size/2.0) {
+        fill fill_color
+      }
+      arc1 = arc(size/2.0, size/2.0, size/2.0, 0, 180) {
+        fill unfilled_color
+      }
+      arc2 = arc(size/2.0, size/2.0, size/2.0, 90, 180) {
+        fill unfilled_color
+      }
+      circle(size/2.0, size/2.0, (size/2.0)*(1.0 - donut_percentage)) {
+        fill background_color
+      }
+      
+      on_mouse_up do
+        the_area.destroy
+      end
+    }.tap do
+      Glimmer::LibUI.timer(0.05) do
+        delta = 10
+        arc1.start_angle += delta
+        arc2.start_angle += delta
+      end
+    end
+  end
+end
+
+SpinnerExample.new.launch
+```
+
+![mac spinner](/images/glimmer-dsl-libui-mac-spinner.gif)
+
 ### Smart Defaults and Conventions
 
 - `horizontal_box`, `vertical_box`, `grid`, and `form` controls have `padded` as `true` upon instantiation to ensure more user-friendly GUI by default
@@ -1868,6 +2013,7 @@ Learn more from data-binding usage in [Login](#login) (4 data-binding versions),
 - There is no proper way to destroy `grid` children due to [libui](https://github.com/andlabs/libui) not offering any API for deleting them from `grid` (no `grid_delete` similar to `box_delete` for `horizontal_box` and `vertical_box`).
 - `table` `checkbox_column` checkbox editing only works on Linux and Windows (not Mac) due to a current limitation in [libui](https://github.com/andlabs/ui/issues/357).
 - `table` `checkbox_text_column` checkbox editing only works on Linux (not Mac or Windows) due to a current limitation in [libui](https://github.com/andlabs/ui/issues/357).
+- `checkbox` only supports obtaining the `checked` property, but not updating it due to a current limitation in [libui](https://github.com/andlabs/libui).
 - `text` `align` property seems not to work on the Mac ([libui](https://github.com/andlabs/libui) has an [issue](https://github.com/andlabs/libui/pull/407) about it)
 - `text` `string` `background` does not work on Windows due to an [issue in libui](https://github.com/andlabs/libui/issues/347).
 - `table` `progress_bar` column on Windows cannot be updated with a positive value if it started initially with `-1` (it ignores update to avoid crashing due to an issue in [libui](https://github.com/andlabs/libui) on Windows.
@@ -1875,6 +2021,7 @@ Learn more from data-binding usage in [Login](#login) (4 data-binding versions),
 - It seems that [libui](https://github.com/andlabs/libui) does not support nesting multiple `area` controls under a `grid` as only the first one shows up in that scenario. To workaround that limitation, use a `vertical_box` with nested `horizontal_box`s instead to include multiple `area`s in a GUI.
 - As per the code of [examples/basic_transform.rb](#basic-transform), Windows requires different ordering of transforms than Mac and Linux.
 - `scrolling_area#scroll_to` does not seem to work on Windows and Linux, but works fine on Mac
+- When creating/showing a window other than the main window and then closing the secondary window, the entire app closes. This is a current limitation to the windowing system that should be fixed with [child window support](https://github.com/andlabs/libui/issues/137) in [libui](https://github.com/andlabs/libui)
 
 ### Original API
 
