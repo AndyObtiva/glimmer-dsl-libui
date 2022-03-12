@@ -113,6 +113,7 @@ Upgrade to glimmer 2.7.0 and document: - **Keyed:** `String` containing hash att
 - Scaffold a custom shape gem
 - Scaffold a custom control within existing application
 - Scaffold a custom shape within existing application
+- Support Linux AARCH64
 
 # Refactoring
 

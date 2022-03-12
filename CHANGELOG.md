@@ -2,6 +2,7 @@
 
 ## 0.5.5
 
+- Upgrade to libui 0.0.15 (with official Mac ARM64 support)
 - Update [README](/README.md) with [Area Animation](/README.md#area-animation) `spinner` custom control
 
 ## 0.5.4
