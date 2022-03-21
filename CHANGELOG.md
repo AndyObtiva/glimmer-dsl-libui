@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.5.6
+
+- Upgrade to glimmer 2.7.1 and document its support for keyed data-binding
+
 ## 0.5.5
 
 - Upgrade to libui 0.0.15 (with official Mac ARM64 support)

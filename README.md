@@ -454,7 +454,7 @@ The Glimmer GUI DSL follows these simple concepts in mapping from [LibUI](https:
 
 **Keyword(args)**: [LibUI](https://github.com/kojix2/LibUI) controls may be declared by lower-case underscored name (aka keyword from list of [supported keywords](#supported-keywords)) (e.g. `window` or `button`). Behind the scenes, they are represented by keyword methods that map to corresponding `LibUI.new_keyword` methods receiving args (e.g. `window('hello world', 300, 200, true)`).
 
-**Content Block** (Properties/Listeners/Controls): Any keyword may be optionally followed by a Ruby curly-brace multi-line content block containing properties (attributes), listeners, and/or nested controls. 
+**Content Block** (Properties/Listeners/Controls): Any keyword may be optionally followed by a Ruby curly-brace multi-line content block containing properties (attributes), listeners, and/or nested controls.
 
 Example:
 
@@ -464,7 +464,7 @@ window {
   
   on_closing do # listener (always has a do; end block to signify logic)
     puts 'Bye'
-  end 
+  end
   
   button('greet') { # nested control
     on_clicked do
@@ -474,13 +474,13 @@ window {
 }
 ```
 
-Content block optionally receives one arg representing the controll 
+Content block optionally receives one arg representing the controll
 
 Example:
 
 ```ruby
-button('greet') { |b| 
-  on_clicked do 
+button('greet') { |b|
+  on_clicked do
     puts b.text
   end
 }
@@ -488,7 +488,7 @@ button('greet') { |b|
 
 **Property**: Control properties may be declared inside keyword blocks with lower-case underscored name followed by property value args (e.g. `title "hello world"` inside `group`). Behind the scenes, properties correspond to `LibUI.control_set_property` methods.
 
-**Listener**: Control listeners may be declared inside keyword blocks with listener lower-case underscored name beginning with `on_` and receiving required block handler (always followed by a `do; end` style block to signify logic). 
+**Listener**: Control listeners may be declared inside keyword blocks with listener lower-case underscored name beginning with `on_` and receiving required block handler (always followed by a `do; end` style block to signify logic).
 
 Example:
 
@@ -500,11 +500,11 @@ button('click') {
 }
 ```
 
-Optionally, the listener block can receive an arg representing the control. 
+Optionally, the listener block can receive an arg representing the control.
 
 ```ruby
 button('click') {
-  on_clicked do |btn| 
+  on_clicked do |btn|
     puts btn.text
   end
 }
@@ -567,7 +567,7 @@ window('hello world', 300, 200) {
 
 ## Usage
 
-Install [glimmer-dsl-libui](https://rubygems.org/gems/glimmer-dsl-libui) gem directly:
+Install [glimmer-dsl-libui](https://rubygems.org/gems/glimmer-dsl-libui) gem directly into a [maintained Ruby version](https://www.ruby-lang.org/en/downloads/):
 
 ```
 gem install glimmer-dsl-libui
@@ -1978,6 +1978,7 @@ Data-bound model attribute can be:
 - **Direct:** `Symbol` representing attribute reader/writer (e.g. `[person, :name`])
 - **Nested:** `String` representing nested attribute path (e.g. `[company, 'address.street']`). That results in "nested data-binding"
 - **Indexed:** `String` containing array attribute index (e.g. `[customer, 'addresses[0].street']`). That results in "indexed data-binding"
+- **Keyed:** `String` containing hash attribute key (e.g. `[customer, 'addresses[:main].street']`). That results in "keyed data-binding"
 
 Data-binding options include:
 - `before_read {|value| ...}`: performs an operation before reading data from Model to update View.
@@ -9514,6 +9515,8 @@ Snake provides an example of building a desktop application [test-first](/spec/e
 
 Use arrows to move and spacebar to pause/resume.
 
+Note that Snake relies on the new [Ruby Pattern Matching feature](https://docs.ruby-lang.org/en/3.0/doc/syntax/pattern_matching_rdoc.html) available starting in Ruby 2.7 experimentally and in Ruby 3.0 officially.
+
 [examples/snake.rb](examples/snake.rb)
 
 Run with this command from the root of the project if you cloned the project:
@@ -9737,6 +9740,8 @@ Snake.new.launch
 #### Tetris
 
 Glimmer Tetris utilizes many small areas to represent Tetromino blocks because this ensures smaller redraws per tetromino block color change, thus achieving higher performance than redrawing one large area on every little change.
+
+Note that Tetris relies on the new [Ruby Pattern Matching feature](https://docs.ruby-lang.org/en/3.0/doc/syntax/pattern_matching_rdoc.html) available starting in Ruby 2.7 experimentally and in Ruby 3.0 officially.
 
 [examples/tetris.rb](examples/tetris.rb)
 
