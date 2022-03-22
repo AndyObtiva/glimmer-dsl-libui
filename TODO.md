@@ -1,11 +1,8 @@
 # TODO
 
-## Next 0.5.6
+## Next 0.5.7
 
-- Rename examples/method_based_custom_keyword.rb example to examples/method_based_custom_control.rb
-
-### 0.5.7
-
+- Augment examples/class_based_custom_controls.rb example with a custom listener
 - Support `code_entry` class-based custom control as a code-syntax-highlighted `entry` control using the `rouge` gem
 
 ### 0.5.8

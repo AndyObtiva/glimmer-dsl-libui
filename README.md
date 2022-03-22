@@ -419,7 +419,8 @@ DSL | Platforms | Native? | Vector Graphics? | Pros | Cons | Prereqs
       - [Grid](#grid)
       - [Histogram](#histogram)
       - [Login](#login)
-      - [Method-Based Custom Keyword](#method-based-custom-keyword)
+      - [Method-Based Custom Controls](#method-based-custom-controls)
+      - [Class-Based Custom Controls](#class-based-custom-controls)
       - [Area-Based Custom Controls](#area-based-custom-controls)
       - [Midi Player](#midi-player)
       - [Snake](#snake)
@@ -1598,15 +1599,15 @@ SpinnerExample.new.launch
 
 Custom keywords can be defined to represent custom controls (components) that provide new features or act as composites of [existing controls](#supported-keywords) that need to be reused multiple times in an application or across multiple applications. Custom keywords save a lot of development time, improving productivity and maintainability immensely.
 
-For example, you can define a custom `address` control as an aggregate of multiple `label` controls to reuse multiple times as a standard address View, displaying street, city, state, and zip code.
+For example, you can define a custom `address_view` control as an aggregate of multiple `label` controls to reuse multiple times as a standard address View, displaying street, city, state, and zip code.
 
-To define custom keywords, simply define a method representing the custom control you want (e.g. `address`) with any arguments needed (e.g. `address(address_model)`).
-
-To make custom keywords externally reusable, you can define in modules and simply include the modules in the view classes that need them.
+There are two ways to define custom keywords:
+- Method-Based: simply define a method representing the custom control you want (e.g. `address_view`) with any arguments needed (e.g. `address(address_model)`).
+- Class-Based: define a class matching the camelcased name of the custom control (e.g. the `address_view` custom control keyword would have a class called `AddressView`) and `include Glimmer::LibUI::CustomControl`. Classes add the benefit of being able to distribute the custom controls into separate files and reuse externally from multiple places or share via Ruby gems.
 
 It is OK to use terms "custom keyword" and "custom control" synonymously though "custom keyword" is a broader term that covers things other than controls too like custom shapes (e.g. `cylinder`), custom attributed strings (e.g. `alternating_color_string`), and custom transforms (`isometric_transform`).
 
-Example that defines `form_field`, `address_form`, `label_pair`, and `address` keywords (you may copy/paste in [`girb`](#girb-glimmer-irb)):
+Example that defines `form_field`, `address_form`, `label_pair`, and `address_view` keywords (you may copy/paste in [`girb`](#girb-glimmer-irb)):
 
 ```ruby
 require 'glimmer-dsl-libui'
@@ -1643,7 +1644,7 @@ def label_pair(model, attribute, value)
   }
 end
 
-def address(address_model)
+def address_view(address_model)
   vertical_box {
     address_model.each_pair do |attribute, value|
       label_pair(address_model, attribute, value)
@@ -1673,7 +1674,7 @@ window('Method-Based Custom Keyword') {
         stretchy false
       }
       
-      address(address1)
+      address_view(address1)
     }
     
     vertical_separator {
@@ -1695,7 +1696,7 @@ window('Method-Based Custom Keyword') {
         stretchy false
       }
       
-      address(address2)
+      address_view(address2)
     }
   }
 }.show
@@ -8581,26 +8582,26 @@ window('Login') {
 }.show
 ```
 
-#### Method-Based Custom Keyword
+#### Method-Based Custom Controls
 
 [Custom keywords](#custom-keywords) can be defined to represent custom controls (components) that provide new features or act as composites of existing controls that need to be reused multiple times in an application or across multiple applications. Custom keywords save a lot of development time, improving productivity and maintainability immensely.
   
-This example defines `form_field`, `address_form`, `label_pair`, and `address` as custom control keywords.
+This example defines `form_field`, `address_form`, `label_pair`, and `address` as custom controls (keywords).
 
 The custom keywords are defined via methods (thus are "method-based").
 
-[examples/method_based_custom_keyword.rb](examples/method_based_custom_keyword.rb)
+[examples/method_based_custom_controls.rb](examples/method_based_custom_controls.rb)
 
 Run with this command from the root of the project if you cloned the project:
 
 ```
-ruby -r './lib/glimmer-dsl-libui' examples/method_based_custom_keyword.rb
+ruby -r './lib/glimmer-dsl-libui' examples/method_based_custom_controls.rb
 ```
 
 Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
 
 ```
-ruby -r glimmer-dsl-libui -e "require 'examples/method_based_custom_keyword'"
+ruby -r glimmer-dsl-libui -e "require 'examples/method_based_custom_controls'"
 ```
 
 Mac | Windows | Linux
@@ -8625,13 +8626,13 @@ def form_field(model, attribute)
   }
 end
 
-def address_form(address)
+def address_form(address_model)
   form {
-    form_field(address, :street)
-    form_field(address, :p_o_box)
-    form_field(address, :city)
-    form_field(address, :state)
-    form_field(address, :zip_code)
+    form_field(address_model, :street)
+    form_field(address_model, :p_o_box)
+    form_field(address_model, :city)
+    form_field(address_model, :state)
+    form_field(address_model, :zip_code)
   }
 end
 
@@ -8644,10 +8645,10 @@ def label_pair(model, attribute, value)
   }
 end
 
-def address(address)
+def address_view(address_model)
   vertical_box {
-    address.each_pair do |attribute, value|
-      label_pair(address, attribute, value)
+    address_model.each_pair do |attribute, value|
+      label_pair(address_model, attribute, value)
     end
   }
 end
@@ -8655,7 +8656,7 @@ end
 address1 = Address.new('123 Main St', '23923', 'Denver', 'Colorado', '80014')
 address2 = Address.new('2038 Park Ave', '83272', 'Boston', 'Massachusetts', '02101')
 
-window('Method-Based Custom Keyword') {
+window('Method-Based Custom Controls') {
   margined true
   
   horizontal_box {
@@ -8674,7 +8675,7 @@ window('Method-Based Custom Keyword') {
         stretchy false
       }
       
-      address(address1)
+      address_view(address1)
     }
     
     vertical_separator {
@@ -8696,7 +8697,7 @@ window('Method-Based Custom Keyword') {
         stretchy false
       }
       
-      address(address2)
+      address_view(address2)
     }
   }
 }.show
@@ -8724,13 +8725,13 @@ def form_field(model, property)
   }
 end
 
-def address_form(address)
+def address_form(address_model)
   form {
-    form_field(address, :street)
-    form_field(address, :p_o_box)
-    form_field(address, :city)
-    form_field(address, :state)
-    form_field(address, :zip_code)
+    form_field(address_model, :street)
+    form_field(address_model, :p_o_box)
+    form_field(address_model, :city)
+    form_field(address_model, :state)
+    form_field(address_model, :zip_code)
   }
 end
 
@@ -8746,10 +8747,10 @@ def label_pair(model, attribute, value)
   end
 end
 
-def address(address)
+def address_view(address_model)
   vertical_box {
-    address.each_pair do |attribute, value|
-      label_pair(address, attribute, value)
+    address_model.each_pair do |attribute, value|
+      label_pair(address_model, attribute, value)
     end
   }
 end
@@ -8757,7 +8758,7 @@ end
 address1 = Address.new('123 Main St', '23923', 'Denver', 'Colorado', '80014')
 address2 = Address.new('2038 Park Ave', '83272', 'Boston', 'Massachusetts', '02101')
 
-window('Method-Based Custom Keyword') {
+window('Method-Based Custom Controls') {
   margined true
   
   horizontal_box {
@@ -8776,7 +8777,7 @@ window('Method-Based Custom Keyword') {
         stretchy false
       }
       
-      address(address1)
+      address_view(address1)
     }
     
     vertical_separator {
@@ -8798,7 +8799,151 @@ window('Method-Based Custom Keyword') {
         stretchy false
       }
       
-      address(address2)
+      address_view(address2)
+    }
+  }
+}.show
+```
+
+#### Class-Based Custom Controls
+
+[Custom keywords](#custom-keywords) can be defined to represent custom controls (components) that provide new features or act as composites of existing controls that need to be reused multiple times in an application or across multiple applications. Custom keywords save a lot of development time, improving productivity and maintainability immensely.
+  
+This example defines `form_field`, `address_form`, `label_pair`, and `address` as custom controls (keywords).
+
+The custom keywords are defined via classes that include `Glimmer::LibUI::CustomControl` (thus are "class-based"), thus enabling offloading each custom control into its own file when needed for better code organization.
+
+[examples/class_based_custom_controls.rb](examples/class_based_custom_controls.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/class_based_custom_controls.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/class_based_custom_controls'"
+```
+
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-method-based-custom-keyword.png](images/glimmer-dsl-libui-mac-method-based-custom-keyword.png) | ![glimmer-dsl-libui-windows-method-based-custom-keyword.png](images/glimmer-dsl-libui-windows-method-based-custom-keyword.png) | ![glimmer-dsl-libui-linux-method-based-custom-keyword.png](images/glimmer-dsl-libui-linux-method-based-custom-keyword.png)
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version (with [data-binding](#data-binding)):
+
+```ruby
+require 'glimmer-dsl-libui'
+require 'facets'
+
+include Glimmer
+
+Address = Struct.new(:street, :p_o_box, :city, :state, :zip_code)
+
+class FormField
+  include Glimmer::LibUI::CustomControl
+  
+  options :model, :attribute
+  
+  body {
+    entry { |e|
+      label attribute.to_s.underscore.split('_').map(&:capitalize).join(' ')
+      text <=> [model, attribute]
+    }
+  }
+end
+
+class AddressForm
+  include Glimmer::LibUI::CustomControl
+  
+  options :address
+  
+  body {
+    form {
+      form_field(model: address, attribute: :street)
+      form_field(model: address, attribute: :p_o_box)
+      form_field(model: address, attribute: :city)
+      form_field(model: address, attribute: :state)
+      form_field(model: address, attribute: :zip_code)
+    }
+  }
+end
+
+class LabelPair
+  include Glimmer::LibUI::CustomControl
+  
+  options :model, :attribute, :value
+  
+  body {
+    horizontal_box {
+      label(attribute.to_s.underscore.split('_').map(&:capitalize).join(' '))
+      label(value.to_s) {
+        text <= [model, attribute]
+      }
+    }
+  }
+end
+
+class AddressView
+  include Glimmer::LibUI::CustomControl
+  
+  options :address
+  
+  body {
+    vertical_box {
+      address.each_pair do |attribute, value|
+        label_pair(model: address, attribute: attribute, value: value)
+      end
+    }
+  }
+end
+
+address1 = Address.new('123 Main St', '23923', 'Denver', 'Colorado', '80014')
+address2 = Address.new('2038 Park Ave', '83272', 'Boston', 'Massachusetts', '02101')
+
+window('Class-Based Custom Keyword') {
+  margined true
+  
+  horizontal_box {
+    vertical_box {
+      label('Address 1') {
+        stretchy false
+      }
+      
+      address_form(address: address1)
+      
+      horizontal_separator {
+        stretchy false
+      }
+      
+      label('Address 1 (Saved)') {
+        stretchy false
+      }
+      
+      address_view(address: address1)
+    }
+    
+    vertical_separator {
+      stretchy false
+    }
+    
+    vertical_box {
+      label('Address 2') {
+        stretchy false
+      }
+      
+      address_form(address: address2)
+      
+      horizontal_separator {
+        stretchy false
+      }
+      
+      label('Address 2 (Saved)') {
+        stretchy false
+      }
+      
+      address_view(address: address2)
     }
   }
 }.show

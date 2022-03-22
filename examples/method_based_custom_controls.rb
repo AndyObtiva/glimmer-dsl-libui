@@ -5,15 +5,11 @@ include Glimmer
 
 Address = Struct.new(:street, :p_o_box, :city, :state, :zip_code)
 
-def form_field(model, property)
-  property = property.to_s
+def form_field(model, attribute)
+  attribute = attribute.to_s
   entry { |e|
-    label property.underscore.split('_').map(&:capitalize).join(' ')
-    text model.send(property).to_s
-
-    on_changed do
-      model.send("#{property}=", e.text)
-    end
+    label attribute.underscore.split('_').map(&:capitalize).join(' ')
+    text <=> [model, attribute]
   }
 end
 
@@ -28,18 +24,15 @@ def address_form(address_model)
 end
 
 def label_pair(model, attribute, value)
-  name_label = nil
-  value_label = nil
   horizontal_box {
-    name_label = label(attribute.to_s.underscore.split('_').map(&:capitalize).join(' '))
-    value_label = label(value.to_s)
+    label(attribute.to_s.underscore.split('_').map(&:capitalize).join(' '))
+    label(value.to_s) {
+      text <= [model, attribute]
+    }
   }
-  observe(model, attribute) do
-    value_label.text = model.send(attribute)
-  end
 end
 
-def address(address_model)
+def address_view(address_model)
   vertical_box {
     address_model.each_pair do |attribute, value|
       label_pair(address_model, attribute, value)
@@ -50,7 +43,7 @@ end
 address1 = Address.new('123 Main St', '23923', 'Denver', 'Colorado', '80014')
 address2 = Address.new('2038 Park Ave', '83272', 'Boston', 'Massachusetts', '02101')
 
-window('Method-Based Custom Keyword') {
+window('Method-Based Custom Controls') {
   margined true
   
   horizontal_box {
@@ -69,7 +62,7 @@ window('Method-Based Custom Keyword') {
         stretchy false
       }
       
-      address(address1)
+      address_view(address1)
     }
     
     vertical_separator {
@@ -91,7 +84,7 @@ window('Method-Based Custom Keyword') {
         stretchy false
       }
       
-      address(address2)
+      address_view(address2)
     }
   }
 }.show
