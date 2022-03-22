@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2022 Andy Maleh
+# Copyright (c) 2007-2022 Andy Maleh
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -19,34 +19,21 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'glimmer/dsl/engine'
-Dir[File.expand_path('*_expression.rb', __dir__)].each {|f| require f}
-
-# Glimmer DSL expression configuration module
-#
-# When DSL engine interprets an expression, it attempts to handle
-# with expressions listed here in the order specified.
-
-# Every expression has a corresponding Expression subclass
-# in glimmer/dsl
+require 'delegate'
 
 module Glimmer
-  module DSL
-    module Libui
-      Engine.add_dynamic_expressions(
-        Libui,
-        %w[
-          listener
-          data_binding
-          shine_data_binding
-          property
-          string
-          operation
-          control
-          custom_control
-          shape
-        ]
-      )
+  class ProcTracker < DelegateClass(Proc)
+    def initialize(proc)
+      super(proc)
+    end
+    
+    def call(*args)
+      __getobj__.call(*args)
+      @called = true
+    end
+    
+    def called?
+      !!@called
     end
   end
 end

@@ -2,8 +2,6 @@
 
 ## Next 0.5.6
 
-- Support class-based custom controls
-- examples/class_based_custom_control.rb example
 - Rename examples/method_based_custom_keyword.rb example to examples/method_based_custom_control.rb
 
 ### 0.5.7
@@ -120,6 +118,8 @@
 - Scaffold a custom control within existing application
 - Scaffold a custom shape within existing application
 - Support Linux AARCH64
+- Support `#glimmer` method (alias `#control_proxy`) on libui objects (obtained through `#libui` method on controls) to obtain Glimmer control proxy
+- Support `#custom_control` method on libui objects that are the root of a class-based custom control (consider adding to control proxies too that are roots of custom controls)
 
 # Refactoring
 

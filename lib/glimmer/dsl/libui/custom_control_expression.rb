@@ -19,28 +19,38 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+require 'glimmer'
 require 'glimmer/dsl/expression'
-require 'glimmer/libui/control_proxy'
-require 'glimmer/libui/shape'
-require 'glimmer/libui/attributed_string'
+require 'glimmer/dsl/parent_expression'
+require 'glimmer/dsl/top_level_expression'
+require 'glimmer/libui/custom_control'
 
 module Glimmer
   module DSL
     module Libui
-      class PropertyExpression < Expression
+      class CustomControlExpression < Expression
+        # TODO Consider making custom controls automatically generate static expressions
+        include ParentExpression
+        include TopLevelExpression
+
         def can_interpret?(parent, keyword, *args, &block)
-          (
-            parent.is_a?(Glimmer::LibUI::ControlProxy) or
-              parent.is_a?(Glimmer::LibUI::Shape) or
-              parent.is_a?(Glimmer::LibUI::AttributedString) or
-              parent.is_a?(Glimmer::LibUI::CustomControl)
-          ) and
-            block.nil? and
-            parent.respond_to?("#{keyword}=", *args)
+          LibUI::CustomControl.for(keyword)
         end
   
         def interpret(parent, keyword, *args, &block)
-          parent.send("#{keyword}=", *args)
+          options = args.last.is_a?(Hash) ? args.pop : {}
+          LibUI::CustomControl.for(keyword).new(keyword, parent, args, options, &block)
+        end
+  
+        def add_content(custom_control, keyword, *args, &block)
+          options = args.last.is_a?(Hash) ? args.last : {post_add_content: true}
+          # TODO consider avoiding source_location
+          if block.source_location == custom_control.content&.__getobj__&.source_location
+            custom_control.content.call(custom_control) unless custom_control.content.called?
+          else
+            super
+          end
+          custom_control.post_add_content if options[:post_add_content]
         end
       end
     end

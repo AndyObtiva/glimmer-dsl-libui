@@ -3,6 +3,8 @@
 ## 0.5.6
 
 - Upgrade to glimmer 2.7.1 and document its support for keyed data-binding
+- Support class-based custom controls
+- examples/class_based_custom_control.rb example
 
 ## 0.5.5
 
