@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.5.5
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.5.6
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -19,7 +19,7 @@ The main trade-off in using [Glimmer DSL for LibUI](https://rubygems.org/gems/gl
 - [Declarative DSL syntax](#glimmer-gui-dsl-concepts) that visually maps to the GUI control hierarchy
 - [Convention over configuration](#smart-defaults-and-conventions) via smart defaults and automation of low-level details
 - Requiring the [least amount of syntax](#glimmer-gui-dsl-concepts) possible to build GUI
-- [Custom Keyword](#custom-keywords) support
+- [Custom Control](#custom-keywords) support
 - [Bidirectional/Unidirectional Data-Binding](#data-binding) to declaratively wire and automatically synchronize GUI Views with Models
 - [Far Future Plan] Scaffolding for new custom controls, apps, and gems
 - [Far Future Plan] Native-Executable packaging on Mac, Windows, and Linux.
@@ -577,7 +577,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.5.5'
+gem 'glimmer-dsl-libui', '~> 0.5.6'
 ```
 
 Test that installation worked by running the [Meta-Example](#examples):
@@ -1603,9 +1603,9 @@ For example, you can define a custom `address_view` control as an aggregate of m
 
 There are two ways to define custom keywords:
 - Method-Based: simply define a method representing the custom control you want (e.g. `address_view`) with any arguments needed (e.g. `address(address_model)`).
-- Class-Based: define a class matching the camelcased name of the custom control (e.g. the `address_view` custom control keyword would have a class called `AddressView`) and `include Glimmer::LibUI::CustomControl`. Classes add the benefit of being able to distribute the custom controls into separate files and reuse externally from multiple places or share via Ruby gems.
+- Class-Based: define a class matching the camelcased name of the custom control by convention (e.g. the `address_view` custom control keyword would have a class called `AddressView`) and `include Glimmer::LibUI::CustomControl`. Classes add the benefit of being able to distribute the custom controls into separate files and reuse externally from multiple places or share via Ruby gems.
 
-It is OK to use terms "custom keyword" and "custom control" synonymously though "custom keyword" is a broader term that covers things other than controls too like custom shapes (e.g. `cylinder`), custom attributed strings (e.g. `alternating_color_string`), and custom transforms (`isometric_transform`).
+It is OK to use the terms "custom keyword" and "custom control" synonymously though "custom keyword" is a broader term that covers things other than controls too like custom shapes (e.g. `cylinder`), custom attributed strings (e.g. `alternating_color_string`), and custom transforms (`isometric_transform`).
 
 Example that defines `form_field`, `address_form`, `label_pair`, and `address_view` keywords (you may copy/paste in [`girb`](#girb-glimmer-irb)):
 
