@@ -37,7 +37,7 @@ require 'libui'
 
 # Internal requires
 # require 'ext/glimmer/config'
-# require 'ext/glimmer'
+require 'glimmer-dsl-libui/ext/glimmer'
 require 'glimmer/dsl/libui/dsl'
 require 'glimmer/libui'
 Glimmer::Config.loop_max_count = -1

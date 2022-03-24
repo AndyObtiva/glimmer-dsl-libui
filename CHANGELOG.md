@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.5.7
+
+- Support Custom Window keywords (aka Applications) using `Glimmer::LibUI::CustomWindow` or alias of `Glimmer::LibUI::Application`
+- Refactor examples/class_based_custom_controls.rb to use `Glimmer::LibUI::Application` (alias: `Glimmer::LibUI::CustomWindow`)
+
 ## 0.5.6
 
 - Upgrade to glimmer 2.7.1 and document its support for keyed data-binding

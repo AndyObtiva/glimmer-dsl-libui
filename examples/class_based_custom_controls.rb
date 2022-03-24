@@ -1,8 +1,6 @@
 require 'glimmer-dsl-libui'
 require 'facets'
 
-include Glimmer
-
 Address = Struct.new(:street, :p_o_box, :city, :state, :zip_code)
 
 class FormField
@@ -63,51 +61,61 @@ class AddressView
   }
 end
 
-address1 = Address.new('123 Main St', '23923', 'Denver', 'Colorado', '80014')
-address2 = Address.new('2038 Park Ave', '83272', 'Boston', 'Massachusetts', '02101')
-
-window('Class-Based Custom Keyword') {
-  margined true
+class ClassBasedCustomControls
+  include Glimmer::LibUI::Application # alias: Glimmer::LibUI::CustomWindow
   
-  horizontal_box {
-    vertical_box {
-      label('Address 1') {
-        stretchy false
+  before_body do
+    @address1 = Address.new('123 Main St', '23923', 'Denver', 'Colorado', '80014')
+    @address2 = Address.new('2038 Park Ave', '83272', 'Boston', 'Massachusetts', '02101')
+  end
+  
+  body {
+    window('Class-Based Custom Keyword') {
+      margined true
+      
+      horizontal_box {
+        vertical_box {
+          label('Address 1') {
+            stretchy false
+          }
+          
+          address_form(address: @address1)
+          
+          horizontal_separator {
+            stretchy false
+          }
+          
+          label('Address 1 (Saved)') {
+            stretchy false
+          }
+          
+          address_view(address: @address1)
+        }
+        
+        vertical_separator {
+          stretchy false
+        }
+        
+        vertical_box {
+          label('Address 2') {
+            stretchy false
+          }
+          
+          address_form(address: @address2)
+          
+          horizontal_separator {
+            stretchy false
+          }
+          
+          label('Address 2 (Saved)') {
+            stretchy false
+          }
+          
+          address_view(address: @address2)
+        }
       }
-      
-      address_form(address: address1)
-      
-      horizontal_separator {
-        stretchy false
-      }
-      
-      label('Address 1 (Saved)') {
-        stretchy false
-      }
-      
-      address_view(address: address1)
-    }
-    
-    vertical_separator {
-      stretchy false
-    }
-    
-    vertical_box {
-      label('Address 2') {
-        stretchy false
-      }
-      
-      address_form(address: address2)
-      
-      horizontal_separator {
-        stretchy false
-      }
-      
-      label('Address 2 (Saved)') {
-        stretchy false
-      }
-      
-      address_view(address: address2)
     }
   }
-}.show
+end
+
+ClassBasedCustomControls.launch

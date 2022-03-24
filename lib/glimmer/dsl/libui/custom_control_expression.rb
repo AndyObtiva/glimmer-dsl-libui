@@ -24,6 +24,7 @@ require 'glimmer/dsl/expression'
 require 'glimmer/dsl/parent_expression'
 require 'glimmer/dsl/top_level_expression'
 require 'glimmer/libui/custom_control'
+require 'glimmer/libui/custom_window'
 
 module Glimmer
   module DSL

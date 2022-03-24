@@ -21,6 +21,7 @@
 
 require 'super_module'
 require 'glimmer'
+require 'glimmer/error'
 require 'glimmer/proc_tracker'
 require 'glimmer/data_binding/observer'
 require 'glimmer/data_binding/observable_model'
@@ -33,8 +34,10 @@ module Glimmer
 
       super_module_included do |klass|
         # TODO clear memoization of WidgetProxy.libui_class_for for a keyword if a custom control was defined with that keyword
-        klass.include(Glimmer)
-        Glimmer::LibUI::CustomControl.add_custom_control_namespaces_for(klass)
+        unless klass.name.include?('Glimmer::LibUI::CustomWindow')
+          klass.include(Glimmer)
+          Glimmer::LibUI::CustomControl.add_custom_control_namespaces_for(klass)
+        end
       end
     
       class << self
