@@ -232,9 +232,10 @@ module Glimmer
       end
 
       def respond_to?(method_name, *args, &block)
-        super or
-          can_handle_listener?(method_name) or
-          @body_root.respond_to?(method_name, *args, &block)
+        result = false
+        result ||= super
+        result ||= can_handle_listener?(method_name)
+        result ||= @body_root.respond_to?(method_name, *args, &block)
       end
       
       private
@@ -250,3 +251,5 @@ module Glimmer
     end
   end
 end
+
+Dir[File.expand_path("./#{File.basename(__FILE__, '.rb')}/*.rb", __dir__)].each {|f| require f}

@@ -17,6 +17,7 @@ gem 'color', '~> 1.8'
 gem 'libui', '~> 0.0.15'
 gem 'chunky_png', '~> 1.4.0'
 gem 'equalizer', '0.0.11'
+gem 'rouge', '>= 3.26.0', '< 4.0.0'
 
 # Add dependencies to develop your gem here.
 # Include everything needed to run rake, tests, features, etc.

@@ -80,11 +80,9 @@ module Glimmer
     
       def hex_to_rgb(value)
         if value.is_a?(String)
-          value = "0x#{value[1..-1]}" if value.start_with?('#')
-          if !value.start_with?('0x')
-            value = value.chars.map {|char| [char, char]}.flatten.join if value.length == 3
-            value = "0x#{value}"
-          end
+          value = value[2..-1] if value.start_with?('0x')
+          value = value[1..-1] if value.start_with?('#')
+          value = value.chars.map {|char| [char, char]}.flatten.join if value.length == 3
           value = value.to_i(16)
         end
         if value.is_a?(Integer)

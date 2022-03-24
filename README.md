@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.5.7
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.5.8
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -405,6 +405,7 @@ DSL | Platforms | Native? | Vector Graphics? | Pros | Cons | Prereqs
       - [Basic Image](#basic-image)
       - [Basic Transform](#basic-transform)
       - [Basic Draw Text](#basic-draw-text)
+      - [Basic Code Area](#basic-code-area)
     - [Advanced Examples](#advanced-examples)
       - [Area Gallery](#area-gallery)
       - [Button Counter](#button-counter)
@@ -577,7 +578,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.5.7'
+gem 'glimmer-dsl-libui', '~> 0.5.8'
 ```
 
 Test that installation worked by running the [Meta-Example](#examples):
@@ -590,14 +591,40 @@ Mac | Windows | Linux
 ----|---------|------
 ![glimmer-dsl-libui-mac-meta-example.png](images/glimmer-dsl-libui-mac-meta-example.png) | ![glimmer-dsl-libui-windows-meta-example.png](images/glimmer-dsl-libui-windows-meta-example.png) | ![glimmer-dsl-libui-linux-meta-example.png](images/glimmer-dsl-libui-linux-meta-example.png)
 
-Now to use [glimmer-dsl-libui](https://rubygems.org/gems/glimmer-dsl-libui), add `require 'glimmer-dsl-libui'` at the top, and then `include Glimmer` into the top-level main object for testing or into an actual class for serious usage.
+Now to use [glimmer-dsl-libui](https://rubygems.org/gems/glimmer-dsl-libui), add `require 'glimmer-dsl-libui'` at the top.
 
-Example (you may copy/paste in [`girb`](#girb-glimmer-irb)):
+Afterwards, `include Glimmer` into the top-level main object for testing or into an actual class for serious usage.
+
+Alternatively, `include Glimmer::LibUI::Application` to conveniently declare the GUI `body` and run via the `::launch` method (`Glimmer::LibUI::Application` is an alias for `Glimmer::LibUI::CustomWindow` since that is what it represents).
+
+Example including `Glimmer::LibUI::Application` (you may copy/paste in [`girb`](#girb-glimmer-irb)):
 
 ```ruby
 require 'glimmer-dsl-libui'
 
-class Application
+class SomeGlimmerApp
+  include Glimmer::LibUI::Application
+  
+  body {
+    window('hello world', 300, 200) {
+      button('Button') {
+        on_clicked do
+          puts 'Button Clicked'
+        end
+      }
+    }
+  }
+end
+
+SomeGlimmerApp.launch
+```
+
+Example including `Glimmer` and manually implementing the `#launch` method (you may copy/paste in [`girb`](#girb-glimmer-irb)):
+
+```ruby
+require 'glimmer-dsl-libui'
+
+class SomeGlimmerApp
   include Glimmer
   
   def launch
@@ -611,7 +638,23 @@ class Application
   end
 end
 
-Application.new.launch
+SomeGlimmerApp.new.launch
+```
+
+Example including `Glimmer` at the top-level scope just for some prototyping/demoing/testing (you may copy/paste in [`girb`](#girb-glimmer-irb)):
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+  
+window('hello world', 300, 200) {
+  button('Button') {
+    on_clicked do
+      puts 'Button Clicked'
+    end
+  }
+}.show
 ```
 
 If you are new to [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui), check out [Girb](#girb-glimmer-irb) and [Examples](#examples) to quickly learn through copy/paste. You may refer to the [API](#api) later on once you have gotten your feet wet with [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) and need more detailed reference information.
@@ -675,6 +718,7 @@ Keyword(Args) | Properties | Listeners
 `checkbox_text_column(name as String)` | `editable` (Boolean), `editable_checkbox` (Boolean), `editable_text` (Boolean) | None
 `checkbox_text_color_column(name as String)` | `editable` (Boolean), `editable_checkbox` (Boolean), `editable_text` (Boolean) | None
 `check_menu_item(text as String)` | `checked` (Boolean) | `on_clicked`
+`code_area` | `language` (String) (default: `'ruby'`), `theme` (String) (default: `'glimmer'`), `code` (String) | None
 `combobox` | `items` (`Array` of `String`), `selected` (`Integer`), `selected_item` (`String`) | `on_selected`
 `color_button` | `color` (Array of `red` as `Float`, `green` as `Float`, `blue` as `Float`, `alpha` as `Float`), `red` as `Float`, `green` as `Float`, `blue` as `Float`, `alpha` as `Float` | `on_changed`
 `date_picker` | `time` (`Hash` of keys: `sec` as `Integer`, `min` as `Integer`, `hour` as `Integer`, `mday` as `Integer`, `mon` as `Integer`, `year` as `Integer`, `wday` as `Integer`, `yday` as `Integer`, `dst` as Boolean) | `on_changed`
@@ -4987,6 +5031,62 @@ end
 BasicDrawText.new.launch
 ```
 
+#### Basic Code Area
+
+[examples/basic_code_area.rb](examples/basic_code_area.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/basic_code_area.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/basic_code_area'"
+```
+
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-basic-code-area.png](images/glimmer-dsl-libui-mac-basic-code-area.png) | ![glimmer-dsl-libui-windows-basic-code-area.png](images/glimmer-dsl-libui-windows-basic-code-area.png) | ![glimmer-dsl-libui-linux-basic-code-area.png](images/glimmer-dsl-libui-linux-basic-code-area.png)
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+require 'glimmer-dsl-libui'
+
+class BasicCodeArea
+  include Glimmer::LibUI::Application
+  
+  before_body do
+    @code = <<~CODE
+      # Greets target with greeting
+      def greet(greeting: 'Hello', target: 'World')
+        
+        puts "\#{greeting}, \#{target}!"
+      end
+      
+      greet
+      greet(target: 'Robert')
+      greet(greeting: 'Aloha')
+      greet(greeting: 'Aloha', target: 'Nancy')
+      greet(greeting: 'Howdy', target: 'Doodle')
+    CODE
+  end
+  
+  body {
+    window('Basic Code Area', 400, 300) {
+      margined true
+      
+      code_area(language: 'ruby', code: @code)
+    }
+  }
+end
+
+BasicCodeArea.launch
+```
+
 ### Advanced Examples
 
 #### Area Gallery
@@ -8967,8 +9067,6 @@ New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version
 require 'glimmer-dsl-libui'
 require 'facets'
 
-include Glimmer
-
 Address = Struct.new(:street, :p_o_box, :city, :state, :zip_code)
 
 class FormField
@@ -9029,54 +9127,64 @@ class AddressView
   }
 end
 
-address1 = Address.new('123 Main St', '23923', 'Denver', 'Colorado', '80014')
-address2 = Address.new('2038 Park Ave', '83272', 'Boston', 'Massachusetts', '02101')
-
-window('Class-Based Custom Keyword') {
-  margined true
+class ClassBasedCustomControls
+  include Glimmer::LibUI::Application # alias: Glimmer::LibUI::CustomWindow
   
-  horizontal_box {
-    vertical_box {
-      label('Address 1') {
-        stretchy false
+  before_body do
+    @address1 = Address.new('123 Main St', '23923', 'Denver', 'Colorado', '80014')
+    @address2 = Address.new('2038 Park Ave', '83272', 'Boston', 'Massachusetts', '02101')
+  end
+  
+  body {
+    window('Class-Based Custom Keyword') {
+      margined true
+      
+      horizontal_box {
+        vertical_box {
+          label('Address 1') {
+            stretchy false
+          }
+          
+          address_form(address: @address1)
+          
+          horizontal_separator {
+            stretchy false
+          }
+          
+          label('Address 1 (Saved)') {
+            stretchy false
+          }
+          
+          address_view(address: @address1)
+        }
+        
+        vertical_separator {
+          stretchy false
+        }
+        
+        vertical_box {
+          label('Address 2') {
+            stretchy false
+          }
+          
+          address_form(address: @address2)
+          
+          horizontal_separator {
+            stretchy false
+          }
+          
+          label('Address 2 (Saved)') {
+            stretchy false
+          }
+          
+          address_view(address: @address2)
+        }
       }
-      
-      address_form(address: address1)
-      
-      horizontal_separator {
-        stretchy false
-      }
-      
-      label('Address 1 (Saved)') {
-        stretchy false
-      }
-      
-      address_view(address: address1)
-    }
-    
-    vertical_separator {
-      stretchy false
-    }
-    
-    vertical_box {
-      label('Address 2') {
-        stretchy false
-      }
-      
-      address_form(address: address2)
-      
-      horizontal_separator {
-        stretchy false
-      }
-      
-      label('Address 2 (Saved)') {
-        stretchy false
-      }
-      
-      address_view(address: address2)
     }
   }
-}.show
+end
+
+ClassBasedCustomControls.launch
 ```
 
 #### Area-Based Custom Controls

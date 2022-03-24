@@ -83,6 +83,8 @@ GEM
       racc (~> 1.4)
     nokogiri (1.13.3-x64-mingw32)
       racc (~> 1.4)
+    nokogiri (1.13.3-x64-unknown)
+      racc (~> 1.4)
     nokogiri (1.13.3-x86_64-darwin)
       racc (~> 1.4)
     nokogiri (1.13.3-x86_64-linux)
@@ -114,6 +116,7 @@ GEM
     rchardet (1.8.0)
     rdoc (6.4.0)
       psych (>= 4.0.0)
+    rouge (3.28.0)
     rspec (3.11.0)
       rspec-core (~> 3.11.0)
       rspec-expectations (~> 3.11.0)
@@ -161,6 +164,7 @@ GEM
 PLATFORMS
   universal-java-1.8
   x64-mingw32
+  x64-unknown
   x86_64-darwin-19
   x86_64-darwin-20
   x86_64-linux
@@ -177,10 +181,11 @@ DEPENDENCIES
   perfect-shape (~> 1.0.1)
   puts_debuggerer (~> 0.13.1)
   rake-tui (>= 0.2.1)
+  rouge (>= 3.26.0, < 4.0.0)
   rspec (~> 3.0)
   simplecov (~> 0.16.1)
   simplecov-lcov (~> 0.7.0)
   super_module (~> 1.4.1)
 
 BUNDLED WITH
-   2.3.9
+   2.3.6

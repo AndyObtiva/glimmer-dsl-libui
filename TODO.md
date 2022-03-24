@@ -1,43 +1,43 @@
 # TODO
 
-## Next 0.5.8
+## Next 0.5.9
 
-- Refactor all samples that use a class including Glimmer to utilize CustomWindow instead
+- Support `code_editor` class-based custom control as a code-syntax-highlighted `entry` control using the `rouge` gem
 - Augment examples/class_based_custom_controls.rb example with a custom listener
-- Support `code_entry` class-based custom control as a code-syntax-highlighted `entry` control using the `rouge` gem
 
-### 0.5.9
+### 0.5.10
 
 - Support `path` (supporting multiple figures or shapes) `bounding_box` (minx, miny, width, height), `contain?` method (checking if shape contains point inside) and `include?` method (checking on outline if stroked and inside if filled?)
 
-### 0.5.10
+### 0.5.11
 
 - Support Custom Shapes, describing composite shapes/text/image concepts inside an `area`
 - Look into extracting `bevel` Custom Shape in Tetris
 
-### 0.5.11
+### 0.5.12
 
 - Support Custom Shape `bounding_box` (minx, miny, width, height), `contain?` method (checking if shape contains point inside) and `include?` method (checking on outline if stroked and inside if filled?)
 
-### 0.5.12
+### 0.5.13
 
 - Support nesting area mouse and keyboard listeners underneath shapes directly given the newly added support for the `include?(x, y)` method, which can be used to detect if a mouse or keyboard event fired for a specific shape
 
-### 0.5.13
+### 0.5.14
 
 - Support `drag_and_move true` (just enables dragging and moving shapes in area)
 - examples/area_drag_and_move.rb (customize a face with face parts like mustache, nose, lips, eyes, eyebrows, and hair) [utilize SVGs from https://editor.dicebear.com/]
 
-### 0.5.14
+### 0.5.15
 
 - Simpler Drag and Drop via `drag_source true`, `drop_target true`, and `on_drop { }` event (working within same area)
 
-### 0.5.15
+### 0.5.16
 
 - Build Quarto game sample using area drag and drop: https://en.gigamic.com/game/quarto-classic
 
 ## Soon
 
+- Refactor all samples that use a class including Glimmer to utilize CustomWindow instead
 - examples/file_tabs.rb (inspired by this addressed issue: https://github.com/AndyObtiva/glimmer-dsl-libui/issues/16)
 - Glimmerize examples/draw_text.rb from Ruby LibUI project
 - Glimmerize examples/spectrum.rb from Ruby LibUI project

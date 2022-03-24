@@ -1,5 +1,12 @@
 # Change Log
 
+## 0.5.8
+
+- Support `code_area` class-based custom control as a code-syntax-highlighted `area` control using the `rouge` gem
+- `examples/basic_code_area.rb`
+- Handle hex colors that have a 3-digit shorthand
+- Stop annoying false negative logs when using `Glimmer::LibUI::CustomWindow`
+
 ## 0.5.7
 
 - Support Custom Window keywords (aka Applications) using `Glimmer::LibUI::CustomWindow` or alias of `Glimmer::LibUI::Application`

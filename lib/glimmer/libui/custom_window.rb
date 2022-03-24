@@ -37,7 +37,11 @@ module Glimmer
       end
       
       def initialize(parent, *swt_constants, options, &content)
+        original_logger = Glimmer::Config.logger
+        require 'stringio'
+        Glimmer::Config.logger = Logger.new(StringIO.new)
         super
+        Glimmer::Config.logger = original_logger
         raise Glimmer::Error, 'Invalid custom window body root! Must be a window, another custom window, or a custom control with window as its body root!' unless body_root.is_a?(Glimmer::LibUI::ControlProxy::WindowProxy) || body_root.is_a?(Glimmer::LibUI::CustomWindow) || (body_root.is_a?(Glimmer::LibUI::CustomControl) && body_root.body_root.is_a?(Glimmer::LibUI::ControlProxy::WindowProxy))
       end
       

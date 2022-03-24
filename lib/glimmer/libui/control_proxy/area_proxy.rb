@@ -85,7 +85,7 @@ module Glimmer
         end
         
         def post_add_content
-          unless parent_proxy.is_a?(Box)
+          if OS.linux? && parent_proxy.is_a?(WindowProxy)
             unless @content_added
               original_parent_proxy = @parent_proxy
               @vertical_box_parent_proxy = ControlProxy.create('vertical_box', parent_proxy, []) {} # block prevents calling post add content
