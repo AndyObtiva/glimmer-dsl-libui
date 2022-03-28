@@ -1,12 +1,9 @@
 # TODO
 
-## Next 0.5.9
+## Next 0.5.10
 
-- Support `code_editor` class-based custom control as a code-syntax-highlighted `entry` control using the `rouge` gem
-- Augment examples/class_based_custom_controls.rb example with a custom listener
-
-### 0.5.10
-
+- Upgrade to perfect-shape 1.0.4
+- Make sure that if a path has multiple figures, they are merged (with closed figures auto-deriving extra line), before perfect_shape is created from the path to accurately depict the shape
 - Support `path` (supporting multiple figures or shapes) `bounding_box` (minx, miny, width, height), `contain?` method (checking if shape contains point inside) and `include?` method (checking on outline if stroked and inside if filled?)
 
 ### 0.5.11
@@ -35,6 +32,10 @@
 
 - Build Quarto game sample using area drag and drop: https://en.gigamic.com/game/quarto-classic
 
+### 0.5.17
+
+- Augment examples/class_based_custom_controls.rb example with a custom listener
+
 ## Soon
 
 - Refactor all samples that use a class including Glimmer to utilize CustomWindow instead
@@ -46,6 +47,7 @@
 
 ## Future
 
+- Support `code_editor` class-based custom control as a code-syntax-highlighted `entry` control using the `rouge` gem
 - Build app for sportdb gem
 - Build app for beerdb gem
 - Support class-based custom matrix transform
@@ -118,6 +120,7 @@
 - Support Linux AARCH64
 - Support `#glimmer` method (alias `#control_proxy`) on libui objects (obtained through `#libui` method on controls) to obtain Glimmer control proxy
 - Support `#custom_control` method on libui objects that are the root of a class-based custom control (consider adding to control proxies too that are roots of custom controls)
+- Support textual tooltips (on hover over attributed strings) in `code_area` custom control (and potentially `code_editor` custom control)
 
 # Refactoring
 

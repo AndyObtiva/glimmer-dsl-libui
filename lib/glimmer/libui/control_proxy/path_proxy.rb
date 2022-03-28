@@ -23,6 +23,7 @@ require 'glimmer/libui/control_proxy'
 require 'glimmer/libui/control_proxy/area_proxy'
 require 'glimmer/libui/parent'
 require 'glimmer/libui/control_proxy/transformable'
+require 'glimmer/libui/perfect_shaped'
 
 module Glimmer
   module LibUI
@@ -32,6 +33,7 @@ module Glimmer
       # Follows the Proxy Design Pattern
       class PathProxy < ControlProxy
         include Parent
+        include PerfectShaped
         prepend Transformable
       
         def initialize(keyword, parent, args, &block)
@@ -158,6 +160,30 @@ module Glimmer
         
         def request_auto_redraw
           @parent_proxy&.request_auto_redraw
+        end
+        
+        def perfect_shape
+          perfect_shape_dependencies = [draw_fill_mode, children]
+          if perfect_shape_dependencies != @perfect_shape_dependencies
+            draw_fill_mode, children = @perfect_shape_dependencies = perfect_shape_dependencies
+            shapes = children.map(&:perfect_shape)
+            new_shapes = []
+            shapes.each do |shape|
+              if shape.is_a?(PerfectShape::Path)
+                new_shapes += shape.basic_shapes
+              else
+                new_shapes << shape
+              end
+            end
+            shapes = new_shapes
+            winding_rule = draw_fill_mode == :winding ? :wind_non_zero : :wind_even_odd
+            @perfect_shape = PerfectShape::Path.new(
+              shapes: shapes,
+              winding_rule: winding_rule,
+              line_to_complex_shapes: true
+            )
+          end
+          @perfect_shape
         end
         
         private

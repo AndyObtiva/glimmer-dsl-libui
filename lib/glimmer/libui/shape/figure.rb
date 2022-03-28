@@ -29,7 +29,7 @@ module Glimmer
       class Figure < Shape
         parameters :x, :y
         parameter_defaults nil, nil
-      
+        
         def draw(area_draw_params)
           ::LibUI.draw_path_new_figure(path_proxy.libui, *@args) unless @args.compact.empty? # TODO if args empty then wait till there is an arc child and it starts the figure
           children.dup.each {|child| child.draw(area_draw_params)}
@@ -58,7 +58,12 @@ module Glimmer
             path_shapes = [[x, y]]
             path_shapes += children.map(&:perfect_shape)
             winding_rule = draw_fill_mode == :winding ? :wind_non_zero : :wind_even_odd
-            @perfect_shape = PerfectShape::Path.new(closed: closed, winding_rule: winding_rule, shapes: path_shapes)
+            @perfect_shape = PerfectShape::Path.new(
+              closed: closed,
+              winding_rule: winding_rule,
+              shapes: path_shapes,
+              line_to_complex_shapes: true
+            )
           end
           @perfect_shape
         end

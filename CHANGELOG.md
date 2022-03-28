@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.5.9
+
+- Upgrade to glimmer v2.7.3
+- Upgrade to perfect-shape v1.0.3
+- Support `path`/`figure`/shape `#contain?`, `#include?`, and `#bounding_box` methods via perfect-shape algorithms applying the path winding rule (aka `draw_fill_mode`)
+
 ## 0.5.8
 
 - Support `code_area` class-based custom control as a code-syntax-highlighted `area` control using the `rouge` gem
