@@ -2,37 +2,35 @@
 
 ## Next 0.5.10
 
-- Upgrade to perfect-shape 1.0.4
-- Make sure that if a path has multiple figures, they are merged (with closed figures auto-deriving extra line), before perfect_shape is created from the path to accurately depict the shape
-- Support `path` (supporting multiple figures or shapes) `bounding_box` (minx, miny, width, height), `contain?` method (checking if shape contains point inside) and `include?` method (checking on outline if stroked and inside if filled?)
+Support nesting area mouse and keyboard listeners underneath shapes directly given the newly added support for the `include?(x, y)` method, which can be used to detect if a mouse or keyboard event fired for a specific shape
 
-### 0.5.11
+### 0.5.x
 
 - Support Custom Shapes, describing composite shapes/text/image concepts inside an `area`
+- Support Custom Shape `bounding_box` (minx, miny, width, height), `contain?` method (checking if shape contains point inside) and `include?` method (checking on outline if stroked and inside if filled?)
 - Look into extracting `bevel` Custom Shape in Tetris
 
-### 0.5.12
+### 0.5.x
 
-- Support Custom Shape `bounding_box` (minx, miny, width, height), `contain?` method (checking if shape contains point inside) and `include?` method (checking on outline if stroked and inside if filled?)
+- class based custom shape example (randomly generated custom shape coloring)
 
-### 0.5.13
-
-- Support nesting area mouse and keyboard listeners underneath shapes directly given the newly added support for the `include?(x, y)` method, which can be used to detect if a mouse or keyboard event fired for a specific shape
-
-### 0.5.14
+### 0.5.x
 
 - Support `drag_and_move true` (just enables dragging and moving shapes in area)
+
+### 0.5.x
+
 - examples/area_drag_and_move.rb (customize a face with face parts like mustache, nose, lips, eyes, eyebrows, and hair) [utilize SVGs from https://editor.dicebear.com/]
 
-### 0.5.15
+### 0.5.x
 
 - Simpler Drag and Drop via `drag_source true`, `drop_target true`, and `on_drop { }` event (working within same area)
 
-### 0.5.16
+### 0.5.x
 
 - Build Quarto game sample using area drag and drop: https://en.gigamic.com/game/quarto-classic
 
-### 0.5.17
+### 0.5.x
 
 - Augment examples/class_based_custom_controls.rb example with a custom listener
 
@@ -121,6 +119,7 @@
 - Support `#glimmer` method (alias `#control_proxy`) on libui objects (obtained through `#libui` method on controls) to obtain Glimmer control proxy
 - Support `#custom_control` method on libui objects that are the root of a class-based custom control (consider adding to control proxies too that are roots of custom controls)
 - Support textual tooltips (on hover over attributed strings) in `code_area` custom control (and potentially `code_editor` custom control)
+- Look into the potential issue with not respecting the even odd rule when triggering events on figures within a path
 
 # Refactoring
 

@@ -147,6 +147,16 @@ module Glimmer
       end
       alias transform= transform
       alias set_transform transform
+      
+      def can_handle_listener?(listener_name)
+        area_proxy.can_handle_listener?(listener_name)
+      end
+      
+      def handle_listener(listener_name, &listener)
+        area_proxy.handle_listener(listener_name) do |event|
+          listener.call(event) if include?(event[:x], event[:y])
+        end
+      end
 
       def respond_to?(method_name, *args, &block)
         self.class.parameters.include?(method_name.to_s.sub(/=$/, '').sub(/^set_/, '').to_sym) or
