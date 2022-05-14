@@ -1,5 +1,7 @@
 # TODO
 
+- Look into whether keyboard listeners must not be allowed within shapes since they do not carry an x/y element like mouse listeners
+
 ## Next 0.5.11
 
 - Support Custom Shapes, describing composite shapes/text/image concepts inside an `area`

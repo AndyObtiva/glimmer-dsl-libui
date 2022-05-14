@@ -2,7 +2,7 @@
 
 ## 0.5.10
 
-- Support nesting area mouse and keyboard listeners underneath shapes directly given the newly added support for the `include?(x, y)` method, which can be used to detect if a mouse or keyboard event fired for a specific shape
+- Support nesting area mouse listeners underneath shapes directly given the newly added support for the `include?(x, y)` method, which can be used to detect if a mouse event fired for a specific shape
 - examples/shape_coloring.rb
 
 ## 0.5.9

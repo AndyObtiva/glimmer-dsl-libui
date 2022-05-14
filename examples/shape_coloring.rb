@@ -43,19 +43,19 @@ class ShapeColoring
             fill :white
           }
           
-          @shapes << colorable(:rectangle, 20, 20, 40, 20) { |shape|
+          @shapes << colorable(:rectangle, 20, 20, 40, 20) {
             fill :lime
           }
           
-          @shapes << colorable(:square, 80, 20, 20) { |shape|
+          @shapes << colorable(:square, 80, 20, 20) {
             fill :blue
           }
           
-          @shapes << colorable(:circle, 75, 70, 20, 20) { |shape|
+          @shapes << colorable(:circle, 75, 70, 20) {
             fill :green
           }
           
-          @shapes << colorable(:arc, 120, 70, 40, 0, 145) { |shape|
+          @shapes << colorable(:arc, 120, 70, 40, 0, 145) {
             fill :orange
           }
           
