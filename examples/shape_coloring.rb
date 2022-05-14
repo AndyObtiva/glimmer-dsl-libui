@@ -3,7 +3,7 @@ require 'glimmer-dsl-libui'
 class ShapeColoring
   include Glimmer::LibUI::Application
   
-  COLORS = %i[violet indigo blue green yellow orange red]
+  COLORS = %i[purple blue green orange red]
   
   body {
     window('Shape Coloring') {
@@ -11,22 +11,28 @@ class ShapeColoring
 
       horizontal_box {
         area {
-          rectangle(0, 0, 400, 300) { # background shape
+          rectangle(0, 0, 600, 400) { # background shape
             fill :white
           }
-          colorable(:rectangle, 10, 10, 40, 20) { |shape|
+          colorable(:rectangle, 20, 20, 40, 20) { |shape|
             fill COLORS.sample
           }
-          colorable(:square, 70, 20, 20) { |shape|
+          colorable(:square, 80, 20, 20) { |shape|
             fill COLORS.sample
           }
-          colorable(:circle, 60, 60, 20, 20) { |shape|
+          colorable(:circle, 75, 70, 20, 20) { |shape|
             fill COLORS.sample
           }
-          colorable(:arc, 90, 70, 40, 0, 145) { |shape|
+          colorable(:arc, 120, 70, 40, 0, 145) { |shape|
             fill COLORS.sample
           }
           colorable(:polygon, 120, 10, 120, 50, 150, 10, 150, 50) {
+            fill COLORS.sample
+          }
+          colorable(:polybezier, 10, 40,
+                     20, 70, 10, 80, 10, 51,
+                     20, 100, 40, 80, 70, 110,
+                     30, 120, 10, 120, 10, 91) {
             fill COLORS.sample
           }
         }
