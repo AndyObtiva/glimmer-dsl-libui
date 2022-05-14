@@ -1,10 +1,6 @@
 # TODO
 
-## Next 0.5.10
-
-Support nesting area mouse and keyboard listeners underneath shapes directly given the newly added support for the `include?(x, y)` method, which can be used to detect if a mouse or keyboard event fired for a specific shape
-
-### 0.5.x
+## Next 0.5.11
 
 - Support Custom Shapes, describing composite shapes/text/image concepts inside an `area`
 - Support Custom Shape `bounding_box` (minx, miny, width, height), `contain?` method (checking if shape contains point inside) and `include?` method (checking on outline if stroked and inside if filled?)

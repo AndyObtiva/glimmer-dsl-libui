@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.5.9
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.5.10
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -428,6 +428,7 @@ DSL | Platforms | Native? | Vector Graphics? | Pros | Cons | Prereqs
       - [Tetris](#tetris)
       - [Tic Tac Toe](#tic-tac-toe)
       - [Timer](#timer)
+      - [Shape Coloring](#shape-coloring)
   - [Applications](#applications)
     - [Manga2PDF](#manga2pdf)
     - [Befunge98 GUI](#befunge98-gui)
@@ -578,7 +579,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.5.9'
+gem 'glimmer-dsl-libui', '~> 0.5.10'
 ```
 
 Test that installation worked by running the [Meta-Example](#examples):
@@ -1391,6 +1392,10 @@ The `area_draw_params` `Hash` argument for `on_draw` block is a hash consisting 
 In general, it is recommended to use declarative stable paths whenever feasible since they require less code and simpler maintenance. But, in more advanced cases, semi-declarative dynamic paths could be used instead, especially if there are thousands of dynamic paths that need maximum performance and low memory footprint.
 
 #### Area Listeners
+
+`area` supports a number of keyboard and mouse listeners to enable observing the control for user interaction to execute some logic.
+
+The same listeners can be nested directly under `area` shapes like `rectangle` and `circle`, and [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) will automatically detect when the mouse lands within those shapes to constrain triggering the listeners by the shape regions.
 
 `area` supported listeners are:
 - `on_key_event {|area_key_event| ...}`: general catch-all key event (recommend using fine-grained key events below instead)
@@ -11014,6 +11019,125 @@ class Timer
 end
 
 Timer.new
+```
+
+#### Shape Coloring
+
+This example demonstrates being able to nest a listener within shapes directly, and [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) will automatically detect when the mouse lands inside a shape to notify listener.
+
+[examples/shape_coloring.rb](examples/shape_coloring.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/shape_coloring.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/shape_coloring'"
+```
+
+![glimmer-dsl-libui-mac-shape-coloring.png](images/glimmer-dsl-libui-mac-shape-coloring.png)
+![glimmer-dsl-libui-mac-shape-coloring-color-dialog.png](images/glimmer-dsl-libui-mac-shape-coloring-color-dialog.png)
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+require 'glimmer-dsl-libui'
+
+class ShapeColoring
+  include Glimmer::LibUI::Application
+  
+  COLOR_SELECTION = Glimmer::LibUI.interpret_color(:red)
+  
+  before_body {
+    @shapes = []
+  }
+  
+  body {
+    window('Shape Coloring', 200, 200) {
+      margined false
+      
+      grid {
+        label("Click a shape to select and\nchange color via color button") {
+          left 0
+          top 0
+          hexpand true
+          halign :center
+          vexpand false
+        }
+        
+        color_button { |cb|
+          left 0
+          top 1
+          hexpand true
+          vexpand false
+          
+          on_changed do
+            @selected_shape&.fill = cb.color
+          end
+        }
+      
+        area {
+          left 0
+          top 2
+          hexpand true
+          vexpand true
+          
+          rectangle(0, 0, 600, 400) { # background shape
+            fill :white
+          }
+          
+          @shapes << colorable(:rectangle, 20, 20, 40, 20) { |shape|
+            fill :lime
+          }
+          
+          @shapes << colorable(:square, 80, 20, 20) { |shape|
+            fill :blue
+          }
+          
+          @shapes << colorable(:circle, 75, 70, 20, 20) { |shape|
+            fill :green
+          }
+          
+          @shapes << colorable(:arc, 120, 70, 40, 0, 145) { |shape|
+            fill :orange
+          }
+          
+          @shapes << colorable(:polygon, 120, 10, 120, 50, 150, 10, 150, 50) {
+            fill :cyan
+          }
+          
+          @shapes << colorable(:polybezier, 20, 40,
+                     30, 100, 50, 80, 80, 110,
+                     40, 120, 20, 120, 30, 91) {
+            fill :pink
+          }
+        }
+      }
+    }
+  }
+  
+  def colorable(shape_symbol, *args, &content)
+    send(shape_symbol, *args) do |shape|
+      on_mouse_up do |area_mouse_event|
+        old_stroke = Glimmer::LibUI.interpret_color(shape.stroke).slice(:r, :g, :b)
+        @shapes.each {|sh| sh.stroke = nil}
+        @selected_shape = nil
+        unless old_stroke == COLOR_SELECTION
+          shape.stroke = COLOR_SELECTION.merge(thickness: 2)
+          @selected_shape = shape
+        end
+      end
+      
+      content.call(shape)
+    end
+  end
+end
+
+ShapeColoring.launch
 ```
 
 ## Applications
