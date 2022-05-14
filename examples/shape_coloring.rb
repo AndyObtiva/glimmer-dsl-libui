@@ -8,27 +8,46 @@ class ShapeColoring
   body {
     window('Shape Coloring') {
       margined false
-
-      horizontal_box {
+      
+      grid {
+        label("Color by Clicking a Shape") {
+          left 0
+          top 0
+          hexpand true
+          halign :center
+          vexpand false
+        }
+      
         area {
+          left 0
+          top 1
+          hexpand true
+          vexpand true
+          
           rectangle(0, 0, 600, 400) { # background shape
             fill :white
           }
+          
           colorable(:rectangle, 20, 20, 40, 20) { |shape|
             fill COLORS.sample
           }
+          
           colorable(:square, 80, 20, 20) { |shape|
             fill COLORS.sample
           }
+          
           colorable(:circle, 75, 70, 20, 20) { |shape|
             fill COLORS.sample
           }
+          
           colorable(:arc, 120, 70, 40, 0, 145) { |shape|
             fill COLORS.sample
           }
+          
           colorable(:polygon, 120, 10, 120, 50, 150, 10, 150, 50) {
             fill COLORS.sample
           }
+          
           colorable(:polybezier, 10, 40,
                      20, 70, 10, 80, 10, 51,
                      20, 100, 40, 80, 70, 110,
