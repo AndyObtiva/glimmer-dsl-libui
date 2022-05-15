@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.5.11 (unreleased)
+
+- Upgrade to perfect-shape 1.0.4
+
 ## 0.5.10
 
 - Support nesting area mouse listeners underneath shapes directly given the newly added support for the `include?(x, y)` method, which can be used to detect if a mouse event fired for a specific shape
