@@ -1,8 +1,18 @@
 # Change Log
 
-## 0.5.11 (unreleased)
+## 0.5.11
 
 - Upgrade to perfect-shape 1.0.4
+- Update examples/shape_coloring.rb with basic drag and drop support
+- Support `#move_by(x_delta, y_delta)` (alias `translate`) method on all shapes and `path` (e.g. useful in drag and drop)
+- Support `#move(x, y)` method on all shapes and `path` to move to x,y coordinate directly
+- Support `#min_x` minimum x coordinate of shape/`path` (of top-left corner)
+- Support `#min_y` minimum y coordinate of shape/`path` (of top-left corner)
+- Support `#max_x` maximum x coordinate of shape/`path` (of bottom-right corner)
+- Support `#max_y` maximum y coordinate of shape/`path` (of bottom-right corner)
+- Support `#center_point` (`Array` of x,y) center point of shape/`path`
+- Support `#center_x` center x coordinate of shape/`path`
+- Support `#center_y` center y coordinate of shape/`path`
 
 ## 0.5.10
 

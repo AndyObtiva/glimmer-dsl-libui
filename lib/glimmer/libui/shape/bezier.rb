@@ -50,6 +50,17 @@ module Glimmer
           x && y
         end
         
+        def move_by(x_delta, y_delta)
+          self.x += x_delta
+          self.y += y_delta
+          self.c1_x += x_delta
+          self.c1_y += y_delta
+          self.c2_x += x_delta
+          self.c2_y += y_delta
+          self.end_x += x_delta
+          self.end_y += y_delta
+        end
+        
         def perfect_shape
           perfect_shape_dependencies = [x, y, c1_x, c1_y, c2_x, c2_y, end_x, end_y]
           if perfect_shape_dependencies != @perfect_shape_dependencies

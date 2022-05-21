@@ -41,6 +41,10 @@ module Glimmer
           super
         end
         
+        def move_by(x_delta, y_delta)
+          self.point_array = point_array.each_with_index.map {|coordinate, i| i.even? ? coordinate + x_delta : coordinate + y_delta}
+        end
+        
         def perfect_shape
           perfect_shape_dependencies = PerfectShape::MultiPoint.normalize_point_array(point_array)
           if perfect_shape_dependencies != @perfect_shape_dependencies

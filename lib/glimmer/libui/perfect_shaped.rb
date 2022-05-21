@@ -1,7 +1,14 @@
+require 'forwardable'
+  
 module Glimmer
   module LibUI
     # GUI View objects that can be represented by PerfectShape objects
     module PerfectShaped
+      extend Forwardable
+      
+      def_delegators :perfect_shape,
+                     :min_x, :min_y, :max_x, :max_y, :center_point, :center_x, :center_y
+      
       # Returns if shape contains point on the inside when outline is false (default)
       # or if point is on the outline when outline is true
       # distance_tolerance is used when outline is true to enable a fuzz factor in
@@ -32,6 +39,18 @@ module Glimmer
           perfect_shape_bounding_box.width,
           perfect_shape_bounding_box.height,
         ]
+      end
+      
+      # moves by x delta and y delta. Classes must implement
+      def move_by(x_delta, y_delta)
+        # No Op
+      end
+      alias translate move_by
+      
+      def move(x, y)
+        x_delta = x - perfect_shape.min_x
+        y_delta = y - perfect_shape.min_y
+        move_by(x_delta, y_delta)
       end
       
       # Returns PerfectShape object matching this shape to enable

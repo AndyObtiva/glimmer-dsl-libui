@@ -2,7 +2,11 @@
 
 - Look into whether keyboard listeners must not be allowed within shapes since they do not carry an x/y element like mouse listeners
 
-## Next 0.5.11
+## Next 0.5.12
+
+- Support `shape` keyword as aggregate (composite) shape that can have arbitrary shapes, text, transforms underneath
+
+### 0.5.x
 
 - Support Custom Shapes, describing composite shapes/text/image concepts inside an `area`
 - Support Custom Shape `bounding_box` (minx, miny, width, height), `contain?` method (checking if shape contains point inside) and `include?` method (checking on outline if stroked and inside if filled?)

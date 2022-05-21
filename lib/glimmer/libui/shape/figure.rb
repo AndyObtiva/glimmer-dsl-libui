@@ -51,6 +51,12 @@ module Glimmer
         alias set_closed closed
         alias closed? closed
         
+        def move_by(x_delta, y_delta)
+          self.x += x_delta
+          self.y += y_delta
+          children.each {|child| child.move_by(x_delta, y_delta)}
+        end
+                
         def perfect_shape
           perfect_shape_dependencies = [x, y, closed, parent.draw_fill_mode, children]
           if perfect_shape_dependencies != @perfect_shape_dependencies

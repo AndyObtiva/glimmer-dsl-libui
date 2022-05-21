@@ -181,7 +181,7 @@ module Glimmer
           super
         end
       end
-      
+    
       private
       
       def build_control

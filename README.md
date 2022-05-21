@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.5.10
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.5.11
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -579,7 +579,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.5.10'
+gem 'glimmer-dsl-libui', '~> 0.5.11'
 ```
 
 Test that installation worked by running the [Meta-Example](#examples):
@@ -1088,13 +1088,22 @@ Mac | Windows | Linux
 ----|---------|------
 ![glimmer-dsl-libui-mac-area-gallery.png](images/glimmer-dsl-libui-mac-area-gallery.png) | ![glimmer-dsl-libui-windows-area-gallery.png](images/glimmer-dsl-libui-windows-area-gallery.png) | ![glimmer-dsl-libui-linux-area-gallery.png](images/glimmer-dsl-libui-linux-area-gallery.png)
 
-##### Shape Methods
+##### Area Path Shape Methods
 
 - `::parameters`: returns parameters of a shape class
 - `#bounding_box`: returns `Array` containing `[min_x, min_y, width, height]`
 - `#contain?(*point, outline: false, distance_tolerance: 0)`: Returns if point (`[x, y]` `Array` or args) is inside the shape when `outline` is `false` or on the outline when `outline` is `true`. `distance_tolerance` is used when `outline` is `true` as a fuzz factor for declaring a point on the outline of the shape (e.g. helps users select a shape from its outline more easily).
 - `#include?(*point)`: Returns if point (`[x, y]` `Array` or args) is inside the shape when filled (having `fill` value) or on the outline when stroked (not having `fill` value yet `stroke` value only)
 - `#perfect_shape`: returns [PerfectShape](https://github.com/AndyObtiva/perfect-shape) object matching the [libui](https://github.com/andlabs/libui) shape.
+- `#move_by(x_delta, y_delta)` (alias: `translate`): moves (translates) shape by x,y delta
+- `#move(x, y)`: moves (translates) shape to x,y coordinates (in the top-left x,y corner of the shape)
+- `#min_x`: minimum x coordinate of shape (of top-left corner)
+- `#min_y`: minimum y coordinate of shape (of top-left corner)
+- `#max_x`: maximum x coordinate of shape (of bottom-right corner)
+- `#max_y`: maximum y coordinate of shape (of bottom-right corner)
+- `#center_point` (`Array` of x,y): center point of shape
+- `#center_x`: center x coordinate of shape
+- `#center_y`: center y coordinate of shape
 
 #### Area Text
 
@@ -11023,7 +11032,9 @@ Timer.new
 
 #### Shape Coloring
 
-This example demonstrates being able to nest a listener within shapes directly, and [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) will automatically detect when the mouse lands inside a shape to notify listener.
+This example demonstrates being able to nest listeners within shapes directly, and [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) will automatically detect when the mouse lands inside the shapes to notify listeners.
+
+This example also demonstrates very basic drag and drop support, implemented manually with shape listeners.
 
 [examples/shape_coloring.rb](examples/shape_coloring.rb)
 
@@ -11039,7 +11050,12 @@ Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/
 ruby -r glimmer-dsl-libui -e "require 'examples/shape_coloring'"
 ```
 
+Shape Coloring Example
+
 ![glimmer-dsl-libui-mac-shape-coloring.png](images/glimmer-dsl-libui-mac-shape-coloring.png)
+
+![glimmer-dsl-libui-mac-shape-coloring-drag-and-drop.png](images/glimmer-dsl-libui-mac-shape-coloring-drag-and-drop.png)
+
 ![glimmer-dsl-libui-mac-shape-coloring-color-dialog.png](images/glimmer-dsl-libui-mac-shape-coloring-color-dialog.png)
 
 New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
@@ -11057,11 +11073,11 @@ class ShapeColoring
   }
   
   body {
-    window('Shape Coloring', 200, 200) {
+    window('Shape Coloring', 200, 220) {
       margined false
       
       grid {
-        label("Click a shape to select and\nchange color via color button") {
+        label("Drag & drop shapes to move or\nclick a shape to select and\nchange color via color button") {
           left 0
           top 0
           hexpand true
@@ -11090,19 +11106,19 @@ class ShapeColoring
             fill :white
           }
           
-          @shapes << colorable(:rectangle, 20, 20, 40, 20) { |shape|
+          @shapes << colorable(:rectangle, 20, 20, 40, 20) {
             fill :lime
           }
           
-          @shapes << colorable(:square, 80, 20, 20) { |shape|
+          @shapes << colorable(:square, 80, 20, 20) {
             fill :blue
           }
           
-          @shapes << colorable(:circle, 75, 70, 20, 20) { |shape|
+          @shapes << colorable(:circle, 75, 70, 20) {
             fill :green
           }
           
-          @shapes << colorable(:arc, 120, 70, 40, 0, 145) { |shape|
+          @shapes << colorable(:arc, 120, 70, 40, 0, 145) {
             fill :orange
           }
           
@@ -11115,6 +11131,14 @@ class ShapeColoring
                      40, 120, 20, 120, 30, 91) {
             fill :pink
           }
+          
+          on_mouse_dragged do |area_mouse_event|
+            mouse_dragged(area_mouse_event)
+          end
+          
+          on_mouse_dropped do |area_mouse_event|
+            mouse_dropped(area_mouse_event)
+          end
         }
       }
     }
@@ -11123,17 +11147,53 @@ class ShapeColoring
   def colorable(shape_symbol, *args, &content)
     send(shape_symbol, *args) do |shape|
       on_mouse_up do |area_mouse_event|
-        old_stroke = Glimmer::LibUI.interpret_color(shape.stroke).slice(:r, :g, :b)
-        @shapes.each {|sh| sh.stroke = nil}
-        @selected_shape = nil
-        unless old_stroke == COLOR_SELECTION
-          shape.stroke = COLOR_SELECTION.merge(thickness: 2)
-          @selected_shape = shape
+        unless @dragged_shape
+          old_stroke = Glimmer::LibUI.interpret_color(shape.stroke).slice(:r, :g, :b)
+          @shapes.each {|sh| sh.stroke = nil}
+          @selected_shape = nil
+          unless old_stroke == COLOR_SELECTION
+            shape.stroke = COLOR_SELECTION.merge(thickness: 2)
+            @selected_shape = shape
+          end
         end
+      end
+      
+      on_mouse_drag_started do |area_mouse_event|
+        mouse_drag_started(shape, area_mouse_event)
+      end
+      
+      on_mouse_dragged do |area_mouse_event|
+        mouse_dragged(area_mouse_event)
+      end
+      
+      on_mouse_dropped do |area_mouse_event|
+        mouse_dropped(area_mouse_event)
       end
       
       content.call(shape)
     end
+  end
+  
+  def mouse_drag_started(dragged_shape, area_mouse_event)
+    @dragged_shape = dragged_shape
+    @dragged_shape_x = area_mouse_event[:x]
+    @dragged_shape_y = area_mouse_event[:y]
+  end
+  
+  def mouse_dragged(area_mouse_event)
+    if @dragged_shape && @dragged_shape_x && @dragged_shape_y
+      x_delta = area_mouse_event[:x] - @dragged_shape_x
+      y_delta = area_mouse_event[:y] - @dragged_shape_y
+      @dragged_shape.move_by(x_delta, y_delta)
+      @dragged_shape_x = area_mouse_event[:x]
+      @dragged_shape_y = area_mouse_event[:y]
+    end
+  end
+  
+  def mouse_dropped(area_mouse_event)
+    @dragged_shape = nil
+    @dragged_shape_x = nil
+    @dragged_shape_y = nil
   end
 end
 

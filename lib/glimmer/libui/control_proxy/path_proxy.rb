@@ -162,6 +162,10 @@ module Glimmer
           @parent_proxy&.request_auto_redraw
         end
         
+        def move_by(x_delta, y_delta)
+          children.each {|child| child.move_by(x_delta, y_delta)}
+        end
+        
         def perfect_shape
           perfect_shape_dependencies = [draw_fill_mode, children]
           if perfect_shape_dependencies != @perfect_shape_dependencies

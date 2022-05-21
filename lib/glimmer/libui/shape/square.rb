@@ -35,6 +35,11 @@ module Glimmer
         
         # TODO look into refactoring/unifying code with Rectangle
         
+        def move_by(x_delta, y_delta)
+          self.x += x_delta
+          self.y += y_delta
+        end
+        
         def perfect_shape
           perfect_shape_dependencies = [x, y, length]
           if perfect_shape_dependencies != @perfect_shape_dependencies
