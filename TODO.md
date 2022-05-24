@@ -4,6 +4,12 @@
 
 ## Next 0.5.12
 
+- Modify default window closing behavior to autodetect if the window is not the last open window, and in which case, ensure that closing the window does not close the app.
+- Update shape_coloring.rb to use data-binding
+- Accept `true` and `false` as return values for `on_closing` window listener as aliases to `1` and `0`
+
+### 0.5.x
+
 - Support `shape` keyword as aggregate (composite) shape that can have arbitrary shapes, text, transforms underneath
 
 ### 0.5.x

@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.5.12
+
+- Upgrade `perfect-shape` gem to 1.0.5 to address Ruby 3.1 issue with `matrix` gem getting extracted from Ruby into a bundled gem
+
 ## 0.5.11
 
 - Upgrade to perfect-shape 1.0.4

@@ -2,7 +2,7 @@ source "https://rubygems.org"
 
 # Glimmer project owner gems
 gem 'glimmer', '~> 2.7.3' #, path: '../glimmer'
-gem 'perfect-shape', '~> 1.0.4' #, path: '../glimmer'
+gem 'perfect-shape', '~> 1.0.5' #, path: '../glimmer'
 gem 'super_module', '~> 1.4.1'
 # gem 'puts_debuggerer', '~> 0.10.0', require: false
 # gem 'rake-tui', '>= 0.2.1'
