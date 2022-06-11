@@ -11260,6 +11260,8 @@ These features have been planned or suggested. You might see them in a future ve
 
 ## Contributing
 
+If you would like to contribute to the project, please adhere to the [Open-Source Etiquette](https://github.com/AndyObtiva/open-source-etiquette) to ensure the best results.
+
 -   Check out the latest master to make sure the feature hasn't been
     implemented or the bug hasn't been fixed yet.
 -   Check out the issue tracker to make sure someone already hasn't
