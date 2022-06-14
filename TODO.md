@@ -44,6 +44,7 @@
 
 ## Soon
 
+- Add padding around code_area (empty space to the left and right and empty line on top and at the bottom)
 - Refactor all samples that use a class including Glimmer to utilize CustomWindow instead
 - examples/file_tabs.rb (inspired by this addressed issue: https://github.com/AndyObtiva/glimmer-dsl-libui/issues/16)
 - Glimmerize examples/draw_text.rb from Ruby LibUI project

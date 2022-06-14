@@ -433,6 +433,8 @@ DSL | Platforms | Native? | Vector Graphics? | Pros | Cons | Prereqs
     - [Manga2PDF](#manga2pdf)
     - [Befunge98 GUI](#befunge98-gui)
     - [i3off Gtk Ruby](#i3off-gtk-ruby)
+    - [Chess](#chess)
+    - [RubyCrumbler](#rubycrumbler)
   - [Process](#process)
   - [Resources](#resources)
   - [Help](#help)
@@ -11226,6 +11228,16 @@ https://github.com/iraamaro/i3off-gtk-ruby
 ### Chess
 
 https://github.com/mikeweber/chess
+
+### RubyCrumbler
+
+NLP (Natural Language Processing) App
+
+https://github.com/joh-ga/RubyCrumbler
+
+MacOS | Windows | Linux
+| :---: | :---: | :---:
+![mac_31](https://user-images.githubusercontent.com/72874215/159339948-b7ae1bf2-60c1-4dae-ac1a-4e13a6048ef0.gif)|![windows_4](https://user-images.githubusercontent.com/72874215/160242473-c38439be-0955-4e89-9f3f-b3d0567531fd.gif)|![rubycrumbler_linux](https://user-images.githubusercontent.com/72874215/160242460-99af1c8c-b43f-458d-bd69-1274a0bd9814.gif)
 
 ## Process
 
