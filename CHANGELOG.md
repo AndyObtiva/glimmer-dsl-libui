@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.5.13
+
+- Fix issue with rendering table content changes when having many rows
+
 ## 0.5.12
 
 - Upgrade `perfect-shape` gem to 1.0.5 to address Ruby 3.1 issue with `matrix` gem getting extracted from Ruby into a bundled gem

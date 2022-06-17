@@ -303,16 +303,30 @@ module Glimmer
         def register_cell_rows_observer
           @cell_rows_observer = Glimmer::DataBinding::Observer.proc do |new_cell_rows|
             if @cell_rows.size < @last_cell_rows.size && @last_cell_rows.include_all?(*@cell_rows)
-              @last_cell_rows.array_diff_indexes(@cell_rows).reverse.each do |row|
+              @last_cell_rows.each_with_index do |old_row_data, row|
+                if old_row_data != @cell_rows[row]
+                  ::LibUI.table_model_row_changed(model, row) if model && row
+                  notify_custom_listeners('on_changed', row, :changed, @cell_rows[row])
+                end
+              end
+              (@last_cell_rows.size - @cell_rows.size).times do |n|
+                row = @last_cell_rows.size - n - 1
                 ::LibUI.table_model_row_deleted(model, row) if model && row
                 notify_custom_listeners('on_changed', row, :deleted, @last_cell_rows[row])
               end
             elsif @cell_rows.size > @last_cell_rows.size && @cell_rows.include_all?(*@last_cell_rows)
-              @cell_rows.array_diff_indexes(@last_cell_rows).each do |row|
+              (@cell_rows.size - @last_cell_rows.size).times do |n|
+                row = @last_cell_rows.size + n
                 ::LibUI.table_model_row_inserted(model, row) if model && row
                 notify_custom_listeners('on_changed', row, :inserted, @cell_rows[row])
               end
-            else
+              @cell_rows.each_with_index do |new_row_data, row|
+                if new_row_data != @last_cell_rows[row]
+                  ::LibUI.table_model_row_changed(model, row) if model && row
+                  notify_custom_listeners('on_changed', row, :changed, @cell_rows[row])
+                end
+              end
+            elsif @cell_rows != @last_cell_rows
               @cell_rows.each_with_index do |new_row_data, row|
                 if new_row_data != @last_cell_rows[row]
                   ::LibUI.table_model_row_changed(model, row) if model && row
