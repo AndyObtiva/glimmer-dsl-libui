@@ -2,7 +2,9 @@
 
 - Look into whether keyboard listeners must not be allowed within shapes since they do not carry an x/y element like mouse listeners
 
-## Next 0.5.12
+## 0.5.x
+
+- Optimize table content changes with diffing
 
 - Modify default window closing behavior to autodetect if the window is not the last open window, and in which case, ensure that closing the window does not close the app.
 - Update shape_coloring.rb to use data-binding
