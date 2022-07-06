@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.5.14
+
+- Basic Child Window example
+- Modify default window closing behavior to autodetect if the window is a child window (not the main window), and if closed, ensure that does not quit the app.
+
 ## 0.5.13
 
 - Fix issue with rendering table content changes when having many rows

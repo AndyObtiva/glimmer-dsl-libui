@@ -84,6 +84,8 @@ module Glimmer
               end
               if return_value.is_a?(Numeric)
                 return_value
+              elsif self != ControlProxy.main_window_proxy
+                1
               else
                 destroy
                 ::LibUI.quit
