@@ -4,6 +4,7 @@
 
 - Basic Child Window example
 - Modify default window closing behavior to autodetect if the window is a child window (not the main window), and if closed, ensure that does not quit the app.
+- Accept `true` and `false` as return values for `on_closing` window listener as aliases to `1` and `0`
 
 ## 0.5.13
 

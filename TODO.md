@@ -4,10 +4,7 @@
 
 ## 0.5.x
 
-- Optimize table content changes with diffing
-
 - Update shape_coloring.rb to use data-binding
-- Accept `true` and `false` as return values for `on_closing` window listener as aliases to `1` and `0`
 
 ### 0.5.x
 
@@ -131,7 +128,9 @@
 - Support textual tooltips (on hover over attributed strings) in `code_area` custom control (and potentially `code_editor` custom control)
 - Look into the potential issue with not respecting the even odd rule when triggering events on figures within a path
 - Integrate GR chart/plot support into Glimmer DSL for LibUI (or provide a custom control gem for it) once LibUI supports image rendering or pixel drawing in an efficient manner
-- paginated_filtered_table widget or something similar
+- `paginated_filtered_table` widget or something similar (like splitting `pagination` and `filter` as separate widgets)
+- Optimize table content changes with diffing
+
 # Refactoring
 
 - Refactor column proxies code to be more dynamic and enable autosupport of new columns in the future

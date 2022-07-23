@@ -80,10 +80,12 @@ module Glimmer
               return_value = nil
               @on_closing_listeners.each do |l|
                 return_value = l.call(self)
-                break if return_value.is_a?(Numeric)
+                break if return_value.is_a?(Numeric) || return_value.is_a?(TrueClass) || return_value.is_a?(FalseClass)
               end
               if return_value.is_a?(Numeric)
                 return_value
+              elsif return_value.is_a?(TrueClass) || return_value.is_a?(FalseClass)
+                return_value ? 1 : 0
               elsif self != ControlProxy.main_window_proxy
                 1
               else
