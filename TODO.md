@@ -2,9 +2,7 @@
 
 - Look into whether keyboard listeners must not be allowed within shapes since they do not carry an x/y element like mouse listeners
 
-## 0.5.x
-
-- Update shape_coloring.rb to use data-binding
+## Next
 
 ### 0.5.x
 
@@ -42,6 +40,7 @@
 
 ## Soon
 
+- Update shape_coloring.rb to use data-binding (must support being able to set top-left x,y on any shape instead of relying on move_by to make it work with data-binding, just like Glimmer DSL for SWT supports that)
 - Add padding around code_area (empty space to the left and right and empty line on top and at the bottom)
 - Refactor all samples that use a class including Glimmer to utilize CustomWindow instead
 - examples/file_tabs.rb (inspired by this addressed issue: https://github.com/AndyObtiva/glimmer-dsl-libui/issues/16)
