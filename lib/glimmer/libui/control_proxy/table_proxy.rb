@@ -129,7 +129,7 @@ module Glimmer
           model_attribute_observer = Glimmer::DataBinding::Observer.proc do
             new_value = model_binding.evaluate_property
             new_value = new_value.to_a if new_value.is_a?(Enumerator)
-            if model_binding.binding_options[:column_attributes] || (!new_value.empty? && !new_value.first.is_a?(Array))
+            if model_binding.binding_options[:column_attributes] || (!new_value.nil? && (!new_value.is_a?(String) || !new_value.empty?) && (!new_value.is_a?(Array) || !new_value.first.is_a?(Array)))
               @model_attribute_array_observer_registration&.deregister
               @model_attribute_array_observer_registration = model_attribute_observer.observe(new_value, @column_attributes, ignore_frozen: true, attribute_writer_type: [:attribute=, :set_attribute])
               model_attribute_observer.add_dependent(model_attribute_observer_registration => @model_attribute_array_observer_registration)

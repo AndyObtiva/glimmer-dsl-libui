@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.5.15
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.5.16
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -418,6 +418,7 @@ DSL | Platforms | Native? | Vector Graphics? | Pros | Cons | Prereqs
       - [Editable Column Table](#editable-column-table)
       - [Editable Table](#editable-table)
       - [Form Table](#form-table)
+      - [Paginated Refined Table](#paginated-refined-table)
       - [Grid](#grid)
       - [Histogram](#histogram)
       - [Login](#login)
@@ -583,7 +584,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.5.15'
+gem 'glimmer-dsl-libui', '~> 0.5.16'
 ```
 
 Test that installation worked by running the [Meta-Example](#examples):
@@ -765,6 +766,7 @@ Keyword(Args) | Properties | Listeners
 `quit_menu_item` | None | `on_clicked`
 `radio_buttons` | `selected` (`Integer`) | `on_selected`
 `rectangle(x as Numeric, y as Numeric, width as Numeric, height as Numeric)` |  `x` (`Numeric`), `y` (`Numeric`), `width` (`Numeric`), `height` (`Numeric`) | None
+`refined_table` | (EARLY ALPHA UNSTABLE API / CHECK SOURCE CODE FOR DETAILS) | (EARLY ALPHA UNSTABLE API / CHECK SOURCE CODE FOR DETAILS)
 `scrolling_area(width = main_window.width, height = main_window.height)` | `auto_draw_enabled` (Boolean), `size` (`Array` of `width` (`Numeric`) and `height` (`Numeric`)), `width` (`Numeric`), `height` (`Numeric`) | `on_draw(area_draw_params)`, `on_mouse_event(area_mouse_event)`, `on_mouse_down(area_mouse_event)`, `on_mouse_up(area_mouse_event)`, `on_mouse_drag_started(area_mouse_event)`, `on_mouse_dragged(area_mouse_event)`, `on_mouse_dropped(area_mouse_event)`, `on_mouse_entered`, `on_mouse_exited`, `on_key_event(area_key_event)`, `on_key_down(area_key_event)`, `on_key_up(area_key_event)`
 `search_entry` | `read_only` (Boolean), `text` (`String`) | `on_changed`
 `separator_menu_item` | None | None
@@ -991,6 +993,40 @@ Mac | Windows | Linux
 ![glimmer-dsl-libui-mac-form-table.png](images/glimmer-dsl-libui-mac-form-table.png) | ![glimmer-dsl-libui-windows-form-table.png](images/glimmer-dsl-libui-windows-form-table.png) | ![glimmer-dsl-libui-linux-form-table.png](images/glimmer-dsl-libui-linux-form-table.png)
 
 Learn more by checking out [examples](#examples).
+
+#### Refined Table
+
+[EARLY ALPHA FEATURE]
+
+`refined_table` is a custom control provided exclusively by Glimmer DSL for LibUI that includes filtering and pagination support out of the box and can handle very large amounts of data (e.g. 50,000 rows).
+
+It is currently an early alpha feature, so please test-drive and report issues if you encounter any.
+
+Also, the API might undergo big changes, so please keep that in mind.
+
+Example code:
+
+```ruby
+refined_table(
+  model_array: contacts,
+  table_columns: {
+    'Name'  => {button: {on_clicked: ->(row) {puts row}}},
+    'Colored Email' => :text_color,
+    'Phone' => {text: {editable: true}},
+    'City'  => :text,
+    'State' => :text,
+  },
+  table_editable: true,
+  per_page: 20, # row count per page
+  page: 5, # initial page
+)
+```
+
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-paginated-refined-table.png](images/glimmer-dsl-libui-mac-paginated-refined-table.png)| ![glimmer-dsl-libui-windows-paginated-refined-table.png](images/glimmer-dsl-libui-windows-paginated-refined-table.png)| ![glimmer-dsl-libui-linux-paginated-refined-table.png](images/glimmer-dsl-libui-linux-paginated-refined-table.png)
+
+Learn more in the [Paginated Refined Table](#paginated-refined-table) example.
 
 ### Area API
 
@@ -7977,6 +8013,273 @@ window('Contacts', 600, 600) {
     }
   }
 }.show
+```
+
+#### Paginated Refined Table
+
+[examples/paginated_refined_table.rb](examples/paginated_refined_table.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/paginated_refined_table.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/paginated_refined_table'"
+```
+
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-paginated-refined-table.png](images/glimmer-dsl-libui-mac-paginated-refined-table.png)| ![glimmer-dsl-libui-windows-paginated-refined-table.png](images/glimmer-dsl-libui-windows-paginated-refined-table.png)| ![glimmer-dsl-libui-linux-paginated-refined-table.png](images/glimmer-dsl-libui-linux-paginated-refined-table.png)
+
+New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+```ruby
+require 'glimmer-dsl-libui'
+
+class PaginatedRefinedTable
+  Contact = Struct.new(:name, :email, :phone, :city, :state)
+  
+  include Glimmer::LibUI::Application
+  
+  NAMES_FIRST = %w[
+    Liam
+    Noah
+    William
+    James
+    Oliver
+    Benjamin
+    Elijah
+    Lucas
+    Mason
+    Logan
+    Alexander
+    Ethan
+    Jacob
+    Michael
+    Daniel
+    Henry
+    Jackson
+    Sebastian
+    Aiden
+    Matthew
+    Samuel
+    David
+    Joseph
+    Carter
+    Owen
+    Wyatt
+    John
+    Jack
+    Luke
+    Jayden
+    Dylan
+    Grayson
+    Levi
+    Isaac
+    Gabriel
+    Julian
+    Mateo
+    Anthony
+    Jaxon
+    Lincoln
+    Joshua
+    Christopher
+    Andrew
+    Theodore
+    Caleb
+    Ryan
+    Asher
+    Nathan
+    Thomas
+    Leo
+    Isaiah
+    Charles
+    Josiah
+    Hudson
+    Christian
+    Hunter
+    Connor
+    Eli
+    Ezra
+    Aaron
+    Landon
+    Adrian
+    Jonathan
+    Nolan
+    Jeremiah
+    Easton
+    Elias
+    Colton
+    Cameron
+    Carson
+    Robert
+    Angel
+    Maverick
+    Nicholas
+    Dominic
+    Jaxson
+    Greyson
+    Adam
+    Ian
+    Austin
+    Santiago
+    Jordan
+    Cooper
+    Brayden
+    Roman
+    Evan
+    Ezekiel
+    Xaviar
+    Jose
+    Jace
+    Jameson
+    Leonardo
+    Axel
+    Everett
+    Kayden
+    Miles
+    Sawyer
+    Jason
+    Emma
+    Olivia
+    Bartholomew
+    Corey
+    Danielle
+    Eva
+    Felicity
+  ]
+  
+  NAMES_LAST = %w[
+    Smith
+    Johnson
+    Williams
+    Brown
+    Jones
+    Miller
+    Davis
+    Wilson
+    Anderson
+    Taylor
+    George
+    Harrington
+    Iverson
+    Jackson
+    Korby
+    Levinson
+  ]
+  
+  CITIES = [
+    'Bellesville',
+    'Lombardia',
+    'Steepleton',
+    'Deerenstein',
+    'Schwartz',
+    'Hollandia',
+    'Saint Pete',
+    'Grandville',
+    'London',
+    'Berlin',
+    'Elktown',
+    'Paris',
+    'Garrison',
+    'Muncy',
+    'St Louis',
+  ]
+  
+  STATES = [ 'AK', 'AL', 'AR', 'AZ', 'CA', 'CO', 'CT', 'DC', 'DE', 'FL', 'GA',
+             'HI', 'IA', 'ID', 'IL', 'IN', 'KS', 'KY', 'LA', 'MA', 'MD', 'ME',
+             'MI', 'MN', 'MO', 'MS', 'MT', 'NC', 'ND', 'NE', 'NH', 'NJ', 'NM',
+             'NV', 'NY', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX',
+             'UT', 'VA', 'VT', 'WA', 'WI', 'WV', 'WY']
+             
+  attr_accessor :contacts, :name, :email, :phone, :city, :state, :filter_value, :index
+  
+  before_body do
+    @contacts = 50_000.times.map do |n|
+      n += 1
+      first_name = NAMES_FIRST.sample
+      last_name = NAMES_LAST.sample
+      city = CITIES.sample
+      state = STATES.sample
+      Contact.new("#{first_name} #{last_name}", "#{first_name.downcase}#{n}@#{last_name.downcase}.com", '555-555-5555', city, state)
+    end
+  end
+  
+  body {
+    window("50,000 Paginated Contacts", 600, 700) {
+      margined true
+      
+      vertical_box {
+        form {
+          stretchy false
+          
+          entry {
+            label 'Name'
+            text <=> [self, :name] # bidirectional data-binding between entry text and self.name
+          }
+          
+          entry {
+            label 'Email'
+            text <=> [self, :email]
+          }
+          
+          entry {
+            label 'Phone'
+            text <=> [self, :phone]
+          }
+          
+          entry {
+            label 'City'
+            text <=> [self, :city]
+          }
+          
+          entry {
+            label 'State'
+            text <=> [self, :state]
+          }
+        }
+        
+        button('Save Contact') {
+          stretchy false
+          
+          on_clicked do
+            new_row = [name, email, phone, city, state]
+            if new_row.map(&:to_s).include?('')
+              msg_box_error('Validation Error!', 'All fields are required! Please make sure to enter a value for all fields.')
+            else
+              @contacts << Contact.new(*new_row) # automatically inserts a row into the table due to explicit data-binding
+              @unfiltered_contacts = @contacts.dup
+              self.name = '' # automatically clears name entry through explicit data-binding
+              self.email = ''
+              self.phone = ''
+              self.city = ''
+              self.state = ''
+            end
+          end
+        }
+        
+        refined_table(
+          model_array: contacts,
+          table_columns: {
+            'Name'  => :text,
+            'Email' => :text,
+            'Phone' => :text,
+            'City'  => :text,
+            'State' => :text,
+          },
+          table_editable: true,
+          per_page: 20,
+        )
+      }
+    }
+  }
+end
+
+PaginatedRefinedTable.launch
 ```
 
 #### Grid

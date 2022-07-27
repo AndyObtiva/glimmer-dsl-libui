@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.5.16
+
+- `refined_table` custom control that renders a `table` with filtering and pagination, thus being able to handle a large data set (e.g. 50,000)
+- New examples/paginated_refined_table.rb
+
 ## 0.5.15
 
 - Fix an issue with rendering table content changes when the number of rows changes with new content that is not a subset of the old content or a container of it
