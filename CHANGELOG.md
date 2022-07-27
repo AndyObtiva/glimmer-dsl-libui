@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.5.15
+
+- Fix an issue with rendering table content changes when the number of rows changes with new content that is not a subset of the old content or a container of it
+
 ## 0.5.14
 
 - Basic Child Window example

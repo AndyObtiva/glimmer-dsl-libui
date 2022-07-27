@@ -1,9 +1,12 @@
 # TODO
 
-- Look into whether keyboard listeners must not be allowed within shapes since they do not carry an x/y element like mouse listeners
-
 ## Next
 
+### 0.5.x
+
+- `refined_table` custom control that renders a `table` with filtering and pagination
+- Refined Table example
+ 
 ### 0.5.x
 
 - Support `shape` keyword as aggregate (composite) shape that can have arbitrary shapes, text, transforms underneath
@@ -40,6 +43,7 @@
 
 ## Soon
 
+- Look into whether keyboard listeners must not be allowed within shapes since they do not carry an x/y element like mouse listeners
 - Update shape_coloring.rb to use data-binding (must support being able to set top-left x,y on any shape instead of relying on move_by to make it work with data-binding, just like Glimmer DSL for SWT supports that)
 - Add padding around code_area (empty space to the left and right and empty line on top and at the bottom)
 - Refactor all samples that use a class including Glimmer to utilize CustomWindow instead

@@ -302,7 +302,7 @@ module Glimmer
         
         def register_cell_rows_observer
           @cell_rows_observer = Glimmer::DataBinding::Observer.proc do |new_cell_rows|
-            if @cell_rows.size < @last_cell_rows.size && @last_cell_rows.include_all?(*@cell_rows)
+            if @cell_rows.size < @last_cell_rows.size
               @last_cell_rows.each_with_index do |old_row_data, row|
                 if old_row_data != @cell_rows[row] && model
                   ::LibUI.table_model_row_changed(model, row)
@@ -316,7 +316,7 @@ module Glimmer
                   notify_custom_listeners('on_changed', row, :deleted, @last_cell_rows[row])
                 end
               end
-            elsif @cell_rows.size > @last_cell_rows.size && @cell_rows.include_all?(*@last_cell_rows)
+            elsif @cell_rows.size > @last_cell_rows.size
               (@cell_rows.size - @last_cell_rows.size).times do |n|
                 row = @last_cell_rows.size + n
                 if model
