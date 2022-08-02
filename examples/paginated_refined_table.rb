@@ -6,148 +6,21 @@ class PaginatedRefinedTable
   include Glimmer::LibUI::Application
   
   NAMES_FIRST = %w[
-    Liam
-    Noah
-    William
-    James
-    Oliver
-    Benjamin
-    Elijah
-    Lucas
-    Mason
-    Logan
-    Alexander
-    Ethan
-    Jacob
-    Michael
-    Daniel
-    Henry
-    Jackson
-    Sebastian
-    Aiden
-    Matthew
-    Samuel
-    David
-    Joseph
-    Carter
-    Owen
-    Wyatt
-    John
-    Jack
-    Luke
-    Jayden
-    Dylan
-    Grayson
-    Levi
-    Isaac
-    Gabriel
-    Julian
-    Mateo
-    Anthony
-    Jaxon
-    Lincoln
-    Joshua
-    Christopher
-    Andrew
-    Theodore
-    Caleb
-    Ryan
-    Asher
-    Nathan
-    Thomas
-    Leo
-    Isaiah
-    Charles
-    Josiah
-    Hudson
-    Christian
-    Hunter
-    Connor
-    Eli
-    Ezra
-    Aaron
-    Landon
-    Adrian
-    Jonathan
-    Nolan
-    Jeremiah
-    Easton
-    Elias
-    Colton
-    Cameron
-    Carson
-    Robert
-    Angel
-    Maverick
-    Nicholas
-    Dominic
-    Jaxson
-    Greyson
-    Adam
-    Ian
-    Austin
-    Santiago
-    Jordan
-    Cooper
-    Brayden
-    Roman
-    Evan
-    Ezekiel
-    Xaviar
-    Jose
-    Jace
-    Jameson
-    Leonardo
-    Axel
-    Everett
-    Kayden
-    Miles
-    Sawyer
-    Jason
-    Emma
-    Olivia
-    Bartholomew
-    Corey
-    Danielle
-    Eva
-    Felicity
+    Liam Noah William James Oliver Benjamin Elijah Lucas Mason Logan Alexander Ethan Jacob Michael Daniel Henry Jackson Sebastian 
+    Aiden Matthew Samuel David Joseph Carter Owen Wyatt John Jack Luke Jayden Dylan Grayson Levi Isaac Gabriel Julian Mateo
+    Anthony Jaxon Lincoln Joshua Christopher Andrew Theodore Caleb Ryan Asher Nathan Thomas Leo Isaiah Charles Josiah Hudson
+    Christian Hunter Connor Eli Ezra Aaron Landon Adrian Jonathan Nolan Jeremiah Easton Elias Colton Cameron Carson Robert Angel
+    Maverick Nicholas Dominic Jaxson Greyson Adam Ian Austin Santiago Jordan Cooper Brayden Roman Evan Ezekiel Xaviar Jose Jace
+    Jameson Leonardo Axel Everett Kayden Miles Sawyer Jason Emma Olivia Bartholomew Corey Danielle Eva Felicity
   ]
   
   NAMES_LAST = %w[
-    Smith
-    Johnson
-    Williams
-    Brown
-    Jones
-    Miller
-    Davis
-    Wilson
-    Anderson
-    Taylor
-    George
-    Harrington
-    Iverson
-    Jackson
-    Korby
-    Levinson
+    Smith Johnson Williams Brown Jones Miller Davis Wilson Anderson Taylor George Harrington Iverson Jackson Korby Levinson
   ]
   
   CITIES = [
-    'Bellesville',
-    'Lombardia',
-    'Steepleton',
-    'Deerenstein',
-    'Schwartz',
-    'Hollandia',
-    'Saint Pete',
-    'Grandville',
-    'London',
-    'Berlin',
-    'Elktown',
-    'Paris',
-    'Garrison',
-    'Muncy',
-    'St Louis',
+    'Bellesville', 'Lombardia', 'Steepleton', 'Deerenstein', 'Schwartz', 'Hollandia', 'Saint Pete', 'Grandville', 'London',
+    'Berlin', 'Elktown', 'Paris', 'Garrison', 'Muncy', 'St Louis',
   ]
   
   STATES = [ 'AK', 'AL', 'AR', 'AZ', 'CA', 'CO', 'CT', 'DC', 'DE', 'FL', 'GA',

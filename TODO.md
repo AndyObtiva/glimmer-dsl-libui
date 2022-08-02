@@ -2,8 +2,13 @@
 
 ## Next
 
-- Fix issue with entering a filter query that fails to find any results (e.g. 333333 for 50000 records)
-- Look into data-binding table `editable` property
+- Ensure disabling next and previous buttons in refined table if page is at beginning or end
+- Ensure correcting initial page passed to refoned table if out of range
+- Add a "of Count of Pages" label after the text control in the table pagination area (or add it within the text widget input)
+
+- Use polyline in one more place in histogram
+- Provide a guide comparing use of path with path having figure with shape shorcuts (e.g. polyline, which abstracts path and figure away)
+- Collapse name arrays in paginated refined table example
 
 ### 0.5.x
 
