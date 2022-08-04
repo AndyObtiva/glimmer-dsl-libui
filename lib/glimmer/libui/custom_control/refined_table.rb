@@ -76,6 +76,8 @@ class RefinedTable
       stretchy false
 
       button('<<') {
+        enabled <= [self, :page, on_read: ->(val) {val > 1}]
+        
         on_clicked do
           unless self.page == 0
             self.page = 1
@@ -83,7 +85,10 @@ class RefinedTable
           end
         end
       }
+      
       button('<') {
+        enabled <= [self, :page, on_read: ->(val) {val > 1}]
+        
         on_clicked do
           unless self.page == 0
             self.page = [page - 1, 1].max
@@ -91,6 +96,7 @@ class RefinedTable
           end
         end
       }
+      
       entry {
         text <=> [self, :page,
                   on_read: :to_s,
@@ -98,7 +104,10 @@ class RefinedTable
                   after_write: ->(val) { paginate_model_array },
                  ]
       }
+      
       button('>') {
+        enabled <= [self, :page, on_read: ->(val) {val < page_count}]
+        
         on_clicked do
           unless self.page == 0
             self.page = [page + 1, page_count].min
@@ -106,7 +115,10 @@ class RefinedTable
           end
         end
       }
+      
       button('>>') {
+        enabled <= [self, :page, on_read: ->(val) {val < page_count}]
+        
         on_clicked do
           unless self.page == 0
             self.page = page_count
