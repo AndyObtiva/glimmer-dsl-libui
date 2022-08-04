@@ -15,6 +15,7 @@ class RefinedTable
     @filter_query_page_stack = {}
     @filtered_model_array = model_array.dup
     @filtered_model_array_stack = {@filter_query => @filtered_model_array}
+    self.page = correct_page(page)
     paginate_model_array
   end
   

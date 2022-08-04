@@ -5,6 +5,7 @@
 - Ensure disabling pagination buttons in `refined_table` if page is at beginning or end
 - Add a "of #{page_count} pages" label after the text control in `refined_table` pagination area
 - Page count ("of #{page_count} pages" label) can be hidden by setting `visible_page_count: false` in `refined_table` options
+- Correct initial `page` option passed to `refined_table` if out of range
 
 ## 0.5.16
 
