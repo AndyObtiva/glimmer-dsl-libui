@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.5.17
+
+- Ensure disabling pagination buttons in `refined_table` if page is at beginning or end
+- Add a "of #{page_count} pages" label after the text control in `refined_table` pagination area
+
 ## 0.5.16
 
 - `refined_table` custom control that renders a `table` with filtering and pagination, thus being able to handle a large data set (e.g. 50,000)

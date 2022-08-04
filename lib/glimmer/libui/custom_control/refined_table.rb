@@ -105,6 +105,10 @@ class RefinedTable
                  ]
       }
       
+      label {
+        text <= [self, :paginated_model_array, on_read: ->(val) {"of #{page_count} pages"}]
+      }
+      
       button('>') {
         enabled <= [self, :page, on_read: ->(val) {val < page_count}]
         

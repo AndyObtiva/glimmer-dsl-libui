@@ -2,9 +2,7 @@
 
 ## Next
 
-- Ensure disabling next and previous buttons in refined table if page is at beginning or end
 - Ensure correcting initial page passed to refoned table if out of range
-- Add a "of Count of Pages" label after the text control in the table pagination area (or add it within the text widget input)
 
 - Use polyline in one more place in histogram
 - Provide a guide comparing use of path with path having figure with shape shorcuts (e.g. polyline, which abstracts path and figure away)
