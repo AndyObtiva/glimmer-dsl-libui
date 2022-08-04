@@ -3,6 +3,7 @@
 ## Next
 
 - Ensure correcting initial page passed to refoned table if out of range
+- When typing too fast into `refined_table` filter, page count changes are not reflected correctly in subsequent steps towards a full keyword
 
 - Use polyline in one more place in histogram
 - Provide a guide comparing use of path with path having figure with shape shorcuts (e.g. polyline, which abstracts path and figure away)

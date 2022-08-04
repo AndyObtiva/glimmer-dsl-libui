@@ -6,7 +6,7 @@ class PaginatedRefinedTable
   include Glimmer::LibUI::Application
   
   NAMES_FIRST = %w[
-    Liam Noah William James Oliver Benjamin Elijah Lucas Mason Logan Alexander Ethan Jacob Michael Daniel Henry Jackson Sebastian 
+    Liam Noah William James Oliver Benjamin Elijah Lucas Mason Logan Alexander Ethan Jacob Michael Daniel Henry Jackson Sebastian
     Aiden Matthew Samuel David Joseph Carter Owen Wyatt John Jack Luke Jayden Dylan Grayson Levi Isaac Gabriel Julian Mateo
     Anthony Jaxon Lincoln Joshua Christopher Andrew Theodore Caleb Ryan Asher Nathan Thomas Leo Isaiah Charles Josiah Hudson
     Christian Hunter Connor Eli Ezra Aaron Landon Adrian Jonathan Nolan Jeremiah Easton Elias Colton Cameron Carson Robert Angel
@@ -106,6 +106,8 @@ class PaginatedRefinedTable
           },
           table_editable: true,
           per_page: 20,
+          # page: 1, # initial page is 1
+          # visible_page_count: true, # page count can be hidden if preferred
         )
       }
     }

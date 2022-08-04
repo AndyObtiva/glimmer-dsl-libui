@@ -6,6 +6,7 @@ class RefinedTable
   option :table_editable, default: false
   option :per_page, default: 10
   option :page, default: 1
+  option :visible_page_count, default: true
   
   attr_accessor :filtered_model_array, :filter_query, :filter_query_page_stack, :paginated_model_array
   
@@ -105,9 +106,11 @@ class RefinedTable
                  ]
       }
       
-      label {
-        text <= [self, :paginated_model_array, on_read: ->(val) {"of #{page_count} pages"}]
-      }
+      if visible_page_count
+        label {
+          text <= [self, :paginated_model_array, on_read: ->(val) {"of #{page_count} pages"}]
+        }
+      end
       
       button('>') {
         enabled <= [self, :page, on_read: ->(val) {val < page_count}]
