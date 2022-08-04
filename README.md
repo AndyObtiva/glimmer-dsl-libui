@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.5.16
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.5.17
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -584,7 +584,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.5.16'
+gem 'glimmer-dsl-libui', '~> 0.5.17'
 ```
 
 Test that installation worked by running the [Meta-Example](#examples):
@@ -766,7 +766,7 @@ Keyword(Args) | Properties | Listeners
 `quit_menu_item` | None | `on_clicked`
 `radio_buttons` | `selected` (`Integer`) | `on_selected`
 `rectangle(x as Numeric, y as Numeric, width as Numeric, height as Numeric)` |  `x` (`Numeric`), `y` (`Numeric`), `width` (`Numeric`), `height` (`Numeric`) | None
-`refined_table` | (EARLY ALPHA UNSTABLE API / CHECK SOURCE CODE FOR DETAILS) | (EARLY ALPHA UNSTABLE API / CHECK SOURCE CODE FOR DETAILS)
+`refined_table` | `model_array` (`Array`), `table_columns` (`Hash`), `table_editable` (Boolean), `per_page` (`Integer`), `page` (`Integer`), `visible_page_count` (Boolean) | (EARLY ALPHA UNSTABLE API / CHECK SOURCE CODE FOR DETAILS)
 `scrolling_area(width = main_window.width, height = main_window.height)` | `auto_draw_enabled` (Boolean), `size` (`Array` of `width` (`Numeric`) and `height` (`Numeric`)), `width` (`Numeric`), `height` (`Numeric`) | `on_draw(area_draw_params)`, `on_mouse_event(area_mouse_event)`, `on_mouse_down(area_mouse_event)`, `on_mouse_up(area_mouse_event)`, `on_mouse_drag_started(area_mouse_event)`, `on_mouse_dragged(area_mouse_event)`, `on_mouse_dropped(area_mouse_event)`, `on_mouse_entered`, `on_mouse_exited`, `on_key_event(area_key_event)`, `on_key_down(area_key_event)`, `on_key_up(area_key_event)`
 `search_entry` | `read_only` (Boolean), `text` (`String`) | `on_changed`
 `separator_menu_item` | None | None
@@ -998,11 +998,22 @@ Learn more by checking out [examples](#examples).
 
 [EARLY ALPHA FEATURE]
 
-`refined_table` is a custom control provided exclusively by Glimmer DSL for LibUI that includes filtering and pagination support out of the box and can handle very large amounts of data (e.g. 50,000 rows).
+`refined_table` is a custom control provided exclusively by [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui)
+that includes filtering and pagination support out of the box and can handle very large amounts of data (e.g. 50,000 rows).
 
 It is currently an early alpha feature, so please test-drive and report issues if you encounter any.
+And, please keep in mind that the API might undergo big changes.
 
-Also, the API might undergo big changes, so please keep that in mind.
+Options (passed as kwargs hash):
+
+- `model_array` (`Array`): array of models for which attributes map to table columns
+- `table_columns` (`Hash`): this maps column types to symbols (e.g. `text_column` becomes `:text`) with hash options per column
+- `table_editable` (Boolean) [default: `false`]: this indicates if all table columns are editable or not.
+- `per_page` (`Integer`)
+- `page` (`Integer`)
+- `visible_page_count` (Boolean) [default: `true`]: shows or hides "of PAGE_COUNT pages"
+
+If the initial `model_array` has no more than a single page of data, then pagination buttons are hidden (but, the filter field remains).
 
 Example code:
 
@@ -1016,9 +1027,10 @@ refined_table(
     'City'  => :text,
     'State' => :text,
   },
-  table_editable: true,
+  table_editable: true, # default value is false
   per_page: 20, # row count per page
-  page: 5, # initial page
+  # page: 1, # initial page is 1
+  # visible_page_count: true, # page count can be hidden if preferred
 )
 ```
 
@@ -8046,148 +8058,21 @@ class PaginatedRefinedTable
   include Glimmer::LibUI::Application
   
   NAMES_FIRST = %w[
-    Liam
-    Noah
-    William
-    James
-    Oliver
-    Benjamin
-    Elijah
-    Lucas
-    Mason
-    Logan
-    Alexander
-    Ethan
-    Jacob
-    Michael
-    Daniel
-    Henry
-    Jackson
-    Sebastian
-    Aiden
-    Matthew
-    Samuel
-    David
-    Joseph
-    Carter
-    Owen
-    Wyatt
-    John
-    Jack
-    Luke
-    Jayden
-    Dylan
-    Grayson
-    Levi
-    Isaac
-    Gabriel
-    Julian
-    Mateo
-    Anthony
-    Jaxon
-    Lincoln
-    Joshua
-    Christopher
-    Andrew
-    Theodore
-    Caleb
-    Ryan
-    Asher
-    Nathan
-    Thomas
-    Leo
-    Isaiah
-    Charles
-    Josiah
-    Hudson
-    Christian
-    Hunter
-    Connor
-    Eli
-    Ezra
-    Aaron
-    Landon
-    Adrian
-    Jonathan
-    Nolan
-    Jeremiah
-    Easton
-    Elias
-    Colton
-    Cameron
-    Carson
-    Robert
-    Angel
-    Maverick
-    Nicholas
-    Dominic
-    Jaxson
-    Greyson
-    Adam
-    Ian
-    Austin
-    Santiago
-    Jordan
-    Cooper
-    Brayden
-    Roman
-    Evan
-    Ezekiel
-    Xaviar
-    Jose
-    Jace
-    Jameson
-    Leonardo
-    Axel
-    Everett
-    Kayden
-    Miles
-    Sawyer
-    Jason
-    Emma
-    Olivia
-    Bartholomew
-    Corey
-    Danielle
-    Eva
-    Felicity
+    Liam Noah William James Oliver Benjamin Elijah Lucas Mason Logan Alexander Ethan Jacob Michael Daniel Henry Jackson Sebastian
+    Aiden Matthew Samuel David Joseph Carter Owen Wyatt John Jack Luke Jayden Dylan Grayson Levi Isaac Gabriel Julian Mateo
+    Anthony Jaxon Lincoln Joshua Christopher Andrew Theodore Caleb Ryan Asher Nathan Thomas Leo Isaiah Charles Josiah Hudson
+    Christian Hunter Connor Eli Ezra Aaron Landon Adrian Jonathan Nolan Jeremiah Easton Elias Colton Cameron Carson Robert Angel
+    Maverick Nicholas Dominic Jaxson Greyson Adam Ian Austin Santiago Jordan Cooper Brayden Roman Evan Ezekiel Xaviar Jose Jace
+    Jameson Leonardo Axel Everett Kayden Miles Sawyer Jason Emma Olivia Bartholomew Corey Danielle Eva Felicity
   ]
   
   NAMES_LAST = %w[
-    Smith
-    Johnson
-    Williams
-    Brown
-    Jones
-    Miller
-    Davis
-    Wilson
-    Anderson
-    Taylor
-    George
-    Harrington
-    Iverson
-    Jackson
-    Korby
-    Levinson
+    Smith Johnson Williams Brown Jones Miller Davis Wilson Anderson Taylor George Harrington Iverson Jackson Korby Levinson
   ]
   
   CITIES = [
-    'Bellesville',
-    'Lombardia',
-    'Steepleton',
-    'Deerenstein',
-    'Schwartz',
-    'Hollandia',
-    'Saint Pete',
-    'Grandville',
-    'London',
-    'Berlin',
-    'Elktown',
-    'Paris',
-    'Garrison',
-    'Muncy',
-    'St Louis',
+    'Bellesville', 'Lombardia', 'Steepleton', 'Deerenstein', 'Schwartz', 'Hollandia', 'Saint Pete', 'Grandville', 'London',
+    'Berlin', 'Elktown', 'Paris', 'Garrison', 'Muncy', 'St Louis',
   ]
   
   STATES = [ 'AK', 'AL', 'AR', 'AZ', 'CA', 'CO', 'CT', 'DC', 'DE', 'FL', 'GA',
@@ -8265,7 +8150,7 @@ class PaginatedRefinedTable
         refined_table(
           model_array: contacts,
           table_columns: {
-            'Name'  => :text,
+            'Name'  => {text: {editable: false}},
             'Email' => :text,
             'Phone' => :text,
             'City'  => :text,
@@ -8273,6 +8158,8 @@ class PaginatedRefinedTable
           },
           table_editable: true,
           per_page: 20,
+          # page: 1, # initial page is 1
+          # visible_page_count: true, # page count can be hidden if preferred
         )
       }
     }

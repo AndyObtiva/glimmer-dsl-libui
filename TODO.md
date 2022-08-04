@@ -4,7 +4,6 @@
 
 - Use polyline in one more place in histogram
 - Provide a guide comparing use of path with path having figure with shape shorcuts (e.g. polyline, which abstracts path and figure away)
-- Collapse name arrays in paginated refined table example
 
 ### 0.5.x
 

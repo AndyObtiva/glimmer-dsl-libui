@@ -23,7 +23,7 @@ class RefinedTable
     vertical_box {
       table_filter
 
-      table_paginator
+      table_paginator if page_count > 1
       
       @table = table {
         table_columns.each do |column_name, column_details|
@@ -76,7 +76,7 @@ class RefinedTable
   def table_paginator
     horizontal_box {
       stretchy false
-
+      
       button('<<') {
         enabled <= [self, :page, on_read: ->(val) {val > 1}]
         

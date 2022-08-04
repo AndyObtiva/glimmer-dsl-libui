@@ -6,6 +6,7 @@
 - Add a "of #{page_count} pages" label after the text control in `refined_table` pagination area
 - Page count ("of #{page_count} pages" label) can be hidden by setting `visible_page_count: false` in `refined_table` options
 - Correct initial `page` option passed to `refined_table` if out of range
+- If `refined_table` `model_array` has no more than a single page of data, then hide pagination buttons
 
 ## 0.5.16
 
