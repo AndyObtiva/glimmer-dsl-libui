@@ -31,8 +31,17 @@ module Glimmer
       
       class << self
         def launch(*args, &content)
-          launched_custom_shell = send(keyword, *args, &content)
-          launched_custom_shell.show
+          @@launched_custom_window = send(keyword, *args, &content)
+          @@launched_custom_window.show
+          @@launched_custom_window
+        end
+        
+        def launched_custom_window
+          @@launched_custom_window if defined?(@@launched_custom_window)
+        end
+        
+        def launched_application
+          launched_custom_window
         end
       end
       

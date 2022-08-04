@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.5.18
+
+- `CustomWindow.launch(...)` returns the launched application/custom-window (e.g. `PaginatedRefinedTable.launch` returns the `PaginatedRefinedTable` instance that was automatically constructed)
+- `CustomWindow.launched_application`/`CustomWindow.launched_custom_window` returns the launched application of a previous `.launch` call. This can be useful for rescuing errors and performing cleanup on the view object attributes after `.launch` returned.
+
 ## 0.5.17
 
 - Ensure disabling pagination buttons in `refined_table` if page is at beginning or end
