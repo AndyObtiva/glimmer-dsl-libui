@@ -6,7 +6,7 @@ class RefinedTable
   option :table_editable, default: false
   option :per_page, default: 10
   option :page, default: 1
-  option :visible_page_count, default: true
+  option :visible_page_count, default: false
   
   attr_accessor :filtered_model_array, :filter_query, :filter_query_page_stack, :paginated_model_array
   

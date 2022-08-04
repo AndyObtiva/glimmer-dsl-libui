@@ -1011,7 +1011,7 @@ Options (passed as kwargs hash):
 - `table_editable` (Boolean) [default: `false`]: this indicates if all table columns are editable or not.
 - `per_page` (`Integer`)
 - `page` (`Integer`)
-- `visible_page_count` (Boolean) [default: `true`]: shows or hides "of PAGE_COUNT pages"
+- `visible_page_count` (Boolean) [default: `false`]: shows "of PAGE_COUNT pages" after page `entry` field
 
 If the initial `model_array` has no more than a single page of data, then pagination buttons are hidden (but, the filter field remains).
 
@@ -1030,7 +1030,7 @@ refined_table(
   table_editable: true, # default value is false
   per_page: 20, # row count per page
   # page: 1, # initial page is 1
-  # visible_page_count: true, # page count can be hidden if preferred
+  # visible_page_count: true, # page count can be shown if preferred
 )
 ```
 
@@ -8159,7 +8159,7 @@ class PaginatedRefinedTable
           table_editable: true,
           per_page: 20,
           # page: 1, # initial page is 1
-          # visible_page_count: true, # page count can be hidden if preferred
+          # visible_page_count: true, # page count can be shown if preferred
         )
       }
     }
