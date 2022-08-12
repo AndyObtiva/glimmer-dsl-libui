@@ -41,7 +41,7 @@ module Glimmer
               super
               if Glimmer::LibUI.integer_to_boolean(value, allow_nil: false) != Glimmer::LibUI.integer_to_boolean(@last_checked, allow_nil: false)
                 if Glimmer::LibUI.integer_to_boolean(value)
-                  (@parent_proxy.children - [self]).select {|c| c.is_a?(MenuItemProxy)}.each do |menu_item|
+                  (@parent_proxy.children - [self]).select {|c| c.is_a?(RadioMenuItemProxy)}.each do |menu_item|
                     menu_item.checked = false
                   end
                 end

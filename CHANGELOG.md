@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.5.20
+
+- Fix issue with selecting a `radio_menu_item` causing a crash when included with other types of `menu_item` under a `menu`
+
 ## 0.5.19
 
 - New `refined_table` `filter_query` option to set initial filter

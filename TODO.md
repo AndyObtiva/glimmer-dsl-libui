@@ -2,7 +2,6 @@
 
 ## Next
 
-
 - Use polyline in one more place in histogram
 - Provide a guide comparing use of path with path having figure with shape shorcuts (e.g. polyline, which abstracts path and figure away)
 - It seems that table-related instability in Windows is back. Check what is causing it.
