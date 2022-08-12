@@ -21,6 +21,9 @@ class RefinedTable
     observe(self, :model_array) do
       init_model_array
     end
+    observe(self, :filter_query) do
+      filter_model_array
+    end
   end
   
   body {
@@ -55,11 +58,7 @@ class RefinedTable
   def table_filter
     search_entry {
       stretchy false
-      text <=> [self, :filter_query,
-        after_write: ->(new_filter_query) {
-          filter_model_array
-        }
-      ]
+      text <=> [self, :filter_query]
     }
   end
   
