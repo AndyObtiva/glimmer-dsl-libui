@@ -20,7 +20,7 @@ GEM
     docile (1.4.0)
     equalizer (0.0.11)
     facets (3.1.0)
-    faraday (1.10.0)
+    faraday (1.10.1)
       faraday-em_http (~> 1.0)
       faraday-em_synchrony (~> 1.0)
       faraday-excon (~> 1.1)
@@ -36,8 +36,8 @@ GEM
     faraday-em_synchrony (1.0.0)
     faraday-excon (1.1.0)
     faraday-httpclient (1.0.1)
-    faraday-multipart (1.0.3)
-      multipart-post (>= 1.2, < 3)
+    faraday-multipart (1.0.4)
+      multipart-post (~> 2)
     faraday-net_http (1.0.1)
     faraday-net_http_persistent (1.2.0)
     faraday-patron (1.0.0)
@@ -71,7 +71,7 @@ GEM
       rake
       rdoc
       semver2
-    jwt (2.3.0)
+    jwt (2.4.1)
     kamelcase (0.0.2)
       semver2 (~> 3)
     libui (0.0.15)
@@ -80,11 +80,11 @@ GEM
     mini_portile2 (2.8.0)
     multi_json (1.15.0)
     multi_xml (0.6.0)
-    multipart-post (2.2.0)
-    nokogiri (1.13.6)
+    multipart-post (2.2.3)
+    nokogiri (1.13.8)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
-    oauth2 (1.4.9)
+    oauth2 (1.4.10)
       faraday (>= 0.17.3, < 3.0)
       jwt (>= 1.0, < 3.0)
       multi_json (~> 1.3)
@@ -105,14 +105,14 @@ GEM
       awesome_print (~> 1.9.2)
     racc (1.6.0)
     racc (1.6.0-java)
-    rack (2.2.3.1)
+    rack (2.2.4)
     rake (13.0.6)
     rake-tui (0.2.3)
       tty-prompt
     rchardet (1.8.0)
     rdoc (6.4.0)
       psych (>= 4.0.0)
-    rouge (3.29.0)
+    rouge (3.30.0)
     rspec (3.11.0)
       rspec-core (~> 3.11.0)
       rspec-expectations (~> 3.11.0)
@@ -158,6 +158,7 @@ GEM
     wisper (2.0.1)
 
 PLATFORMS
+  arm64-darwin-21
   universal-java-1.8
   x64-mingw32
   x64-unknown
@@ -184,4 +185,4 @@ DEPENDENCIES
   super_module (~> 1.4.1)
 
 BUNDLED WITH
-   2.3.15
+   2.3.20

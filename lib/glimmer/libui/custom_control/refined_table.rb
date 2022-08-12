@@ -7,8 +7,8 @@ class RefinedTable
   option :per_page, default: 10
   option :page, default: 1
   option :visible_page_count, default: false
+  option :filter_query, default: ''
   
-  attr_accessor :filter_query, :filter_query_page_stack
   attr_accessor :filtered_model_array # filtered model array (intermediary, non-paginated)
   attr_accessor :refined_model_array # paginated filtered model array
   attr_reader :table_proxy
@@ -18,9 +18,12 @@ class RefinedTable
   end
   
   after_body do
+    filter_model_array
+    
     observe(self, :model_array) do
       init_model_array
     end
+    
     observe(self, :filter_query) do
       filter_model_array
     end
@@ -128,16 +131,15 @@ class RefinedTable
   
   def init_model_array
     @last_filter_query = nil
-    @filter_query ||= ''
     @filter_query_page_stack = {}
     @filtered_model_array = model_array.dup
     @filtered_model_array_stack = {'' => @filtered_model_array}
     self.page = correct_page(page)
-    filter_model_array
+    filter_model_array if @table_proxy
   end
   
   def filter_model_array
-    return unless @last_filter_query.nil? || filter_query != @last_filter_query
+    return unless (@last_filter_query.nil? || filter_query != @last_filter_query)
     if !@filtered_model_array_stack.key?(filter_query)
       @filtered_model_array_stack[filter_query] = model_array.dup.filter do |model|
         @table_proxy.expand([model])[0].any? do |attribute_value|

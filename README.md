@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.5.18
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.5.19
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -538,7 +538,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.5.18'
+gem 'glimmer-dsl-libui', '~> 0.5.19'
 ```
 
 Test that installation worked by running the [Meta-Example](#examples):
@@ -720,7 +720,7 @@ Keyword(Args) | Properties | Listeners
 `quit_menu_item` | None | `on_clicked`
 `radio_buttons` | `selected` (`Integer`) | `on_selected`
 `rectangle(x as Numeric, y as Numeric, width as Numeric, height as Numeric)` |  `x` (`Numeric`), `y` (`Numeric`), `width` (`Numeric`), `height` (`Numeric`) | None
-`refined_table` | `model_array` (`Array`), `table_columns` (`Hash`), `table_editable` (Boolean), `per_page` (`Integer`), `page` (`Integer`), `visible_page_count` (Boolean) | (EARLY ALPHA UNSTABLE API / CHECK SOURCE CODE FOR DETAILS)
+`refined_table` | `model_array` (`Array`), `table_columns` (`Hash`), `table_editable` (Boolean), `per_page` (`Integer`), `page` (`Integer`), `visible_page_count` (Boolean), `filter_query` (`String`) | (EARLY ALPHA UNSTABLE API / CHECK SOURCE CODE FOR DETAILS)
 `scrolling_area(width = main_window.width, height = main_window.height)` | `auto_draw_enabled` (Boolean), `size` (`Array` of `width` (`Numeric`) and `height` (`Numeric`)), `width` (`Numeric`), `height` (`Numeric`) | `on_draw(area_draw_params)`, `on_mouse_event(area_mouse_event)`, `on_mouse_down(area_mouse_event)`, `on_mouse_up(area_mouse_event)`, `on_mouse_drag_started(area_mouse_event)`, `on_mouse_dragged(area_mouse_event)`, `on_mouse_dropped(area_mouse_event)`, `on_mouse_entered`, `on_mouse_exited`, `on_key_event(area_key_event)`, `on_key_down(area_key_event)`, `on_key_up(area_key_event)`
 `search_entry` | `read_only` (Boolean), `text` (`String`) | `on_changed`
 `separator_menu_item` | None | None
@@ -961,12 +961,18 @@ And, please keep in mind that the API might undergo big changes.
 Options (passed as kwargs hash):
 
 - `model_array` (`Array`): array of models for which attributes map to table columns
-- `refined_model_array` (`Array`): `model_array` with filtering and pagination applied (useful to grab a table row model by index)
+- `filter_query` (`String`): query term to filter table by, matching against all columns
 - `table_columns` (`Hash`): this maps column types to symbols (e.g. `text_column` becomes `:text`) with hash options per column
 - `table_editable` (Boolean) [default: `false`]: this indicates if all table columns are editable or not.
 - `per_page` (`Integer`)
 - `page` (`Integer`)
 - `visible_page_count` (Boolean) [default: `false`]: shows "of PAGE_COUNT pages" after page `entry` field
+
+API:
+
+- `refined_model_array` (`Array`): `model_array` with filtering and pagination applied (useful to grab a table row model by index).
+- `filtered_model_array` (`Array`): `model_array` with filtering applied, but without pagination
+- `table_proxy`: control proxy object for the `table` contained in the `refined_table` custom control
 
 If the initial `model_array` has no more than a single page of data, then pagination buttons are hidden (but, the filter field remains).
 
