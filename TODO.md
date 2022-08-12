@@ -55,6 +55,8 @@
 
 ## Future
 
+- Support allowing consumers to perform a custom query against `filter_query` in `refined_table` for custom filtering
+- Add an example demonstrating how to use a SQLite database through ActiveRecord in Glimmer DSL for LibUI
 - Support `refined_table` sorting
 - Support `code_editor` class-based custom control as a code-syntax-highlighted `entry` control using the `rouge` gem
 - Build app for sportdb gem
@@ -134,6 +136,8 @@
 - Integrate GR chart/plot support into Glimmer DSL for LibUI (or provide a custom control gem for it) once LibUI supports image rendering or pixel drawing in an efficient manner
 - `paginated_filtered_table` widget or something similar (like splitting `pagination` and `filter` as separate widgets)
 - Optimize table content changes with diffing
+- Support `refined_table` AND-based FTS (Full-Text-Search) queries by treating multiple words as WORD1 AND WORD2, and accepting syntax of WORD1 AND WORD2 as alternative (or 'and' or '&', or '&&')
+- Support `refined_table` OR-based FTS (Full-Text-Search) queries by accepting syntax of WORD1 OR WORD2, etc..., (or 'or' or '|' or '||')
 
 # Refactoring
 

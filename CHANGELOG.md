@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.5.21
+
+- Support `refined_table` AND-based filtering by treating multiple words as WORD1 AND WORD2, etc...
+
 ## 0.5.20
 
 - Fix issue with selecting a `radio_menu_item` causing a crash when included with other types of `menu_item` under a `menu`

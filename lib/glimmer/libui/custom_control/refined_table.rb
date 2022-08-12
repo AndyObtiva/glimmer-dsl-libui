@@ -142,8 +142,9 @@ class RefinedTable
     return unless (@last_filter_query.nil? || filter_query != @last_filter_query)
     if !@filtered_model_array_stack.key?(filter_query)
       @filtered_model_array_stack[filter_query] = model_array.dup.filter do |model|
-        @table_proxy.expand([model])[0].any? do |attribute_value|
-          attribute_value.to_s.downcase.include?(filter_query.downcase)
+        attribute_values_string = @table_proxy.expand([model])[0].map(&:to_s).map(&:downcase).join(' ')
+        filter_query.downcase.split.all? do |word|
+          attribute_values_string.include?(word)
         end
       end
     end
