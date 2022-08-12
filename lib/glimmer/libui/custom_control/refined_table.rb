@@ -8,15 +8,19 @@ class RefinedTable
   option :page, default: 1
   option :visible_page_count, default: false
   
-  attr_accessor :filtered_model_array, :filter_query, :filter_query_page_stack, :paginated_model_array
+  attr_accessor :filter_query, :filter_query_page_stack
+  attr_accessor :filtered_model_array # filtered model array (intermediary, non-paginated)
+  attr_accessor :refined_model_array # paginated filtered model array
+  attr_reader :table_proxy
   
   before_body do
-    @filter_query = ''
-    @filter_query_page_stack = {}
-    @filtered_model_array = model_array.dup
-    @filtered_model_array_stack = {@filter_query => @filtered_model_array}
-    self.page = correct_page(page)
-    paginate_model_array
+    init_model_array
+  end
+  
+  after_body do
+    observe(self, :model_array) do
+      init_model_array
+    end
   end
   
   body {
@@ -25,7 +29,7 @@ class RefinedTable
 
       table_paginator if page_count > 1
       
-      @table = table {
+      @table_proxy = table {
         table_columns.each do |column_name, column_details|
           editable_value = on_clicked_value = nil
           if column_details.is_a?(Symbol) || column_details.is_a?(String)
@@ -43,7 +47,7 @@ class RefinedTable
         end
   
         editable table_editable
-        cell_rows <=> [self, :paginated_model_array]
+        cell_rows <=> [self, :refined_model_array]
       }
     }
   }
@@ -52,22 +56,8 @@ class RefinedTable
     search_entry {
       stretchy false
       text <=> [self, :filter_query,
-        before_write: ->(new_filter_query) {
-          if new_filter_query != filter_query
-            if !@filtered_model_array_stack.key?(new_filter_query)
-              @filtered_model_array_stack[new_filter_query] = model_array.dup.filter do |model|
-                @table.expand([model])[0].any? do |attribute_value|
-                  attribute_value.to_s.downcase.include?(new_filter_query.downcase)
-                end
-              end
-            end
-            @filtered_model_array = @filtered_model_array_stack[new_filter_query]
-            if new_filter_query.size > filter_query.size
-              @filter_query_page_stack[filter_query] = page
-            end
-            self.page = @filter_query_page_stack[new_filter_query] || correct_page(page)
-            paginate_model_array
-          end
+        after_write: ->(new_filter_query) {
+          filter_model_array
         }
       ]
     }
@@ -109,7 +99,7 @@ class RefinedTable
       
       if visible_page_count
         label {
-          text <= [self, :paginated_model_array, on_read: ->(val) {"of #{page_count} pages"}]
+          text <= [self, :refined_model_array, on_read: ->(val) {"of #{page_count} pages"}]
         }
       end
       
@@ -137,8 +127,36 @@ class RefinedTable
     }
   end
   
+  def init_model_array
+    @last_filter_query = nil
+    @filter_query ||= ''
+    @filter_query_page_stack = {}
+    @filtered_model_array = model_array.dup
+    @filtered_model_array_stack = {'' => @filtered_model_array}
+    self.page = correct_page(page)
+    filter_model_array
+  end
+  
+  def filter_model_array
+    return unless @last_filter_query.nil? || filter_query != @last_filter_query
+    if !@filtered_model_array_stack.key?(filter_query)
+      @filtered_model_array_stack[filter_query] = model_array.dup.filter do |model|
+        @table_proxy.expand([model])[0].any? do |attribute_value|
+          attribute_value.to_s.downcase.include?(filter_query.downcase)
+        end
+      end
+    end
+    @filtered_model_array = @filtered_model_array_stack[filter_query]
+    if @last_filter_query.nil? || filter_query.size > @last_filter_query.size
+      @filter_query_page_stack[filter_query] = correct_page(page)
+    end
+    self.page = @filter_query_page_stack[filter_query] || correct_page(page)
+    paginate_model_array
+    @last_filter_query = filter_query
+  end
+  
   def paginate_model_array
-    self.paginated_model_array = filtered_model_array[index, limit]
+    self.refined_model_array = filtered_model_array[index, limit]
   end
   
   def index
@@ -157,15 +175,15 @@ class RefinedTable
     [[page, 1].max, page_count].min
   end
   
-  # Ensure proxying properties to @table if body_root (vertical_box) doesn't support them
+  # Ensure proxying properties to @table_proxy if body_root (vertical_box) doesn't support them
   
   def respond_to?(method_name, *args, &block)
-    super || @table&.respond_to?(method_name, *args, &block)
+    super || @table_proxy&.respond_to?(method_name, *args, &block)
   end
   
   def method_missing(method_name, *args, &block)
-    if @table&.respond_to?(method_name, *args, &block)
-      @table&.send(method_name, *args, &block)
+    if @table_proxy&.respond_to?(method_name, *args, &block)
+      @table_proxy&.send(method_name, *args, &block)
     else
       super
     end

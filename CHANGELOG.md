@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.5.19
+
+- Support `refined_table` `model_array=(new_array)` method to enable setting a new `model_array`, automatically filtering by `filter_query` if any
+- Rename `refined_table` `paginated_model_array` attribute to `refined_model_array` to represent its paginated filtered model array
+
 ## 0.5.18
 
 - `CustomWindow.launch(...)` returns the launched application/custom-window (e.g. `PaginatedRefinedTable.launch` returns the `PaginatedRefinedTable` instance that was automatically constructed)

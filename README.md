@@ -961,6 +961,7 @@ And, please keep in mind that the API might undergo big changes.
 Options (passed as kwargs hash):
 
 - `model_array` (`Array`): array of models for which attributes map to table columns
+- `refined_model_array` (`Array`): `model_array` with filtering and pagination applied (useful to grab a table row model by index)
 - `table_columns` (`Hash`): this maps column types to symbols (e.g. `text_column` becomes `:text`) with hash options per column
 - `table_editable` (Boolean) [default: `false`]: this indicates if all table columns are editable or not.
 - `per_page` (`Integer`)

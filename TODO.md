@@ -2,7 +2,6 @@
 
 ## Next
 
-- Enable setting a new `model_array` for a `refined_table`, which resets everything internally, and re-applies `filter_query` if any
 
 - Use polyline in one more place in histogram
 - Provide a guide comparing use of path with path having figure with shape shorcuts (e.g. polyline, which abstracts path and figure away)
