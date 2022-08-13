@@ -55,7 +55,6 @@
 
 ## Future
 
-- Support allowing consumers to perform a custom query against `filter_query` in `refined_table` for custom filtering
 - Add an example demonstrating how to use a SQLite database through ActiveRecord in Glimmer DSL for LibUI
 - Support `refined_table` sorting
 - Support `code_editor` class-based custom control as a code-syntax-highlighted `entry` control using the `rouge` gem

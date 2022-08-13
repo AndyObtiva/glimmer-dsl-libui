@@ -3,6 +3,7 @@
 ## 0.5.21
 
 - Support `refined_table` AND-based filtering by treating multiple words as WORD1 AND WORD2, etc...
+- Support `refined_table` `filter` option that should be a `lambda` that accepts `text, query` args and returns `true` or `false` for whether the `text` matches the `query` (`RefinedTable::FILTER_DEFAULT` is the default value)
 
 ## 0.5.20
 

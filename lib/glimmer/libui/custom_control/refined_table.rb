@@ -1,6 +1,12 @@
 class RefinedTable
   include Glimmer::LibUI::CustomControl
   
+  FILTER_DEFAULT = lambda do |text, query|
+    query.downcase.split.all? do |word|
+      text.include?(word)
+    end
+  end
+  
   option :model_array, default: []
   option :table_columns, default: []
   option :table_editable, default: false
@@ -8,6 +14,7 @@ class RefinedTable
   option :page, default: 1
   option :visible_page_count, default: false
   option :filter_query, default: ''
+  option :filter, default: FILTER_DEFAULT
   
   attr_accessor :filtered_model_array # filtered model array (intermediary, non-paginated)
   attr_accessor :refined_model_array # paginated filtered model array
@@ -143,9 +150,7 @@ class RefinedTable
     if !@filtered_model_array_stack.key?(filter_query)
       @filtered_model_array_stack[filter_query] = model_array.dup.filter do |model|
         attribute_values_string = @table_proxy.expand([model])[0].map(&:to_s).map(&:downcase).join(' ')
-        filter_query.downcase.split.all? do |word|
-          attribute_values_string.include?(word)
-        end
+        filter.call(attribute_values_string, filter_query)
       end
     end
     @filtered_model_array = @filtered_model_array_stack[filter_query]
