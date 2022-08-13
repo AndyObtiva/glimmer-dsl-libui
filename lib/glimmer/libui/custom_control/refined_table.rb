@@ -50,7 +50,7 @@ module Glimmer
             if word.include?(':')
               column_name, column_value = word.split(':')
               text.downcase.include?(word.downcase)
-              column_human_name = row_hash.keys.find {|table_column_name| table_column_name.underscore == column_name.underscore}
+              column_human_name = row_hash.keys.find {|table_column_name| table_column_name.underscore.include?(column_name.underscore)}
               row_hash[column_human_name].downcase.include?(column_value.downcase)
             else
               text.downcase.include?(word.downcase)

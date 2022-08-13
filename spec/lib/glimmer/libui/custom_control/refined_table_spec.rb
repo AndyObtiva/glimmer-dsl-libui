@@ -50,6 +50,42 @@ RSpec.describe Glimmer::LibUI::CustomControl::RefinedTable do
       expect(result).to be_falsey
     end
     
+    it 'matches a specific column by first few letters of column name' do
+      query = 'last:doe' # last name
+      result = described_class::FILTER_DEFAULT.call(row_hash, query)
+      expect(result).to be_truthy
+    end
+    
+    it 'does not match a specific column by by first few letters of column name' do
+      query = 'first:Doe' # first name
+      result = described_class::FILTER_DEFAULT.call(row_hash, query)
+      expect(result).to be_falsey
+    end
+    
+    it 'matches a specific column by first letter of column name' do
+      query = 'l:doe' # last name
+      result = described_class::FILTER_DEFAULT.call(row_hash, query)
+      expect(result).to be_truthy
+    end
+    
+    it 'does not match a specific column by by first letter of column name' do
+      query = 'f:Doe' # first name
+      result = described_class::FILTER_DEFAULT.call(row_hash, query)
+      expect(result).to be_falsey
+    end
+    
+    it 'matches first specific column in multiple having first letter of column name' do
+      query = 'c:champaign' # city
+      result = described_class::FILTER_DEFAULT.call(row_hash, query)
+      expect(result).to be_truthy
+    end
+    
+    it 'does not match first specific column in multiple having first letter of column name' do
+      query = 'c:chicago' # city
+      result = described_class::FILTER_DEFAULT.call(row_hash, query)
+      expect(result).to be_falsey
+    end
+    
     it 'matches multiple words, a double-quoted term, and a column-specific term' do
       query = 'First_name:Jo Doe Illinois "a-Champ"'
       result = described_class::FILTER_DEFAULT.call(row_hash, query)
