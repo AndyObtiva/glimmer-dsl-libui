@@ -29,9 +29,23 @@ module Glimmer
       class RefinedTable
         include Glimmer::LibUI::CustomControl
         
-        FILTER_DEFAULT = lambda do |text, query|
-          query_words = CSV.new(query, col_sep: ' ').to_a.flatten.compact
-          query_words.all? do |word|
+        FILTER_DEFAULT = lambda do |row_hash, query|
+          text = row_hash.values.map(&:downcase).join(' ')
+          if query != @last_query
+            @last_query = query
+            @query_words = []
+            query_text = query.strip
+            until query_text.empty?
+              query_match = query_text.match(/^("[^"]+"|\S+)\s*/)
+              if query_match && query_match[1]
+                query_word = query_match[1]
+                query_text = query_text.sub(query_word, '').strip
+                query_word = query_word.sub(/^"/, '').sub(/"$/, '') if query_word.start_with?('"') && query_word.end_with?('"')
+                @query_words << query_word
+              end
+            end
+          end
+          @query_words.all? do |word|
             text.downcase.include?(word.downcase)
           end
         end
@@ -177,9 +191,11 @@ module Glimmer
         def filter_model_array
           return unless (@last_filter_query.nil? || filter_query != @last_filter_query)
           if !@filtered_model_array_stack.key?(filter_query)
+            table_column_names = @table_proxy.columns.map(&:name)
             @filtered_model_array_stack[filter_query] = model_array.dup.filter do |model|
-              attribute_values_string = @table_proxy.expand([model])[0].map(&:to_s).map(&:downcase).join(' ')
-              filter.call(attribute_values_string, filter_query)
+              row_values = @table_proxy.expand([model])[0].map(&:to_s)
+              row_hash = Hash[table_column_names.zip(row_values)]
+              filter.call(row_hash, filter_query)
             end
           end
           @filtered_model_array = @filtered_model_array_stack[filter_query]
