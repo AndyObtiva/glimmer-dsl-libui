@@ -17,5 +17,19 @@ RSpec.describe Glimmer::LibUI::CustomControl::RefinedTable do
       result = described_class::FILTER_DEFAULT.call(text, query)
       expect(result).to be_truthy
     end
+    
+    it 'matches multiple words surrounded by double-quotes as an exact term ' do
+      text = 'John Doe Urbana Champaign Illinois USA'
+      query = '"John Doe"'
+      result = described_class::FILTER_DEFAULT.call(text, query)
+      expect(result).to be_truthy
+    end
+    
+    it 'does not match multiple words surrounded by double-quotes as an exact term ' do
+      text = 'John Doe Urbana Champaign Illinois USA'
+      query = '"Doe John"'
+      result = described_class::FILTER_DEFAULT.call(text, query)
+      expect(result).to be_falsey
+    end
   end
 end

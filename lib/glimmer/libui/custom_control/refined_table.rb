@@ -19,6 +19,8 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+require 'csv'
+
 require 'glimmer/libui/custom_control'
 
 module Glimmer
@@ -28,8 +30,9 @@ module Glimmer
         include Glimmer::LibUI::CustomControl
         
         FILTER_DEFAULT = lambda do |text, query|
-          query.downcase.split.all? do |word|
-            text.downcase.include?(word)
+          query_words = CSV.new(query, col_sep: ' ').to_a.flatten.compact
+          query_words.all? do |word|
+            text.downcase.include?(word.downcase)
           end
         end
         
