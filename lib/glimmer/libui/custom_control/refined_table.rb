@@ -20,6 +20,7 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 require 'csv'
+require 'facets/string/underscore'
 
 require 'glimmer/libui/custom_control'
 
@@ -46,7 +47,14 @@ module Glimmer
             end
           end
           @query_words.all? do |word|
-            text.downcase.include?(word.downcase)
+            if word.include?(':')
+              column_name, column_value = word.split(':')
+              text.downcase.include?(word.downcase)
+              column_human_name = row_hash.keys.find {|table_column_name| table_column_name.underscore == column_name.underscore}
+              row_hash[column_human_name].downcase.include?(column_value.downcase)
+            else
+              text.downcase.include?(word.downcase)
+            end
           end
         end
         
