@@ -86,8 +86,29 @@ RSpec.describe Glimmer::LibUI::CustomControl::RefinedTable do
       expect(result).to be_falsey
     end
     
+    it 'matches a specific column by full double-quoted human column name' do
+      query = '"last name":doe'
+      result = described_class::FILTER_DEFAULT.call(row_hash, query)
+      expect(result).to be_truthy
+    end
+    
+    it 'does not match a specific column by full double-quoted human column name' do
+      query = 'first_name:Doe'
+      result = described_class::FILTER_DEFAULT.call(row_hash, query)
+      expect(result).to be_falsey
+    end
+    
+    # TODO test double quoted value for specific column
+    # TODO test double quoted column and value for specific column
+    
+    it 'matches a double-quoted column-specific term, multiple words, a double-quoted term' do
+      query = ' "First Name":Jo Doe Illinois "a-Champ" '
+      result = described_class::FILTER_DEFAULT.call(row_hash, query)
+      expect(result).to be_truthy
+    end
+    
     it 'matches multiple words, a double-quoted term, and a column-specific term' do
-      query = 'First_name:Jo Doe Illinois "a-Champ"'
+      query = 'Doe Illinois "a-Champ" First_name:Jo'
       result = described_class::FILTER_DEFAULT.call(row_hash, query)
       expect(result).to be_truthy
     end

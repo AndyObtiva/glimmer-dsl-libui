@@ -37,7 +37,7 @@ module Glimmer
             @query_words = []
             query_text = query.strip
             until query_text.empty?
-              query_match = query_text.match(/^("[^"]+"|\S+)\s*/)
+              query_match = (query_text + ' ').match(/^("[^"]+"|"[^"]+":[^" ]+|\S+)\s+/)
               if query_match && query_match[1]
                 query_word = query_match[1]
                 query_text = query_text.sub(query_word, '').strip
@@ -49,6 +49,7 @@ module Glimmer
           @query_words.all? do |word|
             if word.include?(':')
               column_name, column_value = word.split(':')
+              column_name = column_name.sub(/^"/, '').sub(/"$/, '') if column_name.start_with?('"') && column_name.end_with?('"')
               text.downcase.include?(word.downcase)
               column_human_name = row_hash.keys.find {|table_column_name| table_column_name.underscore.include?(column_name.underscore)}
               row_hash[column_human_name].downcase.include?(column_value.downcase)
