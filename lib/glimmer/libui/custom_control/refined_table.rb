@@ -61,10 +61,7 @@ module Glimmer
                 table_column_name.underscore.start_with?(column_name.underscore)
               end
               if column_human_name
-                column_value_words = [column_value.downcase.split].flatten
-                column_value_words.all? do |column_value_word|
-                  row_hash[column_human_name].downcase.include?(column_value_word)
-                end
+                row_hash[column_human_name].downcase.include?(column_value.downcase)
               else
                 text.downcase.include?(word.downcase)
               end

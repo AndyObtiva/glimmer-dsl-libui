@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.5.21
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.5.22
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -538,7 +538,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.5.21'
+gem 'glimmer-dsl-libui', '~> 0.5.22'
 ```
 
 Test that installation worked by running the [Meta-Example](#examples):
@@ -961,7 +961,7 @@ And, please keep in mind that the API might undergo big changes.
 Options (passed as kwargs hash):
 
 - `model_array` (`Array`): array of models for which attributes map to table columns
-- `filter_query` (`String`): query term to filter table by, matching against all columns
+- `filter_query` (`String`): query term to filter table by; AND-matching multiple words against all columns (e.g. `John Illinois` returns John Doe from Illinois, USA), a double-quoted exact term match against all columns (e.g. `"Urbana Champaign"` returns only results from the town of "Urbana Champaign"), or a match against specific columns (e.g. `first_name:John`, `"first name":John`, `first_name:"John Doe"`, or `"first name":"john doe"`). You may mix and match different types of filter queries. All matches are case-insensitive. To customize filtering differently, you may set the `filter` option explained below.
 - `table_columns` (`Hash`): this maps column types to symbols (e.g. `text_column` becomes `:text`) with hash options per column
 - `table_editable` (Boolean) [default: `false`]: this indicates if all table columns are editable or not.
 - `per_page` (`Integer`)

@@ -8,7 +8,7 @@ RSpec.describe Glimmer::LibUI::CustomControl::RefinedTable do
       {
         'First Name' => 'John',
         'Last Name' => 'Doe',
-        'City' => 'Urbana-Champaign',
+        'City' => 'Urbana Champaign',
         'State' => 'Illinois',
         'Country' => 'USA'
       }
@@ -105,43 +105,43 @@ RSpec.describe Glimmer::LibUI::CustomControl::RefinedTable do
     end
     
     it 'matches a specific column by full underscored column name and double-quoted column value' do
-      query = 'first_name:"jo n"'
+      query = 'city:"urbana champaign"'
       result = described_class::FILTER_DEFAULT.call(row_hash, query)
       expect(result).to be_truthy
     end
     
     it 'does not match a specific column by full underscored column name and double-quoted column value' do
-      query = 'first_name:"jo e"'
+      query = 'city:"urbana-champaign"'
       result = described_class::FILTER_DEFAULT.call(row_hash, query)
       expect(result).to be_falsey
     end
     
     it 'matches a specific column by full double-quoted column name and double-quoted column value' do
-      query = '"first name":"jo n"'
+      query = '"first name":"john"'
       result = described_class::FILTER_DEFAULT.call(row_hash, query)
       expect(result).to be_truthy
     end
     
     it 'does not match a specific column by full double-quoted column name and double-quoted column value' do
-      query = '"first name":"jo e"'
+      query = '"first name":"joe"'
       result = described_class::FILTER_DEFAULT.call(row_hash, query)
       expect(result).to be_falsey
     end
     
     it 'matches a double-quoted column-specific term, multiple words, a double-quoted term' do
-      query = ' "First Name":Jo Doe Illinois "a-Champ" '
+      query = ' "First Name":Jo Doe Illinois "a Champ" '
       result = described_class::FILTER_DEFAULT.call(row_hash, query)
       expect(result).to be_truthy
     end
     
     it 'matches multiple words, a double-quoted term, and a column-specific term' do
-      query = 'Doe Illinois "a-Champ" First_name:Jo'
+      query = 'Doe Illinois "a Champ" First_name:Jo'
       result = described_class::FILTER_DEFAULT.call(row_hash, query)
       expect(result).to be_truthy
     end
     
     it 'fails to match multiple incorrect words, a double-quoted term, and a column-specific term' do
-      query = 'First_name:Jo Does Illinoise "a-Champ"'
+      query = 'First_name:Jo Does Illinoise "a Champ"'
       result = described_class::FILTER_DEFAULT.call(row_hash, query)
       expect(result).to be_falsey
     end
@@ -153,7 +153,7 @@ RSpec.describe Glimmer::LibUI::CustomControl::RefinedTable do
     end
     
     it 'fails to match multiple words, a double-quoted term, and an incorrect column-specific term' do
-      query = 'First_name:Jos Doe Illinois "a-Champ"'
+      query = 'First_name:Jos Doe Illinois "a Champ"'
       result = described_class::FILTER_DEFAULT.call(row_hash, query)
       expect(result).to be_falsey
     end

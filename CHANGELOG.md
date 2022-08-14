@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.5.22
+
+- Update support for `refined_table` column-specific term filtering to do an exact term filtering when entering a double-quoted column value (e.g. first_name:"John Doe")
+
 ## 0.5.21
 
 - Support `refined_table` AND-based filtering by treating multiple words as WORD1 AND WORD2, etc...
