@@ -93,12 +93,23 @@ RSpec.describe Glimmer::LibUI::CustomControl::RefinedTable do
     end
     
     it 'does not match a specific column by full double-quoted human column name' do
-      query = 'first_name:Doe'
+      query = '"first name":Doe'
       result = described_class::FILTER_DEFAULT.call(row_hash, query)
       expect(result).to be_falsey
     end
     
-    # TODO test double quoted value for specific column
+    it 'matches a specific column by full underscored column name and double-quoted column value' do
+      query = 'first_name:"jo n"'
+      result = described_class::FILTER_DEFAULT.call(row_hash, query)
+      expect(result).to be_truthy
+    end
+    
+    it 'does not match a specific column by full underscored column name and double-quoted column value' do
+      query = 'first_name:"jo e"'
+      result = described_class::FILTER_DEFAULT.call(row_hash, query)
+      expect(result).to be_falsey
+    end
+    
     # TODO test double quoted column and value for specific column
     
     it 'matches a double-quoted column-specific term, multiple words, a double-quoted term' do
