@@ -4,7 +4,7 @@
 
 - Support `refined_table` AND-based filtering by treating multiple words as WORD1 AND WORD2, etc...
 - Support `refined_table` exact term filtering by surrounding word by double-quotes
-- Support `refined_table` column-specific term (column_name:term) filtering by concatenating underscored column name with single-word value using colon
+- Support `refined_table` column-specific term (column_name:term) filtering by concatenating column name (with or without double quotes) with column value (with or without double quotes) using colon
 - Support `refined_table` `filter` option that should be a `lambda` that accepts `text, query` args and returns `true` or `false` for whether the `text` matches the `query` (`Glimmer::LibUI::CustomControl::RefinedTable::FILTER_DEFAULT` is the default value)
 
 ## 0.5.20

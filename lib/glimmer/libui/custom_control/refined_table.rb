@@ -37,11 +37,16 @@ module Glimmer
             @query_words = []
             query_text = query.strip
             until query_text.empty?
-              query_match = (query_text + ' ').match(/^("[^"]+"|"[^":]+":[^": ]+|[^": ]+:"[^":]+"|\S+)\s+/)
+              exact_term_double_quoted_regexp = /"[^"]+"/
+              specific_column_double_quoted_column_name_regexp = /"[^":]+":[^": ]+/
+              specific_column_double_quoted_column_value_regexp = /[^": ]+:"[^":]+"/
+              specific_column_double_quoted_column_name_and_value_regexp = /"[^":]+":"[^":]+"/
+              single_word_regexp = /\S+/
+              query_match = (query_text + ' ').match(/^(#{exact_term_double_quoted_regexp}|#{specific_column_double_quoted_column_name_regexp}|#{specific_column_double_quoted_column_value_regexp}|#{specific_column_double_quoted_column_name_and_value_regexp}|#{single_word_regexp})\s+/)
               if query_match && query_match[1]
                 query_word = query_match[1]
                 query_text = query_text.sub(query_word, '').strip
-                query_word = query_word.sub(/^"/, '').sub(/"$/, '') if query_word.start_with?('"') && query_word.end_with?('"')
+                query_word = query_word.sub(/^"/, '').sub(/"$/, '') if query_word.start_with?('"') && query_word.end_with?('"') && !query_word.include?(':')
                 @query_words << query_word
               end
             end
@@ -49,13 +54,19 @@ module Glimmer
           @query_words.all? do |word|
             if word.include?(':')
               column_name, column_value = word.split(':')
+              column_value = column_value.to_s
               column_name = column_name.sub(/^"/, '').sub(/"$/, '') if column_name.start_with?('"') && column_name.end_with?('"')
               column_value = column_value.sub(/^"/, '').sub(/"$/, '') if column_value.start_with?('"') && column_value.end_with?('"')
-              text.downcase.include?(word.downcase)
-              column_human_name = row_hash.keys.find {|table_column_name| table_column_name.underscore.include?(column_name.underscore)}
-              column_value_words = [column_value.downcase.split].flatten
-              column_value_words.all? do |column_value_word|
-                row_hash[column_human_name].downcase.include?(column_value_word)
+              column_human_name = row_hash.keys.find do |table_column_name|
+                table_column_name.underscore.start_with?(column_name.underscore)
+              end
+              if column_human_name
+                column_value_words = [column_value.downcase.split].flatten
+                column_value_words.all? do |column_value_word|
+                  row_hash[column_human_name].downcase.include?(column_value_word)
+                end
+              else
+                text.downcase.include?(word.downcase)
               end
             else
               text.downcase.include?(word.downcase)
