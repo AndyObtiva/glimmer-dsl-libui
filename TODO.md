@@ -42,6 +42,9 @@
 
 ## Soon
 
+- Scaffold an application
+- Zenity-like Command-Line-Mode-GUI Scaffolding
+- Full MVC + Database scaffolding
 - Look into whether keyboard listeners must not be allowed within shapes since they do not carry an x/y element like mouse listeners
 - Report to libui the delay issue in calling on changed listener on `search_entry` (not a problem with basic `entry`)
 - Update shape_coloring.rb to use data-binding (must support being able to set top-left x,y on any shape instead of relying on move_by to make it work with data-binding, just like Glimmer DSL for SWT supports that)
@@ -72,7 +75,6 @@
 
 ## Far Future
 
-- Scaffold an application
 - Optimize startup time, perhaps dropping 'os' gem for direct use of `Gem::Platform.local` instead.
 - Support configuration of global widget default properties to quickly affect the style of an entire app globally without the complexity of CSS expressions.
 - Automate OCRA support for Windows Native-Executable Packaging

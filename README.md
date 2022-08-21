@@ -3,7 +3,7 @@
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-[**(Fukuoka Ruby Award Competition 2022 Special Award Winner)**](http://www.digitalfukuoka.jp/topics/187?locale=ja)
+(**[Fukuoka Ruby Award Competition 2022 Special Award Winner](https://andymaleh.blogspot.com/2022/02/glimmer-dsl-for-libui-wins-fukuoka-ruby.html)** [[Award Announcement]](http://www.digitalfukuoka.jp/topics/187?locale=ja))
 
 [Glimmer](https://github.com/AndyObtiva/glimmer) DSL for [LibUI](https://github.com/kojix2/LibUI) is a prerequisite-free [MRI Ruby](https://www.ruby-lang.org) desktop development GUI (Graphical User Interface) library. No need to pre-install any prerequisites. Just install the [gem](https://rubygems.org/gems/glimmer-dsl-libui) and have platform-independent native GUI that just works!
 
@@ -392,6 +392,7 @@ DSL | Platforms | Native? | Vector Graphics? | Pros | Cons | Prereqs
     - [Chess](#chess)
     - [RubyCrumbler](#rubycrumbler)
     - [Rubio-Radio](#rubio-radio)
+    - [PMV Calc](#pmv-calc)
   - [Process](#process)
   - [Resources](#resources)
   - [Help](#help)
@@ -2627,15 +2628,19 @@ NLP (Natural Language Processing) App
 
 https://github.com/joh-ga/RubyCrumbler
 
-MacOS | Windows | Linux
-| :---: | :---: | :---:
-![mac_31](https://user-images.githubusercontent.com/72874215/159339948-b7ae1bf2-60c1-4dae-ac1a-4e13a6048ef0.gif)|![windows_4](https://user-images.githubusercontent.com/72874215/160242473-c38439be-0955-4e89-9f3f-b3d0567531fd.gif)|![rubycrumbler_linux](https://user-images.githubusercontent.com/72874215/160242460-99af1c8c-b43f-458d-bd69-1274a0bd9814.gif)
+![mac_31](https://user-images.githubusercontent.com/72874215/159339948-b7ae1bf2-60c1-4dae-ac1a-4e13a6048ef0.gif)
 
 ### Rubio-Radio
 
 https://github.com/kojix2/rubio-radio
 
-![rubio radio screenshot](https://user-images.githubusercontent.com/5798442/171986696-24bedc38-3811-4c62-a5ad-89c09d015c8a.png)
+![rubio radio screenshot](https://raw.githubusercontent.com/kojix2/rubio-radio/main/screenshots/rubio-radio-linux.png)
+
+### PMV Calc
+
+https://github.com/bzanchet/pmv-calc
+
+![PMV Calc](https://raw.githubusercontent.com/AndyObtiva/pmv-calc/screenshot/screenshots/PMV-Calc.png)
 
 ## Process
 
