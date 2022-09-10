@@ -72,7 +72,7 @@ class GPT2Notepad
   end
   
   body {
-    window('Notepad', 500, 300) {
+    window('GPT-2 Notepad', 500, 300) {
       vertical_box {
         padded true
         
