@@ -48,9 +48,9 @@ class GPT2TextPredictor
     return logits.argmax unless prob
   
     log_probs = softmax(logits)
-    idx = log_probs.sort_index
-    i = (log_probs[idx].cumsum < rand).count
-    idx[i]
+    cum_probs = log_probs.cumsum(1)
+    r = rand(0..cum_probs[-1]) # 0..1
+    (cum_probs < r).count
   end
   
   def predict_text(max = 30)
