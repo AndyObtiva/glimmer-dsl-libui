@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.5.24
+
+- Update examples/gp2_notepad.rb to avoid sorting ( thank you @kojix2 )
+- Fix issue with `refined_table` crashing when `cell_rows` contains `nil` values for some of the cells.
+
 ## 0.5.23
 
 - New examples/gp2_notepad.rb

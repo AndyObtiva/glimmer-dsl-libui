@@ -31,7 +31,7 @@ module Glimmer
         include Glimmer::LibUI::CustomControl
         
         FILTER_DEFAULT = lambda do |row_hash, query|
-          text = row_hash.values.map(&:downcase).join(' ')
+          text = row_hash.values.map(&:to_s).map(&:downcase).join(' ')
           if query != @last_query
             @last_query = query
             @query_words = []

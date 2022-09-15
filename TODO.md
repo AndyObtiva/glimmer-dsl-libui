@@ -139,6 +139,7 @@
 - Optimize table content changes with diffing
 - Support `refined_table` AND-based FTS (Full-Text-Search) queries by treating multiple words as WORD1 AND WORD2, and accepting syntax of WORD1 AND WORD2 as alternative (or 'and' or '&', or '&&')
 - Support `refined_table` OR-based FTS (Full-Text-Search) queries by accepting syntax of WORD1 OR WORD2, etc..., (or 'or' or '|' or '||')
+- Build a MiniTest/RSpec test runner that shows results in a GUI app
 
 # Refactoring
 

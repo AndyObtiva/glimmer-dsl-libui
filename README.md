@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.5.23
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.5.24
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -539,7 +539,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.5.23'
+gem 'glimmer-dsl-libui', '~> 0.5.24'
 ```
 
 Test that installation worked by running the [Meta-Example](#examples):
@@ -2641,6 +2641,18 @@ https://github.com/kojix2/rubio-radio
 https://github.com/bzanchet/pmv-calc
 
 ![PMV Calc](https://raw.githubusercontent.com/AndyObtiva/pmv-calc/screenshot/screenshots/PMV-Calc.png)
+
+### Suika Box
+
+https://github.com/kojix2/suikabox
+
+![suika box screenshot](https://raw.githubusercontent.com/AndyObtiva/suikabox/main/screenshot.png)
+
+### HTS Grid
+
+https://github.com/kojix2/htsgrid
+
+![hts grid screenshot](https://raw.githubusercontent.com/AndyObtiva/htsgrid/main/screenshot-00.png)
 
 ## Process
 
