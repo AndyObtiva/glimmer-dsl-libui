@@ -2,9 +2,15 @@
 
 ## Next
 
+- Support `pagination: false` option in `refined_table`
+- Support table `cell_rows` provider as an alternative to data-binding (by passing a block that takes row, column arguments)
+- Optimize `table` data-binding performance (it seems like it does repeated fetches, especially when using models instead of raw data, thus wasting time unnecessarily; also it seems slow in scrolling even with raw data.. meaning reading data might be doing extra work)
+- Make `table` columns default to empty string if no text is provided for the name of the column
+- Ensure `Glimmer::LibUI::interpret_color` supports `[r, g, b, a]` `Array`-based colors, not just `[r, g, b]`
 - Use polyline in one more place in histogram
 - Provide a guide comparing use of path with path having figure with shape shorcuts (e.g. polyline, which abstracts path and figure away)
 - It seems that table-related instability in Windows is back. Check what is causing it.
+- Fix issue with version 4 of Area Gallery
 
 ### 0.5.x
 
@@ -140,6 +146,7 @@
 - Support `refined_table` AND-based FTS (Full-Text-Search) queries by treating multiple words as WORD1 AND WORD2, and accepting syntax of WORD1 AND WORD2 as alternative (or 'and' or '&', or '&&')
 - Support `refined_table` OR-based FTS (Full-Text-Search) queries by accepting syntax of WORD1 OR WORD2, etc..., (or 'or' or '|' or '||')
 - Build a MiniTest/RSpec test runner that shows results in a GUI app
+- Show progress-bar while loading a completion in GPT2 Notepad
 
 # Refactoring
 

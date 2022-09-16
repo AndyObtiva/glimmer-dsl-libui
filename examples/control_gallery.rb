@@ -13,6 +13,14 @@ menu('File') {
     end
   }
 
+  menu_item('Open Folder') {
+    on_clicked do
+      folder = open_folder
+      puts folder unless folder.nil?
+      $stdout.flush # for Windows
+    end
+  }
+
   menu_item('Save') {
     on_clicked do
       file = save_file

@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.6.0.pre.0
+
+- `open_folder` support
+- examples/control_gallery.rb now includes an "Open Folder" File menu item
+
 ## 0.5.24
 
 - Update examples/gp2_notepad.rb to avoid sorting ( thank you @kojix2 )
