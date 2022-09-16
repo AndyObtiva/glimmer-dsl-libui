@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2023 Andy Maleh
+# Copyright (c) 2021-2022 Andy Maleh
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -19,32 +19,45 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'glimmer/dsl/expression'
-require 'glimmer/dsl/parent_expression'
+require 'glimmer/libui/shape'
 
 module Glimmer
-  module DSL
-    module Libui
-      class ControlExpression < Expression
-        include ParentExpression
-  
-        def can_interpret?(parent, keyword, *args, &block)
-          Glimmer::LibUI::ControlProxy.exists?(keyword)
-        end
-  
-        def interpret(parent, keyword, *args, &block)
-          keyword = Glimmer::LibUI::ControlProxy::KEYWORD_ALIASES[keyword] || keyword
-          Glimmer::LibUI::ControlProxy.create(keyword, parent, args, &block)
+  module LibUI
+    class Shape
+      class CompositeShape < Glimmer::LibUI::Shape
+        # TODO support nested shape properties that apply to all children
+        parameters :x, :y
+        parameter_defaults 0, 0
+      
+        def draw(area_draw_params)
+          children.each do |child|
+            child.move_by(x, y)
+            begin
+              child.draw(area_draw_params)
+            rescue Exception => e
+              raise e
+            ensure
+              child.move_by(-x, -y)
+            end
+          end
+          super
         end
         
-        def add_content(parent, keyword, *args, &block)
-          options = args.last.is_a?(Hash) ? args.last : {post_add_content: true}
-          super
-          parent&.post_add_content if options[:post_add_content]
+        def move_by(x_delta, y_delta)
+          self.x += x_delta
+          self.y += y_delta
+        end
+        
+        def perfect_shape
+          perfect_shape_dependencies = [x, y, children]
+          if perfect_shape_dependencies != @perfect_shape_dependencies
+            x, y, children = @perfect_shape_dependencies = perfect_shape_dependencies
+            shapes = children.map(&:perfect_shape)
+            @perfect_shape = PerfectShape::CompositeShape.new(shapes: shapes)
+          end
+          @perfect_shape
         end
       end
     end
   end
 end
-
-require 'glimmer/libui/control_proxy'

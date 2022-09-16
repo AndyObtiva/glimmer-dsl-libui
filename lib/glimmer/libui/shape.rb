@@ -31,16 +31,19 @@ module Glimmer
     class Shape
       class << self
         def exists?(keyword)
+          keyword = KEYWORD_ALIASES[keyword] || keyword
           Shape.constants.include?(constant_symbol(keyword)) and
             shape_class(keyword).respond_to?(:ancestors) and
             shape_class(keyword).ancestors.include?(Shape)
         end
         
         def create(keyword, parent, args, &block)
+          keyword = KEYWORD_ALIASES[keyword] || keyword
           shape_class(keyword).new(keyword, parent, args, &block)
         end
         
         def shape_class(keyword)
+          keyword = KEYWORD_ALIASES[keyword] || keyword
           Shape.const_get(constant_symbol(keyword))
         end
         
@@ -61,6 +64,7 @@ module Glimmer
         end
         
         def constant_symbol(keyword)
+          keyword = KEYWORD_ALIASES[keyword] || keyword
           "#{keyword.camelcase(:upper)}".to_sym
         end
       end
@@ -69,10 +73,15 @@ module Glimmer
       include PerfectShaped
       include DataBindable
       
+      KEYWORD_ALIASES = {
+        'shape' => 'composite_shape',
+      }
+      
       attr_reader :parent, :args, :keyword, :block, :content_added
       alias content_added? content_added
       
       def initialize(keyword, parent, args, &block)
+        keyword = KEYWORD_ALIASES[keyword] || keyword
         @keyword = keyword
         @parent = parent
         @args = args
@@ -191,7 +200,11 @@ module Glimmer
       
       # indicates if nested directly under area or on_draw event (having an implicit path not an explicit path parent)
       def implicit_path?
-        @implicit_path ||= !!(@parent.is_a?(Glimmer::LibUI::ControlProxy::AreaProxy) || (@parent.nil? && Glimmer::LibUI::ControlProxy::AreaProxy.current_area_draw_params))
+        @implicit_path ||= !!(
+          @parent.is_a?(Glimmer::LibUI::ControlProxy::AreaProxy) ||
+          @parent.is_a?(Glimmer::LibUI::Shape::CompositeShape) ||
+          (@parent.nil? && Glimmer::LibUI::ControlProxy::AreaProxy.current_area_draw_params)
+        )
       end
       
       def dynamic?

@@ -1,5 +1,12 @@
 # Change Log
 
+## Next Version
+
+- Support `composite_shape` keyword (alias: `shape`) as aggregate (composite) shape that can have arbitrary shapes, text, transforms underneath
+- examples/basic_shape.rb
+- Invert `Glimmer::LibUI::ControlProxy::KEYWORD_ALIASES` to enable adding multiple aliases per keyword
+- Support `Glimmer::LibUI::Shape::KEYWORD_ALIASES` to enable adding multiple aliases per keyword
+
 ## 0.7.8
 
 - Upgrade to `perfect-shape` gem version 1.0.8 to fix a crashing issue in `examples/shape_coloring.rb`

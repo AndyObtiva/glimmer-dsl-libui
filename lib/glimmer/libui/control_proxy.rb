@@ -96,7 +96,7 @@ module Glimmer
         private
         
         def add_aliases_to_keyword_constant_map(keyword_constant_map)
-          KEYWORD_ALIASES.each do |keyword, alias_keyword|
+          KEYWORD_ALIASES.each do |alias_keyword, keyword|
             keyword_constant_map[alias_keyword] = keyword_constant_map[keyword]
           end
           keyword_constant_map
@@ -106,8 +106,8 @@ module Glimmer
       include DataBindable
       
       KEYWORD_ALIASES = {
-        'msg_box'       => 'message_box',
-        'msg_box_error' => 'message_box_error',
+        'message_box'       => 'msg_box',
+        'message_box_error' => 'msg_box_error',
       }
       
       BOOLEAN_PROPERTIES = %w[

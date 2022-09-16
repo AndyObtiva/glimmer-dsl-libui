@@ -42,6 +42,7 @@ module Glimmer
         end
   
         def interpret(parent, keyword, *args, &block)
+          keyword = Glimmer::LibUI::Shape::KEYWORD_ALIASES[keyword] || keyword
           args = [args] if args.size > 1 && Glimmer::LibUI::Shape.shape_class(keyword).parameters.size == 1
           Glimmer::LibUI::Shape.create(keyword, parent, args, &block)
         end

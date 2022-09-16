@@ -20,18 +20,18 @@
 - Update Supported Controls documentation with allowed parents and allowed children
 - Support overriding global `table` `editable` state with a specific column `editable` state if global value is `true` and column value is `false`
 - Make `table` columns default to empty string if no text is provided for the name of the column
-- Support table `cell_rows` live-loading via a provider (e.g. `cell_rows { |row, cell| value_based_on_row_and_cell }` )
+- Support table `cell_rows` live-loading via a provider (e.g. `cell_rows { |row, cell| value_based_on_row_and_cell }` ) (refactor apps that need it to use it)
 - Support table `cell_rows` live-loading via a provider with caching (e.g. `cell_rows(cache: true) { |row, cell| value_based_on_row_and_cell }` )
+
+- Support table `cell_rows` provider as an alternative to data-binding (by passing a block that takes row, column arguments)
+- Make `table` columns default to empty string if no text is provided for the name of the column
+
 - Use polyline in one more place in histogram
 - Provide a guide comparing use of path with path having figure with shape shorcuts (e.g. polyline, which abstracts path and figure away)
 - It seems that table-related instability in Windows is back. Check what is causing it. Test with RefinedTable
 - Fix issue with version 4 of Area Gallery
 
 - examples/area_tooltip.rb & examples/area_tooltip_with_delay.rb
-
-### 0.5.x
-
-- Support `shape` keyword as aggregate (composite) shape that can have arbitrary shapes, text, transforms underneath
 
 ### 0.5.x
 
