@@ -86,7 +86,7 @@ module Glimmer
           if rows.nil?
             @cell_rows
           else
-            if rows != @cell_rows
+            if !rows.equal?(@cell_rows)
               @cell_rows = rows
               @cell_rows = @cell_rows.to_a if @cell_rows.is_a?(Enumerator)
             end

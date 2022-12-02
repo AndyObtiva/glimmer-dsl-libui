@@ -147,6 +147,7 @@
 - Support `refined_table` OR-based FTS (Full-Text-Search) queries by accepting syntax of WORD1 OR WORD2, etc..., (or 'or' or '|' or '||')
 - Build a MiniTest/RSpec test runner that shows results in a GUI app
 - Show progress-bar while loading a completion in GPT2 Notepad
+- Have `table` tolerate adding `nil` in implicit data-binding by treating it as an empty row
 
 # Refactoring
 

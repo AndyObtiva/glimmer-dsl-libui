@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.6.0.pre.2
+
+- Fix issue "Cannot add rows to a table that started empty": https://github.com/AndyObtiva/glimmer-dsl-libui/issues/36
+
 ## 0.6.0.pre.1
 
 - `window` `#open` method as alias to `#show`
