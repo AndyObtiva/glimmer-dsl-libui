@@ -1,9 +1,11 @@
 # Change Log
 
-## 0.6.0.pre.1 (unreleased)
+## 0.6.0.pre.1
 
-- `window#open` as alias to `#show`
-
+- `window` `#open` method as alias to `#show`
+- `window` `#focused?` read-only property
+- Document `window` `on_focus_changed` listener
+- Update `examples/basic_child_window.rb` to demo `on_focus_changed` and `focused?`
 
 ## 0.6.0.pre.0
 

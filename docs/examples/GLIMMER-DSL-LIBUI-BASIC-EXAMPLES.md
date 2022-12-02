@@ -120,30 +120,6 @@ Mac | Windows | Linux
 ----|---------|------
 ![glimmer-dsl-libui-mac-basic-child-window.png](/images/glimmer-dsl-libui-mac-basic-child-window.png) ![glimmer-dsl-libui-mac-basic-child-window-open.png](/images/glimmer-dsl-libui-mac-basic-child-window-open.png) | ![glimmer-dsl-libui-windows-basic-child-window.png](/images/glimmer-dsl-libui-windows-basic-child-window.png) ![glimmer-dsl-libui-windows-basic-child-window-open.png](/images/glimmer-dsl-libui-windows-basic-child-window-open.png) | ![glimmer-dsl-libui-linux-basic-child-window.png](/images/glimmer-dsl-libui-linux-basic-child-window.png) ![glimmer-dsl-libui-linux-basic-child-window-open.png](/images/glimmer-dsl-libui-linux-basic-child-window-open.png)
 
-New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
-
-```ruby
-require 'glimmer-dsl-libui'
-
-include Glimmer
-
-window('Main Window') {
-  button('Spawn Child Window') {
-    on_clicked do
-      window('Child Window') {
-        on_closing do
-          puts 'Child window is closing'
-        end
-      }.show
-    end
-  }
-  
-  on_closing do
-    puts 'Main window is closing'
-  end
-}.show
-```
-
 ## Basic Button
 
 [examples/basic_button.rb](/examples/basic_button.rb)

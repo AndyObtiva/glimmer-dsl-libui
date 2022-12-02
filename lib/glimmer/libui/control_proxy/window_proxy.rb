@@ -157,6 +157,11 @@ module Glimmer
         alias resizable? resizable
         alias resizable= resizable
         alias set_resizable resizable
+        
+        def focused
+          Glimmer::LibUI.integer_to_boolean(super)
+        end
+        alias focused? focused
       
         private
         
