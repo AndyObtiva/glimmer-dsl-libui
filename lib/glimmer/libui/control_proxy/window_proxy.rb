@@ -70,6 +70,7 @@ module Glimmer
             ::LibUI.quit
           end
         end
+        alias open show
         
         def handle_listener(listener_name, &listener)
           case listener_name

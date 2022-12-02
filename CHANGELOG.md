@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.6.0.pre.1 (unreleased)
+
+- `window#open` as alias to `#show`
+
+
 ## 0.6.0.pre.0
 
 - `open_folder` support
