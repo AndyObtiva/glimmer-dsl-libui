@@ -76,6 +76,7 @@ module Glimmer
         option :table_editable, default: false
         option :per_page, default: 10
         option :page, default: 1
+        option :pagination, default: true
         option :visible_page_count, default: false
         option :filter_query, default: ''
         option :filter, default: FILTER_DEFAULT
@@ -85,6 +86,7 @@ module Glimmer
         attr_reader :table_proxy
         
         before_body do
+          self.per_page = 1_000_000_000 if !pagination
           init_model_array
         end
         

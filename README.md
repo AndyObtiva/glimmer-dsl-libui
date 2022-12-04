@@ -971,6 +971,7 @@ Options (passed as kwargs hash):
 - `table_editable` (Boolean) [default: `false`]: this indicates if all table columns are editable or not.
 - `per_page` (`Integer`) [default: `10`]: number of rows per page
 - `page` (`Integer`) [default: `1`]: initial page displayed
+- `pagination` (Boolean) [default: `true`]: pagination is enabled (disabling still keeps the filter field)
 - `visible_page_count` (Boolean) [default: `false`]: shows "of PAGE_COUNT pages" after page `entry` field
 - `filter` (Lambda) [default: `Glimmer::LibUI::CustomControl::RefinedTable::FILTER_DEFAULT`]: enables setting custom filter that accepts `row_hash` (mapping table column names to row values) and `query` string as arguments, and it is supposed to return `true` or `false` for whether to show a row or filter it out.
 

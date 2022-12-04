@@ -3,6 +3,7 @@
 ## 0.6.0.pre.3
 
 - Optimize `table` scrolling performance when having many rows and columns (prevent recalculation of `expanded_cell_rows` on every cell evaluation).
+- `refined_table` `pagination: false` option to disable pagination, but keep filtering.
 
 ## 0.6.0.pre.2
 

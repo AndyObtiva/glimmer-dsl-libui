@@ -2,7 +2,6 @@
 
 ## Next
 
-- Support `pagination: false` option in `refined_table`
 - Support table `cell_rows` provider as an alternative to data-binding (by passing a block that takes row, column arguments)
 - Make `table` columns default to empty string if no text is provided for the name of the column
 - Ensure `Glimmer::LibUI::interpret_color` supports `[r, g, b, a]` `Array`-based colors, not just `[r, g, b]`
