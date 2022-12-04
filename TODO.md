@@ -4,7 +4,6 @@
 
 - Support table `cell_rows` provider as an alternative to data-binding (by passing a block that takes row, column arguments)
 - Make `table` columns default to empty string if no text is provided for the name of the column
-- Ensure `Glimmer::LibUI::interpret_color` supports `[r, g, b, a]` `Array`-based colors, not just `[r, g, b]`
 - Use polyline in one more place in histogram
 - Provide a guide comparing use of path with path having figure with shape shorcuts (e.g. polyline, which abstracts path and figure away)
 - It seems that table-related instability in Windows is back. Check what is causing it.

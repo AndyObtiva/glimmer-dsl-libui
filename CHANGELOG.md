@@ -2,8 +2,9 @@
 
 ## 0.6.0.pre.3
 
-- Optimize `table` scrolling performance when having many rows and columns (prevent recalculation of `expanded_cell_rows` on every cell evaluation).
+- Optimize `table` scrolling performance when having many rows and columns (prevent recalculation of `expanded_cell_rows` on every cell evaluation). Resolve: https://github.com/AndyObtiva/glimmer-dsl-libui/issues/38
 - `refined_table` `pagination: false` option to disable pagination, but keep filtering.
+- Fix issue with `Glimmer::LibUI::interpret_color` support for `[r, g, b, a]` `Array`-based colors, returning `[r, g, b]` only without alpha value
 
 ## 0.6.0.pre.2
 

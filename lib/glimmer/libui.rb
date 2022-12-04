@@ -50,11 +50,11 @@ module Glimmer
         result = if value.is_a?(Array)
           old_value = value
           value = {
-            r: value[0],
-            g: value[1],
-            b: value[2],
+            r: old_value[0],
+            g: old_value[1],
+            b: old_value[2],
           }
-          value[:a] = value[3] unless value[3].nil?
+          value[:a] = old_value[3] unless old_value[3].nil?
           value
         elsif value.is_a?(Hash)
           old_value = value
