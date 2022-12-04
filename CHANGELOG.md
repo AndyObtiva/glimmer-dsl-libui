@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.6.0.pre.3
+
+- Optimize `table` scrolling performance when having many rows and columns (prevent recalculation of `expanded_cell_rows` on every cell evaluation).
+
 ## 0.6.0.pre.2
 
 - Fix issue "Cannot add rows to a table that started empty": https://github.com/AndyObtiva/glimmer-dsl-libui/issues/36

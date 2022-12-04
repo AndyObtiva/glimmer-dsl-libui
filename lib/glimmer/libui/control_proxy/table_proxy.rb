@@ -97,7 +97,12 @@ module Glimmer
         alias set_cell_rows cell_rows
         
         def expanded_cell_rows
-          expand(cell_rows)
+          expanded_cell_rows_dependency_cell_rows = cell_rows
+          if expanded_cell_rows_dependency_cell_rows != @expanded_cell_rows_dependency_cell_rows
+            @expanded_cell_rows_dependency_cell_rows = expanded_cell_rows_dependency_cell_rows
+            @expanded_cell_rows = expand(@expanded_cell_rows_dependency_cell_rows)
+          end
+          @expanded_cell_rows
         end
         
         def expand(cell_rows)
@@ -272,6 +277,7 @@ module Glimmer
                 @cell_rows[row].send(attribute)[0] = ::LibUI.table_value_int(val).to_i == 1
               end
             end
+            @expanded_cell_rows_dependency_cell_rows = nil
             notify_custom_listeners('on_edited', row, @cell_rows[row])
           end
           
@@ -306,6 +312,7 @@ module Glimmer
               @last_cell_rows.each_with_index do |old_row_data, row|
                 if old_row_data != @cell_rows[row] && model
                   ::LibUI.table_model_row_changed(model, row)
+                  @expanded_cell_rows_dependency_cell_rows = nil
                   notify_custom_listeners('on_changed', row, :changed, @cell_rows[row])
                 end
               end
@@ -313,6 +320,7 @@ module Glimmer
                 row = @last_cell_rows.size - n - 1
                 if model
                   ::LibUI.table_model_row_deleted(model, row)
+                  @expanded_cell_rows_dependency_cell_rows = nil
                   notify_custom_listeners('on_changed', row, :deleted, @last_cell_rows[row])
                 end
               end
@@ -321,12 +329,14 @@ module Glimmer
                 row = @last_cell_rows.size + n
                 if model
                   ::LibUI.table_model_row_inserted(model, row)
+                  @expanded_cell_rows_dependency_cell_rows = nil
                   notify_custom_listeners('on_changed', row, :inserted, @cell_rows[row])
                 end
               end
               @cell_rows.each_with_index do |new_row_data, row|
                 if new_row_data != @last_cell_rows[row] && model
                   ::LibUI.table_model_row_changed(model, row)
+                  @expanded_cell_rows_dependency_cell_rows = nil
                   notify_custom_listeners('on_changed', row, :changed, @cell_rows[row])
                 end
               end
@@ -334,6 +344,7 @@ module Glimmer
               @cell_rows.each_with_index do |new_row_data, row|
                 if new_row_data != @last_cell_rows[row] && model
                   ::LibUI.table_model_row_changed(model, row)
+                  @expanded_cell_rows_dependency_cell_rows = nil
                   notify_custom_listeners('on_changed', row, :changed, @cell_rows[row])
                 end
               end

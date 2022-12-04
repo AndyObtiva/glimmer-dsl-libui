@@ -4,7 +4,6 @@
 
 - Support `pagination: false` option in `refined_table`
 - Support table `cell_rows` provider as an alternative to data-binding (by passing a block that takes row, column arguments)
-- Optimize `table` data-binding performance (it seems like it does repeated fetches, especially when using models instead of raw data, thus wasting time unnecessarily; also it seems slow in scrolling even with raw data.. meaning reading data might be doing extra work)
 - Make `table` columns default to empty string if no text is provided for the name of the column
 - Ensure `Glimmer::LibUI::interpret_color` supports `[r, g, b, a]` `Array`-based colors, not just `[r, g, b]`
 - Use polyline in one more place in histogram
@@ -148,6 +147,7 @@
 - Build a MiniTest/RSpec test runner that shows results in a GUI app
 - Show progress-bar while loading a completion in GPT2 Notepad
 - Have `table` tolerate adding `nil` in implicit data-binding by treating it as an empty row
+- As a performance optimization, have `table` change expanded_cell_rows only for updated cells instead of regenerating from scratch upon every cell/row change.
 
 # Refactoring
 
