@@ -48,6 +48,26 @@ module Glimmer
           self.y += y_delta
         end
         
+        def contain?(*point, outline: false, distance_tolerance: 0)
+          children.any? { |child| child.contain?(*point, outline: outline, distance_tolerance: distance_tolerance) }
+        end
+        
+        def include?(*point)
+          children.any? { |child| child.include?(*point) }
+        end
+        
+        def relative_x(x)
+          self.x + x
+        end
+        
+        def relative_y(y)
+          self.y + y
+        end
+        
+        def relative_point(*point)
+          [relative_x(point.first), relative_y(point.last)]
+        end
+        
         def perfect_shape
           perfect_shape_dependencies = [x, y, children]
           if perfect_shape_dependencies != @perfect_shape_dependencies

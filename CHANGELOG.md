@@ -3,7 +3,7 @@
 ## Next Version
 
 - Support `composite_shape` keyword (alias: `shape`) as aggregate (composite) shape that can have arbitrary shapes, text, transforms underneath
-- examples/basic_shape.rb
+- examples/custom_shape.rb
 - Invert `Glimmer::LibUI::ControlProxy::KEYWORD_ALIASES` to enable adding multiple aliases per keyword
 - Support `Glimmer::LibUI::Shape::KEYWORD_ALIASES` to enable adding multiple aliases per keyword
 

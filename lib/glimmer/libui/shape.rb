@@ -138,6 +138,10 @@ module Glimmer
       def path_proxy
         find_parent_in_ancestors { |parent| parent.nil? || parent.is_a?(ControlProxy::PathProxy) }
       end
+      
+      def composite_shape
+        find_parent_in_ancestors { |parent| parent.nil? || parent.is_a?(CompositeShape) }
+      end
     
       def fill(*args)
         path_proxy.fill(*args)
@@ -156,6 +160,125 @@ module Glimmer
       end
       alias transform= transform
       alias set_transform transform
+      
+      def absolute_x
+        if composite_shape
+          composite_shape.relative_x(x)
+        else
+          x
+        end
+      end
+      
+      def absolute_y
+        if composite_shape
+          composite_shape.relative_y(y)
+        else
+          y
+        end
+      end
+      
+      def absolute_point_array
+        # TODO Consider moving this method into a module mixed into all shapes having point_array
+        return unless respond_to?(:point_array)
+        
+        point_array = self.point_array || []
+        point_array = PerfectShape::MultiPoint.normalize_point_array(point_array)
+        point_array.map do |point|
+          if composite_shape
+            composite_shape.relative_point(*point)
+          else
+            point
+          end
+        end
+      end
+      
+      def absolute_x_center
+        # TODO Consider moving this method into a module mixed into all shapes having x_center
+        return unless respond_to?(:x_center)
+        
+        if composite_shape
+          composite_shape.relative_x(x_center)
+        else
+          x_center
+        end
+      end
+      
+      def absolute_y_center
+        # TODO Consider moving this method into a module mixed into all shapes having y_center
+        return unless respond_to?(:y_center)
+        
+        if composite_shape
+          composite_shape.relative_y(y_center)
+        else
+          y_center
+        end
+      end
+      
+      def absolute_c1_x
+        # TODO Consider moving this method into a module mixed into all shapes having c1_x
+        return unless respond_to?(:c1_x)
+        
+        if composite_shape
+          composite_shape.relative_x(c1_x)
+        else
+          c1_x
+        end
+      end
+      
+      def absolute_c1_y
+        # TODO Consider moving this method into a module mixed into all shapes having c1_y
+        return unless respond_to?(:c1_y)
+        
+        if composite_shape
+          composite_shape.relative_x(c1_y)
+        else
+          c1_y
+        end
+      end
+      
+      def absolute_c2_x
+        # TODO Consider moving this method into a module mixed into all shapes having c2_x
+        return unless respond_to?(:c2_x)
+        
+        if composite_shape
+          composite_shape.relative_x(c2_x)
+        else
+          c2_x
+        end
+      end
+      
+      def absolute_c2_y
+        # TODO Consider moving this method into a module mixed into all shapes having c2_y
+        return unless respond_to?(:c2_y)
+        
+        if composite_shape
+          composite_shape.relative_x(c2_y)
+        else
+          c2_y
+        end
+      end
+      
+      def absolute_end_x
+        # TODO Consider moving this method into a module mixed into all shapes having end_x
+        return unless respond_to?(:end_x)
+        
+        if composite_shape
+          composite_shape.relative_x(end_x)
+        else
+          end_x
+        end
+      end
+      
+      def absolute_end_y
+        # TODO Consider moving this method into a module mixed into all shapes having end_y
+        return unless respond_to?(:end_y)
+        
+        if composite_shape
+          composite_shape.relative_x(end_y)
+        else
+          end_y
+        end
+      end
       
       def can_handle_listener?(listener_name)
         area_proxy.can_handle_listener?(listener_name)

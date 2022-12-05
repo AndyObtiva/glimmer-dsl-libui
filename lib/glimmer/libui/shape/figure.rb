@@ -58,10 +58,10 @@ module Glimmer
         end
                 
         def perfect_shape
-          perfect_shape_dependencies = [x, y, closed, parent.draw_fill_mode, children]
+          perfect_shape_dependencies = [absolute_x, absolute_y, closed, parent.draw_fill_mode, children]
           if perfect_shape_dependencies != @perfect_shape_dependencies
-            x, y, closed, draw_fill_mode, children = @perfect_shape_dependencies = perfect_shape_dependencies
-            path_shapes = [[x, y]]
+            absolute_x, absolute_y, closed, draw_fill_mode, children = @perfect_shape_dependencies = perfect_shape_dependencies
+            path_shapes = [[absolute_x, absolute_y]]
             path_shapes += children.map(&:perfect_shape)
             winding_rule = draw_fill_mode == :winding ? :wind_non_zero : :wind_even_odd
             @perfect_shape = PerfectShape::Path.new(

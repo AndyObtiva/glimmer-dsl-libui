@@ -45,11 +45,11 @@ module Glimmer
         end
         
         def perfect_shape
-          perfect_shape_dependencies = PerfectShape::MultiPoint.normalize_point_array(point_array)
+          perfect_shape_dependencies = absolute_point_array
           if perfect_shape_dependencies != @perfect_shape_dependencies
-            point_array = @perfect_shape_dependencies = perfect_shape_dependencies
-            path_shapes = [point_array.first]
-            bezier_shape_points = point_array.drop(1).each.with_index.to_a.group_by {|pair| pair.last/3}.values.map {|arr| arr.map(&:first)}
+            absolute_point_array = @perfect_shape_dependencies = perfect_shape_dependencies
+            path_shapes = [absolute_point_array.first]
+            bezier_shape_points = absolute_point_array.drop(1).each.with_index.to_a.group_by {|pair| pair.last/3}.values.map {|arr| arr.map(&:first)}
             path_shapes += bezier_shape_points.map { |points| PerfectShape::CubicBezierCurve.new(points: points) }
             @perfect_shape = PerfectShape::Path.new(closed: false, shapes: path_shapes)
           end

@@ -61,10 +61,10 @@ module Glimmer
         end
         
         def perfect_shape
-          perfect_shape_dependencies = [x, y, end_x, end_y]
+          perfect_shape_dependencies = [absolute_x, absolute_y, absolute_end_x, absolute_end_y]
           if perfect_shape_dependencies != @perfect_shape_dependencies
-            x, y, end_x, end_y = @perfect_shape_dependencies = perfect_shape_dependencies
-            @perfect_shape = PerfectShape::Line.new(points: [x, y, end_x, end_y].compact)
+            absolute_x, absolute_y, absolute_end_x, absolute_end_y = @perfect_shape_dependencies = perfect_shape_dependencies
+            @perfect_shape = PerfectShape::Line.new(points: [absolute_x, absolute_y, absolute_end_x, absolute_end_y].compact)
           end
           @perfect_shape
         end

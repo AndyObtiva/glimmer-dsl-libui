@@ -2,6 +2,11 @@
 
 ## Next
 
+- Support common composite `shape` properties
+- Look into providing absolute values (incorporating relative position to parent composite shape) for PerfectShaped bounding box elements
+
+- Support `LibUI.uninit` to enable clean exit of a LibUI app in Linux and support launching/closing a LibUI app window multiple times
+
 - Rename basic table selection example to something that indicates sorting too
 - Fix issue with button_column on_clicked not resulting in click of button yet click of column. It seems we have to add a on_button_clicked alternative here. and break the API
 - Provide a way to configure a different sort_by or sort block per table column while relying on sortable property
@@ -19,6 +24,7 @@
 
 - Update Supported Controls documentation with allowed parents and allowed children
 - Support overriding global `table` `editable` state with a specific column `editable` state if global value is `true` and column value is `false`
+
 - Make `table` columns default to empty string if no text is provided for the name of the column
 - Support table `cell_rows` live-loading via a provider (e.g. `cell_rows { |row, cell| value_based_on_row_and_cell }` ) (refactor apps that need it to use it)
 - Support table `cell_rows` live-loading via a provider with caching (e.g. `cell_rows(cache: true) { |row, cell| value_based_on_row_and_cell }` )
@@ -28,10 +34,12 @@
 
 - Use polyline in one more place in histogram
 - Provide a guide comparing use of path with path having figure with shape shorcuts (e.g. polyline, which abstracts path and figure away)
+
 - It seems that table-related instability in Windows is back. Check what is causing it. Test with RefinedTable
 - Fix issue with version 4 of Area Gallery
 
 - examples/area_tooltip.rb & examples/area_tooltip_with_delay.rb
+
 
 ### 0.5.x
 

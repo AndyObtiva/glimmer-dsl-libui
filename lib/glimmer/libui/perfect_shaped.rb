@@ -22,6 +22,7 @@ module Glimmer
       # or if shape includes point on the outline when stroked
       def include?(*point)
         if fill.empty?
+          # TODO check if distance_tolerance should be half the thickness in case it is checked against both sides of out and in
           contain?(*point, outline: true, distance_tolerance: ((stroke[:thickness] || 1) - 1))
         else
           contain?(*point)
