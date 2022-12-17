@@ -2,7 +2,7 @@
 
 ## Next
 
-- Support table `cell_rows` provider as an alternative to data-binding (by passing a block that takes row, column arguments)
+- Support table `cell_rows` lazy-loading (do not expand all rows at data-binding time) to support lazy-fetching arrays for `cell_rows`
 - Make `table` columns default to empty string if no text is provided for the name of the column
 - Use polyline in one more place in histogram
 - Provide a guide comparing use of path with path having figure with shape shorcuts (e.g. polyline, which abstracts path and figure away)

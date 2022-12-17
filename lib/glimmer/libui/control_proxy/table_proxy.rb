@@ -96,20 +96,48 @@ module Glimmer
         alias cell_rows= cell_rows
         alias set_cell_rows cell_rows
         
-        def expanded_cell_rows
-          expanded_cell_rows_dependency_cell_rows = cell_rows
-          if expanded_cell_rows_dependency_cell_rows != @expanded_cell_rows_dependency_cell_rows
-            @expanded_cell_rows_dependency_cell_rows = expanded_cell_rows_dependency_cell_rows
-            @expanded_cell_rows = expand(@expanded_cell_rows_dependency_cell_rows)
-          end
-          @expanded_cell_rows
+        def expand_cell_rows(cell_rows = nil)
+          cell_rows ||= self.cell_rows
+          cell_rows.to_a.map { |cell_row| expand_cell_row(cell_row) }
+        end
+        alias expanded_cell_rows expand_cell_rows
+        
+        def expand_cell_row(cell_row)
+          pd cell_row.count
+          cell_row.count.times.each {|n| pd cell_row[n]}
+          return cell_row if cell_row.nil?
+          
+          # TODO limit caching to non-array cell rows only
+#           @expand_cell_row_cache ||= {}
+#           if !@expand_cell_row_cache[cell_row]
+            pd cell_row.is_a?(Array)
+            pd @column_attributes
+            pd @column_attributes&.any?
+            pd !cell_row.is_a?(Array) && @column_attributes&.any?
+            cell_row = expand_cell_row_from_model(cell_row) if !cell_row.is_a?(Array) && @column_attributes&.any?
+#             @expand_cell_row_cache[cell_row] = cell_row.flatten(1)
+            flat_cell_row = []
+            cell_row.count.times.each do |cell_index|
+              cell = cell_row[cell_index]
+              if cell.is_a?(Array)
+                cell.count.times.each do |element_index|
+                  element = cell[element_index]
+                  pd element
+                  flat_cell_row << element
+                end
+              else
+                pd cell
+                flat_cell_row << cell
+              end
+            end
+            flat_cell_row
+#             cell_row.flatten(1)
+#           end
+#           @expand_cell_row_cache[cell_row]
         end
         
-        def expand(cell_rows)
-          cell_rows.to_a.map do |row|
-            row = @column_attributes.map {|attribute| row.send(attribute) } if @column_attributes&.any? && !row.is_a?(Array)
-            row.flatten(1)
-          end
+        def expand_cell_row_from_model(cell_row)
+          @column_attributes.to_a.map {|attribute| cell_row.send(attribute) }
         end
         
         def editable(value = nil)
@@ -124,11 +152,13 @@ module Glimmer
         alias editable? editable
         
         def data_bind_read(property, model_binding)
+          # TODO why is this not triggered from red amber view app?
+          pd model_binding.binding_options[:column_attributes].is_a?(Array)
           if model_binding.binding_options[:column_attributes].is_a?(Array)
             @column_attributes = model_binding.binding_options[:column_attributes]
           else
-            column_attribute_mapping = model_binding.binding_options[:column_attributes].is_a?(Hash) ? model_binding.binding_options[:column_attributes] : {}
-            @column_attributes = columns.select {|column| column.is_a?(Column)}.map(&:name).map {|column_name| column_attribute_mapping[column_name] || column_name.underscore}
+            pd column_attribute_mapping = model_binding.binding_options[:column_attributes].is_a?(Hash) ? model_binding.binding_options[:column_attributes] : {}
+            pd @column_attributes = columns.select {|column| column.is_a?(Column)}.map(&:name).map {|column_name| column_attribute_mapping[column_name] || column_name.underscore}
           end
           model_attribute_observer = model_attribute_observer_registration = nil
           model_attribute_observer = Glimmer::DataBinding::Observer.proc do
@@ -186,38 +216,38 @@ module Glimmer
             cell_rows.count + (OS.windows? ? 1 : 0)
           end
           @model_handler.CellValue    = fiddle_closure_block_caller(1, [1, 1, 4, 4]) do |_, _, row, column|
-            the_cell_rows = expanded_cell_rows
+            the_cell_row = expand_cell_row(cell_rows.to_a[row])
             case @columns[column]
             when Column::TextColumnProxy, Column::ButtonColumnProxy, Column::TextColorColumnProxy, :text
-              ::LibUI.new_table_value_string((expanded_cell_rows[row] && expanded_cell_rows[row][column]).to_s)
+              ::LibUI.new_table_value_string((the_cell_row && the_cell_row[column]).to_s)
             when Column::ImageColumnProxy, Column::ImageTextColumnProxy, Column::ImageTextColorColumnProxy
               if OS.windows? && row == cell_rows.count
                 img = Glimmer::LibUI::ICON
               else
-                img = expanded_cell_rows[row][column]
+                img = the_cell_row[column]
               end
               img = ControlProxy::ImageProxy.create('image', nil, img) if img.is_a?(Array)
               img = ControlProxy::ImageProxy.create('image', nil, [img]) if img.is_a?(String)
               img = img.respond_to?(:libui) ? img.libui : img
               ::LibUI.new_table_value_image(img)
             when Column::CheckboxColumnProxy, Column::CheckboxTextColumnProxy, Column::CheckboxTextColorColumnProxy
-              ::LibUI.new_table_value_int(((expanded_cell_rows[row] && (expanded_cell_rows[row][column] == 1 || expanded_cell_rows[row][column].to_s.strip.downcase == 'true' ? 1 : 0))) || 0)
+              ::LibUI.new_table_value_int(((the_cell_row && (the_cell_row[column] == 1 || the_cell_row[column].to_s.strip.downcase == 'true' ? 1 : 0))) || 0)
             when Column::ProgressBarColumnProxy
-              value = (expanded_cell_rows[row] && expanded_cell_rows[row][column]).to_i
-              expanded_last_last_cell_rows = expand(@last_last_cell_rows)
-              old_value = (expanded_last_last_cell_rows[row] && expanded_last_last_cell_rows[row][column]).to_i
+              value = (the_cell_row && the_cell_row[column]).to_i
+              expanded_last_last_cell_row = expand_cell_row(@last_last_cell_rows.to_a[row])
+              old_value = (expanded_last_last_cell_row && expanded_last_last_cell_row[column]).to_i
               if OS.windows? && old_value == -1 && value >= 0
                 Glimmer::Config.logger.error('Switching a progress bar value from -1 to a positive value is not supported on Windows')
                 cell_rows[row][column] = -1
                 ::LibUI.new_table_value_int(old_value)
               else
-                ::LibUI.new_table_value_int((expanded_cell_rows[row] && expanded_cell_rows[row][column]).to_i)
+                ::LibUI.new_table_value_int((the_cell_row && the_cell_row[column]).to_i)
               end
             when Column::BackgroundColorColumnProxy
-              background_color = Glimmer::LibUI.interpret_color(expanded_cell_rows[row] && expanded_cell_rows[row][column]) || {r: 255, g: 255, b: 255}
+              background_color = Glimmer::LibUI.interpret_color(the_cell_row && the_cell_row[column]) || {r: 255, g: 255, b: 255}
               ::LibUI.new_table_value_color(background_color[:r] / 255.0, background_color[:g] / 255.0, background_color[:b] / 255.0, background_color[:a] || 1.0)
             when :color
-              color = Glimmer::LibUI.interpret_color(expanded_cell_rows[row] && expanded_cell_rows[row][column]) || {r: 0, g: 0, b: 0}
+              color = Glimmer::LibUI.interpret_color(the_cell_row && the_cell_row[column]) || {r: 0, g: 0, b: 0}
               ::LibUI.new_table_value_color(color[:r] / 255.0, color[:g] / 255.0, color[:b] / 255.0, color[:a] || 1.0)
             end
           end
@@ -277,7 +307,7 @@ module Glimmer
                 @cell_rows[row].send(attribute)[0] = ::LibUI.table_value_int(val).to_i == 1
               end
             end
-            @expanded_cell_rows_dependency_cell_rows = nil
+            @expand_cell_row_cache = {}
             notify_custom_listeners('on_edited', row, @cell_rows[row])
           end
           
@@ -312,7 +342,7 @@ module Glimmer
               @last_cell_rows.each_with_index do |old_row_data, row|
                 if old_row_data != @cell_rows[row] && model
                   ::LibUI.table_model_row_changed(model, row)
-                  @expanded_cell_rows_dependency_cell_rows = nil
+                  @expand_cell_row_cache = {}
                   notify_custom_listeners('on_changed', row, :changed, @cell_rows[row])
                 end
               end
@@ -320,7 +350,7 @@ module Glimmer
                 row = @last_cell_rows.size - n - 1
                 if model
                   ::LibUI.table_model_row_deleted(model, row)
-                  @expanded_cell_rows_dependency_cell_rows = nil
+                  @expand_cell_row_cache = {}
                   notify_custom_listeners('on_changed', row, :deleted, @last_cell_rows[row])
                 end
               end
@@ -329,14 +359,14 @@ module Glimmer
                 row = @last_cell_rows.size + n
                 if model
                   ::LibUI.table_model_row_inserted(model, row)
-                  @expanded_cell_rows_dependency_cell_rows = nil
+                  @expand_cell_row_cache = {}
                   notify_custom_listeners('on_changed', row, :inserted, @cell_rows[row])
                 end
               end
               @cell_rows.each_with_index do |new_row_data, row|
                 if new_row_data != @last_cell_rows[row] && model
                   ::LibUI.table_model_row_changed(model, row)
-                  @expanded_cell_rows_dependency_cell_rows = nil
+                  @expand_cell_row_cache = {}
                   notify_custom_listeners('on_changed', row, :changed, @cell_rows[row])
                 end
               end
@@ -344,11 +374,15 @@ module Glimmer
               @cell_rows.each_with_index do |new_row_data, row|
                 if new_row_data != @last_cell_rows[row] && model
                   ::LibUI.table_model_row_changed(model, row)
-                  @expanded_cell_rows_dependency_cell_rows = nil
+                  @expand_cell_row_cache = {}
                   notify_custom_listeners('on_changed', row, :changed, @cell_rows[row])
                 end
               end
             end
+            # TODO look into performance implications of deep cloning an entire array,
+            # which wastes time looping through all elements even if we are displaying about
+            # 20 of them only at the moment, thus preventing lazy loading from happening
+            # Consider alternatively caching rows per index when needed instead
             @last_last_cell_rows = array_deep_clone(@last_cell_rows)
             @last_cell_rows = array_deep_clone(@cell_rows)
             if !@applied_windows_fix_on_first_cell_rows_update && OS.windows?
