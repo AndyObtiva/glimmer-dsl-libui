@@ -48,7 +48,7 @@ module Glimmer
           @enabled = true
           @columns = []
           @cell_rows = []
-          @last_cell_rows = []
+          @last_cell_rows = nil
           register_cell_rows_observer
           window_proxy.on_destroy do
             # the following unless condition is an exceptional condition stumbled upon that fails freeing the table model
@@ -88,7 +88,8 @@ module Glimmer
           else
             if !rows.equal?(@cell_rows)
               @cell_rows = rows
-              @cell_rows = @cell_rows.to_a if @cell_rows.is_a?(Enumerator)
+              # TODO should we do something better than to force all elements on Enumerator?
+#               @cell_rows = @cell_rows.to_a if @cell_rows.is_a?(Enumerator)
             end
             @cell_rows
           end
@@ -96,20 +97,46 @@ module Glimmer
         alias cell_rows= cell_rows
         alias set_cell_rows cell_rows
         
-        def expanded_cell_rows
-          expanded_cell_rows_dependency_cell_rows = cell_rows
-          if expanded_cell_rows_dependency_cell_rows != @expanded_cell_rows_dependency_cell_rows
-            @expanded_cell_rows_dependency_cell_rows = expanded_cell_rows_dependency_cell_rows
-            @expanded_cell_rows = expand(@expanded_cell_rows_dependency_cell_rows)
-          end
-          @expanded_cell_rows
+        def expand_cell_rows(cell_rows = nil)
+          cell_rows ||= self.cell_rows
+          cell_rows ||= []
+          cell_rows.map { |cell_row| expand_cell_row(cell_row) }
+        end
+        alias expanded_cell_rows expand_cell_rows
+        
+        def expand_cell_row(cell_row)
+          return cell_row if cell_row.nil?
+          
+            # TODO should we do something better than to force all elements on Enumerator?
+            cell_row = cell_row.to_a if cell_row.is_a?(Enumerator)
+          # TODO limit caching to non-array cell rows only
+#           @expand_cell_row_cache ||= {}
+#           if !@expand_cell_row_cache[cell_row]
+            cell_row = expand_cell_row_from_model(cell_row) if !cell_row.is_a?(Array) && @column_attributes&.any?
+#             @expand_cell_row_cache[cell_row] = cell_row.flatten(1)
+            
+            # Manual flattening
+#             flat_cell_row = []
+#             cell_row.size.times.each do |cell_index|
+#               cell = cell_row[cell_index]
+#               if cell.is_a?(Array)
+#                 cell.size.times.each do |element_index|
+#                   element = cell[element_index]
+#                   flat_cell_row << element
+#                 end
+#               else
+#                 flat_cell_row << cell
+#               end
+#             end
+#             flat_cell_row
+            
+            cell_row.flatten(1)
+#           end
+#           @expand_cell_row_cache[cell_row]
         end
         
-        def expand(cell_rows)
-          cell_rows.to_a.map do |row|
-            row = @column_attributes.map {|attribute| row.send(attribute) } if @column_attributes&.any? && !row.is_a?(Array)
-            row.flatten(1)
-          end
+        def expand_cell_row_from_model(cell_row)
+          @column_attributes.to_a.map {|attribute| cell_row.send(attribute) }
         end
         
         def editable(value = nil)
@@ -124,6 +151,7 @@ module Glimmer
         alias editable? editable
         
         def data_bind_read(property, model_binding)
+          # TODO why is this not triggered from red amber view app?
           if model_binding.binding_options[:column_attributes].is_a?(Array)
             @column_attributes = model_binding.binding_options[:column_attributes]
           else
@@ -133,7 +161,8 @@ module Glimmer
           model_attribute_observer = model_attribute_observer_registration = nil
           model_attribute_observer = Glimmer::DataBinding::Observer.proc do
             new_value = model_binding.evaluate_property
-            new_value = new_value.to_a if new_value.is_a?(Enumerator)
+            # TODO should we do something better than to force all elements on Enumerator?
+#             new_value = new_value.to_a if new_value.is_a?(Enumerator)
             if model_binding.binding_options[:column_attributes] || (!new_value.nil? && (!new_value.is_a?(String) || !new_value.empty?) && (!new_value.is_a?(Array) || !new_value.first.is_a?(Array)))
               @model_attribute_array_observer_registration&.deregister
               @model_attribute_array_observer_registration = model_attribute_observer.observe(new_value, @column_attributes, ignore_frozen: true, attribute_writer_type: [:attribute=, :set_attribute])
@@ -149,21 +178,53 @@ module Glimmer
         end
         
         def data_bind_write(property, model_binding)
-          # TODO ensure writing is happening to models if rows are not arrays
+          # TODO ensure writing is happening to models if rows are not arrays (enumerator)
           handle_listener('on_edited') { model_binding.call(cell_rows) } if property == 'cell_rows'
         end
         
-        def array_deep_clone(array_or_object)
+        def array_deep_dup(array_or_object)
           if array_or_object.is_a?(Array)
             array_or_object.map do |element|
-              array_deep_clone(element)
+              array_deep_dup(element)
             end
           else
-            array_or_object.clone
+            array_or_object.dup
           end
         end
         
         private
+        
+        def table_cell_for(row, column)
+          cell_row = expanded_table_cell_row_for(row)
+          cell = cell_row && cell_row[column]
+        end
+        
+        def expanded_table_cell_row_for(row)
+          expand_cell_row(table_cell_row_for(row))
+        end
+        
+        def table_cell_row_for(row)
+          # TODO handle combination of enumerator and rows that are models instead of arrays
+          @cached_cell_rows ||= []
+          # TODO make sure to clear cache for expanded cell rows when receiving updates from data-binding
+          if @cached_cell_rows[row].nil?
+            cell_rows = self.cell_rows || []
+            if cell_rows.is_a?(Enumerator)
+              @cached_cell_rows_size ||= @cached_cell_rows.size
+              @cached_cell_rows_enumerator_index ||= 0
+              # TODO consider handling size being nil
+              # TODO consider handling case when row exceeds size/count
+              while @cached_cell_rows_enumerator_index <= row
+                @cached_cell_rows << cell_rows.next
+                @cached_cell_rows_enumerator_index += 1
+              end
+            else
+                # TODO make sure to expand cell row
+              @cached_cell_rows = cell_rows
+            end
+          end
+          @cached_cell_rows[row]
+        end
         
         def build_control
           @model_handler = ::LibUI::FFI::TableModelHandler.malloc
@@ -183,45 +244,54 @@ module Glimmer
           end
           @model_handler.NumRows      = fiddle_closure_block_caller(4) do
             # Note: there is a double-delete bug in Windows when performing table_model_row_deleted, which requires pre-adding and extra empty row
-            cell_rows.count + (OS.windows? ? 1 : 0)
+            cell_rows.size + (OS.windows? ? 1 : 0)
+            # TODO consider handling case of Enumerator not having size, but having count
           end
           @model_handler.CellValue    = fiddle_closure_block_caller(1, [1, 1, 4, 4]) do |_, _, row, column|
-            the_cell_rows = expanded_cell_rows
+            cell_rows = self.cell_rows || []
+            the_cell = table_cell_for(row, column)
             case @columns[column]
             when Column::TextColumnProxy, Column::ButtonColumnProxy, Column::TextColorColumnProxy, :text
-              ::LibUI.new_table_value_string((expanded_cell_rows[row] && expanded_cell_rows[row][column]).to_s)
+              ::LibUI.new_table_value_string((the_cell).to_s)
             when Column::ImageColumnProxy, Column::ImageTextColumnProxy, Column::ImageTextColorColumnProxy
-              if OS.windows? && row == cell_rows.count
+              if OS.windows? && row == cell_rows.size
                 img = Glimmer::LibUI::ICON
               else
-                img = expanded_cell_rows[row][column]
+                img = the_cell
               end
               img = ControlProxy::ImageProxy.create('image', nil, img) if img.is_a?(Array)
               img = ControlProxy::ImageProxy.create('image', nil, [img]) if img.is_a?(String)
               img = img.respond_to?(:libui) ? img.libui : img
               ::LibUI.new_table_value_image(img)
             when Column::CheckboxColumnProxy, Column::CheckboxTextColumnProxy, Column::CheckboxTextColorColumnProxy
-              ::LibUI.new_table_value_int(((expanded_cell_rows[row] && (expanded_cell_rows[row][column] == 1 || expanded_cell_rows[row][column].to_s.strip.downcase == 'true' ? 1 : 0))) || 0)
+              ::LibUI.new_table_value_int(((the_cell_row && (the_cell == 1 || the_cell.to_s.strip.downcase == 'true' ? 1 : 0))) || 0)
             when Column::ProgressBarColumnProxy
-              value = (expanded_cell_rows[row] && expanded_cell_rows[row][column]).to_i
-              expanded_last_last_cell_rows = expand(@last_last_cell_rows)
-              old_value = (expanded_last_last_cell_rows[row] && expanded_last_last_cell_rows[row][column]).to_i
+              value = (the_cell).to_i
+              last_last_cell_rows = @last_last_cell_rows || []
+              expanded_last_last_cell_row = expand_cell_row(last_last_cell_rows[row])
+              old_value = (expanded_last_last_cell_row && expanded_last_last_cell_row[column]).to_i
               if OS.windows? && old_value == -1 && value >= 0
                 Glimmer::Config.logger.error('Switching a progress bar value from -1 to a positive value is not supported on Windows')
-                cell_rows[row][column] = -1
+                if cell_rows[row].is_a?(Array)
+                  cell_rows[row][column] = -1
+                else
+                  attribute = @column_attributes[column]
+                  cell_rows[row].send("#{attribute}=", -1)
+                end
                 ::LibUI.new_table_value_int(old_value)
               else
-                ::LibUI.new_table_value_int((expanded_cell_rows[row] && expanded_cell_rows[row][column]).to_i)
+                ::LibUI.new_table_value_int((the_cell).to_i)
               end
             when Column::BackgroundColorColumnProxy
-              background_color = Glimmer::LibUI.interpret_color(expanded_cell_rows[row] && expanded_cell_rows[row][column]) || {r: 255, g: 255, b: 255}
+              background_color = Glimmer::LibUI.interpret_color(the_cell) || {r: 255, g: 255, b: 255}
               ::LibUI.new_table_value_color(background_color[:r] / 255.0, background_color[:g] / 255.0, background_color[:b] / 255.0, background_color[:a] || 1.0)
             when :color
-              color = Glimmer::LibUI.interpret_color(expanded_cell_rows[row] && expanded_cell_rows[row][column]) || {r: 0, g: 0, b: 0}
+              color = Glimmer::LibUI.interpret_color(the_cell) || {r: 0, g: 0, b: 0}
               ::LibUI.new_table_value_color(color[:r] / 255.0, color[:g] / 255.0, color[:b] / 255.0, color[:a] || 1.0)
             end
           end
           @model_handler.SetCellValue = fiddle_closure_block_caller(0, [1, 1, 4, 4, 1]) do |_, _, row, column, val|
+            # TODO handle enumerators
             case @columns[column]
             when Column::TextColumnProxy
               column = @columns[column].index
@@ -277,7 +347,7 @@ module Glimmer
                 @cell_rows[row].send(attribute)[0] = ::LibUI.table_value_int(val).to_i == 1
               end
             end
-            @expanded_cell_rows_dependency_cell_rows = nil
+            clear_expanded_cell_rows
             notify_custom_listeners('on_edited', row, @cell_rows[row])
           end
           
@@ -301,6 +371,12 @@ module Glimmer
           end
         end
         
+        def clear_expanded_cell_rows
+          @cached_cell_rows = nil
+          @cached_cell_rows_size = nil
+          @cached_cell_rows_enumerator_index = nil
+        end
+        
         def next_column_index
           @next_column_index ||= -1
           @next_column_index += 1
@@ -308,49 +384,64 @@ module Glimmer
         
         def register_cell_rows_observer
           @cell_rows_observer = Glimmer::DataBinding::Observer.proc do |new_cell_rows|
-            if @cell_rows.size < @last_cell_rows.size
-              @last_cell_rows.each_with_index do |old_row_data, row|
-                if old_row_data != @cell_rows[row] && model
-                  ::LibUI.table_model_row_changed(model, row)
-                  @expanded_cell_rows_dependency_cell_rows = nil
-                  notify_custom_listeners('on_changed', row, :changed, @cell_rows[row])
+            # TODO handle enumerators with @last_cell_rows
+            # maybe we should have cloned cached cell rows instead of cell rows
+            # and maybe we should just save row/column values in a hash instead
+            if !@last_cell_rows.nil? # not initial load of table
+              if @cell_rows.size < @last_cell_rows.size
+                # TODO avoid inefficient delete/change notifications by only updating cells that need updates
+                # instead of updating everything
+                @last_cell_rows.each_with_index do |old_row_data, row|
+                  if old_row_data != @cell_rows[row] && model
+                    ::LibUI.table_model_row_changed(model, row)
+                    clear_expanded_cell_rows
+                    notify_custom_listeners('on_changed', row, :changed, @cell_rows[row])
+                  end
                 end
-              end
-              (@last_cell_rows.size - @cell_rows.size).times do |n|
-                row = @last_cell_rows.size - n - 1
-                if model
-                  ::LibUI.table_model_row_deleted(model, row)
-                  @expanded_cell_rows_dependency_cell_rows = nil
-                  notify_custom_listeners('on_changed', row, :deleted, @last_cell_rows[row])
+                (@last_cell_rows.size - @cell_rows.size).times do |n|
+                  row = @last_cell_rows.size - n - 1
+                  if model
+                    ::LibUI.table_model_row_deleted(model, row)
+                    clear_expanded_cell_rows
+                    notify_custom_listeners('on_changed', row, :deleted, @last_cell_rows[row])
+                  end
                 end
-              end
-            elsif @cell_rows.size > @last_cell_rows.size
-              (@cell_rows.size - @last_cell_rows.size).times do |n|
-                row = @last_cell_rows.size + n
-                if model
-                  ::LibUI.table_model_row_inserted(model, row)
-                  @expanded_cell_rows_dependency_cell_rows = nil
-                  notify_custom_listeners('on_changed', row, :inserted, @cell_rows[row])
+              elsif @cell_rows.size > @last_cell_rows.size
+                (@cell_rows.size - @last_cell_rows.size).times do |n|
+                  row = @last_cell_rows.size + n
+                  if model
+                    ::LibUI.table_model_row_inserted(model, row)
+                    clear_expanded_cell_rows
+                    notify_custom_listeners('on_changed', row, :inserted, @cell_rows[row])
+                  end
                 end
-              end
-              @cell_rows.each_with_index do |new_row_data, row|
-                if new_row_data != @last_cell_rows[row] && model
-                  ::LibUI.table_model_row_changed(model, row)
-                  @expanded_cell_rows_dependency_cell_rows = nil
-                  notify_custom_listeners('on_changed', row, :changed, @cell_rows[row])
+                # TODO avoid inefficient insert/change notifications by only updating cells that need updates
+                # instead of updating everything
+                @cell_rows.each_with_index do |new_row_data, row|
+                  if new_row_data != @last_cell_rows[row] && model
+                    ::LibUI.table_model_row_changed(model, row)
+                    clear_expanded_cell_rows
+                    notify_custom_listeners('on_changed', row, :changed, @cell_rows[row])
+                  end
                 end
-              end
-            elsif @cell_rows != @last_cell_rows
-              @cell_rows.each_with_index do |new_row_data, row|
-                if new_row_data != @last_cell_rows[row] && model
-                  ::LibUI.table_model_row_changed(model, row)
-                  @expanded_cell_rows_dependency_cell_rows = nil
-                  notify_custom_listeners('on_changed', row, :changed, @cell_rows[row])
+              elsif @cell_rows != @last_cell_rows
+                @cell_rows.each_with_index do |new_row_data, row|
+                  if new_row_data != @last_cell_rows[row] && model
+                    ::LibUI.table_model_row_changed(model, row)
+                    clear_expanded_cell_rows
+                    notify_custom_listeners('on_changed', row, :changed, @cell_rows[row])
+                  end
                 end
               end
             end
-            @last_last_cell_rows = array_deep_clone(@last_cell_rows)
-            @last_cell_rows = array_deep_clone(@cell_rows)
+            # TODO look into performance implications of deep cloning an entire array,
+            # which wastes time looping through all elements even if we are displaying about
+            # 20 of them only at the moment, thus preventing lazy loading from happening
+            # Consider alternatively caching rows per index when needed instead
+            # This seems to add about a full second to certain apps, especially when using enumerators
+            # to avoid loading everything at once
+            @last_last_cell_rows = array_deep_dup(@last_cell_rows)
+            @last_cell_rows = array_deep_dup(@cell_rows)
             if !@applied_windows_fix_on_first_cell_rows_update && OS.windows?
               @applied_windows_fix_on_first_cell_rows_update = true
               apply_windows_fix

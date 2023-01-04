@@ -2,7 +2,9 @@
 
 ## Next
 
-- Support table `cell_rows` provider as an alternative to data-binding (by passing a block that takes row, column arguments)
+- Support table `cell_rows` lazy enumerator value to do lazy loading of data instead of immediate loading of all data, thus improving performance of table initial render for very large datasets
+- Support table `cell_rows` lazy enumerator with `editable true`
+- Support table `cell_rows` lazy enumerator with data-binding updates
 - Make `table` columns default to empty string if no text is provided for the name of the column
 - Use polyline in one more place in histogram
 - Provide a guide comparing use of path with path having figure with shape shorcuts (e.g. polyline, which abstracts path and figure away)
@@ -146,6 +148,7 @@
 - Show progress-bar while loading a completion in GPT2 Notepad
 - Have `table` tolerate adding `nil` in implicit data-binding by treating it as an empty row
 - As a performance optimization, have `table` change expanded_cell_rows only for updated cells instead of regenerating from scratch upon every cell/row change.
+- Support table `cell_rows` live-loading via a provider (e.g. `cell_rows { |row, cell| value_based_on_row_and_cell }` )
 
 # Refactoring
 

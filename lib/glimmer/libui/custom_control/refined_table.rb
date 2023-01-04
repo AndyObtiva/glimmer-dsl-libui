@@ -216,7 +216,7 @@ module Glimmer
           if !@filtered_model_array_stack.key?(filter_query)
             table_column_names = @table_proxy.columns.map(&:name)
             @filtered_model_array_stack[filter_query] = model_array.dup.filter do |model|
-              row_values = @table_proxy.expand([model])[0].map(&:to_s)
+              row_values = @table_proxy.expand_cell_row(model).map(&:to_s)
               row_hash = Hash[table_column_names.zip(row_values)]
               filter.call(row_hash, filter_query)
             end

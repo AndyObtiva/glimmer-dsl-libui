@@ -32,6 +32,7 @@ module Glimmer
       #
       # returns model attribute reading observer registration by default
       def data_bind(property, model_binding)
+        pd 'data_bind', property, model_binding
         data_bind_read(property, model_binding).tap do
           data_bind_write(property, model_binding) unless model_binding.binding_options[:read_only]
         end
@@ -42,6 +43,7 @@ module Glimmer
       # Default implementation observes model attribute for changes via model binding
       # and updates view property accordingly
       def data_bind_read(property, model_binding)
+        pd 'data_bind_read default implementation'
         model_attribute_observer = Glimmer::DataBinding::Observer.proc do
           new_value = model_binding.evaluate_property
           send("#{property}=", new_value) unless send(property) == new_value

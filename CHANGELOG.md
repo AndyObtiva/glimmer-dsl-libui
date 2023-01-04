@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.6.0.pre.4
+
+- Fix issue with not setting table progress column correctly on Windows in case of data-binding table to an array of models instead of an array of arrays
+
 ## 0.6.0.pre.3
 
 - Optimize `table` scrolling performance when having many rows and columns (prevent recalculation of `expanded_cell_rows` on every cell evaluation). Resolve: https://github.com/AndyObtiva/glimmer-dsl-libui/issues/38
