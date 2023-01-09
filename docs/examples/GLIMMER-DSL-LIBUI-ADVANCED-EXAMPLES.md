@@ -3068,7 +3068,7 @@ class Tetris
   
   def show_about_dialog
     Glimmer::LibUI.queue_main do
-      msg_box('About', 'Glimmer Tetris - Glimmer DSL for LibUI Example - Copyright (c) 2021-2022 Andy Maleh')
+      msg_box('About', 'Glimmer Tetris - Glimmer DSL for LibUI Example - Copyright (c) 2021-2023 Andy Maleh')
     end
   end
 end
