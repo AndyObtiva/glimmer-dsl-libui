@@ -2,11 +2,12 @@
 
 ## Next
 
-- Support table `cell_rows` provider as an alternative to data-binding (by passing a block that takes row, column arguments)
+- Support table `cell_rows` live-loading via a provider (e.g. `cell_rows { |row, cell| value_based_on_row_and_cell }` )
+- Support table `cell_rows` live-loading via a provider with caching (e.g. `cell_rows(cache: true) { |row, cell| value_based_on_row_and_cell }` )
 - Make `table` columns default to empty string if no text is provided for the name of the column
 - Use polyline in one more place in histogram
 - Provide a guide comparing use of path with path having figure with shape shorcuts (e.g. polyline, which abstracts path and figure away)
-- It seems that table-related instability in Windows is back. Check what is causing it.
+- It seems that table-related instability in Windows is back. Check what is causing it. Test with RefinedTable
 - Fix issue with version 4 of Area Gallery
 
 ### 0.5.x

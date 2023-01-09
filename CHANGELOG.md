@@ -1,5 +1,21 @@
 # Change Log
 
+## 0.6.0
+
+- Support table `cell_rows` `Enumerator` value to do lazy loading of data upon display of rows instead of immediate loading of all table data, thus improving performance of table initial render for very large datasets
+- Fix issue with `table` `progress_bar_column` not getting updated successfully on Windows if there were dual or triple columns before it.
+- Fix issue with `table` `progress_bar_column` not getting updated successfully on Windows if data-binding table to an array of models instead of an array of arrays
+- [final] Optimize `table` scrolling performance when having many rows and columns (prevent recalculation of `expanded_cell_rows` on every cell evaluation). Resolve: https://github.com/AndyObtiva/glimmer-dsl-libui/issues/38
+- [final] `refined_table` `pagination: false` option to disable pagination, but keep filtering.
+- [final] Fix issue with `Glimmer::LibUI::interpret_color` support for `[r, g, b, a]` `Array`-based colors, returning `[r, g, b]` only without alpha value
+- [final] Fix issue "Cannot add rows to a table that started empty": https://github.com/AndyObtiva/glimmer-dsl-libui/issues/36
+- [final] `window` `#open` method as alias to `#show`
+- [final] `window` `#focused?` read-only property
+- [final] Document `window` `on_focus_changed` listener
+- [final] Update `examples/basic_child_window.rb` to demo `on_focus_changed` and `focused?`
+- [final] `open_folder` support
+- [final] examples/control_gallery.rb now includes an "Open Folder" File menu item
+
 ## 0.6.0.pre.3
 
 - Optimize `table` scrolling performance when having many rows and columns (prevent recalculation of `expanded_cell_rows` on every cell evaluation). Resolve: https://github.com/AndyObtiva/glimmer-dsl-libui/issues/38
