@@ -2,9 +2,14 @@
 
 ## 0.6.0
 
+- Upgrade to `libui` Ruby gem version 0.1.0.pre.0, which includes a newer C libui alpha release (libui-ng Nov 13, 2022)
 - Support table `cell_rows` `Enumerator` value to do lazy loading of data upon display of rows instead of immediate loading of all table data, thus improving performance of table initial render for very large datasets
 - Fix issue with `table` `progress_bar_column` not getting updated successfully on Windows if there were dual or triple columns before it.
 - Fix issue with `table` `progress_bar_column` not getting updated successfully on Windows if data-binding table to an array of models instead of an array of arrays
+- Fix issue with `table` `checkbox_column` checkbox editing not working in Mac by including a new C libui-ng release
+- Fix issue with `table` `checkbox_text_column` checkbox editing not working in Mac or Windows by including a new C libui-ng release
+- Update examples/basic_table_checkbox.rb to enable editing checkbox values
+- Update examples/basic_table_checkbox_text.rb to enable editing checkbox/text values
 - [final] Optimize `table` scrolling performance when having many rows and columns (prevent recalculation of `expanded_cell_rows` on every cell evaluation). Resolve: https://github.com/AndyObtiva/glimmer-dsl-libui/issues/38
 - [final] `refined_table` `pagination: false` option to disable pagination, but keep filtering.
 - [final] Fix issue with `Glimmer::LibUI::interpret_color` support for `[r, g, b, a]` `Array`-based colors, returning `[r, g, b]` only without alpha value

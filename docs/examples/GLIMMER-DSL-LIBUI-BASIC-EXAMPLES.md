@@ -1400,34 +1400,6 @@ Mac | Windows | Linux
 ----|---------|------
 ![glimmer-dsl-libui-mac-basic-table-checkbox.png](/images/glimmer-dsl-libui-mac-basic-table-checkbox.png) | ![glimmer-dsl-libui-windows-basic-table-checkbox.png](/images/glimmer-dsl-libui-windows-basic-table-checkbox.png) | ![glimmer-dsl-libui-linux-basic-table-checkbox.png](/images/glimmer-dsl-libui-linux-basic-table-checkbox.png)
 
-New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
-
-```ruby
-require 'glimmer-dsl-libui'
-
-include Glimmer
-
-data = [
-  ['cat', 'meow', true],
-  ['dog', 'woof', true],
-  ['chicken', 'cock-a-doodle-doo', false],
-  ['horse', 'neigh', true],
-  ['cow', 'moo', true]
-]
-
-window('Animal sounds', 300, 200) {
-  horizontal_box {
-    table {
-      text_column('Animal')
-      text_column('Description')
-      checkbox_column('Mammal')
-
-      cell_rows data
-    }
-  }
-}.show
-```
-
 ## Basic Table Checkbox Text
 
 [examples/basic_table_checkbox_text.rb](/examples/basic_table_checkbox_text.rb)
@@ -1447,34 +1419,6 @@ ruby -r glimmer-dsl-libui -e "require 'examples/basic_table_checkbox_text'"
 Mac | Windows | Linux
 ----|---------|------
 ![glimmer-dsl-libui-mac-basic-table-checkbox-text.png](/images/glimmer-dsl-libui-mac-basic-table-checkbox-text.png) | ![glimmer-dsl-libui-windows-basic-table-checkbox-text.png](/images/glimmer-dsl-libui-windows-basic-table-checkbox-text.png) | ![glimmer-dsl-libui-linux-basic-table-checkbox-text.png](/images/glimmer-dsl-libui-linux-basic-table-checkbox-text.png)
-
-New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
-
-```ruby
-require 'glimmer-dsl-libui'
-
-include Glimmer
-
-data = [
-  ['cat', 'meow', [true, 'mammal']],
-  ['dog', 'woof', [true, 'mammal']],
-  ['chicken', 'cock-a-doodle-doo', [false, 'mammal']],
-  ['horse', 'neigh', [true, 'mammal']],
-  ['cow', 'moo', [true, 'mammal']]
-]
-
-window('Animal sounds', 400, 200) {
-  horizontal_box {
-    table {
-      text_column('Animal')
-      text_column('Sound')
-      checkbox_text_column('Description')
-
-      cell_rows data
-    }
-  }
-}.show
-```
 
 ## Basic Table Progress Bar
 
