@@ -217,7 +217,6 @@ module Glimmer
             if last_cell_rows.is_a?(Enumerator)
               @cached_last_cell_rows_size ||= @cached_last_cell_rows.size
               @cached_last_cell_rows_enumerator_index ||= 0
-              last_cell_rows.rewind if @cached_last_cell_rows_enumerator_index == 0
               # TODO consider handling size being nil and needing to force Enumerator count instead
               while @cached_last_cell_rows_enumerator_index <= row
                 begin
@@ -234,13 +233,47 @@ module Glimmer
           @cached_last_cell_rows[row]
         end
         
+        def last_last_cell_row_for(row)
+          # TODO refactor to share code with cell_row_for
+          @cached_last_last_cell_rows ||= []
+          if @cached_last_last_cell_rows[row].nil?
+            last_last_cell_rows = @last_last_cell_rows || []
+            if last_last_cell_rows.is_a?(Enumerator)
+              @cached_last_last_cell_rows_size ||= @cached_last_last_cell_rows.size
+              @cached_last_last_cell_rows_enumerator_index ||= 0
+              # TODO consider handling size being nil and needing to force Enumerator count instead
+              while @cached_last_last_cell_rows_enumerator_index <= row
+                begin
+                  @cached_last_last_cell_rows << last_last_cell_rows.next
+                  @cached_last_last_cell_rows_enumerator_index += 1
+                rescue StopIteration => e
+                  break
+                end
+              end
+            else
+              @cached_last_last_cell_rows = last_last_cell_rows
+            end
+          end
+          @cached_last_last_cell_rows[row]
+        end
+        
         def dup_last_cell_rows
           return (@last_cell_rows = nil) if @cell_rows.nil?
           # using future last cell rows guarantees that Enumerator is rewound
           @last_cell_rows = @future_last_cell_rows || array_deep_dup(@cell_rows)
+          @future_last_last_cell_rows = array_deep_dup(@last_cell_rows)
           @future_last_cell_rows = nil
           clear_cached_last_cell_rows
           @last_cell_rows
+        end
+        
+        def dup_last_last_cell_rows
+          return (@last_last_cell_rows = nil) if @last_cell_rows.nil?
+          # using future last cell rows guarantees that Enumerator is rewound
+          @last_last_cell_rows = @future_last_last_cell_rows || array_deep_dup(@last_cell_rows)
+          @future_last_last_cell_rows = nil
+          clear_cached_last_last_cell_rows
+          @last_last_cell_rows
         end
         
         def build_control
@@ -284,9 +317,9 @@ module Glimmer
               ::LibUI.new_table_value_int(((the_cell == 1 || the_cell.to_s.strip.downcase == 'true' ? 1 : 0)) || 0)
             when Column::ProgressBarColumnProxy
               value = (the_cell).to_i
-              expanded_last_cell_row = expand_cell_row(last_cell_row_for(row))
+              expanded_last_last_cell_row = expand_cell_row(last_last_cell_row_for(row))
               # TODO consider only caching old value when displayed in CellValue before, but otherwise not worrying about it (if row was hiding, this fix shouldn't be needed on Windows)
-              old_value = (expanded_last_cell_row && expanded_last_cell_row[column]).to_i
+              old_value = (expanded_last_last_cell_row && expanded_last_last_cell_row[column]).to_i
               if OS.windows? && old_value == -1 && value >= 0
                 Glimmer::Config.logger.error('Switching a progress bar value from -1 to a positive value is not supported on Windows')
                 cell_row = cell_row_for(row)
@@ -395,6 +428,12 @@ module Glimmer
           @cached_last_cell_rows_enumerator_index = nil
         end
         
+        def clear_cached_last_last_cell_rows
+          @cached_last_last_cell_rows = nil
+          @cached_last_last_cell_rows_size = nil
+          @cached_last_last_cell_rows_enumerator_index = nil
+        end
+        
         def next_column_index
           @next_column_index ||= -1
           @next_column_index += 1
@@ -453,6 +492,7 @@ module Glimmer
             # This seems to add about a full second to certain apps, especially when using enumerators
             # to avoid loading everything at once
             
+            dup_last_last_cell_rows if OS.windows?
             dup_last_cell_rows
             
             if !@applied_windows_fix_on_first_cell_rows_update && OS.windows?
