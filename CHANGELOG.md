@@ -2,13 +2,13 @@
 
 ## 0.6.1
 
-- `examples/lazy_table.rb` (and `examples/lazy_table2.rb` variation)
+- `examples/lazy_table.rb` (4 versions) table lazy loading with a million rows via `Enumerator` or `Enumerator::Lazy` to enable instant app startup time
 - Support `table` `cell_rows` implicit data-binding to a collection of models (only supported an array of arrays before in implicit data-binding)
 
 ## 0.6.0
 
 - Upgrade to `libui` Ruby gem version 0.1.0.pre.0, which includes a newer C libui alpha release (libui-ng Nov 13, 2022)
-- Support table `cell_rows` `Enumerator` value to do lazy loading of data upon display of rows instead of immediate loading of all table data, thus improving performance of table initial render for very large datasets
+- Support table `cell_rows` `Enumerator` or `Enumerator::Lazy` value to do lazy loading of data upon display of rows instead of immediate loading of all table data, thus improving performance of table initial render for very large datasets
 - Fix issue with `table` `progress_bar_column` not getting updated successfully on Windows if there were dual or triple columns before it.
 - Fix issue with `table` `progress_bar_column` not getting updated successfully on Windows if data-binding table to an array of models instead of an array of arrays
 - Fix issue with `table` `checkbox_column` checkbox editing not working in Mac by including a new C libui-ng release

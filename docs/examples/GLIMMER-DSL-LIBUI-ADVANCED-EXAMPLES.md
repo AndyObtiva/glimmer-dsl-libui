@@ -364,19 +364,19 @@ Mac | Windows | Linux
 ----|---------|------
 ![glimmer-dsl-libui-mac-paginated-refined-table.png](/images/glimmer-dsl-libui-mac-paginated-refined-table.png)| ![glimmer-dsl-libui-windows-paginated-refined-table.png](/images/glimmer-dsl-libui-windows-paginated-refined-table.png)| ![glimmer-dsl-libui-linux-paginated-refined-table.png](/images/glimmer-dsl-libui-linux-paginated-refined-table.png)
 
-`Enumerator` Subclass [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version (using a well encapsulated `Enumerator` Subclass):
 
 [examples/lazy_table.rb](/examples/lazy_table.rb)
 
-`Enumerator` [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 2:
+[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 2 (using `Enumerator` directly):
 
 [examples/lazy_table2.rb](/examples/lazy_table2.rb)
 
-`Enumerator::Lazy` Subclass [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 3:
+[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 3 (using a well encapsulated `Enumerator::Lazy` Subclass):
 
 [examples/lazy_table3.rb](/examples/lazy_table3.rb)
 
-`Enumerator::Lazy` [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 4:
+[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 4 (using `Enumerator::Lazy` directly):
 
 [examples/lazy_table4.rb](/examples/lazy_table4.rb)
 
