@@ -38,7 +38,7 @@ module Glimmer
         
         CUSTOM_LISTENER_NAMES = ['on_changed', 'on_edited']
         
-        attr_reader :model_handler, :model, :table_params, :columns, :column_attributes
+        attr_reader :model_handler, :model, :table_params, :columns
       
         def initialize(keyword, parent, args, &block)
           @keyword = keyword
@@ -110,12 +110,12 @@ module Glimmer
         
         def expand_cell_row(cell_row)
           return cell_row if cell_row.nil?
-          cell_row = expand_cell_row_from_model(cell_row) if !cell_row.is_a?(Array) && @column_attributes&.any?
+          cell_row = expand_cell_row_from_model(cell_row) if !cell_row.is_a?(Array) && column_attributes.any?
           cell_row.flatten(1)
         end
         
         def expand_cell_row_from_model(cell_row)
-          @column_attributes.to_a.map {|attribute| cell_row.send(attribute) }
+          column_attributes.to_a.map {|attribute| cell_row.send(attribute) }
         end
         
         def editable(value = nil)
@@ -129,6 +129,10 @@ module Glimmer
         alias set_editable editable
         alias editable? editable
         
+        def column_attributes
+          @column_attributes ||= columns.select {|column| column.is_a?(Column)}.map(&:name).map(&:underscore)
+        end
+        
         def data_bind_read(property, model_binding)
           if model_binding.binding_options[:column_attributes].is_a?(Array)
             @column_attributes = model_binding.binding_options[:column_attributes]
@@ -141,7 +145,7 @@ module Glimmer
             new_value = model_binding.evaluate_property
             if model_binding.binding_options[:column_attributes] || (!new_value.nil? && (!new_value.is_a?(String) || !new_value.empty?) && (!new_value.is_a?(Array) || !new_value.first.is_a?(Array)))
               @model_attribute_array_observer_registration&.deregister
-              @model_attribute_array_observer_registration = model_attribute_observer.observe(new_value, @column_attributes, ignore_frozen: true, attribute_writer_type: [:attribute=, :set_attribute])
+              @model_attribute_array_observer_registration = model_attribute_observer.observe(new_value, column_attributes, ignore_frozen: true, attribute_writer_type: [:attribute=, :set_attribute])
               model_attribute_observer.add_dependent(model_attribute_observer_registration => @model_attribute_array_observer_registration)
             end
             # TODO look if multiple notifications are happening as a result of observing array and observing model binding
@@ -326,7 +330,7 @@ module Glimmer
                 if cell_row.is_a?(Array)
                   cell_row[compound_column_index_for(column)] = -1
                 else
-                  attribute = @column_attributes[column]
+                  attribute = column_attributes[column]
                   cell_row.send("#{attribute}=", -1)
                 end
                 ::LibUI.new_table_value_int(old_value)
@@ -349,7 +353,7 @@ module Glimmer
               if table_cell_row.is_a?(Array)
                 table_cell_row[column] = ::LibUI.table_value_string(val).to_s
               else
-                attribute = @column_attributes[column]
+                attribute = column_attributes[column]
                 table_cell_row.send("#{attribute}=", ::LibUI.table_value_string(val).to_s)
               end
             when Column::TextColorColumnProxy
@@ -358,7 +362,7 @@ module Glimmer
                 table_cell_row[column] ||= []
                 table_cell_row[column][0] = ::LibUI.table_value_string(val).to_s
               else
-                attribute = @column_attributes[column]
+                attribute = column_attributes[column]
                 table_cell_row.send("#{attribute}=", []) unless table_cell_row.send(attribute)
                 table_cell_row.send(attribute)[0] = ::LibUI.table_value_string(val).to_s
               end
@@ -368,7 +372,7 @@ module Glimmer
                 table_cell_row[column] ||= []
                 table_cell_row[column][1] = ::LibUI.table_value_string(val).to_s
               else
-                attribute = @column_attributes[column]
+                attribute = column_attributes[column]
                 table_cell_row.send("#{attribute}=", []) unless table_cell_row.send(attribute)
                 table_cell_row.send(attribute)[1] = ::LibUI.table_value_string(val).to_s
               end
@@ -379,7 +383,7 @@ module Glimmer
               if table_cell_row.is_a?(Array)
                 table_cell_row[column] = ::LibUI.table_value_int(val).to_i == 1
               else
-                attribute = @column_attributes[column]
+                attribute = column_attributes[column]
                 table_cell_row.send("#{attribute}=", ::LibUI.table_value_int(val).to_i == 1)
               end
             when Column::CheckboxTextColumnProxy
@@ -388,7 +392,7 @@ module Glimmer
                 table_cell_row[column] ||= []
                 table_cell_row[column][0] = ::LibUI.table_value_int(val).to_i == 1
               else
-                attribute = @column_attributes[column]
+                attribute = column_attributes[column]
                 table_cell_row.send("#{attribute}=", []) unless table_cell_row.send(attribute)
                 table_cell_row.send(attribute)[0] = ::LibUI.table_value_int(val).to_i == 1
               end

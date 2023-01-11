@@ -13,6 +13,7 @@
   - [Form Table](#form-table)
   - [GPT2 Notepad](#gpt2-notepad)
   - [Paginated Refined Table](#paginated-refined-table)
+  - [Lazy Table](#lazy-table)
   - [Grid](#grid)
   - [Histogram](#histogram)
   - [Login](#login)
@@ -337,125 +338,47 @@ Mac | Windows | Linux
 
 New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
 
-```ruby
-require 'glimmer-dsl-libui'
+[examples/paginated_refined_table.rb](/examples/paginated_refined_table.rb)
 
-class PaginatedRefinedTable
-  Contact = Struct.new(:name, :email, :phone, :city, :state)
-  
-  include Glimmer::LibUI::Application
-  
-  NAMES_FIRST = %w[
-    Liam Noah William James Oliver Benjamin Elijah Lucas Mason Logan Alexander Ethan Jacob Michael Daniel Henry Jackson Sebastian
-    Aiden Matthew Samuel David Joseph Carter Owen Wyatt John Jack Luke Jayden Dylan Grayson Levi Isaac Gabriel Julian Mateo
-    Anthony Jaxon Lincoln Joshua Christopher Andrew Theodore Caleb Ryan Asher Nathan Thomas Leo Isaiah Charles Josiah Hudson
-    Christian Hunter Connor Eli Ezra Aaron Landon Adrian Jonathan Nolan Jeremiah Easton Elias Colton Cameron Carson Robert Angel
-    Maverick Nicholas Dominic Jaxson Greyson Adam Ian Austin Santiago Jordan Cooper Brayden Roman Evan Ezekiel Xaviar Jose Jace
-    Jameson Leonardo Axel Everett Kayden Miles Sawyer Jason Emma Olivia Bartholomew Corey Danielle Eva Felicity
-  ]
-  
-  NAMES_LAST = %w[
-    Smith Johnson Williams Brown Jones Miller Davis Wilson Anderson Taylor George Harrington Iverson Jackson Korby Levinson
-  ]
-  
-  CITIES = [
-    'Bellesville', 'Lombardia', 'Steepleton', 'Deerenstein', 'Schwartz', 'Hollandia', 'Saint Pete', 'Grandville', 'London',
-    'Berlin', 'Elktown', 'Paris', 'Garrison', 'Muncy', 'St Louis',
-  ]
-  
-  STATES = [ 'AK', 'AL', 'AR', 'AZ', 'CA', 'CO', 'CT', 'DC', 'DE', 'FL', 'GA',
-             'HI', 'IA', 'ID', 'IL', 'IN', 'KS', 'KY', 'LA', 'MA', 'MD', 'ME',
-             'MI', 'MN', 'MO', 'MS', 'MT', 'NC', 'ND', 'NE', 'NH', 'NJ', 'NM',
-             'NV', 'NY', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX',
-             'UT', 'VA', 'VT', 'WA', 'WI', 'WV', 'WY']
-             
-  attr_accessor :contacts, :name, :email, :phone, :city, :state, :filter_value, :index
-  
-  before_body do
-    @contacts = 50_000.times.map do |n|
-      n += 1
-      first_name = NAMES_FIRST.sample
-      last_name = NAMES_LAST.sample
-      city = CITIES.sample
-      state = STATES.sample
-      Contact.new("#{first_name} #{last_name}", "#{first_name.downcase}#{n}@#{last_name.downcase}.com", '555-555-5555', city, state)
-    end
-  end
-  
-  body {
-    window("50,000 Paginated Contacts", 600, 700) {
-      margined true
-      
-      vertical_box {
-        form {
-          stretchy false
-          
-          entry {
-            label 'Name'
-            text <=> [self, :name] # bidirectional data-binding between entry text and self.name
-          }
-          
-          entry {
-            label 'Email'
-            text <=> [self, :email]
-          }
-          
-          entry {
-            label 'Phone'
-            text <=> [self, :phone]
-          }
-          
-          entry {
-            label 'City'
-            text <=> [self, :city]
-          }
-          
-          entry {
-            label 'State'
-            text <=> [self, :state]
-          }
-        }
-        
-        button('Save Contact') {
-          stretchy false
-          
-          on_clicked do
-            new_row = [name, email, phone, city, state]
-            if new_row.map(&:to_s).include?('')
-              msg_box_error('Validation Error!', 'All fields are required! Please make sure to enter a value for all fields.')
-            else
-              @contacts << Contact.new(*new_row) # automatically inserts a row into the table due to explicit data-binding
-              @unfiltered_contacts = @contacts.dup
-              self.name = '' # automatically clears name entry through explicit data-binding
-              self.email = ''
-              self.phone = ''
-              self.city = ''
-              self.state = ''
-            end
-          end
-        }
-        
-        refined_table(
-          model_array: contacts,
-          table_columns: {
-            'Name'  => {text: {editable: false}},
-            'Email' => :text,
-            'Phone' => :text,
-            'City'  => :text,
-            'State' => :text,
-          },
-          table_editable: true,
-          per_page: 20,
-          # page: 1, # initial page is 1
-          # visible_page_count: true, # page count can be shown if preferred
-        )
-      }
-    }
-  }
-end
+## Lazy Table
 
-PaginatedRefinedTable.launch
+A lazy table is loaded with row data lazily via Ruby `Enumerator` or `Enumerator::Lazy`.
+That enables starting the app and rendering the table instantly before generating/loading all data,
+even if the table was to contain millions of rows.
+
+[examples/lazy_table.rb](/examples/lazy_table.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
 ```
+ruby -r './lib/glimmer-dsl-libui' examples/lazy_table.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/paginated_refined_table'"
+```
+
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-paginated-refined-table.png](/images/glimmer-dsl-libui-mac-paginated-refined-table.png)| ![glimmer-dsl-libui-windows-paginated-refined-table.png](/images/glimmer-dsl-libui-windows-paginated-refined-table.png)| ![glimmer-dsl-libui-linux-paginated-refined-table.png](/images/glimmer-dsl-libui-linux-paginated-refined-table.png)
+
+`Enumerator` Subclass [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
+
+[examples/lazy_table.rb](/examples/lazy_table.rb)
+
+`Enumerator` [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 2:
+
+[examples/lazy_table2.rb](/examples/lazy_table2.rb)
+
+`Enumerator::Lazy` Subclass [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 3:
+
+[examples/lazy_table3.rb](/examples/lazy_table3.rb)
+
+`Enumerator::Lazy` [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 4:
+
+[examples/lazy_table4.rb](/examples/lazy_table4.rb)
 
 ## Grid
 

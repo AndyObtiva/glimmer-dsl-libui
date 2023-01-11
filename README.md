@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.6.0
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.6.1
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 ### The Quickest Way From Zero To GUI
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
@@ -542,7 +542,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.6.0'
+gem 'glimmer-dsl-libui', '~> 0.6.1'
 ```
 
 Test that installation worked by running the [Meta-Example](#examples):
@@ -2000,8 +2000,10 @@ That is data-binding `entered_text` attribute on `self` to `entry` `text` proper
 ##### Table Data-Binding
 
 One note about `table` `cell_rows` data-binding is that it works with either:
-- Raw data `Array` (rows) of `Array`s (column cells)
-- Model `Array` (rows) of objects having attributes (column cells) matching the underscored names of `table` columns by convention. Model attribute names can be overridden when needed by passing an `Array` enumerating all mapped model attributes in the order of `table` columns or alternatively a `Hash` mapping only the column names that have model attribute names different from their table column underscored version.
+- Raw data `Array` (rows) of `Array`s (column cells) (see [Form Table example versions 4-5](https://github.com/AndyObtiva/glimmer-dsl-libui/blob/master/docs/examples/GLIMMER-DSL-LIBUI-ADVANCED-EXAMPLES.md#form-table)).
+- Model `Array` (rows) of objects having attributes (column cells) matching the underscored names of `table` columns by convention. Model attribute names can be overridden when needed by passing an `Array` enumerating all mapped model attributes in the order of `table` columns or alternatively a `Hash` mapping only the column names that have model attribute names different from their table column underscored version (see [Form Table example versions 1-3](https://github.com/AndyObtiva/glimmer-dsl-libui/blob/master/docs/examples/GLIMMER-DSL-LIBUI-ADVANCED-EXAMPLES.md#form-table)).
+- Raw data `Enumerator` or `Enumerator::Lazy` that generates `Array`s (column cells). This option enables rendering a table instantly even if it contained millions of rows, before all its rows have been generated. Rows are gradually generated as the user scrolls through the table.
+- Model `Enumerator` or `Enumerator::Lazy` that generates objects having attributes (column cells) matching the underscored names of `table` columns. This option enables rendering a table instantly even if it contained millions of rows, before all its rows have been generated. Rows are gradually generated as the user scrolls through the table (see [Lazy Table](https://github.com/AndyObtiva/glimmer-dsl-libui/blob/master/docs/examples/GLIMMER-DSL-LIBUI-ADVANCED-EXAMPLES.md#lazy-table) example).
 
 Example of `table` implicit data-binding of `cell_rows` to raw data `Array` of `Array`s (you may copy/paste in [`girb`](#girb-glimmer-irb)):
 

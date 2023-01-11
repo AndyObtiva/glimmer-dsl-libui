@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.6.1
+
+- `examples/lazy_table.rb` (and `examples/lazy_table2.rb` variation)
+- Support `table` `cell_rows` implicit data-binding to a collection of models (only supported an array of arrays before in implicit data-binding)
+
 ## 0.6.0
 
 - Upgrade to `libui` Ruby gem version 0.1.0.pre.0, which includes a newer C libui alpha release (libui-ng Nov 13, 2022)
