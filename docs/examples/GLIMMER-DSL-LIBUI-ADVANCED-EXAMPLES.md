@@ -357,12 +357,8 @@ ruby -r './lib/glimmer-dsl-libui' examples/lazy_table.rb
 Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
 
 ```
-ruby -r glimmer-dsl-libui -e "require 'examples/paginated_refined_table'"
+ruby -r glimmer-dsl-libui -e "require 'examples/lazy_table'"
 ```
-
-Mac | Windows | Linux
-----|---------|------
-![glimmer-dsl-libui-mac-paginated-refined-table.png](/images/glimmer-dsl-libui-mac-paginated-refined-table.png)| ![glimmer-dsl-libui-windows-paginated-refined-table.png](/images/glimmer-dsl-libui-windows-paginated-refined-table.png)| ![glimmer-dsl-libui-linux-paginated-refined-table.png](/images/glimmer-dsl-libui-linux-paginated-refined-table.png)
 
 [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version (using a well encapsulated `Enumerator` Subclass):
 

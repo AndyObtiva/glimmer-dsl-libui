@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.6.2
+
+- Fix issue with `examples/lazy_table.rb` not working in Windows due to error: block in `apply_windows_fix`: undefined method `<<` for `#:each`> (`NoMethodError`) `@cell_rows << new_row`
+
 ## 0.6.1
 
 - `examples/lazy_table.rb` (4 versions) table lazy loading with a million rows via `Enumerator` or `Enumerator::Lazy` to enable instant app startup time

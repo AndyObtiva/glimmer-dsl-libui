@@ -511,7 +511,7 @@ module Glimmer
           # TODO will this require that @cell_rows_observer is called with queue_main too to avoid issue with multiple immediate model updates breaking this?
           Glimmer::LibUI.queue_main do
             new_row = @columns&.select {|column| column.is_a?(Column)}&.map {|column| column.class.default_value}
-            if new_row
+            if new_row && !@cell_rows.is_a?(Enumerator)
               @cell_rows << new_row
               @cell_rows.pop
             end

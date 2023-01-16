@@ -57,8 +57,8 @@ GEM
     hashie (3.6.0)
     highline (2.0.3)
     jar-dependencies (0.4.1)
-    json (2.6.2)
-    json (2.6.2-java)
+    json (2.6.1)
+    json (2.6.1-java)
     juwelier (2.4.9)
       builder
       bundler
@@ -76,6 +76,7 @@ GEM
       semver2 (~> 3)
     libui (0.1.0.pre.0)
     libui (0.1.0.pre.0-arm64-darwin)
+    libui (0.1.0.pre.0-x64-mingw)
     libui (0.1.0.pre.0-x86_64-darwin)
     matrix (0.4.2)
     method_source (1.0.0)
@@ -95,12 +96,12 @@ GEM
     os (1.1.4)
     pastel (0.8.0)
       tty-color (~> 0.5)
-    perfect-shape (1.0.5)
+    perfect-shape (1.0.7)
       equalizer (>= 0.0.11, < 1.1.0)
       matrix (>= 0.4.2, < 1.1.0)
-    psych (4.0.4)
+    psych (4.0.3)
       stringio
-    psych (4.0.4-java)
+    psych (4.0.3-java)
       jar-dependencies (>= 0.1.7)
     public_suffix (4.0.7)
     puts_debuggerer (0.13.5)
@@ -136,7 +137,7 @@ GEM
       simplecov-html (~> 0.10.0)
     simplecov-html (0.10.2)
     simplecov-lcov (0.7.0)
-    stringio (3.0.2)
+    stringio (3.0.1)
     super_module (1.4.1)
       method_source (>= 0.8.2, < 1.1.0)
     sync (0.5.0)
@@ -162,6 +163,7 @@ GEM
 PLATFORMS
   arm64-darwin-21
   universal-java-1.8
+  x64-mingw-ucrt
   x64-mingw32
   x64-unknown
   x86_64-darwin-19
@@ -174,16 +176,19 @@ DEPENDENCIES
   coveralls (= 0.8.23)
   equalizer (= 0.0.11)
   glimmer (~> 2.7.3)
+  json (= 2.6.1)
   juwelier (>= 2.4.9, < 3.0.0)
   libui (~> 0.1.0.pre.0)
   os (>= 1.0.0, < 2.0.0)
-  perfect-shape (~> 1.0.5)
+  perfect-shape (~> 1.0.7)
+  psych (= 4.0.3)
   puts_debuggerer (~> 0.13.1)
   rake-tui (>= 0.2.1)
   rouge (>= 3.26.0, < 4.0.0)
   rspec (~> 3.0)
   simplecov (~> 0.16.1)
   simplecov-lcov (~> 0.7.0)
+  stringio (= 3.0.1)
   super_module (~> 1.4.1)
 
 BUNDLED WITH

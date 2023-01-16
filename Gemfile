@@ -23,6 +23,9 @@ gem 'rouge', '>= 3.26.0', '< 4.0.0'
 # Include everything needed to run rake, tests, features, etc.
 group :development do
   gem 'juwelier', '>= 2.4.9', '< 3.0.0'
+  gem 'stringio', '3.0.1'
+  gem 'psych', '4.0.3'
+  gem 'json', '2.6.1'
   gem 'rspec', '~> 3.0'
   gem 'rake-tui', '>= 0.2.1'
   gem 'puts_debuggerer', '~> 0.13.1', require: false
