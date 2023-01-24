@@ -1,5 +1,12 @@
 # Change Log
 
+## 0.7.0
+
+- Upgrade to libui v0.1.2.pre (including newer libui-ng with table selection API)
+- `Table` `on_row_clicked`, `on_row_double_clicked`, and `on_selection_changed` listeners
+- `Table` `selection` property
+- `examples/basic_table_selection.rb`
+
 ## 0.6.2
 
 - Fix issue with `examples/lazy_table.rb` not working in Windows due to error: block in `apply_windows_fix`: undefined method `<<` for `#:each`> (`NoMethodError`) `@cell_rows << new_row`

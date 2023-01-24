@@ -57,8 +57,9 @@ module Glimmer
         end
         
         def post_add_content
-          build_control unless @content_added
+          build_control if !@content_added && @libui.nil?
           super
+          register_listeners
         end
         
         def post_initialize_child(child)
@@ -129,6 +130,17 @@ module Glimmer
         alias set_editable editable
         alias editable? editable
         
+        def selection
+          tsp = super
+          ts = ::LibUI::FFI::TableSelection.new(tsp)
+          if ts.NumRows > 0
+            selection_array = ts.Rows[0, Fiddle::SIZEOF_INT * ts.NumRows].unpack("i*")
+            selection_array.size == 1 ? selection_array.first : selection_array
+          end
+        ensure
+          ::LibUI.free_table_selection(tsp)
+        end
+        
         def column_attributes
           @column_attributes ||= columns.select {|column| column.is_a?(Column)}.map(&:name).map(&:underscore)
         end
@@ -176,6 +188,17 @@ module Glimmer
           compound_column = @columns.find { |compound_column| compound_column.respond_to?(:column_index) && compound_column.column_index == expanded_column_index }
           compound_columns = @columns.select { |compound_column| compound_column.is_a?(Column) }
           compound_columns.index(compound_column)
+        end
+        
+        def handle_listener(listener_name, &listener)
+          # if content has been added, then you can register listeners immediately (without accumulation
+          if CUSTOM_LISTENER_NAMES.include?(listener_name.to_s) || @content_added
+            super
+          else
+            # if content is not added yet, then accumulate listeners to register later when table content is closed
+            @table_listeners ||= []
+            @table_listeners << [listener_name, listener]
+          end
         end
         
         private
@@ -515,6 +538,13 @@ module Glimmer
               @cell_rows << new_row
               @cell_rows.pop
             end
+          end
+        end
+        
+        def register_listeners
+          # register accumulated listeners after table content is closed
+          @table_listeners&.each do |listener_name, listener|
+            handle_listener(listener_name, &listener)
           end
         end
       end
