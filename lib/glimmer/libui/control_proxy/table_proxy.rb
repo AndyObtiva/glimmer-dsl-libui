@@ -60,6 +60,7 @@ module Glimmer
           build_control if !@content_added && @libui.nil?
           super
           register_listeners
+          configure_selection_mode
         end
         
         def post_initialize_child(child)
@@ -130,12 +131,22 @@ module Glimmer
         alias set_editable editable
         alias editable? editable
         
+        def selection_mode(value = nil)
+          if value.nil?
+            @selection_mode
+          else
+            value = LibUI.enum_symbol_to_value(:table_selection_mode, value)
+            @selection_mode = value
+          end
+        end
+        alias selection_mode= selection_mode
+        
         def selection
           tsp = super
           ts = ::LibUI::FFI::TableSelection.new(tsp)
           if ts.NumRows > 0
             selection_array = ts.Rows[0, Fiddle::SIZEOF_INT * ts.NumRows].unpack("i*")
-            selection_array.size == 1 ? selection_array.first : selection_array
+            selection_mode == ::LibUI::TableSelectionModeZeroOrMany ? selection_array : selection_array.first
           end
         ensure
           ::LibUI.free_table_selection(tsp)
@@ -546,6 +557,10 @@ module Glimmer
           @table_listeners&.each do |listener_name, listener|
             handle_listener(listener_name, &listener)
           end
+        end
+        
+        def configure_selection_mode
+          send_to_libui('selection_mode=', @selection_mode)
         end
       end
     end

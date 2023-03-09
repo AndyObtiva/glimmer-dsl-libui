@@ -3,7 +3,6 @@
 ## Next
 
 - Table#selection=(index)
-- Table#selection_mode=(mode)
 - table_header_on_clicked
 
 - Update Supported Controls documentation with allowed parents and allowed children

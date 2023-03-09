@@ -5,6 +5,7 @@
 - Upgrade to libui v0.1.2.pre (including newer libui-ng with table selection API)
 - `Table` `on_row_clicked`, `on_row_double_clicked`, and `on_selection_changed` listeners
 - `Table` `selection` property
+- `Table` `selection_mode` property supporting values: `:zero_or_many` , `:none` , `:zero_or_one` , and `:one`
 - `examples/basic_table_selection.rb`
 
 ## 0.6.2

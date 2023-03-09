@@ -22,6 +22,7 @@ window('Animal sounds', 300, 200) {
       text_column('Description')
 
       cell_rows data
+      selection_mode :zero_or_many # other values are :none , :zero_or_one , and :one
 
       on_row_clicked do |t, row|
         puts "Row Clicked: #{row}"
@@ -32,7 +33,9 @@ window('Animal sounds', 300, 200) {
       end
 
       on_selection_changed do |t|
-        puts "Selection Changed: #{t.selection}"
+        # selection is an array or nil if selection mode is zero_or_many
+        # otherwise, selection is a single index integer or nil when not selected
+        puts "Selection Changed: #{t.selection.inspect}"
       end
     }
   }
