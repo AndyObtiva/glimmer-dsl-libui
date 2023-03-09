@@ -1,46 +1,125 @@
 require 'glimmer-dsl-libui'
 
-include Glimmer
-
-data = [
-  %w[cat meow],
-  %w[dog woof],
-  %w[chicken cock-a-doodle-doo],
-  %w[horse neigh],
-  %w[cow moo]
-]
-
-window('Animal sounds', 300, 200) {
-  horizontal_box {
-    table {
-      text_column('Animal') {
-#       table_header_on_clicked do |t|
-#         puts 'table_header_on_clicked'
-#         p t
-#       end
+class BasicTableSelection
+  include Glimmer::LibUI::Application
+  
+  before_body do
+    @data = [
+      %w[cat meow],
+      %w[dog woof],
+      %w[chicken cock-a-doodle-doo],
+      %w[horse neigh],
+      %w[cow moo]
+    ]
+  end
+  
+  body {
+    window('Basic Table Selection', 300, 300) {
+      tab {
+        tab_item('Zero-Or-One') {
+          vertical_box {
+            vertical_box {
+              stretchy false
+              
+              @zero_or_one_radio_buttons = radio_buttons {
+                items @data.size.times.map { |row| "Row #{row} Selection" }
+                
+                on_selected do |rb|
+                  @zero_or_one_table.selection = [rb.selected]
+                end
+              }
+            }
+            
+            @zero_or_one_table = table {
+              text_column('Animal') {
+        #       table_header_on_clicked do |t|
+        #         puts 'table_header_on_clicked'
+        #         p t
+        #       end
+              }
+              text_column('Description')
+        
+              cell_rows @data
+              selection_mode :zero_or_one # other values are :zero_or_many , :one, :none
+              selection 0 # initial selection row index (could be nil too or just left off)
+        
+              on_row_clicked do |t, row|
+                puts "Row Clicked: #{row}"
+              end
+        
+              on_row_double_clicked do |t, row|
+                puts "Row Double Clicked: #{row}"
+              end
+        
+              on_selection_changed do |t|
+                # selection is an array or nil if selection mode is zero_or_many
+                # otherwise, selection is a single index integer or nil when not selected
+                puts "Selection Changed: #{t.selection.inspect}"
+                @zero_or_one_radio_buttons.selected = t.selection
+              end
+            }
+          }
+        }
+        
+        tab_item('Zero-Or-Many') {
+          vertical_box {
+            vertical_box {
+              stretchy false
+              
+              @zero_or_many_checkboxes = @data.size.times.map do |row|
+                checkbox("Row #{row} Selection") {
+                  on_toggled do |c|
+                    table_selection = @zero_or_many_table.selection.to_a
+                    if c.checked?
+                      table_selection << row unless table_selection.include?(row)
+                    else
+                      table_selection.delete(row) if table_selection.include?(row)
+                    end
+                    @zero_or_many_table.selection = table_selection
+                  end
+                }
+              end
+            }
+            
+            @zero_or_many_table = table {
+              text_column('Animal') {
+        #       table_header_on_clicked do |t|
+        #         puts 'table_header_on_clicked'
+        #         p t
+        #       end
+              }
+              text_column('Description')
+        
+              cell_rows @data
+              selection_mode :zero_or_many # other values are :none , :zero_or_one , and :one
+              selection 0, 2, 4 # initial selection row indexes (could be empty array too or just left off)
+        
+              on_row_clicked do |t, row|
+                puts "Row Clicked: #{row}"
+              end
+        
+              on_row_double_clicked do |t, row|
+                puts "Row Double Clicked: #{row}"
+              end
+        
+              on_selection_changed do |t|
+                # selection is an array or nil if selection mode is zero_or_many
+                # otherwise, selection is a single index integer or nil when not selected
+                puts "Selection Changed: #{t.selection.inspect}"
+                @zero_or_many_checkboxes.each { |cb| cb.checked = false }
+                t.selection&.each do |selected_row|
+                  @zero_or_many_checkboxes[selected_row].checked = true
+                end
+              end
+            }
+          }
+        }
       }
-      text_column('Description')
-
-      cell_rows data
-      selection_mode :zero_or_many # other values are :none , :zero_or_one , and :one
-
-      on_row_clicked do |t, row|
-        puts "Row Clicked: #{row}"
-      end
-
-      on_row_double_clicked do |t, row|
-        puts "Row Double Clicked: #{row}"
-      end
-
-      on_selection_changed do |t|
-        # selection is an array or nil if selection mode is zero_or_many
-        # otherwise, selection is a single index integer or nil when not selected
-        puts "Selection Changed: #{t.selection.inspect}"
-      end
     }
   }
-}.show
+end
 
+BasicTableSelection.launch
 
 # require 'libui'
 #

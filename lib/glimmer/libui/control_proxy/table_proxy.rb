@@ -59,8 +59,10 @@ module Glimmer
         def post_add_content
           build_control if !@content_added && @libui.nil?
           super
+          # TODO consider automatically detecting what properties/listeners accumulated dynamically to avoid hardcoding code below
           register_listeners
           configure_selection_mode
+          configure_selection
         end
         
         def post_initialize_child(child)
@@ -142,6 +144,8 @@ module Glimmer
         alias selection_mode= selection_mode
         
         def selection
+          return @selection if !@content_added
+          
           tsp = super
           ts = ::LibUI::FFI::TableSelection.new(tsp)
           if ts.NumRows > 0
@@ -150,6 +154,22 @@ module Glimmer
           end
         ensure
           ::LibUI.free_table_selection(tsp)
+        end
+        
+        def selection=(*value)
+          value = value.first if value.size == 1
+          @selection = value
+          return @selection if !@content_added
+          return if value.nil?
+        
+          ts = ::LibUI::FFI::TableSelection.malloc
+          ts.NumRows = value.is_a?(Array) ? value.size : 1
+          ts.Rows = [value].flatten.pack('i*')
+          super(ts)
+          # TODO figure out why ensure block is not working (perhaps libui auto-frees that resource upon setting selection)
+          # Delete following code if not needed.
+#         ensure
+#           ::LibUI.free_table_selection(ts)
         end
         
         def column_attributes
@@ -561,6 +581,10 @@ module Glimmer
         
         def configure_selection_mode
           send_to_libui('selection_mode=', @selection_mode)
+        end
+        
+        def configure_selection
+          self.selection = @selection
         end
       end
     end

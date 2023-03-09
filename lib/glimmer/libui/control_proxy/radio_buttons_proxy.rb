@@ -50,6 +50,11 @@ module Glimmer
         alias set_selected_item selected_item
         alias selected_item= selected_item
         
+        def selected=(value = nil)
+          value ||= -1
+          super(value)
+        end
+        
         def data_bind_write(property, model_binding)
           case property
           when 'selected'
