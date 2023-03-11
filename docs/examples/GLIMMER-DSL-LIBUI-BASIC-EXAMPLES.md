@@ -18,6 +18,7 @@
   - [Basic Table Checkbox Text](#basic-table-checkbox-text)
   - [Basic Table Progress Bar](#basic-table-progress-bar)
   - [Basic Table Color](#basic-table-color)
+  - [Basic Table Selection](#basic-table-selection)
   - [Basic Area](#basic-area)
   - [Basic Scrolling Area](#basic-scrolling-area)
   - [Basic Image](#basic-image)
@@ -1497,190 +1498,26 @@ Mac | Windows | Linux
 ----|---------|------
 ![glimmer-dsl-libui-mac-basic-table-color.png](/images/glimmer-dsl-libui-mac-basic-table-color.png) | ![glimmer-dsl-libui-windows-basic-table-color.png](/images/glimmer-dsl-libui-windows-basic-table-color.png) | ![glimmer-dsl-libui-linux-basic-table-color.png](/images/glimmer-dsl-libui-linux-basic-table-color.png)
 
-New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version (with explicit [data-binding](#data-binding) to model rows using a presenter):
+[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version (with explicit [data-binding](#data-binding) to model rows using a presenter)
 
-```ruby
-require 'glimmer-dsl-libui'
+[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 2 (with implicit [data-binding](#data-binding) to raw data rows)
 
-class BasicTableColor
-  Animal = Struct.new(:name, :sound, :mammal)
-  
-  class AnimalPresenter < Animal
-    def name_color
-      color = case name
-      when 'cat'
-        :red
-      when 'dog'
-        :yellow
-      when 'chicken'
-        :beige
-      when 'horse'
-        :purple
-      when 'cow'
-        :gray
-      end
-      [name, color]
-    end
-    
-    def sound_color
-      color = case name
-      when 'cat', 'chicken', 'cow'
-        :blue
-      when 'dog', 'horse'
-        {r: 240, g: 32, b: 32}
-      end
-      [sound, color]
-    end
-    
-    def mammal_description_color
-      color = case name
-      when 'cat', 'dog', 'horse', 'cow'
-        :green
-      when 'chicken'
-        :red
-      end
-      [mammal, 'mammal', color]
-    end
-    
-    def image_description_color
-      color = case name
-      when 'cat', 'dog', 'horse'
-        :dark_blue
-      when 'chicken'
-        :beige
-      when 'cow'
-        :brown
-      end
-      [img, 'Glimmer', color]
-    end
-    
-    def img
-      # scale image to 24x24 (can be passed as file path String only instead of Array to avoid scaling)
-      [File.expand_path('../icons/glimmer.png', __dir__), 24, 24]
-    end
-    
-    def background_color
-      case name
-      when 'cat'
-        {r: 255, g: 120, b: 0, a: 0.5}
-      when 'dog'
-        :skyblue
-      when 'chicken'
-        {r: 5, g: 120, b: 110}
-      when 'horse'
-        '#13a1fb'
-      when 'cow'
-        0x12ff02
-      end
-    end
-  end
-  
-  include Glimmer
-  
-  attr_accessor :animals
-  
-  def initialize
-    @animals = [
-      AnimalPresenter.new('cat', 'meow', true),
-      AnimalPresenter.new('dog', 'woof', true),
-      AnimalPresenter.new('chicken', 'cock-a-doodle-doo', false),
-      AnimalPresenter.new('horse', 'neigh', true),
-      AnimalPresenter.new('cow', 'moo', true),
-    ]
-  end
-  
-  def launch
-    window('Animals', 500, 200) {
-      horizontal_box {
-        table {
-          text_color_column('Animal')
-          text_color_column('Sound')
-          checkbox_text_color_column('Description')
-          image_text_color_column('GUI')
-          background_color_column # must always be the last column and always expects data-binding model attribute `background_color` when binding to Array of models
-    
-          cell_rows <= [self, :animals, column_attributes: {'Animal' => :name_color, 'Sound' => :sound_color, 'Description' => :mammal_description_color, 'GUI' => :image_description_color}]
-        }
-      }
-    }.show
-  end
-end
+[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 3 (with implicit [data-binding](#data-binding) to raw data rows and manual construction of [libui](https://github.com/andlabs/libui) `image` from `image_part`)
 
-BasicTableColor.new.launch
+## Basic Table Selection
+
+[examples/basic_table_selection.rb](/examples/basic_table_selection.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/basic_table_selection.rb
 ```
 
-New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 2 (with implicit [data-binding](#data-binding) to raw data rows):
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
 
-```ruby
-require 'glimmer-dsl-libui'
-
-include Glimmer
-
-img = [File.expand_path('../icons/glimmer.png', __dir__), 24, 24] # scales image to 24x24 (can be passed as file path String only instead of Array to avoid scaling)
-
-data = [
-  [['cat', :red]      , ['meow', :blue]                  , [true, 'mammal', :green], [img, 'Glimmer', :dark_blue], {r: 255, g: 120, b: 0, a: 0.5}],
-  [['dog', :yellow]   , ['woof', {r: 240, g: 32, b: 32}] , [true, 'mammal', :green], [img, 'Glimmer', :dark_blue], :skyblue],
-  [['chicken', :beige], ['cock-a-doodle-doo', :blue]     , [false, 'mammal', :red] , [img, 'Glimmer', :beige], {r: 5, g: 120, b: 110}],
-  [['horse', :purple] , ['neigh', {r: 240, g: 32, b: 32}], [true, 'mammal', :green], [img, 'Glimmer', :dark_blue], '13a1fb'],
-  [['cow', :gray]     , ['moo', :blue]                   , [true, 'mammal', :green], [img, 'Glimmer', :brown], 0x12ff02]
-]
-
-window('Animals', 500, 200) {
-  horizontal_box {
-    table {
-      text_color_column('Animal')
-      text_color_column('Sound')
-      checkbox_text_color_column('Description')
-      image_text_color_column('GUI')
-      background_color_column # must be the last column
-
-      cell_rows data
-    }
-  }
-}.show
 ```
-
-New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 3 (with implicit [data-binding](#data-binding) to raw data rows and manual construction of [libui](https://github.com/andlabs/libui) `image` from `image_part`):
-
-```ruby
-require 'glimmer-dsl-libui'
-require 'chunky_png'
-
-include Glimmer
-
-f = File.open(File.expand_path('../icons/glimmer.png', __dir__))
-canvas = ChunkyPNG::Canvas.from_io(f)
-f.close
-canvas.resample_nearest_neighbor!(24, 24)
-data = canvas.to_rgba_stream
-width = canvas.width
-height = canvas.height
-img = image {
-  image_part(data, width, height, width * 4)
-}
-
-data = [
-  [['cat', :red]      , ['meow', :blue]                  , [true, 'mammal', :green], [img, 'Glimmer', :dark_blue], {r: 255, g: 120, b: 0, a: 0.5}],
-  [['dog', :yellow]   , ['woof', {r: 240, g: 32, b: 32}] , [true, 'mammal', :green], [img, 'Glimmer', :dark_blue], :skyblue],
-  [['chicken', :beige], ['cock-a-doodle-doo', :blue]     , [false, 'mammal', :red] , [img, 'Glimmer', :beige], {r: 5, g: 120, b: 110}],
-  [['horse', :purple] , ['neigh', {r: 240, g: 32, b: 32}], [true, 'mammal', :green], [img, 'Glimmer', :dark_blue], '13a1fb'],
-  [['cow', :gray]     , ['moo', :blue]                   , [true, 'mammal', :green], [img, 'Glimmer', :brown], 0x12ff02]
-]
-
-window('Animals', 500, 200) {
-  horizontal_box {
-    table {
-      text_color_column('Animal')
-      text_color_column('Sound')
-      checkbox_text_color_column('Description')
-      image_text_color_column('GUI')
-      background_color_column
-
-      cell_rows data
-    }
-  }
-}.show
+ruby -r glimmer-dsl-libui -e "require 'examples/basic_table_selection'"
 ```
 
 ## Basic Area
