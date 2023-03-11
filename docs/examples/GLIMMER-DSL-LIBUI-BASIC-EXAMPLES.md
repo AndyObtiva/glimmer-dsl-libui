@@ -1520,6 +1520,8 @@ Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/
 ruby -r glimmer-dsl-libui -e "require 'examples/basic_table_selection'"
 ```
 
+![glimmer-dsl-libui-mac-basic-table-selection-one.png](/images/glimmer-dsl-libui-mac-basic-table-selection-one.png)
+
 ## Basic Area
 
 [examples/basic_area.rb](/examples/basic_area.rb)
