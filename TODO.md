@@ -2,12 +2,12 @@
 
 ## Next
 
-- table_header_set_sort_indicator
 - table_header_set_visible
-- table_header_sort_indicator
 - table_header_visible
 
 - Table selection databinding
+- Table column sort indicator databinding
+- Table column visible databinding
 - basic_table_selection2.rb relying on data-binding
 
 - Update Supported Controls documentation with allowed parents and allowed children

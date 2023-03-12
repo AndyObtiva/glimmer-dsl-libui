@@ -34,11 +34,13 @@ class BasicTableSelection
               text_column('Animal') {
                 on_clicked do |tc, column|
                   puts "Clicked column #{column}: #{tc.name}"
+                  tc.toggle_sort_indicator
                 end
               }
               text_column('Description') {
                 on_clicked do |tc, column|
                   puts "Clicked column #{column}: #{tc.name}"
+                  tc.toggle_sort_indicator
                 end
               }
         
@@ -82,11 +84,13 @@ class BasicTableSelection
               text_column('Animal') {
                 on_clicked do |tc, column|
                   puts "Clicked column #{column}: #{tc.name}"
+                  tc.toggle_sort_indicator
                 end
               }
               text_column('Description') {
                 on_clicked do |tc, column|
                   puts "Clicked column #{column}: #{tc.name}"
+                  tc.toggle_sort_indicator
                 end
               }
         
@@ -136,11 +140,13 @@ class BasicTableSelection
               text_column('Animal') {
                 on_clicked do |tc, column|
                   puts "Clicked column #{column}: #{tc.name}"
+                  tc.toggle_sort_indicator
                 end
               }
               text_column('Description') {
                 on_clicked do |tc, column|
                   puts "Clicked column #{column}: #{tc.name}"
+                  tc.toggle_sort_indicator
                 end
               }
         
@@ -175,11 +181,13 @@ class BasicTableSelection
               text_column('Animal') {
                 on_clicked do |tc, column|
                   puts "Clicked column #{column}: #{tc.name}"
+                  tc.toggle_sort_indicator
                 end
               }
               text_column('Description') {
                 on_clicked do |tc, column|
                   puts "Clicked column #{column}: #{tc.name}"
+                  tc.toggle_sort_indicator
                 end
               }
         

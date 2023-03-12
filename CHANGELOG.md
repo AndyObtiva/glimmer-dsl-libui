@@ -3,6 +3,7 @@
 ## 0.7.1
 
 - `table` column `on_clicked` listener (can be nested under `text_column`, `text_color_column`, `button_column`, `checkbox_column`, `checkbox_text_color_column`, `image_column`, `image_text_color_column`, `image_text_column`, and `progress_bar_column`)
+- `table` column `sort_indicator` property (can be `nil`, `:ascending` [aliases: `:asc`, `:a`], `:descending` [aliases: `:desc`, `:d`])
 - Fix issue with `table` `selection_mode` getting set to `nil` if not specified
 
 ## 0.7.0

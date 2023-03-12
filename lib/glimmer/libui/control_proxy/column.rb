@@ -54,6 +54,25 @@ module Glimmer
         def index
           @parent_proxy.columns.select {|c| c.is_a?(Column)}.index(self)
         end
+        
+        def sort_indicator(value = nil)
+          if value.nil?
+            result = ::LibUI.table_header_sort_indicator(@parent_proxy.libui, index)
+            LibUI.integer_to_column_sort_indicator(result)
+          else
+            value = LibUI.column_sort_indicator_to_integer(value)
+            ::LibUI.table_header_set_sort_indicator(@parent_proxy.libui, index, value)
+          end
+        end
+        alias sort_indicator= sort_indicator
+        
+        def toggle_sort_indicator(value = nil)
+          if value.nil?
+            self.sort_indicator = self.sort_indicator != :ascending ? :ascending : :descending
+          else
+            self.sort_indicator = value
+          end
+        end
           
         def can_handle_listener?(listener_name)
           listener_name == 'on_clicked'

@@ -35,6 +35,32 @@ module Glimmer
         bool.nil? ? (allow_nil ? nil : 0) : (allow_integer && bool.is_a?(Integer) ? bool : (bool.is_a?(TrueClass) || bool.is_a?(FalseClass) ? (bool == true ? 1 : 0) : (allow_nil ? nil : 0)))
       end
       
+      def column_sort_indicator_to_integer(value)
+        return value if value.is_a?(Integer)
+        
+        case value.to_s.to_sym
+        when :ascending, :asc, :a
+          1
+        when :descending, :desc, :d
+          2
+        else
+          0
+        end
+      end
+      
+      def integer_to_column_sort_indicator(value)
+        return value if value.is_a?(String) || value.is_a?(Symbol)
+        
+        case value
+        when 1
+          :ascending
+        when 2
+          :descending
+        else
+          nil
+        end
+      end
+      
       def degrees_to_radians(degrees)
         ((Math::PI * 2.0) / 360.00) * degrees.to_f
       end
