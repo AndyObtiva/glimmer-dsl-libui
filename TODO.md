@@ -6,8 +6,10 @@
 - Table column sort indicator databinding
 - Table header visible databinding
 - basic_table_selection2.rb relying on data-binding
+
 - table on_selection_changed provides new selection added in second argument (could be useful)
-- Automate table sorting support (perhaps via a property, sortable)
+
+- Automate table sorting support (perhaps via a property, sortable, which should default to true)
 
 - Update Supported Controls documentation with allowed parents and allowed children
 - Support overriding global `table` `editable` state with a specific column `editable` state if global value is `true` and column value is `false`

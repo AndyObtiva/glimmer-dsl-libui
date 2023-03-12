@@ -1521,6 +1521,10 @@ ruby -r glimmer-dsl-libui -e "require 'examples/basic_table_selection'"
 ```
 
 ![glimmer-dsl-libui-mac-basic-table-selection-one.png](/images/glimmer-dsl-libui-mac-basic-table-selection-one.png)
+![glimmer-dsl-libui-mac-basic-table-selection-zero-or-one.png](/images/glimmer-dsl-libui-mac-basic-table-selection-zero-or-one.png)
+![glimmer-dsl-libui-mac-basic-table-selection-zero-or-many.png](/images/glimmer-dsl-libui-mac-basic-table-selection-zero-or-many.png)
+![glimmer-dsl-libui-mac-basic-table-selection-none.png](/images/glimmer-dsl-libui-mac-basic-table-selection-none.png)
+![glimmer-dsl-libui-mac-basic-table-selection-header-not-visible.png](/images/glimmer-dsl-libui-mac-basic-table-selection-header-not-visible.png)
 
 ## Basic Area
 
