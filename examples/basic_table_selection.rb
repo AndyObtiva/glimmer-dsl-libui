@@ -195,11 +195,11 @@ class BasicTableSelection
                 
                 on_clicked do |tc, column|
                   puts "Clicked column #{column}: #{tc.name}"
-                  selected_row = @zero_or_many_table.selection && @zero_or_many_data[@zero_or_many_table.selection]
+                  selected_rows = @zero_or_many_table.selection&.map { |row| @zero_or_many_data[row] }
                   tc.toggle_sort_indicator
                   @zero_or_many_data.sort_by! { |row_data| row_data[column] }
                   @zero_or_many_data.reverse! if tc.sort_indicator == :descending
-                  @zero_or_many_table.selection = @zero_or_many_data.index(selected_row)
+                  @zero_or_many_table.selection = selected_rows&.map {|row_data| @zero_or_many_data.index(row_data) }
                 end
               }
               text_column('Description') {
@@ -207,11 +207,11 @@ class BasicTableSelection
                 
                 on_clicked do |tc, column|
                   puts "Clicked column #{column}: #{tc.name}"
-                  selected_row = @zero_or_many_table.selection && @zero_or_many_data[@zero_or_many_table.selection]
+                  selected_rows = @zero_or_many_table.selection&.map { |row| @zero_or_many_data[row] }
                   tc.toggle_sort_indicator
                   @zero_or_many_data.sort_by! { |row_data| row_data[column] }
                   @zero_or_many_data.reverse! if tc.sort_indicator == :descending
-                  @zero_or_many_table.selection = @zero_or_many_data.index(selected_row)
+                  @zero_or_many_table.selection = selected_rows&.map {|row_data| @zero_or_many_data.index(row_data) }
                 end
               }
         
