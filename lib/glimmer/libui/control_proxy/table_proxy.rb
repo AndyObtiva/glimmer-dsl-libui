@@ -583,13 +583,16 @@ module Glimmer
         def register_column_listeners
           # register accumulated column listeners after table content is closed
           return if @columns.nil? || @columns.empty?
-          if @columns.any? {|column| !column.column_listeners_for('on_clicked').empty? }
+          if @columns.any? {|column| column.is_a?(Column) && !column.column_listeners_for('on_clicked').empty? }
             ::LibUI.table_header_on_clicked(@libui) do |_, column_index|
-              column = @columns[column_index]
-              column_listeners = column.column_listeners_for('on_clicked')
-              if !column_listeners.empty?
-                column_listeners.each do |column_listener|
-                  column_listener.call(column, column_index)
+              actual_columns = @columns.select {|column| column.is_a?(Column)}
+              column = actual_columns[column_index]
+              if column.is_a?(Column)
+                column_listeners = column.column_listeners_for('on_clicked')
+                if !column_listeners.empty?
+                  column_listeners.each do |column_listener|
+                    column_listener.call(column, column_index)
+                  end
                 end
               end
             end
@@ -597,7 +600,7 @@ module Glimmer
         end
         
         def configure_selection_mode
-          send_to_libui('selection_mode=', @selection_mode)
+          send_to_libui('selection_mode=', @selection_mode) if @selection_mode
         end
         
         def configure_selection

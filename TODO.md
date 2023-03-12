@@ -2,7 +2,6 @@
 
 ## Next
 
-- table_header_on_clicked
 - table_header_set_sort_indicator
 - table_header_set_visible
 - table_header_sort_indicator

@@ -43,7 +43,7 @@ class BasicTableSelection
               }
         
               cell_rows @data
-              selection_mode :one # other values are :zero_or_many , :zero_or_one, :none
+              selection_mode :one # other values are :zero_or_many , :zero_or_one, :none (default is :zero_or_one if not specified)
               selection 2 # initial selection row index (could be nil too or just left off, defaulting to 0)
         
               on_row_clicked do |t, row|
@@ -91,7 +91,7 @@ class BasicTableSelection
               }
         
               cell_rows @data
-              selection_mode :zero_or_one # other values are :zero_or_many , :one, :none
+              selection_mode :zero_or_one # other values are :zero_or_many , :one, :none (default is :zero_or_one if not specified)
               # selection 0 # initial selection row index (could be nil too or just left off)
         
               on_row_clicked do |t, row|
@@ -145,7 +145,7 @@ class BasicTableSelection
               }
         
               cell_rows @data
-              selection_mode :zero_or_many # other values are :none , :zero_or_one , and :one
+              selection_mode :zero_or_many # other values are :none , :zero_or_one , and :one (default is :zero_or_one if not specified)
               selection 0, 2, 4 # initial selection row indexes (could be empty array too or just left off)
         
               on_row_clicked do |t, row|
@@ -184,7 +184,7 @@ class BasicTableSelection
               }
         
               cell_rows @data
-              selection_mode :none # other values are :zero_or_many , :zero_or_one, :one
+              selection_mode :none # other values are :zero_or_many , :zero_or_one, :one (default is :zero_or_one if not specified)
         
               on_row_clicked do |t, row|
                 puts "Row Clicked: #{row}"

@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.7.1
+
+- `table` column `on_clicked` listener (can be nested under `text_column`, `text_color_column`, `button_column`, `checkbox_column`, `checkbox_text_color_column`, `image_column`, `image_text_color_column`, `image_text_column`, and `progress_bar_column`)
+- Fix issue with `table` `selection_mode` getting set to `nil` if not specified
+
 ## 0.7.0
 
 - Upgrade to libui v0.1.2.pre (including newer libui-ng with table selection API)
