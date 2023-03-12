@@ -31,8 +31,16 @@ class BasicTableSelection
             }
             
             @one_table = table {
-              text_column('Animal')
-              text_column('Description')
+              text_column('Animal') {
+                on_clicked do |tc, column|
+                  puts "Clicked column #{column}: #{tc.name}"
+                end
+              }
+              text_column('Description') {
+                on_clicked do |tc, column|
+                  puts "Clicked column #{column}: #{tc.name}"
+                end
+              }
         
               cell_rows @data
               selection_mode :one # other values are :zero_or_many , :zero_or_one, :none
@@ -71,8 +79,16 @@ class BasicTableSelection
             }
             
             @zero_or_one_table = table {
-              text_column('Animal')
-              text_column('Description')
+              text_column('Animal') {
+                on_clicked do |tc, column|
+                  puts "Clicked column #{column}: #{tc.name}"
+                end
+              }
+              text_column('Description') {
+                on_clicked do |tc, column|
+                  puts "Clicked column #{column}: #{tc.name}"
+                end
+              }
         
               cell_rows @data
               selection_mode :zero_or_one # other values are :zero_or_many , :one, :none
@@ -117,8 +133,16 @@ class BasicTableSelection
             }
             
             @zero_or_many_table = table {
-              text_column('Animal')
-              text_column('Description')
+              text_column('Animal') {
+                on_clicked do |tc, column|
+                  puts "Clicked column #{column}: #{tc.name}"
+                end
+              }
+              text_column('Description') {
+                on_clicked do |tc, column|
+                  puts "Clicked column #{column}: #{tc.name}"
+                end
+              }
         
               cell_rows @data
               selection_mode :zero_or_many # other values are :none , :zero_or_one , and :one
@@ -148,8 +172,16 @@ class BasicTableSelection
         tab_item('None') {
           vertical_box {
             @none_table = table {
-              text_column('Animal')
-              text_column('Description')
+              text_column('Animal') {
+                on_clicked do |tc, column|
+                  puts "Clicked column #{column}: #{tc.name}"
+                end
+              }
+              text_column('Description') {
+                on_clicked do |tc, column|
+                  puts "Clicked column #{column}: #{tc.name}"
+                end
+              }
         
               cell_rows @data
               selection_mode :none # other values are :zero_or_many , :zero_or_one, :one

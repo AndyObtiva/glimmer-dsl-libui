@@ -54,6 +54,22 @@ module Glimmer
         def index
           @parent_proxy.columns.select {|c| c.is_a?(Column)}.index(self)
         end
+          
+        def can_handle_listener?(listener_name)
+          listener_name == 'on_clicked'
+        end
+        
+        def handle_listener(listener_name, &listener)
+          column_listeners_for(listener_name) << listener
+        end
+      
+        def column_listeners
+          @column_listeners ||= {}
+        end
+        
+        def column_listeners_for(listener_name)
+          column_listeners[listener_name] ||= []
+        end
       end
     end
   end

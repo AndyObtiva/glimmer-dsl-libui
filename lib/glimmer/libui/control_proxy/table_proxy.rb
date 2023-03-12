@@ -61,6 +61,7 @@ module Glimmer
           super
           # TODO consider automatically detecting what properties/listeners accumulated dynamically to avoid hardcoding code below
           register_listeners
+          register_column_listeners
           configure_selection_mode
           configure_selection
         end
@@ -576,6 +577,22 @@ module Glimmer
           # register accumulated listeners after table content is closed
           @table_listeners&.each do |listener_name, listener|
             handle_listener(listener_name, &listener)
+          end
+        end
+        
+        def register_column_listeners
+          # register accumulated column listeners after table content is closed
+          return if @columns.nil? || @columns.empty?
+          if @columns.any? {|column| !column.column_listeners_for('on_clicked').empty? }
+            ::LibUI.table_header_on_clicked(@libui) do |_, column_index|
+              column = @columns[column_index]
+              column_listeners = column.column_listeners_for('on_clicked')
+              if !column_listeners.empty?
+                column_listeners.each do |column_listener|
+                  column_listener.call(column, column_index)
+                end
+              end
+            end
           end
         end
         
