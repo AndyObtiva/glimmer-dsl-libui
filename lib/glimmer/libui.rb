@@ -38,10 +38,10 @@ module Glimmer
       def column_sort_indicator_to_integer(value)
         return value if value.is_a?(Integer)
         
-        case value.to_s.to_sym
-        when :ascending, :asc, :a
+        value = value.to_s
+        if 'ascending'.start_with?(value)
           1
-        when :descending, :desc, :d
+        elsif 'descending'.start_with?(value)
           2
         else
           0
