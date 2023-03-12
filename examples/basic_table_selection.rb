@@ -4,16 +4,17 @@ class BasicTableSelection
   include Glimmer::LibUI::Application
   
   before_body do
-    @one_data = [
+    data = [
       %w[cat meow],
       %w[dog woof],
       %w[chicken cock-a-doodle-doo],
       %w[horse neigh],
       %w[cow moo]
     ]
-    @zero_or_one_data = @one_data.dup
-    @zero_or_many_data = @one_data.dup
-    @none_data = @one_data.dup
+    @one_table_data = data.dup
+    @zero_or_one_table_data = data.dup
+    @zero_or_many_table_data = data.dup
+    @none_table_data = data.dup
   end
   
   body {
@@ -24,8 +25,8 @@ class BasicTableSelection
             vertical_box {
               stretchy false
               
-              @one_radio_buttons = radio_buttons {
-                items @one_data.size.times.map { |row| "Row #{row} Selection" }
+              @one_table_selection_radio_buttons = radio_buttons {
+                items @one_table_data.size.times.map { |row| "Row #{row} Selection" }
                 
                 on_selected do |rb|
                   @one_table.selection = [rb.selected]
@@ -43,31 +44,21 @@ class BasicTableSelection
             
             @one_table = table {
               text_column('Animal') {
-                # sort_indicator :descending # can be :ascending, :descending, or nil (default)
+                # sort_indicator :descending # (optional) can be :ascending, :descending, or nil (default)
                 
                 on_clicked do |tc, column|
-                  puts "Clicked column #{column}: #{tc.name}"
-                  selected_row = @one_table.selection && @one_data[@one_table.selection]
-                  tc.toggle_sort_indicator
-                  @one_data.sort_by! { |row_data| row_data[column] }
-                  @one_data.reverse! if tc.sort_indicator == :descending
-                  @one_table.selection = @one_data.index(selected_row)
+                  sort_one_table_column(tc, column)
                 end
               }
               text_column('Description') {
-                # sort_indicator :descending # can be :ascending, :descending, or nil (default)
+                # sort_indicator :descending # (optional) can be :ascending, :descending, or nil (default)
                 
                 on_clicked do |tc, column|
-                  puts "Clicked column #{column}: #{tc.name}"
-                  selected_row = @one_table.selection && @one_data[@one_table.selection]
-                  tc.toggle_sort_indicator
-                  @one_data.sort_by! { |row_data| row_data[column] }
-                  @one_data.reverse! if tc.sort_indicator == :descending
-                  @one_table.selection = @one_data.index(selected_row)
+                  sort_one_table_column(tc, column)
                 end
               }
         
-              cell_rows @one_data
+              cell_rows @one_table_data
               selection_mode :one # other values are :zero_or_many , :zero_or_one, :none (default is :zero_or_one if not specified)
               selection 2 # initial selection row index (could be nil too or just left off, defaulting to 0)
               # header_visible true # default
@@ -84,7 +75,7 @@ class BasicTableSelection
                 # selection is an array or nil if selection mode is zero_or_many
                 # otherwise, selection is a single index integer or nil when not selected
                 puts "Selection Changed: #{t.selection.inspect}"
-                @one_radio_buttons.selected = t.selection
+                @one_table_selection_radio_buttons.selected = t.selection
               end
             }
           }
@@ -95,8 +86,8 @@ class BasicTableSelection
             vertical_box {
               stretchy false
               
-              @zero_or_one_radio_buttons = radio_buttons {
-                items @zero_or_one_data.size.times.map { |row| "Row #{row} Selection" }
+              @zero_or_one_table_selection_radio_buttons = radio_buttons {
+                items @zero_or_one_table_data.size.times.map { |row| "Row #{row} Selection" }
                 
                 on_selected do |rb|
                   @zero_or_one_table.selection = [rb.selected]
@@ -114,31 +105,21 @@ class BasicTableSelection
             
             @zero_or_one_table = table {
               text_column('Animal') {
-                # sort_indicator :descending # can be :ascending, :descending, or nil (default)
+                # sort_indicator :descending # (optional) can be :ascending, :descending, or nil (default)
                 
                 on_clicked do |tc, column|
-                  puts "Clicked column #{column}: #{tc.name}"
-                  selected_row = @zero_or_one_table.selection && @zero_or_one_data[@zero_or_one_table.selection]
-                  tc.toggle_sort_indicator
-                  @zero_or_one_data.sort_by! { |row_data| row_data[column] }
-                  @zero_or_one_data.reverse! if tc.sort_indicator == :descending
-                  @zero_or_one_table.selection = @zero_or_one_data.index(selected_row)
+                  sort_zero_or_one_table_column(tc, column)
                 end
               }
               text_column('Description') {
-                # sort_indicator :descending # can be :ascending, :descending, or nil (default)
+                # sort_indicator :descending # (optional) can be :ascending, :descending, or nil (default)
                 
                 on_clicked do |tc, column|
-                  puts "Clicked column #{column}: #{tc.name}"
-                  selected_row = @zero_or_one_table.selection && @zero_or_one_data[@zero_or_one_table.selection]
-                  tc.toggle_sort_indicator
-                  @zero_or_one_data.sort_by! { |row_data| row_data[column] }
-                  @zero_or_one_data.reverse! if tc.sort_indicator == :descending
-                  @zero_or_one_table.selection = @zero_or_one_data.index(selected_row)
+                  sort_zero_or_one_table_column(tc, column)
                 end
               }
         
-              cell_rows @zero_or_one_data
+              cell_rows @zero_or_one_table_data
               selection_mode :zero_or_one # other values are :zero_or_many , :one, :none (default is :zero_or_one if not specified)
               # selection 0 # initial selection row index (could be nil too or just left off)
               # header_visible true # default
@@ -155,7 +136,7 @@ class BasicTableSelection
                 # selection is an array or nil if selection mode is zero_or_many
                 # otherwise, selection is a single index integer or nil when not selected
                 puts "Selection Changed: #{t.selection.inspect}"
-                @zero_or_one_radio_buttons.selected = t.selection
+                @zero_or_one_table_selection_radio_buttons.selected = t.selection
               end
             }
           }
@@ -166,7 +147,7 @@ class BasicTableSelection
             vertical_box {
               stretchy false
               
-              @zero_or_many_checkboxes = @zero_or_many_data.size.times.map do |row|
+              @zero_or_many_table_selection_checkboxes = @zero_or_many_table_data.size.times.map do |row|
                 checkbox("Row #{row} Selection") {
                   on_toggled do |c|
                     table_selection = @zero_or_many_table.selection.to_a
@@ -191,31 +172,21 @@ class BasicTableSelection
             
             @zero_or_many_table = table {
               text_column('Animal') {
-                # sort_indicator :descending # can be :ascending, :descending, or nil (default)
+                # sort_indicator :descending # (optional) can be :ascending, :descending, or nil (default)
                 
                 on_clicked do |tc, column|
-                  puts "Clicked column #{column}: #{tc.name}"
-                  selected_rows = @zero_or_many_table.selection&.map { |row| @zero_or_many_data[row] }
-                  tc.toggle_sort_indicator
-                  @zero_or_many_data.sort_by! { |row_data| row_data[column] }
-                  @zero_or_many_data.reverse! if tc.sort_indicator == :descending
-                  @zero_or_many_table.selection = selected_rows&.map {|row_data| @zero_or_many_data.index(row_data) }
+                  sort_zero_or_many_table_column(tc, column)
                 end
               }
               text_column('Description') {
-                # sort_indicator :descending # can be :ascending, :descending, or nil (default)
+                # sort_indicator :descending # (optional) can be :ascending, :descending, or nil (default)
                 
                 on_clicked do |tc, column|
-                  puts "Clicked column #{column}: #{tc.name}"
-                  selected_rows = @zero_or_many_table.selection&.map { |row| @zero_or_many_data[row] }
-                  tc.toggle_sort_indicator
-                  @zero_or_many_data.sort_by! { |row_data| row_data[column] }
-                  @zero_or_many_data.reverse! if tc.sort_indicator == :descending
-                  @zero_or_many_table.selection = selected_rows&.map {|row_data| @zero_or_many_data.index(row_data) }
+                  sort_zero_or_many_table_column(tc, column)
                 end
               }
         
-              cell_rows @zero_or_many_data
+              cell_rows @zero_or_many_table_data
               selection_mode :zero_or_many # other values are :none , :zero_or_one , and :one (default is :zero_or_one if not specified)
               selection 0, 2, 4 # initial selection row indexes (could be empty array too or just left off)
               # header_visible true # default
@@ -232,9 +203,9 @@ class BasicTableSelection
                 # selection is an array or nil if selection mode is zero_or_many
                 # otherwise, selection is a single index integer or nil when not selected
                 puts "Selection Changed: #{t.selection.inspect}"
-                @zero_or_many_checkboxes.each { |cb| cb.checked = false }
+                @zero_or_many_table_selection_checkboxes.each { |cb| cb.checked = false }
                 t.selection&.each do |selected_row|
-                  @zero_or_many_checkboxes[selected_row].checked = true
+                  @zero_or_many_table_selection_checkboxes[selected_row].checked = true
                 end
               end
             }
@@ -253,31 +224,21 @@ class BasicTableSelection
             
             @none_table = table {
               text_column('Animal') {
-                # sort_indicator :descending # can be :ascending, :descending, or nil (default)
+                # sort_indicator :descending # (optional) can be :ascending, :descending, or nil (default)
                 
                 on_clicked do |tc, column|
-                  puts "Clicked column #{column}: #{tc.name}"
-                  selected_row = @none_table.selection && @none_data[@none_table.selection]
-                  tc.toggle_sort_indicator
-                  @none_data.sort_by! { |row_data| row_data[column] }
-                  @none_data.reverse! if tc.sort_indicator == :descending
-                  @none_table.selection = @none_data.index(selected_row)
+                  sort_none_table_column(tc, column)
                 end
               }
               text_column('Description') {
-                # sort_indicator :descending # can be :ascending, :descending, or nil (default)
+                # sort_indicator :descending # (optional) can be :ascending, :descending, or nil (default)
                 
                 on_clicked do |tc, column|
-                  puts "Clicked column #{column}: #{tc.name}"
-                  selected_row = @none_table.selection && @none_data[@none_table.selection]
-                  tc.toggle_sort_indicator
-                  @none_data.sort_by! { |row_data| row_data[column] }
-                  @none_data.reverse! if tc.sort_indicator == :descending
-                  @none_table.selection = @none_data.index(selected_row)
+                  sort_none_table_column(tc, column)
                 end
               }
         
-              cell_rows @none_data
+              cell_rows @none_table_data
               selection_mode :none # other values are :zero_or_many , :zero_or_one, :one (default is :zero_or_one if not specified)
               # header_visible true # default
         
@@ -301,6 +262,40 @@ class BasicTableSelection
       }
     }
   }
+  
+  def sort_one_table_column(tc, column)
+    puts "Clicked column #{column}: #{tc.name}"
+    selected_row = @one_table.selection && @one_table_data[@one_table.selection]
+    tc.toggle_sort_indicator
+    @one_table_data.sort_by! { |row_data| row_data[column] }
+    @one_table_data.reverse! if tc.sort_indicator == :descending
+    @one_table.selection = @one_table_data.index(selected_row)
+  end
+  
+  def sort_zero_or_one_table_column(tc, column)
+    puts "Clicked column #{column}: #{tc.name}"
+    selected_row = @zero_or_one_table.selection && @zero_or_one_table_data[@zero_or_one_table.selection]
+    tc.toggle_sort_indicator
+    @zero_or_one_table_data.sort_by! { |row_data| row_data[column] }
+    @zero_or_one_table_data.reverse! if tc.sort_indicator == :descending
+    @zero_or_one_table.selection = @zero_or_one_table_data.index(selected_row)
+  end
+  
+  def sort_zero_or_many_table_column(tc, column)
+    puts "Clicked column #{column}: #{tc.name}"
+    selected_rows = @zero_or_many_table.selection&.map { |row| @zero_or_many_table_data[row] }
+    tc.toggle_sort_indicator
+    @zero_or_many_table_data.sort_by! { |row_data| row_data[column] }
+    @zero_or_many_table_data.reverse! if tc.sort_indicator == :descending
+    @zero_or_many_table.selection = selected_rows&.map {|row_data| @zero_or_many_table_data.index(row_data) }
+  end
+  
+  def sort_none_table_column(tc, column)
+    puts "Clicked column #{column}: #{tc.name}"
+    tc.toggle_sort_indicator
+    @none_table_data.sort_by! { |row_data| row_data[column] }
+    @none_table_data.reverse! if tc.sort_indicator == :descending
+  end
 end
 
 BasicTableSelection.launch
