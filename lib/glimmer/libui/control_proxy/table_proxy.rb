@@ -64,6 +64,7 @@ module Glimmer
           register_column_listeners
           configure_selection_mode
           configure_selection
+          configure_header_visible
         end
         
         def post_initialize_child(child)
@@ -143,6 +144,7 @@ module Glimmer
           end
         end
         alias selection_mode= selection_mode
+        alias set_selection_mode selection_mode
         
         def selection
           return @selection if !@content_added
@@ -172,6 +174,24 @@ module Glimmer
 #         ensure
 #           ::LibUI.free_table_selection(ts)
         end
+        alias set_selection selection=
+        
+        def header_visible
+          return @header_visible if !@content_added
+          
+          result = ::LibUI.table_header_visible(@libui)
+          LibUI.integer_to_boolean(result)
+        end
+        
+        def header_visible=(value)
+          @header_visible = value
+          return @header_visible if !@content_added
+          return if value.nil?
+          
+          value = LibUI.boolean_to_integer(value)
+          ::LibUI.table_header_set_visible(@libui, value)
+        end
+        alias set_header_visible header_visible=
         
         def column_attributes
           @column_attributes ||= columns.select {|column| column.is_a?(Column)}.map(&:name).map(&:underscore)
@@ -609,6 +629,10 @@ module Glimmer
         
         def configure_selection
           self.selection = @selection
+        end
+        
+        def configure_header_visible
+          self.header_visible = @header_visible
         end
       end
     end

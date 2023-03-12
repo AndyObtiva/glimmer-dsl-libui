@@ -33,6 +33,14 @@ class BasicTableSelection
               }
             }
             
+            button('Toggle Table Header Visibility') {
+              stretchy false
+              
+              on_clicked do
+                @one_table.header_visible = !@one_table.header_visible
+              end
+            }
+            
             @one_table = table {
               text_column('Animal') {
                 on_clicked do |tc, column|
@@ -58,6 +66,7 @@ class BasicTableSelection
               cell_rows @one_data
               selection_mode :one # other values are :zero_or_many , :zero_or_one, :none (default is :zero_or_one if not specified)
               selection 2 # initial selection row index (could be nil too or just left off, defaulting to 0)
+              # header_visible true # default
         
               on_row_clicked do |t, row|
                 puts "Row Clicked: #{row}"
@@ -91,6 +100,14 @@ class BasicTableSelection
               }
             }
             
+            button('Toggle Table Header Visibility') {
+              stretchy false
+              
+              on_clicked do
+                @zero_or_one_table.header_visible = !@zero_or_one_table.header_visible
+              end
+            }
+            
             @zero_or_one_table = table {
               text_column('Animal') {
                 on_clicked do |tc, column|
@@ -116,6 +133,7 @@ class BasicTableSelection
               cell_rows @zero_or_one_data
               selection_mode :zero_or_one # other values are :zero_or_many , :one, :none (default is :zero_or_one if not specified)
               # selection 0 # initial selection row index (could be nil too or just left off)
+              # header_visible true # default
         
               on_row_clicked do |t, row|
                 puts "Row Clicked: #{row}"
@@ -155,6 +173,14 @@ class BasicTableSelection
               end
             }
             
+            button('Toggle Table Header Visibility') {
+              stretchy false
+              
+              on_clicked do
+                @zero_or_many_table.header_visible = !@zero_or_many_table.header_visible
+              end
+            }
+            
             @zero_or_many_table = table {
               text_column('Animal') {
                 on_clicked do |tc, column|
@@ -180,6 +206,7 @@ class BasicTableSelection
               cell_rows @zero_or_many_data
               selection_mode :zero_or_many # other values are :none , :zero_or_one , and :one (default is :zero_or_one if not specified)
               selection 0, 2, 4 # initial selection row indexes (could be empty array too or just left off)
+              # header_visible true # default
         
               on_row_clicked do |t, row|
                 puts "Row Clicked: #{row}"
@@ -204,6 +231,14 @@ class BasicTableSelection
                 
         tab_item('None') {
           vertical_box {
+            button('Toggle Table Header Visibility') {
+              stretchy false
+              
+              on_clicked do
+                @none_table.header_visible = !@none_table.header_visible
+              end
+            }
+            
             @none_table = table {
               text_column('Animal') {
                 on_clicked do |tc, column|
@@ -228,6 +263,7 @@ class BasicTableSelection
         
               cell_rows @none_data
               selection_mode :none # other values are :zero_or_many , :zero_or_one, :one (default is :zero_or_one if not specified)
+              # header_visible true # default
         
               on_row_clicked do |t, row|
                 puts "Row Clicked: #{row}"
