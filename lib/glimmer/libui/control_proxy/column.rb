@@ -52,19 +52,26 @@ module Glimmer
         
         # actual index within table columns (disregarding extra fillings that account for DualColumn instances)
         def index
-          @parent_proxy.columns.select {|c| c.is_a?(Column)}.index(self)
+          @parent_proxy.column_proxies.index(self)
         end
         
-        def sort_indicator(value = nil)
-          if value.nil?
-            result = ::LibUI.table_header_sort_indicator(@parent_proxy.libui, index)
-            LibUI.integer_to_column_sort_indicator(result)
-          else
-            value = LibUI.column_sort_indicator_to_integer(value)
-            ::LibUI.table_header_set_sort_indicator(@parent_proxy.libui, index, value)
-          end
+        def other_columns
+          @parent_proxy.column_proxies.reject {|c| c == self}
         end
-        alias sort_indicator= sort_indicator
+        
+        def sort_indicator
+          result = ::LibUI.table_header_sort_indicator(@parent_proxy.libui, index)
+          LibUI.integer_to_column_sort_indicator(result)
+        end
+        
+        def sort_indicator=(*args)
+          options = args.last.is_a?(Hash) ? args.pop : {reset_columns: true}
+          value = args.first
+          other_columns.each { |c| c.set_sort_indicator(nil, reset_columns: false) } if options[:reset_columns]
+          value = LibUI.column_sort_indicator_to_integer(value)
+          ::LibUI.table_header_set_sort_indicator(@parent_proxy.libui, index, value)
+        end
+        alias set_sort_indicator sort_indicator=
         
         def toggle_sort_indicator(value = nil)
           if value.nil?

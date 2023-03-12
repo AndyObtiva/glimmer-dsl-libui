@@ -37,17 +37,21 @@ class BasicTableSelection
               text_column('Animal') {
                 on_clicked do |tc, column|
                   puts "Clicked column #{column}: #{tc.name}"
+                  selected_row = @one_table.selection && @one_data[@one_table.selection]
                   tc.toggle_sort_indicator
                   @one_data.sort_by! { |row_data| row_data[column] }
                   @one_data.reverse! if tc.sort_indicator == :descending
+                  @one_table.selection = @one_data.index(selected_row)
                 end
               }
               text_column('Description') {
                 on_clicked do |tc, column|
                   puts "Clicked column #{column}: #{tc.name}"
+                  selected_row = @one_table.selection && @one_data[@one_table.selection]
                   tc.toggle_sort_indicator
                   @one_data.sort_by! { |row_data| row_data[column] }
                   @one_data.reverse! if tc.sort_indicator == :descending
+                  @one_table.selection = @one_data.index(selected_row)
                 end
               }
         
@@ -91,17 +95,21 @@ class BasicTableSelection
               text_column('Animal') {
                 on_clicked do |tc, column|
                   puts "Clicked column #{column}: #{tc.name}"
+                  selected_row = @zero_or_one_table.selection && @zero_or_one_data[@zero_or_one_table.selection]
                   tc.toggle_sort_indicator
                   @zero_or_one_data.sort_by! { |row_data| row_data[column] }
                   @zero_or_one_data.reverse! if tc.sort_indicator == :descending
+                  @zero_or_one_table.selection = @zero_or_one_data.index(selected_row)
                 end
               }
               text_column('Description') {
                 on_clicked do |tc, column|
                   puts "Clicked column #{column}: #{tc.name}"
+                  selected_row = @zero_or_one_table.selection && @zero_or_one_data[@zero_or_one_table.selection]
                   tc.toggle_sort_indicator
                   @zero_or_one_data.sort_by! { |row_data| row_data[column] }
                   @zero_or_one_data.reverse! if tc.sort_indicator == :descending
+                  @zero_or_one_table.selection = @zero_or_one_data.index(selected_row)
                 end
               }
         
@@ -151,17 +159,21 @@ class BasicTableSelection
               text_column('Animal') {
                 on_clicked do |tc, column|
                   puts "Clicked column #{column}: #{tc.name}"
+                  selected_row = @zero_or_many_table.selection && @zero_or_many_data[@zero_or_many_table.selection]
                   tc.toggle_sort_indicator
                   @zero_or_many_data.sort_by! { |row_data| row_data[column] }
                   @zero_or_many_data.reverse! if tc.sort_indicator == :descending
+                  @zero_or_many_table.selection = @zero_or_many_data.index(selected_row)
                 end
               }
               text_column('Description') {
                 on_clicked do |tc, column|
                   puts "Clicked column #{column}: #{tc.name}"
+                  selected_row = @zero_or_many_table.selection && @zero_or_many_data[@zero_or_many_table.selection]
                   tc.toggle_sort_indicator
                   @zero_or_many_data.sort_by! { |row_data| row_data[column] }
                   @zero_or_many_data.reverse! if tc.sort_indicator == :descending
+                  @zero_or_many_table.selection = @zero_or_many_data.index(selected_row)
                 end
               }
         
@@ -196,17 +208,21 @@ class BasicTableSelection
               text_column('Animal') {
                 on_clicked do |tc, column|
                   puts "Clicked column #{column}: #{tc.name}"
+                  selected_row = @none_table.selection && @none_data[@none_table.selection]
                   tc.toggle_sort_indicator
                   @none_data.sort_by! { |row_data| row_data[column] }
                   @none_data.reverse! if tc.sort_indicator == :descending
+                  @none_table.selection = @none_data.index(selected_row)
                 end
               }
               text_column('Description') {
                 on_clicked do |tc, column|
                   puts "Clicked column #{column}: #{tc.name}"
+                  selected_row = @none_table.selection && @none_data[@none_table.selection]
                   tc.toggle_sort_indicator
                   @none_data.sort_by! { |row_data| row_data[column] }
                   @none_data.reverse! if tc.sort_indicator == :descending
+                  @none_table.selection = @none_data.index(selected_row)
                 end
               }
         

@@ -4,6 +4,8 @@
 
 - table_header_set_visible
 - table_header_visible
+- set `table` column `sort_indicator` declaratively
+- set `table` column `visible` declaratively
 
 - Table selection databinding
 - Table column sort indicator databinding

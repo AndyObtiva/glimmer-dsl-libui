@@ -222,6 +222,10 @@ module Glimmer
           compound_columns.index(compound_column)
         end
         
+        def column_proxies
+          @columns&.select {|c| c.is_a?(Column)}
+        end
+        
         def handle_listener(listener_name, &listener)
           # if content has been added, then you can register listeners immediately (without accumulation
           if CUSTOM_LISTENER_NAMES.include?(listener_name.to_s) || @content_added
