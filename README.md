@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.7.0
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.7.1
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 ### The Quickest Way From Zero To GUI
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
@@ -544,7 +544,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.7.0'
+gem 'glimmer-dsl-libui', '~> 0.7.1'
 ```
 
 Test that installation worked by running the [Meta-Example](#examples):
@@ -736,9 +736,9 @@ Keyword(Args) | Properties | Listeners
 `string(string = '')` | `font`, `color` (`Hash` of `:r` as `0`-`255`, `:g` as `0`-`255`, `:b` as `0`-`255`, `:a` as `0.0`-`1.0`, hex, or [X11](https://en.wikipedia.org/wiki/X11_color_names) color), `background` (`Hash` of `:r` as `0`-`255`, `:g` as `0`-`255`, `:b` as `0`-`255`, `:a` as `0.0`-`1.0`, hex, or [X11](https://en.wikipedia.org/wiki/X11_color_names) color), `underline`, `underline_color` (`Hash` of `:r` as `0`-`255`, `:g` as `0`-`255`, `:b` as `0`-`255`, `:a` as `0.0`-`1.0`, hex, or [X11](https://en.wikipedia.org/wiki/X11_color_names) color), `open_type_features`, `string` (`String`) | None
 `tab` | `margined` (Boolean), `num_pages` (`Integer`) | None
 `tab_item(name as String)` | `index` [read-only] (`Integer`), `margined` (Boolean), `name` [read-only] (`String`) | None
-`table` | `cell_rows` (`Array` (rows) of `Arrays` (row columns) of cell values (e.g. `String` values for `text_column` cells or `Array` of `image`/`String` for `image_text_column`)), `editable` as Boolean, `selection_mode` (`:zero_or_many` , `:none` , `:zero_or_one` , or `:one`), `selection` (`Integer` for row index or `Array` of multiple row indexes) | `on_changed {|row, type, row_data| ...}`, `on_edited {|row, row_data| ...}`, `on_row_clicked {|table, row| }`, `on_row_double_clicked {|table, row| }`, and `on_selection_changed {|table| }`
+`table` | `cell_rows` (`Array` (rows) of `Arrays` (row columns) of cell values (e.g. `String` values for `text_column` cells or `Array` of `image`/`String` for `image_text_column`)), `editable` as Boolean, `selection_mode` (`:zero_or_many` , `:none` , `:zero_or_one` , or `:one`), `selection` (`Integer` for row index or `Array` of multiple row indexes), `header_visible` (Boolean) | `on_changed {|row, type, row_data| ...}`, `on_edited {|row, row_data| ...}`, `on_row_clicked {|table, row| }`, `on_row_double_clicked {|table, row| }`, and `on_selection_changed {|table| }`
 `text(x = 0 as Numeric, y = 0 as Numeric, width = area_width as Numeric)` | `align`, `default_font` | None
-`text_column(name as String)` | `editable` (Boolean) | None
+`text_column(name as String)` | `editable` (Boolean), `sort_indicator` (`:ascending` [alias: `:asc`, `:a`], `:descending` [alias: `:desc`, `:d`], or `nil`) | `on_clicked {|tc, column_index| }`
 `text_color_column(name as String)` | `editable` (Boolean) | None
 `time_picker` | `time` (`Hash` of keys: `sec` as `Integer`, `min` as `Integer`, `hour` as `Integer`) | `on_changed`
 `vertical_box` | `padded` (Boolean) | None

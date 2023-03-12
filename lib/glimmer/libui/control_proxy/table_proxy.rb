@@ -65,6 +65,7 @@ module Glimmer
           configure_selection_mode
           configure_selection
           configure_header_visible
+          configure_column_sort_indicators
         end
         
         def post_initialize_child(child)
@@ -633,6 +634,10 @@ module Glimmer
         
         def configure_header_visible
           self.header_visible = @header_visible
+        end
+        
+        def configure_column_sort_indicators
+          column_proxies.each {|c| c.configure_sort_indicator }
         end
       end
     end

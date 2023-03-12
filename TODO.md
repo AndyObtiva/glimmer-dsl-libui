@@ -2,11 +2,9 @@
 
 ## Next
 
-- set `table` column `sort_indicator` declaratively
-
 - Table selection databinding
 - Table column sort indicator databinding
-- Table column visible databinding
+- Table header visible databinding
 - basic_table_selection2.rb relying on data-binding
 
 - Update Supported Controls documentation with allowed parents and allowed children

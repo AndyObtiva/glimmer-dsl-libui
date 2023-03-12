@@ -43,6 +43,8 @@ class BasicTableSelection
             
             @one_table = table {
               text_column('Animal') {
+                # sort_indicator :descending # can be :ascending, :descending, or nil (default)
+                
                 on_clicked do |tc, column|
                   puts "Clicked column #{column}: #{tc.name}"
                   selected_row = @one_table.selection && @one_data[@one_table.selection]
@@ -53,6 +55,8 @@ class BasicTableSelection
                 end
               }
               text_column('Description') {
+                # sort_indicator :descending # can be :ascending, :descending, or nil (default)
+                
                 on_clicked do |tc, column|
                   puts "Clicked column #{column}: #{tc.name}"
                   selected_row = @one_table.selection && @one_data[@one_table.selection]
@@ -110,6 +114,8 @@ class BasicTableSelection
             
             @zero_or_one_table = table {
               text_column('Animal') {
+                # sort_indicator :descending # can be :ascending, :descending, or nil (default)
+                
                 on_clicked do |tc, column|
                   puts "Clicked column #{column}: #{tc.name}"
                   selected_row = @zero_or_one_table.selection && @zero_or_one_data[@zero_or_one_table.selection]
@@ -120,6 +126,8 @@ class BasicTableSelection
                 end
               }
               text_column('Description') {
+                # sort_indicator :descending # can be :ascending, :descending, or nil (default)
+                
                 on_clicked do |tc, column|
                   puts "Clicked column #{column}: #{tc.name}"
                   selected_row = @zero_or_one_table.selection && @zero_or_one_data[@zero_or_one_table.selection]
@@ -183,6 +191,8 @@ class BasicTableSelection
             
             @zero_or_many_table = table {
               text_column('Animal') {
+                # sort_indicator :descending # can be :ascending, :descending, or nil (default)
+                
                 on_clicked do |tc, column|
                   puts "Clicked column #{column}: #{tc.name}"
                   selected_row = @zero_or_many_table.selection && @zero_or_many_data[@zero_or_many_table.selection]
@@ -193,6 +203,8 @@ class BasicTableSelection
                 end
               }
               text_column('Description') {
+                # sort_indicator :descending # can be :ascending, :descending, or nil (default)
+                
                 on_clicked do |tc, column|
                   puts "Clicked column #{column}: #{tc.name}"
                   selected_row = @zero_or_many_table.selection && @zero_or_many_data[@zero_or_many_table.selection]
@@ -241,6 +253,8 @@ class BasicTableSelection
             
             @none_table = table {
               text_column('Animal') {
+                # sort_indicator :descending # can be :ascending, :descending, or nil (default)
+                
                 on_clicked do |tc, column|
                   puts "Clicked column #{column}: #{tc.name}"
                   selected_row = @none_table.selection && @none_data[@none_table.selection]
@@ -251,6 +265,8 @@ class BasicTableSelection
                 end
               }
               text_column('Description') {
+                # sort_indicator :descending # can be :ascending, :descending, or nil (default)
+                
                 on_clicked do |tc, column|
                   puts "Clicked column #{column}: #{tc.name}"
                   selected_row = @none_table.selection && @none_data[@none_table.selection]

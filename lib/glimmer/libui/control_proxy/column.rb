@@ -60,6 +60,8 @@ module Glimmer
         end
         
         def sort_indicator
+          return @sort_indicator if !@content_added
+          
           result = ::LibUI.table_header_sort_indicator(@parent_proxy.libui, index)
           LibUI.integer_to_column_sort_indicator(result)
         end
@@ -67,6 +69,9 @@ module Glimmer
         def sort_indicator=(*args)
           options = args.last.is_a?(Hash) ? args.pop : {reset_columns: true}
           value = args.first
+          @sort_indicator = value
+          return @sort_indicator if !@content_added
+          
           other_columns.each { |c| c.set_sort_indicator(nil, reset_columns: false) } if options[:reset_columns]
           value = LibUI.column_sort_indicator_to_integer(value)
           ::LibUI.table_header_set_sort_indicator(@parent_proxy.libui, index, value)
@@ -95,6 +100,10 @@ module Glimmer
         
         def column_listeners_for(listener_name)
           column_listeners[listener_name] ||= []
+        end
+        
+        def configure_sort_indicator
+          set_sort_indicator(@sort_indicator, reset_columns: false)
         end
       end
     end
