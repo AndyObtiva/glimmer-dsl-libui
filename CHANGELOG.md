@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.7.3
+
+- `table` `selection` data-binding support
+- Update `examples/basic_table_selection.rb` to use `selection`, `selection_mode`, `header_visible` data-binding support
+
 ## 0.7.2
 
 - `table` `on_selection_changed` listener arguments now provide extra arguments of `selection`, `added_selection`, `removed_selection` after first argument (`table`)

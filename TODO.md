@@ -2,9 +2,7 @@
 
 ## Next
 
-- Table selection databinding
 - Table column sort indicator databinding
-- Table header visible databinding
 - basic_table_selection2.rb relying on data-binding
 
 - Automate table sorting support (perhaps via a property, sortable, which should default to true)

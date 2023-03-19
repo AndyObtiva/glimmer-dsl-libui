@@ -1,9 +1,13 @@
 require 'glimmer-dsl-libui'
 
 class BasicTableSelection
-  TablePresenter = Struct.new(:data, :selection, keyword_init: true) do
+  TablePresenter = Struct.new(:data, :selection_mode, :selection, :header_visible, keyword_init: true) do
     def selection_items
       data.size.times.map { |row| "Row #{row} Selection" }
+    end
+    
+    def toggle_header_visible
+      self.header_visible = !(header_visible.nil? || header_visible)
     end
   end
   
@@ -17,7 +21,12 @@ class BasicTableSelection
       %w[horse neigh],
       %w[cow moo]
     ]
-    @one_table_presenter = TablePresenter.new(data: data.dup, selection: 2)
+    @one_table_presenter = TablePresenter.new(
+      data: data.dup,
+      selection_mode: :one, # other values are :zero_or_many , :zero_or_one, :none (default is :zero_or_one if not specified)
+      selection: 2, # initial selection row index (could be nil too or just left off, defaulting to 0)
+      header_visible: nil, # defaults to true
+    )
   end
   
   body {
@@ -38,7 +47,7 @@ class BasicTableSelection
               stretchy false
               
               on_clicked do
-                @one_table.header_visible = !@one_table.header_visible
+                @one_table_presenter.toggle_header_visible
               end
             }
             
@@ -59,9 +68,9 @@ class BasicTableSelection
               }
         
               cell_rows @one_table_presenter.data
-              selection_mode :one # other values are :zero_or_many , :zero_or_one, :none (default is :zero_or_one if not specified)
-              selection <=> [@one_table_presenter, :selection] # initial selection row index (could be nil too or just left off, defaulting to 0)
-              # header_visible true # default
+              selection_mode <= [@one_table_presenter, :selection_mode]
+              selection <=> [@one_table_presenter, :selection]
+              header_visible <= [@one_table_presenter, :header_visible]
         
               on_row_clicked do |t, row|
                 puts "Row Clicked: #{row}"
@@ -86,14 +95,14 @@ class BasicTableSelection
     }
   }
   
-#   def sort_one_table_column(tc, column)
-#     puts "Clicked column #{column}: #{tc.name}"
-#     selected_row = @one_table.selection && @one_table_presenter.data[@one_table.selection]
-#     tc.toggle_sort_indicator
-#     @one_table_presenter.data.sort_by! { |row_data| row_data[column] }
-#     @one_table_presenter.data.reverse! if tc.sort_indicator == :descending
-#     @one_table.selection = @one_table_presenter.data.index(selected_row)
-#   end
+  def sort_one_table_column(tc, column)
+    puts "Clicked column #{column}: #{tc.name}"
+    selected_row = @one_table_presenter.selection && @one_table_presenter.data[@one_table.selection]
+    tc.toggle_sort_indicator
+    @one_table_presenter.data.sort_by! { |row_data| row_data[column] }
+    @one_table_presenter.data.reverse! if tc.sort_indicator == :descending
+    @one_table_presenter.selection = @one_table_presenter.data.index(selected_row)
+  end
 end
 
 BasicTableSelection.launch
