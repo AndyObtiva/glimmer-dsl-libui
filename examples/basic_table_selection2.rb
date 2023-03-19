@@ -11,11 +11,11 @@ class BasicTableSelection
     end
     
     def sort
-      selected_row = table_presenter.selected_row
+      selected_data = table_presenter.selection_mode == :zero_or_many ? table_presenter.selected_rows : table_presenter.selected_row
       toggle_sort_indicator
       table_presenter.data.sort_by! { |row_data| row_data[column] }
       table_presenter.data.reverse! if sort_indicator == :descending
-      table_presenter.selection = table_presenter.data.index(selected_row)
+      table_presenter.selection = table_presenter.selection_mode == :zero_or_many ? selected_data&.map { |selected_row| table_presenter.data.index(selected_row) } : table_presenter.data.index(selected_data)
     end
   end
                                   
@@ -42,6 +42,10 @@ class BasicTableSelection
     def selected_row
       selection && data[selection]
     end
+    
+    def selected_rows
+      selection && selection.is_a?(Array) && selection.map { |row| data[row] }
+    end
   end
   
   include Glimmer::LibUI::Application
@@ -66,6 +70,13 @@ class BasicTableSelection
       column_names: ['Name', 'Description'],
       selection_mode: :zero_or_one, # other values are :zero_or_many , :one, :none (default is :zero_or_one if not specified)
       selection: nil, # initial selection row index (could be an integer too or just left off, defaulting to nil)
+      header_visible: nil, # defaults to true
+    )
+    @zero_or_many_table_presenter = TablePresenter.new(
+      data: data.dup,
+      column_names: ['Name', 'Description'],
+      selection_mode: :zero_or_many, # other values are :zero_or_many , :one, :none (default is :zero_or_one if not specified)
+      selection: [0, 2, 4], # initial selection row index (could be an integer too or just left off, defaulting to nil)
       header_visible: nil, # defaults to true
     )
     @none_table_presenter = TablePresenter.new(
@@ -170,6 +181,70 @@ class BasicTableSelection
               selection_mode <= [@zero_or_one_table_presenter, :selection_mode]
               selection <=> [@zero_or_one_table_presenter, :selection]
               header_visible <= [@zero_or_one_table_presenter, :header_visible]
+        
+              on_row_clicked do |t, row|
+                puts "Row Clicked: #{row}"
+              end
+        
+              on_row_double_clicked do |t, row|
+                puts "Row Double Clicked: #{row}"
+              end
+        
+              on_selection_changed do |t, selection, added_selection, removed_selection|
+                # selection is an array or nil if selection mode is zero_or_many
+                # otherwise, selection is a single index integer or nil when not selected
+                puts "Selection Changed: #{selection.inspect}"
+                puts "Added Selection: #{added_selection.inspect}"
+                puts "Removed Selection: #{removed_selection.inspect}"
+              end
+            }
+          }
+        }
+        
+        tab_item('Zero-Or-Many') {
+          vertical_box {
+            vertical_box {
+              stretchy false
+              
+              @zero_or_many_table_selection_checkboxes = @zero_or_many_table_presenter.data.size.times.map do |row|
+                checkbox("Row #{row} Selection") {
+                  on_toggled do |c|
+                    table_selection = @zero_or_many_table_presenter.selection.to_a
+                    if c.checked?
+                      table_selection << row unless table_selection.include?(row)
+                    else
+                      table_selection.delete(row) if table_selection.include?(row)
+                    end
+                    @zero_or_many_table_presenter.selection = table_selection
+                  end
+                }
+              end
+            }
+            
+            button('Toggle Table Header Visibility') {
+              stretchy false
+              
+              on_clicked do
+                @zero_or_many_table_presenter.toggle_header_visible
+              end
+            }
+            
+            @zero_or_many_table = table {
+              @zero_or_many_table_presenter.column_presenters.each do |column_presenter|
+                text_column(column_presenter.name) {
+                  sort_indicator <=> [column_presenter, :sort_indicator]
+                  
+                  on_clicked do |tc, column|
+                    puts "Clicked column #{column}: #{tc.name}"
+                    column_presenter.sort
+                  end
+                }
+              end
+        
+              cell_rows @zero_or_many_table_presenter.data
+              selection_mode <= [@zero_or_many_table_presenter, :selection_mode]
+              selection <=> [@zero_or_many_table_presenter, :selection]
+              header_visible <= [@zero_or_many_table_presenter, :header_visible]
         
               on_row_clicked do |t, row|
                 puts "Row Clicked: #{row}"
