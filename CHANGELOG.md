@@ -3,7 +3,8 @@
 ## 0.7.3
 
 - `table` `selection` data-binding support
-- Update `examples/basic_table_selection.rb` to use `selection`, `selection_mode`, `header_visible` data-binding support
+- `table` column `sort_indicator` data-binding support
+- New `examples/basic_table_selection2.rb` that uses `selection`, `selection_mode`, `header_visible`, and `sort_indicator` data-binding support
 
 ## 0.7.2
 

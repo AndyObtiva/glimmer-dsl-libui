@@ -2,10 +2,9 @@
 
 ## Next
 
-- Table column sort indicator databinding
-- basic_table_selection2.rb relying on data-binding
 
-- Automate table sorting support (perhaps via a property, sortable, which should default to true)
+- Automate table sorting support (perhaps via a property, sortable, which should default to true). Must handle cell_rows as array of arrays, array of hashes, and array of models. Does not work if cell_rows is an lazy enumerable
+- Option for in-memory only sort for table in case we don't want to store the sort back on the model
 
 - Update Supported Controls documentation with allowed parents and allowed children
 - Support overriding global `table` `editable` state with a specific column `editable` state if global value is `true` and column value is `false`

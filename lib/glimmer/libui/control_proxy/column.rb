@@ -85,6 +85,15 @@ module Glimmer
             self.sort_indicator = value
           end
         end
+        
+        def data_bind_write(property, model_binding)
+          case property
+          when 'sort_indicator'
+            Glimmer::DataBinding::Observer.proc do
+              model_binding.call(sort_indicator)
+            end.observe(self, :sort_indicator)
+          end
+        end
           
         def can_handle_listener?(listener_name)
           listener_name == 'on_clicked'
