@@ -167,6 +167,7 @@ module Glimmer
       end
       
       def handle_listener(listener_name, &listener)
+        # replace first listener argument (control libui pointer) with actual Ruby libui object
         safe_listener = Proc.new { |*args| listener.call(self, *args[1..-1]) }
         if ::LibUI.respond_to?("#{libui_api_keyword}_#{listener_name}")
           if listeners[listener_name].nil?

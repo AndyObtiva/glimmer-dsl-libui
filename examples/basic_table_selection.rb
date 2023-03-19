@@ -71,11 +71,13 @@ class BasicTableSelection
                 puts "Row Double Clicked: #{row}"
               end
         
-              on_selection_changed do |t|
+              on_selection_changed do |t, selection, added_selection, removed_selection|
                 # selection is an array or nil if selection mode is zero_or_many
                 # otherwise, selection is a single index integer or nil when not selected
-                puts "Selection Changed: #{t.selection.inspect}"
-                @one_table_selection_radio_buttons.selected = t.selection
+                puts "Selection Changed: #{selection.inspect}"
+                puts "Added Selection: #{added_selection.inspect}"
+                puts "Removed Selection: #{removed_selection.inspect}"
+                @one_table_selection_radio_buttons.selected = selection
               end
             }
           }
@@ -132,11 +134,13 @@ class BasicTableSelection
                 puts "Row Double Clicked: #{row}"
               end
         
-              on_selection_changed do |t|
+              on_selection_changed do |t, selection, added_selection, removed_selection|
                 # selection is an array or nil if selection mode is zero_or_many
                 # otherwise, selection is a single index integer or nil when not selected
-                puts "Selection Changed: #{t.selection.inspect}"
-                @zero_or_one_table_selection_radio_buttons.selected = t.selection
+                puts "Selection Changed: #{selection.inspect}"
+                puts "Added Selection: #{added_selection.inspect}"
+                puts "Removed Selection: #{removed_selection.inspect}"
+                @zero_or_one_table_selection_radio_buttons.selected = selection
               end
             }
           }
@@ -199,12 +203,16 @@ class BasicTableSelection
                 puts "Row Double Clicked: #{row}"
               end
         
-              on_selection_changed do |t|
+              on_selection_changed do |t, selection, added_selection, removed_selection|
                 # selection is an array or nil if selection mode is zero_or_many
                 # otherwise, selection is a single index integer or nil when not selected
-                puts "Selection Changed: #{t.selection.inspect}"
-                @zero_or_many_table_selection_checkboxes.each { |cb| cb.checked = false }
-                t.selection&.each do |selected_row|
+                puts "Selection Changed: #{selection.inspect}"
+                puts "Added Selection: #{added_selection.inspect}"
+                puts "Removed Selection: #{removed_selection.inspect}"
+                removed_selection&.each do |selected_row|
+                  @zero_or_many_table_selection_checkboxes[selected_row].checked = false
+                end
+                added_selection&.each do |selected_row|
                   @zero_or_many_table_selection_checkboxes[selected_row].checked = true
                 end
               end
@@ -248,12 +256,6 @@ class BasicTableSelection
         
               on_row_double_clicked do |t, row|
                 puts "Row Double Clicked: #{row}"
-              end
-        
-              on_selection_changed do |t|
-                # selection is an array or nil if selection mode is zero_or_many
-                # otherwise, selection is a single index integer or nil when not selected
-                puts "Selection Changed: #{t.selection.inspect}"
               end
             }
           }

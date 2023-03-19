@@ -164,11 +164,11 @@ module Glimmer
           value = value.first if value.size == 1
           @selection = value
           return @selection if !@content_added
-          return if value.nil?
+          return if @selection.nil?
         
           ts = ::LibUI::FFI::TableSelection.malloc
-          ts.NumRows = value.is_a?(Array) ? value.size : 1
-          ts.Rows = [value].flatten.pack('i*')
+          ts.NumRows = @selection.is_a?(Array) ? @selection.size : 1
+          ts.Rows = [@selection].flatten.pack('i*')
           super(ts)
           # TODO figure out why ensure block is not working (perhaps libui auto-frees that resource upon setting selection)
           # Delete following code if not needed.
@@ -248,9 +248,18 @@ module Glimmer
         end
         
         def handle_listener(listener_name, &listener)
-          # if content has been added, then you can register listeners immediately (without accumulation
-          if CUSTOM_LISTENER_NAMES.include?(listener_name.to_s) || @content_added
-            super
+          # if content has been added, then you can register listeners immediately (without accumulation)
+          if CUSTOM_LISTENER_NAMES.include?(listener_name) || @content_added
+            actual_listener = listener
+            case listener_name
+            when 'on_selection_changed'
+              actual_listener = Proc.new do |myself, *args|
+                added_selection = selection.is_a?(Array) ? (selection - @old_selection.to_a) : selection
+                removed_selection = selection.is_a?(Array) ? (@old_selection.to_a - selection) : @old_selection
+                listener.call(myself, selection, added_selection, removed_selection)
+              end
+            end
+            super(listener_name, &actual_listener)
           else
             # if content is not added yet, then accumulate listeners to register later when table content is closed
             @table_listeners ||= []
@@ -602,6 +611,9 @@ module Glimmer
           # register accumulated listeners after table content is closed
           @table_listeners&.each do |listener_name, listener|
             handle_listener(listener_name, &listener)
+          end
+          handle_listener('on_selection_changed') do |myself, selection, added_selection, removed_selection|
+            @old_selection = selection
           end
         end
         

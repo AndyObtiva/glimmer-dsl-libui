@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.7.2
+
+- `table` `on_selection_changed` listener arguments now provide extra arguments of `selection`, `added_selection`, `removed_selection` after first argument (`table`)
+- Update `examples/basic_table_selection.rb` to use new `on_selection_changed` arguments of `selection`, `added_selection`, and `removed_selection`
+
 ## 0.7.1
 
 - `table` column `on_clicked` listener (can be nested under `text_column`, `text_color_column`, `button_column`, `checkbox_column`, `checkbox_text_color_column`, `image_column`, `image_text_color_column`, `image_text_column`, and `progress_bar_column`)
