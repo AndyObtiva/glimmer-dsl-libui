@@ -1506,8 +1506,6 @@ Mac | Windows | Linux
 
 ## Basic Table Selection
 
-[examples/basic_table_selection.rb](/examples/basic_table_selection.rb)
-
 Run with this command from the root of the project if you cloned the project:
 
 ```
@@ -1525,6 +1523,14 @@ ruby -r glimmer-dsl-libui -e "require 'examples/basic_table_selection'"
 ![glimmer-dsl-libui-mac-basic-table-selection-zero-or-many.png](/images/glimmer-dsl-libui-mac-basic-table-selection-zero-or-many.png)
 ![glimmer-dsl-libui-mac-basic-table-selection-none.png](/images/glimmer-dsl-libui-mac-basic-table-selection-none.png)
 ![glimmer-dsl-libui-mac-basic-table-selection-header-not-visible.png](/images/glimmer-dsl-libui-mac-basic-table-selection-header-not-visible.png)
+
+Version 1 (without data-binding):
+
+[examples/basic_table_selection.rb](/examples/basic_table_selection.rb)
+
+Version 2 (with data-binding):
+
+[examples/basic_table_selection2.rb](/examples/basic_table_selection2.rb)
 
 ## Basic Area
 

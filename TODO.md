@@ -2,7 +2,6 @@
 
 ## Next
 
-
 - Automate table sorting support (perhaps via a property, sortable, which should default to true). Must handle cell_rows as array of arrays, array of hashes, and array of models. Does not work if cell_rows is an lazy enumerable
 - Option for in-memory only sort for table in case we don't want to store the sort back on the model
 
