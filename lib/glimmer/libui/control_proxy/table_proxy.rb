@@ -224,7 +224,12 @@ module Glimmer
         end
         
         def data_bind_write(property, model_binding)
-          handle_listener('on_edited') { model_binding.call(cell_rows) } if property == 'cell_rows'
+          case property
+          when 'cell_rows'
+            handle_listener('on_edited') { model_binding.call(cell_rows) }
+          when 'selection'
+            handle_listener('on_selection_changed') { model_binding.call(selection) }
+          end
         end
         
         def array_deep_dup(array_or_object)

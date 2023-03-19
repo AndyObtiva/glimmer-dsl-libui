@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.7.2
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.7.3
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 ### The Quickest Way From Zero To GUI
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
@@ -544,7 +544,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.7.2'
+gem 'glimmer-dsl-libui', '~> 0.7.3'
 ```
 
 Test that installation worked by running the [Meta-Example](#examples):
