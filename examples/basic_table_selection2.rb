@@ -64,8 +64,15 @@ class BasicTableSelection
     @zero_or_one_table_presenter = TablePresenter.new(
       data: data.dup,
       column_names: ['Name', 'Description'],
-      selection_mode: :zero_or_one, # other values are :zero_or_many , :zero_or_one, :none (default is :zero_or_one if not specified)
+      selection_mode: :zero_or_one, # other values are :zero_or_many , :one, :none (default is :zero_or_one if not specified)
       selection: nil, # initial selection row index (could be an integer too or just left off, defaulting to nil)
+      header_visible: nil, # defaults to true
+    )
+    @none_table_presenter = TablePresenter.new(
+      data: data.dup,
+      column_names: ['Name', 'Description'],
+      selection_mode: :none, # other values are :zero_or_many , :zero_or_one, :one (default is :zero_or_one if not specified)
+      selection: nil, # defaults to nil
       header_visible: nil, # defaults to true
     )
   end
@@ -178,6 +185,44 @@ class BasicTableSelection
                 puts "Selection Changed: #{selection.inspect}"
                 puts "Added Selection: #{added_selection.inspect}"
                 puts "Removed Selection: #{removed_selection.inspect}"
+              end
+            }
+          }
+        }
+        
+        tab_item('None') {
+          vertical_box {
+            button('Toggle Table Header Visibility') {
+              stretchy false
+              
+              on_clicked do
+                @none_table_presenter.toggle_header_visible
+              end
+            }
+            
+            @none_table = table {
+              @none_table_presenter.column_presenters.each do |column_presenter|
+                text_column(column_presenter.name) {
+                  sort_indicator <=> [column_presenter, :sort_indicator]
+                  
+                  on_clicked do |tc, column|
+                    puts "Clicked column #{column}: #{tc.name}"
+                    column_presenter.sort
+                  end
+                }
+              end
+        
+              cell_rows @none_table_presenter.data
+              selection_mode <= [@none_table_presenter, :selection_mode]
+              selection <=> [@none_table_presenter, :selection]
+              header_visible <= [@none_table_presenter, :header_visible]
+        
+              on_row_clicked do |t, row|
+                puts "Row Clicked: #{row}"
+              end
+        
+              on_row_double_clicked do |t, row|
+                puts "Row Double Clicked: #{row}"
               end
             }
           }
