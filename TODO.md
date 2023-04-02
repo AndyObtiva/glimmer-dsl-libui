@@ -2,8 +2,13 @@
 
 ## Next
 
-- Automate table sorting support (perhaps via a property, sortable, which should default to true). Must handle cell_rows as array of arrays, array of hashes, and array of models. Does not work if cell_rows is an lazy enumerable
+- Fix issue with button_column on_clicked not resulting in click of button yet click of column. It seems we have to add a on_button_clicked alternative here. and break the API
+- Fix issue with not showing multi-selection of table in checkboxes upon starting version 2 of table selection example
+- Provide a way to configure a different sort block per table column while relying on sortable property
 - Option for in-memory only sort for table in case we don't want to store the sort back on the model
+- Table sorting for refined_table
+
+- Enable usage of `msg_box` and `msg_box_error` without constructing a `window` explicitly or launching a `Glimmer::LibUI::Application` to enable quick command line triggering of message boxes if needed.
 
 - Update Supported Controls documentation with allowed parents and allowed children
 - Support overriding global `table` `editable` state with a specific column `editable` state if global value is `true` and column value is `false`
@@ -14,6 +19,8 @@
 - Provide a guide comparing use of path with path having figure with shape shorcuts (e.g. polyline, which abstracts path and figure away)
 - It seems that table-related instability in Windows is back. Check what is causing it. Test with RefinedTable
 - Fix issue with version 4 of Area Gallery
+
+- examples/area_tooltip.rb & examples/area_tooltip_with_delay.rb 
 
 ### 0.5.x
 

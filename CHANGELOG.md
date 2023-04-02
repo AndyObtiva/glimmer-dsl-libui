@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.7.4
+
+- `table` `sortable` property (default: `true`) to enable automatic table sorting support when `cell_rows` is an `Array` (does not sort if `cell_rows` is a lazy enumerable)
+
 ## 0.7.3
 
 - `table` `selection` data-binding support

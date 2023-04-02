@@ -37,6 +37,28 @@ module Glimmer
         include Glimmer::FiddleConsumer
         
         CUSTOM_LISTENER_NAMES = ['on_changed', 'on_edited']
+        DEFAULT_COLUMN_SORT_BLOCK = lambda do |table_cell_row, column, table_proxy|
+          if table_cell_row.is_a?(Array)
+            value = table_cell_row[column]
+          else
+            attribute = table_proxy.column_attributes[column]
+            value = table_cell_row.send(attribute)
+          end
+          if value.is_a?(Array)
+            # This is needed to not crash on sorting an unsortable array
+            value = value.map do |element|
+              case element
+              when true
+                1
+              when false
+                0
+              else
+                element
+              end
+            end
+          end
+          value
+        end
         
         attr_reader :model_handler, :model, :table_params, :columns
       
@@ -66,6 +88,7 @@ module Glimmer
           configure_selection
           configure_header_visible
           configure_column_sort_indicators
+          configure_sorting
         end
         
         def post_initialize_child(child)
@@ -183,6 +206,7 @@ module Glimmer
           result = ::LibUI.table_header_visible(@libui)
           LibUI.integer_to_boolean(result)
         end
+        alias header_visible? header_visible
         
         def header_visible=(value)
           @header_visible = value
@@ -193,6 +217,17 @@ module Glimmer
           ::LibUI.table_header_set_visible(@libui, value)
         end
         alias set_header_visible header_visible=
+        
+        def sortable
+          @sortable = true if @sortable.nil?
+          @sortable
+        end
+        alias sortable? sortable
+        
+        def sortable=(value)
+          @sortable = value
+        end
+        alias set_sortable sortable=
         
         def column_attributes
           @column_attributes ||= columns.select {|column| column.is_a?(Column)}.map(&:name).map(&:underscore)
@@ -625,16 +660,14 @@ module Glimmer
         def register_column_listeners
           # register accumulated column listeners after table content is closed
           return if @columns.nil? || @columns.empty?
-          if @columns.any? {|column| column.is_a?(Column) && !column.column_listeners_for('on_clicked').empty? }
+          if @columns.any? {|column| column.is_a?(Column)}
             ::LibUI.table_header_on_clicked(@libui) do |_, column_index|
               actual_columns = @columns.select {|column| column.is_a?(Column)}
               column = actual_columns[column_index]
               if column.is_a?(Column)
                 column_listeners = column.column_listeners_for('on_clicked')
-                if !column_listeners.empty?
-                  column_listeners.each do |column_listener|
-                    column_listener.call(column, column_index)
-                  end
+                column_listeners.each do |column_listener|
+                  column_listener.call(column, column_index)
                 end
               end
             end
@@ -654,8 +687,47 @@ module Glimmer
         end
         
         def configure_column_sort_indicators
-          column_proxies.each {|c| c.configure_sort_indicator }
+          column_proxies.each(&:configure_sort_indicator)
         end
+        
+        def configure_sorting
+          if sortable?
+            columns.each do |column_object|
+              next unless column_object.is_a?(Column)
+              column_object.on_clicked do |column_proxy, column|
+                sort_by_column(column_proxy, column)
+              end
+            end
+          end
+        end
+        
+        def sort_by_column(column_proxy, column)
+          return unless sortable? && cell_rows.is_a?(Array)
+          old_selection = backup_selection
+          column_proxy.toggle_sort_indicator
+          cell_rows.sort_by! {|table_cell_row| DEFAULT_COLUMN_SORT_BLOCK.call(table_cell_row, column, self) }
+          cell_rows.reverse! if column_proxy.sort_indicator == :descending
+          restore_selection(old_selection)
+        end
+        
+        def backup_selection
+          if selection_mode == ::LibUI::TableSelectionModeZeroOrMany
+            selected_rows = selection&.map { |row| cell_rows[row] }
+          else
+            selected_row = selection && cell_rows[selection]
+          end
+        end
+        
+        def restore_selection(old_selection)
+          if selection_mode == ::LibUI::TableSelectionModeZeroOrMany
+            selected_rows = old_selection
+            self.selection = selected_rows&.map {|row_data| cell_rows.index(row_data) }
+          else
+            selected_row = old_selection
+            self.selection = cell_rows.index(selected_row)
+          end
+        end
+        
       end
     end
   end
