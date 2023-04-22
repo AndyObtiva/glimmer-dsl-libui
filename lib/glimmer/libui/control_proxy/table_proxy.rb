@@ -664,7 +664,7 @@ module Glimmer
             ::LibUI.table_header_on_clicked(@libui) do |_, column_index|
               actual_columns = @columns.select {|column| column.is_a?(Column)}
               column = actual_columns[column_index]
-              if column.is_a?(Column)
+              if column.is_a?(Column) && !column.is_a?(Column::ButtonColumnProxy)
                 column_listeners = column.column_listeners_for('on_clicked')
                 column_listeners.each do |column_listener|
                   column_listener.call(column, column_index)
@@ -693,7 +693,7 @@ module Glimmer
         def configure_sorting
           if sortable?
             columns.each do |column_object|
-              next unless column_object.is_a?(Column)
+              next unless column_object.is_a?(Column) && !column_object.is_a?(Column::ButtonColumnProxy)
               column_object.on_clicked do |column_proxy, column|
                 sort_by_column(column_proxy, column)
               end

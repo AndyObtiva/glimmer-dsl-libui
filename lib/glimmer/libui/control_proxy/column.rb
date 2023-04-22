@@ -101,6 +101,12 @@ module Glimmer
         
         def handle_listener(listener_name, &listener)
           column_listeners_for(listener_name) << listener
+          # TODO fix this by adding a `on_button_clicked` listener in the future to separate it from `on_clicked` on the column header
+          begin
+            super # attempt to handle listener natively if this column supports it (button_column)
+          rescue => e
+            # No Op
+          end
         end
       
         def column_listeners

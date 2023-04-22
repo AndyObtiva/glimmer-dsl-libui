@@ -2,7 +2,6 @@
 
 ## Next
 
-- Disable sorting for button columns until fully supported there
 - Fix issue with button_column on_clicked not resulting in click of button yet click of column. It seems we have to add a on_button_clicked alternative here. and break the API
 - Provide a way to configure a different sort block per table column while relying on sortable property
 - Option for in-memory only sort for table in case we don't want to store the sort back on the model
