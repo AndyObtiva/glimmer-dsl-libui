@@ -126,6 +126,7 @@ module Glimmer
               end
         
               editable table_editable
+              sortable false # TODO disabled for now until we support it correctly in the future
               cell_rows <=> [self, :refined_model_array]
             }
           }

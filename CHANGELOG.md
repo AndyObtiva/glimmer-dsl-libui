@@ -5,6 +5,7 @@
 - `table` `sortable` property (default: `true`) to enable automatic table sorting support when `cell_rows` is an `Array` (does not sort if `cell_rows` is a lazy enumerable)
 - Fix issue with not auto-checking checkboxes for zero-or-many table selection in `examples/basic_table_selection2.rb`
 - Rename `examples/basic_table_selection.rb` to `examples/basic_table_selection3.rb` and add new `examples/basic_table_selection.rb` with automated `table` selection via `sortable` property (default: `true`)
+- Disable automatic sorting by default in `refined_table` since it does not sort over the entire collection, yet the visible collection only
 
 ## 0.7.3
 
