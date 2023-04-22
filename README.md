@@ -824,7 +824,7 @@ There are additional useful `Glimmer::LibUI` operations that are not found in `L
 
 The `table` control must first declare its columns via one of these column keywords (mentioned in [Supported Keywords](#supported-keywords)):
   - `background_color_column`: expects color cell values
-  - `button_column`: expects `String` cell values
+  - `button_column`: expects `String` cell values and a nested `on_clicked` listener that gets triggerd when a button is clicked
   - `checkbox_column`: expects Boolean cell values
   - `checkbox_text_column`: expects dual-element `Array` of Boolean and `String` cell values
   - `checkbox_text_color_column`: expects triple-element `Array` of Boolean, `String`, and color cell values
@@ -841,6 +841,22 @@ Note that the `cell_rows` property declaration results in "implicit data-binding
 - Deleting cell rows: Calling `Array#delete`, `Array#delete_at`, `Array#delete_if`, or any filtering/deletion `Array` method automatically deletes rows in actual `table` control
 - Inserting cell rows: Calling `Array#<<`, `Array#push`, `Array#prepend`, or any insertion/addition `Array` method automatically inserts rows in actual `table` control
 - Changing cell rows: Calling `Array#[]=`, `Array#map!`, or any update `Array` method automatically updates rows in actual `table` control
+
+More details about table data-binding can be found in [examples/basic_table.rb](https://github.com/AndyObtiva/glimmer-dsl-libui/blob/master/docs/examples/GLIMMER-DSL-LIBUI-BASIC-EXAMPLES.md#basic-table) or other `table` [basic examples](https://github.com/AndyObtiva/glimmer-dsl-libui/blob/master/docs/examples/GLIMMER-DSL-LIBUI-BASIC-EXAMPLES.md) and [advanced examples](https://github.com/AndyObtiva/glimmer-dsl-libui/blob/master/docs/examples/GLIMMER-DSL-LIBUI-ADVANCED-EXAMPLES.md).
+
+The `table` control supports table selection and table sorting automatically as smart defaults, which can also be configured if needed as per the options below.
+
+There are other properties that `table` supports:
+- `selection_mode` (`Symbol`) [default: `:zero_or_one`]: sets selection mode to `:one`, `:zero_or_one`, `:zero_or_many`, or `:none`
+- `selection` (`Integer` or `Array` of `Integer`s): a single `Integer` row index for `:one` and `:zero_or_one` selection modes, or an `Array` of `Integer` row indexes if selection mode is `:zero_or_many`
+- `header_visible` (Boolean): shows or hides column headers
+- `sortable` (Boolean) [default: `true`]: enables automatic table sorting support
+
+To handle `table` sorting manually, the following can be set inside a table column:
+- `sort_indicator` (`Symbol`): sets sort indicator to ascending or descending with the value being `:ascending`, `:descending`, `:asc`, `:desc`, `:a`, or `:d`
+- `on_clicked` (`Proc`): this listener is triggered when a table column is clicked
+
+More details about table selection and table sorting can be found in [examples/basic_table_selection.rb](https://github.com/AndyObtiva/glimmer-dsl-libui/blob/master/docs/examples/GLIMMER-DSL-LIBUI-BASIC-EXAMPLES.md#basic-table-selection).
 
 ([explicit data-binding](#data-binding) supports everything available with implicit data-binding too)
 

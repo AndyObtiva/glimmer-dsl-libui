@@ -2,6 +2,7 @@
 
 ## Next
 
+- Rename basic table selection example to something that indicates sorting too
 - Fix issue with button_column on_clicked not resulting in click of button yet click of column. It seems we have to add a on_button_clicked alternative here. and break the API
 - Provide a way to configure a different sort block per table column while relying on sortable property
 - Option for in-memory only sort for table in case we don't want to store the sort back on the model
@@ -162,6 +163,8 @@
 - consider replacing chunky png gem with exif to additionally support jpeg and tiff with higher native extension performance: https://github.com/tonytonyjan/exif or https://github.com/wilg/mini_exiftool_vendored
 - Validate control's allowed parents and allowed children to help with using the GUI DSL when making mistakes
 - Figure out if there is a way to dynamically support listeners/properties from FFI functions without having to hardcode them (like the new addition of table.on_selection_changed)
+- Consider doing special sorting for table progress_bar column where -1 shows up bigger than 100%
+- Consider preserving selection for `refined_table` across pages so that if I select a row in page 1 and go to page 2, selection is removed, and then when I go back to page 1, selection is back at the correct row
 
 # Refactoring
 
