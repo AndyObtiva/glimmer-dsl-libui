@@ -126,6 +126,7 @@ class BasicTableSelection
               selection_mode <= [@one_table_presenter, :selection_mode]
               selection <=> [@one_table_presenter, :selection]
               header_visible <= [@one_table_presenter, :header_visible]
+              sortable false # disable default sorting behavior to demonstrate manual sorting
         
               on_row_clicked do |t, row|
                 puts "Row Clicked: #{row}"
@@ -181,6 +182,7 @@ class BasicTableSelection
               selection_mode <= [@zero_or_one_table_presenter, :selection_mode]
               selection <=> [@zero_or_one_table_presenter, :selection]
               header_visible <= [@zero_or_one_table_presenter, :header_visible]
+              sortable false # disable default sorting behavior to demonstrate manual sorting
         
               on_row_clicked do |t, row|
                 puts "Row Clicked: #{row}"
@@ -208,15 +210,14 @@ class BasicTableSelection
               
               @zero_or_many_table_selection_checkboxes = @zero_or_many_table_presenter.data.size.times.map do |row|
                 checkbox("Row #{row} Selection") {
-                  on_toggled do |c|
-                    table_selection = @zero_or_many_table_presenter.selection.to_a
-                    if c.checked?
-                      table_selection << row unless table_selection.include?(row)
-                    else
-                      table_selection.delete(row) if table_selection.include?(row)
-                    end
-                    @zero_or_many_table_presenter.selection = table_selection
-                  end
+                  checked <=> [@zero_or_many_table_presenter, :selection,
+                                on_read: ->(selection_rows) {selection_rows.to_a.include?(row)},
+                                on_write: ->(checked_value) {
+                                  checked_value ?
+                                    (@zero_or_many_table_presenter.selection.to_a + [row]).uniq :
+                                    @zero_or_many_table_presenter.selection.to_a.reject {|v| v == row }
+                                },
+                              ]
                 }
               end
             }
@@ -245,6 +246,7 @@ class BasicTableSelection
               selection_mode <= [@zero_or_many_table_presenter, :selection_mode]
               selection <=> [@zero_or_many_table_presenter, :selection]
               header_visible <= [@zero_or_many_table_presenter, :header_visible]
+              sortable false # disable default sorting behavior to demonstrate manual sorting
         
               on_row_clicked do |t, row|
                 puts "Row Clicked: #{row}"
@@ -291,6 +293,7 @@ class BasicTableSelection
               selection_mode <= [@none_table_presenter, :selection_mode]
               selection <=> [@none_table_presenter, :selection]
               header_visible <= [@none_table_presenter, :header_visible]
+              sortable false # disable default sorting behavior to demonstrate manual sorting
         
               on_row_clicked do |t, row|
                 puts "Row Clicked: #{row}"

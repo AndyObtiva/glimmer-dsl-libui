@@ -1,6 +1,45 @@
 require 'glimmer-dsl-libui'
 
 class BasicTableSelection
+  TableColumnPresenter = Struct.new(:name,
+                                    :column,
+                                    :table_presenter,
+                                    keyword_init: true)
+                                  
+  TablePresenter = Struct.new(:data,
+                              :column_names,
+                              :selection_mode,
+                              :selection,
+                              :header_visible,
+                              :sortable,
+                              keyword_init: true) do
+    def selection_items
+      data.size.times.map { |row| "Row #{row} Selection" }
+    end
+    
+    def toggle_header_visible
+      self.header_visible = !(header_visible.nil? || header_visible)
+    end
+    
+    def toggle_sortable
+      self.sortable = !(sortable.nil? || sortable)
+    end
+    
+    def column_presenters
+      @column_presenters ||= column_names.each_with_index.map do |column_name, column|
+        TableColumnPresenter.new(name: column_name, column: column, table_presenter: self)
+      end
+    end
+    
+    def selected_row
+      selection && data[selection]
+    end
+    
+    def selected_rows
+      selection && selection.is_a?(Array) && selection.map { |row| data[row] }
+    end
+  end
+  
   include Glimmer::LibUI::Application
   
   before_body do
@@ -11,10 +50,38 @@ class BasicTableSelection
       %w[horse neigh],
       %w[cow moo]
     ]
-    @one_table_data = data.dup
-    @zero_or_one_table_data = data.dup
-    @zero_or_many_table_data = data.dup
-    @none_table_data = data.dup
+    @one_table_presenter = TablePresenter.new(
+      data: data.dup,
+      column_names: ['Name', 'Description'],
+      selection_mode: :one, # other values are :zero_or_many , :zero_or_one, :none (default is :zero_or_one if not specified)
+      selection: 2, # initial selection row index (could be nil too or just left off, defaulting to 0)
+      header_visible: nil, # defaults to true
+      sortable: nil, # defaults to true
+    )
+    @zero_or_one_table_presenter = TablePresenter.new(
+      data: data.dup,
+      column_names: ['Name', 'Description'],
+      selection_mode: :zero_or_one, # other values are :zero_or_many , :one, :none (default is :zero_or_one if not specified)
+      selection: nil, # initial selection row index (could be an integer too or just left off, defaulting to nil)
+      header_visible: nil, # defaults to true
+      sortable: nil, # defaults to true
+    )
+    @zero_or_many_table_presenter = TablePresenter.new(
+      data: data.dup,
+      column_names: ['Name', 'Description'],
+      selection_mode: :zero_or_many, # other values are :zero_or_many , :one, :none (default is :zero_or_one if not specified)
+      selection: [0, 2, 4], # initial selection row index (could be an integer too or just left off, defaulting to nil)
+      header_visible: nil, # defaults to true
+      sortable: nil, # defaults to true
+    )
+    @none_table_presenter = TablePresenter.new(
+      data: data.dup,
+      column_names: ['Name', 'Description'],
+      selection_mode: :none, # other values are :zero_or_many , :zero_or_one, :one (default is :zero_or_one if not specified)
+      selection: nil, # defaults to nil
+      header_visible: nil, # defaults to true
+      sortable: nil, # defaults to true
+    )
   end
   
   body {
@@ -26,42 +93,37 @@ class BasicTableSelection
               stretchy false
               
               @one_table_selection_radio_buttons = radio_buttons {
-                items @one_table_data.size.times.map { |row| "Row #{row} Selection" }
-                
-                on_selected do |rb|
-                  @one_table.selection = [rb.selected]
-                end
+                items @one_table_presenter.selection_items
+                selected <=> [@one_table_presenter, :selection]
               }
             }
-            
-            button('Toggle Table Header Visibility') {
+
+            horizontal_box {
               stretchy false
               
-              on_clicked do
-                @one_table.header_visible = !@one_table.header_visible
-              end
+              button('Toggle Table Header Visibility') {
+                on_clicked do
+                  @one_table_presenter.toggle_header_visible
+                end
+              }
+              
+              button('Toggle Table Sortability') {
+                on_clicked do
+                  @one_table_presenter.toggle_sortable # toggles sortable attribute to false or true
+                end
+              }
             }
             
             @one_table = table {
-              text_column('Animal') {
-                # sort_indicator :descending # (optional) can be :ascending, :descending, or nil (default)
-                
-                on_clicked do |tc, column|
-                  sort_one_table_column(tc, column)
-                end
-              }
-              text_column('Description') {
-                # sort_indicator :descending # (optional) can be :ascending, :descending, or nil (default)
-                
-                on_clicked do |tc, column|
-                  sort_one_table_column(tc, column)
-                end
-              }
+              @one_table_presenter.column_presenters.each do |column_presenter|
+                text_column(column_presenter.name)
+              end
         
-              cell_rows @one_table_data
-              selection_mode :one # other values are :zero_or_many , :zero_or_one, :none (default is :zero_or_one if not specified)
-              selection 2 # initial selection row index (could be nil too or just left off, defaulting to 0)
-              # header_visible true # default
+              cell_rows @one_table_presenter.data
+              selection_mode <= [@one_table_presenter, :selection_mode]
+              selection <=> [@one_table_presenter, :selection]
+              header_visible <= [@one_table_presenter, :header_visible]
+              sortable <= [@one_table_presenter, :sortable]
         
               on_row_clicked do |t, row|
                 puts "Row Clicked: #{row}"
@@ -77,54 +139,48 @@ class BasicTableSelection
                 puts "Selection Changed: #{selection.inspect}"
                 puts "Added Selection: #{added_selection.inspect}"
                 puts "Removed Selection: #{removed_selection.inspect}"
-                @one_table_selection_radio_buttons.selected = selection
               end
             }
           }
         }
-              
+        
         tab_item('Zero-Or-One') {
           vertical_box {
             vertical_box {
               stretchy false
               
               @zero_or_one_table_selection_radio_buttons = radio_buttons {
-                items @zero_or_one_table_data.size.times.map { |row| "Row #{row} Selection" }
-                
-                on_selected do |rb|
-                  @zero_or_one_table.selection = [rb.selected]
-                end
+                items @zero_or_one_table_presenter.selection_items
+                selected <=> [@zero_or_one_table_presenter, :selection]
               }
             }
             
-            button('Toggle Table Header Visibility') {
+            horizontal_box {
               stretchy false
               
-              on_clicked do
-                @zero_or_one_table.header_visible = !@zero_or_one_table.header_visible
-              end
+              button('Toggle Table Header Visibility') {
+                on_clicked do
+                  @zero_or_one_table_presenter.toggle_header_visible
+                end
+              }
+              
+              button('Toggle Table Sortability') {
+                on_clicked do
+                  @zero_or_one_table_presenter.toggle_sortable # toggles sortable attribute to false or true
+                end
+              }
             }
             
             @zero_or_one_table = table {
-              text_column('Animal') {
-                # sort_indicator :descending # (optional) can be :ascending, :descending, or nil (default)
-                
-                on_clicked do |tc, column|
-                  sort_zero_or_one_table_column(tc, column)
-                end
-              }
-              text_column('Description') {
-                # sort_indicator :descending # (optional) can be :ascending, :descending, or nil (default)
-                
-                on_clicked do |tc, column|
-                  sort_zero_or_one_table_column(tc, column)
-                end
-              }
+              @zero_or_one_table_presenter.column_presenters.each do |column_presenter|
+                text_column(column_presenter.name)
+              end
         
-              cell_rows @zero_or_one_table_data
-              selection_mode :zero_or_one # other values are :zero_or_many , :one, :none (default is :zero_or_one if not specified)
-              # selection 0 # initial selection row index (could be nil too or just left off)
-              # header_visible true # default
+              cell_rows @zero_or_one_table_presenter.data
+              selection_mode <= [@zero_or_one_table_presenter, :selection_mode]
+              selection <=> [@zero_or_one_table_presenter, :selection]
+              header_visible <= [@zero_or_one_table_presenter, :header_visible]
+              sortable <= [@zero_or_one_table_presenter, :sortable]
         
               on_row_clicked do |t, row|
                 puts "Row Clicked: #{row}"
@@ -140,7 +196,6 @@ class BasicTableSelection
                 puts "Selection Changed: #{selection.inspect}"
                 puts "Added Selection: #{added_selection.inspect}"
                 puts "Removed Selection: #{removed_selection.inspect}"
-                @zero_or_one_table_selection_radio_buttons.selected = selection
               end
             }
           }
@@ -151,49 +206,46 @@ class BasicTableSelection
             vertical_box {
               stretchy false
               
-              @zero_or_many_table_selection_checkboxes = @zero_or_many_table_data.size.times.map do |row|
+              @zero_or_many_table_selection_checkboxes = @zero_or_many_table_presenter.data.size.times.map do |row|
                 checkbox("Row #{row} Selection") {
-                  on_toggled do |c|
-                    table_selection = @zero_or_many_table.selection.to_a
-                    if c.checked?
-                      table_selection << row unless table_selection.include?(row)
-                    else
-                      table_selection.delete(row) if table_selection.include?(row)
-                    end
-                    @zero_or_many_table.selection = table_selection
-                  end
+                  checked <=> [@zero_or_many_table_presenter, :selection,
+                                on_read: ->(selection_rows) {selection_rows.to_a.include?(row)},
+                                on_write: ->(checked_value) {
+                                  checked_value ?
+                                    (@zero_or_many_table_presenter.selection.to_a + [row]).uniq :
+                                    @zero_or_many_table_presenter.selection.to_a.reject {|v| v == row }
+                                },
+                              ]
                 }
               end
             }
             
-            button('Toggle Table Header Visibility') {
+            horizontal_box {
               stretchy false
               
-              on_clicked do
-                @zero_or_many_table.header_visible = !@zero_or_many_table.header_visible
-              end
+              button('Toggle Table Header Visibility') {
+                on_clicked do
+                  @zero_or_many_table_presenter.toggle_header_visible
+                end
+              }
+              
+              button('Toggle Table Sortability') {
+                on_clicked do
+                  @zero_or_many_table_presenter.toggle_sortable # toggles sortable attribute to false or true
+                end
+              }
             }
             
             @zero_or_many_table = table {
-              text_column('Animal') {
-                # sort_indicator :descending # (optional) can be :ascending, :descending, or nil (default)
-                
-                on_clicked do |tc, column|
-                  sort_zero_or_many_table_column(tc, column)
-                end
-              }
-              text_column('Description') {
-                # sort_indicator :descending # (optional) can be :ascending, :descending, or nil (default)
-                
-                on_clicked do |tc, column|
-                  sort_zero_or_many_table_column(tc, column)
-                end
-              }
+              @zero_or_many_table_presenter.column_presenters.each do |column_presenter|
+                text_column(column_presenter.name)
+              end
         
-              cell_rows @zero_or_many_table_data
-              selection_mode :zero_or_many # other values are :none , :zero_or_one , and :one (default is :zero_or_one if not specified)
-              selection 0, 2, 4 # initial selection row indexes (could be empty array too or just left off)
-              # header_visible true # default
+              cell_rows @zero_or_many_table_presenter.data
+              selection_mode <= [@zero_or_many_table_presenter, :selection_mode]
+              selection <=> [@zero_or_many_table_presenter, :selection]
+              header_visible <= [@zero_or_many_table_presenter, :header_visible]
+              sortable <= [@zero_or_many_table_presenter, :sortable]
         
               on_row_clicked do |t, row|
                 puts "Row Clicked: #{row}"
@@ -209,46 +261,39 @@ class BasicTableSelection
                 puts "Selection Changed: #{selection.inspect}"
                 puts "Added Selection: #{added_selection.inspect}"
                 puts "Removed Selection: #{removed_selection.inspect}"
-                removed_selection&.each do |selected_row|
-                  @zero_or_many_table_selection_checkboxes[selected_row].checked = false
-                end
-                added_selection&.each do |selected_row|
-                  @zero_or_many_table_selection_checkboxes[selected_row].checked = true
-                end
               end
             }
           }
         }
-                
+        
         tab_item('None') {
           vertical_box {
-            button('Toggle Table Header Visibility') {
+            horizontal_box {
               stretchy false
               
-              on_clicked do
-                @none_table.header_visible = !@none_table.header_visible
-              end
+              button('Toggle Table Header Visibility') {
+                on_clicked do
+                  @none_table_presenter.toggle_header_visible
+                end
+              }
+              
+              button('Toggle Table Sortability') {
+                on_clicked do
+                  @none_table_presenter.toggle_sortable # toggles sortable attribute to false or true
+                end
+              }
             }
             
             @none_table = table {
-              text_column('Animal') {
-                # sort_indicator :descending # (optional) can be :ascending, :descending, or nil (default)
-                
-                on_clicked do |tc, column|
-                  sort_none_table_column(tc, column)
-                end
-              }
-              text_column('Description') {
-                # sort_indicator :descending # (optional) can be :ascending, :descending, or nil (default)
-                
-                on_clicked do |tc, column|
-                  sort_none_table_column(tc, column)
-                end
-              }
+              @none_table_presenter.column_presenters.each do |column_presenter|
+                text_column(column_presenter.name)
+              end
         
-              cell_rows @none_table_data
-              selection_mode :none # other values are :zero_or_many , :zero_or_one, :one (default is :zero_or_one if not specified)
-              # header_visible true # default
+              cell_rows @none_table_presenter.data
+              selection_mode <= [@none_table_presenter, :selection_mode]
+              selection <=> [@none_table_presenter, :selection]
+              header_visible <= [@none_table_presenter, :header_visible]
+              sortable <= [@none_table_presenter, :sortable]
         
               on_row_clicked do |t, row|
                 puts "Row Clicked: #{row}"
@@ -264,40 +309,6 @@ class BasicTableSelection
       }
     }
   }
-  
-  def sort_one_table_column(tc, column)
-    puts "Clicked column #{column}: #{tc.name}"
-    selected_row = @one_table.selection && @one_table_data[@one_table.selection]
-    tc.toggle_sort_indicator
-    @one_table_data.sort_by! { |row_data| row_data[column] }
-    @one_table_data.reverse! if tc.sort_indicator == :descending
-    @one_table.selection = @one_table_data.index(selected_row)
-  end
-  
-  def sort_zero_or_one_table_column(tc, column)
-    puts "Clicked column #{column}: #{tc.name}"
-    selected_row = @zero_or_one_table.selection && @zero_or_one_table_data[@zero_or_one_table.selection]
-    tc.toggle_sort_indicator
-    @zero_or_one_table_data.sort_by! { |row_data| row_data[column] }
-    @zero_or_one_table_data.reverse! if tc.sort_indicator == :descending
-    @zero_or_one_table.selection = @zero_or_one_table_data.index(selected_row)
-  end
-  
-  def sort_zero_or_many_table_column(tc, column)
-    puts "Clicked column #{column}: #{tc.name}"
-    selected_rows = @zero_or_many_table.selection&.map { |row| @zero_or_many_table_data[row] }
-    tc.toggle_sort_indicator
-    @zero_or_many_table_data.sort_by! { |row_data| row_data[column] }
-    @zero_or_many_table_data.reverse! if tc.sort_indicator == :descending
-    @zero_or_many_table.selection = selected_rows&.map {|row_data| @zero_or_many_table_data.index(row_data) }
-  end
-  
-  def sort_none_table_column(tc, column)
-    puts "Clicked column #{column}: #{tc.name}"
-    tc.toggle_sort_indicator
-    @none_table_data.sort_by! { |row_data| row_data[column] }
-    @none_table_data.reverse! if tc.sort_indicator == :descending
-  end
 end
 
 BasicTableSelection.launch
