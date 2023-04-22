@@ -634,6 +634,7 @@ module Glimmer
             end
           end
           @cell_rows_observer_registration = @cell_rows_observer.observe(self, :cell_rows, recursive: true, ignore_frozen: true, attribute_writer_type: [:attribute=, :set_attribute])
+          @cell_rows_observer.call
         end
 
         def apply_windows_fix

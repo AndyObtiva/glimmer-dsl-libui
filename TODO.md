@@ -4,7 +4,7 @@
 
 - Rename basic table selection example to something that indicates sorting too
 - Fix issue with button_column on_clicked not resulting in click of button yet click of column. It seems we have to add a on_button_clicked alternative here. and break the API
-- Provide a way to configure a different sort block per table column while relying on sortable property
+- Provide a way to configure a different sort_by or sort block per table column while relying on sortable property
 - Option for in-memory only sort for table in case we don't want to store the sort back on the model
 - Table sorting for refined_table
 
@@ -20,7 +20,7 @@
 - It seems that table-related instability in Windows is back. Check what is causing it. Test with RefinedTable
 - Fix issue with version 4 of Area Gallery
 
-- examples/area_tooltip.rb & examples/area_tooltip_with_delay.rb 
+- examples/area_tooltip.rb & examples/area_tooltip_with_delay.rb
 
 ### 0.5.x
 

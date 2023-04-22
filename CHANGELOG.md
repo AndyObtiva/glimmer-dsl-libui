@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.7.5
+
+- Fix [issue 46](https://github.com/AndyObtiva/glimmer-dsl-libui/issues/46) (GTK Error rendering table with zero initial elements), which happens when explicitly data-binding table cell_rows to an empty array
+
 ## 0.7.4
 
 - `table` `sortable` property (default: `true`) to enable automatic table sorting support when `cell_rows` is an `Array` (does not sort if `cell_rows` is a lazy enumerable)
