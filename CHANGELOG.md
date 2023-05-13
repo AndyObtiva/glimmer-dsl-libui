@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.7.6
+
+- Fix issue with hearing "fonk" sound on every key press when handling `on_key_event`/`on_key_down`/`on_key_up` listeners (by returning expected `1` value if the listeners are handled properly or otherwise allowing the "fonk" sound to ring when the listeners are not handled)
+- Update examples/tetris.rb with COMMAND+Q shortcut for quitting on the Mac and ALT+F4 shortcut for quitting on Windows/Linux
+
 ## 0.7.5
 
 - Fix [issue 46](https://github.com/AndyObtiva/glimmer-dsl-libui/issues/46) (GTK Error rendering table with zero initial elements), which happens when explicitly data-binding table cell_rows to an empty array

@@ -5,6 +5,11 @@
 - Rename basic table selection example to something that indicates sorting too
 - Fix issue with button_column on_clicked not resulting in click of button yet click of column. It seems we have to add a on_button_clicked alternative here. and break the API
 - Provide a way to configure a different sort_by or sort block per table column while relying on sortable property
+
+- Support a `window.quit` operation that is a shortcut for `window.destroy` followed by `::LibUI.quit`
+- Enable usage of `msg_box` and `msg_box_error` without constructing a `window` explicitly or launching a `Glimmer::LibUI::Application` to enable quick command line triggering of message boxes if needed.
+- Automate table sorting support (perhaps via a property, sortable, which should default to true). Must handle cell_rows as array of arrays, array of hashes, and array of models. Does not work if cell_rows is an lazy enumerable
+
 - Option for in-memory only sort for table in case we don't want to store the sort back on the model
 - Table sorting for refined_table
 

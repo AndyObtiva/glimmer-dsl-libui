@@ -292,6 +292,10 @@ class Tetris
           @game.rotate!(:right)
         in modifier: :control
           @game.rotate!(:left)
+        in modifiers: [:command], key: 'q'
+          exit(0) if OS.mac?
+        in modifiers: [:alt], ext_key: :f4
+          exit(0) unless OS.mac?
         else
           # Do Nothing
         end

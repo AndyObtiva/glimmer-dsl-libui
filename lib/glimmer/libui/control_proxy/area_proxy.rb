@@ -179,7 +179,7 @@ module Glimmer
             @area_handler.DragBroken   = fiddle_closure_block_caller(0, [1, 1]) do |_, _|
               notify_custom_listeners('on_drag_broken')
             end
-            @area_handler.KeyEvent     = fiddle_closure_block_caller(0, [1, 1, 1]) do |_, _, area_key_event|
+            @area_handler.KeyEvent     = fiddle_closure_block_caller(1, [1, 1, 1]) do |_, _, area_key_event|
               area_key_event = ::LibUI::FFI::AreaKeyEvent.new(area_key_event)
               area_key_event = area_key_event_hash(area_key_event)
               notify_custom_listeners('on_key_event', area_key_event)
@@ -187,6 +187,11 @@ module Glimmer
                 notify_custom_listeners('on_key_up', area_key_event)
               else
                 notify_custom_listeners('on_key_down', area_key_event)
+              end
+              if handle_custom_listener('on_key_event').any? || handle_custom_listener('on_key_up').any? || handle_custom_listener('on_key_down').any?
+                1
+              else
+                0
               end
             end
             @listeners_installed = true
@@ -221,13 +226,14 @@ module Glimmer
         
         def area_key_event_hash(area_key_event)
           modifiers = modifiers_to_symbols(area_key_event.Modifiers)
+          modifier = modifiers_to_symbols(area_key_event.Modifier).first
           {
             key: key_to_char(area_key_event.Key, modifiers),
             key_value: area_key_event.Key,
             key_code: area_key_event.Key,
             ext_key: ext_key_to_symbol(area_key_event.ExtKey),
             ext_key_value: area_key_event.ExtKey,
-            modifier: modifiers_to_symbols(area_key_event.Modifier).first,
+            modifier: modifier,
             modifiers: modifiers,
             up: Glimmer::LibUI.integer_to_boolean(area_key_event.Up),
           }
