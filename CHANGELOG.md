@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.7.7
+
+- Support ability for `area` `on_key_event`/`on_key_down`/`on_key_up` listeners to return a boolean value indicating whether they handled a key event or not in case some key events need to be left to other operating system key handlers like COMMAND+Q for the Mac quit menu item
+- Update `examples/tetris.rb` to return `false` in its `on_key_down` listener for unhandled events
+- Update `examples/area_gallery.rb` to return `false` in its `on_key_event`/`on_key_down`/`on_key_up` listeners for unhandled events
+
 ## 0.7.6
 
 - Fix issue with hearing "fonk" sound on every key press when handling `on_key_event`/`on_key_down`/`on_key_up` listeners (by returning expected `1` value if the listeners are handled properly or otherwise allowing the "fonk" sound to ring when the listeners are not handled)

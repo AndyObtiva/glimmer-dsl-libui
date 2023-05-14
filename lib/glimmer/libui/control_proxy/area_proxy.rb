@@ -182,16 +182,29 @@ module Glimmer
             @area_handler.KeyEvent     = fiddle_closure_block_caller(1, [1, 1, 1]) do |_, _, area_key_event|
               area_key_event = ::LibUI::FFI::AreaKeyEvent.new(area_key_event)
               area_key_event = area_key_event_hash(area_key_event)
-              notify_custom_listeners('on_key_event', area_key_event)
+              on_key_up_results = on_key_down_results = []
+              on_key_event_results = notify_custom_listeners('on_key_event', area_key_event)
               if area_key_event[:up]
-                notify_custom_listeners('on_key_up', area_key_event)
+                on_key_up_results = notify_custom_listeners('on_key_up', area_key_event)
               else
-                notify_custom_listeners('on_key_down', area_key_event)
+                on_key_down_results = notify_custom_listeners('on_key_down', area_key_event)
               end
-              if handle_custom_listener('on_key_event').any? || handle_custom_listener('on_key_up').any? || handle_custom_listener('on_key_down').any?
-                1
-              else
+              if ((
+                    handle_custom_listener('on_key_event').empty? ||
+                    (handle_custom_listener('on_key_event').any? && on_key_event_results.all? {|result| LibUI.boolean_to_integer(result) == 0})
+                  ) &&
+                  (
+                    handle_custom_listener('on_key_up').empty? ||
+                    (handle_custom_listener('on_key_up').any? && on_key_up_results.all? {|result| LibUI.boolean_to_integer(result) == 0})
+                  ) &&
+                  (
+                    handle_custom_listener('on_key_down').empty? ||
+                    (handle_custom_listener('on_key_down').any? && on_key_down_results.all? {|result| LibUI.boolean_to_integer(result) == 0})
+                  )
+                 )
                 0
+              else
+                1
               end
             end
             @listeners_installed = true

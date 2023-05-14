@@ -258,6 +258,7 @@ class Tetris
       }
       
       on_key_down do |key_event|
+        handled = true # assume it is handled for all cases except the else clause below
         case key_event
         in ext_key: :down
           if OS.windows?
@@ -292,13 +293,13 @@ class Tetris
           @game.rotate!(:right)
         in modifier: :control
           @game.rotate!(:left)
-        in modifiers: [:command], key: 'q'
-          exit(0) if OS.mac?
-        in modifiers: [:alt], ext_key: :f4
-          exit(0) unless OS.mac?
         else
-          # Do Nothing
+          # returning false explicitly means the key event was not handled, which
+          # propagates the event to other handlers, like the quit menu item, which
+          # can handle COMMAND+Q on the Mac to quit an application
+          handled = false
         end
+        handled
       end
       
       extra_content&.call

@@ -92,14 +92,50 @@ window('Area Gallery', 400, 400) {
     
     on_key_event do |area_key_event|
       p area_key_event
+      # As a smart default, key events are assumed to be handled if you add a key event listener,
+      # but you can return false to indicate a key event is not handled to allow it
+      # to propagate to other operating system key handlers, like the Mac quit menu item,
+      # which expects a COMMAND+Q shortcut usually.
+      # Otherwise, if you return false in all key event handlers for a specific key combo,
+      # the Mac beeps (makes a "fonk" sound), which is normal behavior on the Mac.
+      case area_key_event
+      in modifiers: [:command], key: 'q'
+        false if OS.mac? # allow to propagate to Mac quit menu item
+      else
+        # true # no return value (nil) or any return value other than false or 0 means true (event handled)
+      end
     end
     
     on_key_up do |area_key_event|
       puts 'key up'
+      # As a smart default, key events are assumed to be handled if you add a key event listener,
+      # but you can return false to indicate a key event is not handled to allow it
+      # to propagate to other operating system key handlers, like the Mac quit menu item,
+      # which expects a COMMAND+Q shortcut usually.
+      # Otherwise, if you return false in all key event handlers for a specific key combo,
+      # the Mac beeps (makes a "fonk" sound), which is normal behavior on the Mac.
+      case area_key_event
+      in modifiers: [:command], key: 'q'
+        false if OS.mac? # allow to propagate to Mac quit menu item
+      else
+        # true # no return value (nil) or any return value other than false or 0 means true (event handled)
+      end
     end
     
     on_key_down do |area_key_event|
       puts 'key down'
+      # As a smart default, key events are assumed to be handled if you add a key event listener,
+      # but you can return false to indicate a key event is not handled to allow it
+      # to propagate to other operating system key handlers, like the Mac quit menu item,
+      # which expects a COMMAND+Q shortcut usually.
+      # Otherwise, if you return false in all key event handlers for a specific key combo,
+      # the Mac beeps (makes a "fonk" sound), which is normal behavior on the Mac.
+      case area_key_event
+      in modifiers: [:command], key: 'q'
+        false if OS.mac? # allow to propagate to Mac quit menu item
+      else
+        # true # no return value (nil) or any return value other than false or 0 means true (event handled)
+      end
     end
   }
 }.show

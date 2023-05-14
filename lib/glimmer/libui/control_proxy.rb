@@ -223,7 +223,7 @@ module Glimmer
       end
       
       def notify_custom_listeners(listener_name, *args)
-        handle_custom_listener(listener_name).each do |listener|
+        handle_custom_listener(listener_name).map do |listener|
           listener.call(*args)
         end
       end
