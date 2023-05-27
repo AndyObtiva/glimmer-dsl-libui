@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.7.8
+
+- Upgrade to `perfect-shape` gem version 1.0.8 to fix a crashing issue in `examples/shape_coloring.rb`
+
 ## 0.7.7
 
 - Support ability for `area` `on_key_event`/`on_key_down`/`on_key_up` listeners to return a boolean value indicating whether they handled a key event or not in case some key events need to be left to other operating system key handlers like COMMAND+Q for the Mac quit menu item
