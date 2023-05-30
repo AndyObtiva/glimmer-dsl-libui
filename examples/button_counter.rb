@@ -6,7 +6,7 @@ class ButtonCounter
   attr_accessor :count
 
   def initialize
-    @count = 0
+    self.count = 0
   end
 
   def launch

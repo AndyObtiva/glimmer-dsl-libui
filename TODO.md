@@ -15,6 +15,8 @@
 
 - Enable usage of `msg_box` and `msg_box_error` without constructing a `window` explicitly or launching a `Glimmer::LibUI::Application` to enable quick command line triggering of message boxes if needed.
 
+- Automate the use of Glimmer::LibUI.queue_main from other threads 
+
 - Update Supported Controls documentation with allowed parents and allowed children
 - Support overriding global `table` `editable` state with a specific column `editable` state if global value is `true` and column value is `false`
 - Make `table` columns default to empty string if no text is provided for the name of the column
