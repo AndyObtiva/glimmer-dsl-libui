@@ -35,10 +35,10 @@ module Glimmer
         end
         
         def create(keyword, parent, args, &block)
-          widget_proxy_class(keyword).new(keyword, parent, args, &block).tap {|c| control_proxies << c}
+          control_proxy_class(keyword).new(keyword, parent, args, &block).tap {|c| control_proxies << c}
         end
         
-        def widget_proxy_class(keyword)
+        def control_proxy_class(keyword)
           descendant_keyword_constant_map[keyword] || ControlProxy
         end
         
