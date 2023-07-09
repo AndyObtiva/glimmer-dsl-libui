@@ -25,6 +25,7 @@
   - [Basic Transform](#basic-transform)
   - [Basic Draw Text](#basic-draw-text)
   - [Basic Code Area](#basic-code-area)
+  - [Basic Composite Shape](#basic-composite-shape)
 
 ## Basic Window
 
@@ -2344,36 +2345,20 @@ Mac | Windows | Linux
 
 New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
 
-```ruby
-require 'glimmer-dsl-libui'
+## Basic Composite Shape
 
-class BasicCodeArea
-  include Glimmer::LibUI::Application
-  
-  before_body do
-    @code = <<~CODE
-      # Greets target with greeting
-      def greet(greeting: 'Hello', target: 'World')
-        
-        puts "\#{greeting}, \#{target}!"
-      end
-      
-      greet
-      greet(target: 'Robert')
-      greet(greeting: 'Aloha')
-      greet(greeting: 'Aloha', target: 'Nancy')
-      greet(greeting: 'Howdy', target: 'Doodle')
-    CODE
-  end
-  
-  body {
-    window('Basic Code Area', 400, 300) {
-      margined true
-      
-      code_area(language: 'ruby', code: @code)
-    }
-  }
-end
+[examples/basic_composite_shape.rb](/examples/basic_composite_shape.rb)
 
-BasicCodeArea.launch
+Run with this command from the root of the project if you cloned the project:
+
 ```
+ruby -r './lib/glimmer-dsl-libui' examples/basic_composite_shape.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/basic_composite_shape.rb'"
+```
+
+![glimmer-dsl-libui-mac-basic-composite-shape.gif](/images/glimmer-dsl-libui-mac-basic-composite-shape.gif)

@@ -2,7 +2,9 @@
 
 ## Next
 
-- Support common composite `shape` properties
+- Ensure that shape/path containment/inclusion checks take their transform into account while using `PerfectShape`
+- Ensure support for nesting a composite `shape` within another composite `shape`
+
 - Look into providing absolute values (incorporating relative position to parent composite shape) for PerfectShaped bounding box elements
 
 - Support `LibUI.uninit` to enable clean exit of a LibUI app in Linux and support launching/closing a LibUI app window multiple times
@@ -20,7 +22,7 @@
 
 - Enable usage of `msg_box` and `msg_box_error` without constructing a `window` explicitly or launching a `Glimmer::LibUI::Application` to enable quick command line triggering of message boxes if needed.
 
-- Automate the use of Glimmer::LibUI.queue_main from other threads 
+- Automate the use of Glimmer::LibUI.queue_main from other threads
 
 - Update Supported Controls documentation with allowed parents and allowed children
 - Support overriding global `table` `editable` state with a specific column `editable` state if global value is `true` and column value is `false`

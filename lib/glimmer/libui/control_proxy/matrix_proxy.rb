@@ -129,6 +129,7 @@ module Glimmer
         
         def build_control
           @libui = ::LibUI::FFI::DrawMatrix.malloc
+          # TODO is there a way to free the memory allocated for this? Or does it get garbage collected automatically?
           if @args.empty?
             set_identity
           else

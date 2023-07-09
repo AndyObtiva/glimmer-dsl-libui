@@ -313,13 +313,6 @@ module Glimmer
           super
         end
       end
-    
-      private
-      
-      def build_control
-        block = Proc.new {} if dynamic?
-        @parent = Glimmer::LibUI::ControlProxy::PathProxy.new('path', @parent, [], &block)
-      end
       
       # indicates if nested directly under area or on_draw event (having an implicit path not an explicit path parent)
       def implicit_path?
@@ -328,6 +321,13 @@ module Glimmer
           @parent.is_a?(Glimmer::LibUI::Shape::CompositeShape) ||
           (@parent.nil? && Glimmer::LibUI::ControlProxy::AreaProxy.current_area_draw_params)
         )
+      end
+      
+      private
+      
+      def build_control
+        block = Proc.new {} if dynamic?
+        @parent = Glimmer::LibUI::ControlProxy::PathProxy.new('path', @parent, [], &block)
       end
       
       def dynamic?

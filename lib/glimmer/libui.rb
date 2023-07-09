@@ -104,6 +104,21 @@ module Glimmer
         result.merge!(options) if options
         result
       end
+      
+      # returns whether the value represents no color (blank) or a present color
+      # when a path is first built, it has a blank color
+      def blank_color?(value)
+        value.nil? ||
+          (value.respond_to?(:empty?) && value.empty?) ||
+          (value.is_a?(Array) && value.compact.empty?) ||
+          (value.is_a?(Hash) && value.values.compact.empty?)
+      end
+      
+      # returns a representation of a blank color
+      # when a path is first built, it has a blank color
+      def blank_color
+        [{}]
+      end
     
       def hex_to_rgb(value)
         if value.is_a?(String)

@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.7.8
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.8.0
 ## Prerequisite-Free Ruby Desktop Development GUI Library
 ### The Quickest Way From Zero To GUI
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
@@ -363,6 +363,7 @@ Learn more about the differences between various [Glimmer](https://github.com/An
       - [Area Listeners](#area-listeners)
       - [Area Methods/Attributes](#area-methods-attributes)
       - [Area Transform Matrix](#area-transform-matrix)
+      - [Area Composite Shape](#area-composite-shape)
       - [Area Animation](#area-animation)
     - [Smart Defaults and Conventions](#smart-defaults-and-conventions)
     - [Custom Keywords](#custom-keywords)
@@ -534,7 +535,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.7.8'
+gem 'glimmer-dsl-libui', '~> 0.8.0'
 ```
 
 Test that installation worked by running the [Meta-Example](#examples):
@@ -1552,6 +1553,170 @@ transform m1
 You can set a `matrix`/`transform` on `area` directly to conveniently apply to all nested `path`s too.
 
 Note that `area`, `path`, and nested shapes are all truly declarative, meaning they do not care about the ordering of calls to `fill`, `stroke`, and `transform`. Furthermore, any transform that is applied is reversed at the end of the block, so you never have to worry about the ordering of `transform` calls among different paths. You simply set a transform on the `path`s that need it and it is guaranteed to be called before all its content is drawn, and then undone afterwards to avoid affecting later paths. Matrix `transform` can be set on an entire `area` too, applying to all nested `path`s.
+
+#### Area Composite Shape
+
+If you would like to build a composite shape that contains smaller sub-shapes, which would all get treated as a single unit,
+you can use the `shape` (or `composite_shape`) keyword, and wrap all the sub-shapes within the composite `shape`.
+
+If you specify the `fill`, `stroke`, and `transform` at the `shape` level, they will get inherited by all sub-shapes that do not
+specify values for `fill`, `stroke`, or `transform` (though if they do, they override their parent's value).
+
+When you use the `include?(x, y)` or `contain?(x, y)` method on a composite `shape`, it automatically includes all its aggregated shapes
+in the inclusion or containment check using the corresponding [PerfectShape](https://github.com/AndyObtiva/perfect-shape) object.
+
+Example of a `cube` method-based custom keyword built using the composite `shape` keyword:
+
+![glimmer-dsl-libui-mac-basic-composite-shape.gif](/images/glimmer-dsl-libui-mac-basic-composite-shape.gif)
+
+```ruby
+require 'glimmer-dsl-libui'
+
+class BasicCompositeShape
+  include Glimmer::LibUI::Application
+  
+  body {
+    window {
+      title 'Basic Composite Shape'
+      content_size 200, 225
+    
+      @area = area {
+        rectangle(0, 0, 200, 225) {
+          fill :white
+        }
+        
+        7.times do |n|
+          x_location = (rand*125).to_i%200 + (rand*15).to_i
+          y_location = (rand*125).to_i%200 + (rand*15).to_i
+          shape_color = [rand*125 + 130, rand*125 + 130, rand*125 + 130]
+          shape_size = 20+n
+
+          cube(
+            location_x: x_location,
+            location_y: y_location,
+            rectangle_width: shape_size*2,
+            rectangle_height: shape_size,
+            cube_height: shape_size*2,
+            background_color: shape_color,
+            line_thickness: 2
+          ) { |the_shape|
+            on_mouse_up do |area_mouse_event|
+              # Change color on mouse up without dragging
+              if @drag_shape.nil?
+                background_color = [rand(255), rand(255), rand(255)]
+                the_shape.fill = background_color
+              end
+            end
+            
+            on_mouse_drag_start do |area_mouse_event|
+              @drag_shape = the_shape
+              @drag_x = area_mouse_event[:x]
+              @drag_y = area_mouse_event[:y]
+            end
+                        
+            on_mouse_drag do |area_mouse_event|
+              if @drag_shape && @drag_x && @drag_y
+                drag_distance_width = area_mouse_event[:x]  - @drag_x
+                drag_distance_height = area_mouse_event[:y] - @drag_y
+                @drag_shape.x += drag_distance_width
+                @drag_shape.y += drag_distance_height
+                @drag_x = area_mouse_event[:x]
+                @drag_y = area_mouse_event[:y]
+              end
+            end
+            
+            on_mouse_drop do |area_mouse_event|
+              @drag_shape = nil
+              @drag_x = nil
+              @drag_y = nil
+            end
+          }
+        end
+        
+        # this general area on_mouse_drag listener is needed to ensure that dragging a shape
+        # outside of its boundaries would still move the dragged shape
+        on_mouse_drag do |area_mouse_event|
+          if @drag_shape && @drag_x && @drag_y
+            drag_distance_width = area_mouse_event[:x]  - @drag_x
+            drag_distance_height = area_mouse_event[:y] - @drag_y
+            @drag_shape.x += drag_distance_width
+            @drag_shape.y += drag_distance_height
+            @drag_x = area_mouse_event[:x]
+            @drag_y = area_mouse_event[:y]
+          end
+        end
+        
+        on_mouse_drop do |area_mouse_event|
+          @drag_shape = nil
+          @drag_x = nil
+          @drag_y = nil
+        end
+      }
+    }
+  }
+  
+  # method-based custom shape using `shape` keyword as a composite shape containing nested shapes
+  # that are declared with relative positioning
+  def cube(location_x: 0,
+           location_y: 0,
+           rectangle_width: nil,
+           rectangle_height: nil,
+           cube_height: nil,
+           background_color: :brown,
+           line_thickness: 1,
+           &content_block)
+    default_size = 28
+    rectangle_width ||= rectangle_height || cube_height || default_size
+    rectangle_height ||= rectangle_width || cube_height || default_size
+    cube_height ||= rectangle_width || rectangle_height || default_size
+    foreground_color = [0, 0, 0, thickness: line_thickness]
+    
+    # the shape keyword (alias for composite_shape) enables building a composite shape that is treated as one shape
+    # like a cube containing polygons, a polyline, a rectangle, and a line
+    # with the fill and stroke colors getting inherited by all children that do not specify them
+    shape(location_x, location_y) { |the_shape|
+      fill background_color
+      stroke foreground_color
+    
+      bottom = polygon(0, cube_height + rectangle_height / 2.0,
+              rectangle_width / 2.0, cube_height,
+              rectangle_width, cube_height + rectangle_height / 2.0,
+              rectangle_width / 2.0, cube_height + rectangle_height) {
+        # inherits fill property from parent shape if not set
+        # inherits stroke property from parent shape if not set
+      }
+      body = rectangle(0, rectangle_height / 2.0, rectangle_width, cube_height) {
+        # inherits fill property from parent shape if not set
+        # stroke is overridden to ensure a different value from parent
+        stroke thickness: 0
+      }
+      polyline(0, rectangle_height / 2.0 + cube_height,
+               0, rectangle_height / 2.0,
+               rectangle_width, rectangle_height / 2.0,
+               rectangle_width, rectangle_height / 2.0 + cube_height) {
+        # inherits stroke property from parent shape if not set
+      }
+      top = polygon(0, rectangle_height / 2.0,
+              rectangle_width / 2.0, 0,
+              rectangle_width, rectangle_height / 2.0,
+              rectangle_width / 2.0, rectangle_height) {
+        # inherits fill property from parent shape if not set
+        # inherits stroke property from parent shape if not set
+      }
+      line(rectangle_width / 2.0, cube_height + rectangle_height,
+           rectangle_width / 2.0, rectangle_height) {
+        # inherits stroke property from parent shape if not set
+      }
+      
+      content_block&.call(the_shape)
+    }
+  end
+end
+
+BasicCompositeShape.launch
+        
+
+```
 
 #### Area Animation
 

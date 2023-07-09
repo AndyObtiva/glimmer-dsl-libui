@@ -31,16 +31,34 @@ module Glimmer
       
         def draw(area_draw_params)
           children.each do |child|
+            child_fill = child.fill
+            child_stroke = child.stroke
+            child_transform = child.transform
+            child.fill = fill if Glimmer::LibUI.blank_color?(child.fill)
+            child.stroke = stroke if Glimmer::LibUI.blank_color?(child.stroke)
+            child.transform = transform if child.transform.nil?
             child.move_by(x, y)
             begin
               child.draw(area_draw_params)
             rescue Exception => e
               raise e
             ensure
+              # restore original child attributes
               child.move_by(-x, -y)
+              child.transform = child_transform
+              child.stroke = Glimmer::LibUI.blank_color?(child_stroke) ? Glimmer::LibUI.blank_color : child_stroke
+              child.fill = Glimmer::LibUI.blank_color?(child_fill) ? Glimmer::LibUI.blank_color : child_fill
             end
           end
           super
+        end
+        
+        def transform(matrix = nil)
+          if matrix.nil?
+            @matrix
+          else
+            @matrix = matrix
+          end
         end
         
         def move_by(x_delta, y_delta)

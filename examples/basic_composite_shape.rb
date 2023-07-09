@@ -1,11 +1,11 @@
 require 'glimmer-dsl-libui'
 
-class BasicShape
+class BasicCompositeShape
   include Glimmer::LibUI::Application
   
   body {
     window {
-      title 'Basic Shape'
+      title 'Basic Composite Shape'
       content_size 200, 225
     
       @area = area {
@@ -19,21 +19,29 @@ class BasicShape
           shape_color = [rand*125 + 130, rand*125 + 130, rand*125 + 130]
           shape_size = 20+n
 
-          cube(location_x: x_location,
-               location_y: y_location,
-               rectangle_width: shape_size*2,
-               rectangle_height: shape_size,
-               cube_height: shape_size*2,
-               background_color: shape_color,
-               line_thickness: 2) { |the_shape|
-            # TODO support extra properties
+          cube(
+            location_x: x_location,
+            location_y: y_location,
+            rectangle_width: shape_size*2,
+            rectangle_height: shape_size,
+            cube_height: shape_size*2,
+            background_color: shape_color,
+            line_thickness: 2
+          ) { |the_shape|
+            on_mouse_up do |area_mouse_event|
+              # Change color on mouse up without dragging
+              if @drag_shape.nil?
+                background_color = [rand(255), rand(255), rand(255)]
+                the_shape.fill = background_color
+              end
+            end
             
             on_mouse_drag_start do |area_mouse_event|
               @drag_shape = the_shape
               @drag_x = area_mouse_event[:x]
               @drag_y = area_mouse_event[:y]
             end
-            
+                        
             on_mouse_drag do |area_mouse_event|
               if @drag_shape && @drag_x && @drag_y
                 drag_distance_width = area_mouse_event[:x]  - @drag_x
@@ -91,50 +99,47 @@ class BasicShape
     cube_height ||= rectangle_width || rectangle_height || default_size
     foreground_color = [0, 0, 0, thickness: line_thickness]
     
+    # the shape keyword (alias for composite_shape) enables building a composite shape that is treated as one shape
+    # like a cube containing polygons, a polyline, a rectangle, and a line
+    # with the fill and stroke colors getting inherited by all children that do not specify them
     shape(location_x, location_y) { |the_shape|
+      fill background_color
+      stroke foreground_color
+    
       bottom = polygon(0, cube_height + rectangle_height / 2.0,
               rectangle_width / 2.0, cube_height,
               rectangle_width, cube_height + rectangle_height / 2.0,
               rectangle_width / 2.0, cube_height + rectangle_height) {
-        fill background_color
-        stroke foreground_color
+        # inherits fill property from parent shape if not set
+        # inherits stroke property from parent shape if not set
       }
       body = rectangle(0, rectangle_height / 2.0, rectangle_width, cube_height) {
-        fill background_color
+        # inherits fill property from parent shape if not set
+        # stroke is overridden to ensure a different value from parent
+        stroke thickness: 0
       }
       polyline(0, rectangle_height / 2.0 + cube_height,
                0, rectangle_height / 2.0,
                rectangle_width, rectangle_height / 2.0,
                rectangle_width, rectangle_height / 2.0 + cube_height) {
-        stroke foreground_color
+        # inherits stroke property from parent shape if not set
       }
       top = polygon(0, rectangle_height / 2.0,
               rectangle_width / 2.0, 0,
               rectangle_width, rectangle_height / 2.0,
               rectangle_width / 2.0, rectangle_height) {
-        fill background_color
-        stroke foreground_color
+        # inherits fill property from parent shape if not set
+        # inherits stroke property from parent shape if not set
       }
       line(rectangle_width / 2.0, cube_height + rectangle_height,
            rectangle_width / 2.0, rectangle_height) {
-        stroke foreground_color
+        # inherits stroke property from parent shape if not set
       }
       
       content_block&.call(the_shape)
-      
-      on_mouse_up do |area_mouse_event|
-        # Change color on mouse up without dragging
-        if @drag_shape.nil?
-          background_color = [rand(255), rand(255), rand(255)]
-          top.fill = background_color
-          body.fill = background_color
-          bottom.fill = background_color
-          the_shape.redraw
-        end
-      end
     }
   end
 end
 
-BasicShape.launch
+BasicCompositeShape.launch
         
