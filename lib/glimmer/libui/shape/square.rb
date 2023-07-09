@@ -41,12 +41,16 @@ module Glimmer
         end
         
         def perfect_shape
-          perfect_shape_dependencies = [absolute_x, absolute_y, length]
-          if perfect_shape_dependencies != @perfect_shape_dependencies
-            @perfect_shape_dependencies = perfect_shape_dependencies
+          the_perfect_shape_dependencies = perfect_shape_dependencies
+          if the_perfect_shape_dependencies != @perfect_shape_dependencies
+            @perfect_shape_dependencies = the_perfect_shape_dependencies
             @perfect_shape = PerfectShape::Square.new(x: @perfect_shape_dependencies[0], y: @perfect_shape_dependencies[1], length: @perfect_shape_dependencies[2])
           end
           @perfect_shape
+        end
+        
+        def perfect_shape_dependencies
+          [absolute_x, absolute_y, length]
         end
       end
     end

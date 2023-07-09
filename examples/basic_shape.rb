@@ -25,9 +25,31 @@ class BasicShape
                rectangle_height: shape_size,
                cube_height: shape_size*2,
                background_color: shape_color,
-               line_thickness: 2) {
-            # TODO support listeners
+               line_thickness: 2) { |the_shape|
             # TODO support extra properties
+            
+            on_mouse_drag_start do |area_mouse_event|
+              @drag_shape = the_shape
+              @drag_x = area_mouse_event[:x]
+              @drag_y = area_mouse_event[:y]
+            end
+            
+            on_mouse_drag do |area_mouse_event|
+              if @drag_shape && @drag_x && @drag_y
+                drag_distance_width = area_mouse_event[:x]  - @drag_x
+                drag_distance_height = area_mouse_event[:y] - @drag_y
+                @drag_shape.x += drag_distance_width
+                @drag_shape.y += drag_distance_height
+                @drag_x = area_mouse_event[:x]
+                @drag_y = area_mouse_event[:y]
+              end
+            end
+            
+            on_mouse_drop do |area_mouse_event|
+              @drag_shape = nil
+              @drag_x = nil
+              @drag_y = nil
+            end
           }
         end
         
@@ -42,6 +64,12 @@ class BasicShape
             @drag_x = area_mouse_event[:x]
             @drag_y = area_mouse_event[:y]
           end
+        end
+        
+        on_mouse_drop do |area_mouse_event|
+          @drag_shape = nil
+          @drag_x = nil
+          @drag_y = nil
         end
       }
     }
@@ -95,36 +123,14 @@ class BasicShape
       content_block&.call(the_shape)
       
       on_mouse_up do |area_mouse_event|
-        if @drag_shape.nil? # while not dragging
+        # Change color on mouse up without dragging
+        if @drag_shape.nil?
           background_color = [rand(255), rand(255), rand(255)]
           top.fill = background_color
           body.fill = background_color
           bottom.fill = background_color
           the_shape.redraw
         end
-      end
-      
-      on_mouse_drag_start do |area_mouse_event|
-        @drag_shape = the_shape
-        @drag_x = area_mouse_event[:x]
-        @drag_y = area_mouse_event[:y]
-      end
-      
-      on_mouse_drag do |area_mouse_event|
-        if @drag_shape && @drag_x && @drag_y
-          drag_distance_width = area_mouse_event[:x]  - @drag_x
-          drag_distance_height = area_mouse_event[:y] - @drag_y
-          @drag_shape.x += drag_distance_width
-          @drag_shape.y += drag_distance_height
-          @drag_x = area_mouse_event[:x]
-          @drag_y = area_mouse_event[:y]
-        end
-      end
-      
-      on_mouse_drop do |area_mouse_event|
-        @drag_shape = nil
-        @drag_x = nil
-        @drag_y = nil
       end
     }
   end

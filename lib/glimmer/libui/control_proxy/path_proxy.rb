@@ -167,9 +167,9 @@ module Glimmer
         end
         
         def perfect_shape
-          perfect_shape_dependencies = [draw_fill_mode, children]
-          if perfect_shape_dependencies != @perfect_shape_dependencies
-            draw_fill_mode, children = @perfect_shape_dependencies = perfect_shape_dependencies
+          the_perfect_shape_dependencies = perfect_shape_dependencies
+          if the_perfect_shape_dependencies != @perfect_shape_dependencies
+            draw_fill_mode, _ = @perfect_shape_dependencies = the_perfect_shape_dependencies
             shapes = children.map(&:perfect_shape)
             new_shapes = []
             shapes.each do |shape|
@@ -188,6 +188,10 @@ module Glimmer
             )
           end
           @perfect_shape
+        end
+        
+        def perfect_shape_dependencies
+          [draw_fill_mode, children.map(&:perfect_shape_dependencies)]
         end
         
         private

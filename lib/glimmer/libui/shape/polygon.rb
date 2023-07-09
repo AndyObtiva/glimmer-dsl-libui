@@ -46,14 +46,18 @@ module Glimmer
         end
         
         def perfect_shape
-          perfect_shape_dependencies = absolute_point_array
-          if perfect_shape_dependencies != @perfect_shape_dependencies
-            absolute_point_array = @perfect_shape_dependencies = perfect_shape_dependencies
+          the_perfect_shape_dependencies = perfect_shape_dependencies
+          if the_perfect_shape_dependencies != @perfect_shape_dependencies
+            absolute_point_array = @perfect_shape_dependencies = the_perfect_shape_dependencies
             path_shapes = [absolute_point_array.first]
             path_shapes += absolute_point_array.drop(1).map { |point| PerfectShape::Line.new(points: [point]) }
             @perfect_shape = PerfectShape::Path.new(closed: true, shapes: path_shapes)
           end
           @perfect_shape
+        end
+        
+        def perfect_shape_dependencies
+          absolute_point_array
         end
       end
     end

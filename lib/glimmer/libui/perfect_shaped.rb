@@ -8,7 +8,7 @@ module Glimmer
       
       def_delegators :perfect_shape,
                      :min_x, :min_y, :max_x, :max_y, :center_point, :center_x, :center_y
-      
+                     
       # Returns if shape contains point on the inside when outline is false (default)
       # or if point is on the outline when outline is true
       # distance_tolerance is used when outline is true to enable a fuzz factor in
@@ -59,6 +59,13 @@ module Glimmer
       #
       # Including classes must implement
       def perfect_shape
+        # No Op
+      end
+      
+      # Returns PerfectShape object dependencies to determine if the PerfectShape
+      # object changed or not for caching purposes.
+      # Every shape/path implements this uniquely for its own PerfectShape attribute dependencies
+      def perfect_shape_dependencies
         # No Op
       end
     end

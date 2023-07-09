@@ -51,12 +51,16 @@ module Glimmer
         end
         
         def perfect_shape
-          perfect_shape_dependencies = [absolute_x_center, absolute_y_center, radius]
-          if perfect_shape_dependencies != @perfect_shape_dependencies
-            absolute_x_center, absolute_y_center, radius = @perfect_shape_dependencies = perfect_shape_dependencies
+          the_perfect_shape_dependencies = perfect_shape_dependencies
+          if the_perfect_shape_dependencies != @perfect_shape_dependencies
+            absolute_x_center, absolute_y_center, radius = @perfect_shape_dependencies = the_perfect_shape_dependencies
             @perfect_shape = PerfectShape::Circle.new(center_x: absolute_x_center, center_y: absolute_y_center, radius: radius)
           end
           @perfect_shape
+        end
+        
+        def perfect_shape_dependencies
+          [absolute_x_center, absolute_y_center, radius]
         end
       end
     end
