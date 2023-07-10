@@ -1,5 +1,5 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.8.0
-## Prerequisite-Free Ruby Desktop Development GUI Library
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI ([Fukuoka Award Winning](http://www.digitalfukuoka.jp/topics/187?locale=ja))
+## Prerequisite-Free Ruby Desktop Development Cross-Platform Native GUI Library
 ### The Quickest Way From Zero To GUI
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -12,13 +12,13 @@
 
 [**(Ruby Rogues Podcast Interview - Desktop Apps in Ruby ft. Andy)**](https://andymaleh.blogspot.com/2022/05/ruby-rogues-podcast-interview-desktop.html)
 
-[Glimmer](https://github.com/AndyObtiva/glimmer) DSL for [LibUI](https://github.com/libui-ng/libui-ng) is a prerequisite-free [MRI Ruby](https://www.ruby-lang.org) desktop development GUI (Graphical User Interface) library. No need to pre-install any prerequisites. Just install the [gem](https://rubygems.org/gems/glimmer-dsl-libui) and have platform-independent native GUI that just works!
+[Glimmer](https://github.com/AndyObtiva/glimmer) DSL for [LibUI](https://github.com/libui-ng/libui-ng) is a [Fukuoka Award Winning](http://www.digitalfukuoka.jp/topics/187?locale=ja) prerequisite-free [MRI Ruby](https://www.ruby-lang.org) desktop development cross-platform native GUI (Graphical User Interface) library. No need to pre-install any prerequisites. Just install the [gem](https://rubygems.org/gems/glimmer-dsl-libui) and have cross-platform native GUI that just works on Mac, Windows, and Linux!
 
 Mac | Windows | Linux
 ----|---------|------
 ![glimmer-dsl-libui-mac-control-gallery.png](images/glimmer-dsl-libui-mac-control-gallery.png) | ![glimmer-dsl-libui-windows-control-gallery.png](images/glimmer-dsl-libui-windows-control-gallery.png) | ![glimmer-dsl-libui-linux-control-gallery.png](images/glimmer-dsl-libui-linux-control-gallery.png)
 
-[LibUI](https://github.com/libui-ng/libui-ng) is a relatively new C GUI library that renders native controls on every platform (similar to [SWT](https://www.eclipse.org/swt/), but without the heavy weight of the [Java Virtual Machine](https://www.java.com/en/)).
+[LibUI](https://github.com/libui-ng/libui-ng) is a relatively new C GUI library that renders native controls on every platform (similar to [SWT](https://www.eclipse.org/swt/), but without the heavy weight of the [Java Virtual Machine](https://www.java.com/en/)). Applications built with Glimmer DSL for LibUI will provide the familiar native look, feel, and behavior of GUI on Mac, Windows, and Linux.
 
 The main trade-off in using [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) as opposed to [Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt) or [Glimmer DSL for Tk](https://github.com/AndyObtiva/glimmer-dsl-tk) is the fact that [SWT](https://www.eclipse.org/swt/) and [Tk](https://www.tcl.tk/) are more mature than mid-alpha [libui](https://github.com/libui-ng/libui-ng) as GUI toolkits. Still, if there is only a need to build a small simple application, [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) could be a good convenient choice due to having zero prerequisites (beyond Ruby and the dependencies included in the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui)). Also, just like [Glimmer DSL for Tk](https://github.com/AndyObtiva/glimmer-dsl-tk), its apps start instantly and have a small memory footprint. [LibUI](https://github.com/kojix2/LibUI) is a promising new GUI toolkit that might prove quite worthy in the future.
 
@@ -366,7 +366,9 @@ Learn more about the differences between various [Glimmer](https://github.com/An
       - [Area Composite Shape](#area-composite-shape)
       - [Area Animation](#area-animation)
     - [Smart Defaults and Conventions](#smart-defaults-and-conventions)
-    - [Custom Keywords](#custom-keywords)
+    - [Custom Controls](#custom-controls)
+      - [Method-Based Custom Controls](#method-based-custom-controls)
+      - [Class-Based Custom Controls](#class-based-custom-controls)      
     - [Observer Pattern](#observer-pattern)
     - [Data-Binding](#data-binding)
       - [Bidirectional (Two-Way) Data-Binding](#bidirectional-two-way-data-binding)
@@ -1565,7 +1567,7 @@ specify values for `fill`, `stroke`, or `transform` (though if they do, they ove
 When you use the `include?(x, y)` or `contain?(x, y)` method on a composite `shape`, it automatically includes all its aggregated shapes
 in the inclusion or containment check using the corresponding [PerfectShape](https://github.com/AndyObtiva/perfect-shape) object.
 
-Example of a `cube` method-based custom keyword built using the composite `shape` keyword:
+Example of a `cube` method-based custom shape built using the composite `shape` keyword:
 
 ![glimmer-dsl-libui-mac-basic-composite-shape.gif](/images/glimmer-dsl-libui-mac-basic-composite-shape.gif)
 
@@ -1851,17 +1853,21 @@ SpinnerExample.new.launch
 - Colors may be passed in as a hash of `:r`, `:g`, `:b`, `:a`, or `:red`, `:green`, `:blue`, `:alpha`, or [X11](https://en.wikipedia.org/wiki/X11_color_names) color like `:skyblue`, or 6-char hex or 3-char hex (as `Integer` or `String` with or without `0x` prefix)
 - Color alpha value defaults to `1.0` when not specified.
 
-### Custom Keywords
+### Custom Controls
 
-Custom keywords can be defined to represent custom controls (components) that provide new features or act as composites of [existing controls](#supported-keywords) that need to be reused multiple times in an application or across multiple applications. Custom keywords save a lot of development time, improving productivity and maintainability immensely.
+Custom controls can be defined to represent custom controls (components) that provide new features or act as composites of [existing controls](#supported-keywords) that need to be reused multiple times in an application or across multiple applications. Custom controls save a lot of development time, improving productivity and maintainability immensely.
 
 For example, you can define a custom `address_view` control as an aggregate of multiple `label` controls to reuse multiple times as a standard address View, displaying street, city, state, and zip code.
 
-There are two ways to define custom keywords:
+There are two ways to define custom controls:
 - Method-Based: simply define a method representing the custom control you want (e.g. `address_view`) with any arguments needed (e.g. `address(address_model)`).
 - Class-Based: define a class matching the camelcased name of the custom control by convention (e.g. the `address_view` custom control keyword would have a class called `AddressView`) and `include Glimmer::LibUI::CustomControl`. Classes add the benefit of being able to distribute the custom controls into separate files and reuse externally from multiple places or share via Ruby gems.
 
-It is OK to use the terms "custom keyword" and "custom control" synonymously though "custom keyword" is a broader term that covers things other than controls too like custom shapes (e.g. `cylinder`), custom attributed strings (e.g. `alternating_color_string`), and custom transforms (`isometric_transform`).
+It is OK to use the terms "custom control" and "custom keyword" synonymously though "custom keyword" is a broader term that covers things other than controls too like custom shapes (e.g. `cylinder`), custom attributed strings (e.g. `alternating_color_string`), and custom transforms (`isometric_transform`).
+
+#### Method-Based Custom Controls
+
+Simply define a method representing the custom control you want (e.g. `address_view`) with any arguments needed (e.g. `address(address_model)`).
 
 Example that defines `form_field`, `address_form`, `label_pair`, and `address_view` keywords (you may copy/paste in [`girb`](#girb-glimmer-irb)):
 
@@ -1960,7 +1966,9 @@ window('Method-Based Custom Keyword') {
 
 ![glimmer-dsl-libui-mac-method-based-custom-keyword.png](images/glimmer-dsl-libui-mac-method-based-custom-keyword.png)
 
-You can also define Custom Window keywords, that is custom controls with `window` being the body root. These are also known as Applications. To define a Custom Window, you `include Glimmer::LibUI::CustomWindow` or `include Glimmer:LibUI::Application` and then you can invoke the `::launch` method on the class.
+#### Class-Based Custom Controls
+
+Define a class matching the camelcased name of the custom control by convention (e.g. the `address_view` custom control keyword would have a class called `AddressView`) and `include Glimmer::LibUI::CustomControl`. Classes add the benefit of being able to distribute the custom controls into separate files and reuse externally from multiple places or share via Ruby gems.
 
 Example (you may copy/paste in [`girb`](#girb-glimmer-irb)):
 
@@ -2090,11 +2098,13 @@ ClassBasedCustomControls.launch
 
 ![glimmer-dsl-libui-mac-method-based-custom-keyword.png](images/glimmer-dsl-libui-mac-method-based-custom-keyword.png)
 
+You can also define Custom Window keywords, that is custom controls with `window` being the body root. These are also known as Applications. To define a Custom Window, you `include Glimmer::LibUI::CustomWindow` or `include Glimmer:LibUI::Application` and then you can invoke the `::launch` method on the class.
+
 The [`area`](#area-api) control can be utilized to build non-native custom controls from scratch by leveraging vector graphics, formattable text, keyboard events, and mouse events. This is demonstrated in the [Area-Based Custom Controls](/docs/examples/GLIMMER-DSL-LIBUI-ADVANCED-EXAMPLES.md#area-based-custom-controls) example.
 
-Defining custom keywords enables unlimited extension of the [Glimmer GUI DSL](#glimmer-gui-dsl). The sky is the limit on what can be done with custom keywords as a result. You can compose new visual vocabulary to build applications in any domain from higher concepts rather than [mere standard controls](#supported-keywords). For example, in a traffic signaling app, you could define `street`, `light_signal`, `traffic_sign`, and `car` as custom keywords and build your application from these concepts directly, saving enormous time and achieving much higher productivity.
+Defining custom controls enables unlimited extension of the [Glimmer GUI DSL](#glimmer-gui-dsl). The sky is the limit on what can be done with custom controls as a result. You can compose new visual vocabulary to build applications in any domain from higher concepts rather than [mere standard controls](#supported-keywords). For example, in a traffic signaling app, you could define `street`, `light_signal`, `traffic_sign`, and `car` as custom keywords and build your application from these concepts directly, saving enormous time and achieving much higher productivity.
 
-Learn more from custom keyword usage in [Method-Based Custom Keyword](/docs/examples/GLIMMER-DSL-LIBUI-ADVANCED-EXAMPLES.md#method-based-custom-keyword), [Area-Based Custom Controls](/docs/examples/GLIMMER-DSL-LIBUI-ADVANCED-EXAMPLES.md#area-based-custom-controls), [Basic Scrolling Area](/docs/examples/GLIMMER-DSL-LIBUI-BASIC-EXAMPLES.md#basic-scrolling-area), [Histogram](/docs/examples/GLIMMER-DSL-LIBUI-ADVANCED-EXAMPLES.md#histogram), and [Tetris](/docs/examples/GLIMMER-DSL-LIBUI-ADVANCED-EXAMPLES.md#tetris) examples.
+Learn more from custom control usage in [Method-Based Custom Keyword](/docs/examples/GLIMMER-DSL-LIBUI-ADVANCED-EXAMPLES.md#method-based-custom-keyword), [Area-Based Custom Controls](/docs/examples/GLIMMER-DSL-LIBUI-ADVANCED-EXAMPLES.md#area-based-custom-controls), [Basic Scrolling Area](/docs/examples/GLIMMER-DSL-LIBUI-BASIC-EXAMPLES.md#basic-scrolling-area), [Histogram](/docs/examples/GLIMMER-DSL-LIBUI-ADVANCED-EXAMPLES.md#histogram), and [Tetris](/docs/examples/GLIMMER-DSL-LIBUI-ADVANCED-EXAMPLES.md#tetris) examples.
 
 ### Observer Pattern
 
@@ -2404,7 +2414,8 @@ Learn more from data-binding usage in [Login](/docs/examples/GLIMMER-DSL-LIBUI-A
 - `text` `string` `background` does not work on Windows due to an [issue in libui](https://github.com/andlabs/libui/issues/347).
 - `table` `progress_bar` column on Windows cannot be updated with a positive value if it started initially with `-1` (it ignores update to avoid crashing due to an issue in [libui](https://github.com/andlabs/libui) on Windows.
 - `radio_buttons` on Linux has an issue where it always selects the first item even if you did not set its `selected` value or set it to `-1` (meaning unselected). It works correctly on Mac and Windows.
-- It seems that [libui](https://github.com/andlabs/libui) does not support nesting multiple `area` controls under a `grid` as only the first one shows up in that scenario. To workaround that limitation, use a `vertical_box` with nested `horizontal_box`s instead to include multiple `area`s in a GUI.
+- It seems that [libui](https://github.com/libui-ng/libui-ng) does not support nesting multiple `area` controls under a `grid` as only the first one shows up in that scenario. To workaround that limitation, use a `vertical_box` with nested `horizontal_box`s instead to include multiple `area`s in a GUI.
+- Both `multiline_entry` and `non_wrapping_multiline_entry` do not seem to play well with being nested in a `grid`. To get around the problem, I would use a combination of `vertical_box` and `horizontal_box`s instead.
 - As per the code of [examples/basic_transform.rb](/docs/examples/GLIMMER-DSL-LIBUI-BASIC-EXAMPLES.md#basic-transform), Windows requires different ordering of transforms than Mac and Linux.
 - `scrolling_area#scroll_to` does not seem to work on Windows and Linux, but works fine on Mac
 
@@ -2422,13 +2433,15 @@ To learn more about the [LibUI](https://github.com/kojix2/LibUI) API exposed thr
 
 I am documenting options for packaging, which I have not tried myself, but figured they would still be useful to add to the README.md until I can expand further effort into supporting packaging.
 
-For Windows, the [LibUI](https://github.com/kojix2/LibUI) project recommends [OCRA](https://github.com/larsch/ocra) (One-Click Ruby Application), which builds Windows executables from Ruby source.
+For Windows, the [LibUI](https://github.com/kojix2/LibUI) project recommends [OCRA](https://github.com/larsch/ocra) (One-Click Ruby Application), which builds Windows executables from Ruby source. And, there is a newer fork of the project that supports newer versions of Ruby called [OCRAN](https://github.com/Largo/ocran).
 
 For Mac, consider [Platypus](https://github.com/sveinbjornt/Platypus) (builds a native Mac app from a Ruby script)
 
 For Linux, simply package your app as a [Ruby Gem](https://guides.rubygems.org/what-is-a-gem/) and [build rpm package from Ruby Gem](https://www.redpill-linpro.com/sysadvent/2015/12/07/building-rpms-from-gems.html) or [build deb package from Ruby Gem](https://openpreservation.org/blogs/building-debian-package-ruby-program/).
 
 Also, there is a promising project called [ruby-packer](https://github.com/pmq20/ruby-packer) that supports all platforms.
+
+Last but not least, Ruby recently supported WASM, including the ability to [package a Ruby application as a WASI application](https://github.com/ruby/ruby.wasm#quick-example-how-to-package-your-ruby-application-as-a-wasi-application).
 
 ## Glimmer Style Guide
 
@@ -2837,6 +2850,12 @@ https://github.com/kojix2/suikabox
 https://github.com/kojix2/htsgrid
 
 ![hts grid screenshot](https://raw.githubusercontent.com/AndyObtiva/htsgrid/main/screenshot-00.png)
+
+### Electric Avenue
+
+This is built as an exploratory software prototype by [Ari Brown](https://github.com/seydar) (closed source software).
+
+![Electric Avenue](https://user-images.githubusercontent.com/16188/260890040-b4b28429-1789-4cdd-a708-45a2bd62b70f.png)
 
 ## Process
 

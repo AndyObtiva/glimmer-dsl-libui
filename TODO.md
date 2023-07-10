@@ -20,10 +20,12 @@
 - Option for in-memory only sort for table in case we don't want to store the sort back on the model
 - Table sorting for refined_table
 
+- Control content data-binding to generate nested controls dynamically based on a model attribute change
 - Enable usage of `msg_box` and `msg_box_error` without constructing a `window` explicitly or launching a `Glimmer::LibUI::Application` to enable quick command line triggering of message boxes if needed.
 
 - Automate the use of Glimmer::LibUI.queue_main from other threads
 
+- Figure out if there is a way to make `on_mouse_up` listener work when nested inside immediate mode shapes created inside `area` `on_draw`
 - Update Supported Controls documentation with allowed parents and allowed children
 - Support overriding global `table` `editable` state with a specific column `editable` state if global value is `true` and column value is `false`
 
@@ -41,7 +43,7 @@
 - Fix issue with version 4 of Area Gallery
 
 - examples/area_tooltip.rb & examples/area_tooltip_with_delay.rb
-
+- examples/linked_pages.rb (build a link-based desktop example that works similarly to web pages with hyperlinks)
 
 ### 0.5.x
 
@@ -51,7 +53,7 @@
 
 ### 0.5.x
 
-- class based custom shape example (randomly generated custom shape coloring)
+- class based custom shape example (randomly generated custom shape coloring). Build Hangman the game.
 
 ### 0.5.x
 

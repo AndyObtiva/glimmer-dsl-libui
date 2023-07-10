@@ -2,7 +2,7 @@
 
 ## 0.8.0
 
-- Support `composite_shape` keyword (alias: `shape`) as aggregate (composite) shape that can have arbitrary shapes, text, transforms underneath, which inherit its `fill`/`stroke` colors and `transform`
+- Support `composite_shape` keyword (alias: `shape`) as aggregate (composite) shape that can have arbitrary shapes, text, transforms underneath, which inherit its `fill`/`stroke` colors and `transform`. `composite_shape` also supports nesting mouse listeners, which check mouse click point containment against all nested shapes automatically.
 - New `examples/basic_composite_shape.rb` with use of `shape` + drag and drop support for moving shapes and click support for changing shape colors
 - Invert `Glimmer::LibUI::ControlProxy::KEYWORD_ALIASES` to enable adding multiple aliases per keyword
 - Support `Glimmer::LibUI::Shape::KEYWORD_ALIASES` to enable adding multiple aliases per keyword
