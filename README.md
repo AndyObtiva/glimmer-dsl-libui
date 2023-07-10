@@ -12,7 +12,7 @@
 
 [**(Ruby Rogues Podcast Interview - Desktop Apps in Ruby ft. Andy)**](https://andymaleh.blogspot.com/2022/05/ruby-rogues-podcast-interview-desktop.html)
 
-[Glimmer](https://github.com/AndyObtiva/glimmer) DSL for [LibUI](https://github.com/libui-ng/libui-ng) is a prerequisite-free [MRI Ruby](https://www.ruby-lang.org) desktop development GUI (Graphical User Interface) library. No need to pre-install any prerequisites. Just install the [gem](https://rubygems.org/gems/glimmer-dsl-libui) and have platform-independent native GUI that just works!
+[Glimmer](https://github.com/AndyObtiva/glimmer) DSL for [LibUI](https://github.com/libui-ng/libui-ng) is a prerequisite-free [MRI Ruby](https://www.ruby-lang.org) desktop development cross-platform native GUI (Graphical User Interface) library. No need to pre-install any prerequisites. Just install the [gem](https://rubygems.org/gems/glimmer-dsl-libui) and have cross-platform native GUI that just works on Mac, Windows, and Linux!
 
 Mac | Windows | Linux
 ----|---------|------
