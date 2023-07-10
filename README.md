@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.8.0 ([Fukuoka Award Winning](http://www.digitalfukuoka.jp/topics/187?locale=ja))
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI ([Fukuoka Award Winning](http://www.digitalfukuoka.jp/topics/187?locale=ja))
 ## Prerequisite-Free Ruby Desktop Development Cross-Platform Native GUI Library
 ### The Quickest Way From Zero To GUI
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
