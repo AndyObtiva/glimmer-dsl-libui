@@ -48,7 +48,8 @@ module Glimmer
                 else
                   ControlProxy.main_window_proxy&.destroy
                   ::LibUI.quit
-                  0
+#                   0
+                  1
                 end
               end.tap do |default_behavior_listener|
                 ::LibUI.on_should_quit(&default_behavior_listener)

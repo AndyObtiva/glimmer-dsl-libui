@@ -47,7 +47,6 @@ Glimmer::Config.excluded_keyword_checkers << lambda do |method_symbol, *args|
   result ||= method == 'load_iseq'
 end
 
-::LibUI.init
 # begin
 #   PutsDebuggerer.printer = lambda { |m| puts m; $stdout.flush}
 # rescue

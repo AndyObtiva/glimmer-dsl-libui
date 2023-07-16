@@ -48,7 +48,11 @@ module Glimmer
         end
         
         def destroy
+#           pd 'destroy', c: :t
           return if @destroying
+          # TODO should we destroy menus?
+#           @quit_menu_item_proxy&.destroy
+#           @menu_proxy&.destroy
           @destroying = true
           @on_closing_listeners&.clear
           super
@@ -56,6 +60,7 @@ module Glimmer
           notify_custom_listeners('on_destroy', self)
           deregister_custom_listeners('on_destroy')
           @destroying = false
+          pd 'done destroy'
         end
         
         def destroying?
@@ -64,10 +69,17 @@ module Glimmer
         
         def show
           super
-          unless @shown_at_least_once
+          pd !@shown_at_least_once
+          pd !@shown_at_least_once && self == ControlProxy.main_window_proxy
+          if !@shown_at_least_once && self == ControlProxy.main_window_proxy
+            pd 'in'
             @shown_at_least_once = true
+            pd 'main'
             ::LibUI.main
-            ::LibUI.quit
+            pd 'uninit'
+            ::LibUI.uninit
+#             ::LibUI.quit
+            pd 'done uninit'
           end
         end
         alias open show
@@ -92,7 +104,8 @@ module Glimmer
               else
                 destroy
                 ::LibUI.quit
-                0
+#                 0
+                1
               end
             end.tap do |default_behavior_listener|
               super(listener_name, &default_behavior_listener)
@@ -166,9 +179,13 @@ module Glimmer
         private
         
         def build_control
+          pd 'build_control'
+          ::LibUI.init
+          # TODO it seems we have to avoid recreating default menus if main window is destroyed and a new main window is created
+          pd OS.mac? && ControlProxy.menu_proxies.empty?
           if OS.mac? && ControlProxy.menu_proxies.empty?
-            menu_proxy = ControlProxy.create('menu', nil, [''])
-            quit_menu_item_proxy = ControlProxy.create('quit_menu_item', menu_proxy, [])
+            @menu_proxy = ControlProxy.create('menu', nil, [''])
+            @quit_menu_item_proxy = ControlProxy.create('quit_menu_item', @menu_proxy, [])
           end
           construction_args = @args.dup
           construction_args[0] = DEFAULT_TITLE if construction_args.size == 0
@@ -179,10 +196,9 @@ module Glimmer
           @width = construction_args[1]
           @height = construction_args[2]
           @libui = ControlProxy.new_control(@keyword, construction_args)
-          @libui.tap do
-            # setup default on_closing listener if no on_closing listeners are setup
-            handle_listener('on_closing') {} if @on_closing_listeners.nil? || @on_closing_listeners.empty?
-          end
+          # setup default on_closing listener if no on_closing listeners are setup
+          handle_listener('on_closing') {} if @on_closing_listeners.nil? || @on_closing_listeners.empty?
+          @libui
         end
       end
     end

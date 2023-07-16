@@ -338,13 +338,15 @@ module Glimmer
       end
       
       def destroy_child(child)
+        pd 'destroy_child', c: :t
         child.default_destroy
         children.delete(child)
       end
       
       def default_destroy
+        pd 'default_destroy', c: :t
         deregister_all_custom_listeners
-        send_to_libui('destroy')
+#         send_to_libui('destroy')
         ControlProxy.control_proxies.delete(self)
       end
             
