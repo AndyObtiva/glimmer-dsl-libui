@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.9.0
+
+- Support `glimmer` command to more conveniently run applications (`glimmer app_path`) and examples (`glimmer examples`)
+
 ## 0.8.0
 
 - Support `composite_shape` keyword (alias: `shape`) as aggregate (composite) shape that can have arbitrary shapes, text, transforms underneath, which inherit its `fill`/`stroke` colors and `transform`. `composite_shape` also supports nesting mouse listeners, which check mouse click point containment against all nested shapes automatically.

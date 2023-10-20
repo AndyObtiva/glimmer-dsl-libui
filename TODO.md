@@ -2,19 +2,14 @@
 
 ## Next
 
-- Ensure that shape/path containment/inclusion checks take their transform into account while using `PerfectShape`
-- Ensure support for nesting a composite `shape` within another composite `shape`
-
-- Look into providing absolute values (incorporating relative position to parent composite shape) for PerfectShaped bounding box elements
+- Scaffold an application
 
 - Support `LibUI.uninit` to enable clean exit of a LibUI app in Linux and support launching/closing a LibUI app window multiple times
-
 - Rename basic table selection example to something that indicates sorting too
 - Fix issue with button_column on_clicked not resulting in click of button yet click of column. It seems we have to add a on_button_clicked alternative here. and break the API
 - Provide a way to configure a different sort_by or sort block per table column while relying on sortable property
-
 - Support a `window.quit` operation that is a shortcut for `window.destroy` followed by `::LibUI.quit`
-- Enable usage of `msg_box` and `msg_box_error` without constructing a `window` explicitly or launching a `Glimmer::LibUI::Application` to enable quick command line triggering of message boxes if needed.
+
 - Automate table sorting support (perhaps via a property, sortable, which should default to true). Must handle cell_rows as array of arrays, array of hashes, and array of models. Does not work if cell_rows is an lazy enumerable
 
 - Option for in-memory only sort for table in case we don't want to store the sort back on the model
@@ -23,7 +18,6 @@
 - Control content data-binding to generate nested controls dynamically based on a model attribute change
 - Enable usage of `msg_box` and `msg_box_error` without constructing a `window` explicitly or launching a `Glimmer::LibUI::Application` to enable quick command line triggering of message boxes if needed.
 
-- Automate the use of Glimmer::LibUI.queue_main from other threads
 
 - Figure out if there is a way to make `on_mouse_up` listener work when nested inside immediate mode shapes created inside `area` `on_draw`
 - Update Supported Controls documentation with allowed parents and allowed children
@@ -45,39 +39,45 @@
 - examples/area_tooltip.rb & examples/area_tooltip_with_delay.rb
 - examples/linked_pages.rb (build a link-based desktop example that works similarly to web pages with hyperlinks)
 
-### 0.5.x
+### 0.x.x
+
+- Ensure that shape/path containment/inclusion checks take their transform into account while using `PerfectShape`
+- Ensure support for nesting a composite `shape` within another composite `shape`
+- Ensure support for nesting any `shape` within another `shape`
+- Look into providing absolute values (incorporating relative position to parent composite shape) for PerfectShaped bounding box elements
+
+### 0.x.x
 
 - Support Custom Shapes, describing composite shapes/text/image concepts inside an `area`
 - Support Custom Shape `bounding_box` (minx, miny, width, height), `contain?` method (checking if shape contains point inside) and `include?` method (checking on outline if stroked and inside if filled?)
 - Look into extracting `bevel` Custom Shape in Tetris
 
-### 0.5.x
+### 0.x.x
 
 - class based custom shape example (randomly generated custom shape coloring). Build Hangman the game.
 
-### 0.5.x
+### 0.x.x
 
 - Support `drag_and_move true` (just enables dragging and moving shapes in area)
 
-### 0.5.x
+### 0.x.x
 
 - examples/area_drag_and_move.rb (customize a face with face parts like mustache, nose, lips, eyes, eyebrows, and hair) [utilize SVGs from https://editor.dicebear.com/]
 
-### 0.5.x
+### 0.x.x
 
 - Simpler Drag and Drop via `drag_source true`, `drop_target true`, and `on_drop { }` event (working within same area)
 
-### 0.5.x
+### 0.x.x
 
 - Build Quarto game sample using area drag and drop: https://en.gigamic.com/game/quarto-classic
 
-### 0.5.x
+### 0.x.x
 
 - Augment examples/class_based_custom_controls.rb example with a custom listener
 
 ## Soon
 
-- Scaffold an application
 - Zenity-like Command-Line-Mode-GUI Scaffolding
 - Full MVC + Database scaffolding
 - Look into whether keyboard listeners must not be allowed within shapes since they do not carry an x/y element like mouse listeners
@@ -93,6 +93,7 @@
 
 ## Future
 
+- Automate the use of Glimmer::LibUI.queue_main from other threads
 - Add an example demonstrating how to use a SQLite database through ActiveRecord in Glimmer DSL for LibUI
 - Support `refined_table` sorting
 - Support `code_editor` class-based custom control as a code-syntax-highlighted `entry` control using the `rouge` gem

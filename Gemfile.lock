@@ -137,6 +137,7 @@ GEM
     sync (0.5.0)
     term-ansicolor (1.7.1)
       tins (~> 1.0)
+    text-table (1.2.4)
     thor (1.2.2)
     thread_safe (0.3.6)
     tins (1.32.1)
@@ -155,6 +156,7 @@ GEM
 
 PLATFORMS
   arm64-darwin-22
+  x86_64-darwin-19
   x86_64-darwin-22
 
 DEPENDENCIES
@@ -177,6 +179,7 @@ DEPENDENCIES
   simplecov-lcov (~> 0.7.0)
   stringio (= 3.0.1)
   super_module (~> 1.4.1)
+  text-table (>= 1.2.4, < 2.0.0)
 
 BUNDLED WITH
    2.3.25

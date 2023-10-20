@@ -21,10 +21,10 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-# This script was written for Windows and Linux only
+require_relative '../lib/glimmer-dsl-libui'
+require_relative '../lib/glimmer/launcher'
 
-require_relative 'girb_runner'
+# Initialize launcher, consuming ARGV args that are for Glimmer only
+launcher = Glimmer::Launcher.new(ARGV)
 
-require 'irb'
-
-IRB.start('.')
+launcher.launch

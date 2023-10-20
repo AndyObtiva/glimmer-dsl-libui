@@ -342,9 +342,13 @@ Learn more about the differences between various [Glimmer](https://github.com/An
 ## Table of Contents
 
 - [Glimmer DSL for LibUI](#)
-  - [Glimmer GUI DSL Concepts](#glimmer-gui-dsl-concepts)
+  - [Setup](#setup)
   - [Usage](#usage)
+    - [Experimentation Usage](#experimentation-usage)
+    - [Prototyping Usage](#prototyping-usage)
+    - [Serious Usage](#serious-usage)
   - [Girb (Glimmer IRB)](#girb-glimmer-irb)
+  - [Glimmer GUI DSL Concepts](#glimmer-gui-dsl-concepts)
   - [API](#api)
     - [Supported Keywords](#supported-keywords)
     - [Common Control Properties](#common-control-properties)
@@ -368,7 +372,7 @@ Learn more about the differences between various [Glimmer](https://github.com/An
     - [Smart Defaults and Conventions](#smart-defaults-and-conventions)
     - [Custom Controls](#custom-controls)
       - [Method-Based Custom Controls](#method-based-custom-controls)
-      - [Class-Based Custom Controls](#class-based-custom-controls)      
+      - [Class-Based Custom Controls](#class-based-custom-controls)
     - [Observer Pattern](#observer-pattern)
     - [Data-Binding](#data-binding)
       - [Bidirectional (Two-Way) Data-Binding](#bidirectional-two-way-data-binding)
@@ -401,6 +405,197 @@ Learn more about the differences between various [Glimmer](https://github.com/An
   - [Contributing](#contributing)
   - [Contributors](#contributors)
   - [License](#license)
+
+## Setup
+
+Install [glimmer-dsl-libui](https://rubygems.org/gems/glimmer-dsl-libui) gem directly into a [maintained Ruby version](https://www.ruby-lang.org/en/downloads/):
+
+```
+gem install glimmer-dsl-libui
+```
+ 
+Or install via Bundler `Gemfile`:
+
+```ruby
+gem 'glimmer-dsl-libui', '~> 0.9.0'
+```
+
+Test that installation worked by running the [Glimmer Meta-Example](#examples):
+
+```
+glimmer examples
+```
+
+Or alternatively, run using the explicit Ruby command:
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/meta_example'"
+```
+
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-meta-example.png](images/glimmer-dsl-libui-mac-meta-example.png) | ![glimmer-dsl-libui-windows-meta-example.png](images/glimmer-dsl-libui-windows-meta-example.png) | ![glimmer-dsl-libui-linux-meta-example.png](images/glimmer-dsl-libui-linux-meta-example.png)
+
+## Usage
+
+Require [glimmer-dsl-libui](https://rubygems.org/gems/glimmer-dsl-libui) (whether through a Ruby `require` statement or `Bundler`) and then include the `Glimmer` or `Glimmer::LibUI::Application` module to enable access to the Glimmer GUI DSL in one of multiple approaches.
+ 
+### Experimentation Usage
+ 
+For experimenting and learning, add `include Glimmer` into the top-level main object and start using the Glimmer GUI DSL directly.
+
+Example including `Glimmer` at the top-level scope just for some prototyping/demoing/testing (you may copy/paste in [`girb`](#girb-glimmer-irb)):
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+  
+window('hello world', 300, 200) {
+  button('Button') {
+    on_clicked do
+      puts 'Button Clicked'
+    end
+  }
+}.show
+```
+
+![usage mac](images/glimmer-dsl-libui-mac-usage.png)
+
+### Prototyping Usage
+
+For prototyping, add `include Glimmer` into an actual class and start using the Glimmer GUI DSL in instance methods.
+
+Example including `Glimmer` and manually implementing the `#launch` method (you may copy/paste in [`girb`](#girb-glimmer-irb)):
+
+```ruby
+require 'glimmer-dsl-libui'
+
+class SomeGlimmerApp
+  include Glimmer
+  
+  def launch
+    window('hello world', 300, 200) {
+      button('Button') {
+        on_clicked do
+          puts 'Button Clicked'
+        end
+      }
+    }.show
+  end
+end
+
+SomeGlimmerApp.new.launch
+```
+
+![usage mac](images/glimmer-dsl-libui-mac-usage.png)
+
+### Serious Usage
+
+For more serious usage, add `include Glimmer::LibUI::Application` into an actual class (it automatically includes the `Glimmer` module) to conveniently declare the GUI underneath a `body` block (with the option of implementing `before_body` and `after_body` hooks) and take advantage of the inherited `SomeClass::launch` method implementation that automatically calls `window.show` for you.
+
+Example including `Glimmer::LibUI::Application` (you may copy/paste in [`girb`](#girb-glimmer-irb)):
+
+```ruby
+require 'glimmer-dsl-libui'
+
+class SomeGlimmerApp
+  include Glimmer::LibUI::Application
+  
+  body {
+    window('hello world', 300, 200) {
+      button('Button') {
+        on_clicked do
+          puts 'Button Clicked'
+        end
+      }
+    }
+  }
+end
+
+SomeGlimmerApp.launch
+```
+
+![usage mac](images/glimmer-dsl-libui-mac-usage.png)
+
+(note: `Glimmer::LibUI::Application` is an alias for `Glimmer::LibUI::CustomWindow` since that is what it represents)
+
+If you are new to [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui), check out the [Glimmer GUI DSL Concepts](#glimmer-gui-dsl-concepts), [Glimmer Command](#glimmer-command), [Girb](#girb-glimmer-irb) and [Examples](#examples) to quickly learn through copy/paste. You may refer to the [API](#api) later on once you have gotten your feet wet with [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) and need more detailed reference information.
+
+
+## Glimmer Command
+
+The `glimmer` command allows you to conveniently:
+- Run Glimmer DSL for LibUI applications (via `glimmer [app_path]`)
+- Run Glimmer DSL for LibUI included examples (via `glimmer examples`, which brings up the [Glimmer Meta-Example](https://github.com/AndyObtiva/glimmer-dsl-libui/blob/master/examples/meta_example.rb))
+
+You can bring up usage instructions by running the `glimmer` command without arguments:
+
+```
+glimmer
+```
+
+```
+% bin/glimmer
+Glimmer DSL for LibUI (Prerequisite-Free Ruby Desktop Development Cross-Platform Native GUI Library) - Ruby Gem: glimmer-dsl-libui v0.8.0
+
+Usage: glimmer [--bundler] [--pd] [--quiet] [--debug] [--log-level=VALUE] [[ENV_VAR=VALUE]...] [[-ruby-option]...] (application.rb or task[task_args])
+
+Runs Glimmer applications and tasks.
+
+When applications are specified, they are run using Ruby,
+automatically preloading the glimmer-dsl-libui Ruby gem.
+
+Optionally, extra Glimmer options, Ruby options, and/or environment variables may be passed in.
+
+Glimmer options:
+- "--bundler=GROUP"   : Activates gems in Bundler default group in Gemfile
+- "--pd=BOOLEAN"      : Requires puts_debuggerer to enable pd method
+- "--quiet=BOOLEAN"   : Does not announce file path of Glimmer application being launched
+- "--debug"           : Displays extra debugging information and enables debug logging
+- "--log-level=VALUE" : Sets Glimmer's Ruby logger level ("ERROR" / "WARN" / "INFO" / "DEBUG"; default is none)
+
+Tasks are run via rake. Some tasks take arguments in square brackets (surround with double-quotes if using Zsh).
+
+Available tasks are below (if you do not see any, please add `require 'glimmer/rake_task'` to Rakefile and rerun or run rake -T):
+
+Select a Glimmer task to run: (Press ↑/↓ arrow to move, Enter to select and letters to filter)
+‣ glimmer examples                                            # Brings up the Glimmer Meta-Sample app to allow browsing, running, and viewing code of Glimmer samples
+  glimmer list:gems:customcontrol[query]                      # List Glimmer custom control gems available at rubygems.org (query is optional) [alt: list:gems:cc]
+  glimmer list:gems:customshape[query]                        # List Glimmer custom shape gems available at rubygems.org (query is optional) [alt: list:gems:cs]
+  glimmer list:gems:customwindow[query]                       # List Glimmer custom window gems available at rubygems.org (query is optional) [alt: list:gems:cw]
+  glimmer list:gems:dsl[query]                                # List Glimmer DSL gems available at rubygems.org (query is optional)
+  glimmer run[app_path]                                       # Runs Glimmer app or custom window gem in the current directory, unless app_path is specified, then runs it instead (app_path is optional)
+  glimmer scaffold[app_name]                                  # Scaffold Glimmer application directory structure to build a new app
+  glimmer scaffold:customcontrol[name,namespace]              # Scaffold Glimmer::UI::CustomControl subclass (part of a view) under app/views (namespace is optional) [alt: scaffold:cc]
+  glimmer scaffold:customshape[name,namespace]                # Scaffold Glimmer::UI::CustomShape subclass (part of a view) under app/views (namespace is optional) [alt: scaffold:cs]
+  glimmer scaffold:customwindow[name,namespace]               # Scaffold Glimmer::UI::CustomWindow subclass (full window view) under app/views (namespace is optional) [alt: scaffold:cw]
+  glimmer scaffold:gem:customcontrol[name,namespace]          # Scaffold Glimmer::UI::CustomControl subclass (part of a view) under its own Ruby gem project (namespace is required) [alt: scaffold:gem:cc]
+  glimmer scaffold:gem:customshape[name,namespace]            # Scaffold Glimmer::UI::CustomShape subclass (part of a view) under its own Ruby gem project (namespace is required) [alt: scaffold:gem:cs]
+  glimmer scaffold:gem:customwindow[name,namespace]           # Scaffold Glimmer::UI::CustomWindow subclass (full window view) under its own Ruby gem + app project (namespace is required) [alt: scaffold:gem:cw]
+```
+
+On Mac and Linux, it brings up a TUI (Text-based User Interface) for interactive navigation and execution of Glimmer tasks (courtesy of [rake-tui](https://github.com/AndyObtiva/rake-tui)).
+
+On Windows and ARM64 machines, it simply lists the available Glimmer tasks at the end (courtsey of [rake](https://github.com/ruby/rake)).
+
+Note: If you encounter an issue running the `glimmer` command, run `bundle exec glimmer` instead.
+
+## Girb (Glimmer IRB)
+
+You can run the `girb` command (`bin/girb` if you cloned the project locally) to do some quick and dirty experimentation and learning:
+
+```
+girb
+```
+
+This gives you `irb` with the `glimmer-dsl-libui` gem loaded and the `Glimmer` module mixed into the main object for easy experimentation with GUI.
+
+![glimmer-dsl-libui-girb.png](images/glimmer-dsl-libui-girb.png)
+
+For a more advanced code editing tool, check out the [Meta-Example (The Example of Examples)](#examples).
+
+Gotcha: On the Mac, when you close a window opened in `girb`, it remains open until you enter `exit` or open another GUI window.
 
 ## Glimmer GUI DSL Concepts
 
@@ -525,115 +720,6 @@ window('hello world', 300, 200) {
   end
 }.show
 ```
-
-## Usage
-
-Install [glimmer-dsl-libui](https://rubygems.org/gems/glimmer-dsl-libui) gem directly into a [maintained Ruby version](https://www.ruby-lang.org/en/downloads/):
-
-```
-gem install glimmer-dsl-libui
-```
- 
-Or install via Bundler `Gemfile`:
-
-```ruby
-gem 'glimmer-dsl-libui', '~> 0.8.0'
-```
-
-Test that installation worked by running the [Meta-Example](#examples):
-
-```
-ruby -r glimmer-dsl-libui -e "require 'examples/meta_example'"
-```
-
-Mac | Windows | Linux
-----|---------|------
-![glimmer-dsl-libui-mac-meta-example.png](images/glimmer-dsl-libui-mac-meta-example.png) | ![glimmer-dsl-libui-windows-meta-example.png](images/glimmer-dsl-libui-windows-meta-example.png) | ![glimmer-dsl-libui-linux-meta-example.png](images/glimmer-dsl-libui-linux-meta-example.png)
-
-Now to use [glimmer-dsl-libui](https://rubygems.org/gems/glimmer-dsl-libui), add `require 'glimmer-dsl-libui'` at the top.
-
-Afterwards, `include Glimmer` into the top-level main object for testing or into an actual class for serious usage.
-
-Alternatively, `include Glimmer::LibUI::Application` to conveniently declare the GUI `body` and run via the `::launch` method (`Glimmer::LibUI::Application` is an alias for `Glimmer::LibUI::CustomWindow` since that is what it represents).
-
-Example including `Glimmer::LibUI::Application` (you may copy/paste in [`girb`](#girb-glimmer-irb)):
-
-```ruby
-require 'glimmer-dsl-libui'
-
-class SomeGlimmerApp
-  include Glimmer::LibUI::Application
-  
-  body {
-    window('hello world', 300, 200) {
-      button('Button') {
-        on_clicked do
-          puts 'Button Clicked'
-        end
-      }
-    }
-  }
-end
-
-SomeGlimmerApp.launch
-```
-
-Example including `Glimmer` and manually implementing the `#launch` method (you may copy/paste in [`girb`](#girb-glimmer-irb)):
-
-```ruby
-require 'glimmer-dsl-libui'
-
-class SomeGlimmerApp
-  include Glimmer
-  
-  def launch
-    window('hello world', 300, 200) {
-      button('Button') {
-        on_clicked do
-          puts 'Button Clicked'
-        end
-      }
-    }.show
-  end
-end
-
-SomeGlimmerApp.new.launch
-```
-
-Example including `Glimmer` at the top-level scope just for some prototyping/demoing/testing (you may copy/paste in [`girb`](#girb-glimmer-irb)):
-
-```ruby
-require 'glimmer-dsl-libui'
-
-include Glimmer
-  
-window('hello world', 300, 200) {
-  button('Button') {
-    on_clicked do
-      puts 'Button Clicked'
-    end
-  }
-}.show
-```
-
-If you are new to [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui), check out [Girb](#girb-glimmer-irb) and [Examples](#examples) to quickly learn through copy/paste. You may refer to the [API](#api) later on once you have gotten your feet wet with [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) and need more detailed reference information.
-
-## Girb (Glimmer IRB)
-
-You can run the `girb` command (`bin/girb` if you cloned the project locally) to do some quick and dirty experimentation and learning:
-
-```
-girb
-```
-
-This gives you `irb` with the `glimmer-dsl-libui` gem loaded and the `Glimmer` module mixed into the main object for easy experimentation with GUI.
-
-![glimmer-dsl-libui-girb.png](images/glimmer-dsl-libui-girb.png)
-
-For a more advanced code editing tool, check out the [Meta-Example (The Example of Examples)](#examples).
-
-Gotcha: On the Mac, when you close a window opened in `girb`, it remains open until you enter `exit` or open another GUI window.
-
 ## API
 
 Any control returned by a [Glimmer GUI DSL](#glimmer-gui-dsl-concepts) keyword declaration can be introspected for its properties and updated via object-oriented attributes (standard Ruby `attr`/`attr=` or `set_attr`).
