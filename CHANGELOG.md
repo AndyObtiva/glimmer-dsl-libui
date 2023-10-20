@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.9.2
+
+- Add `glimmer` commands `glimmer package:gem`, `glimmer package:gemspec`, and `glimmer package:clean`
+
 ## 0.9.1
 
 - Scaffold an application via Glimmer Command: `glimmer scaffold[app_name]`

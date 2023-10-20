@@ -66,6 +66,27 @@ namespace :glimmer do
     Glimmer::Launcher.new([File.expand_path('../../../examples/meta_example.rb', __FILE__)]).launch
   end
 
+  namespace :package do
+    task :package_dependencies do
+      require_relative 'rake_task/package'
+    end
+    
+    desc 'Clean by removing "pkg" directory'
+    task :clean => :package_dependencies do
+      Glimmer::RakeTask::Package.clean
+    end
+
+    desc 'Generate gemspec'
+    task :gemspec => :package_dependencies do
+      Glimmer::RakeTask::Package.gemspec
+    end
+
+    desc 'Generate gem under "pkg" directory'
+    task :gem => :package_dependencies do
+      Glimmer::RakeTask::Package.gem
+    end
+  end
+
   desc 'Scaffold Glimmer application directory structure to build a new app'
   task :scaffold, [:app_name] do |t, args|
     require_relative 'rake_task/scaffold'

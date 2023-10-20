@@ -3,7 +3,6 @@
 ## Next
 
 - Updating Scaffolding of an application to have a Model layer as part of the example
-- Add glimmer commands for Generate gemspec and generate gem adding Package class back for that
 
 - Scaffold an custom shell
 - Scaffold an custom widget

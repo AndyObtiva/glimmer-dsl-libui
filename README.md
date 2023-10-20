@@ -1,5 +1,5 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI ([Fukuoka Award Winning](http://www.digitalfukuoka.jp/topics/187?locale=ja))
-## Prerequisite-Free Ruby Desktop Development Cross-Platform Native GUI Library
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.9.2
+## Prerequisite-Free Ruby Desktop Development Cross-Platform Native GUI Library  ([Fukuoka Award Winning](http://www.digitalfukuoka.jp/topics/187?locale=ja))
 ### The Quickest Way From Zero To GUI
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
 [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -421,7 +421,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.9.1'
+gem 'glimmer-dsl-libui', '~> 0.9.2'
 ```
 
 Test that installation worked by running the [Glimmer Meta-Example](#examples):
@@ -686,10 +686,22 @@ The application comes with `juwelier` for auto-generating an application gem fro
 You can package the newly scaffolded app as a Ruby gem by running this command:
 
 ```
+glimmer package:gem
+```
+
+Or by using the raw rake command:
+
+```
 rake build
 ```
 
 You can generate the application gemspec explicitly if needed with this command (though it is not needed to build the gem):
+
+```
+glimmer package:gemspec
+```
+
+Or by using the raw rake command:
 
 ```
 rake gemspec:generate
