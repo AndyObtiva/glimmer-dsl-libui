@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.9.1
+
+- Scaffold an application via Glimmer Command: `glimmer scaffold[app_name]`
+- Hide unsupported Scaffolding tasks in Glimmer Command
+- Add missing Glimmer Command gem dependencies: `rake`, `rake-tui`, `text-table`, `puts_debuggerer`
+
 ## 0.9.0
 
 - Support `glimmer` command to more conveniently run applications (`glimmer app_path`) and examples (`glimmer examples`)

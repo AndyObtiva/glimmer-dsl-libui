@@ -28,7 +28,7 @@ The main trade-off in using [Glimmer DSL for LibUI](https://rubygems.org/gems/gl
 - Requiring the [least amount of syntax](#glimmer-gui-dsl-concepts) possible to build GUI
 - [Custom Control](#custom-keywords) support
 - [Bidirectional/Unidirectional Data-Binding](#data-binding) to declaratively wire and automatically synchronize GUI Views with Models
-- [Far Future Plan] Scaffolding for new custom controls, apps, and gems
+- [Scaffolding](scaffold-application) for new custom controls, apps, and gems
 - [Far Future Plan] Native-Executable packaging on Mac, Windows, and Linux.
 
 Hello, World!
@@ -347,6 +347,10 @@ Learn more about the differences between various [Glimmer](https://github.com/An
     - [Experimentation Usage](#experimentation-usage)
     - [Prototyping Usage](#prototyping-usage)
     - [Serious Usage](#serious-usage)
+  - [Glimmer Command](#glimmer-command)
+    - [Run Application](#run-application)
+    - [Run Examples](#run-examples)
+    - [Scaffold Application](#scaffold-application)
   - [Girb (Glimmer IRB)](#girb-glimmer-irb)
   - [Glimmer GUI DSL Concepts](#glimmer-gui-dsl-concepts)
   - [API](#api)
@@ -417,7 +421,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.9.0'
+gem 'glimmer-dsl-libui', '~> 0.9.1'
 ```
 
 Test that installation worked by running the [Glimmer Meta-Example](#examples):
@@ -525,9 +529,7 @@ If you are new to [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-
 
 ## Glimmer Command
 
-The `glimmer` command allows you to conveniently:
-- Run Glimmer DSL for LibUI applications (via `glimmer [app_path]`)
-- Run Glimmer DSL for LibUI included examples (via `glimmer examples`, which brings up the [Glimmer Meta-Example](https://github.com/AndyObtiva/glimmer-dsl-libui/blob/master/examples/meta_example.rb))
+The `glimmer` command allows you to conveniently run applications (`glimmer app_path`), run examples (`glimmer examples`), and scaffold applications (`glimmer "scaffold[app_name]"`).
 
 You can bring up usage instructions by running the `glimmer` command without arguments:
 
@@ -580,6 +582,132 @@ On Mac and Linux, it brings up a TUI (Text-based User Interface) for interactive
 On Windows and ARM64 machines, it simply lists the available Glimmer tasks at the end (courtsey of [rake](https://github.com/ruby/rake)).
 
 Note: If you encounter an issue running the `glimmer` command, run `bundle exec glimmer` instead.
+
+### Run Application
+
+Run Glimmer DSL for LibUI applications via this command:
+
+```
+glimmer app_path
+```
+
+For example, from a cloned glimmer-dsl-libui repository:
+
+```
+glimmer examples/basic_window.rb
+```
+
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-basic-window.png](/images/glimmer-dsl-libui-mac-basic-window.png) | ![glimmer-dsl-libui-windows-basic-window.png](/images/glimmer-dsl-libui-windows-basic-window.png) | ![glimmer-dsl-libui-linux-basic-window.png](/images/glimmer-dsl-libui-linux-basic-window.png)
+
+### Run Examples
+
+Run Glimmer DSL for LibUI included examples via this command:
+
+```
+glimmer examples
+```
+
+That brings up the [Glimmer Meta-Example](https://github.com/AndyObtiva/glimmer-dsl-libui/blob/master/examples/meta_example.rb))
+
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-meta-example.png](images/glimmer-dsl-libui-mac-meta-example.png) | ![glimmer-dsl-libui-windows-meta-example.png](images/glimmer-dsl-libui-windows-meta-example.png) | ![glimmer-dsl-libui-linux-meta-example.png](images/glimmer-dsl-libui-linux-meta-example.png)
+
+### Scaffold Application
+
+Application scaffolding enables automatically generating the directories/files of a new desktop GUI application that follows the MVC architecture and can be packaged as a Ruby gem that includes a binary script for running the app conveniently.
+
+Scaffold Glimmer DSL for LibUI application with this command:
+
+```
+glimmer "scaffold[app_name]"
+```
+
+That will generate the general MVC structure of a new Glimmer DSL for LibUI application.
+
+For example, if we run:
+
+```
+glimmer "scaffold[hello_world]"
+```
+
+The following files are generated and reported by the `glimmer` command:
+
+```
+Created hello_world/.gitignore
+Created hello_world/.ruby-version
+Created hello_world/.ruby-gemset
+Created hello_world/VERSION
+Created hello_world/LICENSE.txt
+Created hello_world/Gemfile
+Created hello_world/Rakefile
+Created hello_world/app/hello_world.rb
+Created hello_world/app/hello_world/view/hello_world.rb
+Created hello_world/icons/windows/Hello World.ico
+Created hello_world/icons/macosx/Hello World.icns
+Created hello_world/icons/linux/Hello World.png
+Created hello_world/app/hello_world/launch.rb
+Created hello_world/bin/hello_world
+```
+
+They include a basic Hello, World! application with menus and about/preferences dialogs.
+
+Views live under `app/app_name/view` (e.g. `app/hello_world/view`)
+Models live under `app/app_name/model` (e.g. `app/hello_world/model`)
+
+Once you step into the application directory, you can run it in one of multiple ways:
+
+```
+bin/app_name
+```
+
+For example:
+
+```
+bin/hello_world
+```
+
+Or using the Glimmer generic command for running applications, which will automatically detect the application running script:
+
+```
+glimmer run
+```
+
+![glimmer-dsl-libui-mac-scaffold-app-initial-screen.png](images/glimmer-dsl-libui-mac-scaffold-app-initial-screen.png)
+
+![glimmer-dsl-libui-mac-scaffold-app-preferences.png](images/glimmer-dsl-libui-mac-scaffold-app-preferences.png)
+
+![glimmer-dsl-libui-mac-scaffold-app-changed-greeting.png](images/glimmer-dsl-libui-mac-scaffold-app-changed-greeting.png)
+
+The application comes with `juwelier` for auto-generating an application gem from its `Rakefile` gem configuration.
+
+You can package the newly scaffolded app as a Ruby gem by running this command:
+
+```
+rake build
+```
+
+You can generate the application gemspec explicitly if needed with this command (though it is not needed to build the gem):
+
+```
+rake gemspec:generate
+```
+
+Once you install the gem (e.g. `gem install hello_world`), you can simply run the app with its binary script:
+
+```
+app_name
+```
+
+For example:
+
+```
+hello_world
+```
+
+![glimmer-dsl-libui-mac-scaffold-app-initial-screen.png](images/glimmer-dsl-libui-mac-scaffold-app-initial-screen.png)
 
 ## Girb (Glimmer IRB)
 

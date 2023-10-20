@@ -29,7 +29,7 @@ unless juwelier_required.nil?
     gem.email = "andy.am@gmail.com"
     gem.authors = ["Andy Maleh"]
     gem.executables = ['glimmer', 'girb']
-    gem.files = ['README.md', 'CHANGELOG.md', 'VERSION', 'LICENSE.txt', 'glimmer-dsl-libui.gemspec', 'bin/**/*', 'lib/**/*', 'icons/**/*', 'examples/**/*', 'sounds/**/*', 'docs/**/*']
+    gem.files = ['README.md', 'CHANGELOG.md', 'VERSION', 'RUBY_VERSION', 'LICENSE.txt', 'glimmer-dsl-libui.gemspec', 'bin/**/*', 'lib/**/*', 'icons/**/*', 'examples/**/*', 'sounds/**/*', 'docs/**/*']
     gem.require_paths = ['lib', '.']
   
     # dependencies defined in Gemfile

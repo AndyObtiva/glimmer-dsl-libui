@@ -2,7 +2,15 @@
 
 ## Next
 
-- Scaffold an application
+- Updating Scaffolding of an application to have a Model layer as part of the example
+- Add glimmer commands for Generate gemspec and generate gem adding Package class back for that
+
+- Scaffold an custom shell
+- Scaffold an custom widget
+- Scaffold an custom shape
+- Scaffold an custom shell gem
+- Scaffold an custom widget gem
+- Scaffold an custom shape gem
 
 - Support `LibUI.uninit` to enable clean exit of a LibUI app in Linux and support launching/closing a LibUI app window multiple times
 - Rename basic table selection example to something that indicates sorting too
@@ -18,7 +26,7 @@
 - Control content data-binding to generate nested controls dynamically based on a model attribute change
 - Enable usage of `msg_box` and `msg_box_error` without constructing a `window` explicitly or launching a `Glimmer::LibUI::Application` to enable quick command line triggering of message boxes if needed.
 
-
+- Support setting `radio_buttons` selection as item directly instead of item index
 - Figure out if there is a way to make `on_mouse_up` listener work when nested inside immediate mode shapes created inside `area` `on_draw`
 - Update Supported Controls documentation with allowed parents and allowed children
 - Support overriding global `table` `editable` state with a specific column `editable` state if global value is `true` and column value is `false`
