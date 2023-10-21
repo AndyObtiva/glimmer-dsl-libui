@@ -103,16 +103,16 @@ namespace :glimmer do
     task :cw, [:name, :namespace] => :customwindow
     task :custom_window, [:name, :namespace] => :customwindow
     task :"custom-window", [:name, :namespace] => :customwindow
-#
-#     desc 'Scaffold Glimmer::UI::CustomControl subclass (part of a view) under app/views (namespace is optional) [alt: scaffold:cc]'
-#     task :customcontrol, [:name, :namespace] do |t, args|
-#       require_relative 'rake_task/scaffold'
-#       Glimmer::RakeTask::Scaffold.custom_control(args[:name], args[:namespace])
-#     end
-#
-#     task :cc, [:name, :namespace] => :customcontrol
-#     task :custom_control, [:name, :namespace] => :customcontrol
-#     task :"custom-control", [:name, :namespace] => :customcontrol
+
+    desc 'Scaffold Glimmer::UI::CustomControl subclass (part of a view) under app/views (namespace is optional) [alt: scaffold:cc]'
+    task :customcontrol, [:name, :namespace] do |t, args|
+      require_relative 'rake_task/scaffold'
+      Glimmer::RakeTask::Scaffold.custom_control(args[:name], args[:namespace])
+    end
+
+    task :cc, [:name, :namespace] => :customcontrol
+    task :custom_control, [:name, :namespace] => :customcontrol
+    task :"custom-control", [:name, :namespace] => :customcontrol
 #
 #     desc 'Scaffold Glimmer::UI::CustomShape subclass (part of a view) under app/views (namespace is optional) [alt: scaffold:cs]'
 #     task :customshape, [:name, :namespace] do |t, args|

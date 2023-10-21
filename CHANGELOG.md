@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.9.5
+
+- Scaffold Custom Control via `glimmer scaffold:customcontrol[name,namespace]`
+
 ## 0.9.4
 
 - Scaffold Custom Window via `glimmer scaffold:customwindow[name,namespace]`

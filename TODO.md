@@ -2,7 +2,6 @@
 
 ## Next
 
-- Scaffold custom control
 - Scaffold custom shape
 - Scaffold custom window gem
 - Scaffold custom control gem
@@ -191,6 +190,7 @@
 - Figure out if there is a way to dynamically support listeners/properties from FFI functions without having to hardcode them (like the new addition of table.on_selection_changed)
 - Consider doing special sorting for table progress_bar column where -1 shows up bigger than 100%
 - Consider preserving selection for `refined_table` across pages so that if I select a row in page 1 and go to page 2, selection is removed, and then when I go back to page 1, selection is back at the correct row
+- Consider supporting Ruby block as `default: ` value for a custom control/window/shape `option` to perform deferred evaluation. Maybe call it `default_factory` to allow passing a standard Ruby block with no meaning too as `default`.
 
 # Refactoring
 
