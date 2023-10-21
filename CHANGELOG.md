@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.9.3
+
+- Application Scaffolding via `glimmer scaffold[app_name]` includes a Model layer
+
 ## 0.9.2
 
 - Add `glimmer` commands `glimmer package:gem`, `glimmer package:gemspec`, and `glimmer package:clean`

@@ -155,6 +155,7 @@ module Glimmer
           mkdir_p "app/#{file_name(app_name)}/model"
           mkdir_p "app/#{file_name(app_name)}/view"
           custom_window(class_name(app_name), current_dir_name, window_type, custom_window_class_name: 'Application')
+          application_model(current_dir_name)
             
           mkdir_p 'icons/windows'
           icon_file = "icons/windows/#{human_name(app_name)}.ico"
@@ -366,6 +367,16 @@ module Glimmer
           puts 'Run `rake build` to build gem.'
           puts 'Run `rake release` to release into rubygems.org once ready.'
         end
+        
+        def application_model(current_dir_name)
+          model_name = 'Greeting'
+          namespace ||= current_dir_name
+          root_dir = File.exist?('app') ? 'app' : 'lib'
+          parent_dir = "#{root_dir}/#{file_name(namespace)}/model"
+          return puts("The file '#{parent_dir}/#{file_name(model_name)}.rb' already exists. Please either remove or pick a different name.") if File.exist?("#{parent_dir}/#{file_name(model_name)}.rb")
+          mkdir_p parent_dir unless File.exist?(parent_dir)
+          write "#{parent_dir}/#{file_name(model_name)}.rb", model_file(model_name, namespace)
+        end
     
         private
         
@@ -527,7 +538,16 @@ module Glimmer
           window_options[:custom_window_class_name] ||= 'CustomWindow'
           namespace_type = class_name(namespace) == class_name(current_dir_name) ? 'class' : 'module'
     
-          custom_window_file_content = <<-MULTI_LINE_STRING
+          custom_window_file_content = ''
+          
+          if %i[gem app].include?(window_type)
+            custom_window_file_content += <<-MULTI_LINE_STRING
+require '#{current_dir_name}/model/greeting'
+
+            MULTI_LINE_STRING
+          end
+    
+          custom_window_file_content += <<-MULTI_LINE_STRING
 #{namespace_type} #{class_name(namespace)}
   module View
     class #{class_name(custom_window_name)}
@@ -543,15 +563,6 @@ module Glimmer
             MULTI_LINE_STRING
           end
           
-          if %i[gem app].include?(window_type)
-            custom_window_file_content += <<-MULTI_LINE_STRING
-      GREETINGS = [
-        'Hello, World!',
-        'Howdy, Partner!'
-      ]
-            MULTI_LINE_STRING
-          end
-          
           custom_window_file_content += <<-MULTI_LINE_STRING
           
       ## Add options like the following to configure CustomWindow by outside consumers
@@ -560,14 +571,6 @@ module Glimmer
       # option :width, default: 320
       # option :height, default: 240
           MULTI_LINE_STRING
-      
-          if %i[gem app].include?(window_type)
-            custom_window_file_content += <<-MULTI_LINE_STRING
-      
-      # GREETING Array selected index
-      option :greeting_index, default: 0
-            MULTI_LINE_STRING
-          end
       
           custom_window_file_content += <<-MULTI_LINE_STRING
   
@@ -579,6 +582,8 @@ module Glimmer
           if %i[gem app].include?(window_type)
             custom_window_file_content += <<-MULTI_LINE_STRING
       before_body do
+        @greeting = Model::Greeting.new
+        
         menu('File') {
           menu_item('Preferences...') {
             on_clicked do
@@ -634,7 +639,7 @@ module Glimmer
           margined true
           
           label {
-            text <= [self, :greeting_index, on_read: -> { greeting }]
+            text <= [@greeting, :text]
           }
         }
       }
@@ -642,10 +647,6 @@ module Glimmer
           
           if %i[gem app].include?(window_type)
             custom_window_file_content += <<-MULTI_LINE_STRING
-  
-      def greeting
-        GREETINGS[greeting_index]
-      end
   
       def display_about_dialog
         message = "#{human_name(namespace)}#{" - #{human_name(custom_window_name)}" if window_type == :gem} \#{VERSION}\\n\\n\#{LICENSE}"
@@ -674,8 +675,8 @@ module Glimmer
             radio_buttons {
               stretchy false
               
-              items GREETINGS
-              selected <=> [self, :greeting_index]
+              items Model::Greeting::GREETINGS
+              selected <=> [@greeting, :text_index]
             }
           }
         }.show
@@ -784,6 +785,37 @@ end
         }
       }
   
+    end
+  end
+end
+          MULTI_LINE_STRING
+        end
+        
+        def model_file(model_name, namespace)
+          namespace_type = class_name(namespace) == class_name(current_dir_name) ? 'class' : 'module'
+    
+          <<-MULTI_LINE_STRING
+#{namespace_type} #{class_name(namespace)}
+  module Model
+    class #{class_name(model_name)}
+      GREETINGS = [
+        'Hello, World!',
+        'Howdy, Partner!'
+      ]
+      
+      attr_accessor :text
+      
+      def initialize
+        @text = GREETINGS.first
+      end
+      
+      def text_index=(new_text_index)
+        self.text = GREETINGS[new_text_index]
+      end
+      
+      def text_index
+        GREETINGS.index(text)
+      end
     end
   end
 end

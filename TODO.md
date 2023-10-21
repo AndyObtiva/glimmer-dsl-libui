@@ -2,7 +2,6 @@
 
 ## Next
 
-- Updating Scaffolding of an application to have a Model layer as part of the example
 
 - Scaffold an custom shell
 - Scaffold an custom widget
@@ -10,6 +9,8 @@
 - Scaffold an custom shell gem
 - Scaffold an custom widget gem
 - Scaffold an custom shape gem
+
+- Scaffold Glimmer Snake as an example of Scaffolding
 
 - Support `LibUI.uninit` to enable clean exit of a LibUI app in Linux and support launching/closing a LibUI app window multiple times
 - Rename basic table selection example to something that indicates sorting too

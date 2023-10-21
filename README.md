@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.9.2
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.9.3
 ## Prerequisite-Free Ruby Desktop Development Cross-Platform Native GUI Library  ([Fukuoka Award Winning](http://www.digitalfukuoka.jp/topics/187?locale=ja))
 ### The Quickest Way From Zero To GUI
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
@@ -421,7 +421,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.9.2'
+gem 'glimmer-dsl-libui', '~> 0.9.3'
 ```
 
 Test that installation worked by running the [Glimmer Meta-Example](#examples):
@@ -645,6 +645,7 @@ Created hello_world/Gemfile
 Created hello_world/Rakefile
 Created hello_world/app/hello_world.rb
 Created hello_world/app/hello_world/view/hello_world.rb
+Created hello_world/app/hello_world/model/greeting.rb
 Created hello_world/icons/windows/Hello World.ico
 Created hello_world/icons/macosx/Hello World.icns
 Created hello_world/icons/linux/Hello World.png
@@ -655,6 +656,7 @@ Created hello_world/bin/hello_world
 They include a basic Hello, World! application with menus and about/preferences dialogs.
 
 Views live under `app/app_name/view` (e.g. `app/hello_world/view`)
+
 Models live under `app/app_name/model` (e.g. `app/hello_world/model`)
 
 Once you step into the application directory, you can run it in one of multiple ways:
@@ -681,7 +683,9 @@ glimmer run
 
 ![glimmer-dsl-libui-mac-scaffold-app-changed-greeting.png](images/glimmer-dsl-libui-mac-scaffold-app-changed-greeting.png)
 
-The application comes with `juwelier` for auto-generating an application gem from its `Rakefile` gem configuration.
+![glimmer-dsl-libui-mac-scaffold-app-about.png](images/glimmer-dsl-libui-mac-scaffold-app-about.png)
+
+The application comes with the [juwelier](https://rubygems.org/gems/juwelier) gem for auto-generating an application gem from the app `Rakefile` and `Gemfile` configuration (no need to manually declare gems in a gemspec... just use `Gemfile` normally and [juwelier](https://rubygems.org/gems/juwelier) takes care of the rest by generating an app gemspec automatically from `Gemfile`).
 
 You can package the newly scaffolded app as a Ruby gem by running this command:
 
