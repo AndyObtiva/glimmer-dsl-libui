@@ -639,7 +639,7 @@ require '#{current_dir_name}/model/greeting'
           margined true
           
           label {
-            text <= [@greeting, :text]
+            #{%i[gem app].include?(window_type) ? "text <= [@greeting, :text]" : "text '#{human_name(custom_window_name)}'"}
           }
         }
       }

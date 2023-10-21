@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.9.3
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.9.4
 ## Prerequisite-Free Ruby Desktop Development Cross-Platform Native GUI Library  ([Fukuoka Award Winning](http://www.digitalfukuoka.jp/topics/187?locale=ja))
 ### The Quickest Way From Zero To GUI
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
@@ -351,6 +351,7 @@ Learn more about the differences between various [Glimmer](https://github.com/An
     - [Run Application](#run-application)
     - [Run Examples](#run-examples)
     - [Scaffold Application](#scaffold-application)
+    - [Scaffold Custom Window](#scaffold-custom-window)
   - [Girb (Glimmer IRB)](#girb-glimmer-irb)
   - [Glimmer GUI DSL Concepts](#glimmer-gui-dsl-concepts)
   - [API](#api)
@@ -421,7 +422,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.9.3'
+gem 'glimmer-dsl-libui', '~> 0.9.4'
 ```
 
 Test that installation worked by running the [Glimmer Meta-Example](#examples):
@@ -625,7 +626,7 @@ Scaffold Glimmer DSL for LibUI application with this command:
 glimmer "scaffold[app_name]"
 ```
 
-That will generate the general MVC structure of a new Glimmer DSL for LibUI application.
+That will automatically generate the general MVC structure of a new Glimmer DSL for LibUI application and launch the application when done.
 
 For example, if we run:
 
@@ -659,6 +660,16 @@ Views live under `app/app_name/view` (e.g. `app/hello_world/view`)
 
 Models live under `app/app_name/model` (e.g. `app/hello_world/model`)
 
+The application runs automatically once scaffolding is done.
+
+![glimmer-dsl-libui-mac-scaffold-app-initial-screen.png](images/glimmer-dsl-libui-mac-scaffold-app-initial-screen.png)
+
+![glimmer-dsl-libui-mac-scaffold-app-preferences.png](images/glimmer-dsl-libui-mac-scaffold-app-preferences.png)
+
+![glimmer-dsl-libui-mac-scaffold-app-changed-greeting.png](images/glimmer-dsl-libui-mac-scaffold-app-changed-greeting.png)
+
+![glimmer-dsl-libui-mac-scaffold-app-about.png](images/glimmer-dsl-libui-mac-scaffold-app-about.png)
+
 Once you step into the application directory, you can run it in one of multiple ways:
 
 ```
@@ -678,12 +689,6 @@ glimmer run
 ```
 
 ![glimmer-dsl-libui-mac-scaffold-app-initial-screen.png](images/glimmer-dsl-libui-mac-scaffold-app-initial-screen.png)
-
-![glimmer-dsl-libui-mac-scaffold-app-preferences.png](images/glimmer-dsl-libui-mac-scaffold-app-preferences.png)
-
-![glimmer-dsl-libui-mac-scaffold-app-changed-greeting.png](images/glimmer-dsl-libui-mac-scaffold-app-changed-greeting.png)
-
-![glimmer-dsl-libui-mac-scaffold-app-about.png](images/glimmer-dsl-libui-mac-scaffold-app-about.png)
 
 The application comes with the [juwelier](https://rubygems.org/gems/juwelier) gem for auto-generating an application gem from the app `Rakefile` and `Gemfile` configuration (no need to manually declare gems in a gemspec... just use `Gemfile` normally and [juwelier](https://rubygems.org/gems/juwelier) takes care of the rest by generating an app gemspec automatically from `Gemfile`).
 
@@ -724,6 +729,158 @@ hello_world
 ```
 
 ![glimmer-dsl-libui-mac-scaffold-app-initial-screen.png](images/glimmer-dsl-libui-mac-scaffold-app-initial-screen.png)
+
+### Scaffold Custom Window
+
+When you are in a scaffolded application, you can scaffold a new custom window (a window that you can put anything in to represent a view concept in your application) by running this command:
+
+```
+glimmer scaffold:customwindow[name,namespace]
+```
+
+The name represents the custom window view class name (it can be underscored, and Glimmer will automatically classify it).
+
+The namespace is optional and represents the module that the custom window view class will live under. If left off, the main application class namespace is used (e.g. the top-level `HelloWorld` class namespace for a `hello_world` application).
+
+You can also use the shorter `cw` alias for `customwindow`:
+
+```
+glimmer scaffold:cw[name,namespace]
+```
+
+For example by running this command under a `hello_world` application:
+
+```
+glimmer scaffold:cw[greeting_window]
+```
+
+That will generate this class under `app/hello_world/view/greeting_window`:
+
+```ruby
+class HelloWorld
+  module View
+    class GreetingWindow
+      include Glimmer::LibUI::CustomWindow
+    
+          
+      ## Add options like the following to configure CustomWindow by outside consumers
+      #
+      # options :title, :background_color
+      # option :width, default: 320
+      # option :height, default: 240
+  
+      ## Use before_body block to pre-initialize variables to use in body and
+      #  to setup application menu
+      #
+      # before_body do
+      #
+      # end
+  
+      ## Use after_body block to setup observers for controls in body
+      #
+      # after_body do
+      #
+      # end
+  
+      ## Add control content inside custom window body
+      ## Top-most control must be a window or another custom window
+      #
+      body {
+        window {
+          # Replace example content below with custom window content
+          content_size 240, 240
+          title 'Hello World'
+          
+          margined true
+          
+          label {
+            text 'Hello World'
+          }
+        }
+      }
+    end
+  end
+end
+```
+
+When the generated file is required in another view, the custom window keyword `greeting_window` become available and reusable, like by calling:
+
+```ruby
+greeting_window.show
+```
+
+Here is an example that generates a custom window with a namespace:
+
+```
+glimmer scaffold:cw[train,station]
+```
+
+That will generate this class under `app/station/view/train`:
+
+```ruby
+module Station
+  module View
+    class Train
+      include Glimmer::LibUI::CustomWindow
+    
+          
+      ## Add options like the following to configure CustomWindow by outside consumers
+      #
+      # options :title, :background_color
+      # option :width, default: 320
+      # option :height, default: 240
+  
+      ## Use before_body block to pre-initialize variables to use in body and
+      #  to setup application menu
+      #
+      # before_body do
+      #
+      # end
+  
+      ## Use after_body block to setup observers for controls in body
+      #
+      # after_body do
+      #
+      # end
+  
+      ## Add control content inside custom window body
+      ## Top-most control must be a window or another custom window
+      #
+      body {
+        window {
+          # Replace example content below with custom window content
+          content_size 240, 240
+          title 'Station'
+          
+          margined true
+          
+          label {
+            text 'Station'
+          }
+        }
+      }
+    end
+  end
+end
+```
+
+When that file is required, the `train` keyword becomes available:
+
+```ruby
+train.show
+```
+
+If for whatever reason, you end up with 2 custom window views having the same name with different namespaces, then you can invoke the specific custom window you want by including the Ruby namespace in underscored format separated by double-underscores:
+
+```ruby
+station__view__train.show
+```
+
+Or another `train` custom window view:
+
+```ruby
+hello_world__view__train.show
+```
 
 ## Girb (Glimmer IRB)
 

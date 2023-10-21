@@ -2,13 +2,11 @@
 
 ## Next
 
-
-- Scaffold an custom shell
-- Scaffold an custom widget
-- Scaffold an custom shape
-- Scaffold an custom shell gem
-- Scaffold an custom widget gem
-- Scaffold an custom shape gem
+- Scaffold custom control
+- Scaffold custom shape
+- Scaffold custom window gem
+- Scaffold custom control gem
+- Scaffold custom shape gem
 
 - Scaffold Glimmer Snake as an example of Scaffolding
 
@@ -200,3 +198,7 @@
 - Split attribute getter/setter methods that accept value as nil or empty with separate getter and setter methods and ensure calls to libui setters are routed to attr= methods
 - Use enum symbols everwhere enum values are used directly
 - Refactor all perfect_shape methods to do parameterized memoization automatically with some declarative method or some library
+
+# Issues
+
+- Fix issue on the Mac where if you open a window from a preferences menu item and when it is closed you open another window, the latter window does not show, but when you close the app, it shows, and then you get a low-level crash of the application with a segmentation fault. The issue seems related to fiddle closure access in glimmer-dsl-libui-0.9.4/lib/glimmer/libui/control_proxy.rb:297 (`value = ::LibUI.send("control_#{property}", libui, *args)` line in `send_to_libui`)

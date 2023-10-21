@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.9.4
+
+- Scaffold Custom Window via `glimmer scaffold:customwindow[name,namespace]`
+
 ## 0.9.3
 
 - Application Scaffolding via `glimmer scaffold[app_name]` includes a Model layer
