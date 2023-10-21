@@ -124,16 +124,16 @@ namespace :glimmer do
 #     task :custom_shape, [:name, :namespace] => :customshape
 #     task :"custom-shape", [:name, :namespace] => :customshape
 #
-#     namespace :gem do
-#       desc 'Scaffold Glimmer::UI::CustomWindow subclass (full window view) under its own Ruby gem + app project (namespace is required) [alt: scaffold:gem:cw]'
-#       task :customwindow, [:name, :namespace] do |t, args|
-#         require_relative 'rake_task/scaffold'
-#         Glimmer::RakeTask::Scaffold.custom_window_gem(args[:name], args[:namespace])
-#       end
-#
-#       task :cw, [:name, :namespace] => :customwindow
-#       task :custom_window, [:name, :namespace] => :customwindow
-#       task :"custom-window", [:name, :namespace] => :customwindow
+    namespace :gem do
+      desc 'Scaffold Glimmer::UI::CustomWindow subclass (full window view) under its own Ruby gem + app project (namespace is required) [alt: scaffold:gem:cw]'
+      task :customwindow, [:name, :namespace] do |t, args|
+        require_relative 'rake_task/scaffold'
+        Glimmer::RakeTask::Scaffold.custom_window_gem(args[:name], args[:namespace])
+      end
+
+      task :cw, [:name, :namespace] => :customwindow
+      task :custom_window, [:name, :namespace] => :customwindow
+      task :"custom-window", [:name, :namespace] => :customwindow
 #
 #       desc 'Scaffold Glimmer::UI::CustomControl subclass (part of a view) under its own Ruby gem project (namespace is required) [alt: scaffold:gem:cc]'
 #       task :customcontrol, [:name, :namespace] do |t, args|
@@ -154,11 +154,7 @@ namespace :glimmer do
 #       task :cs, [:name, :namespace] => :customshape
 #       task :custom_shape, [:name, :namespace] => :customshape
 #       task :"custom-shape", [:name, :namespace] => :customshape
-#     end
-#
-#     task :custom_window_gem, [:name, :namespace] => 'gem:customwindow'
-#     task :custom_control_gem, [:name, :namespace] => 'gem:customcontrol'
-#     task :custom_shape_gem, [:name, :namespace] => 'gem:customshape'
+    end
   end
   
   namespace :list do
@@ -198,13 +194,6 @@ namespace :glimmer do
       task :dsl, [:query] => :list_require do |t, args|
         Glimmer::RakeTask::List.dsl_gems(args[:query])
       end
-    
     end
-    
-    # legacy support
-    
-    task :custom_window_gems, [:name, :namespace] => 'gems:customwindow'
-    task :custom_control_gems, [:name, :namespace] => 'gems:customcontrol'
-    
   end
 end

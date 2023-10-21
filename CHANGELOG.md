@@ -1,12 +1,18 @@
 # Change Log
 
+## 0.9.6
+
+- Scaffold Custom Window Gem via `glimmer scaffold:gem:customwindow[name,namespace]` (or alias: `glimmer scaffold:gem:cw[name,namespace]`)
+- List Custom Window Gems (expected name format: `glimmer-libui-cw-gemname-namespace`) via `glimmer list:gems:customwindow[query]` (or alias: `glimmer list:gems:cw[query]`)
+- List Glimmer DSLs via `glimmer list:gems:dsl[query]`
+
 ## 0.9.5
 
-- Scaffold Custom Control via `glimmer scaffold:customcontrol[name,namespace]`
+- Scaffold Custom Control via `glimmer scaffold:customcontrol[name,namespace]` (or alias: `glimmer scaffold:cc[name,namespace]`)
 
 ## 0.9.4
 
-- Scaffold Custom Window via `glimmer scaffold:customwindow[name,namespace]`
+- Scaffold Custom Window via `glimmer scaffold:customwindow[name,namespace]` (or alias: `glimmer scaffold:cw[name,namespace]`)
 
 ## 0.9.3
 

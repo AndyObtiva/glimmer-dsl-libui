@@ -2,10 +2,9 @@
 
 ## Next
 
-- Scaffold custom shape
 - Scaffold custom window gem
 - Scaffold custom control gem
-- Scaffold custom shape gem
+- List Custom Control Gems (expected name format: `glimmer-libui-cc-gemname-namespace`) via `glimmer list:gems:customcontrol[query]`
 
 - Scaffold Glimmer Snake as an example of Scaffolding
 
@@ -56,6 +55,9 @@
 - Support Custom Shapes, describing composite shapes/text/image concepts inside an `area`
 - Support Custom Shape `bounding_box` (minx, miny, width, height), `contain?` method (checking if shape contains point inside) and `include?` method (checking on outline if stroked and inside if filled?)
 - Look into extracting `bevel` Custom Shape in Tetris
+- Scaffold custom shape
+- Scaffold custom shape gem
+- List Custom Shape Gems (expected name format: `glimmer-libui-cs-gemname-namespace`) via `glimmer list:gems:customshape[query]`
 
 ### 0.x.x
 
@@ -84,7 +86,8 @@
 ## Soon
 
 - Zenity-like Command-Line-Mode-GUI Scaffolding
-- Full MVC + Database scaffolding
+- Full MVC + Database scaffolding for a new database
+- Full MVC + Database scaffolding for an existing database to browse its data with a GUI
 - Look into whether keyboard listeners must not be allowed within shapes since they do not carry an x/y element like mouse listeners
 - Report to libui the delay issue in calling on changed listener on `search_entry` (not a problem with basic `entry`)
 - Update shape_coloring.rb to use data-binding (must support being able to set top-left x,y on any shape instead of relying on move_by to make it work with data-binding, just like Glimmer DSL for SWT supports that)
@@ -166,10 +169,6 @@
 - Invert or expand the use of Glimmer::LibUI::ControlProxy::KEYWORD_ALIASES with an array (it does not permit definining multiple aliases at the moment)
 - Drag and drop working across different areas
 - Offer fuzz comparison options for Shape#include?(*point) on outline when stroked or in general (available in PerfectShape)
-- Scaffold a custom control gem
-- Scaffold a custom shape gem
-- Scaffold a custom control within existing application
-- Scaffold a custom shape within existing application
 - Support Linux AARCH64
 - Support `#glimmer` method (alias `#control_proxy`) on libui objects (obtained through `#libui` method on controls) to obtain Glimmer control proxy
 - Support `#custom_control` method on libui objects that are the root of a class-based custom control (consider adding to control proxies too that are roots of custom controls)

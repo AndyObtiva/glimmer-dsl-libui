@@ -219,7 +219,7 @@ module Glimmer
         end
     
         def custom_window_gem(custom_window_name, namespace)
-          gem_name = "glimmer-cs-#{compact_name(custom_window_name)}"
+          gem_name = "glimmer-libui-cw-#{compact_name(custom_window_name)}"
           gem_summary = "#{human_name(custom_window_name)} - Glimmer Custom Window"
           begin
             custom_window_keyword = dsl_control_name(custom_window_name)
@@ -249,6 +249,7 @@ module Glimmer
           write 'Rakefile', gem_rakefile(custom_window_name, namespace, gem_name)
           append "lib/#{gem_name}.rb", gem_main_file(custom_window_name, namespace)
           custom_window(custom_window_name, namespace, :gem)
+          app_model(current_dir_name, namespace)
           
           mkdir_p "lib/#{gem_name}"
           write "lib/#{gem_name}/launch.rb", gem_launch_file(gem_name, custom_window_name, namespace)
@@ -291,7 +292,7 @@ module Glimmer
         end
     
         def custom_control_gem(custom_control_name, namespace)
-          gem_name = "glimmer-cw-#{compact_name(custom_control_name)}"
+          gem_name = "glimmer-libui-cc-#{compact_name(custom_control_name)}"
           gem_summary = "#{human_name(custom_control_name)} - Glimmer Custom Control"
           if namespace
             gem_name += "-#{compact_name(namespace)}"
@@ -330,7 +331,7 @@ module Glimmer
         end
     
         def custom_shape_gem(custom_shape_name, namespace)
-          gem_name = "glimmer-cp-#{compact_name(custom_shape_name)}"
+          gem_name = "glimmer-libui-cs-#{compact_name(custom_shape_name)}"
           gem_summary = "#{human_name(custom_shape_name)} - Glimmer Custom Shape"
           if namespace
             gem_name += "-#{compact_name(namespace)}"
@@ -368,7 +369,7 @@ module Glimmer
           puts 'Run `rake release` to release into rubygems.org once ready.'
         end
         
-        def app_model(current_dir_name)
+        def app_model(current_dir_name, namespace = nil)
           model_name = 'Greeting'
           namespace ||= current_dir_name
           root_dir = File.exist?('app') ? 'app' : 'lib'
@@ -542,7 +543,7 @@ module Glimmer
           
           if %i[gem app].include?(window_type)
             custom_window_file_content += <<-MULTI_LINE_STRING
-require '#{current_dir_name}/model/greeting'
+require '#{window_type == :app ? current_dir_name : namespace}/model/greeting'
 
             MULTI_LINE_STRING
           end
@@ -579,7 +580,7 @@ require '#{current_dir_name}/model/greeting'
       #
           MULTI_LINE_STRING
           
-          if %i[gem app].include?(window_type)
+          if window_type == :app
             custom_window_file_content += <<-MULTI_LINE_STRING
       before_body do
         @greeting = Model::Greeting.new
@@ -611,6 +612,12 @@ require '#{current_dir_name}/model/greeting'
         }
       end
             MULTI_LINE_STRING
+          elsif window_type == :gem
+            custom_window_file_content += <<-MULTI_LINE_STRING
+      before_body do
+        @greeting = Model::Greeting.new
+      end
+            MULTI_LINE_STRING
           else
             custom_window_file_content += <<-MULTI_LINE_STRING
       # before_body do
@@ -638,12 +645,30 @@ require '#{current_dir_name}/model/greeting'
           
           margined true
           
-          label {
-            #{%i[gem app].include?(window_type) ? "text <= [@greeting, :text]" : "text '#{human_name(custom_window_name)}'"}
+          vertical_box {
+          MULTI_LINE_STRING
+          
+          if window_type == :gem
+            custom_window_file_content += <<-MULTI_LINE_STRING
+            
+            button('Preferences...') {
+              stretchy false
+              
+              on_clicked do
+                display_preferences_dialog
+              end
+            }
+            MULTI_LINE_STRING
+          end
+          
+          custom_window_file_content += <<-MULTI_LINE_STRING
+            label {
+              #{%i[gem app].include?(window_type) ? "text <= [@greeting, :text]" : "text '#{human_name(custom_window_name)}'"}
+            }
           }
         }
       }
-            MULTI_LINE_STRING
+          MULTI_LINE_STRING
           
           if %i[gem app].include?(window_type)
             custom_window_file_content += <<-MULTI_LINE_STRING

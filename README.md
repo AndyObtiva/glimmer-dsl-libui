@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.9.5
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.9.6
 ## Prerequisite-Free Ruby Desktop Development Cross-Platform Native GUI Library  ([Fukuoka Award Winning](http://www.digitalfukuoka.jp/topics/187?locale=ja))
 ### The Quickest Way From Zero To GUI
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
@@ -353,6 +353,9 @@ Learn more about the differences between various [Glimmer](https://github.com/An
     - [Scaffold Application](#scaffold-application)
     - [Scaffold Custom Window](#scaffold-custom-window)
     - [Scaffold Custom Control](#scaffold-custom-control)
+    - [Scaffold Custom Window Gem](#scaffold-custom-window-gem)
+    - [List Custom Window Gems](#list-custom-window-gems)
+    - [List Glimmer DSLs](#list-glimmer-dsls)
   - [Girb (Glimmer IRB)](#girb-glimmer-irb)
   - [Glimmer GUI DSL Concepts](#glimmer-gui-dsl-concepts)
   - [API](#api)
@@ -423,7 +426,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.9.5'
+gem 'glimmer-dsl-libui', '~> 0.9.6'
 ```
 
 Test that installation worked by running the [Glimmer Meta-Example](#examples):
@@ -739,9 +742,9 @@ When you are in a scaffolded application, you can scaffold a new custom window (
 glimmer scaffold:customwindow[name,namespace]
 ```
 
-The name represents the custom window view class name (it can be underscored, and Glimmer will automatically classify it).
+The `name` represents the custom window view class name (it can be underscored, and Glimmer will automatically classify it).
 
-The namespace is optional and represents the module that the custom window view class will live under. If left off, the main application class namespace is used (e.g. the top-level `HelloWorld` class namespace for a `hello_world` application).
+The `namespace` is optional and represents the module that the custom window view class will live under. If left off, the main application class namespace is used (e.g. the top-level `HelloWorld` class namespace for a `hello_world` application).
 
 You can also use the shorter `cw` alias for `customwindow`:
 
@@ -891,9 +894,9 @@ When you are in a scaffolded application, you can scaffold a new custom control 
 glimmer scaffold:customcontrol[name,namespace]
 ```
 
-The name represents the custom control view class name (it can be underscored, and Glimmer will automatically classify it).
+The `name` represents the custom control view class name (it can be underscored, and Glimmer will automatically classify it).
 
-The namespace is optional and represents the module that the custom control view class will live under. If left off, the main application class namespace is used (e.g. the top-level `HelloWorld` class namespace for a `hello_world` application).
+The `namespace` is optional and represents the module that the custom control view class will live under. If left off, the main application class namespace is used (e.g. the top-level `HelloWorld` class namespace for a `hello_world` application).
 
 You can also use the shorter `cc` alias for `customcontrol`:
 
@@ -1070,6 +1073,94 @@ window {
   }
 }
 ```
+
+### Scaffold Custom Window Gem
+
+You can scaffold a Ruby gem around a reusable Custom Window by running this command:
+
+```
+glimmer scaffold:gem:customwindow[name,namespace]
+```
+
+That will generate a custom window gem project under the naming convention: `glimmer-libui-cw-name-namespace`
+
+The naming convention helps with discoverability of Ruby gems using the command `glimmer list:gems:customwindow[query]` (or alias: `glimmer list:gems:cw[query]`) where filtering `query` is optional.
+
+The `name` is the custom window class name, which must not contain dashes by convention (multiple words can be concatenated or can use underscores between them).
+
+The `namespace` is needed to avoid clashing with other custom window gems that other software engineers might have thought of. It is recommended not to include dashes between words in it by convention yet concatenated words or underscores between them.
+
+Here is a shorter alias for the custom window gem scaffolding command:
+
+```
+glimmer scaffold:gem:cw[name,namespace]
+```
+
+You can package the newly scaffolded project as a Ruby gem by running this command:
+
+```
+glimmer package:gem
+```
+
+Or by using the raw rake command:
+
+```
+rake build
+```
+
+You can generate the application gemspec explicitly if needed with this command (though it is not needed to build the gem):
+
+```
+glimmer package:gemspec
+```
+
+Or by using the raw rake command:
+
+```
+rake gemspec:generate
+```
+
+The project optionally allows you to run the custom window as its own separate app with a binary script (`bin/gem_name`) to see it, which helps with prototyping it.
+
+But, typically consumers of the gem would include it in their own project, which makes the gem keyword available in the Glimmer GUI DSL where `Glimmer`. `Glimmer::LibUI::Application`, `Glimmer::LibUI::CustomWindow`, or `Glimmer::LibUI::CustomControl` is mixed.
+
+For example:
+
+```ruby
+require 'glimmer-libui-cw-greeter-acme'
+
+...
+greeter.show
+...
+```
+
+### List Custom Window Gems
+
+Custom window gems are scaffolded to follow the naming convention: `glimmer-libui-cw-name-namespace`
+
+The naming convention helps with discoverability of Ruby gems using the command:
+
+```
+glimmer list:gems:customwindow[query]
+```
+
+Or by using the shorter alias:
+
+```
+glimmer list:gems:cw[query]
+```
+
+The filtering `query` is optional.
+
+### List Glimmer DSLs
+
+Glimmer DSLs can be listed with this command:
+
+```
+glimmer list:gems:dsl[query]
+```
+
+The filtering `query` is optional.
 
 ## Girb (Glimmer IRB)
 

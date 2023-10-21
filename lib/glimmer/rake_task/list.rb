@@ -30,25 +30,25 @@ module Glimmer
         REGEX_GEM_LINE = /^([^\(]+) \(([^\)]+)\)$/
         
         def custom_control_gems(query=nil)
-          list_gems('glimmer-cw-', query) do |result|
+          list_gems('glimmer-libui-cc-', query) do |result|
             puts
-            puts "  Glimmer Custom Control Gems#{" matching [#{query}]" if query} at rubygems.org:"
+            puts "  Glimmer DSL for LibUI Custom Control Gems#{" matching [#{query}]" if query} at rubygems.org:"
             puts result
           end
         end
 
         def custom_window_gems(query=nil)
-          list_gems('glimmer-cs-', query) do |result|
+          list_gems('glimmer-libui-cw-', query) do |result|
             puts
-            puts "  Glimmer Custom Window Gems#{" matching [#{query}]" if query} at rubygems.org:"
+            puts "  Glimmer DSL for LibUI Custom Window Gems#{" matching [#{query}]" if query} at rubygems.org:"
             puts result
           end
         end
 
         def custom_shape_gems(query=nil)
-          list_gems('glimmer-cp-', query) do |result|
+          list_gems('glimmer-libui-cs-', query) do |result|
             puts
-            puts "  Glimmer Custom Shape Gems#{" matching [#{query}]" if query} at rubygems.org:"
+            puts "  Glimmer DSL for LibUI Custom Shape Gems#{" matching [#{query}]" if query} at rubygems.org:"
             puts result
           end
         end
