@@ -2,10 +2,6 @@
 
 ## Next
 
-- Scaffold custom window gem
-- Scaffold custom control gem
-- List Custom Control Gems (expected name format: `glimmer-libui-cc-gemname-namespace`) via `glimmer list:gems:customcontrol[query]`
-
 - Scaffold Glimmer Snake as an example of Scaffolding
 
 - Support `LibUI.uninit` to enable clean exit of a LibUI app in Linux and support launching/closing a LibUI app window multiple times

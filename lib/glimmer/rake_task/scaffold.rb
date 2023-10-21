@@ -219,7 +219,7 @@ module Glimmer
         end
     
         def custom_window_gem(custom_window_name, namespace)
-          gem_name = "glimmer-libui-cw-#{compact_name(custom_window_name)}"
+          gem_name = "glimmer-libui-cw-#{custom_window_name.underscore}"
           gem_summary = "#{human_name(custom_window_name)} - Glimmer Custom Window"
           begin
             custom_window_keyword = dsl_control_name(custom_window_name)
@@ -229,7 +229,7 @@ module Glimmer
             # No Op (keyword is not taken by a built in Ruby method)
           end
           if namespace
-            gem_name += "-#{compact_name(namespace)}"
+            gem_name += "-#{namespace.underscore}"
             gem_summary += " (#{human_name(namespace)})"
           else
             return puts('Namespace is required! Usage: glimmer scaffold:gem:customwindow[name,namespace]') unless `git config --get github.user`.to_s.strip == 'AndyObtiva'
@@ -292,10 +292,10 @@ module Glimmer
         end
     
         def custom_control_gem(custom_control_name, namespace)
-          gem_name = "glimmer-libui-cc-#{compact_name(custom_control_name)}"
+          gem_name = "glimmer-libui-cc-#{custom_control_name.underscore}"
           gem_summary = "#{human_name(custom_control_name)} - Glimmer Custom Control"
           if namespace
-            gem_name += "-#{compact_name(namespace)}"
+            gem_name += "-#{namespace.underscore}"
             gem_summary += " (#{human_name(namespace)})"
           else
             return puts('Namespace is required! Usage: glimmer scaffold:custom_control_gem[custom_control_name,namespace]') unless `git config --get github.user`.to_s.strip == 'AndyObtiva'
@@ -331,10 +331,10 @@ module Glimmer
         end
     
         def custom_shape_gem(custom_shape_name, namespace)
-          gem_name = "glimmer-libui-cs-#{compact_name(custom_shape_name)}"
+          gem_name = "glimmer-libui-cs-#{custom_shape_name.underscore}"
           gem_summary = "#{human_name(custom_shape_name)} - Glimmer Custom Shape"
           if namespace
-            gem_name += "-#{compact_name(namespace)}"
+            gem_name += "-#{namespace.underscore}"
             gem_summary += " (#{human_name(namespace)})"
           else
             return puts('Namespace is required! Usage: glimmer scaffold:custom_shape_gem[custom_shape_name,namespace]') unless `git config --get github.user`.to_s.strip == 'AndyObtiva'
@@ -414,10 +414,6 @@ module Glimmer
           app_name.underscore.titlecase
         end
     
-        def compact_name(gem_name)
-          gem_name.underscore.camelcase.downcase
-        end
-        
         def gemfile(window_type)
           APP_GEMFILE
         end
@@ -645,12 +641,11 @@ require '#{window_type == :app ? current_dir_name : namespace}/model/greeting'
           
           margined true
           
-          vertical_box {
           MULTI_LINE_STRING
           
           if window_type == :gem
             custom_window_file_content += <<-MULTI_LINE_STRING
-            
+          vertical_box {
             button('Preferences...') {
               stretchy false
               
@@ -658,14 +653,21 @@ require '#{window_type == :app ? current_dir_name : namespace}/model/greeting'
                 display_preferences_dialog
               end
             }
-            MULTI_LINE_STRING
-          end
-          
-          custom_window_file_content += <<-MULTI_LINE_STRING
+            
             label {
               #{%i[gem app].include?(window_type) ? "text <= [@greeting, :text]" : "text '#{human_name(custom_window_name)}'"}
             }
           }
+            MULTI_LINE_STRING
+          else
+            custom_window_file_content += <<-MULTI_LINE_STRING
+          label {
+            #{%i[gem app].include?(window_type) ? "text <= [@greeting, :text]" : "text '#{human_name(custom_window_name)}'"}
+          }
+            MULTI_LINE_STRING
+          end
+          
+          custom_window_file_content += <<-MULTI_LINE_STRING
         }
       }
           MULTI_LINE_STRING

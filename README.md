@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.9.6
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.9.7
 ## Prerequisite-Free Ruby Desktop Development Cross-Platform Native GUI Library  ([Fukuoka Award Winning](http://www.digitalfukuoka.jp/topics/187?locale=ja))
 ### The Quickest Way From Zero To GUI
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
@@ -354,7 +354,9 @@ Learn more about the differences between various [Glimmer](https://github.com/An
     - [Scaffold Custom Window](#scaffold-custom-window)
     - [Scaffold Custom Control](#scaffold-custom-control)
     - [Scaffold Custom Window Gem](#scaffold-custom-window-gem)
+    - [Scaffold Custom Control Gem](#scaffold-custom-control-gem)
     - [List Custom Window Gems](#list-custom-window-gems)
+    - [List Custom Control Gems](#list-custom-control-gems)
     - [List Glimmer DSLs](#list-glimmer-dsls)
   - [Girb (Glimmer IRB)](#girb-glimmer-irb)
   - [Glimmer GUI DSL Concepts](#glimmer-gui-dsl-concepts)
@@ -426,7 +428,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.9.6'
+gem 'glimmer-dsl-libui', '~> 0.9.7'
 ```
 
 Test that installation worked by running the [Glimmer Meta-Example](#examples):
@@ -1076,7 +1078,7 @@ window {
 
 ### Scaffold Custom Window Gem
 
-You can scaffold a Ruby gem around a reusable Custom Window by running this command:
+You can scaffold a Ruby gem around a reusable custom window by running this command:
 
 ```
 glimmer scaffold:gem:customwindow[name,namespace]
@@ -1122,7 +1124,7 @@ rake gemspec:generate
 
 The project optionally allows you to run the custom window as its own separate app with a binary script (`bin/gem_name`) to see it, which helps with prototyping it.
 
-But, typically consumers of the gem would include it in their own project, which makes the gem keyword available in the Glimmer GUI DSL where `Glimmer`. `Glimmer::LibUI::Application`, `Glimmer::LibUI::CustomWindow`, or `Glimmer::LibUI::CustomControl` is mixed.
+But, typically consumers of the gem would include it in their own project, which makes the gem keyword available in the Glimmer GUI DSL anywhere `Glimmer`. `Glimmer::LibUI::Application`, `Glimmer::LibUI::CustomWindow`, or `Glimmer::LibUI::CustomControl` is mixed.
 
 For example:
 
@@ -1131,6 +1133,70 @@ require 'glimmer-libui-cw-greeter-acme'
 
 ...
 greeter.show
+...
+```
+
+### Scaffold Custom Control Gem
+
+You can scaffold a Ruby gem around a reusable custom control by running this command:
+
+```
+glimmer scaffold:gem:customcontrol[name,namespace]
+```
+
+That will generate a custom control gem project under the naming convention: `glimmer-libui-cc-name-namespace`
+
+The naming convention helps with discoverability of Ruby gems using the command `glimmer list:gems:customcontrol[query]` (or alias: `glimmer list:gems:cc[query]`) where filtering `query` is optional.
+
+The `name` is the custom control class name, which must not contain dashes by convention (multiple words can be concatenated or can use underscores between them).
+
+The `namespace` is needed to avoid clashing with other custom control gems that other software engineers might have thought of. It is recommended not to include dashes between words in it by convention yet concatenated words or underscores between them.
+
+Here is a shorter alias for the custom control gem scaffolding command:
+
+```
+glimmer scaffold:gem:cc[name,namespace]
+```
+
+You can package the newly scaffolded project as a Ruby gem by running this command:
+
+```
+glimmer package:gem
+```
+
+Or by using the raw rake command:
+
+```
+rake build
+```
+
+You can generate the application gemspec explicitly if needed with this command (though it is not needed to build the gem):
+
+```
+glimmer package:gemspec
+```
+
+Or by using the raw rake command:
+
+```
+rake gemspec:generate
+```
+
+Typically, consumers of the gem would include it in their own project, which makes the gem keyword available in the Glimmer GUI DSL anywhere `Glimmer`. `Glimmer::LibUI::Application`, `Glimmer::LibUI::CustomWindow`, or `Glimmer::LibUI::CustomControl` is mixed.
+
+For example:
+
+```ruby
+require 'glimmer-libui-cc-model_form-acme'
+
+...
+window {
+  vertical_box {
+    label('Form:')
+    
+    model_form(model: some_model, attributes: some_attributes)
+  }
+}
 ...
 ```
 
@@ -1148,6 +1214,25 @@ Or by using the shorter alias:
 
 ```
 glimmer list:gems:cw[query]
+```
+
+The filtering `query` is optional.
+
+
+### List Custom Control Gems
+
+Custom control gems are scaffolded to follow the naming convention: `glimmer-libui-cw-name-namespace`
+
+The naming convention helps with discoverability of Ruby gems using the command:
+
+```
+glimmer list:gems:customcontrol[query]
+```
+
+Or by using the shorter alias:
+
+```
+glimmer list:gems:cc[query]
 ```
 
 The filtering `query` is optional.
