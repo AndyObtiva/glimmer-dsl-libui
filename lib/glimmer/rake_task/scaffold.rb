@@ -432,8 +432,6 @@ module Glimmer
             end
             
             class #{class_name(app_name)}
-              include Glimmer
-              
               APP_ROOT = File.expand_path('../..', __FILE__)
               VERSION = File.read(File.join(APP_ROOT, 'VERSION'))
               LICENSE = File.read(File.join(APP_ROOT, 'LICENSE.txt'))
@@ -835,6 +833,7 @@ end
           namespace_type = class_name(namespace) == class_name(current_dir_name) ? 'class' : 'module'
     
           <<-MULTI_LINE_STRING
+# Delete this example model and replace with your own model
 #{namespace_type} #{class_name(namespace)}
   module Model
     class #{class_name(model_name)}

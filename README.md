@@ -351,10 +351,10 @@ Learn more about the differences between various [Glimmer](https://github.com/An
     - [Run Application](#run-application)
     - [Run Examples](#run-examples)
     - [Scaffold Application](#scaffold-application)
-    - [Scaffold Custom Window](#scaffold-custom-window)
     - [Scaffold Custom Control](#scaffold-custom-control)
-    - [Scaffold Custom Window Gem](#scaffold-custom-window-gem)
+    - [Scaffold Custom Window](#scaffold-custom-window)
     - [Scaffold Custom Control Gem](#scaffold-custom-control-gem)
+    - [Scaffold Custom Window Gem](#scaffold-custom-window-gem)
     - [List Custom Window Gems](#list-custom-window-gems)
     - [List Custom Control Gems](#list-custom-control-gems)
     - [List Glimmer DSLs](#list-glimmer-dsls)
@@ -624,7 +624,7 @@ Mac | Windows | Linux
 
 ### Scaffold Application
 
-Application scaffolding enables automatically generating the directories/files of a new desktop GUI application that follows the MVC architecture and can be packaged as a Ruby gem that includes a binary script for running the app conveniently.
+Application scaffolding enables automatically generating the directories/files of a new desktop GUI application that follows the MVC architecture and can be packaged as a Ruby gem that includes an executable script for running the app conveniently. It also ensures that software engineers follow the recommended Glimmer DSL for LibUI conventions and best practices. Application Scaffolding greatly improves software engineering productivity when building desktop applications with [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui).
 
 Scaffold Glimmer DSL for LibUI application with this command:
 
@@ -722,7 +722,7 @@ Or by using the raw rake command:
 rake gemspec:generate
 ```
 
-Once you install the gem (e.g. `gem install hello_world`), you can simply run the app with its binary script:
+Once you install the gem (e.g. `gem install hello_world`), you can simply run the app with its executable script:
 
 ```
 app_name
@@ -736,7 +736,197 @@ hello_world
 
 ![glimmer-dsl-libui-mac-scaffold-app-initial-screen.png](images/glimmer-dsl-libui-mac-scaffold-app-initial-screen.png)
 
+### Scaffold Custom Control
+
+When you are in a scaffolded application, you can scaffold a new [custom control](#custom-controls) (a control that you can put anything in to represent a view concept in your application) by running this command:
+
+```
+glimmer scaffold:customcontrol[name,namespace]
+```
+
+The `name` represents the [custom control](#custom-controls) view class name (it can be underscored, and Glimmer will automatically classify it).
+
+The `namespace` is optional and represents the module that the [custom control](#custom-controls) view class will live under. If left off, the main application class namespace is used (e.g. the top-level `HelloWorld` class namespace for a `hello_world` application).
+
+You can also use the shorter `cc` alias for `customcontrol`:
+
+```
+glimmer scaffold:cc[name,namespace]
+```
+
+For example by running this command under a `hello_world` application:
+
+```
+glimmer scaffold:cw[model_form]
+```
+
+That will generate this class under `app/hello_world/view/model_form`:
+
+```ruby
+class HelloWorld
+  module View
+    class ModelForm
+      include Glimmer::LibUI::CustomControl
+  
+      ## Add options like the following to configure CustomControl by outside consumers
+      #
+      # options :custom_text, :background_color
+      # option :foreground_color, default: :red
+      
+      # Replace example options with your own options
+      option :model
+      option :attributes
+  
+      ## Use before_body block to pre-initialize variables to use in body
+      #
+      #
+      before_body do
+        # Replace example code with your own before_body code
+        default_model_attributes = [:first_name, :last_name, :email]
+        default_model_class = Struct.new(*default_model_attributes)
+        self.model ||= default_model_class.new
+        self.attributes ||= default_model_attributes
+      end
+  
+      ## Use after_body block to setup observers for controls in body
+      #
+      # after_body do
+      #
+      # end
+  
+      ## Add control content under custom control body
+      ##
+      ## If you want to add a window as the top-most control,
+      ## consider creating a custom window instead
+      ## (Glimmer::LibUI::CustomWindow offers window convenience methods, like show and hide)
+      #
+      body {
+        # Replace example content (model_form custom control) with your own custom control content.
+        form {
+          attributes.each do |attribute|
+            entry { |e|
+              label attribute.to_s.underscore.split('_').map(&:capitalize).join(' ')
+              text <=> [model, attribute]
+            }
+          end
+        }
+      }
+  
+    end
+  end
+end
+```
+
+When the generated file is required in another view (e.g. `require 'hello_world/view/model_form'`), the [custom control](#custom-controls) keyword `model_form` become available and reusable, like by calling:
+
+```ruby
+window {
+  vertical_box {
+    label('Form:')
+    model_form(model: some_model, attributes: array_of_attributes)
+  }
+}
+```
+
+Here is an example that generates a [custom control](#custom-controls) with a namespace:
+
+```
+glimmer scaffold:cw[model_form,common]
+```
+
+That will generate this class under `app/common/view/model_form`:
+
+```ruby
+module Common
+  module View
+    class ModelForm
+      include Glimmer::LibUI::CustomControl
+  
+      ## Add options like the following to configure CustomControl by outside consumers
+      #
+      # options :custom_text, :background_color
+      # option :foreground_color, default: :red
+      
+      # Replace example options with your own options
+      option :model
+      option :attributes
+  
+      ## Use before_body block to pre-initialize variables to use in body
+      #
+      #
+      before_body do
+        # Replace example code with your own before_body code
+        default_model_attributes = [:first_name, :last_name, :email]
+        default_model_class = Struct.new(*default_model_attributes)
+        self.model ||= default_model_class.new
+        self.attributes ||= default_model_attributes
+      end
+  
+      ## Use after_body block to setup observers for controls in body
+      #
+      # after_body do
+      #
+      # end
+  
+      ## Add control content under custom control body
+      ##
+      ## If you want to add a window as the top-most control,
+      ## consider creating a custom window instead
+      ## (Glimmer::LibUI::CustomWindow offers window convenience methods, like show and hide)
+      #
+      body {
+        # Replace example content (model_form custom control) with your own custom control content.
+        form {
+          attributes.each do |attribute|
+            entry { |e|
+              label attribute.to_s.underscore.split('_').map(&:capitalize).join(' ')
+              text <=> [model, attribute]
+            }
+          end
+        }
+      }
+  
+    end
+  end
+end
+```
+
+When that file is required in another view (e.g. `require 'common/view/model_form'`), the `model_form` keyword becomes available:
+
+```ruby
+window {
+  vertical_box {
+    label('Form:')
+    model_form(model: some_model, attributes: array_of_attributes)
+  }
+}
+```
+
+If for whatever reason, you end up with 2 [custom control](#custom-controls) views having the same name with different namespaces, then you can invoke the specific [custom control](#custom-controls) you want by including the Ruby namespace in underscored format separated by double-underscores:
+
+```ruby
+window {
+  vertical_box {
+    label('Form:')
+    common__view__model_form(model: some_model, attributes: array_of_attributes)
+  }
+}
+```
+
+Or another `model_form` [custom control](#custom-controls) view:
+
+```ruby
+window {
+  vertical_box {
+    label('Form:')
+    hello_world__view__model_form(model: some_model, attributes: array_of_attributes)
+  }
+}
+```
+
 ### Scaffold Custom Window
+
+A custom window is a specialization of a custom control that has a `window` as its `body` root.
 
 When you are in a scaffolded application, you can scaffold a new custom window (a window that you can put anything in to represent a view concept in your application) by running this command:
 
@@ -888,271 +1078,23 @@ Or another `train` custom window view:
 hello_world__view__train.show
 ```
 
-### Scaffold Custom Control
-
-When you are in a scaffolded application, you can scaffold a new custom control (a control that you can put anything in to represent a view concept in your application) by running this command:
-
-```
-glimmer scaffold:customcontrol[name,namespace]
-```
-
-The `name` represents the custom control view class name (it can be underscored, and Glimmer will automatically classify it).
-
-The `namespace` is optional and represents the module that the custom control view class will live under. If left off, the main application class namespace is used (e.g. the top-level `HelloWorld` class namespace for a `hello_world` application).
-
-You can also use the shorter `cc` alias for `customcontrol`:
-
-```
-glimmer scaffold:cc[name,namespace]
-```
-
-For example by running this command under a `hello_world` application:
-
-```
-glimmer scaffold:cw[model_form]
-```
-
-That will generate this class under `app/hello_world/view/model_form`:
-
-```ruby
-class HelloWorld
-  module View
-    class ModelForm
-      include Glimmer::LibUI::CustomControl
-  
-      ## Add options like the following to configure CustomControl by outside consumers
-      #
-      # options :custom_text, :background_color
-      # option :foreground_color, default: :red
-      
-      # Replace example options with your own options
-      option :model
-      option :attributes
-  
-      ## Use before_body block to pre-initialize variables to use in body
-      #
-      #
-      before_body do
-        # Replace example code with your own before_body code
-        default_model_attributes = [:first_name, :last_name, :email]
-        default_model_class = Struct.new(*default_model_attributes)
-        self.model ||= default_model_class.new
-        self.attributes ||= default_model_attributes
-      end
-  
-      ## Use after_body block to setup observers for controls in body
-      #
-      # after_body do
-      #
-      # end
-  
-      ## Add control content under custom control body
-      ##
-      ## If you want to add a window as the top-most control,
-      ## consider creating a custom window instead
-      ## (Glimmer::LibUI::CustomWindow offers window convenience methods, like show and hide)
-      #
-      body {
-        # Replace example content (model_form custom control) with your own custom control content.
-        form {
-          attributes.each do |attribute|
-            entry { |e|
-              label attribute.to_s.underscore.split('_').map(&:capitalize).join(' ')
-              text <=> [model, attribute]
-            }
-          end
-        }
-      }
-  
-    end
-  end
-end
-```
-
-When the generated file is required in another view (e.g. `require 'hello_world/view/model_form'`), the custom control keyword `model_form` become available and reusable, like by calling:
-
-```ruby
-window {
-  vertical_box {
-    label('Form:')
-    model_form(model: some_model, attributes: array_of_attributes)
-  }
-}
-```
-
-Here is an example that generates a custom control with a namespace:
-
-```
-glimmer scaffold:cw[model_form,common]
-```
-
-That will generate this class under `app/common/view/model_form`:
-
-```ruby
-module Common
-  module View
-    class ModelForm
-      include Glimmer::LibUI::CustomControl
-  
-      ## Add options like the following to configure CustomControl by outside consumers
-      #
-      # options :custom_text, :background_color
-      # option :foreground_color, default: :red
-      
-      # Replace example options with your own options
-      option :model
-      option :attributes
-  
-      ## Use before_body block to pre-initialize variables to use in body
-      #
-      #
-      before_body do
-        # Replace example code with your own before_body code
-        default_model_attributes = [:first_name, :last_name, :email]
-        default_model_class = Struct.new(*default_model_attributes)
-        self.model ||= default_model_class.new
-        self.attributes ||= default_model_attributes
-      end
-  
-      ## Use after_body block to setup observers for controls in body
-      #
-      # after_body do
-      #
-      # end
-  
-      ## Add control content under custom control body
-      ##
-      ## If you want to add a window as the top-most control,
-      ## consider creating a custom window instead
-      ## (Glimmer::LibUI::CustomWindow offers window convenience methods, like show and hide)
-      #
-      body {
-        # Replace example content (model_form custom control) with your own custom control content.
-        form {
-          attributes.each do |attribute|
-            entry { |e|
-              label attribute.to_s.underscore.split('_').map(&:capitalize).join(' ')
-              text <=> [model, attribute]
-            }
-          end
-        }
-      }
-  
-    end
-  end
-end
-```
-
-When that file is required in another view (e.g. `require 'common/view/model_form'`), the `model_form` keyword becomes available:
-
-```ruby
-window {
-  vertical_box {
-    label('Form:')
-    model_form(model: some_model, attributes: array_of_attributes)
-  }
-}
-```
-
-If for whatever reason, you end up with 2 custom control views having the same name with different namespaces, then you can invoke the specific custom control you want by including the Ruby namespace in underscored format separated by double-underscores:
-
-```ruby
-window {
-  vertical_box {
-    label('Form:')
-    common__view__model_form(model: some_model, attributes: array_of_attributes)
-  }
-}
-```
-
-Or another `model_form` custom control view:
-
-```ruby
-window {
-  vertical_box {
-    label('Form:')
-    hello_world__view__model_form(model: some_model, attributes: array_of_attributes)
-  }
-}
-```
-
-### Scaffold Custom Window Gem
-
-You can scaffold a Ruby gem around a reusable custom window by running this command:
-
-```
-glimmer scaffold:gem:customwindow[name,namespace]
-```
-
-That will generate a custom window gem project under the naming convention: `glimmer-libui-cw-name-namespace`
-
-The naming convention helps with discoverability of Ruby gems using the command `glimmer list:gems:customwindow[query]` (or alias: `glimmer list:gems:cw[query]`) where filtering `query` is optional.
-
-The `name` is the custom window class name, which must not contain dashes by convention (multiple words can be concatenated or can use underscores between them).
-
-The `namespace` is needed to avoid clashing with other custom window gems that other software engineers might have thought of. It is recommended not to include dashes between words in it by convention yet concatenated words or underscores between them.
-
-Here is a shorter alias for the custom window gem scaffolding command:
-
-```
-glimmer scaffold:gem:cw[name,namespace]
-```
-
-You can package the newly scaffolded project as a Ruby gem by running this command:
-
-```
-glimmer package:gem
-```
-
-Or by using the raw rake command:
-
-```
-rake build
-```
-
-You can generate the application gemspec explicitly if needed with this command (though it is not needed to build the gem):
-
-```
-glimmer package:gemspec
-```
-
-Or by using the raw rake command:
-
-```
-rake gemspec:generate
-```
-
-The project optionally allows you to run the custom window as its own separate app with a binary script (`bin/gem_name`) to see it, which helps with prototyping it.
-
-But, typically consumers of the gem would include it in their own project, which makes the gem keyword available in the Glimmer GUI DSL anywhere `Glimmer`. `Glimmer::LibUI::Application`, `Glimmer::LibUI::CustomWindow`, or `Glimmer::LibUI::CustomControl` is mixed.
-
-For example:
-
-```ruby
-require 'glimmer-libui-cw-greeter-acme'
-
-...
-greeter.show
-...
-```
-
 ### Scaffold Custom Control Gem
 
-You can scaffold a Ruby gem around a reusable custom control by running this command:
+You can scaffold a Ruby gem around a reusable [custom control](#custom-controls) to expose publicly and make available for multiple projects by running this command:
 
 ```
 glimmer scaffold:gem:customcontrol[name,namespace]
 ```
 
-That will generate a custom control gem project under the naming convention: `glimmer-libui-cc-name-namespace`
+That will generate a [custom control](#custom-controls) gem project under the naming convention: `glimmer-libui-cc-name-namespace`
 
 The naming convention helps with discoverability of Ruby gems using the command `glimmer list:gems:customcontrol[query]` (or alias: `glimmer list:gems:cc[query]`) where filtering `query` is optional.
 
-The `name` is the custom control class name, which must not contain dashes by convention (multiple words can be concatenated or can use underscores between them).
+The `name` is the [custom control](#custom-controls) class name, which must not contain dashes by convention (multiple words can be concatenated or can use underscores between them).
 
-The `namespace` is needed to avoid clashing with other custom control gems that other software engineers might have thought of. It is recommended not to include dashes between words in it by convention yet concatenated words or underscores between them.
+The `namespace` is needed to avoid clashing with other [custom control](#custom-controls) gems that other software engineers might have thought of. It is recommended not to include dashes between words in it by convention yet concatenated words or underscores between them.
 
-Here is a shorter alias for the custom control gem scaffolding command:
+Here is a shorter alias for the [custom control](#custom-controls) gem scaffolding command:
 
 ```
 glimmer scaffold:gem:cc[name,namespace]
@@ -1197,6 +1139,68 @@ window {
     model_form(model: some_model, attributes: some_attributes)
   }
 }
+...
+```
+
+### Scaffold Custom Window Gem
+
+A custom window is a specialization of a custom control that has a `window` as its `body` root.
+
+You can scaffold a Ruby gem around a reusable custom window to expose publicly and make available for multiple projects by running this command:
+
+```
+glimmer scaffold:gem:customwindow[name,namespace]
+```
+
+That will generate a custom window gem project under the naming convention: `glimmer-libui-cw-name-namespace`
+
+The naming convention helps with discoverability of Ruby gems using the command `glimmer list:gems:customwindow[query]` (or alias: `glimmer list:gems:cw[query]`) where filtering `query` is optional.
+
+The `name` is the custom window class name, which must not contain dashes by convention (multiple words can be concatenated or can use underscores between them).
+
+The `namespace` is needed to avoid clashing with other custom window gems that other software engineers might have thought of. It is recommended not to include dashes between words in it by convention yet concatenated words or underscores between them.
+
+Here is a shorter alias for the custom window gem scaffolding command:
+
+```
+glimmer scaffold:gem:cw[name,namespace]
+```
+
+You can package the newly scaffolded project as a Ruby gem by running this command:
+
+```
+glimmer package:gem
+```
+
+Or by using the raw rake command:
+
+```
+rake build
+```
+
+You can generate the application gemspec explicitly if needed with this command (though it is not needed to build the gem):
+
+```
+glimmer package:gemspec
+```
+
+Or by using the raw rake command:
+
+```
+rake gemspec:generate
+```
+
+The project optionally allows you to run the custom window as its own separate app with a executable script (`bin/gem_name`) to see it, which helps with prototyping it.
+
+But, typically consumers of the gem would include it in their own project, which makes the gem keyword available in the Glimmer GUI DSL anywhere `Glimmer`. `Glimmer::LibUI::Application`, `Glimmer::LibUI::CustomWindow`, or `Glimmer::LibUI::CustomControl` is mixed.
+
+For example:
+
+```ruby
+require 'glimmer-libui-cw-greeter-acme'
+
+...
+greeter.show
 ...
 ```
 
@@ -1725,7 +1729,7 @@ Learn more by checking out [examples](#examples).
 
 [EARLY ALPHA FEATURE]
 
-`refined_table` is a custom control provided exclusively by [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui)
+`refined_table` is a [custom control](#custom-controls) provided exclusively by [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui)
 that includes filtering and pagination support out of the box and can handle very large amounts of data (e.g. 50,000 rows).
 
 It is currently an early alpha feature, so please test-drive and report issues if you encounter any.
@@ -1747,7 +1751,7 @@ API:
 
 - `refined_model_array` (`Array`): `model_array` with filtering and pagination applied (useful to grab a table row model by index).
 - `filtered_model_array` (`Array`): `model_array` with filtering applied, but without pagination
-- `table_proxy`: control proxy object for the `table` contained in the `refined_table` custom control
+- `table_proxy`: control proxy object for the `table` contained in the `refined_table` [custom control](#custom-controls)
 
 If the initial `model_array` has no more than a single page of data, then pagination buttons are hidden (but, the filter field remains).
 
@@ -1990,7 +1994,7 @@ Mac | Windows | Linux
 **(ALPHA FEATURE)**
 
 [libui-ng](https://github.com/libui-ng/libui-ng) does not support `image` rendering outside of `table` yet.
-However, [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) adds a special `image(file as String path or web URL, width as Numeric, height as Numeric)` custom control that renders an image unto an `area` pixel by pixel (and when possible to optimize, line by line).
+However, [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) adds a special `image(file as String path or web URL, width as Numeric, height as Numeric)` [custom control](#custom-controls) that renders an image unto an `area` pixel by pixel (and when possible to optimize, line by line).
 
 Given that it is very new and is not a [libui-ng](https://github.com/libui-ng/libui-ng)-native control, please keep these notes in mind:
 - It only supports the `.png` file format.
@@ -2163,7 +2167,7 @@ One final note is that in Linux, table images grow and shrink with the image siz
 
 ![linux table image](images/glimmer-dsl-libui-linux-basic-table-image.png)
 
-Check out [examples/basic_image.rb](/docs/examples/GLIMMER-DSL-LIBUI-BASIC-EXAMPLES.md#basic-image) (all versions) for examples of using `image` Glimmer custom control.
+Check out [examples/basic_image.rb](/docs/examples/GLIMMER-DSL-LIBUI-BASIC-EXAMPLES.md#basic-image) (all versions) for examples of using `image` Glimmer [custom control](#custom-controls).
 
 #### Colors
 
@@ -2476,7 +2480,7 @@ BasicCompositeShape.launch
 
 If you need to animate `area` vector graphics, you just have to use the [`Glimmer::LibUI::timer`](#libui-operations) method along with making changes to shape attributes.
 
-Spinner example that has a fully customizable method-based custom control called `spinner`, which is destroyed if you click on it (you may copy/paste in [`girb`](#girb-glimmer-irb)):
+Spinner example that has a fully customizable method-based [custom control](#custom-controls) called `spinner`, which is destroyed if you click on it (you may copy/paste in [`girb`](#girb-glimmer-irb)):
 
 ```ruby
 require 'glimmer-dsl-libui'
@@ -2607,19 +2611,19 @@ SpinnerExample.new.launch
 
 ### Custom Controls
 
-Custom controls can be defined to represent custom controls (components) that provide new features or act as composites of [existing controls](#supported-keywords) that need to be reused multiple times in an application or across multiple applications. Custom controls save a lot of development time, improving productivity and maintainability immensely.
+Custom controls (components) and custom windows (the `window` version of custom controls) can be defined to provide new features or act as composites of [existing controls](#supported-keywords) that need to be reused multiple times in an application or across multiple applications. Custom controls save a lot of development time, improving productivity and maintainability immensely.
 
 For example, you can define a custom `address_view` control as an aggregate of multiple `label` controls to reuse multiple times as a standard address View, displaying street, city, state, and zip code.
 
-There are two ways to define custom controls:
-- Method-Based: simply define a method representing the custom control you want (e.g. `address_view`) with any arguments needed (e.g. `address(address_model)`).
-- Class-Based: define a class matching the camelcased name of the custom control by convention (e.g. the `address_view` custom control keyword would have a class called `AddressView`) and `include Glimmer::LibUI::CustomControl`. Classes add the benefit of being able to distribute the custom controls into separate files and reuse externally from multiple places or share via Ruby gems.
+There are two ways to define [custom control](#custom-controls)s:
+- Method-Based: simply define a method representing the [custom control](#custom-controls) you want (e.g. `address_view`) with any arguments needed (e.g. `address(address_model)`).
+- Class-Based: define a class matching the camelcased name of the [custom control](#custom-controls) by convention (e.g. the `address_view` [custom control](#custom-controls) keyword would have a class called `AddressView`) and `include Glimmer::LibUI::CustomControl` or `include Glimmer::LibUI::CustomWindow` depending on whether the component represents a standard control or a whole window. Classes add the benefit of being able to distribute the [custom control](#custom-controls)s into separate files and reuse externally from multiple places or share via Ruby gems.
 
 It is OK to use the terms "custom control" and "custom keyword" synonymously though "custom keyword" is a broader term that covers things other than controls too like custom shapes (e.g. `cylinder`), custom attributed strings (e.g. `alternating_color_string`), and custom transforms (`isometric_transform`).
 
 #### Method-Based Custom Controls
 
-Simply define a method representing the custom control you want (e.g. `address_view`) with any arguments needed (e.g. `address(address_model)`).
+Simply define a method representing the [custom control](#custom-controls) you want (e.g. `address_view`) with any arguments needed (e.g. `address(address_model)`).
 
 Example that defines `form_field`, `address_form`, `label_pair`, and `address_view` keywords (you may copy/paste in [`girb`](#girb-glimmer-irb)):
 
@@ -2720,7 +2724,7 @@ window('Method-Based Custom Keyword') {
 
 #### Class-Based Custom Controls
 
-Define a class matching the camelcased name of the custom control by convention (e.g. the `address_view` custom control keyword would have a class called `AddressView`) and `include Glimmer::LibUI::CustomControl`. Classes add the benefit of being able to distribute the custom controls into separate files and reuse externally from multiple places or share via Ruby gems.
+Define a class matching the camelcased name of the [custom control](#custom-controls) by convention (e.g. the `address_view` [custom control](#custom-controls) keyword would have a class called `AddressView`) and `include Glimmer::LibUI::CustomControl`. Classes add the benefit of being able to distribute the [custom control](#custom-controls)s into separate files and reuse externally from multiple places or share via Ruby gems.
 
 Example (you may copy/paste in [`girb`](#girb-glimmer-irb)):
 
@@ -2850,7 +2854,7 @@ ClassBasedCustomControls.launch
 
 ![glimmer-dsl-libui-mac-method-based-custom-keyword.png](images/glimmer-dsl-libui-mac-method-based-custom-keyword.png)
 
-You can also define Custom Window keywords, that is custom controls with `window` being the body root. These are also known as Applications. To define a Custom Window, you `include Glimmer::LibUI::CustomWindow` or `include Glimmer:LibUI::Application` and then you can invoke the `::launch` method on the class.
+You can also define Custom Window keywords, that is [custom control](#custom-controls)s with `window` being the body root. These are also known as Applications. To define a Custom Window, you `include Glimmer::LibUI::CustomWindow` or `include Glimmer:LibUI::Application` and then you can invoke the `::launch` method on the class.
 
 The [`area`](#area-api) control can be utilized to build non-native custom controls from scratch by leveraging vector graphics, formattable text, keyboard events, and mouse events. This is demonstrated in the [Area-Based Custom Controls](/docs/examples/GLIMMER-DSL-LIBUI-ADVANCED-EXAMPLES.md#area-based-custom-controls) example.
 

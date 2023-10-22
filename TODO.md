@@ -2,7 +2,7 @@
 
 ## Next
 
-- Scaffold Glimmer Snake as an example of Scaffolding
+- Don't include Glimmer in top-level class when scaffolding Applications
 
 - Support `LibUI.uninit` to enable clean exit of a LibUI app in Linux and support launching/closing a LibUI app window multiple times
 - Rename basic table selection example to something that indicates sorting too
@@ -117,6 +117,7 @@
 
 - Optimize startup time, perhaps dropping 'os' gem for direct use of `Gem::Platform.local` instead.
 - Support configuration of global widget default properties to quickly affect the style of an entire app globally without the complexity of CSS expressions.
+- Consider packaging as a cross-platform WASI application using ruby.wasm (supporting Mac first, and then Linux, and then Windows). Automate as part of that installing dependencies: wasi-vfs, wasmtime (links are in ruby.wasm project). In the end, convert the WASI Application to a Native Executable via something like https://github.com/vshymanskyy/wasm2native
 - Automate OCRA support for Windows Native-Executable Packaging
 - Implement Mac Native-Executable Packaging (perhaps with https://github.com/create-dmg/create-dmg or https://github.com/sveinbjornt/Platypus)
 - Cover all of Glimmer DSL for LibUI with automated tests and a continuous integration server on Mac, Windows, and Linux to release version 1.0.0
@@ -186,6 +187,7 @@
 - Consider doing special sorting for table progress_bar column where -1 shows up bigger than 100%
 - Consider preserving selection for `refined_table` across pages so that if I select a row in page 1 and go to page 2, selection is removed, and then when I go back to page 1, selection is back at the correct row
 - Consider supporting Ruby block as `default: ` value for a custom control/window/shape `option` to perform deferred evaluation. Maybe call it `default_factory` to allow passing a standard Ruby block with no meaning too as `default`.
+- Fill application scaffolding README with default setup and usage instructions, renaming README.markdown to README.md, and perhaps TODO.md and CHANGELOG.md
 
 # Refactoring
 
