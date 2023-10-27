@@ -100,11 +100,9 @@ module Glimmer
       def launch(application, ruby_options: [], env_vars: {}, glimmer_options: {})
         ruby_options_string = ruby_options.join(' ') + ' ' if ruby_options.any?
         env_vars = env_vars.merge(glimmer_option_env_vars(glimmer_options))
-        env_vars.each do |k,v|
-          ENV[k] = v
-        end
+        load_env_vars(env_vars)
         the_glimmer_lib = glimmer_lib
-        require 'puts_debuggerer' if the_glimmer_lib == GLIMMER_LIB_LOCAL
+        require 'puts_debuggerer' if (ENV['PD'] || ENV['pd']).to_s.downcase == 'true' || the_glimmer_lib == GLIMMER_LIB_LOCAL
         is_rake_task = !application.end_with?('.rb')
         rake_tasks = []
         if is_rake_task
@@ -117,7 +115,6 @@ module Glimmer
           rake_task_args = potential_rake_task_parts[2].split(',')
         end
         if rake_tasks.include?(application)
-          load_env_vars(glimmer_option_env_vars(glimmer_options))
           rake_task = "glimmer:#{application}"
           puts "Running Glimmer rake task: #{rake_task}" if ruby_options_string.to_s.include?('--debug')
           Rake::Task[rake_task].invoke(*rake_task_args)

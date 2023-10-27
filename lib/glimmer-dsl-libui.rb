@@ -25,7 +25,7 @@ $LOAD_PATH.unshift(File.expand_path('..', __FILE__))
 require 'glimmer'
 require 'perfect-shape'
 # require 'logging'
-# require 'puts_debuggerer' if ENV['pd'].to_s.downcase == 'true'
+require 'puts_debuggerer' if (ENV['PD'] || ENV['pd']).to_s.downcase == 'true'
 # require 'super_module'
 require 'color'
 require 'os'

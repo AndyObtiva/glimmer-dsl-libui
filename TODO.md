@@ -41,9 +41,6 @@
 
 ### 0.x.x
 
-- Ensure that shape/path containment/inclusion checks take their transform into account while using `PerfectShape`
-- Ensure support for nesting a composite `shape` within another composite `shape`
-- Ensure support for nesting any `shape` within another `shape`
 - Look into providing absolute values (incorporating relative position to parent composite shape) for PerfectShaped bounding box elements
 
 ### 0.x.x
@@ -54,6 +51,10 @@
 - Scaffold custom shape
 - Scaffold custom shape gem
 - List Custom Shape Gems (expected name format: `glimmer-libui-cs-gemname-namespace`) via `glimmer list:gems:customshape[query]`
+
+### 0.x.x
+
+- Ensure that shape/path containment/inclusion checks take their transform into account while using `PerfectShape`
 
 ### 0.x.x
 
