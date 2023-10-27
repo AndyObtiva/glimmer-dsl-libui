@@ -26,6 +26,7 @@
   - [Basic Draw Text](#basic-draw-text)
   - [Basic Code Area](#basic-code-area)
   - [Basic Composite Shape](#basic-composite-shape)
+  - [Basic Custom Shape](#basic-custom-shape)
 
 ## Basic Window
 
@@ -2347,6 +2348,8 @@ New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version
 
 ## Basic Composite Shape
 
+(this is the method-based custom shape version of Basic Custom Shape)
+
 [examples/basic_composite_shape.rb](/examples/basic_composite_shape.rb)
 
 Run with this command from the root of the project if you cloned the project:
@@ -2362,3 +2365,23 @@ ruby -r glimmer-dsl-libui -e "require 'examples/basic_composite_shape.rb'"
 ```
 
 ![glimmer-dsl-libui-mac-basic-composite-shape.gif](/images/glimmer-dsl-libui-mac-basic-composite-shape.gif)
+
+## Basic Custom Shape
+
+(this is the class-based custom shape version of Basic Composite Shape)
+
+[examples/basic_custom_shape.rb](/examples/basic_custom_shape.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/basic_custom_shape.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/basic_custom_shape.rb'"
+```
+
+![glimmer-dsl-libui-mac-basic-custom-shape.gif](/images/glimmer-dsl-libui-mac-basic-composite-shape.gif)

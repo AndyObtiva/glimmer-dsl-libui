@@ -1,5 +1,7 @@
 require 'glimmer-dsl-libui'
 
+# This is the method-based custom shape version of basic_custom_shape
+
 class BasicCompositeShape
   include Glimmer::LibUI::Application
   

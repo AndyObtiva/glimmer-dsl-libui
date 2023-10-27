@@ -19,26 +19,38 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+require 'glimmer'
 require 'glimmer/dsl/expression'
-require 'glimmer/libui/control_proxy'
+require 'glimmer/dsl/parent_expression'
+require 'glimmer/dsl/top_level_expression'
+require 'glimmer/libui/custom_shape'
 
 module Glimmer
   module DSL
     module Libui
-      class ListenerExpression < Expression
+      class CustomShapeExpression < Expression
+        # TODO Consider making custom shapes automatically generate static expressions
+        include ParentExpression
+        include TopLevelExpression
+
         def can_interpret?(parent, keyword, *args, &block)
-          (
-            parent.is_a?(Glimmer::LibUI::ControlProxy) or
-            parent.is_a?(Glimmer::LibUI::Shape) or
-            parent.is_a?(Glimmer::LibUI::CustomControl) or
-            parent.is_a?(Glimmer::LibUI::CustomShape)
-          ) and
-            block_given? and
-            parent.can_handle_listener?(keyword)
+          LibUI::CustomShape.for(keyword)
         end
   
         def interpret(parent, keyword, *args, &block)
-          parent.handle_listener(keyword, &block)
+          options = args.last.is_a?(Hash) ? args.pop : {}
+          LibUI::CustomShape.for(keyword).new(keyword, parent, args, options, &block)
+        end
+  
+        def add_content(custom_shape, keyword, *args, &block)
+          options = args.last.is_a?(Hash) ? args.last : {post_add_content: true}
+          # TODO consider avoiding source_location
+          if block.source_location == custom_shape.content&.__getobj__&.source_location
+            custom_shape.content.call(custom_shape) unless custom_shape.content.called?
+          else
+            super
+          end
+          custom_shape.post_add_content if options[:post_add_content]
         end
       end
     end

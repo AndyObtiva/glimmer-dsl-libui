@@ -41,11 +41,6 @@
 
 ### 0.x.x
 
-- Look into providing absolute values (incorporating relative position to parent composite shape) for PerfectShaped bounding box elements
-
-### 0.x.x
-
-- Support Custom Shapes, describing composite shapes/text/image concepts inside an `area`
 - Support Custom Shape `bounding_box` (minx, miny, width, height), `contain?` method (checking if shape contains point inside) and `include?` method (checking on outline if stroked and inside if filled?)
 - Look into extracting `bevel` Custom Shape in Tetris
 - Scaffold custom shape

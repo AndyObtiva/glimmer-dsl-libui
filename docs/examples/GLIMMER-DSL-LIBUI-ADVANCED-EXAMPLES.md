@@ -1271,11 +1271,11 @@ window('Login') {
 
 ## Method-Based Custom Controls
 
-[Custom keywords](#custom-keywords) can be defined to represent custom controls (components) that provide new features or act as composites of existing controls that need to be reused multiple times in an application or across multiple applications. Custom keywords save a lot of development time, improving productivity and maintainability immensely.
+[Custom components](#custom-components) can be defined to represent custom controls (components) that provide new features or act as composites of existing controls that need to be reused multiple times in an application or across multiple applications. Custom components save a lot of development time, improving productivity and maintainability immensely.
   
 This example defines `form_field`, `address_form`, `label_pair`, and `address` as custom controls (keywords).
 
-The custom keywords are defined via methods (thus are "method-based").
+The Custom components are defined via methods (thus are "method-based").
 
 [examples/method_based_custom_controls.rb](/examples/method_based_custom_controls.rb)
 
@@ -1494,11 +1494,11 @@ window('Method-Based Custom Controls') {
 
 ## Class-Based Custom Controls
 
-[Custom keywords](#custom-keywords) can be defined to represent custom controls (components) that provide new features or act as composites of existing controls that need to be reused multiple times in an application or across multiple applications. Custom keywords save a lot of development time, improving productivity and maintainability immensely.
+[Custom components](#custom-components) can be defined to represent custom controls (components) that provide new features or act as composites of existing controls that need to be reused multiple times in an application or across multiple applications. Custom components save a lot of development time, improving productivity and maintainability immensely.
   
 This example defines `form_field`, `address_form`, `label_pair`, and `address` as custom controls (keywords).
 
-The custom keywords are defined via classes that include `Glimmer::LibUI::CustomControl` (thus are "class-based"), thus enabling offloading each custom control into its own file when needed for better code organization.
+The Custom components are defined via classes that include `Glimmer::LibUI::CustomControl` (thus are "class-based"), thus enabling offloading each custom control into its own file when needed for better code organization.
 
 [examples/class_based_custom_controls.rb](/examples/class_based_custom_controls.rb)
 
@@ -1646,7 +1646,7 @@ ClassBasedCustomControls.launch
 
 ## Area-Based Custom Controls
 
-[Custom keywords](#custom-keywords) can be defined for graphical custom controls (components) built completely from scratch as vector-graphics on top of the [`area`](#area-api) control while leveraging keyboard and mouse listeners.
+[Custom components](#custom-components) can be defined for graphical custom controls (components) built completely from scratch as vector-graphics on top of the [`area`](#area-api) control while leveraging keyboard and mouse listeners.
 
 This example defines `text_label` and `push_button` as [`area`](#area-api)-based graphical custom controls that can have width, height, font, fill, stroke, border, and custom text location.
       

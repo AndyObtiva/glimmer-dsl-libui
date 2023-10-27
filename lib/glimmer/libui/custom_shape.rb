@@ -28,7 +28,7 @@ require 'glimmer/data_binding/observable_model'
 
 module Glimmer
   module LibUI
-    module CustomControl
+    module CustomShape
       include SuperModule
       include DataBinding::ObservableModel
       
@@ -45,7 +45,7 @@ module Glimmer
             super
           end
         end
-      
+  
         def respond_to?(method_name, *args, &block)
           result = false
           result ||= super
@@ -53,68 +53,66 @@ module Glimmer
           result ||= @body_root.respond_to?(method_name, *args, &block)
         end
       end
-      
+
       super_module_included do |klass|
-        # TODO clear memoization of ControlProxy.libui_class_for for a keyword if a custom control was defined with that keyword
-        unless klass.name.include?('Glimmer::LibUI::CustomWindow')
-          klass.include(Glimmer)
-          klass.include(GlimmerSupersedable) # prevent Glimmer from running method_missing first
-          Glimmer::LibUI::CustomControl.add_custom_control_namespaces_for(klass)
-        end
+        # TODO clear memoization of Shape.libui_class_for for a keyword if a custom shape was defined with that keyword
+        klass.include(Glimmer)
+        klass.include(GlimmerSupersedable) # prevent Glimmer from running method_missing first
+        Glimmer::LibUI::CustomShape.add_custom_shape_namespaces_for(klass)
       end
-    
+      
       class << self
         def for(keyword)
-          unless flyweight_custom_control_classes.keys.include?(keyword)
+          unless flyweight_custom_shape_classes.keys.include?(keyword)
             begin
               extracted_namespaces = keyword.
                 to_s.
                 split(/__/).map do |namespace|
                   namespace.camelcase(:upper)
                 end
-              custom_control_namespaces.each do |base|
+              custom_shape_namespaces.each do |base|
                 extracted_namespaces.reduce(base) do |result, namespace|
                   if !result.constants.include?(namespace)
                     namespace = result.constants.detect {|c| c.to_s.upcase == namespace.to_s.upcase } || namespace
                   end
                   begin
-                    flyweight_custom_control_classes[keyword] = constant = result.const_get(namespace)
-                    return constant if constant.ancestors.include?(Glimmer::LibUI::CustomControl)
-                    flyweight_custom_control_classes[keyword] = constant
+                    flyweight_custom_shape_classes[keyword] = constant = result.const_get(namespace)
+                    return constant if constant.ancestors.include?(Glimmer::LibUI::CustomShape)
+                    flyweight_custom_shape_classes[keyword] = constant
                   rescue => e
                     # Glimmer::Config.logger.debug {"#{e.message}\n#{e.backtrace.join("\n")}"}
-                    flyweight_custom_control_classes[keyword] = result
+                    flyweight_custom_shape_classes[keyword] = result
                   end
                 end
               end
-              raise "#{keyword} has no custom control class!"
+              raise "#{keyword} has no custom shape class!"
             rescue => e
               Glimmer::Config.logger.debug {e.message}
               Glimmer::Config.logger.debug {"#{e.message}\n#{e.backtrace.join("\n")}"}
-              flyweight_custom_control_classes[keyword] = nil
+              flyweight_custom_shape_classes[keyword] = nil
             end
           end
-          flyweight_custom_control_classes[keyword]
+          flyweight_custom_shape_classes[keyword]
         end
         
         # Flyweight Design Pattern memoization cache. Can be cleared if memory is needed.
-        def flyweight_custom_control_classes
-          @flyweight_custom_control_classes ||= {}
+        def flyweight_custom_shape_classes
+          @flyweight_custom_shape_classes ||= {}
         end
         
-        # Returns keyword to use for this custom control
+        # Returns keyword to use for this custom shape
         def keyword
           self.name.underscore.gsub('::', '__')
         end
         
-        # Returns shortcut keyword to use for this custom control (keyword minus namespace)
+        # Returns shortcut keyword to use for this custom shape (keyword minus namespace)
         def shortcut_keyword
           self.name.underscore.gsub('::', '__').split('__').last
         end
         
-        def add_custom_control_namespaces_for(klass)
-          Glimmer::LibUI::CustomControl.namespaces_for_class(klass).drop(1).each do |namespace|
-            Glimmer::LibUI::CustomControl.custom_control_namespaces << namespace
+        def add_custom_shape_namespaces_for(klass)
+          Glimmer::LibUI::CustomShape.namespaces_for_class(klass).drop(1).each do |namespace|
+            Glimmer::LibUI::CustomShape.custom_shape_namespaces << namespace
           end
         end
 
@@ -126,12 +124,12 @@ module Glimmer
           end[1..-1].uniq.reverse
         end
 
-        def custom_control_namespaces
-          @custom_control_namespaces ||= reset_custom_control_namespaces
+        def custom_shape_namespaces
+          @custom_shape_namespaces ||= reset_custom_shape_namespaces
         end
 
-        def reset_custom_control_namespaces
-          @custom_control_namespaces = Set[Object, Glimmer::LibUI]
+        def reset_custom_shape_namespaces
+          @custom_shape_namespaces = Set[Object, Glimmer::LibUI]
         end
 
         # Allows defining convenience option accessors for an array of option names
@@ -185,7 +183,7 @@ module Glimmer
         end
       end
 
-      attr_reader :body_root, :libui, :parent, :parent_proxy, :args, :keyword, :content, :options
+      attr_reader :body_root, :parent, :parent_proxy, :args, :keyword, :content, :options
 
       def initialize(keyword, parent, args, options, &content)
         @parent_proxy = @parent = parent
@@ -194,12 +192,11 @@ module Glimmer
         @content = ProcTracker.new(content) if content
         execute_hook('before_body')
         body_block = self.class.instance_variable_get("@body_block")
-        raise Glimmer::Error, 'Invalid custom control for having no body! Please define body block!' if body_block.nil?
+        raise Glimmer::Error, 'Invalid custom shape for having no body! Please define body block!' if body_block.nil?
         @body_root = instance_exec(&body_block)
-        raise Glimmer::Error, 'Invalid custom control for having an empty body! Please fill body block!' if @body_root.nil?
-        @libui = @body_root.libui
+        raise Glimmer::Error, 'Invalid custom shape for having an empty body! Please fill body block!' if @body_root.nil?
         execute_hook('after_body')
-        # TODO deregister all observer_registrations on destroy of the control once that listener is supported
+        # TODO deregister all observer_registrations on destroy of the shape once that listener is supported
         # (on_destroy) unless it is the last window closing, in which case exit faster
         post_add_content if content.nil?
       end
@@ -231,14 +228,14 @@ module Glimmer
           !@body_root.respond_to_libui?(method_name) and
           (method(method_name) rescue nil) and
           !method(method_name)&.source_location&.first&.include?('glimmer/dsl/engine.rb') and
-          !method(method_name)&.source_location&.first&.include?('glimmer/libui/control_proxy.rb')
+          !method(method_name)&.source_location&.first&.include?('glimmer/libui/shape.rb')
       end
 
       # Returns content block if used as an attribute reader (no args)
-      # Otherwise, if a block is passed, it adds it as content to this custom control
+      # Otherwise, if a block is passed, it adds it as content to this custom shape
       def content(&block)
         if block_given?
-          Glimmer::DSL::Engine.add_content(self, Glimmer::DSL::Libui::CustomControlExpression.new, self.class.keyword, &block)
+          Glimmer::DSL::Engine.add_content(self, Glimmer::DSL::Libui::CustomShapeExpression.new, self.class.keyword, &block)
         else
           @content
         end

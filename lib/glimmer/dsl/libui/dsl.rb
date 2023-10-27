@@ -45,6 +45,7 @@ module Glimmer
           control
           custom_control
           shape
+          custom_shape
         ]
       )
     end

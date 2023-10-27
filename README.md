@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.9.7
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.10.0
 ## Prerequisite-Free Ruby Desktop Development Cross-Platform Native GUI Library  ([Fukuoka Award Winning](http://www.digitalfukuoka.jp/topics/187?locale=ja))
 ### The Quickest Way From Zero To GUI
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
@@ -381,9 +381,9 @@ Learn more about the differences between various [Glimmer](https://github.com/An
       - [Area Composite Shape](#area-composite-shape)
       - [Area Animation](#area-animation)
     - [Smart Defaults and Conventions](#smart-defaults-and-conventions)
-    - [Custom Controls](#custom-controls)
-      - [Method-Based Custom Controls](#method-based-custom-controls)
-      - [Class-Based Custom Controls](#class-based-custom-controls)
+    - [Custom Components](#custom-components)
+      - [Method-Based Custom Components](#method-based-custom-components)
+      - [Class-Based Custom Components](#class-based-custom-components)
     - [Observer Pattern](#observer-pattern)
     - [Data-Binding](#data-binding)
       - [Bidirectional (Two-Way) Data-Binding](#bidirectional-two-way-data-binding)
@@ -428,7 +428,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.9.7'
+gem 'glimmer-dsl-libui', '~> 0.10.0'
 ```
 
 Test that installation worked by running the [Glimmer Meta-Example](#examples):
@@ -738,15 +738,15 @@ hello_world
 
 ### Scaffold Custom Control
 
-When you are in a scaffolded application, you can scaffold a new [custom control](#custom-controls) (a control that you can put anything in to represent a view concept in your application) by running this command:
+When you are in a scaffolded application, you can scaffold a new [custom control](#custom-components) (a control that you can put anything in to represent a view concept in your application) by running this command:
 
 ```
 glimmer scaffold:customcontrol[name,namespace]
 ```
 
-The `name` represents the [custom control](#custom-controls) view class name (it can be underscored, and Glimmer will automatically classify it).
+The `name` represents the [custom control](#custom-components) view class name (it can be underscored, and Glimmer will automatically classify it).
 
-The `namespace` is optional and represents the module that the [custom control](#custom-controls) view class will live under. If left off, the main application class namespace is used (e.g. the top-level `HelloWorld` class namespace for a `hello_world` application).
+The `namespace` is optional and represents the module that the [custom control](#custom-components) view class will live under. If left off, the main application class namespace is used (e.g. the top-level `HelloWorld` class namespace for a `hello_world` application).
 
 You can also use the shorter `cc` alias for `customcontrol`:
 
@@ -817,7 +817,7 @@ class HelloWorld
 end
 ```
 
-When the generated file is required in another view (e.g. `require 'hello_world/view/model_form'`), the [custom control](#custom-controls) keyword `model_form` become available and reusable, like by calling:
+When the generated file is required in another view (e.g. `require 'hello_world/view/model_form'`), the [custom control](#custom-components) keyword `model_form` become available and reusable, like by calling:
 
 ```ruby
 window {
@@ -828,7 +828,7 @@ window {
 }
 ```
 
-Here is an example that generates a [custom control](#custom-controls) with a namespace:
+Here is an example that generates a [custom control](#custom-components) with a namespace:
 
 ```
 glimmer scaffold:cw[model_form,common]
@@ -902,7 +902,7 @@ window {
 }
 ```
 
-If for whatever reason, you end up with 2 [custom control](#custom-controls) views having the same name with different namespaces, then you can invoke the specific [custom control](#custom-controls) you want by including the Ruby namespace in underscored format separated by double-underscores:
+If for whatever reason, you end up with 2 [custom control](#custom-components) views having the same name with different namespaces, then you can invoke the specific [custom control](#custom-components) you want by including the Ruby namespace in underscored format separated by double-underscores:
 
 ```ruby
 window {
@@ -913,7 +913,7 @@ window {
 }
 ```
 
-Or another `model_form` [custom control](#custom-controls) view:
+Or another `model_form` [custom control](#custom-components) view:
 
 ```ruby
 window {
@@ -1080,21 +1080,21 @@ hello_world__view__train.show
 
 ### Scaffold Custom Control Gem
 
-You can scaffold a Ruby gem around a reusable [custom control](#custom-controls) to expose publicly and make available for multiple projects by running this command:
+You can scaffold a Ruby gem around a reusable [custom control](#custom-components) to expose publicly and make available for multiple projects by running this command:
 
 ```
 glimmer scaffold:gem:customcontrol[name,namespace]
 ```
 
-That will generate a [custom control](#custom-controls) gem project under the naming convention: `glimmer-libui-cc-name-namespace`
+That will generate a [custom control](#custom-components) gem project under the naming convention: `glimmer-libui-cc-name-namespace`
 
 The naming convention helps with discoverability of Ruby gems using the command `glimmer list:gems:customcontrol[query]` (or alias: `glimmer list:gems:cc[query]`) where filtering `query` is optional.
 
-The `name` is the [custom control](#custom-controls) class name, which must not contain dashes by convention (multiple words can be concatenated or can use underscores between them).
+The `name` is the [custom control](#custom-components) class name, which must not contain dashes by convention (multiple words can be concatenated or can use underscores between them).
 
-The `namespace` is needed to avoid clashing with other [custom control](#custom-controls) gems that other software engineers might have thought of. It is recommended not to include dashes between words in it by convention yet concatenated words or underscores between them.
+The `namespace` is needed to avoid clashing with other [custom control](#custom-components) gems that other software engineers might have thought of. It is recommended not to include dashes between words in it by convention yet concatenated words or underscores between them.
 
-Here is a shorter alias for the [custom control](#custom-controls) gem scaffolding command:
+Here is a shorter alias for the [custom control](#custom-components) gem scaffolding command:
 
 ```
 glimmer scaffold:gem:cc[name,namespace]
@@ -1729,7 +1729,7 @@ Learn more by checking out [examples](#examples).
 
 [EARLY ALPHA FEATURE]
 
-`refined_table` is a [custom control](#custom-controls) provided exclusively by [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui)
+`refined_table` is a [custom control](#custom-components) provided exclusively by [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui)
 that includes filtering and pagination support out of the box and can handle very large amounts of data (e.g. 50,000 rows).
 
 It is currently an early alpha feature, so please test-drive and report issues if you encounter any.
@@ -1751,7 +1751,7 @@ API:
 
 - `refined_model_array` (`Array`): `model_array` with filtering and pagination applied (useful to grab a table row model by index).
 - `filtered_model_array` (`Array`): `model_array` with filtering applied, but without pagination
-- `table_proxy`: control proxy object for the `table` contained in the `refined_table` [custom control](#custom-controls)
+- `table_proxy`: control proxy object for the `table` contained in the `refined_table` [custom control](#custom-components)
 
 If the initial `model_array` has no more than a single page of data, then pagination buttons are hidden (but, the filter field remains).
 
@@ -1994,7 +1994,7 @@ Mac | Windows | Linux
 **(ALPHA FEATURE)**
 
 [libui-ng](https://github.com/libui-ng/libui-ng) does not support `image` rendering outside of `table` yet.
-However, [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) adds a special `image(file as String path or web URL, width as Numeric, height as Numeric)` [custom control](#custom-controls) that renders an image unto an `area` pixel by pixel (and when possible to optimize, line by line).
+However, [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) adds a special `image(file as String path or web URL, width as Numeric, height as Numeric)` [custom control](#custom-components) that renders an image unto an `area` pixel by pixel (and when possible to optimize, line by line).
 
 Given that it is very new and is not a [libui-ng](https://github.com/libui-ng/libui-ng)-native control, please keep these notes in mind:
 - It only supports the `.png` file format.
@@ -2167,7 +2167,7 @@ One final note is that in Linux, table images grow and shrink with the image siz
 
 ![linux table image](images/glimmer-dsl-libui-linux-basic-table-image.png)
 
-Check out [examples/basic_image.rb](/docs/examples/GLIMMER-DSL-LIBUI-BASIC-EXAMPLES.md#basic-image) (all versions) for examples of using `image` Glimmer [custom control](#custom-controls).
+Check out [examples/basic_image.rb](/docs/examples/GLIMMER-DSL-LIBUI-BASIC-EXAMPLES.md#basic-image) (all versions) for examples of using `image` Glimmer [custom control](#custom-components).
 
 #### Colors
 
@@ -2480,7 +2480,7 @@ BasicCompositeShape.launch
 
 If you need to animate `area` vector graphics, you just have to use the [`Glimmer::LibUI::timer`](#libui-operations) method along with making changes to shape attributes.
 
-Spinner example that has a fully customizable method-based [custom control](#custom-controls) called `spinner`, which is destroyed if you click on it (you may copy/paste in [`girb`](#girb-glimmer-irb)):
+Spinner example that has a fully customizable method-based [custom control](#custom-components) called `spinner`, which is destroyed if you click on it (you may copy/paste in [`girb`](#girb-glimmer-irb)):
 
 ```ruby
 require 'glimmer-dsl-libui'
@@ -2609,21 +2609,21 @@ SpinnerExample.new.launch
 - Colors may be passed in as a hash of `:r`, `:g`, `:b`, `:a`, or `:red`, `:green`, `:blue`, `:alpha`, or [X11](https://en.wikipedia.org/wiki/X11_color_names) color like `:skyblue`, or 6-char hex or 3-char hex (as `Integer` or `String` with or without `0x` prefix)
 - Color alpha value defaults to `1.0` when not specified.
 
-### Custom Controls
+### Custom Components
 
-Custom controls (components) and custom windows (the `window` version of custom controls) can be defined to provide new features or act as composites of [existing controls](#supported-keywords) that need to be reused multiple times in an application or across multiple applications. Custom controls save a lot of development time, improving productivity and maintainability immensely.
+Custom components like custom controls, custom windows, and custom shapes can be defined to provide new features or act as composites of [existing controls](#supported-keywords) that need to be reused multiple times in an application or across multiple applications. Custom controls save a lot of development time, improving productivity and maintainability immensely.
 
 For example, you can define a custom `address_view` control as an aggregate of multiple `label` controls to reuse multiple times as a standard address View, displaying street, city, state, and zip code.
 
-There are two ways to define [custom control](#custom-controls)s:
-- Method-Based: simply define a method representing the [custom control](#custom-controls) you want (e.g. `address_view`) with any arguments needed (e.g. `address(address_model)`).
-- Class-Based: define a class matching the camelcased name of the [custom control](#custom-controls) by convention (e.g. the `address_view` [custom control](#custom-controls) keyword would have a class called `AddressView`) and `include Glimmer::LibUI::CustomControl` or `include Glimmer::LibUI::CustomWindow` depending on whether the component represents a standard control or a whole window. Classes add the benefit of being able to distribute the [custom control](#custom-controls)s into separate files and reuse externally from multiple places or share via Ruby gems.
+There are two ways to define [custom components](#custom-components):
+- Method-Based: simply define a method representing the [custom component](#custom-components) you want (e.g. `address_view`) with any options needed (e.g. `address(address_model: some_model)`).
+- Class-Based: define a class matching the camelcased name of the [custom component](#custom-components) by convention (e.g. the `address_view` [custom component](#custom-components) keyword would have a class called `AddressView`) and `include Glimmer::LibUI::CustomControl`, `include Glimmer::LibUI::CustomWindow`, `include Glimmer::LibUI::CustomShape` depending on if the component represents a standard control, a whole window, or an area canvas graphics shape. Classes add the benefit of being able to distribute the [custom component](#custom-components)s into a separate file for external reuse from multiple views or for sharing as a Ruby gem.
 
-It is OK to use the terms "custom control" and "custom keyword" synonymously though "custom keyword" is a broader term that covers things other than controls too like custom shapes (e.g. `cylinder`), custom attributed strings (e.g. `alternating_color_string`), and custom transforms (`isometric_transform`).
+It is OK to use the terms "custom control", "custom component", and "custom keyword" synonymously though "custom component" is a broader term that covers things other than controls too like custom shapes (e.g. `cube`), custom attributed strings (e.g. `alternating_color_string`), and custom transforms (`isometric_transform`).
 
 #### Method-Based Custom Controls
 
-Simply define a method representing the [custom control](#custom-controls) you want (e.g. `address_view`) with any arguments needed (e.g. `address(address_model)`).
+Simply define a method representing the [custom component](#custom-components) you want (e.g. `address_view`) with any arguments needed (e.g. `address(address_model)`).
 
 Example that defines `form_field`, `address_form`, `label_pair`, and `address_view` keywords (you may copy/paste in [`girb`](#girb-glimmer-irb)):
 
@@ -2722,9 +2722,9 @@ window('Method-Based Custom Keyword') {
 
 ![glimmer-dsl-libui-mac-method-based-custom-keyword.png](images/glimmer-dsl-libui-mac-method-based-custom-keyword.png)
 
-#### Class-Based Custom Controls
+#### Class-Based Custom Components
 
-Define a class matching the camelcased name of the [custom control](#custom-controls) by convention (e.g. the `address_view` [custom control](#custom-controls) keyword would have a class called `AddressView`) and `include Glimmer::LibUI::CustomControl`. Classes add the benefit of being able to distribute the [custom control](#custom-controls)s into separate files and reuse externally from multiple places or share via Ruby gems.
+Define a class matching the camelcased name of the [custom control](#custom-components) by convention (e.g. the `address_view` [custom control](#custom-components) keyword would have a class called `AddressView`) and `include Glimmer::LibUI::CustomControl`. Classes add the benefit of being able to distribute the [custom control](#custom-components)s into separate files and reuse externally from multiple places or share via Ruby gems.
 
 Example (you may copy/paste in [`girb`](#girb-glimmer-irb)):
 
@@ -2854,13 +2854,185 @@ ClassBasedCustomControls.launch
 
 ![glimmer-dsl-libui-mac-method-based-custom-keyword.png](images/glimmer-dsl-libui-mac-method-based-custom-keyword.png)
 
-You can also define Custom Window keywords, that is [custom control](#custom-controls)s with `window` being the body root. These are also known as Applications. To define a Custom Window, you `include Glimmer::LibUI::CustomWindow` or `include Glimmer:LibUI::Application` and then you can invoke the `::launch` method on the class.
+Example of a `cube` custom shape (you may copy/paste in [`girb`](#girb-glimmer-irb)):
+
+```ruby
+require 'glimmer-dsl-libui'
+
+# class-based custom shape using Glimmer::LibUI::CustomShape mixin, which automatically
+# augments the Glimmer GUI DSL with the underscored version of the class name: `cube`
+# while accepting hash options matching the options declared on the class.
+# (e.g. `cube(location_x: 50, location_y: 100)` )
+class Cube
+  include Glimmer::LibUI::CustomShape
+  
+  DEFAULT_SIZE = 28
+  
+  option :location_x, default: 0
+  option :location_y, default: 0
+  option :rectangle_width, default: nil
+  option :rectangle_height, default: nil
+  option :cube_height, default: 75
+  option :background_color, default: :brown
+  option :foreground_color
+  option :line_thickness, default: 1
+    
+  # The before_body block executes before building the body
+  before_body do
+    self.rectangle_width ||= rectangle_height || cube_height || DEFAULT_SIZE
+    self.rectangle_height ||= rectangle_width || cube_height || DEFAULT_SIZE
+    self.cube_height ||= rectangle_width || rectangle_height || DEFAULT_SIZE
+    if foreground_color
+      self.foreground_color = Glimmer::LibUI.interpret_color(foreground_color)
+      self.foreground_color[:thickness] ||= line_thickness
+    else
+      self.foreground_color = [0, 0, 0, thickness: line_thickness]
+    end
+  end
+  
+  # Optionally, after_body could be defined to perform operations after building the body
+  # like setting up observers.
+  #
+  # after_body do
+  # end
+  
+  body {
+    # the shape keyword (alias for composite_shape) enables building a composite shape that is treated as one shape
+    # like a cube containing polygons, a polyline, a rectangle, and a line
+    # with the fill and stroke colors getting inherited by all children that do not specify them
+    shape(location_x, location_y) {
+      fill background_color
+      stroke foreground_color
+    
+      bottom = polygon(0, cube_height + rectangle_height / 2.0,
+              rectangle_width / 2.0, cube_height,
+              rectangle_width, cube_height + rectangle_height / 2.0,
+              rectangle_width / 2.0, cube_height + rectangle_height) {
+        # inherits fill property from parent shape if not set
+        # inherits stroke property from parent shape if not set
+      }
+      body = rectangle(0, rectangle_height / 2.0, rectangle_width, cube_height) {
+        # inherits fill property from parent shape if not set
+        # stroke is overridden to ensure a different value from parent
+        stroke thickness: 0
+      }
+      polyline(0, rectangle_height / 2.0 + cube_height,
+               0, rectangle_height / 2.0,
+               rectangle_width, rectangle_height / 2.0,
+               rectangle_width, rectangle_height / 2.0 + cube_height) {
+        # inherits stroke property from parent shape if not set
+      }
+      top = polygon(0, rectangle_height / 2.0,
+              rectangle_width / 2.0, 0,
+              rectangle_width, rectangle_height / 2.0,
+              rectangle_width / 2.0, rectangle_height) {
+        # inherits fill property from parent shape if not set
+        # inherits stroke property from parent shape if not set
+      }
+      line(rectangle_width / 2.0, cube_height + rectangle_height,
+           rectangle_width / 2.0, rectangle_height) {
+        # inherits stroke property from parent shape if not set
+      }
+    }
+  }
+end
+
+class BasicCustomShape
+  include Glimmer::LibUI::Application
+  
+  body {
+    window {
+      title 'Basic Custom Shape'
+      content_size 200, 225
+    
+      @area = area {
+        rectangle(0, 0, 200, 225) {
+          fill :white
+        }
+        
+        7.times do |n|
+          x_location = (rand*125).to_i%200 + (rand*15).to_i
+          y_location = (rand*125).to_i%200 + (rand*15).to_i
+          shape_color = [rand*125 + 130, rand*125 + 130, rand*125 + 130]
+          shape_size = 20+n
+
+          cube(
+            location_x: x_location,
+            location_y: y_location,
+            rectangle_width: shape_size*2,
+            rectangle_height: shape_size,
+            cube_height: shape_size*2,
+            background_color: shape_color,
+            line_thickness: 2
+          ) { |the_shape|
+            on_mouse_up do |area_mouse_event|
+              # Change color on mouse up without dragging
+              if @drag_shape.nil?
+                background_color = [rand(255), rand(255), rand(255)]
+                the_shape.fill = background_color
+              end
+            end
+
+            on_mouse_drag_start do |area_mouse_event|
+              @drag_shape = the_shape
+              @drag_x = area_mouse_event[:x]
+              @drag_y = area_mouse_event[:y]
+            end
+
+            on_mouse_drag do |area_mouse_event|
+              if @drag_shape && @drag_x && @drag_y
+                drag_distance_width = area_mouse_event[:x]  - @drag_x
+                drag_distance_height = area_mouse_event[:y] - @drag_y
+                @drag_shape.x += drag_distance_width
+                @drag_shape.y += drag_distance_height
+                @drag_x = area_mouse_event[:x]
+                @drag_y = area_mouse_event[:y]
+              end
+            end
+
+            on_mouse_drop do |area_mouse_event|
+              @drag_shape = nil
+              @drag_x = nil
+              @drag_y = nil
+            end
+          }
+        end
+        
+        # this general area on_mouse_drag listener is needed to ensure that dragging a shape
+        # outside of its boundaries would still move the dragged shape
+        on_mouse_drag do |area_mouse_event|
+          if @drag_shape && @drag_x && @drag_y
+            drag_distance_width = area_mouse_event[:x]  - @drag_x
+            drag_distance_height = area_mouse_event[:y] - @drag_y
+            @drag_shape.x += drag_distance_width
+            @drag_shape.y += drag_distance_height
+            @drag_x = area_mouse_event[:x]
+            @drag_y = area_mouse_event[:y]
+          end
+        end
+        
+        on_mouse_drop do |area_mouse_event|
+          @drag_shape = nil
+          @drag_x = nil
+          @drag_y = nil
+        end
+      }
+    }
+  }
+end
+
+BasicCustomShape.launch
+```
+
+![glimmer-dsl-libui-mac-basic-custom-shape.gif](/images/glimmer-dsl-libui-mac-basic-composite-shape.gif)
+
+You can also define Custom Window keywords, that is [custom control](#custom-components)s with `window` being the body root. These are also known as Applications. To define a Custom Window, you `include Glimmer::LibUI::CustomWindow` or `include Glimmer:LibUI::Application` and then you can invoke the `::launch` method on the class.
 
 The [`area`](#area-api) control can be utilized to build non-native custom controls from scratch by leveraging vector graphics, formattable text, keyboard events, and mouse events. This is demonstrated in the [Area-Based Custom Controls](/docs/examples/GLIMMER-DSL-LIBUI-ADVANCED-EXAMPLES.md#area-based-custom-controls) example.
 
 Defining custom controls enables unlimited extension of the [Glimmer GUI DSL](#glimmer-gui-dsl). The sky is the limit on what can be done with custom controls as a result. You can compose new visual vocabulary to build applications in any domain from higher concepts rather than [mere standard controls](#supported-keywords). For example, in a traffic signaling app, you could define `street`, `light_signal`, `traffic_sign`, and `car` as custom keywords and build your application from these concepts directly, saving enormous time and achieving much higher productivity.
 
-Learn more from custom control usage in [Method-Based Custom Keyword](/docs/examples/GLIMMER-DSL-LIBUI-ADVANCED-EXAMPLES.md#method-based-custom-keyword), [Area-Based Custom Controls](/docs/examples/GLIMMER-DSL-LIBUI-ADVANCED-EXAMPLES.md#area-based-custom-controls), [Basic Scrolling Area](/docs/examples/GLIMMER-DSL-LIBUI-BASIC-EXAMPLES.md#basic-scrolling-area), [Histogram](/docs/examples/GLIMMER-DSL-LIBUI-ADVANCED-EXAMPLES.md#histogram), and [Tetris](/docs/examples/GLIMMER-DSL-LIBUI-ADVANCED-EXAMPLES.md#tetris) examples.
+Learn more from custom control usage in [Method-Based Custom Controls](/docs/examples/GLIMMER-DSL-LIBUI-ADVANCED-EXAMPLES.md#method--based-custom-controls), [Class-Based Custom Controls](/docs/examples/GLIMMER-DSL-LIBUI-ADVANCED-EXAMPLES.md#class-based-custom-controls), [Area-Based Custom Controls](/docs/examples/GLIMMER-DSL-LIBUI-ADVANCED-EXAMPLES.md#area-based-custom-controls), [Basic Composite Shape](), [Basic Custom Shape](), [Basic Scrolling Area](/docs/examples/GLIMMER-DSL-LIBUI-BASIC-EXAMPLES.md#basic-scrolling-area), [Histogram](/docs/examples/GLIMMER-DSL-LIBUI-ADVANCED-EXAMPLES.md#histogram), and [Tetris](/docs/examples/GLIMMER-DSL-LIBUI-ADVANCED-EXAMPLES.md#tetris) examples.
 
 ### Observer Pattern
 
