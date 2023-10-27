@@ -47,10 +47,33 @@ class Snake
         self.joins.clear
       end
       
+      def turn_right
+        head.orientation = RIGHT_TURN_MAP[head.orientation]
+      end
+      
+      def turn_left
+        head.orientation = LEFT_TURN_MAP[head.orientation]
+      end
+      
       def move
-        @old_tail = tail.dup
+        create_new_head
+        remove_old_tail
+        if detect_collision?
+          collide_and_die
+        else
+          append_new_head
+          eat_apple if detect_apple?
+        end
+      end
+      
+      def remove_old_tail
+        @old_tail = tail.dup # save in case of growing and keeping old tail
+        @vertebrae.delete(tail)
+      end
+      
+      def create_new_head
         @new_head = head.dup
-        case @new_head.orientation
+        case head.orientation
         when :east
           @new_head.column = (@new_head.column + 1) % @game.width
         when :west
@@ -60,25 +83,28 @@ class Snake
         when :north
           @new_head.row = (@new_head.row - 1) % @game.height
         end
-        if @vertebrae.map {|v| [v.row, v.column]}.include?([@new_head.row, @new_head.column])
-          self.collided = true
-          @game.over = true
-        else
-          @vertebrae.append(@new_head)
-          @vertebrae.delete(tail)
-          if head.row == @game.apple.row && head.column == @game.apple.column
-            grow
-            @game.apple.generate
-          end
-        end
       end
       
-      def turn_right
-        head.orientation = RIGHT_TURN_MAP[head.orientation]
+      def append_new_head
+        @vertebrae.append(@new_head)
       end
       
-      def turn_left
-        head.orientation = LEFT_TURN_MAP[head.orientation]
+      def detect_collision?
+        @vertebrae.map {|v| [v.row, v.column]}.include?([@new_head.row, @new_head.column])
+      end
+      
+      def collide_and_die
+        self.collided = true
+        @game.over = true
+      end
+      
+      def detect_apple?
+        head.row == @game.apple.row && head.column == @game.apple.column
+      end
+      
+      def eat_apple
+        grow
+        @game.apple.generate
       end
       
       def grow

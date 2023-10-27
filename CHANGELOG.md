@@ -1,5 +1,12 @@
 # Change Log
 
+## 0.10.2
+
+- In Snake example, change snake direction on key press instead of key release to be more responsive for players who are not used to releasing pressed keys quickly
+- In Snake example, fix issue with detecting collision too soon if a snake fills the entire space horizontally or vertically
+- In Snake example, fix issue of hearing beeps on every direction change because of not properly informing LibUI when the area key down event is handled
+- In Snake example, refactor `Snake::Model::Snake` to be more readable like high-level game domain rules (especially `move` method)
+
 ## 0.10.1
 
 - Scaffold custom shape
@@ -8,7 +15,7 @@
 
 ## 0.10.0
 
-- Support Custom Shapes, describing composite shapes/text/image concepts inside an `area`
+- Support Custom Shapes by mixing in `Glimmer::LibUI::CustomShape` to abstract composite shapes/text/image concepts inside an `area`
 - `examples/basic_custom_shape.rb` example
 - Support nesting listeners under a Custom Shape that will automatically get added to its `body_root` control
 - Support nesting listeners under a Custom Control that will automatically get added to its `body_root` control

@@ -416,6 +416,7 @@ RSpec.describe Snake::Model::Game do
     subject.snake.generate(initial_row: 0, initial_column: 0, initial_orientation: direction)
     subject.apple.generate(initial_row: 1, initial_column: 1)
     
+    
     subject.snake.move # 0, 1
     subject.snake.turn_right
     subject.snake.move # 1, 1 eats apple
@@ -436,21 +437,18 @@ RSpec.describe Snake::Model::Game do
     expect(subject).to be_over
     expect(subject.score).to eq(50 * 4)
     expect(subject.snake).to be_collided
-    expect(subject.snake.length).to eq(5)
+    expect(subject.snake.length).to eq(4)
     expect(subject.snake.vertebrae[0].row).to eq(1)
-    expect(subject.snake.vertebrae[0].column).to eq(2)
+    expect(subject.snake.vertebrae[0].column).to eq(3)
     expect(subject.snake.vertebrae[0].orientation).to eq(:east)
     expect(subject.snake.vertebrae[1].row).to eq(1)
-    expect(subject.snake.vertebrae[1].column).to eq(3)
-    expect(subject.snake.vertebrae[1].orientation).to eq(:east)
-    expect(subject.snake.vertebrae[2].row).to eq(1)
+    expect(subject.snake.vertebrae[1].column).to eq(4)
+    expect(subject.snake.vertebrae[1].orientation).to eq(:north)
+    expect(subject.snake.vertebrae[2].row).to eq(0)
     expect(subject.snake.vertebrae[2].column).to eq(4)
-    expect(subject.snake.vertebrae[2].orientation).to eq(:north)
+    expect(subject.snake.vertebrae[2].orientation).to eq(:west)
     expect(subject.snake.vertebrae[3].row).to eq(0)
-    expect(subject.snake.vertebrae[3].column).to eq(4)
-    expect(subject.snake.vertebrae[3].orientation).to eq(:west)
-    expect(subject.snake.vertebrae[4].row).to eq(0)
-    expect(subject.snake.vertebrae[4].column).to eq(3)
-    expect(subject.snake.vertebrae[4].orientation).to eq(:south)
+    expect(subject.snake.vertebrae[3].column).to eq(3)
+    expect(subject.snake.vertebrae[3].orientation).to eq(:south)
   end
 end

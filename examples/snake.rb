@@ -72,12 +72,16 @@ class Snake
                   fill <= [@grid.cells[row][column], :color] # data-bind square fill to grid cell color
                 }
                 
-                on_key_up do |area_key_event|
+                on_key_down do |area_key_event|
+                  handled = true # assume we will handle the event
                   if area_key_event[:key] == ' '
                     @game.toggle_pause
-                  else
+                  elsif %i[up right down left].include?(area_key_event[:ext_key])
                     @keypress_queue << area_key_event[:ext_key]
+                  else
+                    handled = false # we won't handle the event after all
                   end
+                  handled
                 end
               }
             end

@@ -2,6 +2,7 @@
 
 ## Next
 
+- Fix issue with area on_key_up not detecting handled=true like on_key_down
 - Support `LibUI.uninit` to enable clean exit of a LibUI app in Linux and support launching/closing a LibUI app window multiple times
 - Rename basic table selection example to something that indicates sorting too
 - Fix issue with button_column on_clicked not resulting in click of button yet click of column. It seems we have to add a on_button_clicked alternative here. and break the API
