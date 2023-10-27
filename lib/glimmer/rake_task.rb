@@ -114,15 +114,15 @@ namespace :glimmer do
     task :custom_control, [:name, :namespace] => :customcontrol
     task :"custom-control", [:name, :namespace] => :customcontrol
 
-#     desc 'Scaffold Glimmer::UI::CustomShape subclass (part of a view) under app/views (namespace is optional) [alt: scaffold:cs]'
-#     task :customshape, [:name, :namespace] do |t, args|
-#       require_relative 'rake_task/scaffold'
-#       Glimmer::RakeTask::Scaffold.custom_shape(args[:name], args[:namespace])
-#     end
-#
-#     task :cs, [:name, :namespace] => :customshape
-#     task :custom_shape, [:name, :namespace] => :customshape
-#     task :"custom-shape", [:name, :namespace] => :customshape
+    desc 'Scaffold Glimmer::UI::CustomShape subclass (part of a view) under app/views (namespace is optional) [alt: scaffold:cs]'
+    task :customshape, [:name, :namespace] do |t, args|
+      require_relative 'rake_task/scaffold'
+      Glimmer::RakeTask::Scaffold.custom_shape(args[:name], args[:namespace])
+    end
+
+    task :cs, [:name, :namespace] => :customshape
+    task :custom_shape, [:name, :namespace] => :customshape
+    task :"custom-shape", [:name, :namespace] => :customshape
 
     namespace :gem do
       desc 'Scaffold Glimmer::UI::CustomWindow subclass (full window view) under its own Ruby gem + app project (namespace is required) [alt: scaffold:gem:cw]'
@@ -145,15 +145,15 @@ namespace :glimmer do
       task :custom_control, [:name, :namespace] => :customcontrol
       task :"custom-control", [:name, :namespace] => :customcontrol
 
-#       desc 'Scaffold Glimmer::UI::CustomShape subclass (part of a view) under its own Ruby gem project (namespace is required) [alt: scaffold:gem:cs]'
-#       task :customshape, [:name, :namespace] do |t, args|
-#         require_relative 'rake_task/scaffold'
-#         Glimmer::RakeTask::Scaffold.custom_shape_gem(args[:name], args[:namespace])
-#       end
-#
-#       task :cs, [:name, :namespace] => :customshape
-#       task :custom_shape, [:name, :namespace] => :customshape
-#       task :"custom-shape", [:name, :namespace] => :customshape
+      desc 'Scaffold Glimmer::UI::CustomShape subclass (part of a view) under its own Ruby gem project (namespace is required) [alt: scaffold:gem:cs]'
+      task :customshape, [:name, :namespace] do |t, args|
+        require_relative 'rake_task/scaffold'
+        Glimmer::RakeTask::Scaffold.custom_shape_gem(args[:name], args[:namespace])
+      end
+
+      task :cs, [:name, :namespace] => :customshape
+      task :custom_shape, [:name, :namespace] => :customshape
+      task :"custom-shape", [:name, :namespace] => :customshape
     end
   end
   

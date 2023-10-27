@@ -633,7 +633,7 @@ require '#{window_type == :app ? current_dir_name : namespace}/model/greeting'
       #
       body {
         window {
-          # Replace example content below with custom window content
+          # Replace example content below with your own custom window content
           content_size 240, 240
           title '#{human_name(namespace)}'
           
@@ -809,17 +809,24 @@ end
       ## Add shape content under custom shape body
       #
       body {
-        # Replace example content below with custom shape content
+        # Replace example content below (heart shape) with your own custom shape content
         shape(location_x, location_y) {
-          path {
-            background background_color
-            cubic size_width - size_width*0.66, size_height/2 - size_height*0.33, size_width*0.65 - size_width*0.66, 0 - size_height*0.33, size_width/2 - size_width*0.66, size_height*0.75 - size_height*0.33, size_width - size_width*0.66, size_height - size_height*0.33
-          }
+          # This fill color is shared under all direct children of `shape`
+          fill background_color
           
-          path {
-            background background_color
-            cubic size_width - size_width*0.66, size_height/2 - size_height*0.33, size_width*1.35 - size_width*0.66, 0 - size_height*0.33, size_width*1.5 - size_width*0.66, size_height*0.75 - size_height*0.33, size_width - size_width*0.66, size_height - size_height*0.33
-          }
+          bezier(
+            size_width - size_width*0.66, size_height/2 - size_height*0.33,
+            size_width*0.65 - size_width*0.66, 0 - size_height*0.33,
+            size_width/2 - size_width*0.66, size_height*0.75 - size_height*0.33,
+            size_width - size_width*0.66, size_height - size_height*0.33
+          )
+          
+          bezier(
+            size_width - size_width*0.66, size_height/2 - size_height*0.33,
+            size_width*1.35 - size_width*0.66, 0 - size_height*0.33,
+            size_width*1.5 - size_width*0.66, size_height*0.75 - size_height*0.33,
+            size_width - size_width*0.66, size_height - size_height*0.33
+          )
         }
       }
   

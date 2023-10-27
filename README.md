@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.10.0
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.10.1
 ## Prerequisite-Free Ruby Desktop Development Cross-Platform Native GUI Library  ([Fukuoka Award Winning](http://www.digitalfukuoka.jp/topics/187?locale=ja))
 ### The Quickest Way From Zero To GUI
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
@@ -26,7 +26,7 @@ The main trade-off in using [Glimmer DSL for LibUI](https://rubygems.org/gems/gl
 - [Declarative DSL syntax](#glimmer-gui-dsl-concepts) that visually maps to the GUI control hierarchy
 - [Convention over configuration](#smart-defaults-and-conventions) via smart defaults and automation of low-level details
 - Requiring the [least amount of syntax](#glimmer-gui-dsl-concepts) possible to build GUI
-- [Custom Control](#custom-keywords) support
+- [Custom Component](#custom-components) support (Custom Controls, Custom Windows, and Custom Shapes)
 - [Bidirectional/Unidirectional Data-Binding](#data-binding) to declaratively wire and automatically synchronize GUI Views with Models
 - [Scaffolding](#scaffold-application) for new custom windows/controls, apps, and gems
 - [Far Future Plan] Native-Executable packaging on Mac, Windows, and Linux.
@@ -353,10 +353,13 @@ Learn more about the differences between various [Glimmer](https://github.com/An
     - [Scaffold Application](#scaffold-application)
     - [Scaffold Custom Control](#scaffold-custom-control)
     - [Scaffold Custom Window](#scaffold-custom-window)
+    - [Scaffold Custom Shape](#scaffold-custom-shape)
     - [Scaffold Custom Control Gem](#scaffold-custom-control-gem)
     - [Scaffold Custom Window Gem](#scaffold-custom-window-gem)
-    - [List Custom Window Gems](#list-custom-window-gems)
+    - [Scaffold Custom Shape Gem](#scaffold-custom-shape-gem)
     - [List Custom Control Gems](#list-custom-control-gems)
+    - [List Custom Window Gems](#list-custom-window-gems)
+    - [List Custom Shape Gems](#list-custom-shape-gems)
     - [List Glimmer DSLs](#list-glimmer-dsls)
   - [Girb (Glimmer IRB)](#girb-glimmer-irb)
   - [Glimmer GUI DSL Concepts](#glimmer-gui-dsl-concepts)
@@ -428,7 +431,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.10.0'
+gem 'glimmer-dsl-libui', '~> 0.10.1'
 ```
 
 Test that installation worked by running the [Glimmer Meta-Example](#examples):
@@ -757,7 +760,7 @@ glimmer scaffold:cc[name,namespace]
 For example by running this command under a `hello_world` application:
 
 ```
-glimmer scaffold:cw[model_form]
+glimmer scaffold:cc[model_form]
 ```
 
 That will generate this class under `app/hello_world/view/model_form`:
@@ -831,7 +834,7 @@ window {
 Here is an example that generates a [custom control](#custom-components) with a namespace:
 
 ```
-glimmer scaffold:cw[model_form,common]
+glimmer scaffold:cc[model_form,common]
 ```
 
 That will generate this class under `app/common/view/model_form`:
@@ -1078,6 +1081,204 @@ Or another `train` custom window view:
 hello_world__view__train.show
 ```
 
+### Scaffold Custom Shape
+
+When you are in a scaffolded application, you can scaffold a new [custom shape](#custom-components) (a shape that you can put anything in to represent a view concept in your application) by running this command:
+
+```
+glimmer scaffold:customshape[name,namespace]
+```
+
+The `name` represents the [custom shape](#custom-components) view class name (it can be underscored, and Glimmer will automatically classify it).
+
+The `namespace` is optional and represents the module that the [custom shape](#custom-components) view class will live under. If left off, the main application class namespace is used (e.g. the top-level `HelloWorld` class namespace for a `hello_world` application).
+
+You can also use the shorter `cs` alias for `customshape`:
+
+```
+glimmer scaffold:cs[name,namespace]
+```
+
+For example by running this command under a `hello_world` application:
+
+```
+glimmer scaffold:cs[heart]
+```
+
+That will generate this class under `app/hello_world/view/heart`:
+
+```ruby
+class HelloWorld
+  module View
+    class Heart
+      include Glimmer::LibUI::CustomShape
+  
+      ## Add options like the following to configure CustomShape by outside consumers
+      #
+      # options :option1, option2, option3
+      option :background_color, default: :red
+      option :size_width, default: 100
+      option :size_height, default: 100
+      option :location_x, default: 0
+      option :location_y, default: 0
+  
+      ## Use before_body block to pre-initialize variables to use in body
+      #
+      #
+      # before_body do
+      #
+      # end
+  
+      ## Use after_body block to setup observers for shapes in body
+      #
+      # after_body do
+      #
+      # end
+  
+      ## Add shape content under custom shape body
+      #
+      body {
+        # Replace example content below (heart shape) with custom shape content
+        shape(location_x, location_y) {
+          # This fill color is shared under all direct children of `shape`
+          fill background_color
+          
+          bezier(
+            size_width - size_width*0.66, size_height/2 - size_height*0.33,
+            size_width*0.65 - size_width*0.66, 0 - size_height*0.33,
+            size_width/2 - size_width*0.66, size_height*0.75 - size_height*0.33,
+            size_width - size_width*0.66, size_height - size_height*0.33
+          )
+          
+          bezier(
+            size_width - size_width*0.66, size_height/2 - size_height*0.33,
+            size_width*1.35 - size_width*0.66, 0 - size_height*0.33,
+            size_width*1.5 - size_width*0.66, size_height*0.75 - size_height*0.33,
+            size_width - size_width*0.66, size_height - size_height*0.33
+          )
+        }
+      }
+  
+    end
+  end
+end
+```
+
+When the generated file is required in another view (e.g. `require 'hello_world/view/heart'`), the [custom shape](#custom-components) keyword `heart` become available and reusable, like by calling:
+
+```ruby
+window {
+  area {
+    heart
+  }
+}
+```
+
+You can pass `heart` options (as defined with `option` near the top of the class):
+
+```ruby
+window {
+  area {
+    heart(location_x: 25, location_y: 50)
+  }
+}
+```
+
+Here is an example that generates a [custom shape](#custom-components) with a namespace:
+
+```
+glimmer scaffold:cs[heart,acme]
+```
+
+That will generate this class under `app/acme/view/heart`:
+
+```ruby
+module Acme
+  module View
+    class Heart
+      include Glimmer::LibUI::CustomShape
+  
+      ## Add options like the following to configure CustomShape by outside consumers
+      #
+      # options :option1, option2, option3
+      option :background_color, default: :red
+      option :size_width, default: 100
+      option :size_height, default: 100
+      option :location_x, default: 0
+      option :location_y, default: 0
+  
+      ## Use before_body block to pre-initialize variables to use in body
+      #
+      #
+      # before_body do
+      #
+      # end
+  
+      ## Use after_body block to setup observers for shapes in body
+      #
+      # after_body do
+      #
+      # end
+  
+      ## Add shape content under custom shape body
+      #
+      body {
+        # Replace example content below (heart shape) with your own custom shape content
+        shape(location_x, location_y) {
+          # This fill color is shared under all direct children of `shape`
+          fill background_color
+          
+          bezier(
+            size_width - size_width*0.66, size_height/2 - size_height*0.33,
+            size_width*0.65 - size_width*0.66, 0 - size_height*0.33,
+            size_width/2 - size_width*0.66, size_height*0.75 - size_height*0.33,
+            size_width - size_width*0.66, size_height - size_height*0.33
+          )
+          
+          bezier(
+            size_width - size_width*0.66, size_height/2 - size_height*0.33,
+            size_width*1.35 - size_width*0.66, 0 - size_height*0.33,
+            size_width*1.5 - size_width*0.66, size_height*0.75 - size_height*0.33,
+            size_width - size_width*0.66, size_height - size_height*0.33
+          )
+        }
+      }
+  
+    end
+  end
+end
+```
+
+When that file is required in another view (e.g. `require 'acme/view/heart'`), the `heart` keyword becomes available:
+
+```ruby
+window {
+  area {
+    heart
+  }
+}
+```
+
+If for whatever reason, you end up with 2 [custom shape](#custom-components) views having the same name with different namespaces, then you can invoke the specific [custom shape](#custom-components) you want by including the Ruby namespace in underscored format separated by double-underscores:
+
+```ruby
+window {
+  area {
+    acme__view__heart
+  }
+}
+```
+
+Or another `heart` [custom shape](#custom-components) view:
+
+```ruby
+window {
+  area {
+    hello_world__view__heart
+  }
+}
+```
+
 ### Scaffold Custom Control Gem
 
 You can scaffold a Ruby gem around a reusable [custom control](#custom-components) to expose publicly and make available for multiple projects by running this command:
@@ -1124,7 +1325,7 @@ Or by using the raw rake command:
 rake gemspec:generate
 ```
 
-Typically, consumers of the gem would include it in their own project, which makes the gem keyword available in the Glimmer GUI DSL anywhere `Glimmer`. `Glimmer::LibUI::Application`, `Glimmer::LibUI::CustomWindow`, or `Glimmer::LibUI::CustomControl` is mixed.
+Typically, consumers of the gem would include it in their own project, which makes the gem keyword available in the Glimmer GUI DSL anywhere `Glimmer`. `Glimmer::LibUI::Application`, `Glimmer::LibUI::CustomWindow`, `Glimmer::LibUI::CustomControl`, or `Glimmer::LibUI::CustomShape` is mixed.
 
 For example:
 
@@ -1192,7 +1393,7 @@ rake gemspec:generate
 
 The project optionally allows you to run the custom window as its own separate app with a executable script (`bin/gem_name`) to see it, which helps with prototyping it.
 
-But, typically consumers of the gem would include it in their own project, which makes the gem keyword available in the Glimmer GUI DSL anywhere `Glimmer`. `Glimmer::LibUI::Application`, `Glimmer::LibUI::CustomWindow`, or `Glimmer::LibUI::CustomControl` is mixed.
+But, typically consumers of the gem would include it in their own project, which makes the gem keyword available in the Glimmer GUI DSL anywhere `Glimmer`. `Glimmer::LibUI::Application`, `Glimmer::LibUI::CustomWindow`, `Glimmer::LibUI::CustomControl`, or `Glimmer::LibUI::CustomShape` is mixed.
 
 For example:
 
@@ -1203,6 +1404,86 @@ require 'glimmer-libui-cw-greeter-acme'
 greeter.show
 ...
 ```
+
+### Scaffold Custom Shape Gem
+
+You can scaffold a Ruby gem around a reusable [custom shape](#custom-components) to expose publicly and make available for multiple projects by running this command:
+
+```
+glimmer scaffold:gem:customshape[name,namespace]
+```
+
+That will generate a [custom shape](#custom-components) gem project under the naming convention: `glimmer-libui-cc-name-namespace`
+
+The naming convention helps with discoverability of Ruby gems using the command `glimmer list:gems:customshape[query]` (or alias: `glimmer list:gems:cs[query]`) where filtering `query` is optional.
+
+The `name` is the [custom shape](#custom-components) class name, which must not contain dashes by convention (multiple words can be concatenated or can use underscores between them).
+
+The `namespace` is needed to avoid clashing with other [custom shape](#custom-components) gems that other software engineers might have thought of. It is recommended not to include dashes between words in it by convention yet concatenated words or underscores between them.
+
+Here is a shorter alias for the [custom shape](#custom-components) gem scaffolding command:
+
+```
+glimmer scaffold:gem:cs[name,namespace]
+```
+
+You can package the newly scaffolded project as a Ruby gem by running this command:
+
+```
+glimmer package:gem
+```
+
+Or by using the raw rake command:
+
+```
+rake build
+```
+
+You can generate the application gemspec explicitly if needed with this command (though it is not needed to build the gem):
+
+```
+glimmer package:gemspec
+```
+
+Or by using the raw rake command:
+
+```
+rake gemspec:generate
+```
+
+Typically, consumers of the gem would include it in their own project, which makes the gem keyword available in the Glimmer GUI DSL anywhere `Glimmer`. `Glimmer::LibUI::Application`, `Glimmer::LibUI::CustomWindow`, `Glimmer::LibUI::CustomControl`, or `Glimmer::LibUI::CustomShape` is mixed.
+
+For example:
+
+```ruby
+require 'glimmer-libui-cs-heart-acme'
+
+...
+window {
+  area {
+    heart
+  }
+}
+...
+```
+
+### List Custom Control Gems
+
+Custom control gems are scaffolded to follow the naming convention: `glimmer-libui-cc-name-namespace`
+
+The naming convention helps with discoverability of Ruby gems using the command:
+
+```
+glimmer list:gems:customcontrol[query]
+```
+
+Or by using the shorter alias:
+
+```
+glimmer list:gems:cc[query]
+```
+
+The filtering `query` is optional.
 
 ### List Custom Window Gems
 
@@ -1222,21 +1503,20 @@ glimmer list:gems:cw[query]
 
 The filtering `query` is optional.
 
+### List Custom Shape Gems
 
-### List Custom Control Gems
-
-Custom control gems are scaffolded to follow the naming convention: `glimmer-libui-cw-name-namespace`
+Custom shape gems are scaffolded to follow the naming convention: `glimmer-libui-cs-name-namespace`
 
 The naming convention helps with discoverability of Ruby gems using the command:
 
 ```
-glimmer list:gems:customcontrol[query]
+glimmer list:gems:customshape[query]
 ```
 
 Or by using the shorter alias:
 
 ```
-glimmer list:gems:cc[query]
+glimmer list:gems:cs[query]
 ```
 
 The filtering `query` is optional.
@@ -2611,19 +2891,19 @@ SpinnerExample.new.launch
 
 ### Custom Components
 
-Custom components like custom controls, custom windows, and custom shapes can be defined to provide new features or act as composites of [existing controls](#supported-keywords) that need to be reused multiple times in an application or across multiple applications. Custom controls save a lot of development time, improving productivity and maintainability immensely.
+Custom components like custom controls, custom windows, and custom shapes can be defined to provide new features or act as composites of existing controls/shapes that need to be reused multiple times in an application or across multiple applications. Custom components save a lot of development time through reuse, improving productivity and maintainability immensely.
 
 For example, you can define a custom `address_view` control as an aggregate of multiple `label` controls to reuse multiple times as a standard address View, displaying street, city, state, and zip code.
 
-There are two ways to define [custom components](#custom-components):
-- Method-Based: simply define a method representing the [custom component](#custom-components) you want (e.g. `address_view`) with any options needed (e.g. `address(address_model: some_model)`).
-- Class-Based: define a class matching the camelcased name of the [custom component](#custom-components) by convention (e.g. the `address_view` [custom component](#custom-components) keyword would have a class called `AddressView`) and `include Glimmer::LibUI::CustomControl`, `include Glimmer::LibUI::CustomWindow`, `include Glimmer::LibUI::CustomShape` depending on if the component represents a standard control, a whole window, or an area canvas graphics shape. Classes add the benefit of being able to distribute the [custom component](#custom-components)s into a separate file for external reuse from multiple views or for sharing as a Ruby gem.
+There are two ways to define custom components:
+- Method-Based: simply define a method representing the custom component you want (e.g. `address_view`) with any options needed (e.g. `address(address_model: some_model)`).
+- Class-Based: define a class matching the camelcased name of the custom component by convention (e.g. the `address_view` custom component keyword would have a class called `AddressView`) and `include Glimmer::LibUI::CustomControl`, `include Glimmer::LibUI::CustomWindow`, or `include Glimmer::LibUI::CustomShape` depending on if the component represents a standard control, a whole window, or an [area canvas graphics shape](#area-path-shapes). Classes add the benefit of being able to distribute the custom components into a separate file for external reuse from multiple views or for sharing as a Ruby gem.
 
 It is OK to use the terms "custom control", "custom component", and "custom keyword" synonymously though "custom component" is a broader term that covers things other than controls too like custom shapes (e.g. `cube`), custom attributed strings (e.g. `alternating_color_string`), and custom transforms (`isometric_transform`).
 
 #### Method-Based Custom Controls
 
-Simply define a method representing the [custom component](#custom-components) you want (e.g. `address_view`) with any arguments needed (e.g. `address(address_model)`).
+Simply define a method representing the custom component you want (e.g. `address_view`) with any arguments needed (e.g. `address(address_model)`).
 
 Example that defines `form_field`, `address_form`, `label_pair`, and `address_view` keywords (you may copy/paste in [`girb`](#girb-glimmer-irb)):
 

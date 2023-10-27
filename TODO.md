@@ -2,8 +2,6 @@
 
 ## Next
 
-- Don't include Glimmer in top-level class when scaffolding Applications
-
 - Support `LibUI.uninit` to enable clean exit of a LibUI app in Linux and support launching/closing a LibUI app window multiple times
 - Rename basic table selection example to something that indicates sorting too
 - Fix issue with button_column on_clicked not resulting in click of button yet click of column. It seems we have to add a on_button_clicked alternative here. and break the API
@@ -36,27 +34,17 @@
 - It seems that table-related instability in Windows is back. Check what is causing it. Test with RefinedTable
 - Fix issue with version 4 of Area Gallery
 
-- examples/area_tooltip.rb & examples/area_tooltip_with_delay.rb
-- examples/linked_pages.rb (build a link-based desktop example that works similarly to web pages with hyperlinks)
+- Report libui-ng issue about shape_coloring not being able to encase arc completely with a border due to not supporting that
 
 ### 0.x.x
 
-- Support Custom Shape `bounding_box` (minx, miny, width, height), `contain?` method (checking if shape contains point inside) and `include?` method (checking on outline if stroked and inside if filled?)
-- Look into extracting `bevel` Custom Shape in Tetris
-- Scaffold custom shape
-- Scaffold custom shape gem
-- List Custom Shape Gems (expected name format: `glimmer-libui-cs-gemname-namespace`) via `glimmer list:gems:customshape[query]`
+- Ensure that shape/path containment/inclusion checks take their transform into account while using `PerfectShape`. Do so by reverse-transforming the point and checking it against the shapes (as done in Glimmer DSL for SWT).
+- Update basic_transform.rb to allow changing the color of the clicked transformed square
 
 ### 0.x.x
 
-- Ensure that shape/path containment/inclusion checks take their transform into account while using `PerfectShape`
-
-### 0.x.x
-
-- class based custom shape example (randomly generated custom shape coloring). Build Hangman the game.
-
-### 0.x.x
-
+- Hangman the game.
+- In Tetris, Look into extracting `bevel` Custom Shape and `block` custom control, and refactoring main class into `Glimmer::LibUI::Application`
 - Support `drag_and_move true` (just enables dragging and moving shapes in area)
 
 ### 0.x.x
@@ -69,7 +57,7 @@
 
 ### 0.x.x
 
-- Build Quarto game sample using area drag and drop: https://en.gigamic.com/game/quarto-classic
+- Build Quarto game sample using area drag and drop and affine transforms: https://en.gigamic.com/game/quarto-classic
 
 ### 0.x.x
 
@@ -85,11 +73,6 @@
 - Update shape_coloring.rb to use data-binding (must support being able to set top-left x,y on any shape instead of relying on move_by to make it work with data-binding, just like Glimmer DSL for SWT supports that)
 - Add padding around code_area (empty space to the left and right and empty line on top and at the bottom)
 - Refactor all samples that use a class including Glimmer to utilize CustomWindow instead
-- examples/file_tabs.rb (inspired by this addressed issue: https://github.com/AndyObtiva/glimmer-dsl-libui/issues/16)
-- Glimmerize examples/draw_text.rb from Ruby LibUI project
-- Glimmerize examples/spectrum.rb from Ruby LibUI project
-- Glimmerize examples/turing_pattern.rb from Ruby LibUI project
-- Game of Life
 
 ## Future
 
@@ -195,3 +178,14 @@
 # Issues
 
 - Fix issue on the Mac where if you open a window from a preferences menu item and when it is closed you open another window, the latter window does not show, but when you close the app, it shows, and then you get a low-level crash of the application with a segmentation fault. The issue seems related to fiddle closure access in glimmer-dsl-libui-0.9.4/lib/glimmer/libui/control_proxy.rb:297 (`value = ::LibUI.send("control_#{property}", libui, *args)` line in `send_to_libui`)
+
+# Examples
+
+- class based custom shape example (randomly generated custom shape coloring).
+- examples/file_tabs.rb (inspired by this addressed issue: https://github.com/AndyObtiva/glimmer-dsl-libui/issues/16)
+- Glimmerize examples/draw_text.rb from Ruby LibUI project
+- Glimmerize examples/spectrum.rb from Ruby LibUI project
+- Glimmerize examples/turing_pattern.rb from Ruby LibUI project
+- Game of Life
+- examples/area_tooltip.rb & examples/area_tooltip_with_delay.rb
+- examples/linked_pages.rb (build a link-based desktop example that works similarly to web pages with hyperlinks)

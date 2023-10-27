@@ -1,11 +1,18 @@
 # Change Log
 
+## 0.10.1
+
+- Scaffold custom shape
+- Scaffold custom shape gem
+- List Custom Shape Gems (expected name format: `glimmer-libui-cs-gemname-namespace`) via `glimmer list:gems:customshape[query]`
+
 ## 0.10.0
 
 - Support Custom Shapes, describing composite shapes/text/image concepts inside an `area`
 - `examples/basic_custom_shape.rb` example
 - Support nesting listeners under a Custom Shape that will automatically get added to its `body_root` control
 - Support nesting listeners under a Custom Control that will automatically get added to its `body_root` control
+- Do not include `Glimmer` in top-level class when scaffolding Applications/Custom-Window-gems as it is unnecessary
 
 ## 0.9.7
 
