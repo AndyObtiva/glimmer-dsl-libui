@@ -452,8 +452,12 @@ Mac | Windows | Linux
 
 ## Usage
 
-Require [glimmer-dsl-libui](https://rubygems.org/gems/glimmer-dsl-libui) (whether through a Ruby `require` statement or `Bundler`) and then include the `Glimmer` or `Glimmer::LibUI::Application` module to enable access to the Glimmer GUI DSL in one of multiple approaches.
- 
+To use [Glimmer DSL for LibUI]:
+- Require [glimmer-dsl-libui](https://rubygems.org/gems/glimmer-dsl-libui) (whether through a Ruby `require 'glimmer-dsl-libui` statement or `Bundler`) 
+- Include the `Glimmer` module (or an alternative like `Glimmer::LibUI::Application`, `Glimmer::LibUI::CustomControl`, or `Glimmer::LibUI::CustomShape`) to enable access to the Glimmer GUI DSL.
+
+ If you are new to [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) (beginner), check out the RubyConf 2022 talk ["Building Native GUI Apps in Ruby"](https://andymaleh.blogspot.com/2023/02/rubyconf-2022-talk-video-for-building.html), [Glimmer GUI DSL Concepts](#glimmer-gui-dsl-concepts), [Glimmer Command](#glimmer-command) (just the basics, how to run an app, and how to run examples to start), [Girb](#girb-glimmer-irb) and [Examples](#examples) to quickly learn through copy/paste. It is very important for beginners to go through all the [Examples](#examples) from the most basic to the most advanced while reading the README topics that relate to the examples. You may refer to the [API](#api) on once you have gotten your feet wet with [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) and need more detailed reference information.
+
 ### Experimentation Usage
  
 For experimenting and learning, add `include Glimmer` into the top-level main object and start using the Glimmer GUI DSL directly.
@@ -533,9 +537,6 @@ SomeGlimmerApp.launch
 ![usage mac](images/glimmer-dsl-libui-mac-usage.png)
 
 (note: `Glimmer::LibUI::Application` is an alias for `Glimmer::LibUI::CustomWindow` since that is what it represents)
-
-If you are new to [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui), check out the [Glimmer GUI DSL Concepts](#glimmer-gui-dsl-concepts), [Glimmer Command](#glimmer-command), [Girb](#girb-glimmer-irb) and [Examples](#examples) to quickly learn through copy/paste. You may refer to the [API](#api) later on once you have gotten your feet wet with [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) and need more detailed reference information.
-
 
 ## Glimmer Command
 
