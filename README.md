@@ -452,7 +452,7 @@ Mac | Windows | Linux
 
 ## Usage
 
-To use, start by requiring the [glimmer-dsl-libui](https://rubygems.org/gems/glimmer-dsl-libui) Ruby gem, whether through a Ruby `require 'glimmer-dsl-libui` statement or `Bundler`.
+Start by requiring the [glimmer-dsl-libui](https://rubygems.org/gems/glimmer-dsl-libui) Ruby gem, whether through a Ruby `require 'glimmer-dsl-libui` statement or `Bundler`.
 
 Afterwards, to access the Glimmer GUI DSL:
 - If you are learning/experimenting/prototyping with Glimmer DSL for LibUI, include the `Glimmer` module into the top-level scope or a Ruby class.
