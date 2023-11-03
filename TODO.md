@@ -2,6 +2,10 @@
 
 ## Next
 
+- Ensure that shape/path containment/inclusion checks take their transform into account while using `PerfectShape`. Do so by reverse-transforming the point and checking it against the shapes (as done in Glimmer DSL for SWT).
+- Update basic_transform.rb to allow changing the color of the clicked transformed square
+- Augment examples/class_based_custom_controls.rb example with a custom listener
+
 - Fix issue with area on_key_up not detecting handled=true like on_key_down
 - Support `LibUI.uninit` to enable clean exit of a LibUI app in Linux and support launching/closing a LibUI app window multiple times
 - Rename basic table selection example to something that indicates sorting too
@@ -39,11 +43,6 @@
 
 ### 0.x.x
 
-- Ensure that shape/path containment/inclusion checks take their transform into account while using `PerfectShape`. Do so by reverse-transforming the point and checking it against the shapes (as done in Glimmer DSL for SWT).
-- Update basic_transform.rb to allow changing the color of the clicked transformed square
-
-### 0.x.x
-
 - Hangman the game.
 - In Tetris, Look into extracting `bevel` Custom Shape and `block` custom control, and refactoring main class into `Glimmer::LibUI::Application`
 - Support `drag_and_move true` (just enables dragging and moving shapes in area)
@@ -59,10 +58,6 @@
 ### 0.x.x
 
 - Build Quarto game sample using area drag and drop and affine transforms: https://en.gigamic.com/game/quarto-classic
-
-### 0.x.x
-
-- Augment examples/class_based_custom_controls.rb example with a custom listener
 
 ## Soon
 
