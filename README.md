@@ -3395,11 +3395,11 @@ Another example of bidirectional data-binding with an option:
 
 ```ruby
 entry {
-  text <=> [self, :entered_text, after_write: ->(text) {puts text}]
+  text <=> [model, :entered_text, after_write: ->(text) {puts text}]
 }
 ```
 
-That is data-binding `entered_text` attribute on `self` to `entry` `text` property and printing text after write to the model.
+That is data-binding `entered_text` attribute on `model` to `entry` `text` property and printing text after write to the model.
 
 ##### Table Data-Binding
 
