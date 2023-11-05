@@ -2,9 +2,8 @@
 
 ## Next
 
-- Ensure that shape/path containment/inclusion checks take their transform into account while using `PerfectShape`. Do so by reverse-transforming the point and checking it against the shapes (as done in Glimmer DSL for SWT).
-- Update basic_transform.rb to allow changing the color of the clicked transformed square
 - Augment examples/class_based_custom_controls.rb example with a custom listener
+- Support allowing a shape consume its on_mouse_down/on_mouse_up/on_mouse_event so that no other shapes that follow will process it
 
 - Fix issue with area on_key_up not detecting handled=true like on_key_down
 - Support `LibUI.uninit` to enable clean exit of a LibUI app in Linux and support launching/closing a LibUI app window multiple times

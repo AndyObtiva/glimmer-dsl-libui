@@ -15,7 +15,9 @@ module Glimmer
       # determining if a point lies on the outline (e.g. makes it easier to select
       # a shape by mouse)
       def contain?(*point, outline: false, distance_tolerance: 0)
-        perfect_shape&.contain?(*point, outline: outline, distance_tolerance: distance_tolerance)
+        perfect_shape_point = PerfectShape::Point.new(*point)
+        inverse_transformed_perfect_shape_point = transform.perfect_shape_affine_transform.inverse_transform_point(*perfect_shape_point.to_a)
+        perfect_shape&.contain?(*inverse_transformed_perfect_shape_point.to_a, outline: outline, distance_tolerance: distance_tolerance)
       end
       
       # Returns if shape includes point on the inside when filled

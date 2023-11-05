@@ -125,6 +125,10 @@ module Glimmer
         end
         alias invertible? invertible
         
+        def perfect_shape_affine_transform
+          PerfectShape::AffineTransform.new(@libui.M11, @libui.M12, @libui.M21, @libui.M22, @libui.M31, @libui.M32)
+        end
+        
         private
         
         def build_control

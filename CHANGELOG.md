@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.10.3
+
+- Ensure that shape/path containment/inclusion checks take their transform into account while using `PerfectShape`. Do so by inverse-transforming the point and checking it against the shapes (as done in Glimmer DSL for SWT).
+- Update basic_transform.rb to allow changing the color of the clicked transformed square
+
 ## 0.10.2
 
 - In Snake example, change snake direction on key press instead of key release to be more responsive for players who are not used to releasing pressed keys quickly
