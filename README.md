@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.10.2
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.11.0
 ## Prerequisite-Free Ruby Desktop Development Cross-Platform Native GUI Library  ([Fukuoka Award Winning](http://www.digitalfukuoka.jp/topics/187?locale=ja))
 ### The Quickest Way From Zero To GUI
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
@@ -431,7 +431,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.10.2'
+gem 'glimmer-dsl-libui', '~> 0.11.0'
 ```
 
 Test that installation worked by running the [Glimmer Meta-Example](#examples):
@@ -1598,6 +1598,43 @@ button('greet') { |b|
   end
 }
 ```
+
+If there is ever a need to add more content to a control, you can re-open its content with the `control.content { ... }` method.
+
+Example:
+
+```ruby
+box1 = vertical_box {
+  label('First Name')
+}
+# re-open content of box1 and add another control
+box1.content {
+  entry {
+    text 'fill in your first name'
+  }
+}
+```
+
+You can also use [data-binding](#data-binding) with content blocks to generate content dynamically based on changes in a model attribute. The only difference in syntax in this case would be to wrap the content with an explicit `content(*binding_args) { ... }` block that includes data-binding arguments for a model attribute.
+
+Example:
+
+```ruby
+form {
+  stretchy false
+  
+  content(@user, :customizable_attributes) {
+    @user.customizable_attributes.each do |attribute|
+      entry {
+        label attribute.to_s.split('_').map(&:capitalize).join(' ')
+        text <=> [@user, attribute]
+      }
+    end
+  }
+}
+```
+
+The form above will only display fields for a model's customizable attributes, so if they change, the form content will change too. Learn more at the [Dynamic Form](/docs/examples/GLIMMER-DSL-LIBUI-ADVANCED-EXAMPLES.md#dynamic-form) example.
 
 **Property**: Control properties may be declared inside keyword blocks with lower-case underscored name followed by property value args (e.g. `title "hello world"` inside `group`). Behind the scenes, properties correspond to `LibUI.control_set_property` methods.
 
@@ -3580,6 +3617,27 @@ window {
 ```
 
 That is data-binding the `window` `title` property to the `score` attribute of a `@game`, but converting on read from the Model to a `String`.
+
+You can also use unidirectional [data-binding](#data-binding) with content blocks to generate content dynamically based on changes in a model attribute. The only difference in syntax in this case would be to wrap the content with an explicit `content(*binding_args) { ... }` block that includes data-binding arguments for a model attribute.
+
+Example:
+
+```ruby
+form {
+  stretchy false
+  
+  content(@user, :customizable_attributes) {
+    @user.customizable_attributes.each do |attribute|
+      entry {
+        label attribute.to_s.split('_').map(&:capitalize).join(' ')
+        text <=> [@user, attribute]
+      }
+    end
+  }
+}
+```
+
+The form above will only display fields for a model's customizable attributes, so if they change, the form content will change too. Learn more at the [Dynamic Form](/docs/examples/GLIMMER-DSL-LIBUI-ADVANCED-EXAMPLES.md#dynamic-form) example.
 
 #### Data-Binding API
 

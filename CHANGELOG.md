@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.11.0
+
+- Control `content` data-binding to generate nested controls dynamically based on a model attribute change
+- `examples/dynamic_form.rb` to demonstrate control `content` data-binding
+
 ## 0.10.2
 
 - In Snake example, change snake direction on key press instead of key release to be more responsive for players who are not used to releasing pressed keys quickly

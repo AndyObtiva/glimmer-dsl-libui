@@ -8,6 +8,7 @@
   - [CPU Percentage](#cpu-percentage)
   - [Custom Draw Text](#custom-draw-text)
   - [Dynamic Area](#dynamic-area)
+  - [Dynamic Form](#dynamic-form)
   - [Editable Column Table](#editable-column-table)
   - [Editable Table](#editable-table)
   - [Form Table](#form-table)
@@ -210,6 +211,33 @@ Version 3 (declarative stable `path` approach with [data-binding](#data-binding)
 Version 4 (declarative stable `path` approach without [data-binding](#data-binding)):
 
 [examples/dynamic_area4.rb](/examples/dynamic_area4.rb)
+
+
+## Dynamic Form
+
+[examples/dynamic_form.rb](/examples/dynamic_form.rb)
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+ruby -r './lib/glimmer-dsl-libui' examples/dynamic_form.rb
+```
+
+Run with this command if you installed the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/dynamic_form'"
+```
+
+![glimmer-dsl-libui-mac-dynamic-form.png](/images/glimmer-dsl-libui-mac-dynamic-form.png)
+
+![glimmer-dsl-libui-mac-dynamic-form-filled.png](/images/glimmer-dsl-libui-mac-dynamic-form-filled.png)
+
+![glimmer-dsl-libui-mac-dynamic-form-summarized.png](/images/glimmer-dsl-libui-mac-dynamic-form-summarized.png)
+
+![glimmer-dsl-libui-mac-dynamic-form-without-some-fields.png](/images/glimmer-dsl-libui-mac-dynamic-form-without-some-fields.png)
+
+![glimmer-dsl-libui-mac-dynamic-form-without-some-fields-summarized.png](/images/glimmer-dsl-libui-mac-dynamic-form-without-some-fields-summarized.png)
 
 ## Editable Column Table
 
