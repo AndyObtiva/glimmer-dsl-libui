@@ -126,7 +126,18 @@ module Glimmer
         alias invertible? invertible
         
         def perfect_shape_affine_transform
+          # TODO optimize by caching unless @libui attributes change
+          pd(@libui.M11, @libui.M12, @libui.M21, @libui.M22, @libui.M31, @libui.M32)
           PerfectShape::AffineTransform.new(@libui.M11, @libui.M12, @libui.M21, @libui.M22, @libui.M31, @libui.M32)
+        end
+        
+        def perfect_shape_inverse_affine_transform
+          # TODO optimize by caching unless @libui attributes change
+          invert
+          pd(@libui.M11, @libui.M12, @libui.M21, @libui.M22, @libui.M31, @libui.M32)
+          transform = PerfectShape::AffineTransform.new(@libui.M11, @libui.M12, @libui.M21, @libui.M22, @libui.M31, @libui.M32)
+          invert
+          transform
         end
         
         private

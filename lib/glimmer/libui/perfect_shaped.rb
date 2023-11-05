@@ -15,8 +15,11 @@ module Glimmer
       # determining if a point lies on the outline (e.g. makes it easier to select
       # a shape by mouse)
       def contain?(*point, outline: false, distance_tolerance: 0)
+        # TODO try inverting through libui instead of perfectshape
+        # TODO do we need to transform rotation directly and everything else inverse?
         perfect_shape_point = PerfectShape::Point.new(*point)
-        inverse_transformed_perfect_shape_point = transform.perfect_shape_affine_transform.inverse_transform_point(*perfect_shape_point.to_a)
+#         inverse_transformed_perfect_shape_point = transform.perfect_shape_affine_transform.inverse_transform_point(*perfect_shape_point.to_a)
+        inverse_transformed_perfect_shape_point = transform.perfect_shape_inverse_affine_transform.transform_point(*perfect_shape_point.to_a)
         perfect_shape&.contain?(*inverse_transformed_perfect_shape_point.to_a, outline: outline, distance_tolerance: distance_tolerance)
       end
       
