@@ -1,5 +1,9 @@
 # Change Log
 
+## unreleased
+
+- Refactor `examples/dynamic_form.rb`
+
 ## 0.11.0
 
 - Control `content` data-binding to generate nested controls dynamically based on a model attribute change

@@ -162,6 +162,7 @@
 - Consider preserving selection for `refined_table` across pages so that if I select a row in page 1 and go to page 2, selection is removed, and then when I go back to page 1, selection is back at the correct row
 - Consider supporting Ruby block as `default: ` value for a custom control/window/shape `option` to perform deferred evaluation. Maybe call it `default_factory` to allow passing a standard Ruby block with no meaning too as `default`.
 - Fill application scaffolding README with default setup and usage instructions, renaming README.markdown to README.md, and perhaps TODO.md and CHANGELOG.md
+- Support a declarative simple way of adding support for listeners on a custom control (`Glimmer::LibUI::CustomControl`)
 
 # Refactoring
 

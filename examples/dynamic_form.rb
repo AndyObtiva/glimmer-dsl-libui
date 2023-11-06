@@ -9,6 +9,15 @@ class User
     # allow customizing all attributes by default
     self.customizable_attributes = ALL_ATTRIBUTES.dup
   end
+  
+  def select_customizable_attribute(attribute, selected)
+    if selected
+      customizable_attributes.push(attribute)
+    else
+      customizable_attributes.delete(attribute)
+    end
+    customizable_attributes.sort_by! {|attribute| User::ALL_ATTRIBUTES.index(attribute)}
+  end
 end
 
 class DynamicForm
@@ -28,14 +37,7 @@ class DynamicForm
             checkbox(attribute.to_s) {
               checked <=> [@user, :customizable_attributes,
                            on_read: -> (attributes) { @user.customizable_attributes.include?(attribute) },
-                           on_write: -> (checked_value) {
-                             if checked_value
-                               @user.customizable_attributes.push(attribute)
-                             else
-                               @user.customizable_attributes.delete(attribute)
-                             end
-                             @user.customizable_attributes.sort_by {|attribute| User::ALL_ATTRIBUTES.index(attribute)}
-                           },
+                           on_write: -> (checked_value) { @user.select_customizable_attribute(attribute, checked_value) }
                           ]
             }
           end

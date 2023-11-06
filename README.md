@@ -1624,6 +1624,7 @@ form {
   stretchy false
   
   content(@user, :customizable_attributes) {
+    # this content will be re-rendered whenever @user.customizable_attributes changes
     @user.customizable_attributes.each do |attribute|
       entry {
         label attribute.to_s.split('_').map(&:capitalize).join(' ')
