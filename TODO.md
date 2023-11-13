@@ -2,10 +2,14 @@
 
 ## Next
 
+- Make scaffolded app closeable with CMD+Q on Mac by default
+
+- Put scaffolded menus in a menu_bar method (or menus or something similar)
 - Ensure that shape/path containment/inclusion checks take their transform into account while using `PerfectShape`. Do so by reverse-transforming the point and checking it against the shapes (as done in Glimmer DSL for SWT).
 - Update basic_transform.rb to allow changing the color of the clicked transformed square
 - Augment examples/class_based_custom_controls.rb example with a custom listener
 
+- Content Data-Binding of area shapes
 - Fix issue with area on_key_up not detecting handled=true like on_key_down
 - Support `LibUI.uninit` to enable clean exit of a LibUI app in Linux and support launching/closing a LibUI app window multiple times
 - Rename basic table selection example to something that indicates sorting too
@@ -173,6 +177,7 @@
 
 # Issues
 
+- Check if there is a way to prevent Gemfile conflict with juwelier in Application Scaffolding
 - Fix issue on the Mac where if you open a window from a preferences menu item and when it is closed you open another window, the latter window does not show, but when you close the app, it shows, and then you get a low-level crash of the application with a segmentation fault. The issue seems related to fiddle closure access in glimmer-dsl-libui-0.9.4/lib/glimmer/libui/control_proxy.rb:297 (`value = ::LibUI.send("control_#{property}", libui, *args)` line in `send_to_libui`)
 
 # Examples

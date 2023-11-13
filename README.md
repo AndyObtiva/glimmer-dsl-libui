@@ -1615,7 +1615,7 @@ box1.content {
 }
 ```
 
-You can also use [data-binding](#data-binding) with content blocks to generate content dynamically based on changes in a model attribute. The only difference in syntax in this case would be to wrap the content with an explicit `content(*binding_args) { ... }` block that includes data-binding arguments for a model attribute.
+Content Data-Binding also allows you to use [data-binding](#data-binding) with content blocks to generate content dynamically based on changes in a model attribute. The only difference in syntax in this case would be to wrap the content with an explicit `content(*binding_args) { ... }` block (like `content(model, attribute) { somecontrols }` ) that includes data-binding arguments for a model attribute.
 
 Example:
 
@@ -2108,8 +2108,8 @@ Learn more in the [Paginated Refined Table](/docs/examples/GLIMMER-DSL-LIBUI-ADV
 ### Area API
 
 The `area` control is a canvas-like control for drawing paths that can be used in one of two ways:
-- Declaratively via stable paths: useful for stable paths that will not change often later on. Simply nest `path` and figures like `rectangle` and all drawing logic is generated automatically. Path proxy objects are preserved across redraws assuming there would be relatively few stable paths (mostly for decorative reasons).
-- Semi-declaratively via on_draw listener dynamic paths: useful for more dynamic paths that will definitely change very often. Open an `on_draw` listener block that receives an [`area_draw_params`](#area-draw-params) argument and nest `path` and figures like `rectangle` and all drawing logic is generated automatically. Path proxy objects are destroyed (thrown-away) at the end of drawing, thus having less memory overhead for drawing thousands of dynamic paths.
+- Retained Mode (declaratively via stable shape structures): useful for stable paths that will not change often later on. Simply nest `path` and figures like `rectangle` and all drawing logic is generated automatically. Path proxy objects are preserved across redraws assuming there would be relatively few stable paths (mostly for decorative reasons).
+- Immediate Mode (semi-declaratively via `on_draw` listener dynamic shapes): useful for more dynamic paths that will definitely change very often. Open an `on_draw` listener block that receives an [`area_draw_params`](#area-draw-params) argument and nest `path` and figures like `rectangle` and all drawing logic is generated automatically. Path proxy objects are destroyed (thrown-away) at the end of drawing, thus having less memory overhead for drawing thousands of dynamic paths.
 
 Note that when nesting an `area` directly underneath `window` (without a layout control like `vertical_box`), it is automatically reparented with `vertical_box` in between the `window` and `area` since it would not show up on Linux otherwise.
 
@@ -2164,6 +2164,59 @@ window('Basic Area', 400, 400) {
 ```
 
 Check [examples/dynamic_area.rb](/docs/examples/GLIMMER-DSL-LIBUI-ADVANCED-EXAMPLES.md#dynamic-area) for a more detailed semi-declarative example.
+
+In Retained Mode, you can still generate `area` shapes dynamically by relying on Content Data-Binding.
+
+```ruby
+require 'glimmer-dsl-libui'
+
+class LineCollection
+  attr_accessor :line_count
+  
+  def initialize
+    @line_count = 3
+  end
+end
+
+class View
+  include Glimmer::LibUI::Application
+  
+  before_body do
+    @line_collection = LineCollection.new
+  end
+  
+  body {
+    window('Area Shapes - Line', 400, 400) {
+      vertical_box {
+        button('Generate Lines') {
+          stretchy false
+          
+          on_clicked do
+            @line_collection.line_count = rand(3..10)
+          end
+        }
+        area {
+          content(@line_collection, :line_count) { # generated dynamically
+            point_range = (50..350)
+            color_range = (0..255)
+            @line_collection.line_count.times do
+              line(rand(point_range), rand(point_range), rand(point_range), rand(point_range)) {
+                stroke rand(color_range), rand(color_range), rand(color_range), thickness: 3
+              }
+            end
+          }
+        }
+      }
+    }
+  }
+end
+
+View.launch
+```
+
+![area shape content data-binding](/images/glimmer-dsl-libui-mac-area-shape-content-data-binding.png)
+
+![area shape content data-binding regenerated](/images/glimmer-dsl-libui-mac-area-shape-content-data-binding-regenerated.png)
 
 #### Scrolling Area
 
