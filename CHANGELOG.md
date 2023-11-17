@@ -1,8 +1,9 @@
 # Change Log
 
-## unreleased
+## 0.11.1
 
 - Refactor `examples/dynamic_form.rb`
+- Freeze LibUI version at 0.1.2.pre because 0.1.3.pre has issues like preventing the ability to close window with CMD+Q shortcut by default on Mac
 
 ## 0.11.0
 

@@ -155,6 +155,7 @@ GEM
     wisper (2.0.1)
 
 PLATFORMS
+  arm64-darwin-21
   arm64-darwin-22
   x86_64-darwin-19
   x86_64-darwin-22
@@ -167,7 +168,7 @@ DEPENDENCIES
   glimmer (~> 2.7.3)
   json (= 2.6.1)
   juwelier (>= 2.4.9, < 3.0.0)
-  libui (~> 0.1.2.pre)
+  libui (= 0.1.2.pre)
   os (>= 1.0.0, < 2.0.0)
   perfect-shape (~> 1.0.8)
   psych (= 4.0.3)
