@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.11.2
+
+- Fix issue with getting error when nesting property content under custom controls/shapes/windows (fixes `examples/basic_custom_shape.rb`)
+
 ## 0.11.1
 
 - Refactor `examples/dynamic_form.rb`
