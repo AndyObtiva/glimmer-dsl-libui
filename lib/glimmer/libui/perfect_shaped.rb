@@ -15,13 +15,14 @@ module Glimmer
       # determining if a point lies on the outline (e.g. makes it easier to select
       # a shape by mouse)
       def contain?(*point, outline: false, distance_tolerance: 0)
+        # TODO inverse transform point with `uiDrawMatrixTransformPoint` before checking containment
         perfect_shape&.contain?(*point, outline: outline, distance_tolerance: distance_tolerance)
       end
       
       # Returns if shape includes point on the inside when filled
       # or if shape includes point on the outline when stroked
       def include?(*point)
-        if fill.empty?
+        if respond_to?(:fill) && fill.empty?
           # TODO check if distance_tolerance should be half the thickness in case it is checked against both sides of out and in
           contain?(*point, outline: true, distance_tolerance: ((stroke[:thickness] || 1) - 1))
         else

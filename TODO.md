@@ -2,13 +2,13 @@
 
 ## Next
 
-- Make scaffolded app closeable with CMD+Q on Mac by default
-- Fix issue (since 0.9.l7) of Mac apps not being closeable with CMD+Q by default
 - Put scaffolded menus in a menu_bar method (or menus or something similar)
 - Ensure that shape/path containment/inclusion checks take their transform into account while using `PerfectShape`. Do so by reverse-transforming the point and checking it against the shapes (as done in Glimmer DSL for SWT).
 - Update basic_transform.rb to allow changing the color of the clicked transformed square
 - Augment examples/class_based_custom_controls.rb example with a custom listener
 
+- Support nesting `text` inside composite `shape`
+- Simplify `text`/`string` combo usage by using only `text` if there is one `string` only.
 - Content Data-Binding of area shapes
 - Fix issue with area on_key_up not detecting handled=true like on_key_down
 - Support `LibUI.uninit` to enable clean exit of a LibUI app in Linux and support launching/closing a LibUI app window multiple times

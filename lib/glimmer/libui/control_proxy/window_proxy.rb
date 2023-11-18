@@ -104,11 +104,11 @@ module Glimmer
         
         def content_size(*args)
           if args.empty?
-            width = Fiddle::Pointer.malloc(8)
-            height = Fiddle::Pointer.malloc(8)
+            width = Fiddle::Pointer.malloc(64)
+            height = Fiddle::Pointer.malloc(64)
             ::LibUI.window_content_size(@libui, width, height)
-            width = width[0, 8].unpack1('i')
-            height = height[0, 8].unpack1('i')
+            width = width[0, 64].unpack1('i')
+            height = height[0, 64].unpack1('i')
             [width, height]
           else
             args = args.first if args.size == 1 && args.first.is_a?(Array)
