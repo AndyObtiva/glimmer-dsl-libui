@@ -2,6 +2,7 @@
 
 ## Next
 
+- Fix issue (if exists.. needs testing/confirmation) with not processing nested shape properties when nested under custom shapes
 - Put scaffolded menus in a menu_bar method (or menus or something similar)
 - Ensure that shape/path containment/inclusion checks take their transform into account while using `PerfectShape`. Do so by reverse-transforming the point and checking it against the shapes (as done in Glimmer DSL for SWT).
 - Update basic_transform.rb to allow changing the color of the clicked transformed square

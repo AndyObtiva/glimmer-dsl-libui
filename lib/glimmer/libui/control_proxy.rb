@@ -142,7 +142,10 @@ module Glimmer
       # Subclasses may override to perform post add_content work (normally must call super)
       def post_add_content
         unless @content_added
-          @parent_proxy&.post_initialize_child(self)
+          if CustomControl.custom_controls_being_interpreted.last.nil? ||
+             CustomControl.custom_controls_being_interpreted.last.parent_proxy != @parent_proxy
+            @parent_proxy&.post_initialize_child(self)
+          end
           @content_added = true
         end
       end

@@ -43,7 +43,8 @@ module Glimmer
         end
   
         def add_content(custom_shape, keyword, *args, &block)
-          options = args.last.is_a?(Hash) ? args.last : {post_add_content: true}
+          options = args.last.is_a?(Hash) ? args.last : {}
+          options[:post_add_content] = true if !options.include?(:post_add_content)
           # TODO consider avoiding source_location
           if block.source_location == custom_shape.content&.__getobj__&.source_location
             custom_shape.content.call(custom_shape) unless custom_shape.content.called?

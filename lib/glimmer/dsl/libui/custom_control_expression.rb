@@ -44,7 +44,8 @@ module Glimmer
         end
   
         def add_content(custom_control, keyword, *args, &block)
-          options = args.last.is_a?(Hash) ? args.last : {post_add_content: true}
+          options = args.last.is_a?(Hash) ? args.last : {}
+          options[:post_add_content] = true if !options.include?(:post_add_content)
           # TODO consider avoiding source_location
           if block.source_location == custom_control.content&.__getobj__&.source_location
             custom_control.content.call(custom_control) unless custom_control.content.called?

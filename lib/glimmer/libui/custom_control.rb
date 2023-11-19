@@ -183,11 +183,16 @@ module Glimmer
         def after_body(&block)
           @after_body_block = block
         end
+        
+        def custom_controls_being_interpreted
+          @custom_controls_being_interpreted ||= []
+        end
       end
 
       attr_reader :body_root, :libui, :parent, :parent_proxy, :args, :keyword, :content, :options
 
       def initialize(keyword, parent, args, options, &content)
+        CustomControl.custom_controls_being_interpreted << self
         @parent_proxy = @parent = parent
         options ||= {}
         @options = self.class.options.merge(options)
@@ -210,7 +215,8 @@ module Glimmer
       end
 
       def post_add_content
-        # No Op by default
+        @parent_proxy&.post_initialize_child(@body_root)
+        Glimmer::LibUI::CustomControl.custom_controls_being_interpreted.pop
       end
       
       def observer_registrations

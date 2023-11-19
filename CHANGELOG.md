@@ -3,7 +3,7 @@
 ## 0.11.4
 
 - Fix issue with Content Data-Binding not working
-- Fix issue with not successfully processing properties nested under custom controls/shapes/windows to be for body root
+- Fix issue with not successfully processing layout properties (e.g. `stretchy`) when nested under custom controls/windows
 
 ## 0.11.3
 

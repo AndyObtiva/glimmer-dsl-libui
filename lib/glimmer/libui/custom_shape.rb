@@ -233,7 +233,7 @@ module Glimmer
 
       # Returns content block if used as an attribute reader (no args)
       # Otherwise, if a block is passed, it adds it as content to this custom shape
-      def content(&block)
+      def content(*args, &block)
         if args.empty?
           if block_given?
             Glimmer::DSL::Engine.add_content(self, Glimmer::DSL::Libui::CustomShapeExpression.new, self.class.keyword, &block)
