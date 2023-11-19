@@ -28,7 +28,8 @@ module Glimmer
     module Libui
       class ShineDataBindingExpression < Expression
         def can_interpret?(parent, keyword, *args, &block)
-          args.size == 0 and
+          keyword != 'content' and
+            args.size == 0 and
             block.nil? and
             parent.respond_to?(keyword, *args, &block)
         end

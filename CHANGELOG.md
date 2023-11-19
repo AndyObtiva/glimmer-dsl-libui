@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.11.4
+
+- Fix issue with Content Data-Binding not working
+- Fix issue with not successfully processing properties nested under custom controls/shapes/windows to be for body root
+
 ## 0.11.3
 
 - Support nesting `on_mouse_*` listeners under `text`

@@ -52,16 +52,6 @@ module Glimmer
           result ||= can_handle_listener?(method_name)
           result ||= @body_root.respond_to?(method_name, *args, &block)
         end
-
-        # Returns content block if used as an attribute reader (no args)
-        # Otherwise, if a block is passed, it adds it as content to this custom control
-        def content(&block)
-          if block_given?
-            Glimmer::DSL::Engine.add_content(self, Glimmer::DSL::Libui::CustomControlExpression.new, self.class.keyword, &block)
-          else
-            @content
-          end
-        end
       end
       
       super_module_included do |klass|
@@ -242,6 +232,21 @@ module Glimmer
           (method(method_name) rescue nil) and
           !method(method_name)&.source_location&.first&.include?('glimmer/dsl/engine.rb') and
           !method(method_name)&.source_location&.first&.include?('glimmer/libui/control_proxy.rb')
+      end
+
+      # Returns content block if used as an attribute reader (no args)
+      # Otherwise, if a block is passed, it adds it as content to this custom control
+      def content(*args, &block)
+        if args.empty?
+          if block_given?
+            Glimmer::DSL::Engine.add_content(self, Glimmer::DSL::Libui::CustomControlExpression.new, self.class.keyword, &block)
+          else
+            @content
+          end
+        else
+          # delegate to GUI DSL ContentExpression
+          super
+        end
       end
       
       private

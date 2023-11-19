@@ -59,7 +59,9 @@ class DynamicForm
 
         button('Summarize') {
           on_clicked do
-            summary = @user.customizable_attributes.map { |attribute| @user.send(attribute) }.join(', ')
+            user_attribute_values = @user.customizable_attributes.map { |attribute| @user.send(attribute) }
+            non_blank_user_attribute_values = user_attribute_values.map(&:to_s).reject(&:empty?)
+            summary = non_blank_user_attribute_values.join(', ')
             msg_box('Summary', summary)
           end
         }

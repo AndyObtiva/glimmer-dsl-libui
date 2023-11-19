@@ -19,12 +19,12 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'glimmer/dsl/static_expression'
+require 'glimmer/dsl/expression'
 
 module Glimmer
   module DSL
     module Libui
-      class ContentExpression < StaticExpression
+      class ContentExpression < Expression
         def can_interpret?(parent, keyword, *args, &block)
           keyword == 'content' &&
             block_given? &&
