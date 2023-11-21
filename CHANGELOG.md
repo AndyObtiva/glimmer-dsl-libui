@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.11.5
+
+- Support table explicit data-binding with a model attribute that returns an Enumerator (instead of an Array)
+
 ## 0.11.4
 
 - Fix issue with Content Data-Binding not working

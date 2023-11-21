@@ -8,6 +8,7 @@
 - Update basic_transform.rb to allow changing the color of the clicked transformed square
 - Augment examples/class_based_custom_controls.rb example with a custom listener
 
+- Support combining table explicit data-binding with lazy enumerable support
 - Support nesting `text` inside composite `shape`
 - Simplify `text`/`string` combo usage by using only `text` if there is one `string` only.
 - Content Data-Binding of area shapes
@@ -168,6 +169,8 @@
 - Consider supporting Ruby block as `default: ` value for a custom control/window/shape `option` to perform deferred evaluation. Maybe call it `default_factory` to allow passing a standard Ruby block with no meaning too as `default`.
 - Fill application scaffolding README with default setup and usage instructions, renaming README.markdown to README.md, and perhaps TODO.md and CHANGELOG.md
 - Support a declarative simple way of adding support for listeners on a custom control (`Glimmer::LibUI::CustomControl`)
+- Consider providing a built-in way of translating table columns with a translator data-binding option (e.g. `cell_rows <=> [user, :contacts, translator: ->(val) {I18n.t(val)}]`) while still using the English-named translation keys as the main attributes to data-bind to. Or even consider configuring a global translator, and then adding a `translated: true` option to take care of everything.
+- Consider providing standard out-of-the-box i18n support 
 
 # Refactoring
 
@@ -189,5 +192,6 @@
 - Glimmerize examples/spectrum.rb from Ruby LibUI project
 - Glimmerize examples/turing_pattern.rb from Ruby LibUI project
 - Game of Life
+- Wampus game
 - examples/area_tooltip.rb & examples/area_tooltip_with_delay.rb
 - examples/linked_pages.rb (build a link-based desktop example that works similarly to web pages with hyperlinks)
