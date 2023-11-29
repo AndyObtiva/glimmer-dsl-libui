@@ -34,6 +34,7 @@ module Glimmer
             parent.is_a?(Glimmer::LibUI::CustomShape)
           ) and
             block_given? and
+            parent.respond_to?(:can_handle_listener?) and
             parent.can_handle_listener?(keyword)
         end
   

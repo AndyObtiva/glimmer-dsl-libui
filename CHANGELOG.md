@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.11.6
+
+- Fix issue with `listener_expression.rb` failing for `TextProxy` due to not having `can_handle_listener?` method.
+
 ## 0.11.5
 
 - Support table explicit data-binding with a model attribute that returns an Enumerator (instead of an Array)
