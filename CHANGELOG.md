@@ -2,6 +2,7 @@
 
 ## 0.11.6
 
+- Organize scaffolded application menus under a `menu_bar` method
 - Fix issue with `listener_expression.rb` failing for `TextProxy` due to not having `can_handle_listener?` method.
 
 ## 0.11.5

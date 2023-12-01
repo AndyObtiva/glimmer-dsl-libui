@@ -2,15 +2,14 @@
 
 ## Next
 
-- Fix issue (if exists.. needs testing/confirmation) with not processing nested shape properties when nested under custom shapes
 - When resetting a new table cell_rows value when the older value was an enumerator, make sure to reset the table content before accepting the new value
-- Put scaffolded menus in a menu_bar method (or menus or something similar)
 - Ensure that shape/path containment/inclusion checks take their transform into account while using `PerfectShape`. Do so by reverse-transforming the point and checking it against the shapes (as done in Glimmer DSL for SWT).
 - Update basic_transform.rb to allow changing the color of the clicked transformed square
 - Augment examples/class_based_custom_controls.rb example with a custom listener
 
+- Fix issue (if exists.. needs testing/confirmation) with not processing nested shape properties when nested under custom shapes
 - Avoid loading perfect-shape gem until area canvas graphics are used
-- Avoid loading color gem until colors are used 
+- Avoid loading color gem until colors are used
 - Avoid loading facets in scaffold and list tasks, yet load used part of facets only instead
 - Set stroke color to block by default
 - Set fill color to white by default

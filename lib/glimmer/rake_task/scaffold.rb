@@ -578,32 +578,7 @@ require '#{window_type == :app ? current_dir_name : namespace}/model/greeting'
             custom_window_file_content += <<-MULTI_LINE_STRING
       before_body do
         @greeting = Model::Greeting.new
-        
-        menu('File') {
-          menu_item('Preferences...') {
-            on_clicked do
-              display_preferences_dialog
-            end
-          }
-          
-          # Enables quitting with CMD+Q on Mac with Mac Quit menu item
-          quit_menu_item if OS.mac?
-        }
-        menu('Help') {
-          if OS.mac?
-            about_menu_item {
-              on_clicked do
-                display_about_dialog
-              end
-            }
-          end
-          
-          menu_item('About') {
-            on_clicked do
-              display_about_dialog
-            end
-          }
-        }
+        menu_bar
       end
             MULTI_LINE_STRING
           elsif window_type == :gem
@@ -669,6 +644,39 @@ require '#{window_type == :app ? current_dir_name : namespace}/model/greeting'
         }
       }
           MULTI_LINE_STRING
+          
+          if %i[app].include?(window_type)
+            custom_window_file_content += <<-MULTI_LINE_STRING
+  
+      def menu_bar
+        menu('File') {
+          menu_item('Preferences...') {
+            on_clicked do
+              display_preferences_dialog
+            end
+          }
+          
+          # Enables quitting with CMD+Q on Mac with Mac Quit menu item
+          quit_menu_item if OS.mac?
+        }
+        menu('Help') {
+          if OS.mac?
+            about_menu_item {
+              on_clicked do
+                display_about_dialog
+              end
+            }
+          end
+          
+          menu_item('About') {
+            on_clicked do
+              display_about_dialog
+            end
+          }
+        }
+      end
+            MULTI_LINE_STRING
+          end
           
           if %i[gem app].include?(window_type)
             custom_window_file_content += <<-MULTI_LINE_STRING
