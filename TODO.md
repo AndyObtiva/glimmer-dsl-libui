@@ -5,7 +5,6 @@
 - When resetting a new table cell_rows value when the older value was an enumerator, make sure to reset the table content before accepting the new value
 - Change scaffolded application main window from namespace/view/namespace.rb to namespace/view/namespace_application.rb
 - Fix issue (if exists.. needs testing/confirmation) with not processing nested shape properties when nested under custom shapes
-- Avoid loading perfect-shape gem until area canvas graphics are used
 - Avoid loading color gem until colors are used
 - Set stroke color to block by default
 - Set fill color to white by default

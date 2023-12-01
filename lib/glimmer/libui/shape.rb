@@ -182,6 +182,7 @@ module Glimmer
         return unless respond_to?(:point_array)
         
         point_array = self.point_array || []
+        require 'perfect-shape'
         point_array = PerfectShape::MultiPoint.normalize_point_array(point_array)
         point_array.map do |point|
           if composite_shape

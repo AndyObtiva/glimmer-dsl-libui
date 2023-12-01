@@ -87,6 +87,7 @@ module Glimmer
         end
         
         def perfect_shape
+          require 'perfect-shape'
           perfect_shape_dependencies = [x, y, children.map(&:perfect_shape_dependencies)]
           if perfect_shape_dependencies != @perfect_shape_dependencies
             x, y, _ = @perfect_shape_dependencies = perfect_shape_dependencies

@@ -167,6 +167,7 @@ module Glimmer
         end
         
         def perfect_shape
+          require 'perfect-shape'
           the_perfect_shape_dependencies = perfect_shape_dependencies
           if the_perfect_shape_dependencies != @perfect_shape_dependencies
             draw_fill_mode, _ = @perfect_shape_dependencies = the_perfect_shape_dependencies

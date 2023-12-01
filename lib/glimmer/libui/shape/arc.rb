@@ -51,6 +51,7 @@ module Glimmer
         end
         
         def perfect_shape
+          require 'perfect-shape'
           the_perfect_shape_dependencies = perfect_shape_dependencies
           if the_perfect_shape_dependencies != @perfect_shape_dependencies
             absolute_x_center, absolute_y_center, radius, start_angle, sweep, is_negative = @perfect_shape_dependencies = the_perfect_shape_dependencies
