@@ -7,6 +7,7 @@
 - Avoid loading `perfect-shape` gem until area canvas graphics are used
 - Avoid loading `color` gem until used by `Glimmer::LibUI.interpret_color` method
 - Fix issue with `listener_expression.rb` failing for `TextProxy` due to not having `can_handle_listener?` method.
+- Fix issue with `TextProxy.can_handle_listener?` crashing when `text` is nested under `area` `on_draw`
 
 ## 0.11.5
 

@@ -174,7 +174,7 @@ module Glimmer
         end
       
         def can_handle_listener?(listener_name)
-          area_proxy.can_handle_listener?(listener_name)
+          area_proxy&.can_handle_listener?(listener_name)
         end
         
         def handle_listener(listener_name, &listener)
