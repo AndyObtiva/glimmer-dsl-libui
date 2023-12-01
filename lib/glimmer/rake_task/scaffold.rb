@@ -21,7 +21,7 @@
 
 require 'fileutils'
 require 'os'
-require 'facets'
+require 'facets/string/titlecase'
 
 # TODO refactor to nest under RakeTask namespace
 

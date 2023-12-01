@@ -3,6 +3,7 @@
 ## 0.11.6
 
 - Organize scaffolded application menus under a `menu_bar` method
+- Avoid loading `facets` gem completely in scaffold and list tasks, yet load used part of facets only ('facets/string/titlecase')
 - Fix issue with `listener_expression.rb` failing for `TextProxy` due to not having `can_handle_listener?` method.
 
 ## 0.11.5
