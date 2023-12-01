@@ -92,6 +92,7 @@ module Glimmer
           value[:a] = value.delete(:alpha) if value[:alpha]
           value
         elsif value.is_a?(String) && !value.start_with?('0x') && !value.start_with?('#') && !value.downcase.match(/^((([1-9a-f]){6})|(([1-9a-f]){3}))$/)
+          require 'color'
           color = Color::RGB.extract_colors(value).first
           color.nil? ? {} : {
             r: color.red,
@@ -194,6 +195,7 @@ module Glimmer
       end
       
       def x11_colors
+        require 'color'
         Color::RGB.constants.reject {|c| c.to_s.upcase == c.to_s}.map(&:to_s).map(&:underscore).map(&:to_sym)
       end
       

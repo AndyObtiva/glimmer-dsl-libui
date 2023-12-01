@@ -5,9 +5,9 @@
 - When resetting a new table cell_rows value when the older value was an enumerator, make sure to reset the table content before accepting the new value
 - Change scaffolded application main window from namespace/view/namespace.rb to namespace/view/namespace_application.rb
 - Fix issue (if exists.. needs testing/confirmation) with not processing nested shape properties when nested under custom shapes
-- Avoid loading color gem until colors are used
 - Set stroke color to block by default
 - Set fill color to white by default
+- Look into gems in `Rakefile` and elsewhere that could be delayed in loading instead of loading right away
 - Ensure that shape/path containment/inclusion checks take their transform into account while using `PerfectShape`. Do so by reverse-transforming the point and checking it against the shapes (as done in Glimmer DSL for SWT).
 - Update basic_transform.rb to allow changing the color of the clicked transformed square
 - Augment examples/class_based_custom_controls.rb example with a custom listener
