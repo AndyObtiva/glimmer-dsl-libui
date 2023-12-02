@@ -29,18 +29,32 @@ module Glimmer
     class ControlProxy
       class << self
         def exists?(keyword)
-#           begin
-#             require "glimmer/libui/control_proxy/#{keyword}_proxy"
-#           rescue LoadError
-            ## No Op
-#           end
+          load_control(keyword)
           ::LibUI.respond_to?("new_#{keyword}") or
             ::LibUI.respond_to?(keyword) or
             descendant_keyword_constant_map.keys.include?(keyword)
         end
         
         def create(keyword, parent, args, &block)
+          load_control(keyword)
           control_proxy_class(keyword).new(keyword, parent, args, &block).tap {|c| control_proxies << c}
+        end
+        
+        def load_control(keyword)
+          keyword = keyword.to_s
+          while keyword
+            begin
+              require "glimmer/libui/control_proxy/#{keyword}_proxy"
+              keyword = nil
+            rescue LoadError
+              # TODO cache failures to avoid spending too much time checking on them
+              if keyword.include?('_')
+                keyword = keyword.split('_').drop(1).join('_')
+              else
+                keyword = nil
+              end
+            end
+          end
         end
         
         def control_proxy_class(keyword)
@@ -78,7 +92,9 @@ module Glimmer
         end
         
         def descendant_keyword_constant_map
-          @descendant_keyword_constant_map ||= add_aliases_to_keyword_constant_map(map_descendant_keyword_constants_for(self))
+          # TODO this might have to get re-written for the lazy loading style
+#           @descendant_keyword_constant_map ||= add_aliases_to_keyword_constant_map(map_descendant_keyword_constants_for(self))
+          add_aliases_to_keyword_constant_map(map_descendant_keyword_constants_for(self))
         end
         
         def reset_descendant_keyword_constant_map
@@ -427,4 +443,5 @@ module Glimmer
   end
 end
 
-Dir[File.expand_path("./#{File.basename(__FILE__, '.rb')}/*.rb", __dir__)].each {|f| require f}
+# TODO delete this line if no longer needed
+# Dir[File.expand_path("./#{File.basename(__FILE__, '.rb')}/*.rb", __dir__)].each {|f| require f}
