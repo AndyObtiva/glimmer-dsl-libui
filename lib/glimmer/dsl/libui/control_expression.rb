@@ -29,6 +29,7 @@ module Glimmer
         include ParentExpression
   
         def can_interpret?(parent, keyword, *args, &block)
+          require 'glimmer/libui/control_proxy'
           Glimmer::LibUI::ControlProxy.exists?(keyword)
         end
   
@@ -47,5 +48,3 @@ module Glimmer
     end
   end
 end
-
-require 'glimmer/libui/control_proxy'

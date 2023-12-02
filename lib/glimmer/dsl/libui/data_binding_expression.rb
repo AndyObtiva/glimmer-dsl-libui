@@ -20,7 +20,6 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 require 'glimmer/dsl/expression'
-require 'glimmer/data_binding/model_binding'
 
 module Glimmer
   module DSL
@@ -29,6 +28,7 @@ module Glimmer
       # Depends on BindExpression
       class DataBindingExpression < Expression
         def can_interpret?(parent, keyword, *args, &block)
+          require 'glimmer/data_binding/model_binding'
           args.size == 1 and
             args[0].is_a?(DataBinding::ModelBinding) and
             parent.respond_to?(:data_bind)

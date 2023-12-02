@@ -20,8 +20,6 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 require 'glimmer/dsl/parent_expression'
-require 'glimmer/libui/control_proxy/text_proxy'
-require 'glimmer/libui/attributed_string'
 
 module Glimmer
   module DSL
@@ -32,8 +30,8 @@ module Glimmer
         def can_interpret?(parent, keyword, *args, &block)
           keyword == 'string' and
             (
-              parent.is_a?(Glimmer::LibUI::ControlProxy::TextProxy) or
-              (parent.is_a?(Glimmer::LibUI::AttributedString) and !args.empty?)
+              (require('glimmer/libui/control_proxy/text_proxy') || parent.is_a?(Glimmer::LibUI::ControlProxy::TextProxy)) or
+              ((require('glimmer/libui/attributed_string') || parent.is_a?(Glimmer::LibUI::AttributedString)) and !args.empty?)
             )
         end
   

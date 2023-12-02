@@ -21,9 +21,6 @@
 
 require 'glimmer/dsl/expression'
 require 'glimmer/dsl/parent_expression'
-require 'glimmer/libui/control_proxy/path_proxy'
-require 'glimmer/libui/shape'
-require 'glimmer/libui/control_proxy/area_proxy'
 
 module Glimmer
   module DSL
@@ -34,10 +31,10 @@ module Glimmer
         def can_interpret?(parent, keyword, *args, &block)
           Glimmer::LibUI::Shape.exists?(keyword) and
             (
-              parent.is_a?(Glimmer::LibUI::ControlProxy::PathProxy) or
-              parent.is_a?(Glimmer::LibUI::Shape) or
-              parent.is_a?(Glimmer::LibUI::ControlProxy::AreaProxy) or
-              (parent.nil? && Glimmer::LibUI::ControlProxy::AreaProxy.current_area_draw_params)
+              (require('glimmer/libui/control_proxy/path_proxy') || parent.is_a?(Glimmer::LibUI::ControlProxy::PathProxy)) or
+              (require('glimmer/libui/shape') || parent.is_a?(Glimmer::LibUI::Shape)) or
+              (require('glimmer/libui/control_proxy/area_proxy') || parent.is_a?(Glimmer::LibUI::ControlProxy::AreaProxy)) or
+              (parent.nil? && (Glimmer::LibUI::ControlProxy::AreaProxy.current_area_draw_params))
             )
         end
   

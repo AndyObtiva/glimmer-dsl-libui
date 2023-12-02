@@ -19,13 +19,12 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'glimmer/libui/control_proxy'
-
 module Glimmer
   module DSL
     module Libui
       module FileExpression
         def interpret(parent, keyword, *args, &block)
+          require 'glimmer/libui/control_proxy'
           window = args.empty? ? Glimmer::LibUI::ControlProxy.main_window_proxy : args.first
           window = window.libui if window.respond_to?(:libui)
           file_pointer = ::LibUI.send(self.class.name.underscore.split('::').last.sub(/_expression$/, ''), window)

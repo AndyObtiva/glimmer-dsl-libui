@@ -20,9 +20,6 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 require 'glimmer/dsl/expression'
-require 'glimmer/libui/control_proxy'
-require 'glimmer/libui/shape'
-require 'glimmer/libui/attributed_string'
 
 module Glimmer
   module DSL
@@ -30,10 +27,10 @@ module Glimmer
       class PropertyExpression < Expression
         def can_interpret?(parent, keyword, *args, &block)
           (
-            parent.is_a?(Glimmer::LibUI::ControlProxy) or
-              parent.is_a?(Glimmer::LibUI::Shape) or
-              parent.is_a?(Glimmer::LibUI::AttributedString) or
-              parent.is_a?(Glimmer::LibUI::CustomControl)
+            (require('glimmer/libui/control_proxy') || parent.is_a?(Glimmer::LibUI::ControlProxy)) or
+            (require('glimmer/libui/shape') || parent.is_a?(Glimmer::LibUI::Shape)) or
+            (require('glimmer/libui/attributed_string') || parent.is_a?(Glimmer::LibUI::AttributedString)) or
+            (require('glimmer/libui/custom_control') || parent.is_a?(Glimmer::LibUI::CustomControl))
           ) and
             block.nil? and
             parent.respond_to?("#{keyword}=", *args)
