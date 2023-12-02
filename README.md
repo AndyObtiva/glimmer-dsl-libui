@@ -28,7 +28,7 @@ The main trade-off in using [Glimmer DSL for LibUI](https://rubygems.org/gems/gl
 - [Declarative DSL syntax](#glimmer-gui-dsl-concepts) that visually maps to the GUI control hierarchy
 - [Convention over configuration](#smart-defaults-and-conventions) via smart defaults and automation of low-level details
 - Requiring the [least amount of syntax](#glimmer-gui-dsl-concepts) possible to build GUI
-- [Custom Component](#custom-components) support (Custom Controls, Custom Windows, and Custom Shapes)
+- [Custom Component](#custom-components) support (Custom Controls, Custom Windows, and Custom Shapes), including external Ruby gems (e.g. [Graphs and Charts](https://github.com/AndyObtiva/glimmer-libui-cc-graphs_and_charts))
 - [Bidirectional/Unidirectional Data-Binding](#data-binding) to declaratively wire and automatically synchronize GUI Views with Models
 - [Scaffolding](#scaffold-application) for new custom windows/controls, apps, and gems
 - [Far Future Plan] Native-Executable packaging on Mac, Windows, and Linux.
@@ -47,7 +47,27 @@ Mac | Windows | Linux
 ----|---------|------
 ![glimmer-dsl-libui-mac-basic-window.png](images/glimmer-dsl-libui-mac-basic-window.png) | ![glimmer-dsl-libui-windows-basic-window.png](images/glimmer-dsl-libui-windows-basic-window.png) | ![glimmer-dsl-libui-linux-basic-window.png](images/glimmer-dsl-libui-linux-basic-window.png)
 
+Basic Button
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+window('hello world', 300, 200) {
+  button('Button') {
+    on_clicked do
+      msg_box('Information', 'You clicked the button')
+    end
+  }
+}.show
+```
+
 Basic Table Progress Bar
+
+Mac | Windows | Linux
+----|---------|------
+![glimmer-dsl-libui-mac-basic-button.png](/images/glimmer-dsl-libui-mac-basic-button.png) ![glimmer-dsl-libui-mac-basic-button-msg-box.png](/images/glimmer-dsl-libui-mac-basic-button-msg-box.png) | ![glimmer-dsl-libui-windows-basic-button.png](/images/glimmer-dsl-libui-windows-basic-button.png) ![glimmer-dsl-libui-windows-basic-button-msg-box.png](/images/glimmer-dsl-libui-windows-basic-button-msg-box.png) | ![glimmer-dsl-libui-linux-basic-button.png](/images/glimmer-dsl-libui-linux-basic-button.png) ![glimmer-dsl-libui-linux-basic-button-msg-box.png](/images/glimmer-dsl-libui-linux-basic-button-msg-box.png)
 
 ```ruby
 require 'glimmer-dsl-libui'
@@ -640,7 +660,7 @@ Mac | Windows | Linux
 
 Application scaffolding enables automatically generating the directories/files of a new desktop GUI application that follows the MVC architecture and can be packaged as a Ruby gem that includes an executable script for running the app conveniently. It also ensures that software engineers follow the recommended Glimmer DSL for LibUI conventions and best practices. Application Scaffolding greatly improves software engineering productivity when building desktop applications with [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui).
 
-Application Scaffolding relies on the [juwelier](https://rubygems.org/gems/juwelier) Ruby gem, which expects having a local Git config (global settings in `~/.gitconfig`) of [`user.name`](https://docs.github.com/en/get-started/getting-started-with-git/setting-your-username-in-git#setting-your-git-username-for-every-repository-on-your-computer), [`user.email`](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-email-preferences/setting-your-commit-email-address#setting-your-email-address-for-every-repository-on-your-computer), and `github.user`.
+Application Scaffolding relies on the juwelier Ruby gem, which expects a local Git config of [`user.name`](https://docs.github.com/en/get-started/getting-started-with-git/setting-your-username-in-git#setting-your-git-username-for-every-repository-on-your-computer) (git config --global user.name "FirstName LastName") and `github.user` (`git config --global github.user githubusername`). 
 
 Scaffold Glimmer DSL for LibUI application with this command:
 
@@ -1356,6 +1376,8 @@ window {
 ...
 ```
 
+A real external Custom Control Gem is [Graphs and Charts](https://github.com/AndyObtiva/glimmer-libui-cc-graphs_and_charts).
+
 ### Scaffold Custom Window Gem
 
 A custom window is a specialization of a custom control that has a `window` as its `body` root.
@@ -1753,7 +1775,7 @@ These are all the supported keywords. Note that some keywords do not represent c
 Keyword(Args) | Properties | Listeners
 ------------- | ---------- | ---------
 `about_menu_item` | None | `on_clicked`
-`area` | `auto_draw_enabled` | `on_draw(area_draw_params)`, `on_mouse_event(area_mouse_event)`, `on_mouse_down(area_mouse_event)`, `on_mouse_up(area_mouse_event)`, `on_mouse_drag_started(area_mouse_event)`, `on_mouse_dragged(area_mouse_event)`, `on_mouse_dropped(area_mouse_event)`, `on_mouse_entered`, `on_mouse_exited`, `on_key_event(area_key_event)`, `on_key_down(area_key_event)`, `on_key_up(area_key_event)`
+`area` | `auto_draw_enabled` | `on_draw(area_draw_params)`, `on_mouse_event(area_mouse_event)`, `on_mouse_moved(area_mouse_event)`, `on_mouse_down(area_mouse_event)`, `on_mouse_up(area_mouse_event)`, `on_mouse_drag_started(area_mouse_event)`, `on_mouse_dragged(area_mouse_event)`, `on_mouse_dropped(area_mouse_event)`, `on_mouse_entered`, `on_mouse_exited`, `on_key_event(area_key_event)`, `on_key_down(area_key_event)`, `on_key_up(area_key_event)`
 `arc(x_center as Numeric, y_center as Numeric, radius as Numeric, start_angle as Numeric, sweep as Numeric, is_negative as Boolean)` | `x_center` (`Numeric`), `y_center` (`Numeric`), `radius` (`Numeric`), `start_angle` (`Numeric`), `sweep` (`Numeric`), `is_negative` (Boolean) | None
 `background_color_column` | None | None
 `bezier(x = nil as Numeric, y = nil as Numeric, c1_x as Numeric, c1_y as Numeric, c2_x as Numeric, c2_y as Numeric, end_x as Numeric, end_y as Numeric)` | `x` (`Numeric`), `y` (`Numeric`), `c1_x` (`Numeric`), `c1_y` (`Numeric`), `c2_x` (`Numeric`), `c2_y` (`Numeric`), `end_x` (`Numeric`), `end_y` (`Numeric`) | None
@@ -3001,7 +3023,7 @@ For example, you can define a custom `address_view` control as an aggregate of m
 
 There are two ways to define custom components:
 - Method-Based: simply define a method representing the custom component you want (e.g. `address_view`) with any options needed (e.g. `address(address_model: some_model)`).
-- Class-Based: define a class matching the camelcased name of the custom component by convention (e.g. the `address_view` custom component keyword would have a class called `AddressView`) and `include Glimmer::LibUI::CustomControl`, `include Glimmer::LibUI::CustomWindow`, or `include Glimmer::LibUI::CustomShape` depending on if the component represents a standard control, a whole window, or an [area canvas graphics shape](#area-path-shapes). Classes add the benefit of being able to distribute the custom components into a separate file for external reuse from multiple views or for sharing as a Ruby gem.
+- Class-Based: define a class matching the camelcased name of the custom component by convention (e.g. the `address_view` custom component keyword would have a class called `AddressView`) and `include Glimmer::LibUI::CustomControl`, `include Glimmer::LibUI::CustomWindow`, or `include Glimmer::LibUI::CustomShape` depending on if the component represents a standard control, a whole window, or an [area canvas graphics shape](#area-path-shapes). Classes add the benefit of being able to distribute the custom components into a separate file for external reuse from multiple views or for sharing as a Ruby gem (e.g. [Graphs and Charts Ruby gem](https://github.com/AndyObtiva/glimmer-libui-cc-graphs_and_charts)).
 
 It is OK to use the terms "custom control", "custom component", and "custom keyword" synonymously though "custom component" is a broader term that covers things other than controls too like custom shapes (e.g. `cube`), custom attributed strings (e.g. `alternating_color_string`), and custom transforms (`isometric_transform`).
 
@@ -4124,6 +4146,16 @@ Mac | Windows | Linux
 ----|---------|------
 ![glimmer-dsl-libui-mac-form-table.png](/images/glimmer-dsl-libui-mac-form-table.png) | ![glimmer-dsl-libui-windows-form-table.png](/images/glimmer-dsl-libui-windows-form-table.png) | ![glimmer-dsl-libui-linux-form-table.png](/images/glimmer-dsl-libui-linux-form-table.png)
 
+## Libraries
+
+### Graphs and Charts
+
+This is a Ruby gem that aims at providing support for graphs and charts (custom controls) in Glimmer DSL for LibUI.
+
+https://github.com/AndyObtiva/glimmer-libui-cc-graphs_and_charts
+
+![basic line graph](https://github.com/AndyObtiva/glimmer-libui-cc-graphs_and_charts/raw/master/screenshots/glimmer-libui-cc-graphs_and_charts-mac-basic-line-graph.png)
+
 ## Applications
 
 Here are some applications built with [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui)
@@ -4189,6 +4221,14 @@ https://github.com/kojix2/htsgrid
 This is built as an exploratory software prototype by [Ari Brown](https://github.com/seydar) (closed source software).
 
 ![Electric Avenue](https://user-images.githubusercontent.com/16188/260890040-b4b28429-1789-4cdd-a708-45a2bd62b70f.png)
+
+### Adamantite
+
+A local password manager written in Ruby (closed source software):
+
+https://rubygems.org/gems/adamantite
+
+![Adamantite password manager](/images/glimmer-dsl-libui-mac-application-adamantite.png)
 
 ## Process
 

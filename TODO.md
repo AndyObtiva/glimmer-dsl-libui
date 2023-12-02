@@ -175,6 +175,8 @@
 - Consider providing a built-in way of translating table columns with a translator data-binding option (e.g. `cell_rows <=> [user, :contacts, translator: ->(val) {I18n.t(val)}]`) while still using the English-named translation keys as the main attributes to data-bind to. Or even consider configuring a global translator, and then adding a `translated: true` option to take care of everything.
 - Consider providing standard out-of-the-box i18n support
 - glimmer command option to scaffold with minitest tests instead of rspec
+- Consider supporting Enumerable in addition to Array and Enumerator::Lazy for table cell_rows data-binding
+- Come up with a way to have an `area`'s graphics auto-scale in size when the window is resized based on the initial size of the area and the initialize size of the window. That would prevent the need for software engineers to do the scaling themselves.
 
 # Refactoring
 

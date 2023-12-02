@@ -3,9 +3,11 @@
 ## 0.11.6
 
 - Organize scaffolded application menus under a `menu_bar` method
-- Avoid loading `facets` gem completely in scaffold and list tasks, yet load used part of facets only ('facets/string/titlecase')
-- Avoid loading `perfect-shape` gem until area canvas graphics are used
-- Avoid loading `color` gem until used by `Glimmer::LibUI.interpret_color` method
+- Optimize performance of startup time, cutting ~26ms by delaying load of certain gems until needed:
+  - Cut ~16ms of startup time by not loading `perfect-shape` gem until area canvas graphics are used
+  - Cut ~10ms of startup time by not loading `color` gem until used by `Glimmer::LibUI.interpret_color` method
+- Optimize performance of scaffolding, cutting ~54ms by not loading `facets` gem completely, yet load used part of facets only ('facets/string/titlecase')
+- Optimize performance of glimmer command listing of gems, cutting ~54ms by not loading `facets` gem completely, yet load used part of facets only ('facets/string/titlecase')
 - Fix issue with `listener_expression.rb` failing for `TextProxy` due to not having `can_handle_listener?` method.
 - Fix issue with `TextProxy.can_handle_listener?` crashing when `text` is nested under `area` `on_draw`
 
