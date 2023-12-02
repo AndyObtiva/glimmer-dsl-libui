@@ -26,13 +26,7 @@ module Glimmer
     module Libui
       class ListenerExpression < Expression
         def can_interpret?(parent, keyword, *args, &block)
-          (
-            (require('glimmer/libui/control_proxy') || parent.is_a?(Glimmer::LibUI::ControlProxy)) or
-            (require('glimmer/libui/shape') || parent.is_a?(Glimmer::LibUI::Shape)) or
-            (require('glimmer/libui/custom_control') || parent.is_a?(Glimmer::LibUI::CustomControl)) or
-            (require('glimmer/libui/custom_shape') || parent.is_a?(Glimmer::LibUI::CustomShape))
-          ) and
-            block_given? and
+          block_given? and
             parent.respond_to?(:can_handle_listener?) and
             parent.can_handle_listener?(keyword)
         end

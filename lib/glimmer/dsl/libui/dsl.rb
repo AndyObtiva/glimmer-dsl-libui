@@ -41,11 +41,11 @@ module Glimmer
           shine_data_binding
           property
           content
-          string
           operation
           control
           custom_control
           shape
+          string
           custom_shape
         ]
       )

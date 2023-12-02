@@ -29,6 +29,11 @@ module Glimmer
     class ControlProxy
       class << self
         def exists?(keyword)
+#           begin
+#             require "glimmer/libui/control_proxy/#{keyword}_proxy"
+#           rescue LoadError
+            ## No Op
+#           end
           ::LibUI.respond_to?("new_#{keyword}") or
             ::LibUI.respond_to?(keyword) or
             descendant_keyword_constant_map.keys.include?(keyword)
@@ -240,28 +245,28 @@ module Glimmer
         (custom_listener_names - ['on_destroy']).each { |listener_name| deregister_custom_listeners(listener_name) }
       end
       
-      def respond_to?(method_name, *args, &block)
-        respond_to_libui?(method_name, *args, &block) ||
+      def respond_to?(method_name, include_private = false)
+        respond_to_libui?(method_name, include_private) ||
           (
             append_properties.include?(method_name.to_s) ||
             (append_properties.include?(method_name.to_s.sub(/\?$/, '')) && BOOLEAN_PROPERTIES.include?(method_name.to_s.sub(/\?$/, ''))) ||
             append_properties.include?(method_name.to_s.sub(/=$/, ''))
           ) ||
           can_handle_listener?(method_name.to_s) ||
-          super(method_name, true)
+          super(method_name, include_private)
       end
       
-      def respond_to_libui?(method_name, *args, &block)
-        ::LibUI.respond_to?("control_#{method_name}") or
-          (::LibUI.respond_to?("control_#{method_name.to_s.sub(/\?$/, '')}") && BOOLEAN_PROPERTIES.include?(method_name.to_s.sub(/\?$/, '')) ) or
-          ::LibUI.respond_to?("control_set_#{method_name.to_s.sub(/=$/, '')}") or
-          ::LibUI.respond_to?("#{libui_api_keyword}_#{method_name}") or
-          (::LibUI.respond_to?("#{libui_api_keyword}_#{method_name.to_s.sub(/\?$/, '')}") && BOOLEAN_PROPERTIES.include?(method_name.to_s.sub(/\?$/, '')) ) or
-          ::LibUI.respond_to?("#{libui_api_keyword}_set_#{method_name.to_s.sub(/=$/, '')}")
+      def respond_to_libui?(method_name, include_private = false)
+        ::LibUI.respond_to?("control_#{method_name}", include_private) or
+          (::LibUI.respond_to?("control_#{method_name.to_s.sub(/\?$/, '')}", include_private) && BOOLEAN_PROPERTIES.include?(method_name.to_s.sub(/\?$/, '')) ) or
+          ::LibUI.respond_to?("control_set_#{method_name.to_s.sub(/=$/, '')}", include_private) or
+          ::LibUI.respond_to?("#{libui_api_keyword}_#{method_name}", include_private) or
+          (::LibUI.respond_to?("#{libui_api_keyword}_#{method_name.to_s.sub(/\?$/, '')}", include_private) && BOOLEAN_PROPERTIES.include?(method_name.to_s.sub(/\?$/, '')) ) or
+          ::LibUI.respond_to?("#{libui_api_keyword}_set_#{method_name.to_s.sub(/=$/, '')}", include_private)
       end
       
       def method_missing(method_name, *args, &block)
-        if respond_to_libui?(method_name, *args, &block)
+        if respond_to_libui?(method_name, true)
           send_to_libui(method_name, *args, &block)
         elsif append_properties.include?(method_name.to_s) ||
             append_properties.include?(method_name.to_s.sub(/(=|\?)$/, ''))

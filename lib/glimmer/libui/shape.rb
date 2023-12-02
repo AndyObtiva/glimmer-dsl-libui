@@ -291,9 +291,9 @@ module Glimmer
         end
       end
 
-      def respond_to?(method_name, *args, &block)
+      def respond_to?(method_name, include_private = false)
         self.class.parameters.include?(method_name.to_s.sub(/=$/, '').sub(/^set_/, '').to_sym) or
-          super(method_name, true)
+          super(method_name, include_private)
       end
       
       def method_missing(method_name, *args, &block)

@@ -29,7 +29,7 @@ module Glimmer
           keyword != 'content' and
             args.size == 0 and
             block.nil? and
-            parent.respond_to?(keyword, *args, &block)
+            parent.respond_to?(keyword)
         end
   
         def interpret(parent, keyword, *args, &block)

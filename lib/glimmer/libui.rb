@@ -232,8 +232,8 @@ module Glimmer
         closure
       end
       
-      def respond_to?(method_name, *args)
-        super || ::LibUI.respond_to?(method_name, *args)
+      def respond_to?(method_name, include_private = false)
+        super || ::LibUI.respond_to?(method_name, include_private)
       end
       
       def method_missing(method_name, *args, &block)

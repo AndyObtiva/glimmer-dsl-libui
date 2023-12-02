@@ -23,6 +23,7 @@ require 'glimmer/libui/control_proxy'
 require 'glimmer/libui/control_proxy/area_proxy'
 require 'glimmer/libui/parent'
 require 'glimmer/libui/control_proxy/transformable'
+require 'glimmer/libui/perfect_shaped'
 
 module Glimmer
   module LibUI

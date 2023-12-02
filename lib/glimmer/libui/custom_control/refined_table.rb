@@ -253,12 +253,12 @@ module Glimmer
         
         # Ensure proxying properties to @table_proxy if body_root (vertical_box) doesn't support them
         
-        def respond_to?(method_name, *args, &block)
-          super || @table_proxy&.respond_to?(method_name, *args, &block)
+        def respond_to?(method_name, include_private = false)
+          super || @table_proxy&.respond_to?(method_name, include_private)
         end
         
         def method_missing(method_name, *args, &block)
-          if @table_proxy&.respond_to?(method_name, *args, &block)
+          if @table_proxy&.respond_to?(method_name, true)
             @table_proxy&.send(method_name, *args, &block)
           else
             super

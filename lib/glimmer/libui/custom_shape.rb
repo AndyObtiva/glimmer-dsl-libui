@@ -46,11 +46,11 @@ module Glimmer
           end
         end
   
-        def respond_to?(method_name, *args, &block)
+        def respond_to?(method_name, include_private = false)
           result = false
           result ||= super
           result ||= can_handle_listener?(method_name)
-          result ||= @body_root.respond_to?(method_name, *args, &block)
+          result ||= @body_root.respond_to?(method_name, include_private)
         end
       end
 

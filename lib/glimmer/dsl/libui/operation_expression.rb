@@ -26,13 +26,8 @@ module Glimmer
     module Libui
       class OperationExpression < Expression
         def can_interpret?(parent, keyword, *args, &block)
-          (
-            (require('glimmer/libui/control_proxy') || parent.is_a?(Glimmer::LibUI::ControlProxy)) or
-            (require('glimmer/libui/shape') || parent.is_a?(Glimmer::LibUI::Shape)) or
-            (require('glimmer/libui/attributed_string') || parent.is_a?(Glimmer::LibUI::AttributedString))
-          ) and
-            block.nil? and
-            parent.respond_to?(keyword, *args)
+          block.nil? and
+            parent.respond_to?(keyword)
         end
   
         def interpret(parent, keyword, *args, &block)

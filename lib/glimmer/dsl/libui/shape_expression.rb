@@ -31,14 +31,15 @@ module Glimmer
         def can_interpret?(parent, keyword, *args, &block)
           Glimmer::LibUI::Shape.exists?(keyword) and
             (
-              (require('glimmer/libui/control_proxy/path_proxy') || parent.is_a?(Glimmer::LibUI::ControlProxy::PathProxy)) or
-              (require('glimmer/libui/shape') || parent.is_a?(Glimmer::LibUI::Shape)) or
-              (require('glimmer/libui/control_proxy/area_proxy') || parent.is_a?(Glimmer::LibUI::ControlProxy::AreaProxy)) or
+              (require('glimmer/libui/control_proxy/area_proxy'); parent.is_a?(Glimmer::LibUI::ControlProxy::AreaProxy)) or
+              (require('glimmer/libui/control_proxy/path_proxy'); parent.is_a?(Glimmer::LibUI::ControlProxy::PathProxy)) or
+              (require('glimmer/libui/shape'); parent.is_a?(Glimmer::LibUI::Shape)) or
               (parent.nil? && (Glimmer::LibUI::ControlProxy::AreaProxy.current_area_draw_params))
             )
         end
   
         def interpret(parent, keyword, *args, &block)
+          require('glimmer/libui/shape')
           keyword = Glimmer::LibUI::Shape::KEYWORD_ALIASES[keyword] || keyword
           args = [args] if args.size > 1 && Glimmer::LibUI::Shape.shape_class(keyword).parameters.size == 1
           Glimmer::LibUI::Shape.create(keyword, parent, args, &block)
