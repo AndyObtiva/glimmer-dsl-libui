@@ -2,7 +2,7 @@
 
 ## Next
 
-- When resetting a new table cell_rows value when the older value was an enumerator, make sure to reset the table content before accepting the new value
+- Support block properties to enable inserting content anywhere in a custom control
 - Change scaffolded application main window from namespace/view/namespace.rb to namespace/view/namespace_application.rb
 - Fix issue (if exists.. needs testing/confirmation) with not processing nested shape properties when nested under custom shapes
 - Set stroke color to block by default
@@ -177,6 +177,7 @@
 - glimmer command option to scaffold with minitest tests instead of rspec
 - Consider supporting Enumerable in addition to Array and Enumerator::Lazy for table cell_rows data-binding
 - Come up with a way to have an `area`'s graphics auto-scale in size when the window is resized based on the initial size of the area and the initialize size of the window. That would prevent the need for software engineers to do the scaling themselves.
+- Consider a different way for assigning values from multi-value table columns to model attributes (other than using Array)
 
 # Refactoring
 

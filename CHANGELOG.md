@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.11.7
+
+- Fix issue with `table` `checkbox_text_color_column` checkbox edits not working
+
 ## 0.11.6
 
 - Organize scaffolded application menus under a `menu_bar` method

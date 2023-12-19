@@ -519,7 +519,7 @@ module Glimmer
                 attribute = column_attributes[column]
                 table_cell_row.send("#{attribute}=", ::LibUI.table_value_int(val).to_i == 1)
               end
-            when Column::CheckboxTextColumnProxy
+            when Column::CheckboxTextColumnProxy, Column::CheckboxTextColorColumnProxy
               column = @columns[column].index
               if table_cell_row.is_a?(Array)
                 table_cell_row[column] ||= []
