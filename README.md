@@ -485,7 +485,7 @@ Afterwards, to access the Glimmer GUI DSL:
 
 You may learn more about the different options above with basic examples in the following subsections: [Experimentation Usage](#experimentation-usage), [Prototyping Usage](#prototyping-usage), [Serious Usage](#serious-usage).
 
-If you are new to [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) (beginner), after going through the subsections below, check out the RubyConf 2022 talk ["Building Native GUI Apps in Ruby"](https://andymaleh.blogspot.com/2023/02/rubyconf-2022-talk-video-for-building.html), [Glimmer GUI DSL Concepts](#glimmer-gui-dsl-concepts), [Glimmer Command](#glimmer-command) (just the basics, how to run an app, and how to run examples to start), [Girb](#girb-glimmer-irb) and [Examples](#examples) to quickly learn through copy/paste. It is very important for beginners to go through all the [Examples](#examples) from the most basic to the most advanced while reading the README topics that relate to the examples. Alternatively, beginners can learn from the RubyConf 2023 workshop ["How To Build Desktop Applications in Ruby"](https://github.com/AndyObtiva/how-to-build-desktop-applications-in-ruby), which includes 27 step-by-step exercises. You may refer to the [API](#api) once you have gotten your feet wet with [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) and need a more detailed reference.
+If you are new to [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) (beginner), after going through the subsections below, check out the RubyConf 2022 talk ["Building Native GUI Apps in Ruby"](https://andymaleh.blogspot.com/2023/02/rubyconf-2022-talk-video-for-building.html), [Glimmer GUI DSL Concepts](#glimmer-gui-dsl-concepts), [Glimmer Style Guide](#glimmer-style-guide), [Glimmer Command](#glimmer-command) (just the basics, how to run an app, and how to run examples to start), [Girb](#girb-glimmer-irb) and [Examples](#examples) to quickly learn through copy/paste. It is very important for beginners to go through all the [Examples](#examples) from the most basic to the most advanced while reading the README topics that relate to the examples. Alternatively, beginners can learn from the RubyConf 2023 workshop ["How To Build Desktop Applications in Ruby"](https://github.com/AndyObtiva/how-to-build-desktop-applications-in-ruby), which includes 27 step-by-step exercises. You may refer to the [API](#api) once you have gotten your feet wet with [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) and need a more detailed reference. 
 
 If you encounter any issues with the documentation, get stuck with code you do not understand, or notice some out-of-date information, you may contact the project maintainers on the [Glimmer Gitter Chat](https://app.gitter.im/#/room/#AndyObtiva_glimmer:gitter.im). Also, this could be your opportunity to be a good steward of Open-Source Software by contributing a documentation fix in a GitHub Pull Request or reporting a GitHub Issue at least.
 
@@ -1743,6 +1743,9 @@ window('hello world', 300, 200) {
   end
 }.show
 ```
+
+Make sure that you follow the [Glimmer Style Guide](#glimmer-style-guide) when writing any Glimmer GUI DSL code.
+
 ## API
 
 Any control returned by a [Glimmer GUI DSL](#glimmer-gui-dsl-concepts) keyword declaration can be introspected for its properties and updated via object-oriented attributes (standard Ruby `attr`/`attr=` or `set_attr`).
@@ -2140,6 +2143,8 @@ The `area` control is a canvas-like control for drawing paths that can be used i
 - Immediate Mode (semi-declaratively via `on_draw` listener dynamic shapes): useful for more dynamic paths that will definitely change very often. Open an `on_draw` listener block that receives an [`area_draw_params`](#area-draw-params) argument and nest `path` and figures like `rectangle` and all drawing logic is generated automatically. Path proxy objects are destroyed (thrown-away) at the end of drawing, thus having less memory overhead for drawing thousands of dynamic paths.
 
 Note that when nesting an `area` directly underneath `window` (without a layout control like `vertical_box`), it is automatically reparented with `vertical_box` in between the `window` and `area` since it would not show up on Linux otherwise.
+
+Also, note that Canvas graphics performance is a bit slow today due to the Ruby LibUI binding making Canvas drawing calls with FFI. There is currently work under way to re-implement the Canvas drawing calls with C Native Extensions, which should speed up performance by 10x-100x once fully implemented. Still, if the `area` control is needed to paint simple or mostly static graphics that do not change much (not updating more than once a second), then current `area` performance should be more than fast enough for those needs.
 
 Here is an example of a declarative `area` with a stable path (you may copy/paste in [`girb`](#girb-glimmer-irb)):
 
@@ -3799,6 +3804,8 @@ Also, there is a promising project called [ruby-packer](https://github.com/pmq20
 Last but not least, Ruby recently supported WASM, including the ability to [package a Ruby application as a WASI application](https://github.com/ruby/ruby.wasm#quick-example-how-to-package-your-ruby-application-as-a-wasi-application).
 
 ## Glimmer Style Guide
+
+The code of the Glimmer GUI DSL is not standard imperative Ruby code because it represents a declarative Domain Specific Language for describing the hierarchical structure of a Graphical User Interface, meaning a language embedded within Ruby that is slightly separate from Ruby. So, it is important that it has a declarative style that helps Software Engineers focus on the visual aspect of the Graphical User Interface in a highly productive manner. As such, multi-line blocks intentionally do not use imperative words like `do; end` that slow readability down, yet the declarative `{}` style that helps give a quick visual view of GUI component nesting at a glance. However, MVC Views are observed for changes by listeners that then invoke imperative logic in Models, so listener multi-line blocks do have the `do; end` style to clearly distinguish imperative code from declarative code in Views. In summary, the Ruby Style Guide is not applicable when writing Glimmer GUI DSL code. Software Engineers must adhere to the Glimmer Style Guide for View code instead to cater to the style requirements of both declarative DSL code and imperative Ruby code.
 
 **1 - Control arguments are always wrapped by parentheses.**
 

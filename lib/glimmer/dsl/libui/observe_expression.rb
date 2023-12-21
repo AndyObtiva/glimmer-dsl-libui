@@ -29,6 +29,7 @@ module Glimmer
       class ObserveExpression < StaticExpression
         include TopLevelExpression
         include Glimmer::DSL::ObserveExpression
+        # TODO consider adding logic to auto-unregister observers created in this expression (unregister them elsewhere)
       end
     end
   end

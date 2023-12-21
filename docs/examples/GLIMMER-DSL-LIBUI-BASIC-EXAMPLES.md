@@ -48,30 +48,6 @@ Mac | Windows | Linux
 ----|---------|------
 ![glimmer-dsl-libui-mac-basic-window.png](/images/glimmer-dsl-libui-mac-basic-window.png) | ![glimmer-dsl-libui-windows-basic-window.png](/images/glimmer-dsl-libui-windows-basic-window.png) | ![glimmer-dsl-libui-linux-basic-window.png](/images/glimmer-dsl-libui-linux-basic-window.png)
 
-[LibUI](https://github.com/kojix2/LibUI) Original Version:
-
-```ruby
-require 'libui'
-
-UI = LibUI
-
-UI.init
-
-main_window = UI.new_window('hello world', 300, 200, 1)
-
-UI.control_show(main_window)
-
-UI.window_on_closing(main_window) do
-  puts 'Bye Bye'
-  UI.control_destroy(main_window)
-  UI.quit
-  0
-end
-
-UI.main
-UI.quit
-```
-
 [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
 
 ```ruby
@@ -143,37 +119,6 @@ Mac | Windows | Linux
 ----|---------|------
 ![glimmer-dsl-libui-mac-basic-button.png](/images/glimmer-dsl-libui-mac-basic-button.png) ![glimmer-dsl-libui-mac-basic-button-msg-box.png](/images/glimmer-dsl-libui-mac-basic-button-msg-box.png) | ![glimmer-dsl-libui-windows-basic-button.png](/images/glimmer-dsl-libui-windows-basic-button.png) ![glimmer-dsl-libui-windows-basic-button-msg-box.png](/images/glimmer-dsl-libui-windows-basic-button-msg-box.png) | ![glimmer-dsl-libui-linux-basic-button.png](/images/glimmer-dsl-libui-linux-basic-button.png) ![glimmer-dsl-libui-linux-basic-button-msg-box.png](/images/glimmer-dsl-libui-linux-basic-button-msg-box.png)
 
-[LibUI](https://github.com/kojix2/LibUI) Original Version:
-
-```ruby
-require 'libui'
-
-UI = LibUI
-
-UI.init
-
-main_window = UI.new_window('hello world', 300, 200, 1)
-
-button = UI.new_button('Button')
-
-UI.button_on_clicked(button) do
-  UI.msg_box(main_window, 'Information', 'You clicked the button')
-end
-
-UI.window_on_closing(main_window) do
-  puts 'Bye Bye'
-  UI.control_destroy(main_window)
-  UI.quit
-  0
-end
-
-UI.window_set_child(main_window, button)
-UI.control_show(main_window)
-
-UI.main
-UI.quit
-```
-
 [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
 
 ```ruby
@@ -214,121 +159,15 @@ Mac | Windows | Linux
 ----|---------|------
 ![glimmer-dsl-libui-mac-basic-entry.png](/images/glimmer-dsl-libui-mac-basic-entry.png) ![glimmer-dsl-libui-mac-basic-entry-msg-box.png](/images/glimmer-dsl-libui-mac-basic-entry-msg-box.png) | ![glimmer-dsl-libui-windows-basic-entry.png](/images/glimmer-dsl-libui-windows-basic-entry.png) ![glimmer-dsl-libui-windows-basic-entry-msg-box.png](/images/glimmer-dsl-libui-windows-basic-entry-msg-box.png) | ![glimmer-dsl-libui-linux-basic-entry.png](/images/glimmer-dsl-libui-linux-basic-entry.png) ![glimmer-dsl-libui-linux-basic-entry-msg-box.png](/images/glimmer-dsl-libui-linux-basic-entry-msg-box.png)
 
-[LibUI](https://github.com/kojix2/LibUI) Original Version:
-
-```ruby
-require 'libui'
-
-UI = LibUI
-
-UI.init
-
-main_window = UI.new_window('Basic Entry', 300, 50, 1)
-UI.window_on_closing(main_window) do
-  puts 'Bye Bye'
-  UI.control_destroy(main_window)
-  UI.quit
-  0
-end
-
-hbox = UI.new_horizontal_box
-UI.window_set_child(main_window, hbox)
-
-entry = UI.new_entry
-UI.entry_on_changed(entry) do
-  puts UI.entry_text(entry).to_s
-  $stdout.flush # For Windows
-end
-UI.box_append(hbox, entry, 1)
-
-button = UI.new_button('Button')
-UI.button_on_clicked(button) do
-  text = UI.entry_text(entry).to_s
-  UI.msg_box(main_window, 'You entered', text)
-  0
-end
-
-UI.box_append(hbox, button, 0)
-
-UI.control_show(main_window)
-UI.main
-UI.quit
-```
-
 [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version (with [data-binding](#data-binding)):
 
-```ruby
-require 'glimmer-dsl-libui'
-
-class BasicEntry
-  include Glimmer
-  
-  attr_accessor :entry_text
-  
-  def launch
-    window('Basic Entry', 300, 50) {
-      horizontal_box {
-        entry {
-          # stretchy true # Smart default option for appending to horizontal_box
-          text <=> [self, :entry_text, after_write: ->(text) {puts text; $stdout.flush}] # bidirectional data-binding between text property and entry_text attribute, printing after write to model.
-        }
-        
-        button('Button') {
-          stretchy false # stretchy property is available when control is nested under horizontal_box
-          
-          on_clicked do
-            msg_box('You entered', entry_text)
-          end
-        }
-      }
-      
-      on_closing do
-        puts 'Bye Bye'
-      end
-    }.show
-  end
-end
-
-BasicEntry.new.launch
-```
+[examples/basic_entry.rb](/examples/basic_entry.rb)
 
 [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 2 (without [data-binding](#data-binding)):
 
-```ruby
-require 'glimmer-dsl-libui'
-
-include Glimmer
-
-window('Basic Entry', 300, 50) {
-  horizontal_box {
-    e = entry {
-      # stretchy true # Smart default option for appending to horizontal_box
-    
-      on_changed do
-        puts e.text
-        $stdout.flush # For Windows
-      end
-    }
-    
-    button('Button') {
-      stretchy false # stretchy property is available when control is nested under horizontal_box
-      
-      on_clicked do
-        text = e.text
-        msg_box('You entered', text)
-      end
-    }
-  }
-  
-  on_closing do
-    puts 'Bye Bye'
-  end
-}.show
-```
+[examples/basic_entry2.rb](/examples/basic_entry2.rb)
 
 ## Simple Notepad
-
-[examples/simple_notepad.rb](/examples/simple_notepad.rb)
 
 Run with this command from the root of the project if you cloned the project:
 
@@ -346,51 +185,7 @@ Mac | Windows | Linux
 ----|---------|------
 ![glimmer-dsl-libui-mac-simple-notepad.png](/images/glimmer-dsl-libui-mac-simple-notepad.png) | ![glimmer-dsl-libui-windows-simple-notepad.png](/images/glimmer-dsl-libui-windows-simple-notepad.png) | ![glimmer-dsl-libui-linux-simple-notepad.png](/images/glimmer-dsl-libui-linux-simple-notepad.png)
 
-[LibUI](https://github.com/kojix2/LibUI) Original Version:
-
-```ruby
-require 'libui'
-
-UI = LibUI
-
-UI.init
-
-main_window = UI.new_window('Notepad', 500, 300, 1)
-UI.window_on_closing(main_window) do
-  puts 'Bye Bye'
-  UI.control_destroy(main_window)
-  UI.quit
-  0
-end
-
-vbox = UI.new_vertical_box
-UI.window_set_child(main_window, vbox)
-
-entry = UI.new_non_wrapping_multiline_entry
-UI.box_append(vbox, entry, 1)
-
-UI.control_show(main_window)
-UI.main
-UI.quit
-```
-
-[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
-
-```ruby
-require 'glimmer-dsl-libui'
-
-include Glimmer
-
-window('Notepad', 500, 300) {
-  on_closing do
-    puts 'Bye Bye'
-  end
-  
-  vertical_box {
-    non_wrapping_multiline_entry
-  }
-}.show
-```
+[examples/simple_notepad.rb](/examples/simple_notepad.rb)
 
 ## Font Button
 
@@ -411,44 +206,6 @@ ruby -r glimmer-dsl-libui -e "require 'examples/font_button'"
 Mac | Windows | Linux
 ----|---------|------
 ![glimmer-dsl-libui-mac-font-button.png](/images/glimmer-dsl-libui-mac-font-button.png) ![glimmer-dsl-libui-mac-font-button-selection.png](/images/glimmer-dsl-libui-mac-font-button-selection.png) | ![glimmer-dsl-libui-windows-font-button.png](/images/glimmer-dsl-libui-windows-font-button.png) ![glimmer-dsl-libui-windows-font-button-selection.png](/images/glimmer-dsl-libui-windows-font-button-selection.png) | ![glimmer-dsl-libui-linux-font-button.png](/images/glimmer-dsl-libui-linux-font-button.png) ![glimmer-dsl-libui-linux-font-button-selection.png](/images/glimmer-dsl-libui-linux-font-button-selection.png)
-
-[LibUI](https://github.com/kojix2/LibUI) Original Version:
-
-```ruby
-require 'libui'
-
-UI = LibUI
-
-UI.init
-
-main_window = UI.new_window('hello world', 300, 200, 1)
-
-font_button = UI.new_font_button
-font_descriptor = UI::FFI::FontDescriptor.malloc
-font_descriptor.to_ptr.free = Fiddle::RUBY_FREE
-UI.font_button_on_changed(font_button) do
-  UI.font_button_font(font_button, font_descriptor)
-  p family: font_descriptor.Family.to_s,
-    size: font_descriptor.Size,
-    weight: font_descriptor.Weight,
-    italic: font_descriptor.Italic,
-    stretch: font_descriptor.Stretch
-end
-
-UI.window_on_closing(main_window) do
-  puts 'Bye Bye'
-  UI.control_destroy(main_window)
-  UI.quit
-  0
-end
-
-UI.window_set_child(main_window, font_button)
-UI.control_show(main_window)
-
-UI.main
-UI.quit
-
-```
 
 [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version (with [data-binding](#data-binding)):
 
@@ -564,8 +321,6 @@ window('color button', 240) {
 
 ## Date Time Picker
 
-[examples/date_time_picker.rb](/examples/date_time_picker.rb)
-
 Run with this command from the root of the project if you cloned the project:
 
 ```
@@ -582,99 +337,13 @@ Mac | Windows | Linux
 ----|---------|------
 ![glimmer-dsl-libui-mac-date-time-picker.png](/images/glimmer-dsl-libui-mac-date-time-picker.png) | ![glimmer-dsl-libui-windows-date-time-picker.png](/images/glimmer-dsl-libui-windows-date-time-picker.png) | ![glimmer-dsl-libui-linux-date-time-picker.png](/images/glimmer-dsl-libui-linux-date-time-picker.png)
 
-[LibUI](https://github.com/kojix2/LibUI) Original Version:
-
-```ruby
-require 'libui'
-
-UI = LibUI
-
-UI.init
-
-vbox = UI.new_vertical_box
-
-date_time_picker = UI.new_date_time_picker
-
-time = UI::FFI::TM.malloc
-
-UI.date_time_picker_on_changed(date_time_picker) do
-  UI.date_time_picker_time(date_time_picker, time)
-  p sec: time.tm_sec,
-    min: time.tm_min,
-    hour: time.tm_hour,
-    mday: time.tm_mday,
-    mon: time.tm_mon,
-    year: time.tm_year,
-    wday: time.tm_wday,
-    yday: time.tm_yday,
-    isdst: time.tm_isdst
-end
-UI.box_append(vbox, date_time_picker, 1)
-
-main_window = UI.new_window('Date Time Pickers', 300, 200, 1)
-UI.window_on_closing(main_window) do
-  puts 'Bye Bye'
-  UI.control_destroy(main_window)
-  UI.quit
-  0
-end
-UI.window_set_child(main_window, vbox)
-UI.control_show(main_window)
-
-UI.main
-UI.quit
-```
-
 [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version (with [data-binding](#data-binding)):
 
-```ruby
-require 'glimmer-dsl-libui'
-
-class DateTimePicker
-  include Glimmer
-  
-  attr_accessor :picked_time
-  
-  def launch
-    window('Date Time Pickers', 300, 200) {
-      vertical_box {
-        date_time_picker {
-          time <=> [self, :picked_time, after_write: ->(time) { p time }]
-        }
-      }
-      
-      on_closing do
-        puts 'Bye Bye'
-      end
-    }.show
-  end
-end
-
-DateTimePicker.new.launch
-```
+[examples/date_time_picker.rb](/examples/date_time_picker.rb)
 
 [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 2 (without [data-binding](#data-binding)):
 
-```ruby
-require 'glimmer-dsl-libui'
-
-include Glimmer
-
-window('Date Time Pickers', 300, 200) {
-  vertical_box {
-    date_time_picker { |dtp|
-      on_changed do
-        time = dtp.time
-        p time
-      end
-    }
-  }
-  
-  on_closing do
-    puts 'Bye Bye'
-  end
-}.show
-```
+[examples/date_time_picker2.rb](/examples/date_time_picker2.rb)
 
 ## Form
 
@@ -808,71 +477,6 @@ Mac | Windows | Linux
 ----|---------|------
 ![glimmer-dsl-libui-mac-basic-table.png](/images/glimmer-dsl-libui-mac-basic-table.png) | ![glimmer-dsl-libui-windows-basic-table.png](/images/glimmer-dsl-libui-windows-basic-table.png) | ![glimmer-dsl-libui-linux-basic-table.png](/images/glimmer-dsl-libui-linux-basic-table.png)
 
-[LibUI](https://github.com/kojix2/LibUI) Original Version:
-
-```ruby
-require 'libui'
-
-UI = LibUI
-
-UI.init
-
-main_window = UI.new_window('Animal sounds', 300, 200, 1)
-
-hbox = UI.new_horizontal_box
-UI.window_set_child(main_window, hbox)
-
-data = [
-  %w[cat meow],
-  %w[dog woof],
-  %w[checken cock-a-doodle-doo],
-  %w[horse neigh],
-  %w[cow moo]
-]
-
-# Protects BlockCaller objects from garbage collection.
-@blockcaller = []
-def rbcallback(*args, &block)
-  args << [0] if args.size == 1 # Argument types are ommited
-  blockcaller = Fiddle::Closure::BlockCaller.new(*args, &block)
-  @blockcaller << blockcaller
-  blockcaller
-end
-
-model_handler = UI::FFI::TableModelHandler.malloc
-model_handler.NumColumns   = rbcallback(4) { 2 }
-model_handler.ColumnType   = rbcallback(4) { 0 }
-model_handler.NumRows      = rbcallback(4) { 5 }
-model_handler.CellValue    = rbcallback(1, [1, 1, 4, 4]) do |_, _, row, column|
-  UI.new_table_value_string(data[row][column])
-end
-model_handler.SetCellValue = rbcallback(0, [0]) {}
-
-model = UI.new_table_model(model_handler)
-
-table_params = UI::FFI::TableParams.malloc
-table_params.Model = model
-table_params.RowBackgroundColorModelColumn = -1
-
-table = UI.new_table(table_params)
-UI.table_append_text_column(table, 'Animal', 0, -1)
-UI.table_append_text_column(table, 'Description', 1, -1)
-
-UI.box_append(hbox, table, 1)
-UI.control_show(main_window)
-
-UI.window_on_closing(main_window) do
-  puts 'Bye Bye'
-  UI.control_destroy(main_window)
-  UI.free_table_model(model)
-  UI.quit
-  0
-end
-
-UI.main
-UI.quit
-```
-
 [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
 
 ```ruby
@@ -925,86 +529,6 @@ ruby -r glimmer-dsl-libui -e "require 'examples/basic_table_image'"
 Mac | Windows | Linux
 ----|---------|------
 ![glimmer-dsl-libui-mac-basic-table-image.png](/images/glimmer-dsl-libui-mac-basic-table-image.png) | ![glimmer-dsl-libui-windows-basic-table-image.png](/images/glimmer-dsl-libui-windows-basic-table-image.png) | ![glimmer-dsl-libui-linux-basic-table-image.png](/images/glimmer-dsl-libui-linux-basic-table-image.png)
-
-[LibUI](https://github.com/kojix2/LibUI) Original Version:
-
-```ruby
-# NOTE:
-# This example displays images that can be freely downloaded from the Studio Ghibli website.
-
-require 'libui'
-require 'chunky_png'
-require 'open-uri'
-
-UI = LibUI
-
-UI.init
-
-main_window = UI.new_window('The Red Turtle', 310, 350, 0)
-
-hbox = UI.new_horizontal_box
-UI.window_set_child(main_window, hbox)
-
-IMAGES = []
-
-50.times do |i|
-  url = format('https://www.ghibli.jp/gallery/thumb-redturtle%03d.png', (i + 1))
-  puts "Processing Image: #{url}"
-  f = URI.open(url)
-  canvas = ChunkyPNG::Canvas.from_io(f)
-  f.close
-  data = canvas.to_rgba_stream
-  width = canvas.width
-  height = canvas.height
-  image = UI.new_image(width, height)
-  UI.image_append(image, data, width, height, width * 4)
-  IMAGES << image
-rescue StandardError => e
-  warn url, e.message
-end
-
-# Protects BlockCaller objects from garbage collection.
-@blockcaller = []
-def rbcallback(*args, &block)
-  args << [0] if args.size == 1 # Argument types are ommited
-  blockcaller = Fiddle::Closure::BlockCaller.new(*args, &block)
-  @blockcaller << blockcaller
-  blockcaller
-end
-
-model_handler = UI::FFI::TableModelHandler.malloc
-model_handler.NumColumns   = rbcallback(4) { 1 }
-model_handler.ColumnType   = rbcallback(4) { 1 } # Image
-model_handler.NumRows      = rbcallback(4) { IMAGES.size }
-model_handler.CellValue    = rbcallback(1, [1, 1, 4, 4]) do |_, _, row, _column|
-  UI.new_table_value_image(/images[row])
-end
-model_handler.SetCellValue = rbcallback(0, [0]) {}
-
-model = UI.new_table_model(model_handler)
-
-table_params = UI::FFI::TableParams.malloc
-table_params.Model = model
-table_params.RowBackgroundColorModelColumn = -1
-
-table = UI.new_table(table_params)
-UI.table_append_image_column(table, 'www.ghibli.jp/works/red-turtle', 0)
-
-UI.box_append(hbox, table, 1)
-UI.control_show(main_window)
-
-UI.window_on_closing(main_window) do
-  puts 'Bye Bye'
-  UI.control_destroy(main_window)
-  UI.free_table_model(model)
-  IMAGES.each { |i| UI.free_image(i) }
-  UI.quit
-  0
-end
-
-UI.main
-UI.quit
-```
 
 [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version (passing file url as image):
 
@@ -1542,8 +1066,6 @@ Version 3 (custom sorting without data-binding):
 
 ## Basic Area
 
-[examples/basic_area.rb](/examples/basic_area.rb)
-
 Run with this command from the root of the project if you cloned the project:
 
 ```
@@ -1560,103 +1082,21 @@ Mac | Windows | Linux
 ----|---------|------
 ![glimmer-dsl-libui-mac-basic-area.png](/images/glimmer-dsl-libui-mac-basic-area.png) | ![glimmer-dsl-libui-windows-basic-area.png](/images/glimmer-dsl-libui-windows-basic-area.png) | ![glimmer-dsl-libui-linux-basic-area.png](/images/glimmer-dsl-libui-linux-basic-area.png)
 
-[LibUI](https://github.com/kojix2/LibUI) Original Version:
+[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 1 (shortcut syntax declarative retained mode):
 
-```ruby
-require 'libui'
+[examples/basic_area.rb](/examples/basic_area.rb)
 
-UI = LibUI
+[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 2 (shortcut syntax semi-declarative immediate mode `on_draw` dynamic `path` approach):
 
-UI.init
+[examples/basic_area2.rb](/examples/basic_area2.rb)
 
-handler = UI::FFI::AreaHandler.malloc
-area    = UI.new_area(handler)
-brush   = UI::FFI::DrawBrush.malloc
+[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 3 (explicit libui syntax declarative retained mode):
 
-handler_draw_event = Fiddle::Closure::BlockCaller.new(0, [1, 1, 1]) do |_, _, area_draw_params|
-  path = UI.draw_new_path(0)
-  UI.draw_path_add_rectangle(path, 0, 0, 400, 400)
-  UI.draw_path_end(path)
-  brush.Type = 0
-  brush.R = 0.4
-  brush.G = 0.4
-  brush.B = 0.8
-  brush.A = 1.0
-  area_draw_params = UI::FFI::AreaDrawParams.new(area_draw_params)
-  UI.draw_fill(area_draw_params.Context, path, brush.to_ptr)
-  UI.draw_free_path(path)
-end
+[examples/basic_area3.rb](/examples/basic_area3.rb)
 
-handler.Draw         = handler_draw_event
-handler.MouseEvent   = Fiddle::Closure::BlockCaller.new(0, [0]) {}
-handler.MouseCrossed = Fiddle::Closure::BlockCaller.new(0, [0]) {}
-handler.DragBroken   = Fiddle::Closure::BlockCaller.new(0, [0]) {}
-handler.KeyEvent     = Fiddle::Closure::BlockCaller.new(0, [0]) {}
+[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 4 (explicit libui syntax semi-declarative immediate mode `on_draw` dynamic `path` approach):
 
-box = UI.new_vertical_box
-UI.box_set_padded(box, 1)
-UI.box_append(box, area, 1)
-
-main_window = UI.new_window('Basic Area', 400, 400, 1)
-UI.window_set_margined(main_window, 1)
-UI.window_set_child(main_window, box)
-
-UI.window_on_closing(main_window) do
-  UI.control_destroy(main_window)
-  UI.quit
-  0
-end
-UI.control_show(main_window)
-
-UI.main
-UI.quit
-```
-
-[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
-
-```ruby
-require 'glimmer-dsl-libui'
-
-include Glimmer
-
-window('Basic Area', 400, 400) {
-  margined true
-  
-  vertical_box {
-    area {
-      path { # a stable path is added declaratively
-        rectangle(0, 0, 400, 400)
-        
-        fill r: 102, g: 102, b: 204, a: 1.0
-      }
-    }
-  }
-}.show
-```
-
-[Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version 2 (semi-declarative `on_draw` dynamic `path` approach):
-
-```ruby
-require 'glimmer-dsl-libui'
-
-include Glimmer
-
-window('Basic Area', 400, 400) {
-  margined true
-  
-  vertical_box {
-    area {
-      on_draw do |area_draw_params|
-        path { # a dynamic path is added semi-declaratively inside on_draw block
-          rectangle(0, 0, 400, 400)
-          
-          fill r: 102, g: 102, b: 204, a: 1.0
-        }
-      end
-    }
-  }
-}.show
-```
+[examples/basic_area4.rb](/examples/basic_area4.rb)
 
 ## Basic Scrolling Area
 
@@ -2065,122 +1505,6 @@ ruby -r glimmer-dsl-libui -e "require 'examples/basic_draw_text'"
 Mac | Windows | Linux
 ----|---------|------
 ![glimmer-dsl-libui-mac-basic-draw-text.png](/images/glimmer-dsl-libui-mac-basic-draw-text.png) | ![glimmer-dsl-libui-windows-basic-draw-text.png](/images/glimmer-dsl-libui-windows-basic-draw-text.png) | ![glimmer-dsl-libui-linux-basic-draw-text.png](/images/glimmer-dsl-libui-linux-basic-draw-text.png)
-
-[LibUI](https://github.com/kojix2/LibUI) Original Version:
-
-```ruby
-require 'libui'
-
-UI = LibUI
-
-UI.init
-
-handler = UI::FFI::AreaHandler.malloc
-area    = UI.new_area(handler)
-
-# Michael Ende (1929-1995)
-# The Neverending Story is a fantasy novel by German writer Michael Ende,
-# The English version, translated by Ralph Manheim, was published in 1983.
-
-TITLE = 'Michael Ende (1929-1995) The Neverending Story'
-
-str1 = \
-  '  At last Ygramul sensed that something was coming toward ' \
-  'her. With the speed of lightning, she turned about, confronting ' \
-  'Atreyu with an enormous steel-blue face. Her single eye had a ' \
-  'vertical pupil, which stared at Atreyu with inconceivable malignancy. '
-
-str2 = \
-  '  A cry of fear escaped Bastian. '
-
-str3 = \
-  '  A cry of terror passed through the ravine and echoed from ' \
-  'side to side. Ygramul turned her eye to left and right, to see if ' \
-  'someone else had arrived, for that sound could not have been ' \
-  'made by the boy who stood there as though paralyzed with ' \
-  'horror. '
-
-str4 = \
-  '  Could she have heard my cry? Bastion wondered in alarm. ' \
-  "But that's not possible. "
-
-str5 = \
-  '  And then Atreyu heard Ygramuls voice. It was very high ' \
-  'and slightly hoarse, not at all the right kind of voice for that ' \
-  'enormous face. Her lips did not move as she spoke. It was the ' \
-  'buzzing of a great swarm of hornets that shaped itself into ' \
-  'words. '
-
-str = ''
-attr_str = UI.new_attributed_string(str)
-
-def attr_str.append(what, color)
-  case color
-  when :red
-    color_attribute = UI.new_color_attribute(0.0, 0.5, 0.0, 0.7)
-  when :green
-    color_attribute = UI.new_color_attribute(0.5, 0.0, 0.25, 0.7)
-  end
-  start = UI.attributed_string_len(self)
-  UI.attributed_string_append_unattributed(self, what)
-  UI.attributed_string_set_attribute(self, color_attribute, start, start + what.size)
-  UI.attributed_string_append_unattributed(self, "\n\n")
-end
-
-attr_str.append(str1, :green)
-attr_str.append(str2, :red)
-attr_str.append(str3, :green)
-attr_str.append(str4, :red)
-attr_str.append(str5, :green)
-
-Georgia = 'Georgia'
-
-handler_draw_event = Fiddle::Closure::BlockCaller.new(0, [1, 1, 1]) do |_, _, adp|
-  area_draw_params = UI::FFI::AreaDrawParams.new(adp)
-  default_font = UI::FFI::FontDescriptor.malloc
-  default_font.Family = Georgia
-  default_font.Size = 13
-  default_font.Weight = 500
-  default_font.Italic = 0
-  default_font.Stretch = 4
-  params = UI::FFI::DrawTextLayoutParams.malloc
-
-  # UI.font_button_font(font_button, default_font)
-  params.String = attr_str
-  params.DefaultFont = default_font
-  params.Width = area_draw_params.AreaWidth
-  params.Align = 0
-  text_layout = UI.draw_new_text_layout(params)
-  UI.draw_text(area_draw_params.Context, text_layout, 0, 0)
-  UI.draw_free_text_layout(text_layout)
-end
-
-handler.Draw         = handler_draw_event
-# Assigning to local variables
-# This is intended to protect Fiddle::Closure from garbage collection.
-handler.MouseEvent   = (c1 = Fiddle::Closure::BlockCaller.new(0, [0]) {})
-handler.MouseCrossed = (c2 = Fiddle::Closure::BlockCaller.new(0, [0]) {})
-handler.DragBroken   = (c3 = Fiddle::Closure::BlockCaller.new(0, [0]) {})
-handler.KeyEvent     = (c4 = Fiddle::Closure::BlockCaller.new(0, [0]) {})
-
-box = UI.new_vertical_box
-UI.box_set_padded(box, 1)
-UI.box_append(box, area, 1)
-
-main_window = UI.new_window(TITLE, 600, 400, 1)
-UI.window_set_margined(main_window, 1)
-UI.window_set_child(main_window, box)
-
-UI.window_on_closing(main_window) do
-  UI.control_destroy(main_window)
-  UI.quit
-  0
-end
-UI.control_show(main_window)
-
-UI.main
-UI.quit
-```
 
 [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version:
 

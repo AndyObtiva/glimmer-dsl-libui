@@ -5,11 +5,9 @@ include Glimmer
 window('Basic Area', 400, 400) {
   margined true
   
-  vertical_box {
-    area {
-      rectangle(0, 0, 400, 400) { # stable implicit path shape, added declaratively
-        fill r: 102, g: 102, b: 204, a: 1.0
-      }
+  area {
+    rectangle(0, 0, 400, 400) { # stable implicit path shape, added declaratively
+      fill r: 102, g: 102, b: 204, a: 1.0
     }
   }
 }.show

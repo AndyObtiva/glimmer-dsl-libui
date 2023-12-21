@@ -2,6 +2,7 @@
 
 ## 0.11.7
 
+- Refactor/simplify examples by removing unnecessary `vertical_box`/`horizontal_box` uses
 - Fix issue with `table` `checkbox_text_color_column` checkbox edits not working
 
 ## 0.11.6
