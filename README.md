@@ -3800,6 +3800,8 @@ Last but not least, Ruby recently supported WASM, including the ability to [pack
 
 ## Glimmer Style Guide
 
+The code of the Glimmer GUI DSL is not standard imperative Ruby code because it represents a declarative Domain Specific Language for describing the hierarchical structure of a Graphical User Interface, meaning a language embedded within Ruby that is slightly separate from Ruby. So, it is important that it has a declarative style that helps Software Engineers focus on the visual aspect of the Graphical User Interface in a highly productive manner. As such, multi-line blocks intentionally do not use imperative words like `do; end` that slow readability down, yet the declarative `{}` style that helps give a quick visual view of GUI component nesting at a glance. However, MVC Views are observed for changes by listeners that then invoke imperative logic in Models, so listener multi-line blocks do have the `do; end` style to clearly distinguish imperative code from declarative code in Views. In summary, the Ruby Style Guide is not applicable when writing Glimmer GUI DSL code. Software Engineers must adhere to the Glimmer Style Guide for View code instead to cater to the style requirements of both declarative DSL code and imperative Ruby code.
+
 **1 - Control arguments are always wrapped by parentheses.**
 
 Example:
