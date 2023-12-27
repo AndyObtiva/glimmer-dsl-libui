@@ -2144,6 +2144,8 @@ The `area` control is a canvas-like control for drawing paths that can be used i
 
 Note that when nesting an `area` directly underneath `window` (without a layout control like `vertical_box`), it is automatically reparented with `vertical_box` in between the `window` and `area` since it would not show up on Linux otherwise.
 
+Also, note that Canvas graphics performance is a bit slow today due to the Ruby LibUI binding making Canvas drawing calls with FFI. There is currently work under way to re-implement the Canvas drawing calls with Native Extensions, which should speed up performance by 10x-100x once fully implemented.
+
 Here is an example of a declarative `area` with a stable path (you may copy/paste in [`girb`](#girb-glimmer-irb)):
 
 ```ruby
