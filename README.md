@@ -4299,7 +4299,7 @@ Note that the latest development sometimes takes place in the [development](http
 
 [MIT](LICENSE.txt)
 
-Copyright (c) 2021-2023 Andy Maleh
+Copyright (c) 2021-2024 Andy Maleh
 
 --
 
