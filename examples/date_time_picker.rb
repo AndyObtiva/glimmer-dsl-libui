@@ -1,25 +1,25 @@
-# frozen_string_literal: true
-
 require 'glimmer-dsl-libui'
 
-class DateTimePicker
-  include Glimmer
-  
-  attr_accessor :picked_time
-  
-  def launch
-    window('Date Time Pickers', 300, 200) {
-      vertical_box {
-        date_time_picker {
-          time <=> [self, :picked_time, after_write: ->(time) { p time }]
-        }
-      }
-      
-      on_closing do
-        puts 'Bye Bye'
-      end
-    }.show
-  end
+class Event
+  attr_accessor :time
 end
 
-DateTimePicker.new.launch
+class DateTimePickerApplication
+  include Glimmer::LibUI::Application
+  
+  before_body do
+    @event = Event.new
+  end
+  
+  body {
+    window('Date Time Pickers', 300, 200) {
+      date_time_picker {
+        time <=> [@event, :time,
+                   after_write: ->(time) { p time }
+                 ]
+      }
+    }
+  }
+end
+
+DateTimePickerApplication.launch

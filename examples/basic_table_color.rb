@@ -89,16 +89,14 @@ class BasicTableColor
   
   def launch
     window('Animals', 500, 200) {
-      horizontal_box {
-        table {
-          text_color_column('Animal')
-          text_color_column('Sound')
-          checkbox_text_color_column('Description')
-          image_text_color_column('GUI')
-          background_color_column # must always be the last column and always expects data-binding model attribute `background_color` when binding to Array of models
-    
-          cell_rows <= [self, :animals, column_attributes: {'Animal' => :name_color, 'Sound' => :sound_color, 'Description' => :mammal_description_color, 'GUI' => :image_description_color}]
-        }
+      table {
+        text_color_column('Animal')
+        text_color_column('Sound')
+        checkbox_text_color_column('Description')
+        image_text_color_column('GUI')
+        background_color_column # must always be the last column and always expects data-binding model attribute `background_color` when binding to Array of models
+  
+        cell_rows <= [self, :animals, column_attributes: {'Animal' => :name_color, 'Sound' => :sound_color, 'Description' => :mammal_description_color, 'GUI' => :image_description_color}]
       }
     }.show
   end

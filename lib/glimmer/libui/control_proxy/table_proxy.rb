@@ -577,6 +577,11 @@ module Glimmer
         end
         
         def register_cell_rows_observer
+          # TODO update all the each_with_index calls below to work differently when value is an Enumerator
+          # Perhaps, call ::LibUI.table_model_row_inserted(model, row) not from here, yet from the place where
+          # we call `next` on the Enumerator to grab more elements
+          # There will need to be extra intelligence for figuring out when to delete instead of
+          # deleting a million rows when a change occurs
           @cell_rows_observer = Glimmer::DataBinding::Observer.proc do |new_cell_rows|
             if !@last_cell_rows.nil? # not initial load of table
               if @cell_rows.size < @last_cell_rows.size
