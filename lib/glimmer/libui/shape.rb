@@ -282,11 +282,11 @@ module Glimmer
       end
       
       def can_handle_listener?(listener_name)
-        area_proxy.can_handle_listener?(listener_name)
+        area_proxy&.can_handle_listener?(listener_name)
       end
       
       def handle_listener(listener_name, &listener)
-        area_proxy.handle_listener(listener_name) do |event|
+        area_proxy&.handle_listener(listener_name) do |event|
           listener.call(event) if include?(event[:x], event[:y])
         end
       end

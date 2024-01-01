@@ -1,8 +1,12 @@
 # Change Log
 
+## 0.11.8
+
+- Fix issue with applying a `transform` inside a `Glimmer::LibUI::Application`, `Glimmer::LibUI::CustomControl`, `Glimmer::LibUI::CustomWindow`, or `Glimmer::LibUI::CustomShape` (it otherwise worked when using Glimmer GUI DSL in top-level object)
+- Refactor/simplify examples by removing unnecessary `vertical_box`/`horizontal_box` uses
+
 ## 0.11.7
 
-- Refactor/simplify examples by removing unnecessary `vertical_box`/`horizontal_box` uses
 - Fix issue with `table` `checkbox_text_color_column` checkbox edits not working
 
 ## 0.11.6
