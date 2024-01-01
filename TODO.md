@@ -5,7 +5,6 @@
 - Fix bug with table lazy loading and remove lazy_table examples that do not use a lazy enumerator
 - Support block properties to enable inserting content anywhere in a custom control
 - Change scaffolded application main window from namespace/view/namespace.rb to namespace/view/namespace_application.rb
-- Apply transform when rendering area shapes in Immediate Mode
 - Fix issue (if exists.. needs testing/confirmation) with not processing nested shape properties when nested under custom shapes
 - Set stroke color to block by default
 - Set fill color to white by default
