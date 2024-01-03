@@ -25,6 +25,7 @@ module Glimmer
   module DSL
     module Libui
       class ContentExpression < Expression
+        # TODO rename to ContentDataBindingExpression given it is no longer a static_expression (and update in dsl.rb)
         def can_interpret?(parent, keyword, *args, &block)
           keyword == 'content' &&
             block_given? &&
