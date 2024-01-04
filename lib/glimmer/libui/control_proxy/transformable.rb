@@ -42,6 +42,7 @@ module Glimmer
       def transform(matrix = nil, &transform_body_block)
         if matrix.nil?
           if transform_body_block
+            # TODO Consider using alternate version of Engine call instead: Glimmer::DSL::Engine.interpret('transform', &transform_body_block) (or delete this comment if not needed)
             Glimmer::DSL::Engine.interpret_expression(Glimmer::DSL::Libui::ControlExpression.new, 'transform', &transform_body_block)
           else
             @transform
