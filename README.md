@@ -431,7 +431,8 @@ Learn more about the differences between various [Glimmer](https://github.com/An
     - [RubyCrumbler](#rubycrumbler)
     - [Rubio-Radio](#rubio-radio)
     - [PMV Calc](#pmv-calc)
-  - [Process](#process)
+  - [Design Principles](#design-principles)
+  - [Glimmer Process](#glimmer-process)
   - [Resources](#resources)
   - [Help](#help)
     - [Issues](#issues)
@@ -4231,13 +4232,25 @@ This is built as an exploratory software prototype by [Ari Brown](https://github
 
 ### Adamantite
 
-A local password manager written in Ruby (closed source software):
+A local password manager written in Ruby:
 
 https://rubygems.org/gems/adamantite
 
 ![Adamantite password manager](/images/glimmer-dsl-libui-mac-application-adamantite.png)
 
-## Process
+## Design Principles
+
+- The Ruby Way (including TIMTOWTDI: There Is More Than One Way To Do It)
+- Requiring the least amount of syntax possible to build GUI (Graphical User Interface)
+- Declarative syntax  that visually maps to the GUI control hierarchy
+- Ability to mix declarative and imperative code conveniently without needing awkward & verbose technologies (e.g. no XML, HTML, ERB scriptlets, JSX)
+- Computers serve Software Engineers (not Software Engineers serve Computers)
+- Think only about real world concepts directly relevant to the GUI and interacting with it (no weird non-real-world irrelevant concepts like hooks/effects/immutability)
+- The Rails Way Convention over Configuration via smart defaults and automation of low-level details
+- Modular Software Design (e.g. support for Components)
+- No premature optimizations
+
+## Glimmer Process
 
 [Glimmer Process](https://github.com/AndyObtiva/glimmer/blob/master/PROCESS.md)
 
