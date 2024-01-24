@@ -3802,7 +3802,7 @@ For Linux, simply package your app as a [Ruby Gem](https://guides.rubygems.org/w
 
 Also, there is a promising project called [ruby-packer](https://github.com/pmq20/ruby-packer) that supports all platforms.
 
-Last but not least, Ruby recently supported WASM, including the ability to [package a Ruby application as a WASI application](https://github.com/ruby/ruby.wasm#quick-example-how-to-package-your-ruby-application-as-a-wasi-application).
+Last but not least, Ruby recently supported WASM, including the ability to [package a Ruby application as a WASI application](https://github.com/ruby/ruby.wasm#quick-example-how-to-package-your-ruby-application-as-a-wasi-application). You can explore combining that with [wasm2native](https://github.com/vshymanskyy/wasm2native).
 
 ## Glimmer Style Guide
 
