@@ -3792,7 +3792,7 @@ To learn more about the [LibUI](https://github.com/kojix2/LibUI) API exposed thr
 
 ## Packaging
 
-I am documenting options for packaging, which I have not tried myself, but figured they would still be useful to add to the README.md until I can expand further effort into supporting packaging.
+If you are building a productivity tool to help with your work, then packaging the app as a Ruby gem would be a good enough solution (already supported via [Application Scaffolding](#scaffold-application)). Otherwise, I am documenting options for native executable packaging, which I have not tried myself, but figured they would still be useful to add to the README.md until I can expand further effort into supporting packaging.
 
 For Windows, the [LibUI](https://github.com/kojix2/LibUI) project recommends [OCRA](https://github.com/larsch/ocra) (One-Click Ruby Application), which builds Windows executables from Ruby source. And, there is a newer fork of the project that supports newer versions of Ruby called [OCRAN](https://github.com/Largo/ocran).
 
@@ -3802,7 +3802,7 @@ For Linux, simply package your app as a [Ruby Gem](https://guides.rubygems.org/w
 
 Also, there is a promising project called [ruby-packer](https://github.com/pmq20/ruby-packer) that supports all platforms.
 
-Last but not least, Ruby recently supported WASM, including the ability to [package a Ruby application as a WASI application](https://github.com/ruby/ruby.wasm#quick-example-how-to-package-your-ruby-application-as-a-wasi-application).
+Last but not least, Ruby recently supported WASM, including the ability to [package a Ruby application as a WASI application](https://github.com/ruby/ruby.wasm#quick-example-how-to-package-your-ruby-application-as-a-wasi-application). You can explore combining that with [wasm2native](https://github.com/vshymanskyy/wasm2native).
 
 ## Glimmer Style Guide
 
