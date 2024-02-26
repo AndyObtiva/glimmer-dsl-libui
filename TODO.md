@@ -2,6 +2,7 @@
 
 ## Next
 
+- Improve documentation for menus and how to use them (and upgrade examples containing menus to use CustomControl to show how to initialize a menu in components)
 - Fix bug with table lazy loading and remove lazy_table examples that do not use a lazy enumerator
 - Support block properties to enable inserting content anywhere in a custom control
 - Change scaffolded application main window from namespace/view/namespace.rb to namespace/view/namespace_application.rb
