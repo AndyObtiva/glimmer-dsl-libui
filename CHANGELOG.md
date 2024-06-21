@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.11.9
+
+- Support Content Data-Binding to multiple model attributes via `computed_by` option (e.g. `content(@game, :scale, computed_by: [:width, :height])` or `content(@game, computed_by: [:scale, :width, :height])` will rebuild content on changes to `:scale`, `:width`, or `:height`)
+
 ## 0.11.8
 
 - Fix issue with applying a `transform` inside a `Glimmer::LibUI::Application`, `Glimmer::LibUI::CustomControl`, `Glimmer::LibUI::CustomWindow`, or `Glimmer::LibUI::CustomShape` (it otherwise worked when using Glimmer GUI DSL in top-level object)

@@ -395,8 +395,9 @@ module Glimmer
           children.dup.each { |child| child.destroy }
           content(&content_block)
         end
+        model_binding_observer = Glimmer::DataBinding::ModelBinding.new(*binding_args)
         content_binding_observer = Glimmer::DataBinding::Observer.proc(&content_binding_work)
-        content_binding_observer.observe(*binding_args)
+        content_binding_observer.observe(model_binding_observer)
         content_binding_work.call # TODO inspect if we need to pass args here (from observed attributes) [but it's simpler not to pass anything at first]
       end
       

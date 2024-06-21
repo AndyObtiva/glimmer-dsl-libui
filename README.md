@@ -488,7 +488,7 @@ Afterwards, to access the Glimmer GUI DSL:
 
 You may learn more about the different options above with basic examples in the following subsections: [Experimentation Usage](#experimentation-usage), [Prototyping Usage](#prototyping-usage), [Serious Usage](#serious-usage).
 
-If you are new to [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) (beginner), after going through the subsections below, check out the RubyConf 2022 talk ["Building Native GUI Apps in Ruby"](https://andymaleh.blogspot.com/2023/02/rubyconf-2022-talk-video-for-building.html), [Glimmer GUI DSL Concepts](#glimmer-gui-dsl-concepts), [Glimmer Style Guide](#glimmer-style-guide), [Glimmer Command](#glimmer-command) (just the basics, how to run an app, and how to run examples to start), [Girb](#girb-glimmer-irb) and [Examples](#examples) to quickly learn through copy/paste. It is very important for beginners to go through all the [Examples](#examples) from the most basic to the most advanced while reading the README topics that relate to the examples. Alternatively, beginners can learn from the RubyConf 2023 workshop ["How To Build Desktop Applications in Ruby"](https://github.com/AndyObtiva/how-to-build-desktop-applications-in-ruby), which includes 27 step-by-step exercises. You may refer to the [API](#api) once you have gotten your feet wet with [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) and need a more detailed reference. 
+If you are new to [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) (beginner), after going through the subsections below, check out the RubyConf 2022 talk ["Building Native GUI Apps in Ruby"](https://andymaleh.blogspot.com/2023/02/rubyconf-2022-talk-video-for-building.html), [Glimmer GUI DSL Concepts](#glimmer-gui-dsl-concepts), [Glimmer Style Guide](#glimmer-style-guide), [Glimmer Command](#glimmer-command) (just the basics, how to run an app, and how to run examples to start), [Girb](#girb-glimmer-irb) and [Examples](#examples) to quickly learn through copy/paste. It is very important for beginners to go through all the [Examples](#examples) from the most basic to the most advanced while reading the README topics that relate to the examples. Alternatively, beginners can learn from the RubyConf 2023 workshop ["How To Build Desktop Applications in Ruby"](https://github.com/AndyObtiva/how-to-build-desktop-applications-in-ruby), which includes 27 step-by-step exercises. You may refer to the [API](#api) once you have gotten your feet wet with [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) and need a more detailed reference.
 
 If you encounter any issues with the documentation, get stuck with code you do not understand, or notice some out-of-date information, you may contact the project maintainers on the [Glimmer Gitter Chat](https://app.gitter.im/#/room/#AndyObtiva_glimmer:gitter.im). Also, this could be your opportunity to be a good steward of Open-Source Software by contributing a documentation fix in a GitHub Pull Request or reporting a GitHub Issue at least.
 
@@ -663,7 +663,7 @@ Mac | Windows | Linux
 
 Application scaffolding enables automatically generating the directories/files of a new desktop GUI application that follows the MVC architecture and can be packaged as a Ruby gem that includes an executable script for running the app conveniently. It also ensures that software engineers follow the recommended Glimmer DSL for LibUI conventions and best practices. Application Scaffolding greatly improves software engineering productivity when building desktop applications with [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui).
 
-Application Scaffolding relies on the juwelier Ruby gem, which expects a local Git config of [`user.name`](https://docs.github.com/en/get-started/getting-started-with-git/setting-your-username-in-git#setting-your-git-username-for-every-repository-on-your-computer) (git config --global user.name "FirstName LastName") and `github.user` (`git config --global github.user githubusername`). 
+Application Scaffolding relies on the juwelier Ruby gem, which expects a local Git config of [`user.name`](https://docs.github.com/en/get-started/getting-started-with-git/setting-your-username-in-git#setting-your-git-username-for-every-repository-on-your-computer) (git config --global user.name "FirstName LastName") and `github.user` (`git config --global github.user githubusername`).
 
 Scaffold Glimmer DSL for LibUI application with this command:
 
@@ -1666,7 +1666,51 @@ form {
 }
 ```
 
-The form above will only display fields for a model's customizable attributes, so if they change, the form content will change too. Learn more at the [Dynamic Form](/docs/examples/GLIMMER-DSL-LIBUI-ADVANCED-EXAMPLES.md#dynamic-form) example.
+The form above will only display fields for a model's customizable attributes, so if they change, the form content will change too.
+
+If you need to rebuild (re-render) content upon changes to multiple model attributes, you can use the `computed_by` option.
+
+Example:
+
+```ruby
+form {
+  stretchy false
+  
+  content(@user, :address, computed_by: [:street, :city, :zipcode]) {
+    @user.address_attributes.each do |attribute|
+      entry {
+        label attribute.to_s.split('_').map(&:capitalize).join(' ')
+        text <=> [@user, attribute]
+      }
+    end
+  }
+}
+```
+
+Now, the content block will get called when changes occur to any of `User` `address` ,`street`, `city`, or `zipcode`.
+
+If you do not have a main attribute that is computed by other attributes, you can leave the main attribute out while using `computed_by`.
+
+Example:
+
+```ruby
+form {
+  stretchy false
+  
+  content(@user, computed_by: [:street, :city, :zipcode]) {
+    @user.address_attributes.each do |attribute|
+      entry {
+        label attribute.to_s.split('_').map(&:capitalize).join(' ')
+        text <=> [@user, attribute]
+      }
+    end
+  }
+}
+```
+
+Now, the content block will get called (rerendered) when changes occur to any of `User` `street`, `city`, or `zipcode`.
+
+Learn more about Content Data-Binding at the [Dynamic Form](/docs/examples/GLIMMER-DSL-LIBUI-ADVANCED-EXAMPLES.md#dynamic-form) example.
 
 **Property**: Control properties may be declared inside keyword blocks with lower-case underscored name followed by property value args (e.g. `title "hello world"` inside `group`). Behind the scenes, properties correspond to `LibUI.control_set_property` methods.
 
