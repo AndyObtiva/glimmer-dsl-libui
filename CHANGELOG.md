@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.11.10
+
+- Fix issue with not being able to add content to the body root of a custom control by opening a block when invoking the custom control keyword
+
 ## 0.11.9
 
 - Support Content Data-Binding to multiple model attributes via `computed_by` option (e.g. `content(@game, :scale, computed_by: [:width, :height])` or `content(@game, computed_by: [:scale, :width, :height])` will rebuild content on changes to `:scale`, `:width`, or `:height`)

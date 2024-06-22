@@ -126,12 +126,13 @@ module Glimmer
       ]
       
       # libui returns the contained LibUI object
-      attr_reader :parent_proxy, :libui, :args, :keyword, :block, :content_added
+      attr_reader :parent_proxy, :parent_custom_control, :libui, :args, :keyword, :block, :content_added
       alias content_added? content_added
       
       def initialize(keyword, parent, args, &block)
         @keyword = keyword
-        @parent_proxy = parent
+        @parent_custom_control = parent if parent.is_a?(CustomControl)
+        @parent_proxy = parent.is_a?(CustomControl) ? parent.body_root : parent
         @args = args
         @block = block
         @enabled = true
