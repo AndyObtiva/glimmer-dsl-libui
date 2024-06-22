@@ -99,7 +99,7 @@ GEM
     psych (4.0.3)
       stringio
     public_suffix (5.0.3)
-    puts_debuggerer (0.13.5)
+    puts_debuggerer (1.0.0)
       awesome_print (~> 1.9.2)
     racc (1.7.1)
     rack (3.0.8)
@@ -173,7 +173,7 @@ DEPENDENCIES
   os (>= 1.0.0, < 2.0.0)
   perfect-shape (~> 1.0.8)
   psych (= 4.0.3)
-  puts_debuggerer (>= 0.13.5, < 2.0.0)
+  puts_debuggerer (>= 1.0.0, < 2.0.0)
   rake (>= 10.1.0, < 14.0.0)
   rake-tui (>= 0.2.3, < 2.0.0)
   rouge (>= 3.26.0, < 4.0.0)

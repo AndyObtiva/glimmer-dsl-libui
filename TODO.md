@@ -4,7 +4,7 @@
 
 - Improve documentation for menus and how to use them (and upgrade examples containing menus to use CustomControl to show how to initialize a menu in components)
 - Fix bug with table lazy loading and remove lazy_table examples that do not use a lazy enumerator
-- Support block properties to enable inserting content anywhere in a custom control
+- Support Custom Shape Component Slots
 - Change scaffolded application main window from namespace/view/namespace.rb to namespace/view/namespace_application.rb
 - Fix issue (if exists.. needs testing/confirmation) with not processing nested shape properties when nested under custom shapes
 - Set stroke color to block by default
@@ -181,6 +181,7 @@
 - Consider supporting Enumerable in addition to Array and Enumerator::Lazy for table cell_rows data-binding
 - Come up with a way to have an `area`'s graphics auto-scale in size when the window is resized based on the initial size of the area and the initialize size of the window. That would prevent the need for software engineers to do the scaling themselves.
 - Consider a different way for assigning values from multi-value table columns to model attributes (other than using Array)
+- Support block properties to enable inserting content anywhere in a custom control
 
 # Refactoring
 

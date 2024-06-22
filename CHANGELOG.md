@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.12.0
+
+- Custom Control Component Slots (containers that could accept content within different parts of a Custom Component)
+
 ## 0.11.10
 
 - Fix issue with not being able to add content to the body root of a custom control by opening a block when invoking the custom control keyword

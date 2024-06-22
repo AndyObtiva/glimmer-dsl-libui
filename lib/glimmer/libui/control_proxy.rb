@@ -126,14 +126,18 @@ module Glimmer
       ]
       
       # libui returns the contained LibUI object
-      attr_reader :parent_proxy, :parent_custom_control, :libui, :args, :keyword, :block, :content_added
+      attr_reader :parent_proxy, :parent_custom_control, :custom_control, :libui, :args, :options, :slot, :keyword, :block, :content_added
       alias content_added? content_added
       
       def initialize(keyword, parent, args, &block)
         @keyword = keyword
+        @custom_control = CustomControl.custom_controls_being_interpreted.last
         @parent_custom_control = parent if parent.is_a?(CustomControl)
         @parent_proxy = parent.is_a?(CustomControl) ? parent.body_root : parent
         @args = args
+        @options = args.last.is_a?(Hash) ? args.pop : {}
+        @slot = options[:slot]
+        custom_control.slot_controls[@slot] = self if @slot && custom_control
         @block = block
         @enabled = true
         build_control

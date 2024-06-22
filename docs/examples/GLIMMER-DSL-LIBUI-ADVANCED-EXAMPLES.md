@@ -20,6 +20,7 @@
   - [Login](#login)
   - [Method-Based Custom Controls](#method-based-custom-controls)
   - [Class-Based Custom Controls](#class-based-custom-controls)
+  - [Class-Based Custom Control Slots](#class-based-custom-control-slots)
   - [Area-Based Custom Controls](#area-based-custom-controls)
   - [Midi Player](#midi-player)
   - [Snake](#snake)
@@ -1546,131 +1547,31 @@ Mac | Windows | Linux
 ----|---------|------
 ![glimmer-dsl-libui-mac-method-based-custom-keyword.png](/images/glimmer-dsl-libui-mac-method-based-custom-keyword.png) | ![glimmer-dsl-libui-windows-method-based-custom-keyword.png](/images/glimmer-dsl-libui-windows-method-based-custom-keyword.png) | ![glimmer-dsl-libui-linux-method-based-custom-keyword.png](/images/glimmer-dsl-libui-linux-method-based-custom-keyword.png)
 
-New [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) Version (with [data-binding](#data-binding)):
+## Class-Based Custom Control Slots
 
-```ruby
-require 'glimmer-dsl-libui'
-require 'facets'
+Class-Based Custom Controls support slots, which enable adding content to various parts of a custom control, like a header, a footer, etc...
 
-Address = Struct.new(:street, :p_o_box, :city, :state, :zip_code)
+Code: [examples/class_based_custom_control_slots.rb](/examples/class_based_custom_control_slots.rb)
 
-class FormField
-  include Glimmer::LibUI::CustomControl
-  
-  options :model, :attribute
-  
-  body {
-    entry { |e|
-      label attribute.to_s.underscore.split('_').map(&:capitalize).join(' ')
-      text <=> [model, attribute]
-    }
-  }
-end
+Run with `glimmer examples` command if you installed the [glimmer-dsl-libui Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
 
-class AddressForm
-  include Glimmer::LibUI::CustomControl
-  
-  options :address
-  
-  body {
-    form {
-      form_field(model: address, attribute: :street)
-      form_field(model: address, attribute: :p_o_box)
-      form_field(model: address, attribute: :city)
-      form_field(model: address, attribute: :state)
-      form_field(model: address, attribute: :zip_code)
-    }
-  }
-end
-
-class LabelPair
-  include Glimmer::LibUI::CustomControl
-  
-  options :model, :attribute, :value
-  
-  body {
-    horizontal_box {
-      label(attribute.to_s.underscore.split('_').map(&:capitalize).join(' '))
-      label(value.to_s) {
-        text <= [model, attribute]
-      }
-    }
-  }
-end
-
-class AddressView
-  include Glimmer::LibUI::CustomControl
-  
-  options :address
-  
-  body {
-    vertical_box {
-      address.each_pair do |attribute, value|
-        label_pair(model: address, attribute: attribute, value: value)
-      end
-    }
-  }
-end
-
-class ClassBasedCustomControls
-  include Glimmer::LibUI::Application # alias: Glimmer::LibUI::CustomWindow
-  
-  before_body do
-    @address1 = Address.new('123 Main St', '23923', 'Denver', 'Colorado', '80014')
-    @address2 = Address.new('2038 Park Ave', '83272', 'Boston', 'Massachusetts', '02101')
-  end
-  
-  body {
-    window('Class-Based Custom Keyword') {
-      margined true
-      
-      horizontal_box {
-        vertical_box {
-          label('Address 1') {
-            stretchy false
-          }
-          
-          address_form(address: @address1)
-          
-          horizontal_separator {
-            stretchy false
-          }
-          
-          label('Address 1 (Saved)') {
-            stretchy false
-          }
-          
-          address_view(address: @address1)
-        }
-        
-        vertical_separator {
-          stretchy false
-        }
-        
-        vertical_box {
-          label('Address 2') {
-            stretchy false
-          }
-          
-          address_form(address: @address2)
-          
-          horizontal_separator {
-            stretchy false
-          }
-          
-          label('Address 2 (Saved)') {
-            stretchy false
-          }
-          
-          address_view(address: @address2)
-        }
-      }
-    }
-  }
-end
-
-ClassBasedCustomControls.launch
 ```
+glimmer examples
+```
+
+Run directly with this command if you installed the [glimmer-dsl-libui Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui):
+
+```
+ruby -r glimmer-dsl-libui -e "require 'examples/class_based_custom_control_slots'"
+```
+
+Run with this command from the root of the project if you cloned the project:
+
+```
+bin/glimmer examples/class_based_custom_control_slots.rb
+```
+
+![glimmer-dsl-libui-mac-class-based-custom-control-slots.png](/images/glimmer-dsl-libui-mac-class-based-custom-control-slots.png)
 
 ## Area-Based Custom Controls
 

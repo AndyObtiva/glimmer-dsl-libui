@@ -19,37 +19,26 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'glimmer/dsl/engine'
-Dir[File.expand_path('*_expression.rb', __dir__)].each {|f| require f}
-
-# Glimmer DSL expression configuration module
-#
-# When DSL engine interprets an expression, it attempts to handle
-# with expressions listed here in the order specified.
-
-# Every expression has a corresponding Expression subclass
-# in glimmer/dsl
+require 'glimmer'
+require 'glimmer/dsl/expression'
+require 'glimmer/libui/custom_control'
 
 module Glimmer
   module DSL
     module Libui
-      Engine.add_dynamic_expressions(
-        Libui,
-        %w[
-          listener
-          data_binding
-          shine_data_binding
-          property
-          content
-          string
-          operation
-          control
-          custom_control_slot_content
-          custom_control
-          shape
-          custom_shape
-        ]
-      )
+      class CustomControlSlotContentExpression < Expression
+        def can_interpret?(parent, keyword, *args, &block)
+          slot = keyword.to_s.to_sym
+          block_given? &&
+            parent.is_a?(Glimmer::LibUI::CustomControl) &&
+            parent.slot_controls.keys.include?(slot)
+        end
+  
+        def interpret(parent, keyword, *args, &block)
+          slot = keyword.to_s.to_sym
+          parent.slot_controls[slot]&.content(&block)
+        end
+      end
     end
   end
 end

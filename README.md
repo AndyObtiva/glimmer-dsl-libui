@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.11.10
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.12.0
 ## Prerequisite-Free Ruby Desktop Development Cross-Platform Native GUI Library  ([Fukuoka Award Winning](http://www.digitalfukuoka.jp/topics/187?locale=ja))
 ### The Quickest Way From Zero To GUI
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
@@ -28,7 +28,7 @@ The main trade-off in using [Glimmer DSL for LibUI](https://rubygems.org/gems/gl
 - [Declarative DSL syntax](#glimmer-gui-dsl-concepts) that visually maps to the GUI control hierarchy
 - [Convention over configuration](#smart-defaults-and-conventions) via smart defaults and automation of low-level details
 - Requiring the [least amount of syntax](#glimmer-gui-dsl-concepts) possible to build GUI
-- [Custom Component](#custom-components) support (Custom Controls, Custom Windows, and Custom Shapes), including external Ruby gems (e.g. [Graphs and Charts](https://github.com/AndyObtiva/glimmer-libui-cc-graphs_and_charts))
+- [Custom Component](#custom-components) support (Custom Controls, Custom Windows, and Custom Shapes), including [Component Slots](#class-based-custom-control-slots) and external Ruby gems (e.g. [Graphs and Charts](https://github.com/AndyObtiva/glimmer-libui-cc-graphs_and_charts))
 - [Bidirectional/Unidirectional Data-Binding](#data-binding) to declaratively wire and automatically synchronize GUI Views with Models
 - [Scaffolding](#scaffold-application) for new custom windows/controls, apps, and gems
 - [Far Future Plan] Native-Executable [packaging](#packaging) on Mac, Windows, and Linux.
@@ -456,7 +456,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.11.10'
+gem 'glimmer-dsl-libui', '~> 0.12.0'
 ```
 
 Test that installation worked by running the [Glimmer Meta-Example](#examples):
@@ -3073,9 +3073,11 @@ Custom components like custom controls, custom windows, and custom shapes can be
 
 For example, you can define a custom `address_view` control as an aggregate of multiple `label` controls to reuse multiple times as a standard address View, displaying street, city, state, and zip code.
 
+Component slots are also supported, meaning containers that could accept content within different parts of a component (e.g. `address_form` can have a `header` slot and a `footer` slot to display extra information about the address being entered).
+
 There are two ways to define custom components:
 - Method-Based: simply define a method representing the custom component you want (e.g. `address_view`) with any options needed (e.g. `address(address_model: some_model)`).
-- Class-Based: define a class matching the camelcased name of the custom component by convention (e.g. the `address_view` custom component keyword would have a class called `AddressView`) and `include Glimmer::LibUI::CustomControl`, `include Glimmer::LibUI::CustomWindow`, or `include Glimmer::LibUI::CustomShape` depending on if the component represents a standard control, a whole window, or an [area canvas graphics shape](#area-path-shapes). Classes add the benefit of being able to distribute the custom components into a separate file for external reuse from multiple views or for sharing as a Ruby gem (e.g. [Graphs and Charts Ruby gem](https://github.com/AndyObtiva/glimmer-libui-cc-graphs_and_charts)).
+- Class-Based: define a class matching the camelcased name of the custom component by convention (e.g. the `address_view` custom component keyword would have a class called `AddressView`) and `include Glimmer::LibUI::CustomControl`, `include Glimmer::LibUI::CustomWindow`, or `include Glimmer::LibUI::CustomShape` depending on if the component represents a standard control, a whole window, or an [area canvas graphics shape](#area-path-shapes). Classes add the benefit of being able to distribute the custom components into a separate file for external reuse from multiple views or for sharing as a Ruby gem (e.g. [Graphs and Charts Ruby gem](https://github.com/AndyObtiva/glimmer-libui-cc-graphs_and_charts)). They also support Component Slots.
 
 It is OK to use the terms "custom control", "custom component", and "custom keyword" synonymously though "custom component" is a broader term that covers things other than controls too like custom shapes (e.g. `cube`), custom attributed strings (e.g. `alternating_color_string`), and custom transforms (`isometric_transform`).
 
@@ -3181,6 +3183,8 @@ window('Method-Based Custom Keyword') {
 ![glimmer-dsl-libui-mac-method-based-custom-keyword.png](images/glimmer-dsl-libui-mac-method-based-custom-keyword.png)
 
 #### Class-Based Custom Components
+
+##### Class-Based Custom Controls
 
 Define a class matching the camelcased name of the [custom control](#custom-components) by convention (e.g. the `address_view` [custom control](#custom-components) keyword would have a class called `AddressView`) and `include Glimmer::LibUI::CustomControl`. Classes add the benefit of being able to distribute the [custom control](#custom-components)s into separate files and reuse externally from multiple places or share via Ruby gems.
 
@@ -3311,6 +3315,212 @@ ClassBasedCustomControls.launch
 ```
 
 ![glimmer-dsl-libui-mac-method-based-custom-keyword.png](images/glimmer-dsl-libui-mac-method-based-custom-keyword.png)
+
+##### Class-Based Custom Control Slots
+
+Component can have Component Slots inside layout container controls: `vertical_box`, `horizontal_box`, `form`, and `grid`.
+
+Simply pass a `slot: slot_name` option to the layout container control to designate it as a Component Slot inside a Custom Control class (in the example below, we have a `:header` slot and a `:footer` slot):
+
+```ruby
+  body {
+    vertical_box {
+      vertical_box(slot: :header) {
+        stretchy false
+      }
+      form {
+        form_field(model: address, attribute: :street)
+        form_field(model: address, attribute: :p_o_box)
+        form_field(model: address, attribute: :city)
+        form_field(model: address, attribute: :state)
+        form_field(model: address, attribute: :zip_code)
+      }
+      vertical_box(slot: :footer) {
+        stretchy false
+      }
+    }
+  }
+```
+
+Next, in the Custom Control consuming code, open a block matching the name of the Component Slot (e.g. `header {}` and `footer {}`):
+
+```ruby
+          address_form(address: @address) {
+            header {
+              label('Billing Address') {
+                stretchy false
+              }
+            }
+            footer {
+              label('Billing address is used for online payments') {
+                stretchy false
+              }
+            }
+          }
+```
+
+Note that the slotted labels can include properties that apply to their Component Slot container like `stretchy false`.
+
+![glimmer-dsl-libui-mac-class-based-custom-control-slots.png](/images/glimmer-dsl-libui-mac-class-based-custom-control-slots.png)
+
+Example ([Class-Based Custom Control Slots](/docs/examples/GLIMMER-DSL-LIBUI-ADVANCED-EXAMPLES.md#class-based-custom-control-slots)):
+
+```ruby
+require 'glimmer-dsl-libui'
+require 'facets'
+
+Address = Struct.new(:street, :p_o_box, :city, :state, :zip_code)
+
+class FormField
+  include Glimmer::LibUI::CustomControl
+  
+  options :model, :attribute
+  
+  body {
+    entry { |e|
+      label attribute.to_s.underscore.split('_').map(&:capitalize).join(' ')
+      text <=> [model, attribute]
+    }
+  }
+end
+
+class AddressForm
+  include Glimmer::LibUI::CustomControl
+  
+  option :address
+  
+  body {
+    vertical_box {
+      vertical_box(slot: :header) {
+        stretchy false
+      }
+      form {
+        form_field(model: address, attribute: :street)
+        form_field(model: address, attribute: :p_o_box)
+        form_field(model: address, attribute: :city)
+        form_field(model: address, attribute: :state)
+        form_field(model: address, attribute: :zip_code)
+      }
+      vertical_box(slot: :footer) {
+        stretchy false
+      }
+    }
+  }
+end
+
+class LabelPair
+  include Glimmer::LibUI::CustomControl
+  
+  options :model, :attribute, :value
+  
+  body {
+    horizontal_box {
+      label(attribute.to_s.underscore.split('_').map(&:capitalize).join(' '))
+      label(value.to_s) {
+        text <= [model, attribute]
+      }
+    }
+  }
+end
+
+class AddressView
+  include Glimmer::LibUI::CustomControl
+  
+  options :address
+  
+  body {
+    vertical_box {
+      vertical_box(slot: :header) {
+        stretchy false
+      }
+      address.each_pair do |attribute, value|
+        label_pair(model: address, attribute: attribute, value: value)
+      end
+    }
+  }
+end
+
+class ClassBasedCustomControlSlots
+  include Glimmer::LibUI::Application # alias: Glimmer::LibUI::CustomWindow
+  
+  before_body do
+    @address1 = Address.new('123 Main St', '23923', 'Denver', 'Colorado', '80014')
+    @address2 = Address.new('2038 Park Ave', '83272', 'Boston', 'Massachusetts', '02101')
+  end
+  
+  body {
+    window('Class-Based Custom Control Slots') {
+      margined true
+      
+      horizontal_box {
+        vertical_box {
+          address_form(address: @address1) {
+            header {
+              label('Shipping Address') {
+                stretchy false
+              }
+            }
+            footer {
+              label('Shipping address is used for mailing purchases') {
+                stretchy false
+              }
+            }
+          }
+          
+          horizontal_separator {
+            stretchy false
+          }
+          
+          address_view(address: @address1) {
+            header {
+              label('Shipping Address (Saved)') {
+                stretchy false
+              }
+            }
+          }
+        }
+        
+        vertical_separator {
+          stretchy false
+        }
+        
+        vertical_box {
+          address_form(address: @address2) {
+            header {
+              label('Billing Address') {
+                stretchy false
+              }
+            }
+            footer {
+              label('Billing address is used for online payments') {
+                stretchy false
+              }
+            }
+          }
+          
+          horizontal_separator {
+            stretchy false
+          }
+                    
+          address_view(address: @address2) {
+            header {
+              label('Billing Address (Saved)') {
+                stretchy false
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+end
+
+ClassBasedCustomControlSlots.launch
+```
+
+![glimmer-dsl-libui-mac-class-based-custom-control-slots.png](/images/glimmer-dsl-libui-mac-class-based-custom-control-slots.png)
+
+##### Class-Based Custom Shapes
 
 Example of a `cube` custom shape (you may copy/paste in [`girb`](#girb-glimmer-irb)):
 
@@ -3484,13 +3694,15 @@ BasicCustomShape.launch
 
 ![glimmer-dsl-libui-mac-basic-custom-shape.gif](/images/glimmer-dsl-libui-mac-basic-composite-shape.gif)
 
+##### Class-Based Custom Windows (Applications)
+
 You can also define Custom Window keywords, that is [custom control](#custom-components)s with `window` being the body root. These are also known as Applications. To define a Custom Window, you `include Glimmer::LibUI::CustomWindow` or `include Glimmer:LibUI::Application` and then you can invoke the `::launch` method on the class.
 
 The [`area`](#area-api) control can be utilized to build non-native custom controls from scratch by leveraging vector graphics, formattable text, keyboard events, and mouse events. This is demonstrated in the [Area-Based Custom Controls](/docs/examples/GLIMMER-DSL-LIBUI-ADVANCED-EXAMPLES.md#area-based-custom-controls) example.
 
 Defining custom controls enables unlimited extension of the [Glimmer GUI DSL](#glimmer-gui-dsl). The sky is the limit on what can be done with custom controls as a result. You can compose new visual vocabulary to build applications in any domain from higher concepts rather than [mere standard controls](#supported-keywords). For example, in a traffic signaling app, you could define `street`, `light_signal`, `traffic_sign`, and `car` as custom keywords and build your application from these concepts directly, saving enormous time and achieving much higher productivity.
 
-Learn more from custom control usage in [Method-Based Custom Controls](/docs/examples/GLIMMER-DSL-LIBUI-ADVANCED-EXAMPLES.md#method--based-custom-controls), [Class-Based Custom Controls](/docs/examples/GLIMMER-DSL-LIBUI-ADVANCED-EXAMPLES.md#class-based-custom-controls), [Area-Based Custom Controls](/docs/examples/GLIMMER-DSL-LIBUI-ADVANCED-EXAMPLES.md#area-based-custom-controls), [Basic Composite Shape](), [Basic Custom Shape](), [Basic Scrolling Area](/docs/examples/GLIMMER-DSL-LIBUI-BASIC-EXAMPLES.md#basic-scrolling-area), [Histogram](/docs/examples/GLIMMER-DSL-LIBUI-ADVANCED-EXAMPLES.md#histogram), and [Tetris](/docs/examples/GLIMMER-DSL-LIBUI-ADVANCED-EXAMPLES.md#tetris) examples.
+Learn more from custom control usage in [Method-Based Custom Controls](/docs/examples/GLIMMER-DSL-LIBUI-ADVANCED-EXAMPLES.md#method--based-custom-controls), [Class-Based Custom Controls](/docs/examples/GLIMMER-DSL-LIBUI-ADVANCED-EXAMPLES.md#class-based-custom-controls), [Class-Based Custom Control Slots](/docs/examples/GLIMMER-DSL-LIBUI-ADVANCED-EXAMPLES.md#class-based-custom-control-slots), [Area-Based Custom Controls](/docs/examples/GLIMMER-DSL-LIBUI-ADVANCED-EXAMPLES.md#area-based-custom-controls), [Basic Composite Shape](), [Basic Custom Shape](), [Basic Scrolling Area](/docs/examples/GLIMMER-DSL-LIBUI-BASIC-EXAMPLES.md#basic-scrolling-area), [Histogram](/docs/examples/GLIMMER-DSL-LIBUI-ADVANCED-EXAMPLES.md#histogram), and [Tetris](/docs/examples/GLIMMER-DSL-LIBUI-ADVANCED-EXAMPLES.md#tetris) examples.
 
 ### Observer Pattern
 

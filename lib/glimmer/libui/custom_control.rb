@@ -171,7 +171,7 @@ module Glimmer
             end_eval
           end
         end
-
+        
         def before_body(&block)
           @before_body_block = block
         end
@@ -189,13 +189,14 @@ module Glimmer
         end
       end
 
-      attr_reader :body_root, :libui, :parent, :parent_proxy, :args, :keyword, :content, :options
+      attr_reader :body_root, :libui, :parent, :parent_proxy, :args, :keyword, :content, :options, :slot_controls
 
       def initialize(keyword, parent, args, options, &content)
         CustomControl.custom_controls_being_interpreted << self
         @parent_proxy = @parent = parent
         options ||= {}
         @options = self.class.options.merge(options)
+        @slot_controls = {}
         @content = ProcTracker.new(content) if content
         execute_hook('before_body')
         body_block = self.class.instance_variable_get("@body_block")
