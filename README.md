@@ -3320,7 +3320,7 @@ ClassBasedCustomControls.launch
 
 Component can have Component Slots inside layout container controls: `vertical_box`, `horizontal_box`, `form`, and `grid`.
 
-Simply pass a `slot: slot_name` option to the layout container control to designate it as a Component Slot inside a Custom Control class (in the example below, we have a `:header` slot and a `:footer` slot):
+Simply designate a layout container control as a Component Slot inside a Custom Control class body block by passing it a `slot: slot_name` option (in the example below, we have a `:header` slot and a `:footer` slot):
 
 ```ruby
   body {
