@@ -492,6 +492,8 @@ If you are new to [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-
 
 If you encounter any issues with the documentation, get stuck with code you do not understand, or notice some out-of-date information, you may contact the project maintainers on the [Glimmer Gitter Chat](https://app.gitter.im/#/room/#AndyObtiva_glimmer:gitter.im). Also, this could be your opportunity to be a good steward of Open-Source Software by contributing a documentation fix in a GitHub Pull Request or reporting a GitHub Issue at least.
 
+For integration with a Relational Database (SQL) via ActiveRecord, you may refer to the blog post that was written about [using ActiveRecord with SQLite DB and Glimmer DSL for SWT](https://andymaleh.blogspot.com/2022/06/using-activerecord-with-sqlite-db-in.html) (altering to fit CRuby and Glimmer DSL for LibUI). Also, [@chip](https://github.com/chip) created a prototype Git repo for starting a Glimmer DSL for LibUI project with SQLite DB and ActiveRecord: https://github.com/chip/glimmer_dsl_with_active_record
+
 ### Experimentation Usage
  
 For experimenting and learning, add `include Glimmer` into the top-level main object and start using the Glimmer GUI DSL directly.
@@ -4498,6 +4500,14 @@ A local password manager written in Ruby:
 https://rubygems.org/gems/adamantite
 
 ![Adamantite password manager](/images/glimmer-dsl-libui-mac-application-adamantite.png)
+
+### Ruby Go
+
+A simple app for playing Go games with a friend, built by [Tim Standen](https://github.com/timbot1789).
+
+https://github.com/timbot1789/rubygo
+
+![Ruby Go](/images/glimmer-dsl-libui-mac-application-ruby-go.png)
 
 ## Design Principles
 
