@@ -21,8 +21,17 @@
 
 $LOAD_PATH.unshift(File.expand_path('..', __FILE__))
 
-# External requires
+# concurrent-ruby gem ensures glimmer relies on Concurrent data-structure classes
+# Load if available only to ensure loading at the right time before loading glimmer
+begin
+  require 'concurrent/array'
+  require 'concurrent/hash'
+  require 'concurrent/set'
+rescue LoadError
+  # No Op
+end
 require 'glimmer'
+# External requires
 # require 'logging'
 require 'puts_debuggerer' if (ENV['PD'] || ENV['pd']).to_s.downcase == 'true'
 # require 'super_module'
