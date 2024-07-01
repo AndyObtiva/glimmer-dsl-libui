@@ -43,7 +43,7 @@ module Glimmer
       # and updates view property accordingly
       def data_bind_read(property, model_binding)
         model_attribute_observer = Glimmer::DataBinding::Observer.proc do
-          new_value = model_binding.evaluate_property
+          new_value = model_binding.evaluate_property # TODO performance might be worse for not using block value instead (double double call on evaluate_property)
           send("#{property}=", new_value) unless send(property) == new_value
         end
         observer_registration = model_attribute_observer.observe(model_binding, attribute_writer_type: [:attribute=, :set_attribute])

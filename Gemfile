@@ -1,10 +1,10 @@
 source "https://rubygems.org"
 
 # Glimmer project owner gems
-gem 'glimmer', '~> 2.7.4' #, path: '../glimmer'
+gem 'glimmer', '~> 2.7.8' #, path: '../glimmer'
 gem 'perfect-shape', '~> 1.0.8' #, path: '../glimmer'
 gem 'super_module', '~> 1.4.1'
-gem 'puts_debuggerer', '>= 1.0.0', '< 2.0.0', require: false
+gem 'puts_debuggerer', '>= 1.0.1', '< 2.0.0', require: false
 gem 'rake-tui', '>= 0.2.3', '< 2.0.0'
 
 # 3rd party gems (flexible versions to support other user gems that may share dependencies)
