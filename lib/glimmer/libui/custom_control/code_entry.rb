@@ -61,7 +61,13 @@ module Glimmer
                 @position = [@position - 1, 0].max
               in ext_key: :right
                 @position += 1
-              # TODO handle ENTER key
+              in ext_key: :up
+                @line = [@line - 1, 0].max
+              in ext_key: :down
+                @line += 1
+              in key: "\n"
+                @line += 1
+                @position = 0
               else
                 # returning false explicitly means the key event was not handled, which
                 # propagates the event to other handlers, like the quit menu item, which
