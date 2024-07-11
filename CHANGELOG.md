@@ -3,6 +3,8 @@
 ## 0.12.2
 
 - Update examples/basic_code_area.rb to have padding
+- Have code_area handle italic syntax highlighting styles
+- Change default code_area font for the Mac to "Courier New"
 - Fix issue in code_area with not recognizing indentation
 
 ## 0.12.1

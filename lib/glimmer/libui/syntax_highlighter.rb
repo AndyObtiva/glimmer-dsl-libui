@@ -28,14 +28,17 @@ class SyntaxHighlighter
   
   def syntax_highlighting(text)
     return [] if text.to_s.strip.empty?
-    @syntax_highlighting ||= {}
+    @syntax_highlighting ||= {} # TODO consider memoizing/remembering the last value only to avoid wasting memory
     unless @syntax_highlighting.keys.include?(text)
       lex = lexer.lex(text).to_a
       text_size = 0
       @syntax_highlighting[text] = lex.map do |pair|
-        {token_type: pair.first, token_text: pair.last}
+        token_type = pair.first
+        token_text = pair.last
+        token_style = Rouge::Theme.find(theme).new.style_for(token_type)
+        {token_type: token_type, token_text: token_text, token_style: token_style}
       end.each do |hash|
-        hash[:token_index] = text_size
+        hash[:token_index] = text_size # TODO do we really need this? Also, consider renaming to something like token_character_index to clarify it is not the index of the token itself yet its first character
         text_size += hash[:token_text].size
       end
     end

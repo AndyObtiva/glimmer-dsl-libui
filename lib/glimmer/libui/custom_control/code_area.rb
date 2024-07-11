@@ -39,6 +39,7 @@ module Glimmer
         
         before_body do
           @syntax_highlighter = SyntaxHighlighter.new(language: language, theme: theme)
+          @font_default = {family: OS.mac? ? 'Courier New' : 'Courier', size: 13, weight: :medium, italic: :normal, stretch: :normal}
         end
         
         body {
@@ -47,15 +48,15 @@ module Glimmer
               fill :white
             }
             text(padding, padding) {
-              default_font family: OS.mac? ? 'Consolas' : 'Courier', size: 13, weight: :medium, italic: :normal, stretch: :normal
+              default_font @font_default
               
               syntax_highlighter.syntax_highlighting(code).each do |token|
-                style_data = Rouge::Theme.find(theme).new.style_for(token[:token_type])
                 token_text = token[:token_text].start_with?("\n") ? " #{token[:token_text]}" : token[:token_text]
             
                 string(token_text) {
-                  color style_data[:fg] || :black
-                  background style_data[:bg] || :white
+                  font @font_default.merge(italic: :italic) if token[:token_style][:italic]
+                  color token[:token_style][:fg] || :black
+                  background token[:token_style][:bg] || :white
                 }
               end
             }
