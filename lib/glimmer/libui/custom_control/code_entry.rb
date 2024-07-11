@@ -83,6 +83,10 @@ module Glimmer
                 code.insert(caret_index, '  ')
                 @position += 2
                 # TODO go back one line up if at position 0
+              in modifier: nil, modifiers: [:control], key: 'a'
+                @position = 0
+              in modifier: nil, modifiers: [:control], key: 'e'
+                @position = current_code_line.length - 1
               in modifier: nil, modifiers: []
                 code.insert(caret_index, key_event[:key])
                 @position += 1
@@ -125,7 +129,8 @@ module Glimmer
         end
         
         def caret_layer
-          text(padding, padding) {
+          # TODO adjust padding offset based on text extent
+          text(padding - 3, padding) {
             default_font @font_default
               
             # TODO make caret blink
@@ -142,7 +147,11 @@ module Glimmer
         end
         
         def caret_index
-          code.lines[0..line].join.length - (code.lines[line].length - position)
+          code.lines[0..line].join.length - (current_code_line.length - position)
+        end
+        
+        def current_code_line
+          code.lines[line]
         end
       end
     end
