@@ -67,11 +67,17 @@ module Glimmer
                 # TODO jump to the next line once reaching the end of a line
                 @position += 1
               in ext_key: :up
-                # TODO remember the farthest point to the right a caret was before moving to a line with less characters and repeat it
                 @line = [@line - 1, 0].max
+                if @max_position
+                  @position = @max_position
+                  @max_position = nil
+                end
               in ext_key: :down
-                # TODO remember the farthest point to the right a caret was before moving to a line with less characters and repeat it
                 @line += 1
+                if @max_position
+                  @position = @max_position
+                  @max_position = nil
+                end
               in ext_key: :delete
                 code.slice!(caret_index)
               in key: "\n"
@@ -120,7 +126,11 @@ module Glimmer
                 handled = false
               end
               @line = [@line, code.lines.length - 1].min
-              @position = [@position, current_code_line.length - 1].min
+              new_position = [@position, current_code_line.length - 1].min
+              if new_position != @position
+                @max_position = @position
+                @position = new_position
+              end
               body_root.redraw
               handled
             end
