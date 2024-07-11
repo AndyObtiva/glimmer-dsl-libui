@@ -7,7 +7,6 @@ class BasicCodeArea
     @code = <<~CODE
       # Greets target with greeting
       def greet(greeting: 'Hello', target: 'World')
-        
         puts "\#{greeting}, \#{target}!"
       end
       

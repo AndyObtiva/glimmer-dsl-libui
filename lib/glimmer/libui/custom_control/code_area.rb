@@ -51,8 +51,9 @@ module Glimmer
               
               syntax_highlighter.syntax_highlighting(code).each do |token|
                 style_data = Rouge::Theme.find(theme).new.style_for(token[:token_type])
-               
-                string(token[:token_text]) {
+                token_text = token[:token_text].start_with?("\n") ? " #{token[:token_text]}" : token[:token_text]
+            
+                string(token_text) {
                   color style_data[:fg] || :black
                   background style_data[:bg] || :white
                 }

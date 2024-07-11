@@ -7,7 +7,6 @@ class BasicCodeEntry
     @code = <<~CODE
       # Greets target with greeting
       def greet(greeting: 'Hello', target: 'World')
-        # TODO report issue with having to add an extra line here to see indentation in next line (happens if ending with parens)
         puts "\#{greeting}, \#{target}!"
       end
       

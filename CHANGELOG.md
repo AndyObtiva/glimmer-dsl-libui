@@ -3,6 +3,7 @@
 ## 0.12.2
 
 - Update examples/basic_code_area.rb to have padding
+- Fix issue in code_area with not recognizing indentation
 
 ## 0.12.1
 
