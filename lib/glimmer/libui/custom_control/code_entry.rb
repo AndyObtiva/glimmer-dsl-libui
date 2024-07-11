@@ -29,6 +29,7 @@ module Glimmer
         include Glimmer::LibUI::CustomControl
         
         REGEX_COLOR_HEX6 = /^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/
+        # TODO vary shortcut key by OS (CMD for Mac, CTRL elsewhere)
         
         option :language, default: 'ruby'
         option :theme, default: 'glimmer'
@@ -61,28 +62,35 @@ module Glimmer
               in ext_key: :left
                 # TODO jump to the previous line once reaching the beginning of a line
                 @position = [@position - 1, 0].max
-              in ext_key: :right # TODO do not go beyond right limit
+              in ext_key: :right
                 # TODO jump to the next line once reaching the end of a line
                 @position += 1
-              in ext_key: :up # TODO do not go beyond right limit
+              in ext_key: :up
+                # TODO remember the farthest point to the right a caret was before moving to a line with less characters and repeat it
                 @line = [@line - 1, 0].max
-              in ext_key: :down # TODO do not go beyond right limit
+              in ext_key: :down
+                # TODO remember the farthest point to the right a caret was before moving to a line with less characters and repeat it
                 @line += 1
               in ext_key: :delete
                 code.slice!(caret_index)
               in key: "\n"
+                code.insert(caret_index, "\n")
                 @line += 1
                 @position = 0
-                # TODO split the text if we are in the middle of the text
-                # add a new line too
+                # TODO indent upon hitting enter
               in key: "\b"
-                @position = [@position - 1, 0].max
-                # TODO go back one line up if at position 0
-                code.slice!(caret_index)
+                if @position == 0
+                  new_position = code.lines[line - 1].length - 1
+                  code.slice!(caret_index - 1)
+                  @line = [@line - 1, 0].max
+                  @position = new_position
+                else
+                  @position = [@position - 1, 0].max
+                  code.slice!(caret_index)
+                end
               in key: "\t"
                 code.insert(caret_index, '  ')
                 @position += 2
-                # TODO go back one line up if at position 0
               in modifier: nil, modifiers: [:control], key: 'a'
                 @position = 0
               in modifier: nil, modifiers: [:control], key: 'e'
@@ -95,16 +103,18 @@ module Glimmer
                 code.insert(caret_index, character)
                 @position += 1
               # TODO handle undo and redo
-              # CTRL+A
-              # CTRL+E
               # FN+LEFT for Home
               # FN+RIGHT for End
               # FN+UP for Page Up
               # FN+Down for Page Down
+              # CMD + [
+              # CMD + ]
               else
                 # TODO insert typed characters into code
                 handled = false
               end
+              @line = [@line, code.lines.length - 1].min
+              @position = [@position, current_code_line.length - 1].min
               body_root.redraw
               handled
             end
