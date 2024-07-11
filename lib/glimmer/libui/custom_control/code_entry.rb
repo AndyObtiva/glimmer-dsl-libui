@@ -60,41 +60,52 @@ module Glimmer
               handled = true # assume it is handled for all cases except the else clause below
 #               pd key_event # TODO remove this line
               case key_event
-              in ext_key: :left
-                # TODO jump to the previous line once reaching the beginning of a line
-                @position = [@position - 1, 0].max
-              in ext_key: :right
-                # TODO jump to the next line once reaching the end of a line
-                @position += 1
-              in ext_key: :up
+              in modifiers: [], ext_key: :left
+                if @position == 0
+                  new_position = code.lines[line - 1].length - 1
+                  @line = [@line - 1, 0].max
+                  @position = new_position
+                else
+                  @position = [@position - 1, 0].max
+                end
+              in modifiers: [], ext_key: :right
+                if @position == current_code_line.length - 1
+                  if @line < code.lines.size - 1
+                    @line += 1
+                    @position = 0
+                  end
+                else
+                  @position += 1
+                end
+              in modifiers: [], ext_key: :up
                 # TODO scroll view when going down or up or paging or going home / end
                 @line = [@line - 1, 0].max
                 if @max_position
                   @position = @max_position
                   @max_position = nil
                 end
-              in ext_key: :down
+              in modifiers: [], ext_key: :down
                 @line += 1
                 if @max_position
                   @position = @max_position
                   @max_position = nil
                 end
-              in ext_key: :page_up
+              in modifiers: [], ext_key: :page_up
                 @line = [@line - 15, 0].max
                 if @max_position
                   @position = @max_position
                   @max_position = nil
                 end
-              in ext_key: :page_down
+              in modifiers: [], ext_key: :page_down
                 @line += 15
                 if @max_position
                   @position = @max_position
                   @max_position = nil
                 end
-              in ext_key: :home
+              in modifiers: [], ext_key: :home
                 @line = 0
                 @position = 0
-              in ext_key: :end
+              in modifiers: [], ext_key: :end
                 @line = code.lines.size - 1
                 @position = current_code_line.length - 1
               in ext_key: :delete
@@ -117,13 +128,36 @@ module Glimmer
               in key: "\t"
                 code.insert(caret_index, '  ')
                 @position += 2
-              in modifier: nil, modifiers: [:control], key: 'a'
+              in modifiers: [:control], key: 'a'
                 @position = 0
-              in modifier: nil, modifiers: [:control], key: 'e'
+              in modifiers: [:control], key: 'e'
                 @position = current_code_line.length - 1
-              in modifier: nil, modifiers: [:shift], key_code: 48
+              in modifiers: [:shift], key_code: 48
                 code.insert(caret_index, ')')
                 @position += 1
+              in modifiers: [:alt], ext_key: :right
+                if @position == current_code_line.length - 1
+                  if @line < code.lines.size - 1
+                    @line += 1
+                    @position = 0
+                  end
+                else
+                  new_caret_index = caret_index
+                  new_caret_index += 1 while code[new_caret_index + 1].match(/[^a-zA-Z]/)
+                  new_caret_index += 1 until code[new_caret_index + 1].match(/[^a-zA-Z]/) # TODO might have to match regex of anything not a letter
+                  @position += new_caret_index + 1 - caret_index
+                end
+              in modifiers: [:alt], ext_key: :left
+                if @position == 0
+                  new_position = code.lines[line - 1].length - 1
+                  @line = [@line - 1, 0].max
+                  @position = new_position
+                else
+                  new_caret_index = caret_index
+                  new_caret_index -= 1 while code[new_caret_index - 1].match(/[^a-zA-Z]/)
+                  new_caret_index -= 1 until code[new_caret_index - 1].match(/[^a-zA-Z]/) # TODO this might need correction
+                  @position -= caret_index - new_caret_index
+                end
               in modifier: nil, modifiers: []
                 code.insert(caret_index, key_event[:key])
                 @position += 1
