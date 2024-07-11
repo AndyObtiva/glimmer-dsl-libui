@@ -67,6 +67,7 @@ module Glimmer
                 # TODO jump to the next line once reaching the end of a line
                 @position += 1
               in ext_key: :up
+                # TODO scroll view when going down or up or paging or going home / end
                 @line = [@line - 1, 0].max
                 if @max_position
                   @position = @max_position
@@ -78,6 +79,24 @@ module Glimmer
                   @position = @max_position
                   @max_position = nil
                 end
+              in ext_key: :page_up
+                @line = [@line - 15, 0].max
+                if @max_position
+                  @position = @max_position
+                  @max_position = nil
+                end
+              in ext_key: :page_down
+                @line += 15
+                if @max_position
+                  @position = @max_position
+                  @max_position = nil
+                end
+              in ext_key: :home
+                @line = 0
+                @position = 0
+              in ext_key: :end
+                @line = code.lines.size - 1
+                @position = current_code_line.length - 1
               in ext_key: :delete
                 code.slice!(caret_index)
               in key: "\n"
@@ -112,15 +131,15 @@ module Glimmer
                 character = key_event[:key] || key_event[:key_code].chr.capitalize
                 code.insert(caret_index, character)
                 @position += 1
-              # TODO handle undo and redo
-              # FN+LEFT for Home
-              # FN+RIGHT for End
-              # FN+UP for Page Up
-              # FN+Down for Page Down
-              # CMD + [
-              # CMD + ]
-              # OPTION + LEFT
-              # OPTION + RIGHT
+              # TODO CMD Z (undo)
+              # CMD SHIFT Z (redo)
+              # CMD + [ (outdent)
+              # CMD + ] (indent)
+              # CMD + down (move line down)
+              # CMD + up (move line up)
+              # CMD + D (duplicate)
+              # modifiers: [:alt] + ext_key :left
+              # modifiers: [:alt] + ext_key :right
               else
                 # TODO insert typed characters into code
                 handled = false
