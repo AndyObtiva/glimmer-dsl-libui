@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.12.2
+
+- Update examples/basic_code_area.rb to have padding
+
 ## 0.12.1
 
 - Fix issue with getting error "superclass mismatch for class Array" when `concurrent-ruby` is included in a desktop applications as it is required to load `concurrent-ruby` before `glimmer`, so now `glimmer-dsl-libui` will attempt loading `concurrent-ruby` if available or default to old behavior otherwise.

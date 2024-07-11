@@ -21,8 +21,6 @@ class BasicCodeArea
   
   body {
     window('Basic Code Area', 400, 300) {
-      margined true
-      
       code_area(language: 'ruby', code: @code)
     }
   }
