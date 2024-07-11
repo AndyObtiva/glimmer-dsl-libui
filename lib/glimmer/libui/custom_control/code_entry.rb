@@ -55,23 +55,50 @@ module Glimmer
             end
       
             on_key_down do |key_event|
+              # TODO consider delegating some of the logic below to a model
               handled = true # assume it is handled for all cases except the else clause below
               case key_event
               in ext_key: :left
+                # TODO jump to the previous line once reaching the beginning of a line
                 @position = [@position - 1, 0].max
-              in ext_key: :right
+              in ext_key: :right # TODO do not go beyond right limit
+                # TODO jump to the next line once reaching the end of a line
                 @position += 1
-              in ext_key: :up
+              in ext_key: :up # TODO do not go beyond right limit
                 @line = [@line - 1, 0].max
-              in ext_key: :down
+              in ext_key: :down # TODO do not go beyond right limit
                 @line += 1
+              in ext_key: :delete
+                code.slice!(caret_index)
               in key: "\n"
                 @line += 1
                 @position = 0
+                # TODO split the text if we are in the middle of the text
+                # add a new line too
+              in key: "\b"
+                @position = [@position - 1, 0].max
+                # TODO go back one line up if at position 0
+                code.slice!(caret_index)
+              in key: "\t"
+                code.insert(caret_index, '  ')
+                @position += 2
+                # TODO go back one line up if at position 0
+              in modifier: nil, modifiers: []
+                code.insert(caret_index, key_event[:key])
+                @position += 1
+              in modifier: nil, modifiers: [:shift]
+                character = key_event[:key] || key_event[:key_code].chr.capitalize
+                code.insert(caret_index, character)
+                @position += 1
+              # TODO handle undo and redo
+              # CTRL+A
+              # CTRL+E
+              # FN+LEFT for Home
+              # FN+RIGHT for End
+              # FN+UP for Page Up
+              # FN+Down for Page Down
               else
-                # returning false explicitly means the key event was not handled, which
-                # propagates the event to other handlers, like the quit menu item, which
-                # can handle COMMAND+Q on the Mac to quit an application
+                # TODO insert typed characters into code
                 handled = false
               end
               body_root.redraw
@@ -101,7 +128,7 @@ module Glimmer
           text(padding, padding) {
             default_font @font_default
               
-            # TODO perhaps instead of this approach, try to calculate text extent as that is supported by libui
+            # TODO make caret blink
             string(caret_text) {
               color :black
               background [0, 0, 0, 0]
@@ -110,7 +137,12 @@ module Glimmer
         end
         
         def caret_text
+          # TODO replace | with a real caret (see if there is an emoji or special character for it)
           ("\n" * line) + (' ' * position) + '|'
+        end
+        
+        def caret_index
+          code.lines[0..line].join.length - (code.lines[line].length - position)
         end
       end
     end
