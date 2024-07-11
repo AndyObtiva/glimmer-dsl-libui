@@ -58,6 +58,7 @@ module Glimmer
             on_key_down do |key_event|
               # TODO consider delegating some of the logic below to a model
               handled = true # assume it is handled for all cases except the else clause below
+#               pd key_event # TODO remove this line
               case key_event
               in ext_key: :left
                 # TODO jump to the previous line once reaching the beginning of a line
@@ -95,6 +96,9 @@ module Glimmer
                 @position = 0
               in modifier: nil, modifiers: [:control], key: 'e'
                 @position = current_code_line.length - 1
+              in modifier: nil, modifiers: [:shift], key_code: 48
+                code.insert(caret_index, ')')
+                @position += 1
               in modifier: nil, modifiers: []
                 code.insert(caret_index, key_event[:key])
                 @position += 1
@@ -109,6 +113,8 @@ module Glimmer
               # FN+Down for Page Down
               # CMD + [
               # CMD + ]
+              # OPTION + LEFT
+              # OPTION + RIGHT
               else
                 # TODO insert typed characters into code
                 handled = false
