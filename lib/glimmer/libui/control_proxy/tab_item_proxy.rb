@@ -29,17 +29,18 @@ module Glimmer
       #
       # Follows the Proxy Design Pattern
       class TabItemProxy < ControlProxy
-        attr_reader :index
+        attr_reader :index, :root_proxy
         
         def initialize(keyword, parent, args, &block)
           @keyword = keyword
           @parent_proxy = parent
+          @root_proxy = nil
           @args = args
           @block = block
           @enabled = 1
           @index = @parent_proxy.num_pages
-          @content = @block&.call
           build_control
+          @content = @root_proxy.content(&@block) if @block
         end
         
         def name
@@ -57,11 +58,18 @@ module Glimmer
         alias margined= margined
         alias margined? margined
             
+        # TODO implement tab_insert_at
+        
+        def destroy
+          @parent_proxy.delete(@index)
+        end
+            
         private
         
         def build_control
-          @content = Box::HorizontalBoxProxy.new('horizontal_box', @libui, []) if @content.nil?
-          @libui = @parent_proxy.append(name, @content.libui)
+          @root_proxy = Box::VerticalBoxProxy.new('vertical_box', @parent_proxy, [])
+          # TODO support being able to re-open a tab item and add content.. it needs special code.. perhaps by having a @content parent for every tab item, this problem becomes easier to solve
+          @parent_proxy.append(name, @root_proxy.libui) # returns nil, so there is no @libui object to store in this case
         end
       end
     end

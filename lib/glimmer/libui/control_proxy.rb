@@ -20,6 +20,7 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 require 'glimmer/libui/data_bindable'
+require 'glimmer/libui/parent'
 
 module Glimmer
   module LibUI
@@ -104,6 +105,7 @@ module Glimmer
       end
       
       include DataBindable
+      prepend Parent
       
       KEYWORD_ALIASES = {
         'message_box'       => 'msg_box',
