@@ -203,7 +203,7 @@ module Glimmer
         def extent_width
           if @extent_width.to_f > 0
             @extent_width
-          else
+          else # TODO auto calculate extents
             width
           end
         end
@@ -211,7 +211,7 @@ module Glimmer
         def extent_height
           if @extent_height.to_f > 0
             @extent_height
-          else
+          else # TODO auto calculate extents
             children_max_size = children.map(&:font).map {|font| font[:size] if font.respond_to?(:[]) }.compact.max
             if children_max_size.to_f > 0
               children_max_size
@@ -219,6 +219,16 @@ module Glimmer
               @default_font[:size]
             end
           end
+        end
+        
+        def calculate_extents
+          # TODO fix implementation once libui binding project responds about this
+          # as it always returns 0,0 right now
+          extent_width = Fiddle::Pointer.malloc(Fiddle::SIZEOF_DOUBLE*8)
+          extent_height = Fiddle::Pointer.malloc(Fiddle::SIZEOF_DOUBLE*8)
+          ::LibUI.draw_text_layout_extents(@libui, extent_width, extent_height)
+          @extent_width = extent_width[0, Fiddle::SIZEOF_DOUBLE*8].unpack1('i')
+          @extent_height = extent_height[0, Fiddle::SIZEOF_DOUBLE*8].unpack1('i')
         end
         
         private
@@ -233,16 +243,6 @@ module Glimmer
           draw_brush.G = (draw_brush_args[:g] || draw_brush_args[:green]).to_f / 255.0
           draw_brush.B = (draw_brush_args[:b] || draw_brush_args[:blue]).to_f / 255.0
           draw_brush.A = (draw_brush_args[:a] || draw_brush_args[:alpha])
-        end
-        
-        def calculate_extents
-          # TODO fix implementation once libui binding project responds about this
-          # as it always returns 0,0 right now
-          extent_width = Fiddle::Pointer.malloc(Fiddle::SIZEOF_DOUBLE*8)
-          extent_height = Fiddle::Pointer.malloc(Fiddle::SIZEOF_DOUBLE*8)
-          ::LibUI.draw_text_layout_extents(@libui, extent_width, extent_height)
-          @extent_width = extent_width[0, Fiddle::SIZEOF_DOUBLE*8].unpack1('i')
-          @extent_height = extent_height[0, Fiddle::SIZEOF_DOUBLE*8].unpack1('i')
         end
       end
     end

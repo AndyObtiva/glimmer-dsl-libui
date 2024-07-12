@@ -35,25 +35,47 @@ module Glimmer
         option :theme, default: 'glimmer'
         option :code
         option :padding, default: 10
+        option :caret_blinking_delay_in_seconds, default: 0.5
+        option :font_size, default: 13
         
         attr_reader :syntax_highlighter, :line, :position
         
         before_body do
           @syntax_highlighter = SyntaxHighlighter.new(language: language, theme: theme)
-          @font_default = {family: OS.mac? ? 'Courier New' : 'Courier', size: 13, weight: :medium, italic: :normal, stretch: :normal}
+          @font_default = {family: OS.mac? ? 'Courier New' : 'Courier', size: font_size, weight: :medium, italic: :normal, stretch: :normal}
           @line = 0
           @position = 5
+          @draw_caret = false
+        end
+        
+        after_body do
+          LibUI.timer(caret_blinking_delay_in_seconds/5.0) do
+            body_root.redraw
+          end
         end
         
         body {
-          area {
+          scrolling_area(1, 1) { |code_entry_area|
             on_draw do
+              code_lines = code.lines
+              # TODO need to determine the scrolling are width and height from the text extent once supported in the future
+              code_entry_area.set_size(code_lines.map(&:size).max * font_size*0.62, code_lines.size * font_size*1.23)
+              
               rectangle(0, 0, 8000, 8000) {
                 fill :white
               }
+              
               code_layer
-              caret_layer
+              
+              caret_layer if @draw_caret
+              
+              if @blinking_time.nil? || (Time.now - @blinking_time > caret_blinking_delay_in_seconds)
+                @blinking_time = Time.now
+                @draw_caret = !@draw_caret
+              end
             end
+      
+            # TODO mouse click moves caret position
       
             on_key_down do |key_event|
               # TODO consider delegating some of the logic below to a model
@@ -130,7 +152,11 @@ module Glimmer
                 @position += 2
               in modifiers: [:control], key: 'a'
                 @position = 0
+              in modifiers: [:command], ext_key: :left
+                @position = 0
               in modifiers: [:control], key: 'e'
+                @position = current_code_line.length - 1
+              in modifiers: [:command], ext_key: :right
                 @position = current_code_line.length - 1
               in modifiers: [:shift], key_code: 48
                 code.insert(caret_index, ')')
@@ -143,20 +169,23 @@ module Glimmer
                   end
                 else
                   new_caret_index = caret_index
-                  new_caret_index += 1 while code[new_caret_index + 1].match(/[^a-zA-Z]/)
-                  new_caret_index += 1 until code[new_caret_index + 1].match(/[^a-zA-Z]/) # TODO might have to match regex of anything not a letter
+                  new_caret_index += 1 while code[new_caret_index + 1]&.match(/[^a-zA-Z]/)
+                  new_caret_index += 1 until code[new_caret_index + 1].nil? || code[new_caret_index + 1].match(/[^a-zA-Z]/) # TODO might have to match regex of anything not a letter
                   @position += new_caret_index + 1 - caret_index
                 end
               in modifiers: [:alt], ext_key: :left
                 if @position == 0
-                  new_position = code.lines[line - 1].length - 1
-                  @line = [@line - 1, 0].max
-                  @position = new_position
+                  if @line != 0
+                    new_position = code.lines[line - 1].length - 1
+                    @line = [@line - 1, 0].max
+                    @position = new_position
+                  end
                 else
                   new_caret_index = caret_index
-                  new_caret_index -= 1 while code[new_caret_index - 1].match(/[^a-zA-Z]/)
-                  new_caret_index -= 1 until code[new_caret_index - 1].match(/[^a-zA-Z]/) # TODO this might need correction
+                  new_caret_index -= 1 while code[new_caret_index - 1]&.match(/[^a-zA-Z]/)
+                  new_caret_index -= 1 until code[new_caret_index + 1].nil? || code[new_caret_index - 1].match(/[^a-zA-Z]/) # TODO this might need correction
                   @position -= caret_index - new_caret_index
+                  @position = [@position, 0].max
                 end
               in modifier: nil, modifiers: []
                 code.insert(caret_index, key_event[:key])
@@ -172,8 +201,6 @@ module Glimmer
               # CMD + down (move line down)
               # CMD + up (move line up)
               # CMD + D (duplicate)
-              # modifiers: [:alt] + ext_key :left
-              # modifiers: [:alt] + ext_key :right
               else
                 # TODO insert typed characters into code
                 handled = false
@@ -184,6 +211,7 @@ module Glimmer
                 @max_position = @position
                 @position = new_position
               end
+              @draw_caret = true
               body_root.redraw
               handled
             end
@@ -194,7 +222,6 @@ module Glimmer
           text(padding, padding) {
             default_font @font_default
             
-            # TODO cache this work if not changed between renders
             syntax_highlighter.syntax_highlighting(code).each do |token|
               token_text = token[:token_text].start_with?("\n") ? " #{token[:token_text]}" : token[:token_text]
               
@@ -222,15 +249,15 @@ module Glimmer
         
         def caret_text
           # TODO replace | with a real caret (see if there is an emoji or special character for it)
-          ("\n" * line) + (' ' * position) + '|'
+          ("\n" * @line) + (' ' * @position) + '|'
         end
         
         def caret_index
-          code.lines[0..line].join.length - (current_code_line.length - position)
+          code.lines[0..line].join.length - (current_code_line.length - @position)
         end
         
         def current_code_line
-          code.lines[line]
+          code.lines[@line]
         end
       end
     end
