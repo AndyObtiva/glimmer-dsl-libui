@@ -36,7 +36,8 @@ module Glimmer
         option :code
         option :padding, default: 10
         option :caret_blinking_delay_in_seconds, default: 0.5
-        option :font_size, default: 13
+        option :font_size, default: 14
+        # TODO consider offering the option to autosave to a file upon changes
         
         attr_reader :syntax_highlighter, :line, :position
         
@@ -46,6 +47,8 @@ module Glimmer
           @line = 0
           @position = 5
           @draw_caret = false
+          @multiplier_position = 0.6
+          @multiplier_line = 1.2
         end
         
         after_body do
@@ -58,8 +61,8 @@ module Glimmer
           scrolling_area(1, 1) { |code_entry_area|
             on_draw do
               code_lines = code.lines
-              # TODO need to determine the scrolling are width and height from the text extent once supported in the future
-              code_entry_area.set_size(code_lines.map(&:size).max * font_size*0.62, code_lines.size * font_size*1.23)
+              # TODO need to determine the scrolling area width and height from the text extent once supported in the future
+              code_entry_area.set_size(code_lines.map(&:size).max * font_size*@multiplier_position, code_lines.size * font_size*@multiplier_line)
               
               rectangle(0, 0, 8000, 8000) {
                 fill :white
@@ -75,18 +78,29 @@ module Glimmer
               end
             end
       
-            # TODO mouse click moves caret position
+            on_mouse_down do |mouse_event|
+              # once text extent calculation via libui is supported, consider the idea of splitting
+              # text by single characters to use every character extent in determining mouse location
+              # or not splitting but using the extent of one character to determine mouse location
+              @position = (mouse_event[:x] - padding) / (font_size*@multiplier_position)
+              @line = (mouse_event[:y] - padding) / (font_size*@multiplier_line)
+              @line = [@line, code.lines.length - 1].min
+              @position = [@position, current_code_line.length - 1].min
+              body_root.redraw
+            end
+            # TODO mouse click based text selection
       
             on_key_down do |key_event|
               # TODO consider delegating some of the logic below to a model
               handled = true # assume it is handled for all cases except the else clause below
-#               pd key_event # TODO remove this line
               case key_event
               in modifiers: [], ext_key: :left
                 if @position == 0
-                  new_position = code.lines[line - 1].length - 1
-                  @line = [@line - 1, 0].max
-                  @position = new_position
+                  if @line > 0
+                    new_position = code.lines[line - 1].length - 1
+                    @line = [@line - 1, 0].max
+                    @position = new_position
+                  end
                 else
                   @position = [@position - 1, 0].max
                 end
@@ -170,12 +184,12 @@ module Glimmer
                 else
                   new_caret_index = caret_index
                   new_caret_index += 1 while code[new_caret_index + 1]&.match(/[^a-zA-Z]/)
-                  new_caret_index += 1 until code[new_caret_index + 1].nil? || code[new_caret_index + 1].match(/[^a-zA-Z]/) # TODO might have to match regex of anything not a letter
+                  new_caret_index += 1 until code[new_caret_index + 1].nil? || code[new_caret_index + 1].match(/[^a-zA-Z]/)
                   @position += new_caret_index + 1 - caret_index
                 end
               in modifiers: [:alt], ext_key: :left
                 if @position == 0
-                  if @line != 0
+                  if @line > 0
                     new_position = code.lines[line - 1].length - 1
                     @line = [@line - 1, 0].max
                     @position = new_position
@@ -183,7 +197,7 @@ module Glimmer
                 else
                   new_caret_index = caret_index
                   new_caret_index -= 1 while code[new_caret_index - 1]&.match(/[^a-zA-Z]/)
-                  new_caret_index -= 1 until code[new_caret_index + 1].nil? || code[new_caret_index - 1].match(/[^a-zA-Z]/) # TODO this might need correction
+                  new_caret_index -= 1 until code[new_caret_index + 1].nil? || code[new_caret_index - 1].match(/[^a-zA-Z]/)
                   @position -= caret_index - new_caret_index
                   @position = [@position, 0].max
                 end
@@ -195,14 +209,13 @@ module Glimmer
                 code.insert(caret_index, character)
                 @position += 1
               # TODO CMD Z (undo)
-              # CMD SHIFT Z (redo)
-              # CMD + [ (outdent)
-              # CMD + ] (indent)
-              # CMD + down (move line down)
-              # CMD + up (move line up)
-              # CMD + D (duplicate)
+              # TODO CMD SHIFT Z (redo)
+              # TODO CMD + [ (outdent)
+              # TODO CMD + ] (indent)
+              # TODO CMD + down (move line down)
+              # TODO CMD + up (move line up)
+              # TODO CMD + D (duplicate)
               else
-                # TODO insert typed characters into code
                 handled = false
               end
               @line = [@line, code.lines.length - 1].min
@@ -236,7 +249,7 @@ module Glimmer
         
         def caret_layer
           # TODO adjust padding offset based on text extent
-          text(padding - 3, padding) {
+          text(padding - 4, padding) {
             default_font @font_default
               
             # TODO make caret blink

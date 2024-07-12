@@ -2,6 +2,9 @@
 
 ## Next
 
+- examples/code_editor.rb
+- bin/code_editor $somefile
+
 - Improve documentation for menus and how to use them (and upgrade examples containing menus to use CustomControl to show how to initialize a menu in components)
 - Fix bug with table lazy loading and remove lazy_table examples that do not use a lazy enumerator
 - Support Custom Shape Component Slots
