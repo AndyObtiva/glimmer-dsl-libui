@@ -19,6 +19,8 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+require 'os'
+
 require 'glimmer/libui/custom_control'
 require 'glimmer/libui/syntax_highlighter'
 
@@ -36,6 +38,7 @@ module Glimmer
         option :code
         option :padding, default: 10
         option :caret_blinking_delay_in_seconds, default: 0.5
+        option :font_family, default: OS.mac? ? 'Courier New' : 'Courier'
         option :font_size, default: 14
         # TODO consider offering the option to autosave to a file upon changes
         
@@ -43,7 +46,7 @@ module Glimmer
         
         before_body do
           @syntax_highlighter = SyntaxHighlighter.new(language: language, theme: theme)
-          @font_default = {family: OS.mac? ? 'Courier New' : 'Courier', size: font_size, weight: :medium, italic: :normal, stretch: :normal}
+          @font_default = {family: font_family, size: font_size, weight: :medium, italic: :normal, stretch: :normal}
           @font_italic = @font_default.merge(italic: :italic)
           @line = 0
           @position = 5

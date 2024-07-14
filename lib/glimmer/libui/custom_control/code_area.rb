@@ -19,6 +19,8 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+require 'os'
+
 require 'glimmer/libui/custom_control'
 require 'glimmer/libui/syntax_highlighter'
 
@@ -34,12 +36,14 @@ module Glimmer
         option :theme, default: 'glimmer'
         option :code
         option :padding, default: 10
+        option :font_family, default: OS.mac? ? 'Consolas' : 'Courier'
+        option :font_size, default: 13
         
         attr_reader :syntax_highlighter
         
         before_body do
           @syntax_highlighter = SyntaxHighlighter.new(language: language, theme: theme)
-          @font_default = {family: OS.mac? ? 'Consolas' : 'Courier', size: 13, weight: :medium, italic: :normal, stretch: :normal}
+          @font_default = {family: font_family, size: font_size, weight: :medium, italic: :normal, stretch: :normal}
           @font_italic = @font_default.merge(italic: :italic)
         end
         

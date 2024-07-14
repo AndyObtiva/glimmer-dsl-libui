@@ -4,8 +4,9 @@
 
 - New `code_entry` control [ALPHA/EXPERIMENTAL/INCOMPLETE/UNSTABLE] (similar to `code_area`, but with code editing functionality).
 - New examples/basic_code_entry.rb
-- Update examples/basic_code_area.rb to have padding
+- Update examples/basic_code_area.rb to have padding inside the `code_area` and no window padding anymore
 - Have `code_area` handle italic syntax highlighting styles
+- Support `code_area` `font_family` and `font_size` options
 - Controls prepend `Parent` mixin to keep track of their children via `children` attribute
 - tab_item always generates a vertical_box root container (root_proxy) before adding its child content within it (also, it does not generate a horizontal_box anymore by default if it had no content to start, yet a vertical_box all the time)
 - Upgrade to glimmer 2.7.9
