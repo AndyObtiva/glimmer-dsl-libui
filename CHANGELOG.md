@@ -6,8 +6,9 @@
 - New examples/basic_code_entry.rb
 - Update examples/basic_code_area.rb to have padding
 - Have `code_area` handle italic syntax highlighting styles
-- Controls keep track of their children
+- Controls prepend `Parent` mixin to keep track of their children via `children` attribute
 - tab_item always generates a vertical_box root container (root_proxy) before adding its child content within it (also, it does not generate a horizontal_box anymore by default if it had no content to start, yet a vertical_box all the time)
+- Upgrade to glimmer 2.7.9
 - Fix issue in `code_area` not recognizing indentation
 
 ## 0.12.1

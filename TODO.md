@@ -175,6 +175,7 @@
 - Consider supporting Ruby block as `default: ` value for a custom control/window/shape `option` to perform deferred evaluation. Maybe call it `default_factory` to allow passing a standard Ruby block with no meaning too as `default`.
 - Fill application scaffolding README with default setup and usage instructions, renaming README.markdown to README.md, and perhaps TODO.md and CHANGELOG.md
 - Support a declarative simple way of adding support for listeners on a custom control (`Glimmer::LibUI::CustomControl`)
+- Support automatically data-binding options and custom attributes on a custom control (e.g. `somecustomcomponent { customattribute <= [model, someattr] }`)
 - Consider providing a built-in way of translating table columns with a translator data-binding option (e.g. `cell_rows <=> [user, :contacts, translator: ->(val) {I18n.t(val)}]`) while still using the English-named translation keys as the main attributes to data-bind to. Or even consider configuring a global translator, and then adding a `translated: true` option to take care of everything.
 - Consider providing standard out-of-the-box i18n support
 - glimmer command option to scaffold with minitest tests instead of rspec

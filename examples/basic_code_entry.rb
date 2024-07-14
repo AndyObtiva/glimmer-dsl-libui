@@ -1,5 +1,6 @@
 require 'glimmer-dsl-libui'
 
+# code_entry is experimental/incomplete and not recommended for serious usage
 class BasicCodeEntry
   include Glimmer::LibUI::Application
   
@@ -20,6 +21,7 @@ class BasicCodeEntry
   
   body {
     window('Basic Code Entry', 400, 300) {
+      # code_entry is experimental/incomplete and not recommended for serious usage
       code_entry(language: 'ruby', code: @code)
     }
   }

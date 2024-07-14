@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 
 # Glimmer project owner gems
-gem 'glimmer', '~> 2.7.8' #, path: '../glimmer'
+gem 'glimmer', '~> 2.7.9' #, path: '../glimmer'
 gem 'perfect-shape', '~> 1.0.8' #, path: '../glimmer'
 gem 'super_module', '~> 1.4.1'
 gem 'puts_debuggerer', '>= 1.0.1', '< 2.0.0', require: false
