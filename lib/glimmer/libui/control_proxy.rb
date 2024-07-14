@@ -356,6 +356,7 @@ module Glimmer
         deregister_all_custom_listeners
         send_to_libui('destroy')
         ControlProxy.control_proxies.delete(self)
+        # TODO should we destroy all children too or at least remove them from the children collection?
       end
             
       def enabled(value = nil)

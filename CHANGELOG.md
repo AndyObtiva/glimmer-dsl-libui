@@ -2,12 +2,14 @@
 
 ## 0.12.2
 
+- New `code_entry` control [ALPHA/EXPERIMENTAL/INCOMPLETE/UNSTABLE] (similar to `code_area`, but with code editing functionality).
+- New examples/basic_code_entry.rb
 - Update examples/basic_code_area.rb to have padding
-- Have code_area handle italic syntax highlighting styles
-- Change default code_area font for the Mac to "Courier New"
+- Have `code_area` handle italic syntax highlighting styles
+- Change default `code_area` font for the Mac to "Courier New"
 - Controls keep track of their children
 - tab_item always generates a vertical_box root container (root_proxy) before adding its child content within it (also, it does not generate a horizontal_box anymore by default if it had no content to start, yet a vertical_box all the time)
-- Fix issue in code_area with not recognizing indentation
+- Fix issue in `code_area` not recognizing indentation
 
 ## 0.12.1
 

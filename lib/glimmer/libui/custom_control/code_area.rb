@@ -40,6 +40,7 @@ module Glimmer
         before_body do
           @syntax_highlighter = SyntaxHighlighter.new(language: language, theme: theme)
           @font_default = {family: OS.mac? ? 'Courier New' : 'Courier', size: 13, weight: :medium, italic: :normal, stretch: :normal}
+          @font_italic = @font_default.merge(italic: :italic)
         end
         
         body {
@@ -54,7 +55,7 @@ module Glimmer
                 token_text = token[:token_text].start_with?("\n") ? " #{token[:token_text]}" : token[:token_text]
             
                 string(token_text) {
-                  font @font_default.merge(italic: :italic) if token[:token_style][:italic]
+                  font @font_italic if token[:token_style][:italic]
                   color token[:token_style][:fg] || :black
                   background token[:token_style][:bg] || :white
                 }

@@ -2,9 +2,6 @@
 
 ## Next
 
-- examples/code_editor.rb
-- bin/code_editor $somefile
-
 - Improve documentation for menus and how to use them (and upgrade examples containing menus to use CustomControl to show how to initialize a menu in components)
 - Fix bug with table lazy loading and remove lazy_table examples that do not use a lazy enumerator
 - Support Custom Shape Component Slots
@@ -185,6 +182,8 @@
 - Come up with a way to have an `area`'s graphics auto-scale in size when the window is resized based on the initial size of the area and the initialize size of the window. That would prevent the need for software engineers to do the scaling themselves.
 - Consider a different way for assigning values from multi-value table columns to model attributes (other than using Array)
 - Support block properties to enable inserting content anywhere in a custom control
+- Make code_area scrollable just like code_entry
+- Make code_area determine its white background width/height dynamically/automatically instead of hardcoding 8000
 
 # Refactoring
 
