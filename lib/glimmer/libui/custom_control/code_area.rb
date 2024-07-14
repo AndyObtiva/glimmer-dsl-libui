@@ -39,7 +39,7 @@ module Glimmer
         
         before_body do
           @syntax_highlighter = SyntaxHighlighter.new(language: language, theme: theme)
-          @font_default = {family: OS.mac? ? 'Courier New' : 'Courier', size: 13, weight: :medium, italic: :normal, stretch: :normal}
+          @font_default = {family: OS.mac? ? 'Consolas' : 'Courier', size: 13, weight: :medium, italic: :normal, stretch: :normal}
           @font_italic = @font_default.merge(italic: :italic)
         end
         
