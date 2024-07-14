@@ -199,6 +199,13 @@ module Glimmer
         Color::RGB.constants.reject {|c| c.to_s.upcase == c.to_s}.map(&:to_s).map(&:underscore).map(&:to_sym)
       end
       
+      # Returns OS shortcut key, meaning the key used with most shorcuts,
+      # like :command on the Mac (used in CMD+S for save)
+      # or :control on Windows and Linux (used in CONTROL+S for save)
+      def os_shortcut_key
+        @os_shortcut_key ||= OS.mac? ? :command : :ctrl
+      end
+      
       # Queues block to execute at the nearest opportunity possible on the main GUI event loop
       def queue_main(&block)
         closure = fiddle_closure_block_caller(4, [0]) do

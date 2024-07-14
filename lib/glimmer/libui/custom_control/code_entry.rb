@@ -44,6 +44,7 @@ module Glimmer
         before_body do
           @syntax_highlighter = SyntaxHighlighter.new(language: language, theme: theme)
           @font_default = {family: OS.mac? ? 'Courier New' : 'Courier', size: font_size, weight: :medium, italic: :normal, stretch: :normal}
+          @font_italic = @font_default.merge(italic: :italic)
           @line = 0
           @position = 5
           @draw_caret = false
@@ -52,7 +53,7 @@ module Glimmer
         end
         
         after_body do
-          LibUI.timer(caret_blinking_delay_in_seconds/5.0) do
+          LibUI.timer(caret_blinking_delay_in_seconds/2.0) do
             body_root.redraw
           end
         end
@@ -60,11 +61,13 @@ module Glimmer
         body {
           scrolling_area(1, 1) { |code_entry_area|
             on_draw do
-              code_lines = code.lines
               # TODO need to determine the scrolling area width and height from the text extent once supported in the future
-              code_entry_area.set_size(code_lines.map(&:size).max * font_size*@multiplier_position, code_lines.size * font_size*@multiplier_line)
+              # TODO only reset size when a new line has been added
+              area_width = longest_line_size * font_size*@multiplier_position
+              area_height = line_count * font_size*@multiplier_line
+              code_entry_area.set_size(area_width, area_height)
               
-              rectangle(0, 0, 8000, 8000) {
+              rectangle(0, 0, area_width, area_height) {
                 fill :white
               }
               
@@ -85,10 +88,11 @@ module Glimmer
               @position = (mouse_event[:x] - padding) / (font_size*@multiplier_position)
               @line = (mouse_event[:y] - padding) / (font_size*@multiplier_line)
               @line = [@line, code.lines.length - 1].min
-              @position = [@position, current_code_line.length - 1].min
+              @position = [@position, current_code_line_max_position].min
               body_root.redraw
             end
             # TODO mouse click based text selection
+            # TODO keyboar based text selection
       
             on_key_down do |key_event|
               # TODO consider delegating some of the logic below to a model
@@ -105,7 +109,7 @@ module Glimmer
                   @position = [@position - 1, 0].max
                 end
               in modifiers: [], ext_key: :right
-                if @position == current_code_line.length - 1
+                if @position == current_code_line_max_position
                   if @line < code.lines.size - 1
                     @line += 1
                     @position = 0
@@ -143,7 +147,7 @@ module Glimmer
                 @position = 0
               in modifiers: [], ext_key: :end
                 @line = code.lines.size - 1
-                @position = current_code_line.length - 1
+                @position = current_code_line_max_position
               in ext_key: :delete
                 code.slice!(caret_index)
               in key: "\n"
@@ -153,10 +157,12 @@ module Glimmer
                 # TODO indent upon hitting enter
               in key: "\b"
                 if @position == 0
-                  new_position = code.lines[line - 1].length - 1
-                  code.slice!(caret_index - 1)
-                  @line = [@line - 1, 0].max
-                  @position = new_position
+                  if @line > 0
+                    new_position = code.lines[line - 1].length - 1
+                    code.slice!(caret_index - 1)
+                    @line = [@line - 1, 0].max
+                    @position = new_position
+                  end
                 else
                   @position = [@position - 1, 0].max
                   code.slice!(caret_index)
@@ -169,14 +175,14 @@ module Glimmer
               in modifiers: [:command], ext_key: :left
                 @position = 0
               in modifiers: [:control], key: 'e'
-                @position = current_code_line.length - 1
+                @position = current_code_line_max_position
               in modifiers: [:command], ext_key: :right
-                @position = current_code_line.length - 1
+                @position = current_code_line_max_position
               in modifiers: [:shift], key_code: 48
                 code.insert(caret_index, ')')
                 @position += 1
               in modifiers: [:alt], ext_key: :right
-                if @position == current_code_line.length - 1
+                if @position == current_code_line_max_position
                   if @line < code.lines.size - 1
                     @line += 1
                     @position = 0
@@ -219,7 +225,8 @@ module Glimmer
                 handled = false
               end
               @line = [@line, code.lines.length - 1].min
-              new_position = [@position, current_code_line.length - 1].min
+              @line = [@line, 0].max
+              new_position = [@position, current_code_line_max_position].min
               if new_position != @position
                 @max_position = @position
                 @position = new_position
@@ -239,7 +246,7 @@ module Glimmer
               token_text = token[:token_text].start_with?("\n") ? " #{token[:token_text]}" : token[:token_text]
               
               string(token_text) {
-                font @font_default.merge(italic: :italic) if token[:token_style][:italic]
+                font @font_italic if token[:token_style][:italic]
                 color token[:token_style][:fg] || :black
                 background token[:token_style][:bg] || :white
               }
@@ -271,6 +278,18 @@ module Glimmer
         
         def current_code_line
           code.lines[@line]
+        end
+        
+        def current_code_line_max_position
+          (current_code_line && current_code_line.length > 0) ? (current_code_line.length - 1) : 0
+        end
+        
+        def longest_line_size
+          code&.lines&.map(&:size)&.max || 1
+        end
+        
+        def line_count
+          code&.lines&.size || 1
         end
       end
     end
