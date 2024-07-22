@@ -425,7 +425,7 @@ module Glimmer
             begin
               require 'bundler/setup'
               Bundler.require(:default)
-            rescue StandardError, Gem::LoadError
+            rescue Exception
               # this runs when packaged as a gem (no bundler)
               require 'glimmer-dsl-libui'
               # add more gems if needed
