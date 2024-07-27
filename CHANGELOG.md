@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.12.3
+
+- Upgrade to libui 0.1.2 (final version of 0.1.2.pre)
+
 ## 0.12.2
 
 - New `code_entry` control [ALPHA/EXPERIMENTAL/INCOMPLETE/UNSTABLE] (similar to `code_area`, but with code editing functionality).
