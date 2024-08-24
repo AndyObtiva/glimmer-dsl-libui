@@ -5,6 +5,7 @@
 - Improve documentation for menus and how to use them (and upgrade examples containing menus to use CustomControl to show how to initialize a menu in components)
 - Fix bug with table lazy loading and remove lazy_table examples that do not use a lazy enumerator
 - Support Custom Shape Component Slots
+- Support Custom Control/Window/Shape Custom Event Listeners
 - Change scaffolded application main window from namespace/view/namespace.rb to namespace/view/namespace_application.rb
 - Fix issue (if exists.. needs testing/confirmation) with not processing nested shape properties when nested under custom shapes
 - Set stroke color to block by default
