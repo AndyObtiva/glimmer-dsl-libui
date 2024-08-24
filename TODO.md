@@ -5,6 +5,7 @@
 - Improve documentation for menus and how to use them (and upgrade examples containing menus to use CustomControl to show how to initialize a menu in components)
 - Fix bug with table lazy loading and remove lazy_table examples that do not use a lazy enumerator
 - Support Custom Shape Component Slots
+- Support Custom Control/Window/Shape Custom Event Listeners
 - Change scaffolded application main window from namespace/view/namespace.rb to namespace/view/namespace_application.rb
 - Fix issue (if exists.. needs testing/confirmation) with not processing nested shape properties when nested under custom shapes
 - Set stroke color to block by default
@@ -24,6 +25,7 @@
 - Provide a way to configure a different sort_by or sort block per table column while relying on sortable property
 - Support a `window.quit` operation that is a shortcut for `window.destroy` followed by `::LibUI.quit`
 
+- Consider adding force/overwrite mode to scaffold component (e.g. customcontrol) commands to overwrite files if they already exist
 - Automate table sorting support (perhaps via a property, sortable, which should default to true). Must handle cell_rows as array of arrays, array of hashes, and array of models. Does not work if cell_rows is an lazy enumerable
 
 - Option for in-memory only sort for table in case we don't want to store the sort back on the model
