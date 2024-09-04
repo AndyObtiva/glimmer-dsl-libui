@@ -25,6 +25,7 @@
 - Provide a way to configure a different sort_by or sort block per table column while relying on sortable property
 - Support a `window.quit` operation that is a shortcut for `window.destroy` followed by `::LibUI.quit`
 
+- Consider adding force/overwrite mode to scaffold component (e.g. customcontrol) commands to overwrite files if they already exist
 - Automate table sorting support (perhaps via a property, sortable, which should default to true). Must handle cell_rows as array of arrays, array of hashes, and array of models. Does not work if cell_rows is an lazy enumerable
 
 - Option for in-memory only sort for table in case we don't want to store the sort back on the model
