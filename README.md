@@ -665,7 +665,7 @@ Mac | Windows | Linux
 
 Application scaffolding enables automatically generating the directories/files of a new desktop GUI application that follows the MVC architecture and can be packaged as a Ruby gem that includes an executable script for running the app conveniently. It also ensures that software engineers follow the recommended Glimmer DSL for LibUI conventions and best practices. Application Scaffolding greatly improves software engineering productivity when building desktop applications with [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui).
 
-Application Scaffolding relies on the juwelier Ruby gem, which expects a local Git config of [`user.name`](https://docs.github.com/en/get-started/getting-started-with-git/setting-your-username-in-git#setting-your-git-username-for-every-repository-on-your-computer) (git config --global user.name "FirstName LastName") and `github.user` (`git config --global github.user githubusername`).
+Application Scaffolding relies on the juwelier Ruby gem, which expects a local Git config of [`user.name`](https://docs.github.com/en/get-started/getting-started-with-git/setting-your-username-in-git#setting-your-git-username-for-every-repository-on-your-computer) (`git config --global user.name "FirstName LastName"`) and `github.user` (`git config --global github.user githubusername`).
 
 Scaffold Glimmer DSL for LibUI application with this command:
 
