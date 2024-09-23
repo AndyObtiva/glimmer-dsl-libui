@@ -147,51 +147,51 @@ module Glimmer
         ::LibUI.attributed_string_append_unattributed(@parent_proxy.attributed_string, @string)
         unless color.nil?
           color_attribute = ::LibUI.new_color_attribute(@color[:r].to_f / 255.0, @color[:g].to_f / 255.0, @color[:b].to_f / 255.0, @color[:a] || 1.0)
-          ::LibUI.attributed_string_set_attribute(@parent_proxy.attributed_string, color_attribute, @start, @start + @string.size)
+          ::LibUI.attributed_string_set_attribute(@parent_proxy.attributed_string, color_attribute, @start, @start + @string.bytesize)
         end
         unless background.nil?
           background_attribute = ::LibUI.new_background_attribute(@background[:r].to_f / 255.0, @background[:g].to_f / 255.0, @background[:b].to_f / 255.0, @background[:a] || 1.0)
-          ::LibUI.attributed_string_set_attribute(@parent_proxy.attributed_string, background_attribute, @start, @start + @string.size)
+          ::LibUI.attributed_string_set_attribute(@parent_proxy.attributed_string, background_attribute, @start, @start + @string.bytesize)
         end
         unless underline.nil?
           underline_attribute = ::LibUI.new_underline_attribute(Glimmer::LibUI.enum_symbol_to_value(:underline, @underline))
-          ::LibUI.attributed_string_set_attribute(@parent_proxy.attributed_string, underline_attribute, @start, @start + @string.size)
+          ::LibUI.attributed_string_set_attribute(@parent_proxy.attributed_string, underline_attribute, @start, @start + @string.bytesize)
         end
         unless underline_color.nil?
           if Glimmer::LibUI.enum_symbols(:underline_color).include?(underline_color.to_s.to_sym) && underline_color.to_s.to_sym != :custom
             underline_color_attribute = ::LibUI.new_underline_color_attribute(Glimmer::LibUI.enum_symbol_to_value(:underline_color, @underline_color), 0, 0, 0, 0)
-            ::LibUI.attributed_string_set_attribute(@parent_proxy.attributed_string, underline_color_attribute, @start, @start + @string.size)
+            ::LibUI.attributed_string_set_attribute(@parent_proxy.attributed_string, underline_color_attribute, @start, @start + @string.bytesize)
           else
             the_color = Glimmer::LibUI.interpret_color(@underline_color)
             underline_color_attribute = ::LibUI.new_underline_color_attribute(0, the_color[:r].to_f / 255.0, the_color[:g].to_f / 255.0, the_color[:b].to_f / 255.0, the_color[:a] || 1.0)
-            ::LibUI.attributed_string_set_attribute(@parent_proxy.attributed_string, underline_color_attribute, @start, @start + @string.size)
+            ::LibUI.attributed_string_set_attribute(@parent_proxy.attributed_string, underline_color_attribute, @start, @start + @string.bytesize)
           end
         end
         unless font.nil?
           if font[:family]
             family_attribute = ::LibUI.new_family_attribute(font[:family])
-            ::LibUI.attributed_string_set_attribute(@parent_proxy.attributed_string, family_attribute, @start, @start + @string.size)
+            ::LibUI.attributed_string_set_attribute(@parent_proxy.attributed_string, family_attribute, @start, @start + @string.bytesize)
           end
           if font[:size]
             size_attribute = ::LibUI.new_size_attribute(font[:size])
-            ::LibUI.attributed_string_set_attribute(@parent_proxy.attributed_string, size_attribute, @start, @start + @string.size)
+            ::LibUI.attributed_string_set_attribute(@parent_proxy.attributed_string, size_attribute, @start, @start + @string.bytesize)
           end
           if font[:weight]
             weight_attribute = ::LibUI.new_weight_attribute(Glimmer::LibUI.enum_symbol_to_value(:text_weight, font[:weight]))
-            ::LibUI.attributed_string_set_attribute(@parent_proxy.attributed_string, weight_attribute, @start, @start + @string.size)
+            ::LibUI.attributed_string_set_attribute(@parent_proxy.attributed_string, weight_attribute, @start, @start + @string.bytesize)
           end
           if font[:italic]
             italic_attribute = ::LibUI.new_italic_attribute(Glimmer::LibUI.enum_symbol_to_value(:text_italic, font[:italic]))
-            ::LibUI.attributed_string_set_attribute(@parent_proxy.attributed_string, italic_attribute, @start, @start + @string.size)
+            ::LibUI.attributed_string_set_attribute(@parent_proxy.attributed_string, italic_attribute, @start, @start + @string.bytesize)
           end
           if font[:stretch]
             stretch_attribute = ::LibUI.new_stretch_attribute(Glimmer::LibUI.enum_symbol_to_value(:text_stretch, font[:stretch]))
-            ::LibUI.attributed_string_set_attribute(@parent_proxy.attributed_string, stretch_attribute, @start, @start + @string.size)
+            ::LibUI.attributed_string_set_attribute(@parent_proxy.attributed_string, stretch_attribute, @start, @start + @string.bytesize)
           end
         end
         unless open_type_features.nil?
           open_type_features_attribute = ::LibUI.new_features_attribute(open_type_features.libui)
-          ::LibUI.attributed_string_set_attribute(@parent_proxy.attributed_string, open_type_features_attribute, @start, @start + @string.size)
+          ::LibUI.attributed_string_set_attribute(@parent_proxy.attributed_string, open_type_features_attribute, @start, @start + @string.bytesize)
         end
         destroy if area_proxy.nil?
       end
