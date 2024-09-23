@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.12.4
+
+- Fix issue #67 (The Japanese text is displayed strangely), thanks to PR #68 by @junogura
+
 ## 0.12.3
 
 - Upgrade to libui 0.1.2 (final version of 0.1.2.pre)
