@@ -33,8 +33,14 @@ module Glimmer
           if values.empty?
             @values
           else
-            @values = values
-            @values.each { |value| append value }
+            @values ||= []
+            values.each do |value|
+              unless @values.include?(value)
+                append(value)
+                @values << value
+              end
+            end
+            @values
           end
         end
         alias set_items items

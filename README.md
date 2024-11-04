@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.12.4
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for LibUI 0.12.5
 ## Prerequisite-Free Ruby Desktop Development Cross-Platform Native GUI Library  ([Fukuoka Award Winning](http://www.digitalfukuoka.jp/topics/187?locale=ja))
 ### The Quickest Way From Zero To GUI
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-libui.svg)](http://badge.fury.io/rb/glimmer-dsl-libui)
@@ -349,13 +349,21 @@ Mac | Windows | Linux
 ----|---------|------
 ![glimmer-dsl-libui-mac-area-gallery.png](images/glimmer-dsl-libui-mac-area-gallery.png) | ![glimmer-dsl-libui-windows-area-gallery.png](images/glimmer-dsl-libui-windows-area-gallery.png) | ![glimmer-dsl-libui-linux-area-gallery.png](images/glimmer-dsl-libui-linux-area-gallery.png)
 
-[Check Out Many More Examples Over Here!](#examples)
+[Check out many more examples over here!](#examples)
 
 [![glimmer-dsl-libui-mac-snake.gif](images/glimmer-dsl-libui-mac-snake.gif)](/docs/examples/GLIMMER-DSL-LIBUI-ADVANCED-EXAMPLES.md#snake)
 
 [![glimmer-dsl-libui-mac-color-the-circles.gif](images/glimmer-dsl-libui-mac-color-the-circles.gif)](/docs/examples/GLIMMER-DSL-LIBUI-ADVANCED-EXAMPLES.md#color-the-circles)
 
 [![glimmer-dsl-libui-mac-tetris.gif](images/glimmer-dsl-libui-mac-tetris.gif)](/docs/examples/GLIMMER-DSL-LIBUI-ADVANCED-EXAMPLES.md#tetris)
+
+[Check out many real apps built with Glimmer DSL for LibUI over here!](#applications)
+
+![kuiq](https://raw.githubusercontent.com/mperham/kuiq/main/misc/ui.png)
+
+![rubio-radio](https://raw.githubusercontent.com/kojix2/rubio-radio/main/screenshots/rubio-radio-linux.png)
+
+![Ruby Go](/images/glimmer-dsl-libui-mac-application-ruby-go.png)
 
 NOTE: [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) is regularly catching up with changes in the C [libui-ng](https://github.com/libui-ng/libui-ng) library API and in beta mode. The C [libui-ng](https://github.com/libui-ng/libui-ng) is still mid-alpha, which is why [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) cannot be declared v1.0.0 yet. Please help make better by contributing, adopting for small or low risk projects, and providing feedback. The more feedback and issues you report the better.
 
@@ -456,7 +464,7 @@ gem install glimmer-dsl-libui
 Or install via Bundler `Gemfile`:
 
 ```ruby
-gem 'glimmer-dsl-libui', '~> 0.12.4'
+gem 'glimmer-dsl-libui', '~> 0.12.5'
 ```
 
 Test that installation worked by running the [Glimmer Meta-Example](#examples):
@@ -4508,6 +4516,14 @@ A simple app for playing Go games with a friend, built by [Tim Standen](https://
 https://github.com/timbot1789/rubygo
 
 ![Ruby Go](/images/glimmer-dsl-libui-mac-application-ruby-go.png)
+
+### Kuiq - Sidekiq UI
+
+The Sidekiq dashboard as a desktop application.
+
+https://github.com/mperham/kuiq
+
+![kuiq](https://raw.githubusercontent.com/mperham/kuiq/main/misc/ui.png)
 
 ## Design Principles
 

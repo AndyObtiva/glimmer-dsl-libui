@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.12.5
+
+- Prevent duplication of items in editable_combobox when updating items with an array that contains duplicates
+
 ## 0.12.4
 
 - Fix issue #67 (The Japanese text is displayed strangely), thanks to PR #68 by @junogura
