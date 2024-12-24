@@ -23,6 +23,7 @@ require 'glimmer/libui/parent'
 require 'glimmer/libui/control_proxy/area_proxy'
 require 'glimmer/libui/control_proxy/path_proxy'
 require 'glimmer/libui/data_bindable'
+require 'glimmer/libui/content_bindable'
 require 'glimmer/libui/perfect_shaped'
 
 module Glimmer
@@ -72,6 +73,7 @@ module Glimmer
       include Parent
       include PerfectShaped
       include DataBindable
+      include ContentBindable
       
       KEYWORD_ALIASES = {
         'shape' => 'composite_shape',

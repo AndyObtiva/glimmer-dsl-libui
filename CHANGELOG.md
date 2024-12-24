@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.12.6
+
+- Shape Content Data-Binding
+
 ## 0.12.5
 
 - Prevent duplication of items in editable_combobox when updating items with an array that contains duplicates
