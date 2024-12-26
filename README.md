@@ -8,6 +8,8 @@
 
 (**[Fukuoka Ruby Award Competition 2022 Special Award Winner](https://andymaleh.blogspot.com/2022/02/glimmer-dsl-for-libui-wins-fukuoka-ruby.html)** [[Award Announcement]](http://www.digitalfukuoka.jp/topics/187?locale=ja))
 
+(**[***RubyConf 2024 Workshop - How To Build Basic Desktop Applications in Ruby***](https://www.youtube.com/watch?v=TTSqRdTVtDY)**)
+
 (**[***RubyConf 2023 Workshop - How To Build Desktop Applications in Ruby***](https://github.com/AndyObtiva/how-to-build-desktop-applications-in-ruby)**)
 
 (**[***RubyConf 2022 Talk - Building Native GUI Apps in Ruby***](https://andymaleh.blogspot.com/2023/02/rubyconf-2022-talk-video-for-building.html)**)
