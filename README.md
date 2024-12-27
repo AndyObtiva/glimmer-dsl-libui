@@ -792,7 +792,7 @@ hello_world
 When you are in a scaffolded application, you can scaffold a new [custom control](#custom-components) (a control that you can put anything in to represent a view concept in your application) by running this command:
 
 ```
-glimmer scaffold:customcontrol[name,namespace]
+glimmer "scaffold:customcontrol[name,namespace]"
 ```
 
 The `name` represents the [custom control](#custom-components) view class name (it can be underscored, and Glimmer will automatically classify it).
@@ -802,13 +802,13 @@ The `namespace` is optional and represents the module that the [custom control](
 You can also use the shorter `cc` alias for `customcontrol`:
 
 ```
-glimmer scaffold:cc[name,namespace]
+glimmer "scaffold:cc[name,namespace]"
 ```
 
 For example by running this command under a `hello_world` application:
 
 ```
-glimmer scaffold:cc[model_form]
+glimmer "scaffold:cc[model_form]"
 ```
 
 That will generate this class under `app/hello_world/view/model_form`:
@@ -882,7 +882,7 @@ window {
 Here is an example that generates a [custom control](#custom-components) with a namespace:
 
 ```
-glimmer scaffold:cc[model_form,common]
+glimmer "scaffold:cc[model_form,common]"
 ```
 
 That will generate this class under `app/common/view/model_form`:
@@ -982,7 +982,7 @@ A custom window is a specialization of a custom control that has a `window` as i
 When you are in a scaffolded application, you can scaffold a new custom window (a window that you can put anything in to represent a view concept in your application) by running this command:
 
 ```
-glimmer scaffold:customwindow[name,namespace]
+glimmer "scaffold:customwindow[name,namespace]"
 ```
 
 The `name` represents the custom window view class name (it can be underscored, and Glimmer will automatically classify it).
@@ -992,13 +992,13 @@ The `namespace` is optional and represents the module that the custom window vie
 You can also use the shorter `cw` alias for `customwindow`:
 
 ```
-glimmer scaffold:cw[name,namespace]
+glimmer "scaffold:cw[name,namespace]"
 ```
 
 For example by running this command under a `hello_world` application:
 
 ```
-glimmer scaffold:cw[greeting_window]
+glimmer "scaffold:cw[greeting_window]"
 ```
 
 That will generate this class under `app/hello_world/view/greeting_window`:
@@ -1059,7 +1059,7 @@ greeting_window.show
 Here is an example that generates a custom window with a namespace:
 
 ```
-glimmer scaffold:cw[train,station]
+glimmer "scaffold:cw[train,station]"
 ```
 
 That will generate this class under `app/station/view/train`:
@@ -1134,7 +1134,7 @@ hello_world__view__train.show
 When you are in a scaffolded application, you can scaffold a new [custom shape](#custom-components) (a shape that you can put anything in to represent a view concept in your application) by running this command:
 
 ```
-glimmer scaffold:customshape[name,namespace]
+glimmer "scaffold:customshape[name,namespace]"
 ```
 
 The `name` represents the [custom shape](#custom-components) view class name (it can be underscored, and Glimmer will automatically classify it).
@@ -1144,13 +1144,13 @@ The `namespace` is optional and represents the module that the [custom shape](#c
 You can also use the shorter `cs` alias for `customshape`:
 
 ```
-glimmer scaffold:cs[name,namespace]
+glimmer "scaffold:cs[name,namespace]"
 ```
 
 For example by running this command under a `hello_world` application:
 
 ```
-glimmer scaffold:cs[heart]
+glimmer "scaffold:cs[heart]"
 ```
 
 That will generate this class under `app/hello_world/view/heart`:
@@ -1235,7 +1235,7 @@ window {
 Here is an example that generates a [custom shape](#custom-components) with a namespace:
 
 ```
-glimmer scaffold:cs[heart,acme]
+glimmer "scaffold:cs[heart,acme]"
 ```
 
 That will generate this class under `app/acme/view/heart`:
@@ -1332,7 +1332,7 @@ window {
 You can scaffold a Ruby gem around a reusable [custom control](#custom-components) to expose publicly and make available for multiple projects by running this command:
 
 ```
-glimmer scaffold:gem:customcontrol[name,namespace]
+glimmer "scaffold:gem:customcontrol[name,namespace]"
 ```
 
 That will generate a [custom control](#custom-components) gem project under the naming convention: `glimmer-libui-cc-name-namespace`
@@ -1346,7 +1346,7 @@ The `namespace` is needed to avoid clashing with other [custom control](#custom-
 Here is a shorter alias for the [custom control](#custom-components) gem scaffolding command:
 
 ```
-glimmer scaffold:gem:cc[name,namespace]
+glimmer "scaffold:gem:cc[name,namespace]"
 ```
 
 You can package the newly scaffolded project as a Ruby gem by running this command:
@@ -1400,7 +1400,7 @@ A custom window is a specialization of a custom control that has a `window` as i
 You can scaffold a Ruby gem around a reusable custom window to expose publicly and make available for multiple projects by running this command:
 
 ```
-glimmer scaffold:gem:customwindow[name,namespace]
+glimmer "scaffold:gem:customwindow[name,namespace]"
 ```
 
 That will generate a custom window gem project under the naming convention: `glimmer-libui-cw-name-namespace`
@@ -1414,7 +1414,7 @@ The `namespace` is needed to avoid clashing with other custom window gems that o
 Here is a shorter alias for the custom window gem scaffolding command:
 
 ```
-glimmer scaffold:gem:cw[name,namespace]
+glimmer "scaffold:gem:cw[name,namespace]"
 ```
 
 You can package the newly scaffolded project as a Ruby gem by running this command:
@@ -1460,7 +1460,7 @@ greeter.show
 You can scaffold a Ruby gem around a reusable [custom shape](#custom-components) to expose publicly and make available for multiple projects by running this command:
 
 ```
-glimmer scaffold:gem:customshape[name,namespace]
+glimmer "scaffold:gem:customshape[name,namespace]"
 ```
 
 That will generate a [custom shape](#custom-components) gem project under the naming convention: `glimmer-libui-cc-name-namespace`
@@ -1474,7 +1474,7 @@ The `namespace` is needed to avoid clashing with other [custom shape](#custom-co
 Here is a shorter alias for the [custom shape](#custom-components) gem scaffolding command:
 
 ```
-glimmer scaffold:gem:cs[name,namespace]
+glimmer "scaffold:gem:cs[name,namespace]"
 ```
 
 You can package the newly scaffolded project as a Ruby gem by running this command:
