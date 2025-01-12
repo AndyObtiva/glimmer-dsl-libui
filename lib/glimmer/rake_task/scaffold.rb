@@ -153,6 +153,7 @@ module Glimmer
           mkdir 'app'
           write "app/#{file_name(app_name)}.rb", app_main_file(app_name)
           mkdir_p "app/#{file_name(app_name)}/model"
+          mkdir_p "app/#{file_name(app_name)}/presenter"
           mkdir_p "app/#{file_name(app_name)}/view"
           custom_window(class_name(app_name), current_dir_name, window_type, custom_window_class_name: 'Application')
           app_model(current_dir_name)
@@ -195,9 +196,11 @@ module Glimmer
           namespace ||= current_dir_name
           root_dir = File.exist?('app') ? 'app' : 'lib'
           parent_dir = "#{root_dir}/#{file_name(namespace)}/view"
-          return puts("The file '#{parent_dir}/#{file_name(custom_window_name)}.rb' already exists. Please either remove or pick a different name.") if File.exist?("#{parent_dir}/#{file_name(custom_window_name)}.rb")
+          custom_window_file_name_suffix = "_#{file_name(window_options[:custom_window_class_name])}" if window_options[:custom_window_class_name] == 'Application'
+          custom_window_file_name = "#{parent_dir}/#{file_name(custom_window_name)}#{custom_window_file_name_suffix}.rb"
+          return puts("The file '#{custom_window_file_name}' already exists. Please either remove or pick a different name.") if File.exist?(custom_window_file_name)
           mkdir_p parent_dir unless File.exist?(parent_dir)
-          write "#{parent_dir}/#{file_name(custom_window_name)}.rb", custom_window_file(custom_window_name, namespace, window_type, window_options)
+          write custom_window_file_name, custom_window_file(custom_window_name, namespace, window_type, window_options)
         end
     
         def custom_control(custom_control_name, namespace)
@@ -437,7 +440,7 @@ module Glimmer
               LICENSE = File.read(File.join(APP_ROOT, 'LICENSE.txt'))
             end
     
-            require '#{file_name(app_name)}/view/#{file_name(app_name)}'
+            require '#{file_name(app_name)}/view/#{file_name(app_name)}_application.rb'
           MULTI_LINE_STRING
         end
     
@@ -457,9 +460,10 @@ module Glimmer
     
         def app_launch_file(app_name)
           <<~MULTI_LINE_STRING
+            # this is only a helper for the bin script to launch the app. Developers must generally not need to edit it.
             require_relative '../#{file_name(app_name)}'
             
-            #{class_name(app_name)}::View::#{class_name(app_name)}.launch
+            #{class_name(app_name)}::View::#{class_name(app_name)}Application.launch
           MULTI_LINE_STRING
         end
         
@@ -545,7 +549,7 @@ require '#{window_type == :app ? current_dir_name : namespace}/model/greeting'
           custom_window_file_content += <<-MULTI_LINE_STRING
 #{namespace_type} #{class_name(namespace)}
   module View
-    class #{class_name(custom_window_name)}
+    class #{class_name(custom_window_name)}#{window_options[:custom_window_class_name] if window_options[:custom_window_class_name] == 'Application'}
       include Glimmer::LibUI::#{window_options[:custom_window_class_name]}
     
           MULTI_LINE_STRING

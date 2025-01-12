@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.12.7
+
+- Application Scaffolding now generates the main view as `SomeNameApplication` (with `_application` suffix in file name) to indicate clearly it is a `Glimmer::LibUI::Application` class.
+- Application Scaffolding now generates a `presenter` directory for convenience in case presenters are needed.
+
 ## 0.12.6
 
 - Shape Content Data-Binding
