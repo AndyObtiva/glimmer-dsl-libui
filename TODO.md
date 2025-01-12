@@ -201,6 +201,7 @@
 
 - Check if there is a way to prevent Gemfile conflict with juwelier in Application Scaffolding
 - Fix issue on the Mac where if you open a window from a preferences menu item and when it is closed you open another window, the latter window does not show, but when you close the app, it shows, and then you get a low-level crash of the application with a segmentation fault. The issue seems related to fiddle closure access in glimmer-dsl-libui-0.9.4/lib/glimmer/libui/control_proxy.rb:297 (`value = ::LibUI.send("control_#{property}", libui, *args)` line in `send_to_libui`)
+- It seems there is an issue with overriding a default shape stroke within composite shape when one of the shapes is a rectangle while others are lines. The rectangle specifying a stroke overrides the stroke for all other shapes instead of its own only. The data must be getting set on a shared stroke object which must not be shared in the case of an override.
 
 # Examples
 
