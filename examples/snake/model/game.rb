@@ -24,18 +24,6 @@ class Snake
         @high_score = File.read(FILE_HIGH_SCORE).to_i rescue 0
       end
       
-      def score=(new_score)
-        @score = new_score
-        self.high_score = @score if @score > @high_score
-      end
-      
-      def high_score=(new_high_score)
-        @high_score = new_high_score
-        File.write(FILE_HIGH_SCORE, @high_score.to_s)
-      rescue => e
-        puts e.full_message
-      end
-      
       def start
         self.over = false
         self.score = 0
@@ -62,6 +50,20 @@ class Snake
       # inspect is overridden to prevent printing very long stack traces
       def inspect
         "#{super[0, 75]}... >"
+      end
+      
+      private
+      
+      def score=(new_score)
+        @score = new_score
+        self.high_score = @score if @score > @high_score
+      end
+      
+      def high_score=(new_high_score)
+        @high_score = new_high_score
+        File.write(FILE_HIGH_SCORE, @high_score.to_s)
+      rescue => e
+        puts e.full_message
       end
     end
   end
