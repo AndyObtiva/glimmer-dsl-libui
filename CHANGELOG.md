@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.12.8
+
+- Fix issue with refined_table crashing when filtering by a specific column (e.g. name:john) and column is not found
+
 ## 0.12.7
 
 - Application Scaffolding now generates the main view as `SomeNameApplication` (with `_application` suffix in file name) to indicate clearly it is a `Glimmer::LibUI::Application` class.
