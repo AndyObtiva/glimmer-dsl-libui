@@ -3,6 +3,7 @@
 ## 0.12.8
 
 - Fix issue with refined_table crashing when filtering by a specific column (e.g. name:john) and column is not found
+- Fix broken spec/examples/snake/model/game_spec.rb due to method being made private incorrectly
 
 ## 0.12.7
 

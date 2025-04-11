@@ -52,8 +52,6 @@ class Snake
         "#{super[0, 75]}... >"
       end
       
-      private
-      
       def score=(new_score)
         @score = new_score
         self.high_score = @score if @score > @high_score
