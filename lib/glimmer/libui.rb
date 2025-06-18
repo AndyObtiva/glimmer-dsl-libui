@@ -195,7 +195,7 @@ module Glimmer
       end
       
       def x11_colors
-        require 'color'
+        require 'color/rgb/colors'
         Color::RGB.constants.reject {|c| c.to_s.upcase == c.to_s}.map(&:to_s).map(&:underscore).map(&:to_sym)
       end
       
