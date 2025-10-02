@@ -28,19 +28,19 @@ module Glimmer
       #
       # Follows the Proxy Design Pattern
       class EditableComboboxProxy < ControlProxy
-        def items(*values)
-          values = values.first if values.first.is_a?(Array)
-          if values.empty?
-            @values
+        def items(*item_values)
+          item_values = item_values.first if item_values.first.is_a?(Array)
+          if item_values.empty?
+            @items
           else
-            @values ||= []
-            values.each do |value|
-              unless @values.include?(value)
+            @items ||= []
+            item_values.each do |value|
+              unless @items.include?(value)
                 append(value)
-                @values << value
+                @items << value
               end
             end
-            @values
+            @items
           end
         end
         alias set_items items

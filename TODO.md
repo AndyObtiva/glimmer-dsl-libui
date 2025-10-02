@@ -2,6 +2,8 @@
 
 ## Next
 
+- Fix issue with combobox selected_item bidirectional data-binding not triggering on_write converter or after_write hook
+- Fix issue with combobox not allowing us to update its items dynamically with unidirectional data-binding (perhaps we have to remove all items and re-add them all or even remove the control and re-add it)
 - Glimmer Model Data-Binding DSL (e.g. bind :name, computed_by: [:first_name, :last_name])
 - Simplify button counter by removing vertical_box and simplify other samples that don't need it
 - Improve documentation for menus and how to use them (and upgrade examples containing menus to use CustomControl to show how to initialize a menu in components)
