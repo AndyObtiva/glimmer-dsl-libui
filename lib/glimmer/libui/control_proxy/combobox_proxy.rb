@@ -42,23 +42,28 @@ module Glimmer
         alias selected= selected
         alias set_selected selected
       
-        def items(*values)
-          values = values.first if values.first.is_a?(Array)
-          if values.empty?
-            @values
+        def items(*item_values)
+          item_values = item_values.first if item_values.first.is_a?(Array)
+          if item_values.empty?
+            @items
           else
-            @values = values
-            @values.each { |value| append value }
+            @items = item_values
+            clear
+            @items.each { |item| append(item) }
           end
         end
         alias set_items items
         alias items= items
         
-        def selected_item(value = nil)
-          if value.nil?
-            items[selected]
+        def selected_item(item_value = nil)
+          if item_value.nil?
+            if selected == -1 # no value selected (unselected)
+              nil
+            else
+              items[selected]
+            end
           else
-            self.selected = items.index(value)
+            self.selected = items.index(item_value)
           end
         end
         alias set_selected_item selected_item

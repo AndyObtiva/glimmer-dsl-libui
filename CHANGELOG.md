@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.13.0
+
+- Support `combobox` `items` unidirectional data-binding
+- Update color gem to version 2
+- Fix issue of `combobox` `selected_item` bidirectional data-binding not working correctly like `selected` data-binding does
+
 ## 0.12.8
 
 - Fix issue with refined_table crashing when filtering by a specific column (e.g. name:john) and column is not found
