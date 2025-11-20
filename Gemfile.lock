@@ -7,7 +7,7 @@ GEM
     awesome_print (1.9.2)
     builder (3.2.4)
     chunky_png (1.4.0)
-    color (2.1.1)
+    color (1.8)
     coveralls (0.8.23)
       json (>= 1.8, < 3)
       simplecov (~> 0.16.1)
@@ -164,7 +164,7 @@ PLATFORMS
 
 DEPENDENCIES
   chunky_png (~> 1.4.0)
-  color (>= 2.0.0, < 3.0.0)
+  color (~> 1.8)
   coveralls (= 0.8.23)
   equalizer (= 0.0.11)
   glimmer (~> 2.8.0)

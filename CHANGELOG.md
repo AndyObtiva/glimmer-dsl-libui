@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.13.1
+
+- Revert color gem to version 1.8 to maintain compatibility with Ruby versions lower than 3.2 for broader support
+
 ## 0.13.0
 
 - Support `combobox` `items` unidirectional data-binding
