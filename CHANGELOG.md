@@ -4,6 +4,7 @@
 
 - Support `combobox` `items` unidirectional data-binding
 - Update color gem to version 2
+- Refactor/simplify examples/button_counter.rb by removing unnecessary `vertical_box` (Glimmer DSL for LibUI implicitly adds it automatically when needed)
 - Fix issue of `combobox` `selected_item` bidirectional data-binding not working correctly like `selected` data-binding does
 
 ## 0.12.8
